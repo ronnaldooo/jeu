@@ -11,7 +11,7 @@
    ========================================================================== */
 
 import * as K from './constantes.js';
-import { CATALOGUE, PAR_ID, REVALORISATION, FINANCEMENT_19, DOSSIERS_ETE, AUDIENCES, RECEPTION } from './catalogue.js';
+import { CATALOGUE, PAR_ID, REVALORISATION, chiffrerRevalorisation, FINANCEMENT_19, DOSSIERS_ETE, AUDIENCES, RECEPTION } from './catalogue.js';
 
 /* ---------------------------------------------------------------- ALÉA --- */
 export function rngDepuis(graine) {
@@ -24,6 +24,7 @@ export function rngDepuis(graine) {
   };
 }
 const borne = (x, min, max) => Math.max(min, Math.min(max, x));
+const fmtMd = (x) => (Math.round(x * 100) / 100).toLocaleString('fr-FR');
 /* Loi normale (Box-Muller) pour le bruit des indicateurs affichés. */
 function normale(rng, mu = 0, sigma = 1) {
   const u = Math.max(1e-9, rng()), v = rng();
@@ -705,9 +706,12 @@ export function coutDe(carte, options = {}) {
     return { cout: f.cout, coutETP: f.coutETP, pol: carte.pol };
   }
   if (carte.parametrique === 'revalorisation') {
-    const cp = REVALORISATION.contreparties[options.contrepartie || 'sans'];
-    const am = REVALORISATION.ampleurs[options.ampleur || 'plan'];
-    return { cout: am.cout, coutETP: 0, pol: carte.pol + cp.pol + Math.round(am.cout * 2) };
+    const ch = chiffrerRevalorisation(options.montant ?? REVALORISATION.montant.defaut,
+                                     options.instrument || 'indiciaire', options.cible || 'tous');
+    /* Plus c'est gros, plus il faut arracher l'arbitrage ; une prime coûte
+       moins de capital qu'une hausse indiciaire, que Bercy sait irréversible. */
+    const polInstrument = { indiciaire: 4, prime: 0, pacte: -2 }[options.instrument || 'indiciaire'];
+    return { cout: ch.montantMd, coutETP: 0, pol: Math.max(3, carte.pol + polInstrument + Math.round(ch.montantMd * 2)) };
   }
   return { cout: carte.cout, coutETP: carte.coutETP, pol: carte.pol };
 }
@@ -757,17 +761,17 @@ function appliquerMesures(s, choix, maxAnnonces = 3, depassementAutorise = true)
     let effets = carte.reel;
     let mult = 1;
     if (carte.parametrique === 'revalorisation') {
-      const cible = REVALORISATION.cibles[ch.options?.cible || 'tous'];
-      const cp = REVALORISATION.contreparties[ch.options?.contrepartie || 'sans'];
-      const am = REVALORISATION.ampleurs[ch.options?.ampleur || 'plan'];
-      const echelle = am.cout / 1.3;                 // l'ampleur module tout
-      s.phys.positionSalariale += am.cout * K.POINTS_SALAIRE_PAR_MD;
-      s.phys.adhesion += (cible.adhesion + cp.adhesion) * echelle;
-      s.bonusAttractivite = (s.bonusAttractivite || 0) + cible.attractiviteBonus * echelle;
-      mult *= echelle;
-      if (cp.hna) s.hnaTemporaires.push({ delta: cp.hna, reste: 99, applique: 0 });
-      effets = cible.reel;
-      if (cp.greve) (s.grevesEnAttente = s.grevesEnAttente || []).push({ ...cp.greve, cause: 'revalorisation sous conditions' });
+      const r = chiffrerRevalorisation(ch.options?.montant ?? REVALORISATION.montant.defaut,
+                                       ch.options?.instrument || 'indiciaire', ch.options?.cible || 'tous');
+      s.phys.positionSalariale += r.gainPosition;
+      s.phys.adhesion += (r.cible.adhesion + r.instrument.adhesion) * r.echelle;
+      s.bonusAttractivite = (s.bonusAttractivite || 0) + r.cible.attractivite * r.echelle * r.instrument.facteurPosition;
+      s.creditBercy = borne(s.creditBercy + r.instrument.bercy * Math.min(2, r.echelle), 0, 100);
+      /* Le pacte paie du remplacement : c'est son seul avantage documenté. */
+      if (r.instrument.hna) s.hnaTemporaires.push({ delta: r.instrument.hna * Math.min(2, r.echelle), reste: 99, applique: 0 });
+      mult *= r.echelle * r.instrument.facteurPosition;
+      effets = r.cible.reel;
+      note(s, `Revalorisation : ${fmtMd(r.montantMd)} Md€/an, ${r.instrument.label.toLowerCase()}, ${r.cible.label.toLowerCase()} — soit ${Math.round(r.euroParMois)} € brut par mois pour ${Math.round(r.concernes / 1000)} 000 enseignants.`, 'salaires');
     }
     if (carte.parametrique === 'financement19') {
       const f = FINANCEMENT_19[ch.options?.financement || 'demographie'];

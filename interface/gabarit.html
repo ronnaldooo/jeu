@@ -138,6 +138,18 @@ h1,h2,h3{text-wrap:balance; margin:0}
 .prio .pastille{width:8px; height:8px; border-radius:50%}
 .prio.p1{border-color:var(--bleu-rf)}
 
+/* ---------- panneau de revalorisation ---------- */
+.salaire{border-top:1px dashed var(--filet-fort); padding-top:10px; display:grid; gap:10px}
+.salaire .curseur-md label{font-size:.7rem; text-transform:uppercase; letter-spacing:.07em; color:var(--encre-2); display:flex; justify-content:space-between; gap:8px}
+.salaire .curseur-md label b{font-family:"IBM Plex Mono",monospace; color:var(--encre); font-size:.9rem; letter-spacing:0; text-transform:none; font-variant-numeric:tabular-nums}
+.salaire input[type=range]{width:100%; accent-color:var(--bleu-rf); margin:4px 0 0}
+.salaire .reperes{display:flex; justify-content:space-between; font-size:.62rem; color:var(--encre-3)}
+.salaire .chiffrage{background:var(--fiche-2); border-left:3px solid var(--c-budget); padding:9px 11px; font-size:.76rem; display:grid; gap:3px}
+.salaire .chiffrage .l{display:flex; justify-content:space-between; gap:10px}
+.salaire .chiffrage .l b{font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums; font-weight:500}
+.salaire .chiffrage .src{color:var(--encre-3); font-size:.68rem; border-top:1px dashed var(--filet-fort); padding-top:5px; margin-top:3px}
+.salaire .note-i{font-size:.72rem; color:var(--encre-2); max-width:60ch}
+
 /* ---------- deltas d'acteurs (avant validation) ---------- */
 .deltas-acteurs{display:flex; flex-wrap:wrap; gap:6px; margin-top:10px}
 .delta-a{font-family:"IBM Plex Mono",monospace; font-size:.74rem; padding:3px 9px; border:1px solid var(--filet-fort); background:var(--fiche); font-variant-numeric:tabular-nums}

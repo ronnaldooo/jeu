@@ -472,7 +472,7 @@ function ecranAtelier(q) {
       </div>
       ${vc.length ? '<div class="note-image">« Image » : l’indicateur affiché bouge tout de suite — puis l’effet s’estompe d’un quart par an et ne compte pas au bilan. Seuls les effets réels (🔒, différés) comptent.</div>' : ''}
       <div class="reels">${(c.reel || []).map((e) => `<div class="ligne"><span class="verrous">${'🔒'.repeat(e.cadenas)}${'·'.repeat(5 - e.cadenas)}</span><span>Effet réel sur <b>${NOMS_C[e.compteur]}</b>, vers l’an +${e.delai}</span></div><div class="src">${esc(e.source)}</div>`).join('')}
-      ${c.parametrique === 'revalorisation' ? '<div class="ligne"><span class="verrous">🔒🔒🔒··</span><span>Effet réel selon vos curseurs (réglez-les après sélection)</span></div>' : ''}</div>
+      ${c.parametrique === 'revalorisation' ? '<div class="ligne"><span class="verrous">🔒🔒🔒··</span><span>Montant, instrument et cible se règlent après sélection — tout est chiffré en direct</span></div>' : ''}</div>
       ${c.greve ? `<div class="alerte-greve">⚠ Risque de mobilisation (intensité ${c.greve.intensite}/5, ${c.greve.theme})</div>` : ''}
       ${c.provocations ? `<div class="alerte-greve">⚠ Provocation « guerre scolaire » (+${c.provocations})</div>` : ''}
       <div class="mot">${esc(c.mot)}</div>`;
@@ -502,10 +502,42 @@ function ecranAtelier(q) {
         s.onchange = (e) => { opt[cle] = e.target.value; majSolde(); };
         w.appendChild(s); return w; };
       if (c.parametrique === 'revalorisation') {
-        zone.append(
-          sel('Ampleur', REVALORISATION.ampleurs, 'ampleur', (k, v) => v.label),
-          sel('Cible', REVALORISATION.cibles, 'cible', (k, v) => v.label),
-          sel('Contrepartie', REVALORISATION.contreparties, 'contrepartie', (k, v) => `${v.label} — ${v.porteurs.join(', ')}`));
+        zone.classList.add('salaire');
+        /* 1. Le montant, au curseur — tout le reste en découle. */
+        const R = REVALORISATION.montant;
+        const cur = el('div', 'curseur-md');
+        cur.innerHTML = `<label for="md-${c.id}"><span>Montant engagé, par an</span><b></b></label>
+          <input id="md-${c.id}" type="range" min="${R.min}" max="${R.max}" step="${R.pas}" value="${opt.montant}">
+          <div class="reperes"><span>${fmt0(R.min * 1000)} M€</span><span>2,5 Md€ = le plan chiffré par Attal</span><span>${fmt1(R.max)} Md€</span></div>`;
+        const chif = el('div', 'chiffrage');
+        const noteI = el('div', 'note-i');
+
+        const valeurMd = cur.querySelector('label b');
+        const majChiffrage = () => {
+          const r = chiffrerRevalorisation(opt.montant, opt.instrument, opt.cible);
+          valeurMd.textContent = fmt1(r.montantMd) + ' Md€';
+          chif.innerHTML = `
+            <div class="l"><span>Concerne</span><b>${fmt0(r.concernes)} enseignants</b></div>
+            <div class="l"><span>Soit, en brut mensuel moyen</span><b>+${fmt0(r.euroParMois)} €/mois</b></div>
+            <div class="l"><span>Équivaut à</span><b>${fmt1(r.pctPoint)} % de point d’indice</b></div>
+            <div class="l"><span>Part du rattrapage réclamé par la FSU (10 Md€)</span><b>${fmt0(r.pctRattrapageFSU)} %</b></div>
+            <div class="l"><span>Coût réel pour l’État${r.instrument.cas ? ', CAS Pensions compris' : ' (pas de contribution pension)'}</span><b>${fmt1(r.coutAvecCAS)} Md€</b></div>
+            <div class="l"><span>Position salariale vs autres diplômés du supérieur</span><b>${fmt1(S.phys.positionSalariale)} % → ${fmt1(S.phys.positionSalariale + r.gainPosition)} %</b></div>
+            <div class="src">Point d’indice 4,92 € gelé depuis 2023 · 1 % de point ≈ 490 M€ sur le périmètre de l’Éducation nationale · 814 927 ETP enseignants · CAS Pensions = +43 % de la masse salariale.</div>`;
+          noteI.innerHTML = `<b>${esc(r.instrument.label)}</b> — ${esc(r.instrument.note)}<br><span style="color:var(--encre-3)">${esc(r.cible.note)}</span>`;
+          majSolde();
+        };
+        cur.querySelector('input').oninput = (e) => { e.stopPropagation(); opt.montant = +e.target.value; majChiffrage(); };
+        cur.querySelector('input').onclick = (e) => e.stopPropagation();
+
+        const relire = (fn) => (e) => { fn(e); majChiffrage(); };
+        const selI = sel('Comment on verse', REVALORISATION.instruments, 'instrument', (k, v) => v.label);
+        const selC = sel('Pour qui', REVALORISATION.cibles, 'cible', (k, v) => v.label);
+        selI.querySelector('select').onchange = relire((e) => { opt.instrument = e.target.value; });
+        selC.querySelector('select').onchange = relire((e) => { opt.cible = e.target.value; });
+
+        zone.append(cur, selI, selC, chif, noteI);
+        majChiffrage();
       } else if (c.parametrique === 'financement19') {
         zone.append(sel('Financement', FINANCEMENT_19, 'financement', (k, v) => `${v.label} (${fmt0(v.cout * 1000)} M€)`));
       }
@@ -522,7 +554,7 @@ function ecranAtelier(q) {
           setTimeout(() => { bRet.textContent = 'Retenir'; }, 1600);
           return;
         }
-        const opt = c.parametrique === 'revalorisation' ? { ampleur: 'plan', cible: 'milieux', contrepartie: 'sans' }
+        const opt = c.parametrique === 'revalorisation' ? { montant: REVALORISATION.montant.defaut, instrument: 'indiciaire', cible: 'milieux' }
           : c.parametrique === 'financement19' ? { financement: 'demographie' } : {};
         selection.set(c.id, opt); carte.classList.add('sel', 'ouverte'); bRet.textContent = 'Retirer'; majParams();
       }

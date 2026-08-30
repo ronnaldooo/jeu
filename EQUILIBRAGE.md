@@ -315,6 +315,42 @@ dépassements triplés, et 20 % de guerres scolaires par accumulation de
 provocations. Avec elles, la survie revient à 51-55 % et les quatre cibles
 sont tenues sans autre retouche.
 
+## 3 sexies. La revalorisation, entièrement chiffrée
+
+La carte salariale passe de trois choix forfaitaires à **trois curseurs
+indépendants** — combien, comment, pour qui — dont toutes les conversions sont
+calculées par `chiffrerRevalorisation()`, appelée à la fois par l'interface et
+par le moteur : **ce que le joueur lit est exactement ce qui est appliqué.**
+
+**Le montant** est libre, de 200 M€ à 5 Md€ par an. Le panneau affiche en
+direct, pour chaque réglage : le nombre d'enseignants concernés, le brut
+mensuel moyen que cela représente, l'équivalent en points d'indice, la part du
+rattrapage réclamé par la FSU, le coût réel pour l'État et le déplacement de la
+position salariale.
+
+**L'instrument** change le coût réel à euro affiché constant :
+
+| Instrument | Position salariale | Coût réel | Bercy | Autre effet |
+|---|---|---|---|---|
+| Point d'indice | ×1,00 | **×1,43** (CAS Pensions) | −6 | irréversible |
+| Prime indemnitaire | ×0,75 | ×1,00 | 0 | un successeur peut l'arrêter |
+| Pacte (contre missions) | ×0,45 | ×1,00 | +4 | −0,6 pt d'heures non assurées |
+
+Le surcoût caché de l'indiciaire (CAS Pensions = 25,15 Md€ pour 58,4 Md€ de
+masse salariale, soit +43 %) est **la** raison pour laquelle tous les
+ministères du Budget préfèrent la prime. Le jeu le montre au lieu de le dire.
+
+**La cible** concentre : 38 % du corps pour les débuts de carrière (la cible
+déjà retenue en 2023), 30 % pour le milieu de carrière (le décrochage de
+−14 % vs OCDE), 100 % pour le saupoudrage. À montant égal, cibler multiplie
+le gain par tête — et le ressentiment de ceux qu'on ne cible pas.
+
+Contrôle de cohérence : 2,5 Md€ répartis sur tout le corps donnent
+**256 €/mois**, ce qui recoupe le « +200 à +500 €/mois » chiffré à 2,5 Md€
+dans le débat public. Les mêmes 2,5 Md€ concentrés sur les débuts de carrière
+donnent 673 €/mois — la démonstration arithmétique de ce que « cibler » veut
+dire.
+
 ## 4. Les constantes du moteur
 
 Inchangées depuis la phase 1 (voir `moteur/constantes.js`, tout est commenté
