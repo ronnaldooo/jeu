@@ -440,6 +440,13 @@ export const PRESIDENTS = [
   },
 ];
 
+/* Écart entre la plateforme du Président et la feuille de route que le
+   ministre déclare devant la presse. S'aligner rassure l'Élysée ; s'en
+   écarter est possible — c'est même la marge de manœuvre politique d'un
+   ministre — mais cela se paie en capital gouvernemental dès le premier jour.
+   Écart = somme des déplacements de rang (0 si identique, 12 si inversé). */
+export const DOCTRINE_ELYSEE = { bonusAlignement: 6, coutParEcart: 1.8, coutMax: 20 };
+
 /* Taille du menu de mesures par année de mandat : on commence resserré pour
    que chaque carte soit vraiment lue, on élargit avec l'expérience du joueur. */
 export const TAILLES_MENU = [7, 9, 11, 12, 12];

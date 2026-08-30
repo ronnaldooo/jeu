@@ -784,6 +784,13 @@ const PRESIDENTS = [
   },
 ];
 
+/* Écart entre la plateforme du Président et la feuille de route que le
+   ministre déclare devant la presse. S'aligner rassure l'Élysée ; s'en
+   écarter est possible — c'est même la marge de manœuvre politique d'un
+   ministre — mais cela se paie en capital gouvernemental dès le premier jour.
+   Écart = somme des déplacements de rang (0 si identique, 12 si inversé). */
+const DOCTRINE_ELYSEE = { bonusAlignement: 6, coutParEcart: 1.8, coutMax: 20 };
+
 /* Taille du menu de mesures par année de mandat : on commence resserré pour
    que chaque carte soit vraiment lue, on élargit avec l'expérience du joueur. */
 const TAILLES_MENU = [7, 9, 11, 12, 12];
@@ -791,7 +798,7 @@ const TAILLES_MENU = [7, 9, 11, 12, 12];
 const MOIS = ['janvier','février','mars','avril','mai','juin',
                      'juillet','août','septembre','octobre','novembre','décembre'];
 
-const K = { CADRAGE, ENVELOPPE_BASE, PALIERS_BERCY, SURCOUT, POINTS_SALAIRE_PAR_MD, BAISSE_ELEVES, ELEVES_INITIAL, ELEVES_PAR_POSTE, RATIO_ED_INITIAL, SEUIL_COLERE_MAIRES, COMPTEURS_INITIAUX, COMPTEURS_META, POIDS_DOCTRINE, PHYSIQUE_INITIALE, INERTIE_OPINION, TENDANCIEL, INTERVALLE_CADENAS, ABSORPTION, FATIGUE, IMPLEMENTATION, POIDS_HERITAGE, BRUIT_AFFICHE, COUT_AFFICHAGE_LONG_TERME, DECROISSANCE_VITRINE, ATTRACTIVITE, GREVE, SYNDICATS, SENSIBILITES, CAPITAL, IMMOBILISME, CREDIT_BERCY_INITIAL, RENVOI, PROJECTION, PROJETS_2027, PRESIDENTS, TAILLES_MENU, MOIS };   // espace de noms attendu par le moteur
+const K = { CADRAGE, ENVELOPPE_BASE, PALIERS_BERCY, SURCOUT, POINTS_SALAIRE_PAR_MD, BAISSE_ELEVES, ELEVES_INITIAL, ELEVES_PAR_POSTE, RATIO_ED_INITIAL, SEUIL_COLERE_MAIRES, COMPTEURS_INITIAUX, COMPTEURS_META, POIDS_DOCTRINE, PHYSIQUE_INITIALE, INERTIE_OPINION, TENDANCIEL, INTERVALLE_CADENAS, ABSORPTION, FATIGUE, IMPLEMENTATION, POIDS_HERITAGE, BRUIT_AFFICHE, COUT_AFFICHAGE_LONG_TERME, DECROISSANCE_VITRINE, ATTRACTIVITE, GREVE, SYNDICATS, SENSIBILITES, CAPITAL, IMMOBILISME, CREDIT_BERCY_INITIAL, RENVOI, PROJECTION, PROJETS_2027, PRESIDENTS, DOCTRINE_ELYSEE, TAILLES_MENU, MOIS };   // espace de noms attendu par le moteur
 /* ===== moteur/catalogue.js ===== */
 /* ============================================================================
    RUE DE GRENELLE — CATALOGUE DES MESURES (phase moteur : 12 cartes-leçons)
@@ -2136,11 +2143,31 @@ function* etapeDoctrine(s) {
   }
   s.president = p;
   s.refusNominations = refus;
-  s.doctrine = [...p.doctrine];
+  s.mesuresPresidentielles = exigencesDe(s, p);
+  note(s, `${p.nom} (« ${p.slogan} ») vous nomme rue de Grenelle.`, 'doctrine');
+
+  /* Second acte : VOUS déclarez votre feuille de route devant la presse.
+     La plateforme présidentielle est proposée par défaut ; vous pouvez la
+     réordonner — c'est votre marge de manœuvre — mais l'Élysée compte les
+     rangs déplacés. Le score final pondérera vos compteurs selon VOTRE
+     classement : vous restez noté contre votre propre parole. */
+  const ordre = (yield { type: 'doctrine', president: p, suggestion: [...p.doctrine] }) || [...p.doctrine];
+  s.doctrine = [...ordre];
   s.poids = {};
   s.doctrine.forEach((c, i) => { s.poids[c] = K.POIDS_DOCTRINE[i]; });
-  s.mesuresPresidentielles = exigencesDe(s, p);
-  note(s, `${p.nom} (« ${p.slogan} ») vous nomme rue de Grenelle. Doctrine du quinquennat : ${s.doctrine.join(' > ')}.`, 'doctrine');
+
+  let ecart = 0;
+  s.doctrine.forEach((c, i) => { ecart += Math.abs(i - p.doctrine.indexOf(c)); });
+  s.ecartDoctrine = ecart;
+  if (ecart === 0) {
+    s.capital = Math.min(K.CAPITAL.plafond, s.capital + K.DOCTRINE_ELYSEE.bonusAlignement);
+    note(s, `Feuille de route alignée sur la plateforme présidentielle. L'Élysée apprécie la loyauté (capital +${K.DOCTRINE_ELYSEE.bonusAlignement}).`, 'elysee');
+  } else {
+    const cout = Math.min(K.DOCTRINE_ELYSEE.coutMax, ecart * K.DOCTRINE_ELYSEE.coutParEcart);
+    s.capital -= cout;
+    note(s, `Vous déclarez une feuille de route qui s'écarte de la plateforme présidentielle (${ecart} rang${ecart > 1 ? 's' : ''} déplacé${ecart > 1 ? 's' : ''}). L'Élysée l'a remarqué avant la fin de votre conférence de presse (capital −${Math.round(cout)}).`, 'elysee');
+  }
+  note(s, `Doctrine déclarée : ${s.doctrine.join(' > ')}.`, 'doctrine');
 }
 
 /* --- L'ÉTÉ DES CENT JOURS (an 1) : deux crises avant la première rentrée --- */
@@ -2760,6 +2787,7 @@ function jouerMandat({ graine = 1, politique }) {
     if (q.type === 'nomination') rep = politique.president
       ? (q.president.id === politique.president(s) ? 'accepter' : 'refuser')
       : 'accepter';
+    else if (q.type === 'doctrine') rep = politique.doctrine ? politique.doctrine(s, q.suggestion) : q.suggestion;
     else if (q.type === 'lettrePlafond') rep = politique.lettrePlafond ? politique.lettrePlafond(s, q.palier) : 'accepter';
     else if (q.type === 'rentree') rep = politique.rentree ? politique.rentree(s, q) : 'assumer';
     else if (q.type === 'carteScolaire') rep = politique.carteScolaire(s, q);
@@ -3143,6 +3171,62 @@ function ecranNomination(q) {
   act.append(oui, non);
   d.appendChild(act);
   scene(j, d);
+}
+
+/* --- votre feuille de route : le classement que VOUS déclarez ---------------- */
+function ecranDoctrine(q) {
+  const pr = q.president;
+  const suggestion = q.suggestion;
+  const ordre = [...suggestion];
+
+  const d = docu('Conférence de presse — prise de fonction', 'Votre feuille de route, devant témoins', 'juin 2027');
+  d.appendChild(el('p', 'chapo', `${esc(pr.nom)} vous a nommé sur la plateforme « ${esc(pr.slogan)} », proposée ci-dessous dans son ordre. Vous n’êtes pas obligé de la reprendre telle quelle : un ministre a sa marge. Mais l’Élysée compte les rangs que vous déplacez, et la presse garde une copie du classement — <b>c’est sur VOTRE ordre que votre bilan sera noté</b> (35 / 25 / 20 / 12 / 8).`));
+
+  const liste = el('div', 'classement');
+  const jauge = el('div', 'mecanisme');
+
+  const majEcart = () => {
+    let ecart = 0;
+    ordre.forEach((c, i) => { ecart += Math.abs(i - suggestion.indexOf(c)); });
+    const cout = Math.min(K.DOCTRINE_ELYSEE.coutMax, ecart * K.DOCTRINE_ELYSEE.coutParEcart);
+    jauge.innerHTML = ecart === 0
+      ? `<div class="titre-d">Alignement avec l’Élysée</div><p style="margin:0">Vous reprenez la plateforme présidentielle mot pour mot. <b style="color:var(--ok)">Capital +${K.DOCTRINE_ELYSEE.bonusAlignement}</b> — la loyauté du premier jour se paie comptant. Reste à savoir si c’est la vôtre.</p>`
+      : `<div class="titre-d">Écart avec la plateforme présidentielle</div><p style="margin:0"><b>${ecart} rang${ecart > 1 ? 's' : ''} déplacé${ecart > 1 ? 's' : ''}</b> par rapport à ce sur quoi ${esc(pr.nom)} a été ${pr.genre === 'f' ? 'élue' : 'élu'}. <b style="color:var(--alerte)">Capital −${Math.round(cout)}</b>. Vous gouvernez avec votre boussole ; l’Élysée s’en souviendra au premier arbitrage.</p>`;
+  };
+
+  const rendreListe = () => {
+    liste.innerHTML = '';
+    ordre.forEach((c, i) => {
+      const rangPres = suggestion.indexOf(c);
+      const bloc = el('div', 'rang-bloc');
+      const r = el('div', 'rang');
+      const deplace = i !== rangPres;
+      r.innerHTML = `<span class="pastille" style="background:${COULEURS_C[c]}"></span>
+        <span class="lib">${NOMS_C_LONGS[c]}</span>
+        <span class="poids">${K.POIDS_DOCTRINE[i]} % du bilan${deplace ? ` · <span style="color:var(--alerte)">Élysée : n° ${rangPres + 1}</span>` : ''}</span>`;
+      const fl = el('div', 'fleches');
+      const haut = el('button', '', '↑'); haut.setAttribute('aria-label', 'Monter ' + NOMS_C[c]); haut.disabled = i === 0;
+      haut.onclick = () => { [ordre[i - 1], ordre[i]] = [ordre[i], ordre[i - 1]]; rendreListe(); majEcart(); };
+      const bas = el('button', '', '↓'); bas.setAttribute('aria-label', 'Descendre ' + NOMS_C[c]); bas.disabled = i === 4;
+      bas.onclick = () => { [ordre[i + 1], ordre[i]] = [ordre[i], ordre[i + 1]]; rendreListe(); majEcart(); };
+      fl.append(haut, bas); r.appendChild(fl);
+      bloc.appendChild(r);
+      bloc.appendChild(el('p', 'sous-titre', K.PROJETS_2027[c].sousTitre));
+      liste.appendChild(bloc);
+    });
+  };
+  rendreListe(); majEcart();
+  d.append(liste, jauge);
+
+  const act = el('div', 'actions');
+  const ok = el('button', 'btn tamponner', 'Annoncer ce classement');
+  ok.onclick = () => suivant([...ordre]);
+  const remettre = el('button', 'btn sec', 'Reprendre la plateforme présidentielle');
+  remettre.onclick = () => { ordre.splice(0, 5, ...suggestion); rendreListe(); majEcart(); };
+  act.append(ok, remettre);
+  d.appendChild(act);
+  d.appendChild(el('p', '', '<span style="font-size:.82rem;color:var(--encre-2)">Votre directeur de cabinet, à voix basse : « Ce que vous mettez en premier, on vous le ressortira à chaque arbitrage contradictoire. Ce que vous mettez en dernier aussi. »</span>'));
+  scene(d);
 }
 
 /* --- passation (intégrée à l'ouverture) -------------------------------------- */
@@ -3662,6 +3746,7 @@ function ecranBilan(B) {
 
   /* --- doctrine déclarée vs menée --- */
   d.appendChild(el('p', '', `<b>Doctrine déclarée contre doctrine menée :</b> ${fmt0((B.coherence || 0) * 100)} % de vos effets réels servent vos deux priorités déclarées${B.constance ? ' — cap tenu : vos gains composeront (référence Portugal, quinze ans de constance)' : ' — cap non tenu : sans constance, un successeur détricote et les dérives reprennent'}.
+    Écart initial avec la plateforme de ${esc(S.president.nom)} : <b>${S.ecartDoctrine || 0}</b> rang${(S.ecartDoctrine || 0) > 1 ? 's' : ''} déplacé${(S.ecartDoctrine || 0) > 1 ? 's' : ''}${S.ecartDoctrine ? ' — vous avez gouverné avec votre propre boussole' : ' — vous avez suivi la plateforme à la lettre'}.
     Grèves : <b>${B.greves}</b> journée${B.greves > 1 ? 's' : ''} · fatigue réformatrice finale : <b>${fmt0(B.fatigue)}</b>/100 · priorités présidentielles abandonnées : <b>${B.abandons}</b>.`));
 
   const act = el('div', 'actions');
@@ -3689,6 +3774,7 @@ const ETAT = { s: null, gen: null, journalLu: 0, pas: [], dateLabel: 'juin 2027'
 function dateDe(q) {
   const S = ETAT.s, an = S.anneeCiv || 2027;
   if (q.type === 'nomination') return 'juin 2027';
+  if (q.type === 'doctrine') return 'juin 2027';
   if (q.type === 'retrait') return `octobre ${ETAT.s.anneeCiv || 2027}`;
   if (q.type === 'dossier') return 'été 2027';
   if (q.type === 'audience') return `octobre ${ETAT.s.anneeCiv || 2027}`;
@@ -3704,6 +3790,7 @@ function rendre(q) {
   ETAT.rentreeRatee = ETAT.s.journal.some((e) => e.cat === 'rentree' && e.annee === ETAT.s.annee && e.texte.includes('dégradée'));
   majHud();
   if (q.type === 'nomination') ecranNomination(q);
+  else if (q.type === 'doctrine') ecranDoctrine(q);
   else if (q.type === 'retrait') ecranRetrait(q);
   else if (q.type === 'dossier') ecranDossier(q);
   else if (q.type === 'audience') ecranAudience(q);

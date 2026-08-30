@@ -243,6 +243,62 @@ function ecranNomination(q) {
   scene(j, d);
 }
 
+/* --- votre feuille de route : le classement que VOUS déclarez ---------------- */
+function ecranDoctrine(q) {
+  const pr = q.president;
+  const suggestion = q.suggestion;
+  const ordre = [...suggestion];
+
+  const d = docu('Conférence de presse — prise de fonction', 'Votre feuille de route, devant témoins', 'juin 2027');
+  d.appendChild(el('p', 'chapo', `${esc(pr.nom)} vous a nommé sur la plateforme « ${esc(pr.slogan)} », proposée ci-dessous dans son ordre. Vous n’êtes pas obligé de la reprendre telle quelle : un ministre a sa marge. Mais l’Élysée compte les rangs que vous déplacez, et la presse garde une copie du classement — <b>c’est sur VOTRE ordre que votre bilan sera noté</b> (35 / 25 / 20 / 12 / 8).`));
+
+  const liste = el('div', 'classement');
+  const jauge = el('div', 'mecanisme');
+
+  const majEcart = () => {
+    let ecart = 0;
+    ordre.forEach((c, i) => { ecart += Math.abs(i - suggestion.indexOf(c)); });
+    const cout = Math.min(K.DOCTRINE_ELYSEE.coutMax, ecart * K.DOCTRINE_ELYSEE.coutParEcart);
+    jauge.innerHTML = ecart === 0
+      ? `<div class="titre-d">Alignement avec l’Élysée</div><p style="margin:0">Vous reprenez la plateforme présidentielle mot pour mot. <b style="color:var(--ok)">Capital +${K.DOCTRINE_ELYSEE.bonusAlignement}</b> — la loyauté du premier jour se paie comptant. Reste à savoir si c’est la vôtre.</p>`
+      : `<div class="titre-d">Écart avec la plateforme présidentielle</div><p style="margin:0"><b>${ecart} rang${ecart > 1 ? 's' : ''} déplacé${ecart > 1 ? 's' : ''}</b> par rapport à ce sur quoi ${esc(pr.nom)} a été ${pr.genre === 'f' ? 'élue' : 'élu'}. <b style="color:var(--alerte)">Capital −${Math.round(cout)}</b>. Vous gouvernez avec votre boussole ; l’Élysée s’en souviendra au premier arbitrage.</p>`;
+  };
+
+  const rendreListe = () => {
+    liste.innerHTML = '';
+    ordre.forEach((c, i) => {
+      const rangPres = suggestion.indexOf(c);
+      const bloc = el('div', 'rang-bloc');
+      const r = el('div', 'rang');
+      const deplace = i !== rangPres;
+      r.innerHTML = `<span class="pastille" style="background:${COULEURS_C[c]}"></span>
+        <span class="lib">${NOMS_C_LONGS[c]}</span>
+        <span class="poids">${K.POIDS_DOCTRINE[i]} % du bilan${deplace ? ` · <span style="color:var(--alerte)">Élysée : n° ${rangPres + 1}</span>` : ''}</span>`;
+      const fl = el('div', 'fleches');
+      const haut = el('button', '', '↑'); haut.setAttribute('aria-label', 'Monter ' + NOMS_C[c]); haut.disabled = i === 0;
+      haut.onclick = () => { [ordre[i - 1], ordre[i]] = [ordre[i], ordre[i - 1]]; rendreListe(); majEcart(); };
+      const bas = el('button', '', '↓'); bas.setAttribute('aria-label', 'Descendre ' + NOMS_C[c]); bas.disabled = i === 4;
+      bas.onclick = () => { [ordre[i + 1], ordre[i]] = [ordre[i], ordre[i + 1]]; rendreListe(); majEcart(); };
+      fl.append(haut, bas); r.appendChild(fl);
+      bloc.appendChild(r);
+      bloc.appendChild(el('p', 'sous-titre', K.PROJETS_2027[c].sousTitre));
+      liste.appendChild(bloc);
+    });
+  };
+  rendreListe(); majEcart();
+  d.append(liste, jauge);
+
+  const act = el('div', 'actions');
+  const ok = el('button', 'btn tamponner', 'Annoncer ce classement');
+  ok.onclick = () => suivant([...ordre]);
+  const remettre = el('button', 'btn sec', 'Reprendre la plateforme présidentielle');
+  remettre.onclick = () => { ordre.splice(0, 5, ...suggestion); rendreListe(); majEcart(); };
+  act.append(ok, remettre);
+  d.appendChild(act);
+  d.appendChild(el('p', '', '<span style="font-size:.82rem;color:var(--encre-2)">Votre directeur de cabinet, à voix basse : « Ce que vous mettez en premier, on vous le ressortira à chaque arbitrage contradictoire. Ce que vous mettez en dernier aussi. »</span>'));
+  scene(d);
+}
+
 /* --- passation (intégrée à l'ouverture) -------------------------------------- */
 function blocPassation() {
   const S = ETAT.s;
@@ -760,6 +816,7 @@ function ecranBilan(B) {
 
   /* --- doctrine déclarée vs menée --- */
   d.appendChild(el('p', '', `<b>Doctrine déclarée contre doctrine menée :</b> ${fmt0((B.coherence || 0) * 100)} % de vos effets réels servent vos deux priorités déclarées${B.constance ? ' — cap tenu : vos gains composeront (référence Portugal, quinze ans de constance)' : ' — cap non tenu : sans constance, un successeur détricote et les dérives reprennent'}.
+    Écart initial avec la plateforme de ${esc(S.president.nom)} : <b>${S.ecartDoctrine || 0}</b> rang${(S.ecartDoctrine || 0) > 1 ? 's' : ''} déplacé${(S.ecartDoctrine || 0) > 1 ? 's' : ''}${S.ecartDoctrine ? ' — vous avez gouverné avec votre propre boussole' : ' — vous avez suivi la plateforme à la lettre'}.
     Grèves : <b>${B.greves}</b> journée${B.greves > 1 ? 's' : ''} · fatigue réformatrice finale : <b>${fmt0(B.fatigue)}</b>/100 · priorités présidentielles abandonnées : <b>${B.abandons}</b>.`));
 
   const act = el('div', 'actions');
@@ -787,6 +844,7 @@ const ETAT = { s: null, gen: null, journalLu: 0, pas: [], dateLabel: 'juin 2027'
 function dateDe(q) {
   const S = ETAT.s, an = S.anneeCiv || 2027;
   if (q.type === 'nomination') return 'juin 2027';
+  if (q.type === 'doctrine') return 'juin 2027';
   if (q.type === 'retrait') return `octobre ${ETAT.s.anneeCiv || 2027}`;
   if (q.type === 'dossier') return 'été 2027';
   if (q.type === 'audience') return `octobre ${ETAT.s.anneeCiv || 2027}`;
@@ -802,6 +860,7 @@ function rendre(q) {
   ETAT.rentreeRatee = ETAT.s.journal.some((e) => e.cat === 'rentree' && e.annee === ETAT.s.annee && e.texte.includes('dégradée'));
   majHud();
   if (q.type === 'nomination') ecranNomination(q);
+  else if (q.type === 'doctrine') ecranDoctrine(q);
   else if (q.type === 'retrait') ecranRetrait(q);
   else if (q.type === 'dossier') ecranDossier(q);
   else if (q.type === 'audience') ecranAudience(q);
