@@ -48,7 +48,12 @@ function valeurReelle(c, poids = null, anneesRestantes = null) {
 function risqueGreve(c) { return c.greve ? c.greve.intensite * 1.6 : 0; }
 
 /* Choisit les cartes tenables dans l'enveloppe et le capital disponibles. */
-function selectionner(s, dispo, ctx, scorer, { toleranceDepassement = 0.15, options = () => ({}), concentration = 0, maxCartes = 3 } = {}) {
+function selectionner(s, dispo, ctx, scorer, { toleranceDepassement = 0.15, options = () => ({}), concentration = 0, maxCartes = 3, reserveCapital = 0 } = {}) {
+  maxCartes = Math.min(maxCartes, ctx.maxAnnonces || maxCartes);
+  if (!ctx.depassementAutorise) toleranceDepassement = 0;
+  /* Un ministre avisé ne descend pas son capital à zéro : il en garde pour
+     les arbitrages qu'il n'a pas encore vus venir. */
+  const reserve = reserveCapital;
   let classees = dispo
     .map((c) => ({ carte: c, sc: scorer(c) }))
     .filter((x) => x.sc > 0)
@@ -66,7 +71,7 @@ function selectionner(s, dispo, ctx, scorer, { toleranceDepassement = 0.15, opti
     const opt = options(carte, s);
     const { cout, pol } = coutDe(carte, opt);
     const polReel = carte.perimetre === 'matignon' ? pol * 2 : pol;
-    if (polReel > capital) continue;
+    if (polReel > capital - reserve) continue;
     if (tresor - cout < -toleranceDepassement) continue;
     retenues.push({ id: carte.id, options: opt });
     tresor -= cout; capital -= polReel;
@@ -194,6 +199,7 @@ export const MIXTE = {
         ;
   }, {
     toleranceDepassement: s.creditBercy > 45 ? 0.5 : 0.2,
+    reserveCapital: 22,
     options: () => ({ ampleur: s.tresor > 2.2 ? 'rattrapage' : s.tresor > 1.1 ? 'plan' : 'geste',
                       cible: s.phys.couvertureConcours < 90 ? 'debuts' : 'milieux',
                       contrepartie: 'pacte', financement: 'demographie' }),
@@ -265,6 +271,7 @@ export function doctrinaire(ordre) {
           ;
     }, {
       toleranceDepassement: 0.3,
+      reserveCapital: 20,
       concentration: 0.55,
       maxCartes: poids.budget >= 34 ? 2 : 2,
       options: () => ({

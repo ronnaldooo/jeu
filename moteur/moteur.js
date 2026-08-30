@@ -304,6 +304,15 @@ function* etapeRentree(s) {
   }
 }
 
+/* --- SEPTEMBRE (suite) : la circulaire de rentrée -------------------------- */
+/* Chaque rentrée s'accompagne d'une circulaire : quelques mesures, financées
+   par redéploiement dans le budget en cours. Étroit, mais immédiat — et c'est
+   le moment où le pays regarde l'école. */
+function* etapeCirculaireRentree(s) {
+  crediter(s, K.ENVELOPPE_RENTREE);
+  yield* etapeMesures(s, { moment: 'rentree', taille: K.TAILLE_MENU_COURT });
+}
+
 /* --- OCTOBRE : l'audience — face à face avec l'organisation majoritaire ---- */
 function* etapeAudience(s) {
   /* L'organisation majoritaire du moment ; l'an 1 alterne avec la deuxième
@@ -471,14 +480,32 @@ function* etapeJanvier(s) {
      re-paient pas, elles ont consommé définitivement la marge des années
      passées. C'est l'effet cliquet : vos décisions réduisent la marge de vos
      successeurs, pas la vôtre. */
-  s.margeCumulee = (s.margeCumulee || 0) + s.margeAnnee + economie;
-  s.disponible = Math.max(0, s.tresor) + s.margeAnnee + economie;
   s.economieCarteScolaire = economie;
-  s.tresor = s.disponible;
-  const dispo = mesuresDisponibles(s);
-  const choix = (yield { type: 'mesures', dispo, tresor: s.tresor, capital: s.capital }) || [];
-  appliquerMesures(s, choix);
+  crediter(s, s.margeAnnee + economie);
+  yield* etapeMesures(s, { moment: 'janvier' });
+}
 
+/* Crédite la trésorerie d'argent frais. `margeCumulee` mémorise tout ce que
+   le mandat a reçu : c'est elle qui mesure le sur-engagement. */
+function crediter(s, montant) {
+  s.margeCumulee = (s.margeCumulee || 0) + montant;
+  s.tresor = Math.max(0, s.tresor) + montant;
+}
+
+/* L'atelier de mesures, réutilisable à chacune des trois fenêtres de l'année :
+   juin (prise de fonction, an 1), septembre (circulaire de rentrée) et janvier
+   (l'arbitrage principal, adossé à la carte scolaire). */
+function* etapeMesures(s, opts) {
+  const dispo = mesuresDisponibles(s, opts.taille);
+  const maxAnnonces = K.ANNONCES_MAX[opts.moment] || 3;
+  /* On n'arrache un arbitrage interministériel qu'au moment du budget. Une
+     circulaire de rentrée se finance par redéploiement, ou ne se finance pas. */
+  const depassementAutorise = opts.moment === 'janvier';
+  const choix = (yield {
+    type: 'mesures', moment: opts.moment, dispo, maxAnnonces, depassementAutorise,
+    tresor: s.tresor, capital: s.capital,
+  }) || [];
+  appliquerMesures(s, choix, maxAnnonces, depassementAutorise);
 }
 
 /* --- MARS : mobilisations de printemps ------------------------------------ */
@@ -645,8 +672,8 @@ export function affiniteDoctrine(s, c) {
   return a;
 }
 
-export function mesuresDisponibles(s) {
-  const TAILLE_MENU = K.TAILLES_MENU[Math.min(4, s.annee - 1)];
+export function mesuresDisponibles(s, tailleVoulue) {
+  const TAILLE_MENU = tailleVoulue || K.TAILLES_MENU[Math.min(4, s.annee - 1)];
   const pool = CATALOGUE.filter((c) => estJouable(s, c));
   const menu = [];
   const pousse = (c) => { if (c && !menu.includes(c)) menu.push(c); };
@@ -685,15 +712,17 @@ export function coutDe(carte, options = {}) {
   return { cout: carte.cout, coutETP: carte.coutETP, pol: carte.pol };
 }
 
-function appliquerMesures(s, choix) {
+function appliquerMesures(s, choix, maxAnnonces = 3, depassementAutorise = true) {
   const retenues = [];
   for (const ch of choix) {
+    if (retenues.length >= maxAnnonces) break;   // le calendrier réglementaire ne suit pas
     const carte = PAR_ID[ch.id];
     if (!carte) continue;
     if (!mesuresDisponibles(s).includes(carte)) continue;
     const { cout, coutETP, pol } = coutDe(carte, ch.options || {});
     if (pol > s.capital) continue;                       // le capital bloque réellement
     if (carte.perimetre === 'matignon' && pol * 2 > s.capital) continue;
+    if (!depassementAutorise && cout > s.tresor) continue; // redéploiement seulement
 
     const polReel = carte.perimetre === 'matignon' ? pol * 2 : pol;
     s.capital -= polReel;
@@ -774,7 +803,7 @@ function appliquerMesures(s, choix) {
   if (surEngagement > 0.05) {
     s.creditBercy = borne(s.creditBercy - Math.min(K.SURCOUT.penaliteStructurelleMax, surEngagement * K.SURCOUT.penaliteStructurelleParMd), 0, 100);
   }
-  s.mesuresParAnnee[s.annee - 1] = retenues;
+  s.mesuresParAnnee[s.annee - 1] = (s.mesuresParAnnee[s.annee - 1] || []).concat(retenues);
   s.phys.adhesion = borne(s.phys.adhesion, 0, 100);
   s.phys.parents = borne(s.phys.parents, 0, 100);
 }
@@ -791,6 +820,11 @@ function appliquerMesures(s, choix) {
 export function* derouler(s) {
   yield* etapeDoctrine(s);
   rafraichir(s);
+  /* Juin : on n'attend pas le prochain budget pour agir. La loi de finances
+     votée par le prédécesseur laisse une marge de redéploiement. */
+  crediter(s, K.ENVELOPPE_PRISE_FONCTION);
+  yield* etapeMesures(s, { moment: 'prise_fonction', taille: K.TAILLE_MENU_COURT });
+  rafraichir(s);
   yield { type: 'etape', etape: 'ouverture' };
   yield* etapeEte(s);
   rafraichir(s);
@@ -798,7 +832,8 @@ export function* derouler(s) {
   for (s.annee = 1; s.annee <= 5 && !s.fini; s.annee++) {
     s.anneeCiv = 2026 + s.annee;                 // année civile de la carte scolaire
     yield* etapeJuillet(s);   s.mois = 6;  yield { type: 'etape', etape: 'juillet' };
-    yield* etapeRentree(s);   s.mois = 8;  yield { type: 'etape', etape: 'rentree' };
+    yield* etapeRentree(s);   s.mois = 8;
+    yield* etapeCirculaireRentree(s);        yield { type: 'etape', etape: 'rentree' };
     yield* etapeAudience(s);  s.mois = 9;
     etapeDecembre(s);         s.mois = 11; yield { type: 'etape', etape: 'decembre' };
     yield* etapeJanvier(s);   s.mois = 0;

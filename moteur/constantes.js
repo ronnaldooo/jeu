@@ -28,6 +28,21 @@ export const CADRAGE = {
    C'est la contrainte structurante du jeu — l'équivalent du « mur des 3 % ». */
 export const ENVELOPPE_BASE = 0.17;   // Md€ de mesures nouvelles « gratuites »
 
+/* Un ministre n'attend pas le budget suivant pour agir : il arrive dans une loi
+   de finances déjà votée par son prédécesseur, et il y redéploie. Deux fenêtres
+   plus précoces que l'arbitrage de janvier, volontairement étroites — on ne
+   refait pas un budget, on déplace des crédits et on signe des circulaires. */
+export const ENVELOPPE_PRISE_FONCTION = 0.30;  // Md€, juin 2027, une seule fois
+export const ENVELOPPE_RENTREE = 0.12;         // Md€, chaque septembre (circulaire de rentrée)
+export const TAILLE_MENU_COURT = 5;            // menus resserrés hors janvier
+
+/* Combien d'annonces une fenêtre peut porter. La contrainte n'est pas
+   budgétaire mais réglementaire et humaine : le calendrier du Conseil
+   supérieur de l'éducation, les textes à écrire, et la capacité du ministère
+   à accompagner ce qu'il annonce. Un ministre qui annonce six réformes dans
+   l'année n'en applique aucune. */
+export const ANNONCES_MAX = { prise_fonction: 2, rentree: 1, janvier: 3 };
+
 /* Paliers de la lettre plafond de juillet, selon le crédit Bercy.  [B.6, C.4]
    schemaEmplois = ETP que Bercy EXIGE de rendre ; marge = Md€ concédés. */
 export const PALIERS_BERCY = [

@@ -362,10 +362,29 @@ function ecranAtelier(q) {
   const selection = new Map();   // id -> options
   const enveloppe = q.tresor, capital = q.capital;
 
+  const MOMENTS = {
+    prise_fonction: {
+      type: 'Prise de fonction — vos premières annonces',
+      titre: 'Vos premières annonces',
+      chapo: 'Vous n’attendez pas le prochain budget : la loi de finances votée par votre prédécesseur laisse une marge de redéploiement, et le pays regarde ce qu’un nouveau ministre fait de ses premiers jours. Deux annonces au maximum — au-delà, plus personne ne retient rien.',
+    },
+    rentree: {
+      type: 'Circulaire de rentrée',
+      titre: 'Que met-on dans la circulaire de rentrée ?',
+      titreSuite: 'Une mesure, pas davantage : la circulaire de rentrée porte un message, pas un programme. Elle se finance par redéploiement — pas d’arbitrage interministériel en septembre.',
+    },
+    janvier: {
+      type: 'L’atelier — l’arbitrage de janvier',
+      titre: 'Que portez-vous cette année ?',
+      chapo: 'Le moment où le budget de l’année se transforme en décisions. Jusqu’à trois annonces, et le seul moment où vous pouvez arracher un arbitrage interministériel pour dépasser votre enveloppe.',
+    },
+  };
+  const MOM = MOMENTS[q.moment] || MOMENTS.janvier;
+
   const d = el('article', 'doc large');
-  d.appendChild(el('div', 'entete-doc', `<span class="type">L’atelier — mesures de l’année</span><span class="date">${ETAT.dateLabel}</span>`));
-  d.appendChild(el('h2', '', 'Que portez-vous cette année ?'));
-  d.appendChild(el('p', 'chapo', 'L’effet vitrine est chiffré : vous le verrez. L’effet réel ne l’est pas : seuls le niveau de preuve (🔒) et le délai sont connus — vous découvrirez au bilan ce que vous avez produit. Dépliez une carte, puis « Comprendre l’effet » pour lire ce que disent réellement les études. Votre doctrine ouvre d’abord les dossiers qui la servent — le reste du catalogue arrivera au fil du mandat. Et rien ne s’applique sans les personnels.'));
+  d.appendChild(el('div', 'entete-doc', `<span class="type">${MOM.type}</span><span class="date">${ETAT.dateLabel}</span>`));
+  d.appendChild(el('h2', '', MOM.titre));
+  d.appendChild(el('p', 'chapo', (MOM.chapo || MOM.titreSuite) + ' L’effet vitrine est chiffré : vous le verrez. L’effet réel ne l’est pas — seuls le niveau de preuve (🔒) et le délai sont connus, et vous découvrirez au bilan ce que vous avez produit. Rien ne s’applique sans les personnels.'));
   /* Le budget, en vrai : tout le mandat se joue dans un liseré. */
   const M = K.CADRAGE.missionHorsCAS;                       // 64,49 Md€
   const salaires = M * K.CADRAGE.partMasseSalariale;
@@ -405,12 +424,20 @@ function ecranAtelier(q) {
     solde.innerHTML = [
       `Enveloppe <b class="${enveloppe - cout < 0 ? 'neg' : ''}">${fmt0((enveloppe - cout) * 1000)} M€</b>/${fmt0(enveloppe * 1000)}`,
       `Capital <b class="${capital - pol < 0 ? 'neg' : ''}">${fmt0(capital - pol)}</b>/${fmt0(capital)}`,
+      `Annonces <b class="${selection.size >= q.maxAnnonces ? 'neg' : ''}">${selection.size}</b>/${q.maxAnnonces} possibles`,
       `Réformes actives <b class="${actives > K.ABSORPTION.seuil ? 'neg' : ''}">${actives}</b>/${K.ABSORPTION.seuil} absorbables`,
       `Implémentation ×<b>${(Math.round(facteurImplementation(S) * 100) / 100).toLocaleString('fr-FR')}</b> (adhésion ${fmt0(S.phys.adhesion)})`,
-      cout > enveloppe ? `<span class="neg">dépassement : −${fmt0(K.SURCOUT.creditBercyParMd * (cout - enveloppe))} crédit Bercy, −${fmt0(K.SURCOUT.capitalParMd * (cout - enveloppe))} capital</span>` : '',
+      cout > enveloppe ? (q.depassementAutorise
+        ? `<span class="neg">dépassement : −${fmt0(K.SURCOUT.creditBercyParMd * (cout - enveloppe))} crédit Bercy, −${fmt0(K.SURCOUT.capitalParMd * (cout - enveloppe))} capital</span>`
+        : '<span class="neg">hors enveloppe — impossible sans arbitrage budgétaire (janvier)</span>') : '',
     ].filter(Boolean).map((x) => `<span>${x}</span>`).join('');
-    valider.disabled = pol > capital;
-    valider.textContent = selection.size ? `Annoncer ${selection.size} mesure${selection.size > 1 ? 's' : ''}` : 'Ne rien annoncer cette année';
+    const tropCher = !q.depassementAutorise && cout > enveloppe;
+    const tropDeCapital = pol > capital;
+    valider.disabled = tropCher || tropDeCapital || selection.size > q.maxAnnonces;
+    valider.textContent = tropCher ? `Dépasse l’enveloppe de ${fmt0((cout - enveloppe) * 1000)} M€ — retirez une mesure`
+      : tropDeCapital ? 'Capital politique insuffisant — retirez une mesure'
+      : selection.size ? `Annoncer ${selection.size} mesure${selection.size > 1 ? 's' : ''}`
+      : (q.moment === 'janvier' ? 'Ne rien annoncer cette année' : 'Passer — ne rien annoncer');
   };
 
   const valider = el('button', 'btn', '');
@@ -490,6 +517,11 @@ function ecranAtelier(q) {
       e.stopPropagation();
       if (selection.has(c.id)) { selection.delete(c.id); carte.classList.remove('sel'); bRet.textContent = 'Retenir'; if (zone) { zone.remove(); zone = null; } }
       else {
+        if (selection.size >= q.maxAnnonces) {
+          bRet.textContent = `plafond de ${q.maxAnnonces} atteint`;
+          setTimeout(() => { bRet.textContent = 'Retenir'; }, 1600);
+          return;
+        }
         const opt = c.parametrique === 'revalorisation' ? { ampleur: 'plan', cible: 'milieux', contrepartie: 'sans' }
           : c.parametrique === 'financement19' ? { financement: 'demographie' } : {};
         selection.set(c.id, opt); carte.classList.add('sel', 'ouverte'); bRet.textContent = 'Retirer'; majParams();
@@ -509,8 +541,8 @@ function ecranAtelier(q) {
   const act = el('div', 'actions');
   act.appendChild(valider);
   valider.onclick = () => {
-    if (!selection.size) {
-      if (!confirm('Ne rien annoncer laisse le système souffler (fatigue −8)… et fait écrire « ministre invisible » (capital −7, parents −3,5). Confirmer ?')) return;
+    if (!selection.size && q.moment === 'janvier') {
+      if (!confirm('Ne rien annoncer de toute l’année laisse le système souffler (fatigue −8)… et fait écrire « ministre invisible » (capital −7, parents −3,5). Confirmer ?')) return;
     }
     suivant([...selection].map(([id, options]) => ({ id, options })));
   };
@@ -782,7 +814,11 @@ function dateDe(q) {
   if (q.type === 'audience') return `octobre ${ETAT.s.anneeCiv || 2027}`;
   if (q.type === 'lettrePlafond') return `juillet ${an}`;
   if (q.type === 'rentree') return `septembre ${an}`;
-  if (q.type === 'carteScolaire' || q.type === 'mesures') return `janvier ${an + 1}`;
+  if (q.type === 'carteScolaire') return `janvier ${an + 1}`;
+  if (q.type === 'mesures') {
+    return q.moment === 'prise_fonction' ? 'juin 2027'
+      : q.moment === 'rentree' ? `septembre ${an}` : `janvier ${an + 1}`;
+  }
   const m = { ouverture: 'juin 2027', juillet: `juillet ${an}`, rentree: `septembre ${an}`, decembre: `décembre ${an}`, mars: `mars ${an + 1}`, cloture: `mai ${an + 1}` };
   return m[q.etape] || `${MOIS_L[S.mois] || ''} ${an}`;
 }
