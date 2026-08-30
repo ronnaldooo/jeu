@@ -1,3 +1,5 @@
+import { CADRAGE, POINTS_SALAIRE_PAR_MD } from './constantes.js';
+
 /* ============================================================================
    RUE DE GRENELLE — CATALOGUE DES MESURES (phase moteur : 12 cartes-leçons)
    ----------------------------------------------------------------------------
@@ -66,7 +68,7 @@ export const CATALOGUE = [
     famille: 'moyens',
     porteurs: ['FSU (+20 % du point ≈ 10 Md€)', 'PS (moyenne OCDE)', 'Attal (+200 à +500 €/mois)', 'Lisnard (+20 %/5 ans conditionnés)'],
     perimetre: 'ministeriel',
-    cout: 1.3, coutETP: 0, pol: 7,
+    cout: 1.3, coutETP: 0, pol: 7,        // montant par défaut ; le curseur décide
     once: false, reforme: false,          // répétable : une mesure salariale par budget
     parametrique: 'revalorisation',   // deux curseurs : cible × contrepartie
     vitrine: { parents: 0, enseignants: +6, presse: +2, compteurs: { budget: +5 } },
@@ -820,65 +822,101 @@ export const CATALOGUE = [
    Cartes paramétriques : les curseurs et leurs effets différenciés.
    -------------------------------------------------------------------------- */
 
-/* Revalorisation — chaîne 2 du brief (B.8-2) : revaloriser QUI, et contre quoi.
-   Même coût, trois pays différents. */
+/* ============================================================================
+   REVALORISATION — la carte la plus chiffrée du jeu             [source B.1, B.3]
+   ----------------------------------------------------------------------------
+   Trois curseurs indépendants : COMBIEN, COMMENT, POUR QUI.
+   Toutes les conversions sont calculées par `chiffrerRevalorisation()`, que
+   l'interface et le moteur appellent tous les deux — ce que le joueur lit est
+   donc exactement ce qui est appliqué.
+
+   Ancrages réels :
+   - 814 927 ETP enseignants (Sénat, PLF 2026) ;
+   - 1 % de point d'indice sur le périmètre EN ≈ 0,49 Md€/an (bilan social MEN) ;
+   - point d'indice 4,92 €, gelé depuis juillet 2023 ;
+   - rattrapage réclamé par la FSU : +20 % du point ≈ 10 Md€ pour la seule EN ;
+   - CAS Pensions = 25,15 Md€ pour 58,4 Md€ de masse salariale, soit +43 % :
+     c'est le surcoût caché d'une hausse indiciaire, et la raison pour laquelle
+     Bercy préfère toujours une prime ;
+   - salaires effectifs vs autres diplômés du supérieur : −26 % en élémentaire,
+     −18 % en collège (OCDE 2025) ; milieu de carrière −14 % vs OCDE en dix ans ;
+   - pacte enseignant : 800 M€ au PLF 2025 pour ~34 % d'adhésion.
+   ========================================================================== */
 export const REVALORISATION = {
-  /* Combien on met sur la table. 1 Md€ récurrent ≈ +2 points de position
-     salariale vs les autres diplômés du supérieur (cf. POINTS_SALAIRE_PAR_MD). */
-  ampleurs: {
-    geste:     { label: 'Un geste (0,5 Md€)', cout: 0.5,
-                 mot: 'De quoi faire un communiqué. Pas de quoi faire une carrière.' },
-    plan:      { label: 'Un plan pluriannuel (1,3 Md€)', cout: 1.3,
-                 mot: 'L’ordre de grandeur d’une vraie mesure catégorielle. Il faudra la financer tous les ans, à vie.' },
-    rattrapage:{ label: 'Un rattrapage (2,6 Md€)', cout: 2.6,
-                 mot: 'Le quart de ce que réclame la FSU. Bercy va vous demander où vous avez trouvé ça.' },
+  montant: { min: 0.2, max: 5.0, pas: 0.1, defaut: 1.3 },   // Md€/an récurrents
+
+  /* COMMENT on verse. Le choix de l'instrument change le coût réel, la
+     durabilité et l'accueil — à euro constant. */
+  instruments: {
+    indiciaire: {
+      label: 'Hausse du point d’indice (traitement)',
+      porteurs: ['FSU', 'intersyndicale', 'PS (moyenne OCDE)'],
+      facteurPosition: 1.00, adhesion: +7, bercy: -6, hna: 0, cas: true,
+      note: 'Pérenne, compte pour la pension, irréversible. Entraîne mécaniquement +43 % de contribution employeur (CAS Pensions) que votre budget ne montre pas.',
+      mot: 'Ce que réclament les syndicats depuis le gel de 2023. Ce que Bercy refuse depuis le gel de 2023.',
+    },
+    prime: {
+      label: 'Prime indemnitaire reconductible',
+      porteurs: ['Bercy', 'la plupart des arbitrages récents'],
+      facteurPosition: 0.75, adhesion: +3, bercy: 0, hna: 0, cas: false,
+      note: 'Pas de contribution pension, donc pas de surcoût caché — mais elle ne compte pas pour la retraite et un successeur peut l’arrêter d’un trait de plume.',
+      mot: 'L’instrument préféré de tous les ministères du Budget depuis vingt ans. Il y a une raison : ce qui n’est pas indiciaire n’est pas définitif.',
+    },
+    pacte: {
+      label: 'Rémunération contre missions supplémentaires (« pacte »)',
+      porteurs: ['Attal'],
+      facteurPosition: 0.45, adhesion: -2, bercy: +4, hna: -0.6, cas: false,
+      note: 'Vous budgétez la totalité, un tiers seulement la touche : 800 M€ au PLF 2025 pour ~34 % d’adhésion. Ceux qui sont épuisés ne prennent pas de mission de plus.',
+      mot: 'Payer du travail supplémentaire plutôt que le travail existant. Comptablement élégant, humainement discuté.',
+    },
   },
+
+  /* POUR QUI. Concentrer multiplie l'effet par tête — et le ressentiment
+     de ceux qu'on ne cible pas. */
   cibles: {
     debuts: {
       label: 'Début de carrière (moins de 15 ans d’ancienneté)',
-      note: 'Les revalorisations de 2023 ont déjà ciblé les débuts. On recommence.',
-      positionSalariale: +4.0, adhesion: +2, attractiviteBonus: +9,
-      reel: [{ compteur: 'sante', central: 6, delai: 1, cadenas: 4, source: 'effet sur le vivier de concours dès l’année suivante' }],
-      mot: 'Les candidats arrivent vite. Les collègues de milieu de carrière, eux, comptent leurs années.',
+      part: 0.38, adhesion: +2, attractivite: +9,
+      note: 'La cible déjà retenue par les revalorisations de 2023. C’est le salaire d’entrée que regarde un étudiant qui hésite à passer le concours.',
+      reel: [{ compteur: 'sante', central: 6, delai: 1, cadenas: 4, source: 'effet sur le vivier de candidats dès la session suivante' }],
+      mot: 'Les candidats reviennent vite. Les collègues de milieu de carrière, eux, comptent leurs années.',
     },
     milieux: {
-      label: 'Milieu de carrière (le décrochage de −14 % vs OCDE)',
-      note: 'Le point noir documenté par l’OCDE : 0 % d’évolution en dix ans pour les expérimentés.',
-      positionSalariale: +4.5, adhesion: +9, attractiviteBonus: +2,
-      reel: [{ compteur: 'sante', central: 7, delai: 2, cadenas: 3, source: 'OCDE 2025 : milieu de carrière −14 % vs moyenne OCDE ; principal moteur des démissions' }],
+      label: 'Milieu de carrière (15 à 25 ans d’ancienneté)',
+      part: 0.30, adhesion: +9, attractivite: +2,
+      note: 'Le point noir documenté par l’OCDE : −14 % par rapport à la moyenne OCDE en dix ans, et 0 % d’évolution pour les expérimentés du premier degré.',
+      reel: [{ compteur: 'sante', central: 7, delai: 2, cadenas: 3, source: 'OCDE 2025 : le décrochage de milieu de carrière est le principal moteur des démissions' }],
       mot: 'Aucun effet sur les concours de l’an prochain, un effet massif sur ceux qui sont déjà là.',
     },
     tous: {
-      label: 'Tout le monde, uniformément',
-      note: 'Le saupoudrage : 4,92 € le point d’indice, réparti sur 814 927 ETP.',
-      positionSalariale: +2.5, adhesion: +4, attractiviteBonus: +4,
-      reel: [{ compteur: 'sante', central: 3, delai: 2, cadenas: 3, source: 'effet dilué : la même somme divisée par tout le corps' }],
+      label: 'Tout le corps, uniformément',
+      part: 1.00, adhesion: +4, attractivite: +4,
+      note: 'Le saupoudrage : la somme divisée par 814 927 équivalents temps plein.',
+      reel: [{ compteur: 'sante', central: 3, delai: 2, cadenas: 3, source: 'effet dilué : la même somme répartie sur tout le corps' }],
       mot: 'Personne n’est furieux, personne n’est content. Le degré zéro de la politique salariale, et souvent le plus sûr.',
     },
   },
-  contreparties: {
-    sans: {
-      label: 'Sans contrepartie',
-      porteurs: ['FSU', 'Mélenchon'],
-      pol: +4, adhesion: +7, presse: -3, paixBonus: 1.0, hna: 0,
-      mot: 'Bercy vous regardera comme si vous aviez rendu les clés de la maison.',
-    },
-    pacte: {
-      label: 'Contre missions supplémentaires (« pacte »)',
-      porteurs: ['Attal'],
-      pol: 0, adhesion: -3, presse: +2, paixBonus: 1.0, hna: -0.6,
-      note: '800 M€ au PLF 2025 pour ~34 % d’adhésion : les épuisés ne prennent pas de mission de plus.',
-      mot: 'Un tiers des enseignants signent. Ce sont ceux qui allaient déjà bien.',
-    },
-    evaluation: {
-      label: 'Contre évaluation, présence et formation obligatoire',
-      porteurs: ['Lisnard', 'Philippe'],
-      pol: -3, adhesion: -11, presse: +7, paixBonus: 1.0, hna: -0.3,
-      greve: { intensite: 4, theme: 'statut', segment: 'tous' },
-      mot: 'La presse adore. Les salles des professeurs beaucoup moins. Comptez une grève.',
-    },
-  },
 };
+
+/* Toutes les conversions, en un seul endroit : l'interface les affiche,
+   le moteur les applique. */
+export function chiffrerRevalorisation(montantMd, instrumentId, cibleId) {
+  const I = REVALORISATION.instruments[instrumentId] || REVALORISATION.instruments.indiciaire;
+  const C = REVALORISATION.cibles[cibleId] || REVALORISATION.cibles.tous;
+  const m = Math.max(REVALORISATION.montant.min, Math.min(REVALORISATION.montant.max, montantMd));
+  const concernes = Math.round(CADRAGE.etpEnseignants * C.part);
+  return {
+    montantMd: m,
+    instrument: I, cible: C,
+    concernes,
+    euroParMois: (m * 1e9) / concernes / 12,            // brut mensuel moyen sur la cible
+    pctPoint: m / CADRAGE.coutPointIndice,              // en % de point d'indice
+    pctRattrapageFSU: (m / 10) * 100,                   // part des 10 Md€ réclamés
+    coutAvecCAS: I.cas ? m * 1.43 : m,                  // CAS Pensions : 25,15 / 58,4
+    gainPosition: m * POINTS_SALAIRE_PAR_MD * I.facteurPosition,
+    echelle: m / REVALORISATION.montant.defaut,
+  };
+}
 
 /* Plafond de 19 élèves par classe — la « carte à deux financements » (B.8-3).
    Le même affichage, deux conflits opposés. */

@@ -143,6 +143,18 @@ h1,h2,h3{text-wrap:balance; margin:0}
 .prio .pastille{width:8px; height:8px; border-radius:50%}
 .prio.p1{border-color:var(--bleu-rf)}
 
+/* ---------- panneau de revalorisation ---------- */
+.salaire{border-top:1px dashed var(--filet-fort); padding-top:10px; display:grid; gap:10px}
+.salaire .curseur-md label{font-size:.7rem; text-transform:uppercase; letter-spacing:.07em; color:var(--encre-2); display:flex; justify-content:space-between; gap:8px}
+.salaire .curseur-md label b{font-family:"IBM Plex Mono",monospace; color:var(--encre); font-size:.9rem; letter-spacing:0; text-transform:none; font-variant-numeric:tabular-nums}
+.salaire input[type=range]{width:100%; accent-color:var(--bleu-rf); margin:4px 0 0}
+.salaire .reperes{display:flex; justify-content:space-between; font-size:.62rem; color:var(--encre-3)}
+.salaire .chiffrage{background:var(--fiche-2); border-left:3px solid var(--c-budget); padding:9px 11px; font-size:.76rem; display:grid; gap:3px}
+.salaire .chiffrage .l{display:flex; justify-content:space-between; gap:10px}
+.salaire .chiffrage .l b{font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums; font-weight:500}
+.salaire .chiffrage .src{color:var(--encre-3); font-size:.68rem; border-top:1px dashed var(--filet-fort); padding-top:5px; margin-top:3px}
+.salaire .note-i{font-size:.72rem; color:var(--encre-2); max-width:60ch}
+
 /* ---------- deltas d'acteurs (avant validation) ---------- */
 .deltas-acteurs{display:flex; flex-wrap:wrap; gap:6px; margin-top:10px}
 .delta-a{font-family:"IBM Plex Mono",monospace; font-size:.74rem; padding:3px 9px; border:1px solid var(--filet-fort); background:var(--fiche); font-variant-numeric:tabular-nums}
@@ -734,6 +746,8 @@ const MOIS = ['janvier','février','mars','avril','mai','juin',
 
 const K = { CADRAGE, ENVELOPPE_BASE, ENVELOPPE_PRISE_FONCTION, ENVELOPPE_RENTREE, TAILLE_MENU_COURT, ANNONCES_MAX, PALIERS_BERCY, SURCOUT, POINTS_SALAIRE_PAR_MD, BAISSE_ELEVES, ELEVES_INITIAL, ELEVES_PAR_POSTE, RATIO_ED_INITIAL, SEUIL_COLERE_MAIRES, COMPTEURS_INITIAUX, COMPTEURS_META, POIDS_DOCTRINE, PHYSIQUE_INITIALE, INERTIE_OPINION, TENDANCIEL, INTERVALLE_CADENAS, ABSORPTION, FATIGUE, IMPLEMENTATION, POIDS_HERITAGE, BRUIT_AFFICHE, COUT_AFFICHAGE_LONG_TERME, DECROISSANCE_VITRINE, ATTRACTIVITE, GREVE, SYNDICATS, SENSIBILITES, CAPITAL, IMMOBILISME, CREDIT_BERCY_INITIAL, RENVOI, PROJECTION, PROJETS_2027, TAILLES_MENU, MOIS };   // espace de noms attendu par le moteur
 /* ===== moteur/catalogue.js ===== */
+
+
 /* ============================================================================
    RUE DE GRENELLE — CATALOGUE DES MESURES (phase moteur : 12 cartes-leçons)
    ----------------------------------------------------------------------------
@@ -802,7 +816,7 @@ const CATALOGUE = [
     famille: 'moyens',
     porteurs: ['FSU (+20 % du point ≈ 10 Md€)', 'PS (moyenne OCDE)', 'Attal (+200 à +500 €/mois)', 'Lisnard (+20 %/5 ans conditionnés)'],
     perimetre: 'ministeriel',
-    cout: 1.3, coutETP: 0, pol: 7,
+    cout: 1.3, coutETP: 0, pol: 7,        // montant par défaut ; le curseur décide
     once: false, reforme: false,          // répétable : une mesure salariale par budget
     parametrique: 'revalorisation',   // deux curseurs : cible × contrepartie
     vitrine: { parents: 0, enseignants: +6, presse: +2, compteurs: { budget: +5 } },
@@ -1556,65 +1570,101 @@ const CATALOGUE = [
    Cartes paramétriques : les curseurs et leurs effets différenciés.
    -------------------------------------------------------------------------- */
 
-/* Revalorisation — chaîne 2 du brief (B.8-2) : revaloriser QUI, et contre quoi.
-   Même coût, trois pays différents. */
+/* ============================================================================
+   REVALORISATION — la carte la plus chiffrée du jeu             [source B.1, B.3]
+   ----------------------------------------------------------------------------
+   Trois curseurs indépendants : COMBIEN, COMMENT, POUR QUI.
+   Toutes les conversions sont calculées par `chiffrerRevalorisation()`, que
+   l'interface et le moteur appellent tous les deux — ce que le joueur lit est
+   donc exactement ce qui est appliqué.
+
+   Ancrages réels :
+   - 814 927 ETP enseignants (Sénat, PLF 2026) ;
+   - 1 % de point d'indice sur le périmètre EN ≈ 0,49 Md€/an (bilan social MEN) ;
+   - point d'indice 4,92 €, gelé depuis juillet 2023 ;
+   - rattrapage réclamé par la FSU : +20 % du point ≈ 10 Md€ pour la seule EN ;
+   - CAS Pensions = 25,15 Md€ pour 58,4 Md€ de masse salariale, soit +43 % :
+     c'est le surcoût caché d'une hausse indiciaire, et la raison pour laquelle
+     Bercy préfère toujours une prime ;
+   - salaires effectifs vs autres diplômés du supérieur : −26 % en élémentaire,
+     −18 % en collège (OCDE 2025) ; milieu de carrière −14 % vs OCDE en dix ans ;
+   - pacte enseignant : 800 M€ au PLF 2025 pour ~34 % d'adhésion.
+   ========================================================================== */
 const REVALORISATION = {
-  /* Combien on met sur la table. 1 Md€ récurrent ≈ +2 points de position
-     salariale vs les autres diplômés du supérieur (cf. POINTS_SALAIRE_PAR_MD). */
-  ampleurs: {
-    geste:     { label: 'Un geste (0,5 Md€)', cout: 0.5,
-                 mot: 'De quoi faire un communiqué. Pas de quoi faire une carrière.' },
-    plan:      { label: 'Un plan pluriannuel (1,3 Md€)', cout: 1.3,
-                 mot: 'L’ordre de grandeur d’une vraie mesure catégorielle. Il faudra la financer tous les ans, à vie.' },
-    rattrapage:{ label: 'Un rattrapage (2,6 Md€)', cout: 2.6,
-                 mot: 'Le quart de ce que réclame la FSU. Bercy va vous demander où vous avez trouvé ça.' },
+  montant: { min: 0.2, max: 5.0, pas: 0.1, defaut: 1.3 },   // Md€/an récurrents
+
+  /* COMMENT on verse. Le choix de l'instrument change le coût réel, la
+     durabilité et l'accueil — à euro constant. */
+  instruments: {
+    indiciaire: {
+      label: 'Hausse du point d’indice (traitement)',
+      porteurs: ['FSU', 'intersyndicale', 'PS (moyenne OCDE)'],
+      facteurPosition: 1.00, adhesion: +7, bercy: -6, hna: 0, cas: true,
+      note: 'Pérenne, compte pour la pension, irréversible. Entraîne mécaniquement +43 % de contribution employeur (CAS Pensions) que votre budget ne montre pas.',
+      mot: 'Ce que réclament les syndicats depuis le gel de 2023. Ce que Bercy refuse depuis le gel de 2023.',
+    },
+    prime: {
+      label: 'Prime indemnitaire reconductible',
+      porteurs: ['Bercy', 'la plupart des arbitrages récents'],
+      facteurPosition: 0.75, adhesion: +3, bercy: 0, hna: 0, cas: false,
+      note: 'Pas de contribution pension, donc pas de surcoût caché — mais elle ne compte pas pour la retraite et un successeur peut l’arrêter d’un trait de plume.',
+      mot: 'L’instrument préféré de tous les ministères du Budget depuis vingt ans. Il y a une raison : ce qui n’est pas indiciaire n’est pas définitif.',
+    },
+    pacte: {
+      label: 'Rémunération contre missions supplémentaires (« pacte »)',
+      porteurs: ['Attal'],
+      facteurPosition: 0.45, adhesion: -2, bercy: +4, hna: -0.6, cas: false,
+      note: 'Vous budgétez la totalité, un tiers seulement la touche : 800 M€ au PLF 2025 pour ~34 % d’adhésion. Ceux qui sont épuisés ne prennent pas de mission de plus.',
+      mot: 'Payer du travail supplémentaire plutôt que le travail existant. Comptablement élégant, humainement discuté.',
+    },
   },
+
+  /* POUR QUI. Concentrer multiplie l'effet par tête — et le ressentiment
+     de ceux qu'on ne cible pas. */
   cibles: {
     debuts: {
       label: 'Début de carrière (moins de 15 ans d’ancienneté)',
-      note: 'Les revalorisations de 2023 ont déjà ciblé les débuts. On recommence.',
-      positionSalariale: +4.0, adhesion: +2, attractiviteBonus: +9,
-      reel: [{ compteur: 'sante', central: 6, delai: 1, cadenas: 4, source: 'effet sur le vivier de concours dès l’année suivante' }],
-      mot: 'Les candidats arrivent vite. Les collègues de milieu de carrière, eux, comptent leurs années.',
+      part: 0.38, adhesion: +2, attractivite: +9,
+      note: 'La cible déjà retenue par les revalorisations de 2023. C’est le salaire d’entrée que regarde un étudiant qui hésite à passer le concours.',
+      reel: [{ compteur: 'sante', central: 6, delai: 1, cadenas: 4, source: 'effet sur le vivier de candidats dès la session suivante' }],
+      mot: 'Les candidats reviennent vite. Les collègues de milieu de carrière, eux, comptent leurs années.',
     },
     milieux: {
-      label: 'Milieu de carrière (le décrochage de −14 % vs OCDE)',
-      note: 'Le point noir documenté par l’OCDE : 0 % d’évolution en dix ans pour les expérimentés.',
-      positionSalariale: +4.5, adhesion: +9, attractiviteBonus: +2,
-      reel: [{ compteur: 'sante', central: 7, delai: 2, cadenas: 3, source: 'OCDE 2025 : milieu de carrière −14 % vs moyenne OCDE ; principal moteur des démissions' }],
+      label: 'Milieu de carrière (15 à 25 ans d’ancienneté)',
+      part: 0.30, adhesion: +9, attractivite: +2,
+      note: 'Le point noir documenté par l’OCDE : −14 % par rapport à la moyenne OCDE en dix ans, et 0 % d’évolution pour les expérimentés du premier degré.',
+      reel: [{ compteur: 'sante', central: 7, delai: 2, cadenas: 3, source: 'OCDE 2025 : le décrochage de milieu de carrière est le principal moteur des démissions' }],
       mot: 'Aucun effet sur les concours de l’an prochain, un effet massif sur ceux qui sont déjà là.',
     },
     tous: {
-      label: 'Tout le monde, uniformément',
-      note: 'Le saupoudrage : 4,92 € le point d’indice, réparti sur 814 927 ETP.',
-      positionSalariale: +2.5, adhesion: +4, attractiviteBonus: +4,
-      reel: [{ compteur: 'sante', central: 3, delai: 2, cadenas: 3, source: 'effet dilué : la même somme divisée par tout le corps' }],
+      label: 'Tout le corps, uniformément',
+      part: 1.00, adhesion: +4, attractivite: +4,
+      note: 'Le saupoudrage : la somme divisée par 814 927 équivalents temps plein.',
+      reel: [{ compteur: 'sante', central: 3, delai: 2, cadenas: 3, source: 'effet dilué : la même somme répartie sur tout le corps' }],
       mot: 'Personne n’est furieux, personne n’est content. Le degré zéro de la politique salariale, et souvent le plus sûr.',
     },
   },
-  contreparties: {
-    sans: {
-      label: 'Sans contrepartie',
-      porteurs: ['FSU', 'Mélenchon'],
-      pol: +4, adhesion: +7, presse: -3, paixBonus: 1.0, hna: 0,
-      mot: 'Bercy vous regardera comme si vous aviez rendu les clés de la maison.',
-    },
-    pacte: {
-      label: 'Contre missions supplémentaires (« pacte »)',
-      porteurs: ['Attal'],
-      pol: 0, adhesion: -3, presse: +2, paixBonus: 1.0, hna: -0.6,
-      note: '800 M€ au PLF 2025 pour ~34 % d’adhésion : les épuisés ne prennent pas de mission de plus.',
-      mot: 'Un tiers des enseignants signent. Ce sont ceux qui allaient déjà bien.',
-    },
-    evaluation: {
-      label: 'Contre évaluation, présence et formation obligatoire',
-      porteurs: ['Lisnard', 'Philippe'],
-      pol: -3, adhesion: -11, presse: +7, paixBonus: 1.0, hna: -0.3,
-      greve: { intensite: 4, theme: 'statut', segment: 'tous' },
-      mot: 'La presse adore. Les salles des professeurs beaucoup moins. Comptez une grève.',
-    },
-  },
 };
+
+/* Toutes les conversions, en un seul endroit : l'interface les affiche,
+   le moteur les applique. */
+function chiffrerRevalorisation(montantMd, instrumentId, cibleId) {
+  const I = REVALORISATION.instruments[instrumentId] || REVALORISATION.instruments.indiciaire;
+  const C = REVALORISATION.cibles[cibleId] || REVALORISATION.cibles.tous;
+  const m = Math.max(REVALORISATION.montant.min, Math.min(REVALORISATION.montant.max, montantMd));
+  const concernes = Math.round(CADRAGE.etpEnseignants * C.part);
+  return {
+    montantMd: m,
+    instrument: I, cible: C,
+    concernes,
+    euroParMois: (m * 1e9) / concernes / 12,            // brut mensuel moyen sur la cible
+    pctPoint: m / CADRAGE.coutPointIndice,              // en % de point d'indice
+    pctRattrapageFSU: (m / 10) * 100,                   // part des 10 Md€ réclamés
+    coutAvecCAS: I.cas ? m * 1.43 : m,                  // CAS Pensions : 25,15 / 58,4
+    gainPosition: m * POINTS_SALAIRE_PAR_MD * I.facteurPosition,
+    echelle: m / REVALORISATION.montant.defaut,
+  };
+}
 
 /* Plafond de 19 élèves par classe — la « carte à deux financements » (B.8-3).
    Le même affichage, deux conflits opposés. */
@@ -1848,6 +1898,7 @@ function rngDepuis(graine) {
   };
 }
 const borne = (x, min, max) => Math.max(min, Math.min(max, x));
+const fmtMd = (x) => (Math.round(x * 100) / 100).toLocaleString('fr-FR');
 /* Loi normale (Box-Muller) pour le bruit des indicateurs affichés. */
 function normale(rng, mu = 0, sigma = 1) {
   const u = Math.max(1e-9, rng()), v = rng();
@@ -2529,9 +2580,12 @@ function coutDe(carte, options = {}) {
     return { cout: f.cout, coutETP: f.coutETP, pol: carte.pol };
   }
   if (carte.parametrique === 'revalorisation') {
-    const cp = REVALORISATION.contreparties[options.contrepartie || 'sans'];
-    const am = REVALORISATION.ampleurs[options.ampleur || 'plan'];
-    return { cout: am.cout, coutETP: 0, pol: carte.pol + cp.pol + Math.round(am.cout * 2) };
+    const ch = chiffrerRevalorisation(options.montant ?? REVALORISATION.montant.defaut,
+                                     options.instrument || 'indiciaire', options.cible || 'tous');
+    /* Plus c'est gros, plus il faut arracher l'arbitrage ; une prime coûte
+       moins de capital qu'une hausse indiciaire, que Bercy sait irréversible. */
+    const polInstrument = { indiciaire: 4, prime: 0, pacte: -2 }[options.instrument || 'indiciaire'];
+    return { cout: ch.montantMd, coutETP: 0, pol: Math.max(3, carte.pol + polInstrument + Math.round(ch.montantMd * 2)) };
   }
   return { cout: carte.cout, coutETP: carte.coutETP, pol: carte.pol };
 }
@@ -2581,17 +2635,17 @@ function appliquerMesures(s, choix, maxAnnonces = 3, depassementAutorise = true)
     let effets = carte.reel;
     let mult = 1;
     if (carte.parametrique === 'revalorisation') {
-      const cible = REVALORISATION.cibles[ch.options?.cible || 'tous'];
-      const cp = REVALORISATION.contreparties[ch.options?.contrepartie || 'sans'];
-      const am = REVALORISATION.ampleurs[ch.options?.ampleur || 'plan'];
-      const echelle = am.cout / 1.3;                 // l'ampleur module tout
-      s.phys.positionSalariale += am.cout * K.POINTS_SALAIRE_PAR_MD;
-      s.phys.adhesion += (cible.adhesion + cp.adhesion) * echelle;
-      s.bonusAttractivite = (s.bonusAttractivite || 0) + cible.attractiviteBonus * echelle;
-      mult *= echelle;
-      if (cp.hna) s.hnaTemporaires.push({ delta: cp.hna, reste: 99, applique: 0 });
-      effets = cible.reel;
-      if (cp.greve) (s.grevesEnAttente = s.grevesEnAttente || []).push({ ...cp.greve, cause: 'revalorisation sous conditions' });
+      const r = chiffrerRevalorisation(ch.options?.montant ?? REVALORISATION.montant.defaut,
+                                       ch.options?.instrument || 'indiciaire', ch.options?.cible || 'tous');
+      s.phys.positionSalariale += r.gainPosition;
+      s.phys.adhesion += (r.cible.adhesion + r.instrument.adhesion) * r.echelle;
+      s.bonusAttractivite = (s.bonusAttractivite || 0) + r.cible.attractivite * r.echelle * r.instrument.facteurPosition;
+      s.creditBercy = borne(s.creditBercy + r.instrument.bercy * Math.min(2, r.echelle), 0, 100);
+      /* Le pacte paie du remplacement : c'est son seul avantage documenté. */
+      if (r.instrument.hna) s.hnaTemporaires.push({ delta: r.instrument.hna * Math.min(2, r.echelle), reste: 99, applique: 0 });
+      mult *= r.echelle * r.instrument.facteurPosition;
+      effets = r.cible.reel;
+      note(s, `Revalorisation : ${fmtMd(r.montantMd)} Md€/an, ${r.instrument.label.toLowerCase()}, ${r.cible.label.toLowerCase()} — soit ${Math.round(r.euroParMois)} € brut par mois pour ${Math.round(r.concernes / 1000)} 000 enseignants.`, 'salaires');
     }
     if (carte.parametrique === 'financement19') {
       const f = FINANCEMENT_19[ch.options?.financement || 'demographie'];
@@ -3295,7 +3349,7 @@ function ecranAtelier(q) {
       </div>
       ${vc.length ? '<div class="note-image">« Image » : l’indicateur affiché bouge tout de suite — puis l’effet s’estompe d’un quart par an et ne compte pas au bilan. Seuls les effets réels (🔒, différés) comptent.</div>' : ''}
       <div class="reels">${(c.reel || []).map((e) => `<div class="ligne"><span class="verrous">${'🔒'.repeat(e.cadenas)}${'·'.repeat(5 - e.cadenas)}</span><span>Effet réel sur <b>${NOMS_C[e.compteur]}</b>, vers l’an +${e.delai}</span></div><div class="src">${esc(e.source)}</div>`).join('')}
-      ${c.parametrique === 'revalorisation' ? '<div class="ligne"><span class="verrous">🔒🔒🔒··</span><span>Effet réel selon vos curseurs (réglez-les après sélection)</span></div>' : ''}</div>
+      ${c.parametrique === 'revalorisation' ? '<div class="ligne"><span class="verrous">🔒🔒🔒··</span><span>Montant, instrument et cible se règlent après sélection — tout est chiffré en direct</span></div>' : ''}</div>
       ${c.greve ? `<div class="alerte-greve">⚠ Risque de mobilisation (intensité ${c.greve.intensite}/5, ${c.greve.theme})</div>` : ''}
       ${c.provocations ? `<div class="alerte-greve">⚠ Provocation « guerre scolaire » (+${c.provocations})</div>` : ''}
       <div class="mot">${esc(c.mot)}</div>`;
@@ -3325,10 +3379,42 @@ function ecranAtelier(q) {
         s.onchange = (e) => { opt[cle] = e.target.value; majSolde(); };
         w.appendChild(s); return w; };
       if (c.parametrique === 'revalorisation') {
-        zone.append(
-          sel('Ampleur', REVALORISATION.ampleurs, 'ampleur', (k, v) => v.label),
-          sel('Cible', REVALORISATION.cibles, 'cible', (k, v) => v.label),
-          sel('Contrepartie', REVALORISATION.contreparties, 'contrepartie', (k, v) => `${v.label} — ${v.porteurs.join(', ')}`));
+        zone.classList.add('salaire');
+        /* 1. Le montant, au curseur — tout le reste en découle. */
+        const R = REVALORISATION.montant;
+        const cur = el('div', 'curseur-md');
+        cur.innerHTML = `<label for="md-${c.id}"><span>Montant engagé, par an</span><b></b></label>
+          <input id="md-${c.id}" type="range" min="${R.min}" max="${R.max}" step="${R.pas}" value="${opt.montant}">
+          <div class="reperes"><span>${fmt0(R.min * 1000)} M€</span><span>2,5 Md€ = le plan chiffré par Attal</span><span>${fmt1(R.max)} Md€</span></div>`;
+        const chif = el('div', 'chiffrage');
+        const noteI = el('div', 'note-i');
+
+        const valeurMd = cur.querySelector('label b');
+        const majChiffrage = () => {
+          const r = chiffrerRevalorisation(opt.montant, opt.instrument, opt.cible);
+          valeurMd.textContent = fmt1(r.montantMd) + ' Md€';
+          chif.innerHTML = `
+            <div class="l"><span>Concerne</span><b>${fmt0(r.concernes)} enseignants</b></div>
+            <div class="l"><span>Soit, en brut mensuel moyen</span><b>+${fmt0(r.euroParMois)} €/mois</b></div>
+            <div class="l"><span>Équivaut à</span><b>${fmt1(r.pctPoint)} % de point d’indice</b></div>
+            <div class="l"><span>Part du rattrapage réclamé par la FSU (10 Md€)</span><b>${fmt0(r.pctRattrapageFSU)} %</b></div>
+            <div class="l"><span>Coût réel pour l’État${r.instrument.cas ? ', CAS Pensions compris' : ' (pas de contribution pension)'}</span><b>${fmt1(r.coutAvecCAS)} Md€</b></div>
+            <div class="l"><span>Position salariale vs autres diplômés du supérieur</span><b>${fmt1(S.phys.positionSalariale)} % → ${fmt1(S.phys.positionSalariale + r.gainPosition)} %</b></div>
+            <div class="src">Point d’indice 4,92 € gelé depuis 2023 · 1 % de point ≈ 490 M€ sur le périmètre de l’Éducation nationale · 814 927 ETP enseignants · CAS Pensions = +43 % de la masse salariale.</div>`;
+          noteI.innerHTML = `<b>${esc(r.instrument.label)}</b> — ${esc(r.instrument.note)}<br><span style="color:var(--encre-3)">${esc(r.cible.note)}</span>`;
+          majSolde();
+        };
+        cur.querySelector('input').oninput = (e) => { e.stopPropagation(); opt.montant = +e.target.value; majChiffrage(); };
+        cur.querySelector('input').onclick = (e) => e.stopPropagation();
+
+        const relire = (fn) => (e) => { fn(e); majChiffrage(); };
+        const selI = sel('Comment on verse', REVALORISATION.instruments, 'instrument', (k, v) => v.label);
+        const selC = sel('Pour qui', REVALORISATION.cibles, 'cible', (k, v) => v.label);
+        selI.querySelector('select').onchange = relire((e) => { opt.instrument = e.target.value; });
+        selC.querySelector('select').onchange = relire((e) => { opt.cible = e.target.value; });
+
+        zone.append(cur, selI, selC, chif, noteI);
+        majChiffrage();
       } else if (c.parametrique === 'financement19') {
         zone.append(sel('Financement', FINANCEMENT_19, 'financement', (k, v) => `${v.label} (${fmt0(v.cout * 1000)} M€)`));
       }
@@ -3345,7 +3431,7 @@ function ecranAtelier(q) {
           setTimeout(() => { bRet.textContent = 'Retenir'; }, 1600);
           return;
         }
-        const opt = c.parametrique === 'revalorisation' ? { ampleur: 'plan', cible: 'milieux', contrepartie: 'sans' }
+        const opt = c.parametrique === 'revalorisation' ? { montant: REVALORISATION.montant.defaut, instrument: 'indiciaire', cible: 'milieux' }
           : c.parametrique === 'financement19' ? { financement: 'demographie' } : {};
         selection.set(c.id, opt); carte.classList.add('sel', 'ouverte'); bRet.textContent = 'Retirer'; majParams();
       }

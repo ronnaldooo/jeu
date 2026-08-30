@@ -120,7 +120,7 @@ export const TOUT_VITRINE = {
      l'applaudissement. Elle prend le « pacte » plutôt que l'évaluation. */
   mesures: (s, dispo, ctx) => selectionner(s, dispo, ctx,
     (c) => valeurVitrine(c) - risqueGreve(c) * 2.2,
-    { toleranceDepassement: 0.35, options: () => ({ ampleur: 'geste', cible: 'debuts', contrepartie: 'pacte', financement: 'demographie' }) }),
+    { toleranceDepassement: 0.35, options: () => ({ montant: 0.5, cible: 'debuts', instrument: 'pacte', financement: 'demographie' }) }),
 };
 
 /* -------------------------------------------------------------------------- */
@@ -146,7 +146,7 @@ export const TOUT_REEL = {
          + (c.physique?.adhesion || 0) * 1.0
         ,
     { toleranceDepassement: 0.35, concentration: 0.5,
-      options: () => ({ ampleur: 'plan', cible: 'milieux', contrepartie: 'sans', financement: 'demographie' }) }),
+      options: () => ({ montant: 1.3, cible: 'milieux', instrument: 'indiciaire', financement: 'demographie' }) }),
 };
 
 /* -------------------------------------------------------------------------- */
@@ -162,7 +162,7 @@ export const SYNDICAL = {
   rentree: () => 'assumer',
   mesures: (s, dispo, ctx) => selectionner(s, dispo, ctx,
     (c) => (c.vitrine?.enseignants || 0) * 2 + (c.physique?.adhesion || 0) * 1.5 - risqueGreve(c) * 3,
-    { toleranceDepassement: 0.35, options: () => ({ ampleur: 'plan', cible: 'milieux', contrepartie: 'sans', financement: 'demographie' }) }),
+    { toleranceDepassement: 0.35, options: () => ({ montant: 1.3, cible: 'milieux', instrument: 'indiciaire', financement: 'demographie' }) }),
 };
 
 /* -------------------------------------------------------------------------- */
@@ -200,9 +200,9 @@ export const MIXTE = {
   }, {
     toleranceDepassement: s.creditBercy > 45 ? 0.5 : 0.2,
     reserveCapital: 22,
-    options: () => ({ ampleur: s.tresor > 2.2 ? 'rattrapage' : s.tresor > 1.1 ? 'plan' : 'geste',
+    options: () => ({ montant: Math.max(0.3, Math.min(2.6, s.tresor * 0.8)),
                       cible: s.phys.couvertureConcours < 90 ? 'debuts' : 'milieux',
-                      contrepartie: 'pacte', financement: 'demographie' }),
+                      instrument: 'indiciaire', financement: 'demographie' }),
   }),
 };
 
@@ -213,15 +213,14 @@ export function politiqueAleatoire(rng, poids) {
   const ordre = ['reussite', 'egalite', 'sante', 'budget', 'paix']
     .sort((a, b) => (poids[b] || 0) - (poids[a] || 0));
   const cibles = Object.keys(REVALORISATION.cibles);
-  const amps = Object.keys(REVALORISATION.ampleurs);
-  const cps = Object.keys(REVALORISATION.contreparties);
+  const instrs = Object.keys(REVALORISATION.instruments);
   const fins = Object.keys(FINANCEMENT_19);
   const restBase = rng(), privBase = rng(), tol = rng() * 0.9;
   const contester = rng() < 0.5;
   const opt = {
-    ampleur: amps[Math.floor(rng() * amps.length)],
+    montant: 0.3 + rng() * 2.6,
     cible: cibles[Math.floor(rng() * cibles.length)],
-    contrepartie: cps[Math.floor(rng() * cps.length)],
+    instrument: instrs[Math.floor(rng() * instrs.length)],
     financement: fins[Math.floor(rng() * fins.length)],
   };
   const bruitCarte = {};
@@ -275,10 +274,9 @@ export function doctrinaire(ordre) {
       concentration: 0.55,
       maxCartes: poids.budget >= 34 ? 2 : 2,
       options: () => ({
-        ampleur: poids.budget >= 34 ? (s.tresor > 2.4 ? 'rattrapage' : s.tresor > 1.1 ? 'plan' : 'geste')
-                                    : (s.tresor > 1.2 ? 'plan' : 'geste'),
+        montant: Math.max(0.3, Math.min(poids.budget >= 34 ? 3.0 : 1.6, s.tresor * 0.85)),
         cible: s.phys.couvertureConcours < 90 ? 'debuts' : 'milieux',
-        contrepartie: poids.paix >= 18 ? 'sans' : 'pacte',
+        instrument: poids.paix >= 18 ? 'indiciaire' : 'pacte',
         financement: 'demographie',
       }),
     }),
