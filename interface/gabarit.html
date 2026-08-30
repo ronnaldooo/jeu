@@ -117,6 +117,31 @@ h1,h2,h3{text-wrap:balance; margin:0}
 .rang .fleches button{cursor:pointer; border:1px solid var(--filet-fort); background:var(--fiche); width:30px; height:30px; font-size:.85rem}
 .rang .fleches button:hover{border-color:var(--bleu-rf); color:var(--bleu-rf)}
 
+/* ---------- barre budgétaire ---------- */
+.budget-bloc{border:1px solid var(--filet); background:var(--fiche); padding:12px 16px; margin:0 0 14px}
+.budget-bloc .titre-b{font-size:.68rem; letter-spacing:.11em; text-transform:uppercase; font-weight:700; color:var(--encre-2); display:flex; justify-content:space-between; gap:10px}
+.budget-bloc .titre-b b{color:var(--encre); letter-spacing:0; text-transform:none; font-variant-numeric:tabular-nums}
+.budget-barre{display:flex; height:18px; border:1px solid var(--filet-fort); margin:6px 0 4px; overflow:hidden}
+.budget-barre i{display:block; height:100%}
+.budget-barre .salaires{background:var(--filet)}
+.budget-barre .autres{background:var(--filet-fort)}
+.budget-barre .engage{background:var(--c-paix)}
+.budget-barre .libre{background:var(--c-sante)}
+.budget-legende{display:flex; flex-wrap:wrap; gap:4px 16px; font-size:.7rem; color:var(--encre-2)}
+.budget-legende b{color:var(--encre); font-variant-numeric:tabular-nums}
+.budget-legende .puce{display:inline-block; width:9px; height:9px; margin-right:4px; vertical-align:baseline}
+
+/* ---------- comment ça marche ---------- */
+.mecanisme{background:var(--fiche-2); border:1px solid var(--filet); padding:12px 16px; margin:14px 0; font-size:.85rem}
+.mecanisme .titre-d{font-size:.66rem; letter-spacing:.12em; text-transform:uppercase; font-weight:700; color:var(--bleu-rf); margin-bottom:6px}
+.mecanisme ol{margin:0; padding-left:20px; max-width:72ch}
+.mecanisme li{margin:4px 0}
+
+/* ---------- effets d'image ---------- */
+.chiffres .image{color:var(--encre-3); border-bottom:1px dashed var(--filet-fort)}
+.note-image{font-size:.72rem; color:var(--encre-3); max-width:70ch}
+.echeance-pr{font-size:.72rem; color:var(--or); font-weight:600}
+
 /* ---------- projets 2027 (doctrine) ---------- */
 .rang-bloc{background:var(--fiche-2); border:1px solid var(--filet)}
 .rang-bloc .rang{background:transparent; border:0}

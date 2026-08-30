@@ -87,6 +87,7 @@ function selectionner(s, dispo, ctx, scorer, { toleranceDepassement = 0.15, opti
 /* -------------------------------------------------------------------------- */
 export const PASSIF = {
   nom: 'Passif (ne rien faire)',
+  audience: () => 0,               // le ministre immobile défend la ligne, faute d'en avoir une
   doctrine: () => ['reussite', 'egalite', 'sante', 'budget', 'paix'],
   lettrePlafond: () => 'accepter',
   carteScolaire: () => ({ restitution: 0.6, prive: 0.5 }),
@@ -109,6 +110,7 @@ function dossierVers(cle) {
 export const TOUT_VITRINE = {
   nom: 'Tout vitrine',
   dossier: dossierVers('parents'),
+  audience: () => 0,               // la fermeté fait de meilleures images
   doctrine: () => ['reussite', 'budget', 'egalite', 'sante', 'paix'],
   lettrePlafond: () => 'accepter',
   /* Rendre les postes fait plaisir à Bercy et paie les annonces. */
@@ -149,6 +151,7 @@ export const TOUT_REEL = {
 export const SYNDICAL = {
   nom: 'Paix sociale d’abord',
   dossier: dossierVers('adhesion'),
+  audience: () => 2,               // toujours concéder
   doctrine: () => ['sante', 'paix', 'budget', 'egalite', 'reussite'],
   lettrePlafond: () => 'contester',
   carteScolaire: () => ({ restitution: 0.05, prive: 0.5 }),

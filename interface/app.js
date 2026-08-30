@@ -197,7 +197,7 @@ function ecranPassation() {
     '« Tout est dans les dossiers. Les dossiers sont dans les cartons. Les cartons sont au garde-meuble, la DGESCO sait lequel. Méfiez-vous de juillet, de septembre et de janvier — le reste de l’année est calme, sauf le reste de l’année. Bonne chance.'
     + '<span class="ps">P.-S. — La photocopieuse du deuxième est en panne depuis 2019. C’est le dossier le plus consensuel du ministère : ne le réglez pas, il fédère. »</span>'));
   const mp = S.mesuresPresidentielles.map((m) => `<b>${esc(PAR_ID[m.id].label)}</b> <span style="color:var(--encre-2)">(avant l’an ${m.anneeLimite})</span>`);
-  d.appendChild(el('p', '', `L’Élysée vous fait par ailleurs porter deux « priorités présidentielles », à engager pendant le mandat sous peine de disgrâce :`));
+  d.appendChild(el('p', '', `Un ministre n’est pas un électron libre : vous portez aussi le programme sur lequel la Présidente a été élue. Deux « priorités présidentielles » vous sont imposées — chacune à engager avant son échéance. Les abandonner coûte cher : <b>−10 de capital politique, +15 de fatigue réformatrice</b>, et un abandon de trop vous prive du bénéfice du « cap tenu » au bilan. Elles resteront affichées dans votre menu de mesures jusqu’à ce que vous les traitiez — l’Élysée y veille.`));
   const ul = el('div', 'opts'); ul.style.gap = '6px';
   for (const x of mp) ul.appendChild(el('div', 'opt', `<span class="badge-pr">Priorité présidentielle</span><br>${x}`));
   d.appendChild(ul);
@@ -294,6 +294,13 @@ function ecranCarteScolaire(q) {
   d.appendChild(el('p', 'chapo',
     `La démographie fait son œuvre : <b>${fmt0(Math.abs(q.baisse) * 1000)} élèves de moins</b> à la prochaine rentrée, soit ${fmt0(q.postesLiberables)} postes « libérables ». Bercy en exige ${fmt0(Math.abs(q.schemaDemande))}. Les maires, eux, exigent l’inverse. Les deux vous regardent.`));
 
+  const meca = el('div', 'mecanisme');
+  meca.innerHTML = `<div class="titre-d">Comment ça marche</div><ol>
+    <li>La démographie baisse : des postes d’enseignants deviennent « libérables » sans dégrader l’encadrement actuel.</li>
+    <li>Vous arbitrez : <b>rendre ces postes à Bercy</b> (crédit budgétaire pour vos mesures, mais fermetures de classes visibles, maires et salles des professeurs en colère) ou <b>les réinvestir</b> (moins d’élèves par classe, mais Bercy s’en souviendra en juillet).</li>
+    <li>En juillet, Bercy compare ce que vous avez rendu à ce qu’il exigeait : c’est ce qui fixe votre marge de l’an prochain.</li></ol>`;
+  d.appendChild(meca);
+
   let restitution = Math.min(q.restitutionMax, 0.4), prive = 0.5;
   const c1 = el('div', 'curseur');
   c1.innerHTML = `<label for="cur-rest">Postes rendus à Bercy ⟷ réinvestis dans l’encadrement</label>
@@ -311,7 +318,10 @@ function ecranCarteScolaire(q) {
     const postes = Math.round(restitution * q.postesLiberables);
     const eco = postes * K.CADRAGE.coutETPhorsCAS * 1000;
     const ecart = postes - Math.abs(q.schemaDemande);
-    $('#lec-rest').innerHTML = `${fmt0(postes)} postes rendus · ${fmt0(eco)} M€ dégagés · ${ecart >= 0 ? 'Bercy servi (' + signe(ecart) + ' ETP)' : 'sous l’exigence Bercy (' + fmt0(ecart) + ' ETP)'}${restitution > K.SEUIL_COLERE_MAIRES ? ' · <span style="color:var(--rouge-rf)">zone de colère des maires</span>' : ''}`;
+    /* prévision d'encadrement : même formule que le moteur */
+    const divisions = (S.eleves * 1000) / S.ratioED;
+    const ratioApres = ((S.eleves + q.baisse) * 1000) / Math.max(1000, divisions - postes / 1.35);
+    $('#lec-rest').innerHTML = `${fmt0(postes)} postes rendus · ${fmt0(eco)} M€ dégagés pour vos mesures · encadrement : ${fmt1(S.ratioED)} → <b>${fmt1(ratioApres)}</b> élèves/classe · ${ecart >= 0 ? 'Bercy servi (' + signe(ecart) + ' ETP)' : '<span style="color:var(--rouge-rf)">sous l’exigence Bercy (' + fmt0(ecart) + ' ETP) : crédit en baisse</span>'}${restitution > K.SEUIL_COLERE_MAIRES ? ' · <span style="color:var(--rouge-rf)">zone de colère des maires</span>' : ''}`;
     $('#lec-prive').innerHTML = prive < 0.35 ? 'Le privé est épargné : la ségrégation dérive en silence.'
       : prive <= 0.65 ? 'Effort proportionnel aux effectifs : personne n’est content, personne ne défile.'
       : prive <= 0.78 ? 'Le privé contribue davantage : protestations d’usage, encore contenues.'
@@ -336,7 +346,29 @@ function ecranAtelier(q) {
   const d = el('article', 'doc large');
   d.appendChild(el('div', 'entete-doc', `<span class="type">L’atelier — mesures de l’année</span><span class="date">${ETAT.dateLabel}</span>`));
   d.appendChild(el('h2', '', 'Que portez-vous cette année ?'));
-  d.appendChild(el('p', 'chapo', 'L’effet vitrine est chiffré : vous le verrez. L’effet réel ne l’est pas : seuls le niveau de preuve (🔒) et le délai sont connus — vous découvrirez au bilan ce que vous avez produit. Dépliez une carte, puis « Comprendre l’effet » pour lire ce que disent réellement les études. Et rien ne s’applique sans les personnels.'));
+  d.appendChild(el('p', 'chapo', 'L’effet vitrine est chiffré : vous le verrez. L’effet réel ne l’est pas : seuls le niveau de preuve (🔒) et le délai sont connus — vous découvrirez au bilan ce que vous avez produit. Dépliez une carte, puis « Comprendre l’effet » pour lire ce que disent réellement les études. Votre doctrine ouvre d’abord les dossiers qui la servent — le reste du catalogue arrivera au fil du mandat. Et rien ne s’applique sans les personnels.'));
+  /* Le budget, en vrai : tout le mandat se joue dans un liseré. */
+  const M = K.CADRAGE.missionHorsCAS;                       // 64,49 Md€
+  const salaires = M * K.CADRAGE.partMasseSalariale;
+  const engages = S.chargesRecurrentes;
+  const libre = Math.max(0, q.tresor);
+  const autres = Math.max(0, M - salaires - engages - libre);
+  const pc = (x) => Math.max(0.35, (x / M) * 100).toFixed(2) + '%';
+  const bb = el('div', 'budget-bloc');
+  bb.innerHTML = `
+    <div class="titre-b"><span>Le budget du ministère — premier budget de l'État</span><b>${fmt1(M)} Md€/an</b></div>
+    <div class="budget-barre" aria-hidden="true">
+      <i class="salaires" style="width:${pc(salaires)}"></i><i class="autres" style="width:${pc(autres)}"></i><i class="engage" style="width:${pc(engages)}"></i><i class="libre" style="width:${pc(libre)}"></i>
+    </div>
+    <div class="budget-legende">
+      <span><i class="puce salaires" style="background:var(--filet)"></i>masse salariale <b>${fmt1(salaires)} Md€</b> (intouchable : ce sont 1,2 M d'agents)</span>
+      <span><i class="puce" style="background:var(--filet-fort)"></i>dépenses déjà engagées</span>
+      <span><i class="puce" style="background:var(--c-paix)"></i>vos mesures passées <b>${fmt0(engages * 1000)} M€/an</b> (à vie — l'effet cliquet)</span>
+      <span><i class="puce" style="background:var(--c-sante)"></i>votre marge cette année <b>${fmt0(libre * 1000)} M€</b></span>
+    </div>
+    <div class="budget-legende" style="margin-top:6px"><span>Le liseré vert est tout ce que vous pouvez décider cette année : <b>${fmt1((libre / M) * 100)} %</b> du budget. Chaque mesure pérenne le réduit pour toujours — pour vous et vos successeurs.</span></div>`;
+  d.appendChild(bb);
+
   d.appendChild(el('div', 'legende-cadenas', '<b>Échelle de preuve</b> (d’après le Teaching &amp; Learning Toolkit de l’EEF) — 🔒🔒🔒🔒🔒 : plus de 90 études concordantes, l’effet tiré reste proche de l’annonce (±20 %) · 🔒🔒🔒 : preuve correcte, l’effet peut aller de la moitié au double · 🔒 : quasi aucune évaluation, l’effet peut aller du négatif au triple. Un cadenas n’est pas un jugement : c’est la largeur de votre pari.'));
 
   const solde = el('div', 'solde');
@@ -380,7 +412,8 @@ function ecranAtelier(q) {
       <span class="famille" style="color:${famCoul}">${famNom}${presid ? ' · <span class="badge-pr">priorité présidentielle</span>' : ''}</span>
       <h3>${esc(c.label)}</h3>
       <div class="chiffres"><span>${fmt0(k0.cout * 1000)} M€/an</span><span>${k0.pol}${c.perimetre === 'matignon' ? '×2' : ''} capital</span><span>preuve ${'🔒'.repeat(cadMax)}${'·'.repeat(Math.max(0, 5 - cadMax))}</span></div>
-      <div class="plie">Porté par : ${c.porteurs.map(esc).join(' · ')}</div>`;
+      <div class="plie">Porté par : ${c.porteurs.map(esc).join(' · ')}</div>
+      ${presid ? `<div class="echeance-pr">Exigée par l’Élysée — à engager avant l’an ${(S.mesuresPresidentielles.find((m) => m.id === c.id) || {}).anneeLimite} (sinon : capital −10, fatigue +15, cap non tenu)</div>` : ''}`;
 
     /* --- corps, déplié à la demande --- */
     const corps = el('div', 'corps');
@@ -391,8 +424,9 @@ function ecranAtelier(q) {
         <span class="${vit.parents >= 0 ? 'pos' : 'neg'}">parents ${signe(vit.parents)}</span>
         <span class="${vit.enseignants >= 0 ? 'pos' : 'neg'}">enseignants ${signe(vit.enseignants)}</span>
         <span class="${vit.presse >= 0 ? 'pos' : 'neg'}">presse ${signe(vit.presse)}</span>
-        ${vc.map(([cc, v]) => `<span class="${v >= 0 ? 'pos' : 'neg'}">${NOMS_C[cc]} ${signe(v)} (vitrine)</span>`).join('')}
+        ${vc.map(([cc, v]) => `<span class="image">image ${NOMS_C[cc]} ${signe(v)}</span>`).join('')}
       </div>
+      ${vc.length ? '<div class="note-image">« Image » : l’indicateur affiché bouge tout de suite — puis l’effet s’estompe d’un quart par an et ne compte pas au bilan. Seuls les effets réels (🔒, différés) comptent.</div>' : ''}
       <div class="reels">${(c.reel || []).map((e) => `<div class="ligne"><span class="verrous">${'🔒'.repeat(e.cadenas)}${'·'.repeat(5 - e.cadenas)}</span><span>Effet réel sur <b>${NOMS_C[e.compteur]}</b>, vers l’an +${e.delai}</span></div><div class="src">${esc(e.source)}</div>`).join('')}
       ${c.parametrique === 'revalorisation' ? '<div class="ligne"><span class="verrous">🔒🔒🔒··</span><span>Effet réel selon vos curseurs (réglez-les après sélection)</span></div>' : ''}</div>
       ${c.greve ? `<div class="alerte-greve">⚠ Risque de mobilisation (intensité ${c.greve.intensite}/5, ${c.greve.theme})</div>` : ''}
@@ -498,6 +532,45 @@ function ecranDossier(q) {
   scene(d);
 }
 
+/* --- audience syndicale ------------------------------------------------------ */
+const PROFILS_L = {
+  rapport_de_force: 'culture du rapport de force', reformiste: 'réformiste',
+  frontal: 'opposition frontale', negociation: 'culture de la négociation',
+  radical: 'radical', corporatiste: 'corporatiste',
+};
+function ecranAudience(q) {
+  const { org, audience } = q;
+  const d = docu('Audience — rentrée sociale', `Face à face : ${org.nom}`);
+  d.appendChild(el('p', 'chapo', `L’organisation majoritaire du moment (${fmt1(org.poids)} % aux dernières élections professionnelles, profil : ${PROFILS_L[org.profil]}) est reçue rue de Grenelle. Sa délégation s’assoit, ouvre un parapheur, et pose UNE question :`));
+  d.appendChild(el('div', 'note-passation', fr(audience.question(ETAT.s))));
+  d.appendChild(el('p', '', '<span style="font-size:.82rem;color:var(--encre-2)">Il n’y a pas de bonne réponse dans l’absolu — il y a une bonne réponse à <b>ce</b> profil-là. La fermeté rassure l’opinion, la méthode paie selon l’interlocuteur, la concession paie partout… et se paie à Bercy.</span>'));
+  const opts = el('div', 'opts');
+  audience.reponses.forEach((r, i) => {
+    const badge = { ferme: 'Fermeté', methode: 'Méthode', concession: 'Concession' }[r.type];
+    const b = el('button', 'opt', `<b>${badge} — ${esc(r.titre)}</b>`);
+    b.onclick = () => {
+      const mult = (RECEPTION[org.profil] || {})[r.type] || 0;
+      const verdict = mult >= 0.8 ? 'bien' : mult >= 0 ? 'froid' : 'mal';
+      opts.querySelectorAll('.opt').forEach((n, k) => { n.disabled = true; if (k !== i) n.style.opacity = '.38'; else { n.style.borderColor = 'var(--bleu-rf)'; n.style.borderLeftColor = 'var(--bleu-rf)'; } });
+      const coul = verdict === 'bien' ? 'var(--ok)' : verdict === 'mal' ? 'var(--rouge-rf)' : 'var(--or)';
+      const lab = verdict === 'bien' ? '✓ Bien pris' : verdict === 'froid' ? '— Accueilli froidement' : '✗ Très mal reçu';
+      const dec = el('div', 'decryptage');
+      dec.style.borderLeftColor = coul;
+      dec.innerHTML = `<div class="titre-d" style="color:${coul}">${lab} par ${esc(org.nom)} (${PROFILS_L[org.profil]})</div>
+        <p><i>${esc(alea(REPLIQUES[verdict]))}</i></p><p>${esc(r.mot)}</p>`;
+      d.appendChild(dec);
+      const act = el('div', 'actions');
+      const ok = el('button', 'btn', 'Clore l’audience');
+      ok.onclick = () => suivant(i);
+      act.appendChild(ok); d.appendChild(act);
+      ok.scrollIntoView({ block: 'nearest' });
+    };
+    opts.appendChild(b);
+  });
+  d.appendChild(opts);
+  scene(d);
+}
+
 /* --- écrans narratifs (étapes) ---------------------------------------------- */
 function ecranEtape(etape) {
   const S = ETAT.s;
@@ -582,19 +655,25 @@ function ecranBilan(B) {
 
   /* --- révélation des effets réels --- */
   d.appendChild(el('h2', '', 'Ce que vos mesures ont réellement produit')).style.marginTop = '26px';
-  d.appendChild(el('p', 'chapo', 'À la signature, vous ne connaissiez que le niveau de preuve. Voici les tirages — implémentation comprise : une réforme portée par un corps enseignant à ' + fmt0(S.phys.adhesion) + ' d’adhésion ne rend pas ce qu’elle promet.'));
+  d.appendChild(el('p', 'chapo', 'À la signature, vous ne connaissiez que le niveau de preuve. Voici tout : l’effet documenté par les études (la valeur centrale, cachée en cours de jeu), et l’effet que VOUS avez obtenu — tirage sous incertitude, multiplié par l’implémentation (adhésion à ' + fmt0(S.phys.adhesion) + ') et la capacité d’absorption. Les effets « d’image » vus en cours de mandat n’apparaissent pas ici : ils se sont évaporés, comme prévu.'));
   const parCarte = new Map();
   for (const e of S.effetsEnAttente) { if (!parCarte.has(e.carte)) parCarte.set(e.carte, []); parCarte.get(e.carte).push(e); }
   const t2 = el('div', 'defile');
   let lignes = '';
   for (const [id, effs] of parCarte) {
     const c = PAR_ID[id];
-    lignes += effs.map((e, i) => `<tr>${i === 0 ? `<td rowspan="${effs.length}">${esc(c ? c.label : id)}</td>` : ''}
+    lignes += effs.map((e, i) => {
+      const verdictTirage = e.cadenas <= 2 && e.montant >= e.central + 1.5 ? '<br><span style="font-size:.72rem;color:var(--encre-3)">tirage favorable — la preuve était mince, vous avez eu de la chance</span>'
+        : e.cadenas <= 2 && e.montant <= e.central - 1.5 ? '<br><span style="font-size:.72rem;color:var(--encre-3)">tirage défavorable — c’est le prix d’un pari à preuve faible</span>'
+        : e.central >= 3 && e.montant < e.central * 0.55 ? '<br><span style="font-size:.72rem;color:var(--encre-3)">effet amputé : implémentation dégradée (adhésion basse ou système saturé)</span>' : '';
+      return `<tr>${i === 0 ? `<td rowspan="${effs.length}">${esc(c ? c.label : id)}</td>` : ''}
       <td>${NOMS_C[e.compteur]}</td><td>${'🔒'.repeat(e.cadenas)}</td>
-      <td class="num"><span class="revele ${e.montant > 1 ? 'bon' : e.montant < -1 ? 'mauvais' : ''}">${signe(e.montant)}</span></td>
-      <td>${e.applique ? 'effet arrivé' : `arrive an ${e.anneeArrivee}${e.anneeArrivee > 5 ? ' — après vous' : ''}`}</td></tr>`).join('');
+      <td class="num">${signe(e.central)}</td>
+      <td class="num"><span class="revele ${e.montant > 1 ? 'bon' : e.montant < -1 ? 'mauvais' : ''}">${signe(e.montant)}</span>${verdictTirage}</td>
+      <td>${e.applique ? 'effet arrivé' : `arrive an ${e.anneeArrivee}${e.anneeArrivee > 5 ? ' — après vous' : ''}`}</td></tr>`;
+    }).join('');
   }
-  t2.innerHTML = `<table class="bilan"><tr><th>Mesure</th><th>Compteur</th><th>Preuve</th><th class="num">Effet réel tiré</th><th>Horizon</th></tr>${lignes || '<tr><td colspan="5">Aucune mesure engagée. Le système vous remercie du repos ; l’Histoire, moins.</td></tr>'}</table>`;
+  t2.innerHTML = `<table class="bilan"><tr><th>Mesure</th><th>Compteur</th><th>Preuve</th><th class="num">Effet documenté</th><th class="num">Effet réel tiré</th><th>Horizon</th></tr>${lignes || '<tr><td colspan="6">Aucune mesure engagée. Le système vous remercie du repos ; l’Histoire, moins.</td></tr>'}</table>`;
   d.appendChild(t2);
 
   /* --- doctrine déclarée vs menée --- */
@@ -627,6 +706,7 @@ function dateDe(q) {
   const S = ETAT.s, an = S.anneeCiv || 2027;
   if (q.type === 'doctrine') return 'juin 2027';
   if (q.type === 'dossier') return 'été 2027';
+  if (q.type === 'audience') return `octobre ${ETAT.s.anneeCiv || 2027}`;
   if (q.type === 'lettrePlafond') return `juillet ${an}`;
   if (q.type === 'rentree') return `septembre ${an}`;
   if (q.type === 'carteScolaire' || q.type === 'mesures') return `janvier ${an + 1}`;
@@ -644,6 +724,7 @@ function rendre(q) {
     ecranDoctrine();
   }
   else if (q.type === 'dossier') ecranDossier(q);
+  else if (q.type === 'audience') ecranAudience(q);
   else if (q.type === 'lettrePlafond') ecranBercy(q);
   else if (q.type === 'rentree') ecranRentree(q);
   else if (q.type === 'carteScolaire') ecranCarteScolaire(q);

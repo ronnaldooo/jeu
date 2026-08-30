@@ -11,7 +11,7 @@
    ========================================================================== */
 
 import * as K from './constantes.js';
-import { CATALOGUE, PAR_ID, REVALORISATION, FINANCEMENT_19, MESURES_PRESIDENTIELLES, DOSSIERS_ETE } from './catalogue.js';
+import { CATALOGUE, PAR_ID, REVALORISATION, FINANCEMENT_19, MESURES_PRESIDENTIELLES, DOSSIERS_ETE, AUDIENCES, RECEPTION } from './catalogue.js';
 
 /* ---------------------------------------------------------------- ALÉA --- */
 export function rngDepuis(graine) {
@@ -304,6 +304,34 @@ function* etapeRentree(s) {
   }
 }
 
+/* --- OCTOBRE : l'audience — face à face avec l'organisation majoritaire ---- */
+function* etapeAudience(s) {
+  /* L'organisation majoritaire du moment ; l'an 1 alterne avec la deuxième
+     pour la variété. Après les élections de décembre, les poids ont bougé. */
+  const tri = [...s.syndicats].sort((a, b) => b.poids - a.poids);
+  const org = tri[(s.annee + (s.graine % 2)) % 2 === 0 ? 0 : Math.min(1, tri.length - 1)];
+  const dispo = AUDIENCES.filter((a) => a.quand(s));
+  const audience = dispo[(s.annee * 3 + (s.graine % 7)) % dispo.length];
+
+  const idx = yield { type: 'audience', org, audience };
+  const rep = audience.reponses[Math.max(0, Math.min(2, idx | 0))];
+  const mult = (RECEPTION[org.profil] || {})[rep.type] || 0;
+  const poidsRel = org.poids / 34;                    // rapporté au poids FSU 2022
+
+  /* Effets : la fermeté rassure l'opinion et coûte le corps ; la méthode paie
+     en adhésion selon le profil ; la concession paie partout mais se paie
+     à Bercy et en capital. */
+  if (rep.type === 'ferme') { s.capital += 2; s.phys.parents += 1.5; }
+  if (rep.type === 'methode') { s.capital -= 1; }
+  if (rep.type === 'concession') { s.capital -= 3; s.creditBercy = borne(s.creditBercy - 3, 0, 100); }
+  s.phys.adhesion = borne(s.phys.adhesion + 2.6 * mult * poidsRel, 0, 100);
+  if (mult < -1) s.pointsGreveCumules += 1.6 * poidsRel;
+
+  const verdict = mult >= 0.8 ? 'bien' : mult >= 0 ? 'froid' : 'mal';
+  s.derniereAudience = { org: org.nom, type: rep.type, verdict, mult };
+  note(s, `Audience avec ${org.nom} : réponse « ${rep.type === 'ferme' ? 'fermeté' : rep.type === 'methode' ? 'méthode' : 'concession'} », ${verdict === 'bien' ? 'bien accueillie' : verdict === 'froid' ? 'accueillie froidement' : 'très mal reçue'}.`, 'audience');
+}
+
 /* --- DÉCEMBRE : vote du budget, publications DEPP, élections pro (an 1) ---- */
 function etapeDecembre(s) {
   if (s.annee === 1) {
@@ -336,6 +364,7 @@ function* etapeJanvier(s) {
   prive = borne(prive, 0, 1);
 
   const postesRendus = Math.round(restitution * postesLiberables);
+  s.dernierPostesRendus = postesRendus;
   const economie = postesRendus * K.CADRAGE.coutETPhorsCAS;
 
   /* Bercy compare aux emplois qu'il a exigés en juillet. */
@@ -385,6 +414,10 @@ function* etapeJanvier(s) {
   /* Mesures présidentielles : les appliquer, ou les abandonner (et le payer). */
   for (const mp of s.mesuresPresidentielles) {
     if (mp.fait || mp.abandonnee) continue;
+    if (s.joue.has(mp.id)) { mp.fait = true; continue; }
+    if (s.annee === mp.anneeLimite - 1) {
+      note(s, `Courrier de l'Élysée : la priorité présidentielle « ${PAR_ID[mp.id].label} » attend toujours. Échéance : l'an prochain.`, 'elysee');
+    }
     if (s.annee >= mp.anneeLimite) {
       if (s.joue.has(mp.id)) { mp.fait = true; continue; }
       mp.abandonnee = true; s.abandons += 1;
@@ -545,6 +578,20 @@ function estJouable(s, c) {
    Toujours proposées : la revalorisation (on revalorise à chaque budget, ou
    jamais) et les mesures présidentielles encore à caser — l'Élysée s'assure
    qu'elles restent sur votre bureau. */
+/* Affinité d'une carte avec la doctrine déclarée : les effets réels qui
+   servent vos deux premières priorités pèsent le plus. */
+export function affiniteDoctrine(s, c) {
+  if (!s.doctrine) return 0;
+  let a = 0;
+  const rang = (cc) => s.doctrine.indexOf(cc);
+  for (const e of c.reel || []) {
+    const r = rang(e.compteur);
+    if (e.central > 0 && r >= 0 && r < 3) a += (3 - r);
+  }
+  if (c.parametrique === 'revalorisation' && rang('sante') < 3) a += 2;
+  return a;
+}
+
 export function mesuresDisponibles(s) {
   const TAILLE_MENU = K.TAILLES_MENU[Math.min(4, s.annee - 1)];
   const pool = CATALOGUE.filter((c) => estJouable(s, c));
@@ -555,11 +602,22 @@ export function mesuresDisponibles(s) {
   for (const mp of s.mesuresPresidentielles) {
     if (!mp.fait && !mp.abandonnee) pousse(pool.find((c) => c.id === mp.id));
   }
+
+  /* Votre doctrine ouvre d'abord les dossiers qui la servent : en début de
+     mandat, l'essentiel du menu est aligné sur vos priorités déclarées ;
+     le reste du catalogue arrive au fil des années. */
   const reste = pool.filter((c) => !menu.includes(c));
-  const dec = reste.length ? ((s.annee * 7 + (s.graine % 13)) % reste.length) : 0;
-  for (let i = 0; i < reste.length && menu.length < TAILLE_MENU; i++) {
-    pousse(reste[(dec + i) % reste.length]);
-  }
+  const affins = reste.filter((c) => affiniteDoctrine(s, c) >= 2);
+  const autres = reste.filter((c) => !affins.includes(c));
+  const quotaAffins = [5, 4, 3, 2, 1][Math.min(4, s.annee - 1)];
+  const tourner = (arr, mult) => {
+    if (!arr.length) return [];
+    const dec = (s.annee * mult + (s.graine % 13)) % arr.length;
+    return arr.map((_, i) => arr[(dec + i) % arr.length]);
+  };
+  for (const c of tourner(affins, 7)) { if (menu.length >= 1 + quotaAffins + 2) break; pousse(c); }
+  for (const c of tourner(autres, 5)) { if (menu.length >= TAILLE_MENU) break; pousse(c); }
+  for (const c of tourner(affins, 7)) { if (menu.length >= TAILLE_MENU) break; pousse(c); }
   return menu;
 }
 
@@ -691,6 +749,7 @@ export function* derouler(s) {
     s.anneeCiv = 2026 + s.annee;                 // année civile de la carte scolaire
     yield* etapeJuillet(s);   s.mois = 6;  yield { type: 'etape', etape: 'juillet' };
     yield* etapeRentree(s);   s.mois = 8;  yield { type: 'etape', etape: 'rentree' };
+    yield* etapeAudience(s);  s.mois = 9;
     etapeDecembre(s);         s.mois = 11; yield { type: 'etape', etape: 'decembre' };
     yield* etapeJanvier(s);   s.mois = 0;
     etapeMars(s);             s.mois = 2;  yield { type: 'etape', etape: 'mars' };
@@ -717,6 +776,7 @@ export function jouerMandat({ graine = 1, politique }) {
     else if (q.type === 'carteScolaire') rep = politique.carteScolaire(s, q);
     else if (q.type === 'mesures') rep = politique.mesures(s, q.dispo, q) || [];
     else if (q.type === 'dossier') rep = politique.dossier ? politique.dossier(s, q.dossier) : 1;
+    else if (q.type === 'audience') rep = politique.audience ? politique.audience(s, q) : 1;
     res = gen.next(rep);
   }
   return bilan(s);

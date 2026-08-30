@@ -977,4 +977,120 @@ export const DOSSIERS_ETE = [
   },
 ];
 
+/* --------------------------------------------------------------------------
+   AUDIENCES SYNDICALES — un face-à-face par an avec l'organisation majoritaire.
+   La question dépend du contexte (vos actes de l'année) ; les trois réponses
+   suivent toujours la même grammaire — fermeté / méthode / concession — mais
+   leur ACCUEIL dépend du profil de l'organisation en face. C'est la leçon :
+   il n'y a pas de bonne réponse dans l'absolu, il y a une bonne réponse à
+   quelqu'un.
+   -------------------------------------------------------------------------- */
+export const AUDIENCES = [
+  {
+    id: 'postes',
+    quand: (s) => (s.dernierPostesRendus || 0) > 2200,
+    question: (s) => `« Vous avez supprimé ${Math.round(s.dernierPostesRendus / 100) * 100} postes en janvier. Dans nos salles des professeurs, on ne parle que de ça. Vous assumez ? »`,
+    reponses: [
+      { type: 'ferme', titre: '« La démographie baisse. Je gère l’école, pas les symboles. »',
+        mot: 'Arithmétiquement exact. Une salle des professeurs n’est pas une feuille de calcul.' },
+      { type: 'methode', titre: '« Chaque poste rendu est documenté ; venez co-construire la carte de l’an prochain. »',
+        mot: 'Ouvrir la cuisine de la carte scolaire : risqué, mais c’est la seule réponse qui traite la question posée.' },
+      { type: 'concession', titre: '« J’entends. Je gèle les suppressions dans le premier degré l’an prochain. »',
+        mot: 'Une concession annoncée en audience est une concession que Bercy découvre dans la presse. Il adore.' },
+    ],
+  },
+  {
+    id: 'salaires',
+    quand: (s) => s.phys.positionSalariale < -22,
+    question: () => '« Un certifié débutant gagne 1,08 SMIC. En 1980, c’était 2 SMIC. À quel niveau de déclassement comptez-vous intervenir ? »',
+    reponses: [
+      { type: 'ferme', titre: '« Je ne promets que ce que je peux financer. »',
+        mot: 'La sincérité budgétaire, dite à des gens qui ont perdu 20 % de pouvoir d’achat en vingt ans.' },
+      { type: 'methode', titre: '« Je propose un agenda social : trajectoire pluriannuelle, négociée, publiée. »',
+        mot: 'Un calendrier n’est pas un chèque, mais c’est la première chose qu’on ne leur a jamais tenue.' },
+      { type: 'concession', titre: '« Le prochain budget comportera une mesure salariale. Je m’y engage ici. »',
+        mot: 'Vous venez d’arbitrer votre propre budget en direct. Bercy vous écoutait, comme toujours.' },
+    ],
+  },
+  {
+    id: 'remplacement',
+    quand: (s) => s.phys.heuresNonAssurees > 11,
+    question: (s) => `« ${Math.round(s.phys.heuresNonAssurees)} % d’heures non assurées. Les parents nous en parlent plus que nos propres adhérents. Votre plan ? »`,
+    reponses: [
+      { type: 'ferme', titre: '« Le remplacement de courte durée est dans les obligations de service. Je l’appliquerai. »',
+        mot: 'Juridiquement fondé. C’est aussi la phrase qui a déclenché trois des cinq derniers conflits.' },
+      { type: 'methode', titre: '« Brigades académiques d’abord, obligations ensuite : discutons l’ordre. »',
+        mot: 'Donner avant d’exiger — la seule séquence qui ait jamais fonctionné sur ce dossier.' },
+      { type: 'concession', titre: '« Je retire le volet obligations. Le remplacement sera volontaire et payé. »',
+        mot: 'La paix immédiate, contre un dispositif qui ne tiendra que là où il n’était pas nécessaire.' },
+    ],
+  },
+  {
+    id: 'concours',
+    quand: (s) => s.phys.couvertureConcours < 90,
+    question: (s) => `« ${(100 - s.phys.couvertureConcours).toFixed(0)} % des postes non pourvus aux concours. Le métier ne fait plus envie. Qu’est-ce que vous répondez à un étudiant de licence ? »`,
+    reponses: [
+      { type: 'ferme', titre: '« Que c’est le plus beau métier du monde, et que les vocations se méritent. »',
+        mot: 'Les vocations ne lisent pas les discours ; elles lisent les grilles indiciaires.' },
+      { type: 'methode', titre: '« Qu’on le paie mieux en début de carrière et qu’on le forme sérieusement. Preuves à l’appui. »',
+        mot: 'La seule réponse que le vivier entend — avec dix-huit mois de décalage, comme toujours.' },
+      { type: 'concession', titre: '« Qu’il aura un prérecrutement rémunéré dès la L2. Je l’annonce devant vous. »',
+        mot: 'Efficace, coûteux, et annoncé sans arbitrage préalable. Le cabinet du Budget vous appelle déjà.' },
+    ],
+  },
+  {
+    id: 'greve',
+    quand: (s) => s.greves.length > 0 && s.greves[s.greves.length - 1].annee === s.annee,
+    question: (s) => `« ${s.greves[s.greves.length - 1].tauxSyndicats} % de grévistes selon nous — vous en avez compté ${s.greves[s.greves.length - 1].tauxMinistere}. Au-delà des chiffres : qu’avez-vous entendu ? »`,
+    reponses: [
+      { type: 'ferme', titre: '« J’ai entendu une minorité mobilisée. Le pays, lui, attend des résultats. »',
+        mot: 'Minorer une mobilisation devant ceux qui l’ont organisée : audacieux, au sens où l’entendait Napoléon avant la Bérézina.' },
+      { type: 'methode', titre: '« J’ai entendu de la fatigue plus que de la colère. Reprenons dossier par dossier. »',
+        mot: 'Nommer la fatigue plutôt que la colère : le diagnostic le plus juste, et le moins coûteux.' },
+      { type: 'concession', titre: '« J’ai entendu. Je retire le point le plus contesté du texte. »',
+        mot: 'Reculer après une journée réussie confirme que la journée a servi. Vous venez de financer la prochaine.' },
+    ],
+  },
+  {
+    id: 'doctrine',
+    quand: () => true,
+    question: (s) => `« Votre priorité affichée, c’est « ${({reussite:'la réussite des élèves',egalite:'la réduction des inégalités',sante:'la santé du système',paix:'la paix sociale',budget:'le budget et les salaires'})[s.doctrine[0]]} ». Concrètement, pour nos collègues, ça change quoi lundi matin ? »`,
+    reponses: [
+      { type: 'ferme', titre: '« Un cap se juge à cinq ans, pas lundi matin. »',
+        mot: 'Vrai. Mais les gens qui vous font face vivent une succession de lundis matins.' },
+      { type: 'methode', titre: '« Voici les trois premières mesures, leur calendrier et leur financement. »',
+        mot: 'Répondre à une question par son contenu : technique sous-employée rue de Grenelle.' },
+      { type: 'concession', titre: '« Dites-moi ce qui doit changer lundi, et je le mets au budget. »',
+        mot: 'Le chèque en blanc rhétorique. Ils ont une liste. Elle est longue. Elle est chiffrée.' },
+    ],
+  },
+];
+
+/* Accueil d'une réponse selon le profil de l'organisation : multiplicateur
+   appliqué aux effets sociaux, et verdict affiché. > 1 : bien pris. */
+export const RECEPTION = {
+  rapport_de_force: { ferme: -1.4, methode: 0.8, concession: 1.5 },
+  reformiste:       { ferme: -0.6, methode: 1.5, concession: 1.0 },
+  frontal:          { ferme: -1.6, methode: 0.2, concession: 1.3 },
+  negociation:      { ferme: -0.8, methode: 1.7, concession: 0.9 },
+  radical:          { ferme: -1.7, methode: 0.3, concession: 1.1 },
+  corporatiste:     { ferme: -0.9, methode: 1.0, concession: 1.4 },
+};
+
+/* La réplique de sortie d'audience, selon le verdict. */
+export const REPLIQUES = {
+  bien: [
+    '« Nous prenons acte. C’est un début — nous jugerons sur pièces. »',
+    '« Voilà une réunion qui n’aura pas été inutile. C’est assez rare pour être noté au compte rendu. »',
+  ],
+  froid: [
+    '« Nous transmettrons à nos instances. » (Traduction : cela ne suffira pas.)',
+    '« Nous restons à votre disposition. » (Le communiqué, lui, est déjà écrit.)',
+  ],
+  mal: [
+    '« Nos collègues apprécieront. » (Ils apprécieront en assemblée générale, avec un vote à la fin.)',
+    '« Merci de votre franchise, monsieur le ministre. Elle figurera intégralement dans notre préavis. »',
+  ],
+};
+
 export const PAR_ID = Object.fromEntries(CATALOGUE.map((c) => [c.id, c]));

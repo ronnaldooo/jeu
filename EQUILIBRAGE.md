@@ -216,6 +216,44 @@ Quatre changements orientés compréhension, sans toucher à l'économie du jeu
   9, 11, puis 12) et cartes repliées par défaut — titre, coût, niveau de preuve
   et porteurs en tête ; le détail, le mot et la preuve se déplient.
 
+## 3 ter. La phase « retours de jeu »
+
+Cinq corrections issues des premières parties du commanditaire, plus une
+demande d'inspiration du jeu de budget (banc d'essai re-vérifié : 4/4 sur
+trois graines ; la survie du passif retombe à ~10 % une fois son audience
+par défaut passée à la fermeté) :
+
+- **La doctrine pilote le menu** (`affiniteDoctrine`) : en début de mandat,
+  l'essentiel du menu est aligné sur les deux premières priorités déclarées ;
+  le reste du catalogue arrive au fil des années. Déclarer une doctrine a
+  désormais un effet mécanique immédiat, pas seulement un effet de score.
+- **Priorités présidentielles expliquées** : la passation détaille la
+  mécanique (échéance, −10 capital, +15 fatigue, cap non tenu), chaque carte
+  concernée affiche son échéance et sa sanction, et l'Élysée envoie un
+  courrier de rappel un an avant l'échéance.
+- **Carte scolaire** : encadré « comment ça marche » en trois temps, et la
+  lecture du curseur affiche l'effet prévisionnel sur l'encadrement
+  (élèves/classe avant → après) et sur le crédit Bercy.
+- **Le budget rendu visible** : l'atelier s'ouvre sur la barre des
+  64,5 Md€ — masse salariale, dépenses engagées, engagements du joueur
+  (l'effet cliquet), et le liseré vert de la marge annuelle (~1,2 % du
+  budget). La contrainte se voit avant de se subir.
+- **Image ≠ réel** : les effets vitrine sont étiquetés « image » avec une
+  note explicative (immédiats, s'estompent, ne comptent pas au bilan) ; le
+  bilan révèle l'« effet documenté » à côté du tirage obtenu, avec un
+  verdict (« tirage favorable — la preuve était mince », « effet amputé :
+  implémentation dégradée »). Plus d'ambiguïté entre ce qui se voit et ce
+  qui agit.
+- **L'audience syndicale annuelle** (`AUDIENCES`, `RECEPTION`) : chaque
+  octobre, l'organisation majoritaire du moment pose UNE question tirée du
+  contexte réel de la partie (postes rendus, salaires, remplacement,
+  concours, grève de l'année, doctrine). Trois réponses — fermeté, méthode,
+  concession — dont l'accueil (« bien pris / mal reçu ») dépend du profil de
+  l'interlocuteur : la concession paie partout mais se paie à Bercy, la
+  méthode paie chez les réformistes, la fermeté rassure l'opinion et coûte
+  le corps. Il n'y a pas de bonne réponse dans l'absolu, il y a une bonne
+  réponse à quelqu'un.
+
 ## 4. Les constantes du moteur
 
 Inchangées depuis la phase 1 (voir `moteur/constantes.js`, tout est commenté
