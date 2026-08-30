@@ -37,11 +37,18 @@ vous n'avez pas fait. Vos propres décisions, elles, produiront leurs effets
 après votre départ. Le bilan final révèle la vérité, puis la projette à dix ans
 — « si votre successeur maintient le cap ».
 
-## Jouer
+## ▶ Jouer
 
-**Ouvrez [`index.html`](index.html)** — le jeu tient dans un seul fichier, sans
-dépendance réseau obligatoire, sur ordinateur comme sur téléphone. La partie se
-sauvegarde toute seule ; un mandat se joue en 45 à 90 minutes.
+### **[Lancer le jeu](https://ronnaldooo.github.io/jeu/)** — rien à installer
+
+Le jeu s'ouvre directement dans le navigateur, sur ordinateur comme sur
+téléphone. Un mandat se joue en 45 à 90 minutes ; la partie se sauvegarde
+toute seule dans le navigateur. Aucun compte, aucune donnée envoyée nulle
+part : tout se passe sur votre appareil.
+
+Vous pouvez aussi **[télécharger `index.html`](index.html)** et l'ouvrir hors
+ligne — le jeu tient dans ce seul fichier, y compris pour une salle de classe
+sans connexion, ou pour le déposer sur un ENT.
 
 Au menu : le choix du Président de 2027 — cinq plateformes assemblées à
 partir des projets réels des candidats, qui fixent vos priorités et vous
@@ -65,6 +72,20 @@ n'est maximisable sans en sacrifier d'autres ; « tout vitrine » fait un bon
 mandat et un mauvais bilan, « tout réel » l'inverse, et les deux perdent contre
 le jeu mixte ; mettre les cinq compteurs au vert en cinq ans est impossible —
 en dix ans, presque.
+
+### Pour les collègues qui veulent l'utiliser en formation
+
+Le jeu a été conçu pour être joué **puis discuté** : chaque mesure affiche ses
+porteurs politiques réels, son niveau de preuve et un panneau « Comprendre
+l'effet » qui résume ce que disent les études (et l'idée reçue qu'elles
+contredisent). Les moments les plus productifs en formation sont en général le
+bilan final — où l'écart entre ce que le tableau de bord affichait et ce qui
+s'est réellement produit se lit d'un coup d'œil — et la comparaison de deux
+parties menées avec des Présidents différents.
+
+---
+
+## Sous le capot (pour les curieux et les développeurs)
 
 ```bash
 npm run equilibrage     # banc d'essai : vérifie les 4 cibles (→ 4/4)
