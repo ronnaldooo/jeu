@@ -218,8 +218,8 @@ export function rafraichir(s) { recalculerVrai(s); recalculerAffiche(s); }
    ========================================================================== */
 
 /* --- JUIN (an 1) : déclaration de doctrine devant la presse ---------------- */
-function etapeDoctrine(s) {
-  const ordre = s.politique.doctrine(s);
+function* etapeDoctrine(s) {
+  const ordre = yield { type: 'doctrine' };
   s.doctrine = ordre;
   s.poids = {};
   ordre.forEach((c, i) => { s.poids[c] = K.POIDS_DOCTRINE[i]; });
@@ -227,14 +227,14 @@ function etapeDoctrine(s) {
 }
 
 /* --- JUILLET : lettre plafond de Bercy + résultats des concours ------------ */
-function etapeJuillet(s) {
+function* etapeJuillet(s) {
   /* (a) Lettre plafond : la sanction externe non contrôlable. */
   const palier = K.PALIERS_BERCY.find((p) => s.creditBercy >= p.seuil) || K.PALIERS_BERCY[K.PALIERS_BERCY.length - 1];
   s.palier = palier;
   s.schemaEmploisDemande = palier.schemaEmplois;
   let marge = palier.marge;
 
-  if (s.politique.lettrePlafond && s.politique.lettrePlafond(s, palier) === 'contester') {
+  if ((yield { type: 'lettrePlafond', palier }) === 'contester') {
     s.capital -= 12;
     if (s.rng() < 0.30 + s.capital / 400) {
       marge += 0.28; s.schemaEmploisDemande = Math.round(s.schemaEmploisDemande * 0.55);
@@ -254,7 +254,7 @@ function etapeJuillet(s) {
 }
 
 /* --- SEPTEMBRE : LA RENTRÉE. Le « 49.3 » du jeu. -------------------------- */
-function etapeRentree(s) {
+function* etapeRentree(s) {
   const p = s.phys;
   const ratee = p.heuresNonAssurees > K.RENVOI.seuilHNARentreeRatee
              || p.couvertureConcours < K.RENVOI.seuilCouvertureRentreeRatee;
@@ -268,7 +268,7 @@ function etapeRentree(s) {
       note(s, `Convocation à Matignon (${s.convocations}/3) : « une rentrée ratée, ça ne se rattrape pas. »`, 'matignon');
     }
     /* Comment le ministre commente-t-il les chiffres ? Les deux existent. */
-    const rep = s.politique.rentree ? s.politique.rentree(s, { ratee }) : 'assumer';
+    const rep = (yield { type: 'rentree', ratee }) || 'assumer';
     if (rep === 'contester') { s.capital += 3; p.adhesion -= 2.5; s.vitrine.sante += 1.5; }
     else { s.capital -= 2; p.adhesion += 1.5; }
   } else {
@@ -306,7 +306,7 @@ function etapeDecembre(s) {
 }
 
 /* --- JANVIER : CSA ministériel, carte scolaire, DHG, et l'atelier de mesures */
-function etapeJanvier(s) {
+function* etapeJanvier(s) {
   s.capital = Math.min(K.CAPITAL.plafond, s.capital + K.CAPITAL.parAn);
 
   /* (a) Le tendanciel démographique de l'année. */
@@ -314,7 +314,7 @@ function etapeJanvier(s) {
   const postesLiberables = Math.round((-baisse * 1000) / K.ELEVES_PAR_POSTE);
 
   const ctx = { baisse, postesLiberables, schemaDemande: s.schemaEmploisDemande, restitutionMax: s.restitutionMax };
-  let { restitution, prive } = s.politique.carteScolaire(s, ctx);
+  let { restitution, prive } = yield { type: 'carteScolaire', ...ctx };
   restitution = borne(restitution, 0, s.restitutionMax);
   prive = borne(prive, 0, 1);
 
@@ -362,7 +362,7 @@ function etapeJanvier(s) {
   s.economieCarteScolaire = economie;
   s.tresor = s.disponible;
   const dispo = mesuresDisponibles(s);
-  const choix = s.politique.mesures(s, dispo, { tresor: s.tresor, capital: s.capital }) || [];
+  const choix = (yield { type: 'mesures', dispo, tresor: s.tresor, capital: s.capital }) || [];
   appliquerMesures(s, choix);
 
   /* Mesures présidentielles : les appliquer, ou les abandonner (et le payer). */
@@ -516,13 +516,34 @@ function etapeCloture(s) {
 /* ============================================================================
    5. MESURES : disponibilité, application
    ========================================================================== */
+function estJouable(s, c) {
+  if (c.once && s.joue.has(c.id)) return false;
+  if (c.theme && s.themes.has(c.theme)) return false;
+  if (c.excl && s.excl.has(c.excl)) return false;
+  return true;
+}
+
+/* Le menu de janvier : 12 cartes tournantes sur le catalogue de 40, comme le
+   jeu de référence (système once/theme/excl + rotation déterministe).
+   Toujours proposées : la revalorisation (on revalorise à chaque budget, ou
+   jamais) et les mesures présidentielles encore à caser — l'Élysée s'assure
+   qu'elles restent sur votre bureau. */
+export const TAILLE_MENU = 12;
 export function mesuresDisponibles(s) {
-  return CATALOGUE.filter((c) => {
-    if (c.once && s.joue.has(c.id)) return false;
-    if (c.theme && s.themes.has(c.theme)) return false;
-    if (c.excl && s.excl.has(c.excl)) return false;
-    return true;
-  });
+  const pool = CATALOGUE.filter((c) => estJouable(s, c));
+  const menu = [];
+  const pousse = (c) => { if (c && !menu.includes(c)) menu.push(c); };
+
+  pousse(pool.find((c) => c.id === 'revalorisation'));
+  for (const mp of s.mesuresPresidentielles) {
+    if (!mp.fait && !mp.abandonnee) pousse(pool.find((c) => c.id === mp.id));
+  }
+  const reste = pool.filter((c) => !menu.includes(c));
+  const dec = reste.length ? ((s.annee * 7 + (s.graine % 13)) % reste.length) : 0;
+  for (let i = 0; i < reste.length && menu.length < TAILLE_MENU; i++) {
+    pousse(reste[(dec + i) % reste.length]);
+  }
+  return menu;
 }
 
 /* Coût réel d'une carte, curseurs compris. */
@@ -574,6 +595,8 @@ function appliquerMesures(s, choix) {
     if (ph.segregation) s.phys.segregation += ph.segregation;
     if (ph.ratioED) s.ratioED += ph.ratioED;
     if (ph.hna) s.hnaTemporaires.push({ delta: ph.hna.delta, reste: ph.hna.duree, applique: 0 });
+    if (ph.attractivite) s.bonusAttractivite = (s.bonusAttractivite || 0) + ph.attractivite;
+    if (carte.bercy) s.creditBercy = borne(s.creditBercy + carte.bercy, 0, 100);
     if (carte.coutETP) s.ratioED -= carte.coutETP / 35000;   // les ETP créés desserrent l'encadrement
 
     /* Effets réels, curseurs compris. */
@@ -604,7 +627,10 @@ function appliquerMesures(s, choix) {
 
     programmerEffets(s, carte, effets, mult);
     if (carte.greve) (s.grevesEnAttente = s.grevesEnAttente || []).push({ ...carte.greve, cause: carte.label });
-    if (carte.guerreScolaire) s.guerreScolaireArmee = true;
+    if (carte.provocations) {
+      s.provocationsPrive = (s.provocationsPrive || 0) + carte.provocations;
+      if (s.provocationsPrive >= 2) s.guerreScolaireArmee = true;
+    }
 
     retenues.push({ id: carte.id, options: ch.options || {}, cout, annee: s.annee });
   }
@@ -631,23 +657,48 @@ function appliquerMesures(s, choix) {
 /* ============================================================================
    6. BOUCLE PRINCIPALE
    ========================================================================== */
-export function jouerMandat({ graine = 1, politique }) {
-  const s = creerPartie({ graine, politique });
-  etapeDoctrine(s);
+/* Le mandat, pas à pas : un générateur qui s'interrompt à chaque décision.
+   `yield {type: ...}` = une question au joueur ; la réponse revient par
+   `gen.next(reponse)`. L'interface interactive et les stratégies simulées
+   pilotent EXACTEMENT le même déroulé — c'est la garantie que ce qui a été
+   équilibré est ce qui sera joué. Les yields `type:'etape'` sont
+   informatifs : l'interface y affiche le récit, les simulations les ignorent. */
+export function* derouler(s) {
+  yield* etapeDoctrine(s);
   rafraichir(s);
+  yield { type: 'etape', etape: 'ouverture' };
 
   for (s.annee = 1; s.annee <= 5 && !s.fini; s.annee++) {
     s.anneeCiv = 2026 + s.annee;                 // année civile de la carte scolaire
-    etapeJuillet(s);   s.mois = 6;
-    etapeRentree(s);   s.mois = 8;
-    etapeDecembre(s);  s.mois = 11;
-    etapeJanvier(s);   s.mois = 0;
-    etapeMars(s);      s.mois = 2;
-    etapeCloture(s);   s.mois = 4;
+    yield* etapeJuillet(s);   s.mois = 6;  yield { type: 'etape', etape: 'juillet' };
+    yield* etapeRentree(s);   s.mois = 8;  yield { type: 'etape', etape: 'rentree' };
+    etapeDecembre(s);         s.mois = 11; yield { type: 'etape', etape: 'decembre' };
+    yield* etapeJanvier(s);   s.mois = 0;
+    etapeMars(s);             s.mois = 2;  yield { type: 'etape', etape: 'mars' };
+    etapeCloture(s);          s.mois = 4;
     rafraichir(s);
+    yield { type: 'etape', etape: 'cloture' };
   }
   if (!s.fini) { s.fini = true; s.fin = { type: 'mandat_complet', annee: 5, texte: 'Cinq rentrées. Vous partez debout — ce qui, rue de Grenelle, est déjà un résultat.' }; }
   s.annee = Math.min(5, s.annee);
+}
+
+/* Pilote synchrone : joue un mandat entier avec une `politique` (objet de
+   fonctions de décision). C'est l'interface qu'utilisent les simulations. */
+export function jouerMandat({ graine = 1, politique }) {
+  const s = creerPartie({ graine, politique });
+  const gen = derouler(s);
+  let res = gen.next();
+  while (!res.done) {
+    const q = res.value;
+    let rep;
+    if (q.type === 'doctrine') rep = politique.doctrine(s);
+    else if (q.type === 'lettrePlafond') rep = politique.lettrePlafond ? politique.lettrePlafond(s, q.palier) : 'accepter';
+    else if (q.type === 'rentree') rep = politique.rentree ? politique.rentree(s, q) : 'assumer';
+    else if (q.type === 'carteScolaire') rep = politique.carteScolaire(s, q);
+    else if (q.type === 'mesures') rep = politique.mesures(s, q.dispo, q) || [];
+    res = gen.next(rep);
+  }
   return bilan(s);
 }
 

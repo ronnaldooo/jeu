@@ -1,12 +1,13 @@
 {
   "name": "rue-de-grenelle",
   "version": "0.1.0",
-  "description": "Jeu de gestion politique : ministre de l'Éducation nationale, 2027-2032. Phase 1 — moteur et simulations d'équilibrage.",
+  "description": "Jeu de gestion politique : ministre de l'Éducation nationale, 2027-2032. Moteur équilibré par simulation, jeu autonome en un fichier (index.html).",
   "type": "module",
   "private": true,
   "scripts": {
     "equilibrage": "node simulations/simuler.js 700",
-    "trajectoires": "node simulations/trajectoires.js 500"
+    "trajectoires": "node simulations/trajectoires.js 500",
+    "construire": "node outil/construire.js"
   },
   "license": "CC-BY-SA-4.0"
 }

@@ -1,0 +1,2848 @@
+<title>Rue de Grenelle</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,400;0,600;0,700;1,400&family=Newsreader:ital,opsz,wght@0,6..72,500;0,6..72,700;1,6..72,400;1,6..72,500&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* ============================================================
+   RUE DE GRENELLE — feuille de style
+   Papier administratif + presse. Trois états de thème :
+   :root = palette claire complète ; media dark gardée ;
+   [data-theme=dark] rejoue les mêmes valeurs.
+   ============================================================ */
+:root{
+  --bleu-rf:#000091; --bleu-rf-2:#2a2ac4;
+  --rouge-rf:#e1000f;
+  --papier:#f2f3f7; --fiche:#ffffff; --fiche-2:#eceef4;
+  --encre:#1e1f26; --encre-2:#565b6b; --encre-3:#8a8fa3;
+  --filet:#d8dae4; --filet-fort:#b9bdcf;
+  --or:#c9a227;
+  --c-reussite:#2a78d6; --c-egalite:#e87ba4; --c-sante:#1baf7a;
+  --c-paix:#eb6834; --c-budget:#eda100;
+  --ok:#0ca30c; --alerte:#d03b3b;
+  --ombre:0 1px 2px rgba(30,31,38,.07),0 4px 14px rgba(30,31,38,.06);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bleu-rf:#8585f6; --bleu-rf-2:#a2a2f8;
+    --rouge-rf:#ff5655;
+    --papier:#14151b; --fiche:#1d1e26; --fiche-2:#262834;
+    --encre:#ecedf3; --encre-2:#a6a9b8; --encre-3:#767b8e;
+    --filet:#33343e; --filet-fort:#484a58;
+    --or:#d9b545;
+    --c-reussite:#3987e5; --c-egalite:#d55181; --c-sante:#199e70;
+    --c-paix:#d95926; --c-budget:#c98500;
+    --ok:#0ca30c; --alerte:#e66767;
+    --ombre:0 1px 2px rgba(0,0,0,.4),0 4px 14px rgba(0,0,0,.3);
+  }
+}
+:root[data-theme="dark"]{
+  --bleu-rf:#8585f6; --bleu-rf-2:#a2a2f8;
+  --rouge-rf:#ff5655;
+  --papier:#14151b; --fiche:#1d1e26; --fiche-2:#262834;
+  --encre:#ecedf3; --encre-2:#a6a9b8; --encre-3:#767b8e;
+  --filet:#33343e; --filet-fort:#484a58;
+  --or:#d9b545;
+  --c-reussite:#3987e5; --c-egalite:#d55181; --c-sante:#199e70;
+  --c-paix:#d95926; --c-budget:#c98500;
+  --ok:#0ca30c; --alerte:#e66767;
+  --ombre:0 1px 2px rgba(0,0,0,.4),0 4px 14px rgba(0,0,0,.3);
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; background:var(--papier); color:var(--encre);
+  font:16px/1.55 "Public Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  min-height:100vh;
+}
+button{font:inherit; color:inherit}
+h1,h2,h3{text-wrap:balance; margin:0}
+
+/* ---------- HUD ---------- */
+#hud{position:sticky; top:0; z-index:20; background:var(--fiche); box-shadow:var(--ombre)}
+#hud .tricolore{height:4px; display:flex}
+#hud .tricolore i{flex:1}
+#hud .tricolore i:nth-child(1){background:#000091}
+#hud .tricolore i:nth-child(2){background:#f5f5fe}
+#hud .tricolore i:nth-child(3){background:#e1000f}
+#hud .barre{max-width:1100px; margin:0 auto; padding:8px 16px; display:flex; flex-wrap:wrap; gap:6px 18px; align-items:center}
+#hud .qui{font-weight:700; font-size:.78rem; letter-spacing:.09em; text-transform:uppercase; color:var(--encre); line-height:1.25}
+#hud .qui small{display:block; font-weight:400; letter-spacing:.02em; text-transform:none; color:var(--encre-2); font-size:.72rem}
+#hud .jauges{display:flex; flex-wrap:wrap; gap:4px 14px; margin-left:auto}
+.jauge{min-width:86px}
+.jauge .nom{font-size:.62rem; letter-spacing:.07em; text-transform:uppercase; color:var(--encre-2); display:flex; justify-content:space-between; gap:6px}
+.jauge .nom b{color:var(--encre); font-variant-numeric:tabular-nums; letter-spacing:0}
+.jauge .rail{height:4px; background:var(--fiche-2); border-radius:2px; margin-top:2px; overflow:hidden}
+.jauge .rail i{display:block; height:100%; border-radius:2px; transition:width .5s ease}
+.jauge .delta{font-size:.62rem; color:var(--encre-3); font-variant-numeric:tabular-nums}
+.jauge .delta.up{color:var(--ok)} .jauge .delta.down{color:var(--alerte)}
+#hud .sous{max-width:1100px; margin:0 auto; padding:0 16px 7px; display:flex; flex-wrap:wrap; gap:4px 16px; font-size:.7rem; color:var(--encre-2)}
+#hud .sous span{white-space:nowrap; font-variant-numeric:tabular-nums}
+#hud .sous b{color:var(--encre); font-weight:600}
+
+/* ---------- scène ---------- */
+#scene{max-width:1100px; margin:0 auto; padding:26px 16px 90px}
+.doc{background:var(--fiche); border:1px solid var(--filet); box-shadow:var(--ombre); padding:28px clamp(18px,4vw,44px); margin:0 auto; max-width:860px}
+.doc.large{max-width:1100px}
+.entete-doc{display:flex; justify-content:space-between; gap:12px; align-items:baseline; border-bottom:2px solid var(--encre); padding-bottom:10px; margin-bottom:18px}
+.entete-doc .type{font-size:.7rem; letter-spacing:.14em; text-transform:uppercase; font-weight:700; color:var(--bleu-rf)}
+.entete-doc .date{font-size:.75rem; color:var(--encre-2); font-variant-numeric:tabular-nums; white-space:nowrap}
+.doc h2{font-size:clamp(1.25rem,3vw,1.7rem); line-height:1.2; font-weight:700; margin:0 0 8px}
+.doc .chapo{color:var(--encre-2); max-width:62ch; margin:0 0 4px}
+.doc p{max-width:66ch}
+
+.actions{display:flex; flex-wrap:wrap; gap:10px; margin-top:22px}
+.btn{cursor:pointer; border:1px solid var(--bleu-rf); background:var(--bleu-rf); color:#fff;
+  padding:10px 18px; font-weight:600; font-size:.92rem; border-radius:0}
+:root[data-theme="dark"] .btn{color:#14151b}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .btn{color:#14151b} }
+.btn:hover{background:var(--bleu-rf-2); border-color:var(--bleu-rf-2)}
+.btn:focus-visible,.carte:focus-visible,.opt:focus-visible{outline:2px solid var(--bleu-rf); outline-offset:2px}
+.btn.sec{background:transparent; color:var(--bleu-rf)}
+.btn.sec:hover{background:var(--fiche-2)}
+.btn:disabled{opacity:.45; cursor:not-allowed}
+
+/* ---------- options (choix à réponses) ---------- */
+.opts{display:grid; gap:10px; margin-top:18px}
+.opt{cursor:pointer; text-align:left; background:var(--fiche); border:1px solid var(--filet); border-left:3px solid var(--filet-fort); padding:13px 16px}
+.opt:hover{border-color:var(--bleu-rf); border-left-color:var(--bleu-rf)}
+.opt b{display:block; margin-bottom:2px}
+.opt .det{font-size:.85rem; color:var(--encre-2); max-width:70ch}
+
+/* ---------- doctrine ---------- */
+.classement{display:grid; gap:8px; margin:18px 0; counter-reset:rang}
+.rang{display:flex; align-items:center; gap:12px; background:var(--fiche-2); border:1px solid var(--filet); padding:10px 14px}
+.rang::before{counter-increment:rang; content:counter(rang); font-weight:700; font-size:1.05rem; color:var(--bleu-rf); width:1.2em; text-align:center; font-variant-numeric:tabular-nums}
+.rang .pastille{width:10px; height:10px; border-radius:50%; flex:none}
+.rang .lib{flex:1; font-weight:600}
+.rang .poids{font-size:.75rem; color:var(--encre-2); font-variant-numeric:tabular-nums}
+.rang .fleches{display:flex; gap:4px}
+.rang .fleches button{cursor:pointer; border:1px solid var(--filet-fort); background:var(--fiche); width:30px; height:30px; font-size:.85rem}
+.rang .fleches button:hover{border-color:var(--bleu-rf); color:var(--bleu-rf)}
+
+/* ---------- curseurs (carte scolaire) ---------- */
+.curseur{margin:20px 0}
+.curseur label{font-weight:600; display:block; margin-bottom:2px}
+.curseur .aide{font-size:.83rem; color:var(--encre-2); max-width:70ch; margin-bottom:8px}
+.curseur input[type=range]{width:100%; accent-color:var(--bleu-rf)}
+.curseur .lecture{font-family:"IBM Plex Mono",monospace; font-size:.85rem; color:var(--encre); background:var(--fiche-2); padding:8px 12px; margin-top:6px; font-variant-numeric:tabular-nums}
+
+/* ---------- atelier / cartes-mesures ---------- */
+.solde{position:sticky; top:86px; z-index:5; background:var(--fiche); border:1px solid var(--filet-fort); padding:9px 14px; display:flex; flex-wrap:wrap; gap:6px 22px; font-family:"IBM Plex Mono",monospace; font-size:.82rem; margin-bottom:16px; font-variant-numeric:tabular-nums}
+.solde b{font-weight:500}
+.solde .neg{color:var(--alerte)}
+.grille-cartes{display:grid; grid-template-columns:repeat(auto-fill,minmax(310px,1fr)); gap:14px}
+.carte{cursor:pointer; text-align:left; background:var(--fiche); border:1px solid var(--filet); border-top:3px solid var(--filet-fort); padding:14px 16px 12px; display:flex; flex-direction:column; gap:8px; position:relative}
+.carte:hover{border-color:var(--bleu-rf)}
+.carte.sel{border-color:var(--bleu-rf); border-top-color:var(--bleu-rf); background:var(--fiche); box-shadow:inset 0 0 0 1px var(--bleu-rf)}
+.carte.sel::after{content:"SÉLECTIONNÉE"; position:absolute; top:8px; right:10px; font-size:.58rem; letter-spacing:.1em; font-weight:700; color:var(--bleu-rf)}
+.carte .famille{font-size:.62rem; letter-spacing:.11em; text-transform:uppercase; font-weight:700; padding-right:92px}
+.carte h3{font-size:.98rem; line-height:1.3; font-weight:600; padding-right:8px}
+.carte .porteurs{font-size:.74rem; color:var(--encre-2)}
+.carte .porteurs b{font-weight:600; color:var(--encre)}
+.carte .chiffres{display:flex; flex-wrap:wrap; gap:4px 14px; font-family:"IBM Plex Mono",monospace; font-size:.74rem; color:var(--encre-2); font-variant-numeric:tabular-nums}
+.carte .chiffres .neg{color:var(--alerte)} .carte .chiffres .pos{color:var(--ok)}
+.carte .reels{display:grid; gap:3px; font-size:.76rem}
+.carte .reels .ligne{display:flex; gap:8px; align-items:baseline}
+.carte .reels .verrous{letter-spacing:1px; white-space:nowrap}
+.carte .reels .src{color:var(--encre-3); font-size:.7rem}
+.carte .alerte-greve{font-size:.72rem; color:var(--rouge-rf); font-weight:600}
+.carte .mot{font-family:"Newsreader",georgia,serif; font-style:italic; font-size:.92rem; color:var(--encre-2); border-top:1px solid var(--filet); padding-top:8px; margin-top:auto; line-height:1.4}
+.carte .curseurs-carte{display:grid; gap:6px; border-top:1px dashed var(--filet-fort); padding-top:8px}
+.carte .curseurs-carte label{font-size:.7rem; text-transform:uppercase; letter-spacing:.07em; color:var(--encre-2); display:block}
+.carte select{width:100%; font:inherit; font-size:.82rem; padding:5px 6px; background:var(--fiche-2); color:var(--encre); border:1px solid var(--filet-fort)}
+.badge-pr{font-size:.62rem; font-weight:700; letter-spacing:.08em; color:var(--or); text-transform:uppercase}
+
+/* ---------- journal / presse ---------- */
+.journal{background:var(--fiche); border:1px solid var(--filet); box-shadow:var(--ombre); max-width:860px; margin:0 auto; padding:26px clamp(18px,4vw,44px); font-family:"Newsreader",georgia,serif}
+.journal .manchette{display:flex; justify-content:space-between; align-items:baseline; gap:10px; border-bottom:3px double var(--encre); padding-bottom:6px}
+.journal .titre-j{font-weight:700; font-size:1.25rem; letter-spacing:.01em}
+.journal .ours{font-family:"Public Sans",sans-serif; font-size:.66rem; color:var(--encre-2); letter-spacing:.06em; text-transform:uppercase; white-space:nowrap}
+.journal h2.une{font-size:clamp(1.5rem,4.4vw,2.3rem); line-height:1.08; font-weight:700; margin:16px 0 8px}
+.journal .sous-une{font-size:1.02rem; font-style:italic; color:var(--encre-2); max-width:60ch}
+.journal .breves{margin-top:18px; border-top:1px solid var(--encre); padding-top:10px; display:grid; gap:9px}
+.journal .breve{font-size:.94rem; line-height:1.35}
+.journal .breve b{font-weight:700}
+.journal .breve .sig{font-family:"Public Sans",sans-serif; font-size:.66rem; color:var(--encre-3); text-transform:uppercase; letter-spacing:.07em}
+
+/* ---------- fil social ---------- */
+.fil{max-width:860px; margin:14px auto 0; display:grid; gap:8px}
+.post{background:var(--fiche); border:1px solid var(--filet); padding:10px 14px; font-size:.88rem}
+.post .auteur{font-weight:700; font-size:.8rem}
+.post .pseudo{color:var(--encre-3); font-weight:400; font-size:.75rem}
+.post p{margin:3px 0 0; max-width:75ch}
+
+/* ---------- dépêche mono ---------- */
+.depeche{font-family:"IBM Plex Mono",monospace; font-size:.8rem; background:var(--fiche-2); border-left:3px solid var(--filet-fort); padding:10px 14px; margin:8px 0; color:var(--encre-2); max-width:75ch}
+.depeche b{color:var(--encre); font-weight:500}
+
+/* ---------- tableaux du bilan ---------- */
+.defile{overflow-x:auto}
+table.bilan{border-collapse:collapse; width:100%; font-size:.86rem; font-variant-numeric:tabular-nums}
+table.bilan th{font-size:.68rem; text-transform:uppercase; letter-spacing:.08em; color:var(--encre-2); text-align:left; padding:6px 10px; border-bottom:2px solid var(--encre)}
+table.bilan td{padding:7px 10px; border-bottom:1px solid var(--filet)}
+table.bilan .num{text-align:right}
+.verdict{font-family:"Newsreader",georgia,serif; font-size:1.15rem; font-style:italic; margin:14px 0; max-width:60ch; line-height:1.45}
+.score-final{display:flex; flex-wrap:wrap; gap:14px; margin:18px 0}
+.score-bloc{flex:1; min-width:150px; background:var(--fiche-2); border-top:3px solid var(--bleu-rf); padding:12px 16px}
+.score-bloc .val{font-size:1.9rem; font-weight:700; font-variant-numeric:tabular-nums; line-height:1.1}
+.score-bloc .lib{font-size:.68rem; text-transform:uppercase; letter-spacing:.08em; color:var(--encre-2)}
+.revele{color:var(--encre-3)} .revele.bon{color:var(--ok); font-weight:600} .revele.mauvais{color:var(--alerte); font-weight:600}
+
+/* ---------- accueil ---------- */
+.accueil{max-width:720px; margin:6vh auto 0; text-align:center}
+.accueil .tampon{display:inline-block; border:3px double var(--bleu-rf); color:var(--bleu-rf); padding:10px 26px; transform:rotate(-2.5deg); margin-bottom:26px}
+.accueil .tampon .rf{font-size:.68rem; letter-spacing:.28em; font-weight:700}
+.accueil h1{font-size:clamp(2.1rem,7vw,3.4rem); letter-spacing:.05em; font-weight:700; text-transform:uppercase}
+.accueil .devise{font-family:"Newsreader",georgia,serif; font-style:italic; font-size:1.12rem; color:var(--encre-2); margin:10px auto 26px; max-width:52ch}
+.accueil .avertissement{font-size:.72rem; color:var(--encre-3); max-width:58ch; margin:26px auto 0}
+.note-passation{font-family:"Newsreader",georgia,serif; font-size:1.05rem; background:var(--fiche-2); border:1px solid var(--filet); padding:16px 20px; margin:16px 0; line-height:1.5; max-width:62ch}
+.note-passation .ps{font-style:italic; color:var(--encre-2); display:block; margin-top:8px}
+
+.suite{position:fixed; bottom:0; left:0; right:0; z-index:15; background:var(--fiche); border-top:1px solid var(--filet); box-shadow:0 -4px 14px rgba(0,0,0,.06)}
+.suite .in{max-width:1100px; margin:0 auto; padding:10px 16px; display:flex; align-items:center; gap:16px; justify-content:space-between}
+.suite .contexte{font-size:.78rem; color:var(--encre-2)}
+@media (prefers-reduced-motion: reduce){ *{transition:none !important; animation:none !important} }
+@media (max-width:640px){
+  #hud{position:static}
+  #hud .jauges{margin-left:0; width:100%}
+  .solde{top:0}
+}
+</style>
+<div id="hud" hidden>
+  <div class="tricolore"><i></i><i></i><i></i></div>
+  <div class="barre">
+    <div class="qui">Ministère de l'Éducation nationale<small id="hud-date"></small></div>
+    <div class="jauges" id="hud-compteurs"></div>
+  </div>
+  <div class="sous" id="hud-sous"></div>
+</div>
+<div id="scene"></div>
+<div class="suite" id="suite" hidden><div class="in">
+  <div class="contexte" id="suite-ctx"></div>
+  <button class="btn" id="suite-btn">Continuer</button>
+</div></div>
+<script>
+/* ===== moteur/constantes.js ===== */
+/* ============================================================================
+   RUE DE GRENELLE — CONSTANTES DU MOTEUR
+   ----------------------------------------------------------------------------
+   Toutes les constantes paramétrables du jeu sont ici, chacune commentée avec
+   sa source (partie B du brief). Même convention que `jeu-budget-source.jsx` :
+   on doit pouvoir ré-équilibrer le jeu sans toucher au moteur.
+
+   Unités : Md€ courants hors CAS Pensions · ETP · points de compteur (0-100).
+   ========================================================================== */
+
+/* ---------------------------------------------------------------------------
+   1. CADRAGE BUDGÉTAIRE                                          [source B.1]
+   ------------------------------------------------------------------------- */
+const CADRAGE = {
+  missionHorsCAS: 64.49,      // Md€ CP, PLF 2026 (Sénat)
+  missionAvecCAS: 89.64,      // Md€ (CAS Pensions ≈ 25 Md€)
+  titre2: 58.4,               // Md€ de masse salariale = 92,7 % de la mission
+  partMasseSalariale: 0.927,  // ce qui n'est PAS arbitrable
+  etpEnseignants: 814927,     // ETP (74 % des 1,2 M de personnels)
+  coutETPhorsCAS: 0.000072,   // Md€/an = 72 k€ (calcul T2/ETP)
+  coutETPavecCAS: 0.000110,   // Md€/an = 110 k€ : le vrai coût d'un poste
+  coutPointIndice: 0.49,      // Md€/an pour 1 % de point, périmètre EN seul
+  depenseParEleve: 10920,     // € (DEPP 2024, tous niveaux)
+};
+
+/* Marge de manœuvre annuelle réellement arbitrable, avant carte scolaire.
+   Le PLF 2026 progresse de +0,26 % : l'essentiel est pré-engagé.
+   C'est la contrainte structurante du jeu — l'équivalent du « mur des 3 % ». */
+const ENVELOPPE_BASE = 0.17;   // Md€ de mesures nouvelles « gratuites »
+
+/* Paliers de la lettre plafond de juillet, selon le crédit Bercy.  [B.6, C.4]
+   schemaEmplois = ETP que Bercy EXIGE de rendre ; marge = Md€ concédés. */
+const PALIERS_BERCY = [
+  { seuil: 75, schemaEmplois: -800,  marge: 1.35, ton: 'confiant' },
+  { seuil: 55, schemaEmplois: -2200, marge: 0.72, ton: 'vigilant' },
+  { seuil: 35, schemaEmplois: -4000, marge: 0.38, ton: 'ferme' },
+  { seuil: 0,  schemaEmplois: -6200, marge: 0.05, ton: 'comminatoire' },
+];
+
+/* Dépasser l'enveloppe est possible — et cher. C'est le seul moyen de financer
+   les grosses cartes (statut AESH 4,3 Md€, 19/classe, revalorisation 2,5 Md€). */
+const SURCOUT = {
+  creditBercyParMd: 13,   // points de crédit Bercy perdus par Md€ de dépassement
+  capitalParMd: 7,        // points de capital gouvernemental consommés
+  /* Sur-engagement structurel : quand les charges déjà engagées dépassent la
+     marge de l'année, Bercy le rappelle chaque année — mais on ne re-facture
+     pas l'intégralité du dépassement initial (les charges sont dans la base). */
+  penaliteStructurelleMax: 8,
+  penaliteStructurelleParMd: 4,
+};
+
+/* Échelle salariale : la revendication FSU d'un rattrapage de +20 % du point
+   est chiffrée à ~10 Md€ pour la seule Éducation nationale (B.3-5). On en tire
+   la conversion du jeu : 1 Md€ récurrent ≈ 2 points de position salariale. */
+const POINTS_SALAIRE_PAR_MD = 2.0;
+
+/* ---------------------------------------------------------------------------
+   2. LE TENDANCIEL DÉMOGRAPHIQUE — le moteur du jeu           [source B.2]
+   ------------------------------------------------------------------------- */
+/* Projections DEPP avril 2026 : −1 676 800 élèves d'ici 2035 (−14,2 %).
+   Baisse par rentrée, en milliers d'élèves. La rentrée 2026 (−161 000) est
+   l'héritage ; le joueur arbitre les rentrées 2027 à 2031. */
+const BAISSE_ELEVES = { 2027: -158, 2028: -172, 2029: -181, 2030: -176, 2031: -168 };
+const ELEVES_INITIAL = 11607.6;     // milliers, rentrée 2026
+
+/* Conversion élèves → postes « libérés ». C'EST le choix politique du jeu.
+   Précédents opposés : rentrée 2025 = −106 000 élèves / −470 postes (ratio 0,04) ;
+   rentrée 2026 = −161 000 élèves / −4 032 postes titulaires (ratio 0,60). */
+const ELEVES_PAR_POSTE = 24;        // diviseur de conversion démographie→ETP
+
+/* Encadrement. E/D France 21,3 (OCDE 20) ; objectif ministériel 21 ;
+   collège ~26/classe (« les classes les plus chargées d'Europe »). */
+const RATIO_ED_INITIAL = 21.3;
+
+/* Verrou politique reconduit : « aucune école ne ferme sans l'accord du maire ».
+   Au-delà de ce taux de restitution, les maires entrent dans le conflit. */
+const SEUIL_COLERE_MAIRES = 0.55;
+
+/* ---------------------------------------------------------------------------
+   3. ÉTAT INITIAL DES CINQ COMPTEURS                          [source B.3]
+   ------------------------------------------------------------------------- */
+/* Échelle 0-100, 100 = idéal. Ce sont des indices composites, pas des taux.
+   Justification de chaque valeur de départ :
+   - reussite 41  : TIMSS CM1 maths 484 vs UE 524 (28e/32) ; 17 % des 4e sous le
+                    niveau de base contre 3 % en 1995 ; PIRLS stable.
+   - egalite  34  : France parmi les plus inégalitaires en maths (DEPP/TIMSS) ;
+                    IPS collèges publics 99,9 vs privés 117,4 et écart +2 pts/an.
+   - sante    29  : 9,8 % d'heures non assurées ; 4 % des enseignants se sentent
+                    valorisés (TALIS, dernière place mondiale) ; formation
+                    continue dernière des 48 pays ; 36 % du corps a ≥50 ans.
+   - paix     78  : le mandat ne s'ouvre pas sur une page blanche. Un front
+                    intersyndical unitaire à sept organisations existe depuis
+                    février 2026, une grève de la fonction publique a eu lieu le
+                    29 septembre 2026 et l'intersyndicale a boycotté les
+                    instances en janvier 2026. Vous héritez d'un conflit ouvert.
+   - budget   30  : salaires −26 % (élémentaire) / −18 % (collège) vs autres
+                    diplômés du supérieur ; point d'indice gelé depuis 2023. */
+const COMPTEURS_INITIAUX = { reussite: 41, egalite: 34, sante: 29, paix: 78, budget: 30 };
+
+const COMPTEURS_META = {
+  reussite: { nom: 'Réussite des élèves', court: 'Réussite' },
+  egalite:  { nom: 'Réduction des inégalités', court: 'Inégalités' },
+  sante:    { nom: 'Santé du système', court: 'Santé' },
+  paix:     { nom: 'Paix sociale', court: 'Paix sociale' },
+  budget:   { nom: 'Budget et salaires', court: 'Budget' },
+};
+
+/* Poids du score final selon le rang que le joueur a lui-même donné au compteur
+   lors de sa déclaration de doctrine (juin 2027). Il est noté contre sa parole. */
+const POIDS_DOCTRINE = [35, 25, 20, 12, 8];
+
+/* ---------------------------------------------------------------------------
+   4. VARIABLES PHYSIQUES DU SYSTÈME                           [source B.3]
+   ------------------------------------------------------------------------- */
+const PHYSIQUE_INITIALE = {
+  heuresNonAssurees: 9.8,     // % (DEPP 26-14), dont 7,5 pt de non-remplacement
+  couvertureConcours: 92.0,   // % de postes pourvus (9,4 % non pourvus en 2025)
+  adhesion: 25,               // enseignants : adhésion aux choix politiques (UNSA au plus bas)
+  affection: 90,              // enseignants : attachement au métier (79-90 %, plancher stable)
+  parents: 45,                // opinion des familles
+  positionSalariale: -22,     // % vs autres diplômés du supérieur (−26 élém. / −18 collège)
+  segregation: 17.5,          // écart d'IPS privé − public (117,4 − 99,9)
+  medecinsScolaires: 900,     // pour 12 M d'élèves, >1/3 des postes vacants
+  psyEN: 5500,                // sur 7 500 postes (~2 000 vacants)
+};
+
+/* Dérives spontanées annuelles si le ministre ne fait rien.               [B.3] */
+/* L'adhésion et l'affection sont PERSISTANTES AVEC INERTIE (correction du
+   défaut A.9-2 du jeu de référence : là-bas, le malus des mesures disparaissait
+   au reset de janvier et devenait exploitable). Ici les mesures les déplacent
+   durablement, avec un lent retour vers la moyenne. */
+const INERTIE_OPINION = {
+  cibleAdhesion: 18, vitesse: 0.16, cibleParents: 45, vitesseParents: 0.16,
+  /* La cible d'adhésion n'est pas fixe : c'est la boucle d'attractivité (B.8-1).
+     Payer mieux et faire baisser les heures non assurées relève durablement le
+     niveau d'adhésion vers lequel le corps revient — et donc la capacité du
+     système à appliquer les réformes suivantes. C'est le cercle vertueux. */
+  gainParPointSalaire: 1.30,      // par point de rattrapage salarial vs supérieur
+  perteParPointHNA: 1.20,         // par point d'heures non assurées au-dessus de 9,8
+};
+
+const TENDANCIEL = {
+  heuresNonAssurees: +0.7,    // +0,7 pt/an constaté
+  segregation: +0.6,          // l'IPS du privé progresse ~+2 pts/an, le public non
+  positionSalariale: -0.8,    // point d'indice gelé + inflation
+  affection: -0.9,            // érosion lente (heureux d'exercer 80,9 % → 73 %)
+  adhesion: -0.8,             // sans geste, l'adhésion continue de baisser
+};
+
+/* ---------------------------------------------------------------------------
+   5. VITRINE / RÉEL : le mécanisme central                    [source B.5, C.2]
+   ------------------------------------------------------------------------- */
+/* Largeur du tirage de l'effet réel selon le niveau de preuve (cadenas EEF).
+   « Le vrai effet peut aller du négatif au double » quand la preuve est faible. */
+const INTERVALLE_CADENAS = {
+  5: [0.80, 1.20],
+  4: [0.65, 1.35],
+  3: [0.50, 1.60],
+  2: [0.30, 2.00],
+  1: [-0.50, 3.00],
+};
+
+/* Capacité d'absorption : au-delà de 3 réformes pédagogiques simultanément
+   actives, chaque réforme supplémentaire rabote l'effet de TOUTES et gonfle
+   leur variance (Slavin : un programme mal implanté a un effet ≈ 0). */
+const ABSORPTION = {
+  seuil: 3,
+  penaliteParReforme: 0.15,   // −15 % d'effet central par réforme au-delà
+  plancher: 0.35,
+  varianceParReforme: 0.22,   // +22 % de largeur d'intervalle par réforme au-delà
+  dureeActive: 3,             // une réforme « occupe » le système 3 ans
+};
+
+/* Fatigue réformatrice : 7 ministres en 3 ans avant vous.                [B.8-7] */
+const FATIGUE = {
+  initiale: 40,
+  parReforme: 10,
+  parAbandon: 15,
+  parAnneeSansAnnonce: -8,
+  max: 100,
+};
+
+/* Facteur d'implémentation : c'est LA leçon du jeu. Une réforme ne vaut que ce
+   que les personnels en font. adhésion 25 → 0,63 ; adhésion 60 → 1,01. */
+const IMPLEMENTATION = {
+  baseAdhesion: 0.35,
+  penteAdhesion: 1.10,
+  penteFatigue: 0.0045,       // par point de fatigue au-dessus de l'initiale
+  plancher: 0.20,
+};
+
+/* Poids de l'héritage dans le signal AFFICHÉ, par année de mandat.        [C.3]
+   Les deux premières années, le joueur est jugé sur ce qu'il n'a pas fait. */
+const POIDS_HERITAGE = [0.60, 0.60, 0.42, 0.26, 0.12];
+
+/* Bruit annuel des indicateurs affichés (évaluations nationales bruitées). */
+const BRUIT_AFFICHE = 2.6;         // écart-type, en points de compteur
+
+/* Le coût d'affichage du long terme. Une réforme dont l'effet n'arrivera que
+   dans quatre ans ou plus consomme des moyens visibles pour un résultat
+   invisible : pendant la transition, l'indicateur ne bouge pas et la
+   comparaison avec l'annonce se retourne contre le ministre. C'est ce qui rend
+   la politique de long terme électoralement irrationnelle. */
+const COUT_AFFICHAGE_LONG_TERME = 2.4;   // points de vitrine, par effet à délai ≥ 4 ans
+
+/* Décroissance annuelle de l'effet-vitrine : l'annonce s'use. */
+const DECROISSANCE_VITRINE = 0.74; // il reste 74 % l'année suivante
+
+/* ---------------------------------------------------------------------------
+   6. BOUCLE D'ATTRACTIVITÉ                                    [source B.8-1]
+   ------------------------------------------------------------------------- */
+/* salaires + considération + conditions → candidats → couverture des concours
+   → remplacement → conditions. Rétroaction positive, à forte inertie.
+   Le taux de couverture de juillet a UN AN DE RETARD sur les décisions. */
+const ATTRACTIVITE = {
+  /* Calibré pour que l'état initial soit un ÉQUILIBRE : sans geste, la
+     couverture ne s'effondre pas toute seule, elle stagne. C'est l'action du
+     ministre — dans un sens ou dans l'autre — qui la déplace. */
+  base: 68, pente: 0.65,
+  poidsSalaire: 0.40,
+  poidsAdhesion: 0.35,
+  poidsConditions: 0.25,
+  inertieCouverture: 0.28,    // vitesse de convergence de la couverture vers sa cible
+  couvertureReference: 92,    // au-dessus, le remplacement s'améliore ; en dessous, il se dégrade
+  effetHNAparPointCouv: 0.060,// par point d'écart à la référence
+};
+
+/* ---------------------------------------------------------------------------
+   7. CONFLIT SOCIAL                                           [source B.3-4, B.4]
+   ------------------------------------------------------------------------- */
+/* Étalon historique : grève du 10/02/2011 = 16,99 % d'enseignants grévistes. */
+const GREVE = {
+  baseParIntensite: { 1: 4.5, 2: 8.5, 3: 13.5, 4: 19.5, 5: 26.5 },  // % de grévistes
+  bonusUnite: 0.30,           // +30 % si ≥ 5 organisations sur 7 mobilisées
+  ecartSyndicats: 1.70,       // les syndicats annoncent ~1,7× le chiffre du ministère
+  coutPaixParPointGreve: 0.45,// points de paix sociale perdus par point de grévistes
+  conflictualiteLatente: 0.42,// préavis, motions, boycott des instances : le conflit sans la grève
+                              // (précédent : boycott intersyndical des instances, janvier 2026)
+  coutAdhesionParPoint: 0.10,
+  segments: { college: 1.20, '1erdegre': 1.09, lp: 0.69, lycee: 0.92, tous: 1.0 }, // étalon 2011
+};
+
+/* Les sept organisations, pondérées par les élections professionnelles CSA 2022.
+   `seuil` = intensité minimale (pondérée) qui les met en grève.
+   `profil` : rapport de force / négociation / frontal / corporatiste / radical. */
+/* Les noms sont des pseudonymes transparents (satire symétrique : toutes les
+   organisations sont altérées du même degré). Les identifiants, pondérations
+   (élections CSA 2022) et profils correspondent aux organisations réelles. */
+const SYNDICATS = [
+  { id: 'fsu',   nom: 'FUSE',             poids: 34.05, seuil: 2.4, profil: 'rapport_de_force' },
+  { id: 'unsa',  nom: 'UNISA Éducation',  poids: 19.37, seuil: 3.4, profil: 'reformiste' },
+  { id: 'fo',    nom: 'FNEC-OF',          poids: 14.05, seuil: 1.8, profil: 'frontal' },
+  { id: 'cfdt',  nom: 'Sgen-CFTD',        poids: 7.80,  seuil: 3.7, profil: 'negociation' },
+  { id: 'cgt',   nom: "CGT Éduc'axion",   poids: 6.64,  seuil: 1.7, profil: 'radical' },
+  { id: 'snalc', nom: 'SNACL',            poids: 6.21,  seuil: 3.0, profil: 'corporatiste' },
+  { id: 'sud',   nom: 'SÜD Éducation',    poids: 5.09,  seuil: 1.5, profil: 'radical' },
+];
+
+/* Sensibilité de chaque profil aux thèmes de conflit (multiplie l'intensité). */
+const SENSIBILITES = {
+  moyens:        { rapport_de_force: 1.3, reformiste: 1.0, frontal: 1.2, negociation: 0.8, radical: 1.3, corporatiste: 1.1 },
+  salaires:      { rapport_de_force: 1.2, reformiste: 1.1, frontal: 1.3, negociation: 0.9, radical: 1.2, corporatiste: 1.3 },
+  statut:        { rapport_de_force: 1.2, reformiste: 0.9, frontal: 1.4, negociation: 0.7, radical: 1.2, corporatiste: 1.4 },
+  pedagogie:     { rapport_de_force: 1.1, reformiste: 0.7, frontal: 1.0, negociation: 0.5, radical: 1.0, corporatiste: 1.2 },
+  evaluation:    { rapport_de_force: 1.2, reformiste: 0.8, frontal: 1.1, negociation: 0.6, radical: 1.2, corporatiste: 1.0 },
+  prive:         { rapport_de_force: 0.9, reformiste: 0.7, frontal: 0.8, negociation: 0.6, radical: 1.1, corporatiste: 0.4 },
+  autorite:      { rapport_de_force: 0.9, reformiste: 0.6, frontal: 0.9, negociation: 0.5, radical: 1.2, corporatiste: 0.3 },
+};
+
+/* ---------------------------------------------------------------------------
+   8. SURVIE POLITIQUE                                         [source A.3, C.5]
+   ------------------------------------------------------------------------- */
+const CAPITAL = { initial: 50, parAn: 30, plafond: 100 };
+
+/* Le prix de l'immobilisme. La fatigue réformatrice retombe quand on n'annonce
+   rien (c'est bon pour l'implémentation des réformes suivantes), mais un
+   ministre qui n'annonce rien n'est pas un ministre qui dure. */
+const IMMOBILISME = { capital: 7, parents: 3.5 };
+const CREDIT_BERCY_INITIAL = 40;
+
+/* Convocation à Matignon : 3 convocations cumulées = renvoi.
+   Durée réelle moyenne d'un ministre de l'EN ≈ 2 ans : finir est une performance. */
+const RENVOI = {
+  convocationsFatales: 3,
+  seuilAdhesionRentreeRatee: 15,
+  seuilHNARentreeRatee: 12.5,   // % d'heures non assurées = « rentrée ratée »
+  seuilCouvertureRentreeRatee: 88,
+  probaConvocRentreeRatee: 0.34,// une rentrée ratée suffit parfois, même sans crise d'adhésion
+  probaConvocCapitalBas: 0.55,  // si capital < 12 en fin d'année
+  seuilParents: 26,             // les familles décrochent : la presse réclame une tête
+  probaConvocParents: 0.40,
+  seuilCreditBercy: 12,         // Bercy fait remonter le dossier à Matignon
+  probaConvocBercy: 0.35,
+  seuilPaixCritique: 45,
+  /* Remaniement : la première cause de fin de mandat dans la vraie vie. Depuis
+     1958, plus de trente ministres se sont succédé rue de Grenelle ; la durée
+     moyenne dans le poste dépasse rarement deux ans. Le risque est modulé par
+     le capital politique et l'opinion des familles : un ministre solide n'est
+     pas à l'abri, il est seulement moins exposé. */
+  remaniementBase: 0.19,
+  remaniementParCapital: 900,
+  remaniementParParents: 700,
+  remaniementMin: 0.03, remaniementMax: 0.30,
+};
+
+/* ---------------------------------------------------------------------------
+   9. PROJECTION À DIX ANS                                     [source B.5, B.8-8]
+   ------------------------------------------------------------------------- */
+/* Portugal : 15 ans de cap constant malgré l'alternance → seul pays OCDE en
+   progression dans les 3 domaines PISA 2000-2018. La victoire existe, elle
+   prend 10-15 ans. La constance du cap est ce qui la déclenche. */
+const PROJECTION = {
+  bonusConstance: 0.55,       // part supplémentaire d'effet si le cap a tenu
+  poursuiteDuCap: 0.40,       // le successeur prolonge votre trajectoire à 40 % de son rythme
+  seuilAbandonsConstance: 1,  // au-delà d'un abandon, plus de bonus
+  /* « Tenir le cap » ne veut pas dire « ne rien faire » : le Portugal a beaucoup
+     réformé. Cela veut dire faire, pendant quinze ans, des choses qui vont dans
+     le MÊME sens. On mesure donc la cohérence entre les effets réellement
+     produits et les deux priorités que le joueur a déclarées en juin 2027 —
+     il est, là aussi, noté contre sa propre parole. */
+  seuilCoherence: 0.45,       // part des effets dirigés vers les priorités déclarées
+  maxAnneesSurcharge: 2,      // années passées au-delà de la capacité d'absorption
+};
+
+const MOIS = ['janvier','février','mars','avril','mai','juin',
+                     'juillet','août','septembre','octobre','novembre','décembre'];
+
+const K = { CADRAGE, ENVELOPPE_BASE, PALIERS_BERCY, SURCOUT, POINTS_SALAIRE_PAR_MD, BAISSE_ELEVES, ELEVES_INITIAL, ELEVES_PAR_POSTE, RATIO_ED_INITIAL, SEUIL_COLERE_MAIRES, COMPTEURS_INITIAUX, COMPTEURS_META, POIDS_DOCTRINE, PHYSIQUE_INITIALE, INERTIE_OPINION, TENDANCIEL, INTERVALLE_CADENAS, ABSORPTION, FATIGUE, IMPLEMENTATION, POIDS_HERITAGE, BRUIT_AFFICHE, COUT_AFFICHAGE_LONG_TERME, DECROISSANCE_VITRINE, ATTRACTIVITE, GREVE, SYNDICATS, SENSIBILITES, CAPITAL, IMMOBILISME, CREDIT_BERCY_INITIAL, RENVOI, PROJECTION, MOIS };   // espace de noms attendu par le moteur
+/* ===== moteur/catalogue.js ===== */
+/* ============================================================================
+   RUE DE GRENELLE — CATALOGUE DES MESURES (phase moteur : 12 cartes-leçons)
+   ----------------------------------------------------------------------------
+   Chaque carte cite ses PORTEURS RÉELS (neutralité par attribution : le jeu ne
+   dit jamais qu'une doctrine est la bonne) et la SOURCE de son effet réel.
+
+   Deux effets par carte :
+   - `vitrine` : chiffré, immédiat, visible. C'est ce que le joueur voit.
+   - `reel`    : jamais chiffré à l'écran. Le joueur ne voit qu'un nombre de
+                 cadenas (niveau de preuve) et un délai. Il découvre au bilan
+                 ce qu'il a réellement produit.
+
+   Champs :
+     cout      Md€/an récurrents (hors CAS)      coutETP  ETP créés (+) / rendus (−)
+     pol       capital gouvernemental consommé   perimetre 'ministeriel' | 'matignon'
+     greve     { intensite 1-5, theme, segment } reforme  compte dans l'absorption
+     goulot    l'effet est plafonné par le taux de postes effectivement pourvus
+   ========================================================================== */
+
+const CATALOGUE = [
+
+  /* ------------------------------------------------------------------ 1 --- */
+  {
+    id: 'formation',
+    label: 'Plan national de formation continue sur le temps de service',
+    famille: 'moyens',
+    porteurs: ['OCDE/TALIS 2024', 'Cour des comptes', 'Education Endowment Foundation'],
+    perimetre: 'ministeriel',
+    cout: 0.62, coutETP: 2500, pol: 5,
+    theme: 'formation', once: true, reforme: true,
+    vitrine: { parents: -4, enseignants: +7, presse: -1, compteurs: { sante: -6, reussite: -3 } },
+    reel: [
+      { compteur: 'reussite', central: 9, delai: 4, cadenas: 5, source: 'EEF : feedback +6 mois, métacognition +7/8 mois, 5 cadenas' },
+      { compteur: 'sante',    central: 6, delai: 3, cadenas: 4, source: 'TALIS 2024 : France dernière des 48 pays, marge maximale' },
+    ],
+    physique: { hna: { delta: +1.5, duree: 2 }, adhesion: +5 },
+    mot: "L'effet réel le plus solide du catalogue. Il coûte deux ans d'heures non assurées, et personne ne vous en félicitera avant votre départ.",
+  },
+
+  /* ------------------------------------------------------------------ 2 --- */
+  {
+    id: 'redoublement',
+    label: 'Redoublement facilité, décision rendue aux équipes et aux familles',
+    famille: 'autorite',
+    porteurs: ['une large majorité de l’opinion', 'plusieurs candidats de droite'],
+    perimetre: 'ministeriel',
+    cout: 0.55, coutETP: 0, pol: 3,
+    theme: 'redoublement', once: true, reforme: true,
+    vitrine: { parents: +9, enseignants: +1, presse: +6, compteurs: { reussite: +8 } },
+    reel: [
+      { compteur: 'reussite', central: -7, delai: 3, cadenas: 4, source: 'CSEN note 15 (Gurgand) : effet négatif, décrochage accru, coût ≈ une année de scolarité' },
+      { compteur: 'egalite',  central: -8, delai: 4, cadenas: 4, source: 'CSEN : le redoublement frappe très majoritairement les élèves défavorisés' },
+    ],
+    physique: {},
+    mot: "Coûteux, contre-productif, et populaire. Le miroir exact de la formation continue : tout ce que le tableau de bord adore et que le bilan déteste.",
+  },
+
+  /* ------------------------------------------------------------------ 3 --- */
+  {
+    id: 'revalorisation',
+    label: 'Revalorisation des enseignants',
+    famille: 'moyens',
+    porteurs: ['FSU (+20 % du point ≈ 10 Md€)', 'PS (moyenne OCDE)', 'Attal (+200 à +500 €/mois)', 'Lisnard (+20 %/5 ans conditionnés)'],
+    perimetre: 'ministeriel',
+    cout: 1.3, coutETP: 0, pol: 7,
+    once: false, reforme: false,          // répétable : une mesure salariale par budget
+    parametrique: 'revalorisation',   // deux curseurs : cible × contrepartie
+    vitrine: { parents: 0, enseignants: +6, presse: +2, compteurs: { budget: +5 } },
+    reel: [],   // construits par le moteur selon les curseurs
+    physique: {},
+    mot: "Trois façons de dépenser exactement la même somme, et trois pays différents à l'arrivée.",
+  },
+
+  /* ------------------------------------------------------------------ 4 --- */
+  {
+    id: 'dedoublement',
+    label: 'Extension du dédoublement aux GS/CP/CE1 hors éducation prioritaire',
+    famille: 'moyens',
+    porteurs: ['prolongement de la politique engagée en 2017', 'PS', 'Mélenchon (≤19/classe)'],
+    perimetre: 'ministeriel',
+    cout: 0.42, coutETP: 5200, pol: 5,
+    theme: 'taille_classe', once: true, excl: 'encadrement', reforme: true,
+    vitrine: { parents: +5, enseignants: +3, presse: +4, compteurs: { egalite: +5 } },
+    reel: [
+      { compteur: 'egalite',  central: 8, delai: 4, cadenas: 4, source: 'DEPP 2021 (15 000 élèves, 408 écoles) : +8 % d’écart-type en français, +13 % en maths ; élèves en très grande difficulté −7,8 / −12,5 pts' },
+      { compteur: 'reussite', central: 2, delai: 4, cadenas: 4, source: 'DEPP 2021 : bénéfice limité voire nul pour les meilleurs élèves' },
+    ],
+    physique: {},
+    mot: "Fait beaucoup pour les inégalités, presque rien pour la moyenne. Aucun journal ne titrera là-dessus, et c'est bien le problème.",
+  },
+
+  /* ------------------------------------------------------------------ 5 --- */
+  {
+    id: 'classe19',
+    label: 'Plafond général de 19 élèves par classe',
+    famille: 'moyens',
+    porteurs: ['Mélenchon', 'PS'],
+    perimetre: 'ministeriel',
+    cout: 0, coutETP: 0, pol: 11,          // dépend du financement choisi
+    theme: 'taille_classe', once: true, excl: 'encadrement', reforme: true,
+    parametrique: 'financement19',          // recrutement (Bercy) ou démographie (syndicats)
+    vitrine: { parents: +8, enseignants: +6, presse: +5, compteurs: { egalite: +5, sante: +4 } },
+    reel: [
+      { compteur: 'reussite', central: 4, delai: 5, cadenas: 3, source: 'STAR / Piketty-Valdenaire : 20-30 % d’écart-type, effet concentré sur les défavorisés' },
+      { compteur: 'egalite',  central: 5, delai: 5, cadenas: 3, source: 'idem — l’effet de taille de classe est très inégalement réparti' },
+    ],
+    physique: {},
+    mot: "La même vitrine que le dédoublement, pour dix fois le prix. Reste à savoir qui paie : Bercy, ou la carte scolaire.",
+  },
+
+  /* ------------------------------------------------------------------ 6 --- */
+  {
+    id: 'aesh',
+    label: 'Création d’un corps de fonctionnaires AESH',
+    famille: 'moyens',
+    porteurs: ['PS', 'Mélenchon', 'SNALC', 'collectif AESH'],
+    contre: ['rapport IGÉSR-IGAS : rejette la fonctionnarisation, propose +10 % via une grille type catégorie B'],
+    perimetre: 'matignon',                  // législatif — rejeté au Sénat le 07/01/2026
+    cout: 4.3, coutETP: 0, pol: 16,
+    theme: 'aesh', once: true, reforme: false,
+    vitrine: { parents: +7, enseignants: +8, presse: +5, compteurs: { sante: +6 } },
+    reel: [
+      { compteur: 'sante',   central: 7, delai: 2, cadenas: 3, source: 'stabilisation d’un corps de 146 000 personnes aujourd’hui à temps incomplet subi' },
+      { compteur: 'egalite', central: 4, delai: 3, cadenas: 2, source: '520 600 élèves en situation de handicap scolarisés, notifications MDPH +10 %/an' },
+    ],
+    physique: { adhesion: +4, affection: +2 },
+    mot: "4,3 milliards. Soit environ neuf fois toute la marge que Bercy vous concédera en cinq ans. Les experts sont contre, les personnels sont pour. Bon courage.",
+  },
+
+  /* ------------------------------------------------------------------ 7 --- */
+  {
+    id: 'sante_scolaire',
+    label: 'Plan de recrutement en santé scolaire (infirmiers, PsyEN, assistants sociaux)',
+    famille: 'moyens',
+    porteurs: ['Cour des comptes', 'intersyndicale', 'fédérations de parents'],
+    perimetre: 'ministeriel',
+    cout: 0.19, coutETP: 1200, pol: 3,
+    theme: 'sante_scolaire', once: true, reforme: false,
+    goulot: true,                           // l'argent ne produit qu'au rythme des concours pourvus
+    vitrine: { parents: +5, enseignants: +4, presse: +2, compteurs: { sante: +2 } },
+    reel: [
+      { compteur: 'sante',   central: 5, delai: 3, cadenas: 3, source: '~900 médecins pour 12 M d’élèves ; 20 % des visites de la 6e année réalisées' },
+      { compteur: 'egalite', central: 3, delai: 4, cadenas: 2, source: 'désengagement scolaire 31 % en IPS faible contre 19,4 % en IPS élevé' },
+    ],
+    physique: {},
+    mot: "Le PLF 2026 a voté +300 postes. Les concours n'en ont pourvu qu'une fraction : 41 postes de PsyEN non pourvus sur 147. Un budget voté n'est pas une politique faite.",
+  },
+
+  /* ------------------------------------------------------------------ 8 --- */
+  {
+    id: 'palier',
+    label: 'Report d’un an du palier d’orientation (tronc commun jusqu’en seconde)',
+    famille: 'parcours',
+    porteurs: ['réforme polonaise de 1999', 'CSEN', 'chercheurs en économie de l’éducation'],
+    perimetre: 'ministeriel',
+    cout: 0.35, coutETP: 900, pol: 12,
+    theme: 'palier', once: true, excl: 'orientation', reforme: true,
+    vitrine: { parents: -3, enseignants: -2, presse: -2, compteurs: { reussite: -4 } },
+    reel: [
+      { compteur: 'reussite', central: 6, delai: 6, cadenas: 3, source: 'Pologne 1999 : facteur crucial de progression PISA, porté par les élèves les plus faibles' },
+      { compteur: 'egalite',  central: 7, delai: 6, cadenas: 3, source: 'idem — l’orientation précoce est le principal canal de reproduction sociale' },
+    ],
+    physique: {},
+    greve: { intensite: 2, theme: 'pedagogie', segment: 'lp' },
+    mot: "Six ans de délai, aucune photo à la clé, et la voie professionnelle qui se sent visée. Un pari de ministre qui a lu les études plutôt que les sondages.",
+  },
+
+  /* ------------------------------------------------------------------ 9 --- */
+  {
+    id: 'differenciation',
+    label: 'Différenciation précoce : groupes de niveau, certificat d’entrée en 6e, parcours dès la 4e',
+    famille: 'parcours',
+    porteurs: ['Attal', 'Lisnard', 'Zemmour (fin du collège unique)', 'Le Pen (collège modulaire)'],
+    contre: ['IGÉSR juin 2025 : « dérive des continents »', 'Conseil d’État : censure partielle du dispositif'],
+    perimetre: 'ministeriel',
+    cout: 0.5, coutETP: 1800, pol: 10,
+    theme: 'differenciation', once: true, excl: 'orientation', reforme: true,
+    vitrine: { parents: +8, enseignants: -9, presse: +7, compteurs: { reussite: +8 } },
+    reel: [
+      { compteur: 'reussite', central: 1, delai: 4, cadenas: 2, source: 'littérature internationale : effet moyen proche de zéro sur la moyenne' },
+      { compteur: 'egalite',  central: -9, delai: 4, cadenas: 2, source: 'effet de composition : les regroupements durables pénalisent les élèves faibles' },
+    ],
+    physique: {},
+    greve: { intensite: 4, theme: 'pedagogie', segment: 'college' },
+    mot: "Première tentative : appliqué dans moins de 20 % des établissements, puis censuré au Conseil d'État et abandonné en 2026. Vous voulez vraiment recommencer ?",
+  },
+
+  /* ----------------------------------------------------------------- 10 --- */
+  {
+    id: 'autonomie',
+    label: 'Autonomie des établissements et publication des résultats',
+    famille: 'autonomie',
+    porteurs: ['Philippe', 'Barnier (pacte pluriannuel)', 'Lisnard (recrutement par les directions)'],
+    perimetre: 'ministeriel',
+    cout: 0.12, coutETP: 0, pol: 9,
+    theme: 'autonomie', once: true, excl: 'evaluation', reforme: true,
+    vitrine: { parents: +4, enseignants: -11, presse: +8, compteurs: { reussite: +7 } },
+    reel: [
+      { compteur: 'reussite', central: 3, delai: 4, cadenas: 2, source: 'preuve faible : résultats contradictoires selon les systèmes, variance maximale' },
+      { compteur: 'egalite',  central: -4, delai: 4, cadenas: 2, source: 'publication des résultats : accroît l’évitement scolaire et la ségrégation' },
+    ],
+    physique: { segregation: +0.8 },
+    greve: { intensite: 4, theme: 'statut', segment: 'tous' },
+    mot: "Deux cadenas : l'effet réel peut aussi bien doubler que se retourner. C'est la carte la plus incertaine du jeu, et celle qui fait les meilleures unes.",
+  },
+
+  /* ----------------------------------------------------------------- 11 --- */
+  {
+    id: 'prive_mixite',
+    label: 'Financement du privé sous contrat conditionné à des objectifs de mixité',
+    famille: 'mixite',
+    porteurs: ['NFP', 'Glucksmann (privé intégré à la carte scolaire)', 'Mélenchon (abrogation de la loi Carle)'],
+    perimetre: 'matignon',
+    cout: -0.15, coutETP: 0, pol: 15,       // rapporte de l'argent, coûte tout le reste
+    theme: 'prive', once: true, reforme: true,
+    provocations: 1,                         // une provocation : la guerre scolaire s'arme à 2
+    vitrine: { parents: -5, enseignants: +5, presse: +3, compteurs: { egalite: 0 } },
+    reel: [
+      { compteur: 'egalite', central: 10, delai: 3, cadenas: 3, source: 'IPS privé 117,4 vs public 99,9 ; part d’élèves très favorisés dans le privé 26,4 % (2000) → 40,2 % (2021)' },
+    ],
+    physique: { segregation: -2.4 },
+    mot: "Le seul levier vraiment puissant sur la ségrégation. Aussi le seul qui ait déjà fait tomber un gouvernement — Savary, 1984, un million de personnes dans la rue.",
+  },
+
+  /* ----------------------------------------------------------------- 12 --- */
+  {
+    id: 'remplacement',
+    label: 'Plan remplacement : brigades académiques et annualisation des obligations de service',
+    famille: 'moyens',
+    porteurs: ['fédérations de parents (FCPE, PEEP)', 'Cour des comptes'],
+    contre: ['l’annualisation touche au statut : l’intersyndicale la refuse en bloc'],
+    perimetre: 'ministeriel',
+    cout: 0.48, coutETP: 4000, pol: 7,
+    theme: 'remplacement', once: true, reforme: false,
+    vitrine: { parents: +8, enseignants: -6, presse: +5, compteurs: { sante: +6 } },
+    reel: [
+      { compteur: 'sante',    central: 6, delai: 2, cadenas: 3, source: 'DEPP 26-14 : 9,8 % d’heures non assurées, ~2 h/semaine perdues par élève' },
+      { compteur: 'reussite', central: 3, delai: 3, cadenas: 3, source: 'le temps d’enseignement effectivement reçu est un déterminant direct des acquis' },
+    ],
+    physique: { hna: { delta: -2.2, duree: 99 } },
+    greve: { intensite: 3, theme: 'statut', segment: 'tous' },
+    mot: "Ramener les heures non assurées de 9,8 % à 5 % rendrait aux élèves plus d'heures que 4 000 postes n'en coûtent. Encore faut-il toucher au statut pour y arriver.",
+  },
+
+  /* ======================================================================
+     EXTENSION DU CATALOGUE — cartes 13 à 40 (phase 2)
+     Cinq familles doctrinales (B.7), porteurs réels cités, humour compris.
+     ====================================================================== */
+
+  /* ----------------------------- 13 · moyens ------------------------- */
+  {
+    id: 'maternelle',
+    label: 'Plan langage en maternelle, priorité aux réseaux d’éducation prioritaire',
+    famille: 'moyens',
+    porteurs: ['CSEN', 'économie de l’éducation (rendement des investissements précoces)', 'PS'],
+    perimetre: 'ministeriel',
+    cout: 0.28, coutETP: 1500, pol: 4,
+    theme: 'maternelle', once: true, reforme: true,
+    vitrine: { parents: +1, enseignants: +2, presse: 0, compteurs: {} },
+    reel: [
+      { compteur: 'reussite', central: 5, delai: 6, cadenas: 4, source: 'recherche convergente : le rendement éducatif est maximal aux âges précoces' },
+      { compteur: 'egalite',  central: 6, delai: 6, cadenas: 4, source: 'les écarts de vocabulaire sont installés à 4 ans ; l’intervention précoce les réduit' },
+    ],
+    physique: {},
+    mot: "L'euro le mieux investi du système, et le seul dont l'inauguration n'intéresse personne : les bénéficiaires ont quatre ans et ne votent pas.",
+  },
+
+  /* ----------------------------- 14 · moyens / équité ----------------- */
+  {
+    id: 'ep_progressive',
+    label: 'Refonte de l’éducation prioritaire : allocation progressive sur l’indice de position sociale',
+    famille: 'moyens',
+    porteurs: ['Cour des comptes', 'DEPP', 'une partie de l’encadrement'],
+    contre: ['les réseaux sortants du label, leurs maires et leurs équipes'],
+    perimetre: 'ministeriel',
+    cout: 0.15, coutETP: 0, pol: 10,
+    theme: 'ep', once: true, reforme: true,
+    vitrine: { parents: -2, enseignants: -4, presse: +2, compteurs: { egalite: +2 } },
+    reel: [
+      { compteur: 'egalite',  central: 7, delai: 4, cadenas: 3, source: 'la difficulté sociale est continue : l’allocation progressive atteint les établissements hors label' },
+      { compteur: 'reussite', central: 2, delai: 4, cadenas: 3, source: 'effet indirect via le ciblage des moyens' },
+    ],
+    physique: {},
+    greve: { intensite: 2, theme: 'moyens', segment: 'tous' },
+    mot: "Techniquement irréprochable : la difficulté sociale est continue, pas binaire. Politiquement : vous venez d'annoncer à cent collèges qu'ils perdent leur prime.",
+  },
+
+  /* ----------------------------- 15 · moyens ------------------------- */
+  {
+    id: 'titularisation',
+    label: 'Plan de titularisation des contractuels enseignants',
+    famille: 'moyens',
+    porteurs: ['intersyndicale', 'PS'],
+    perimetre: 'ministeriel',
+    cout: 0.30, coutETP: 0, pol: 5,
+    theme: 'contractuels', once: true, reforme: false,
+    vitrine: { parents: +1, enseignants: +6, presse: -1, compteurs: { sante: +2 } },
+    reel: [
+      { compteur: 'sante', central: 4, delai: 2, cadenas: 3, source: 'stabilisation et formation d’agents déjà en poste, souvent recrutés en quelques jours' },
+    ],
+    physique: { adhesion: +3 },
+    mot: "Ils font déjà cours depuis trois ans. Vous ne recrutez personne : vous reconnaissez l'existant, ce qui est à la fois moins cher et plus honnête.",
+  },
+
+  /* ----------------------------- 16 · moyens / climat ----------------- */
+  {
+    id: 'vie_scolaire',
+    label: 'Renforcer la vie scolaire : CPE et assistants d’éducation, contrats stabilisés',
+    famille: 'moyens',
+    porteurs: ['intersyndicale', 'recherche sur le climat scolaire', 'chefs d’établissement'],
+    perimetre: 'ministeriel',
+    cout: 0.33, coutETP: 4000, pol: 4,
+    theme: 'vie_scolaire', once: true, reforme: false,
+    vitrine: { parents: +3, enseignants: +5, presse: +1, compteurs: { sante: +3 } },
+    reel: [
+      { compteur: 'sante',    central: 5, delai: 2, cadenas: 4, source: 'la densité et la stabilité des adultes sont le facteur le mieux établi du climat scolaire' },
+      { compteur: 'reussite', central: 2, delai: 3, cadenas: 3, source: 'un climat apaisé rend du temps d’apprentissage effectif' },
+    ],
+    physique: {},
+    mot: "Le climat scolaire n'est pas un discours sur l'autorité : c'est un budget de surveillants. Le discours est gratuit, c'est bien pour ça qu'on l'entend plus souvent.",
+  },
+
+  /* ----------------------------- 17 · moyens (le rabot) --------------- */
+  {
+    id: 'hsa',
+    label: 'Recours massif aux heures supplémentaires plutôt qu’au recrutement',
+    famille: 'moyens',
+    porteurs: ['Bercy', 'tous les gouvernements depuis vingt ans'],
+    perimetre: 'ministeriel',
+    cout: 0.18, coutETP: 0, pol: 2,
+    once: false, reforme: false,          // le rabot est éternel : répétable chaque année
+    vitrine: { parents: +4, enseignants: -3, presse: +1, compteurs: { sante: +2 } },
+    reel: [
+      { compteur: 'sante', central: -2, delai: 3, cadenas: 3, source: 'l’intensification du travail nourrit l’épuisement et les démissions' },
+    ],
+    physique: { hna: { delta: -0.8, duree: 2 } },
+    mot: "Une HSA coûte cinquante fois moins qu'un poste. C'est aussi la différence entre embaucher un collègue et faire ses heures à sa place.",
+  },
+
+  /* ----------------------------- 18 · moyens ------------------------- */
+  {
+    id: 'formation_initiale',
+    label: 'Réforme de la formation initiale et du concours',
+    famille: 'moyens',
+    porteurs: ['tous vos prédécesseurs, sans exception'],
+    perimetre: 'ministeriel',
+    cout: 0.22, coutETP: 0, pol: 8,
+    theme: 'formation_initiale', once: true, reforme: true,
+    vitrine: { parents: 0, enseignants: -5, presse: +3, compteurs: {} },
+    reel: [
+      { compteur: 'sante',    central: 5, delai: 5, cadenas: 3, source: 'une formation en alternance mieux rémunérée reconstitue le vivier — après la transition' },
+      { compteur: 'reussite', central: 3, delai: 6, cadenas: 3, source: 'des néotitulaires mieux formés tiennent mieux leurs classes' },
+    ],
+    physique: { attractivite: -9 },       // la transition casse une année de recrutement
+    mot: "Chaque réforme de la formation casse une promotion le temps de la transition. La vôtre sera la neuvième en trente ans. Cette fois, c'est la bonne.",
+  },
+
+  /* ----------------------------- 19 · moyens / équité ----------------- */
+  {
+    id: 'decrochage',
+    label: 'Repérage précoce du décrochage : un référent par établissement',
+    famille: 'moyens',
+    porteurs: ['consensus de la recherche', 'missions locales', 'régions'],
+    perimetre: 'ministeriel',
+    cout: 0.26, coutETP: 0, pol: 3,
+    theme: 'decrochage', once: true, reforme: false,
+    vitrine: { parents: +2, enseignants: +1, presse: 0, compteurs: { egalite: +1 } },
+    reel: [
+      { compteur: 'egalite', central: 5, delai: 4, cadenas: 4, source: 'le repérage précoce est la mesure la mieux évaluée contre le décrochage' },
+      { compteur: 'sante',   central: 2, delai: 4, cadenas: 3, source: 'moins de sortants sans qualification, moins de classes ingérables' },
+    ],
+    physique: {},
+    mot: "Le décrochage est un processus, pas un événement. Intervenir en 5e coûte dix fois moins cher que raccrocher un jeune de 18 ans — et fait cent fois moins de communiqués.",
+  },
+
+  /* ----------------------------- 20 · moyens / interministériel ------- */
+  {
+    id: 'sante_mentale',
+    label: 'Conventions santé mentale : permanences des maisons des adolescents dans les établissements',
+    famille: 'moyens',
+    porteurs: ['fédérations de parents', 'agences régionales de santé'],
+    perimetre: 'ministeriel',
+    cout: 0.12, coutETP: 0, pol: 6,       // le coût est surtout de la négociation interministérielle
+    theme: 'sante_mentale', once: true, reforme: false,
+    vitrine: { parents: +4, enseignants: +1, presse: +2, compteurs: { sante: +2 } },
+    reel: [
+      { compteur: 'sante', central: 4, delai: 2, cadenas: 3, source: 'contourne le goulot de recrutement de la santé scolaire en mobilisant des personnels de santé publique' },
+    ],
+    physique: {},
+    mot: "Faire soigner vos élèves par le budget d'un autre ministère : l'art d'être efficace avec l'argent qu'on n'a pas. Le revers : votre politique dépend d'un partenaire qui ne vous doit rien.",
+  },
+
+  /* ----------------------------- 21 · compétences partagées ----------- */
+  {
+    id: 'bati',
+    label: 'Fonds d’amorçage pour la rénovation thermique du bâti scolaire',
+    famille: 'moyens',
+    porteurs: ['associations d’élus', 'parents d’élèves en juin'],
+    perimetre: 'matignon',                // l'État n'est pas propriétaire des murs
+    cout: 0.25, coutETP: 0, pol: 8,
+    theme: 'bati', once: true, reforme: false,
+    vitrine: { parents: +6, enseignants: +2, presse: +4, compteurs: {} },
+    reel: [
+      { compteur: 'sante',    central: 2, delai: 3, cadenas: 2, source: 'effet indirect : conditions de travail et d’étude' },
+      { compteur: 'reussite', central: 1, delai: 4, cadenas: 2, source: 'la littérature sur le confort thermique est mince mais cohérente' },
+    ],
+    physique: {},
+    mot: "Les écoles sont aux communes, les collèges aux départements, les lycées aux régions — et les photos de classes à 40 °C au ministre. Vous payez l'amorçage pour des murs qui ne sont pas à vous.",
+  },
+
+  /* ----------------------------- 22 · évaluation ---------------------- */
+  {
+    id: 'evaluation_diagnostic',
+    label: 'Évaluations nationales rendues aux équipes, avec accompagnement — sans publication',
+    famille: 'autonomie',
+    porteurs: ['DEPP', 'encadrement', 'chercheurs en évaluation'],
+    perimetre: 'ministeriel',
+    cout: 0.07, coutETP: 0, pol: 3,
+    theme: 'eval_diag', once: true, excl: 'evaluation', reforme: false,
+    vitrine: { parents: -1, enseignants: +4, presse: -2, compteurs: {} },
+    reel: [
+      { compteur: 'reussite', central: 4, delai: 3, cadenas: 4, source: 'EEF : le feedback est l’intervention la mieux documentée du répertoire' },
+      { compteur: 'egalite',  central: 2, delai: 3, cadenas: 3, source: 'le diagnostic oriente les moyens vers les besoins réels' },
+    ],
+    physique: {},
+    mot: "La presse titrera « le ministre renonce à la transparence ». En réalité vous choisissez entre deux outils : un thermomètre pour soigner, ou un thermomètre pour classer les malades.",
+  },
+
+  /* ----------------------------- 23 · autonomie ----------------------- */
+  {
+    id: 'cheque_education',
+    label: 'Chèque-éducation : financement attaché à l’élève, libre choix de l’établissement',
+    famille: 'autonomie',
+    porteurs: ['Lisnard'],
+    contre: ['la quasi-totalité de la recherche comparative', 'les fédérations du public'],
+    perimetre: 'matignon',
+    cout: 0.40, coutETP: 0, pol: 14,
+    theme: 'cheque', once: true, reforme: true,
+    provocations: 1,
+    vitrine: { parents: +3, enseignants: -8, presse: +6, compteurs: {} },
+    reel: [
+      { compteur: 'reussite', central: 1, delai: 4, cadenas: 1, source: 'aucun pays comparable ne l’a fait à l’échelle : preuve minimale, variance maximale' },
+      { compteur: 'egalite',  central: -6, delai: 4, cadenas: 2, source: 'les systèmes à libre choix accroissent le tri social (Chili, Suède)' },
+    ],
+    physique: { segregation: +1.0 },
+    greve: { intensite: 3, theme: 'prive', segment: 'tous' },
+    mot: "Aucun pays comparable ne l'a fait à l'échelle. Vous serez le pionnier, ou le cas d'école — au sens propre.",
+  },
+
+  /* ----------------------------- 24 · autonomie ----------------------- */
+  {
+    id: 'recrutement_direction',
+    label: 'Recrutement des enseignants par les chefs d’établissement',
+    famille: 'autonomie',
+    porteurs: ['Lisnard', 'Philippe (version expérimentale)'],
+    perimetre: 'ministeriel',
+    cout: 0.05, coutETP: 0, pol: 9,
+    theme: 'recrutement_local', once: true, reforme: true,
+    vitrine: { parents: +2, enseignants: -9, presse: +5, compteurs: {} },
+    reel: [
+      { compteur: 'reussite', central: 2, delai: 4, cadenas: 2, source: 'résultats contradictoires selon les systèmes ; dépend entièrement de la qualité des directions' },
+      { compteur: 'egalite',  central: -3, delai: 4, cadenas: 2, source: 'les établissements difficiles perdent au marché des mutations' },
+    ],
+    physique: {},
+    greve: { intensite: 3, theme: 'statut', segment: 'tous' },
+    mot: "Les établissements attractifs recruteront les meilleurs. Les autres recruteront.",
+  },
+
+  /* ----------------------------- 25 · autonomie ----------------------- */
+  {
+    id: 'pacte_pluriannuel',
+    label: 'Pacte pluriannuel : moyens garantis trois ans contre contractualisation d’objectifs',
+    famille: 'autonomie',
+    porteurs: ['Barnier', 'recteurs', 'associations d’élus'],
+    perimetre: 'ministeriel',
+    cout: 0.10, coutETP: 0, pol: 5,
+    theme: 'pluriannuel', once: true, reforme: false,
+    bercy: -3,                            // Bercy déteste s'engager au-delà de l'annualité
+    vitrine: { parents: +1, enseignants: +3, presse: +1, compteurs: {} },
+    reel: [
+      { compteur: 'sante', central: 3, delai: 3, cadenas: 3, source: 'la visibilité pluriannuelle stabilise les équipes et déclenche l’investissement local' },
+    ],
+    physique: { adhesion: +2 },
+    mot: "Une commune ne rénove pas une école qu'elle croit condamnée, un principal ne s'engage pas sur des moyens repris en février. La visibilité est une politique — que Bercy compte comme une reddition.",
+  },
+
+  /* ----------------------------- 26 · parcours ------------------------ */
+  {
+    id: 'groupes_besoins',
+    label: 'Groupes de besoins temporaires, à la main des équipes',
+    famille: 'parcours',
+    porteurs: ['Sgen-CFDT (l’a arrachée puis défendue)', 'IGÉSR (version souple)'],
+    perimetre: 'ministeriel',
+    cout: 0.24, coutETP: 0, pol: 4,
+    theme: 'groupes_besoins', once: true, excl: 'orientation', reforme: true,
+    vitrine: { parents: +2, enseignants: +1, presse: 0, compteurs: {} },
+    reel: [
+      { compteur: 'reussite', central: 3, delai: 3, cadenas: 3, source: 'différencier sans assigner : le compromis le plus étayé sur l’hétérogénéité' },
+      { compteur: 'egalite',  central: 2, delai: 3, cadenas: 3, source: 'regroupements courts et réversibles : pas d’effet d’étiquetage mesuré' },
+    ],
+    physique: {},
+    mot: "Différencier sans étiqueter. Exigeant, invisible, efficace là où les équipes y croient — c'est-à-dire là où vous ne décidez pas.",
+  },
+
+  /* ----------------------------- 27 · parcours ------------------------ */
+  {
+    id: 'brevet_barrage',
+    label: 'Brevet obligatoire pour l’entrée en seconde, avec classes « prépa-seconde »',
+    famille: 'parcours',
+    porteurs: ['Attal'],
+    contre: ['CSEN : les effets de barrage nourrissent le décrochage'],
+    perimetre: 'ministeriel',
+    cout: 0.30, coutETP: 0, pol: 7,
+    theme: 'brevet', once: true, excl: 'orientation', reforme: true,
+    vitrine: { parents: +5, enseignants: +1, presse: +6, compteurs: { reussite: +4 } },
+    reel: [
+      { compteur: 'reussite', central: 0, delai: 3, cadenas: 2, source: 'aucune preuve que l’effet de menace élève le niveau ; le redoublement déguisé, si' },
+      { compteur: 'egalite',  central: -5, delai: 3, cadenas: 3, source: 'le barrage frappe les élèves fragiles, socialement très typés' },
+    ],
+    physique: {},
+    mot: "« L'exigence. » Les recalés iront en prépa-seconde, c'est-à-dire au même endroit qu'avant, mais avec un nom qui rassure tout le monde sauf eux.",
+  },
+
+  /* ----------------------------- 28 · autorité (comédie) -------------- */
+  {
+    id: 'uniforme',
+    label: 'Généralisation de la tenue unique',
+    famille: 'autorite',
+    porteurs: ['une majorité constante de l’opinion', 'plusieurs candidats'],
+    perimetre: 'ministeriel',
+    cout: 0.09, coutETP: 0, pol: 2,
+    theme: 'uniforme', once: true, reforme: false,
+    vitrine: { parents: +5, enseignants: -1, presse: +5, compteurs: { sante: +1 } },
+    reel: [
+      { compteur: 'reussite', central: 0, delai: 2, cadenas: 2, source: 'l’expérimentation française n’a mesuré aucun effet sur les acquis ni sur le climat' },
+      { compteur: 'sante',    central: 1, delai: 2, cadenas: 2, source: 'léger effet déclaré d’appartenance dans certains établissements volontaires' },
+    ],
+    physique: {},
+    mot: "L'expérimentation a coûté trois millions d'euros et conclu à un effet principal : des polos. Mais quels polos.",
+  },
+
+  /* ----------------------------- 29 · parcours ------------------------ */
+  {
+    id: 'voie_pro',
+    label: 'Renforcer les savoirs fondamentaux au lycée professionnel',
+    famille: 'parcours',
+    porteurs: ['intersyndicale', 'chercheurs sur la poursuite d’études'],
+    perimetre: 'ministeriel',
+    cout: 0.28, coutETP: 0, pol: 4,
+    theme: 'voie_pro', once: true, reforme: true,
+    vitrine: { parents: 0, enseignants: +2, presse: -1, compteurs: {} },
+    reel: [
+      { compteur: 'egalite',  central: 4, delai: 4, cadenas: 3, source: 'la voie professionnelle accueille les élèves les plus défavorisés ; leur réussite en BTS dépend des bases' },
+      { compteur: 'reussite', central: 2, delai: 4, cadenas: 3, source: 'un tiers des lycéens sont concernés' },
+    ],
+    physique: {},
+    mot: "Un tiers des lycéens, zéro pour cent des éditoriaux.",
+  },
+
+  /* ----------------------------- 30 · autorité ------------------------ */
+  {
+    id: 'allocations',
+    label: 'Suspension des allocations familiales en cas d’absentéisme persistant',
+    famille: 'autorite',
+    porteurs: ['Zemmour', 'une partie de la droite', '60 % de l’opinion'],
+    contre: ['deux évaluations publiques : aucun effet durable'],
+    perimetre: 'matignon',
+    cout: 0.02, coutETP: 0, pol: 9,
+    theme: 'allocations', once: true, reforme: false,
+    vitrine: { parents: +4, enseignants: -2, presse: +7, compteurs: {} },
+    reel: [
+      { compteur: 'egalite', central: -4, delai: 3, cadenas: 4, source: 'dispositif Ciotti évalué : sans effet sur l’assiduité, frappe les familles les plus fragiles' },
+      { compteur: 'sante',   central: -1, delai: 3, cadenas: 3, source: 'casse le lien école-famille qu’il faudrait reconstruire' },
+    ],
+    physique: {},
+    mot: "Évaluée deux fois, enterrée deux fois, réclamée toujours. La mesure zombie du débat éducatif français : elle ne marche pas, mais elle marche très bien.",
+  },
+
+  /* ----------------------------- 31 · autorité ------------------------ */
+  {
+    id: 'internats',
+    label: 'Internats de rescolarisation pour élèves hautement perturbateurs',
+    famille: 'autorite',
+    porteurs: ['Lisnard', 'Zemmour', 'des chefs d’établissement épuisés'],
+    perimetre: 'ministeriel',
+    cout: 0.21, coutETP: 0, pol: 5,
+    theme: 'internats', once: true, reforme: false,
+    vitrine: { parents: +5, enseignants: +1, presse: +5, compteurs: {} },
+    reel: [
+      { compteur: 'sante',   central: 1, delai: 3, cadenas: 2, source: 'soulage les classes d’origine ; les trajectoires des élèves déplacés sont mal documentées' },
+      { compteur: 'egalite', central: -2, delai: 3, cadenas: 2, source: 'concentrer les élèves en rupture entre eux : l’effet de composition joue contre eux' },
+    ],
+    physique: {},
+    mot: "Sortir l'élève règle le problème de la classe et déplace celui de l'élève. Le transfert n'est pas une politique, mais il photographie très bien.",
+  },
+
+  /* ----------------------------- 32 · autorité ------------------------ */
+  {
+    id: 'pause_numerique',
+    label: 'Pause numérique : téléphones sous clé du portail à la sortie',
+    famille: 'autorite',
+    porteurs: ['acquis de 2025, à généraliser', 'fédérations de parents'],
+    perimetre: 'ministeriel',
+    cout: 0.11, coutETP: 0, pol: 2,
+    theme: 'portable', once: true, reforme: false,
+    vitrine: { parents: +6, enseignants: +2, presse: +4, compteurs: { sante: +2 } },
+    reel: [
+      { compteur: 'sante',    central: 3, delai: 2, cadenas: 3, source: 'effets mesurés sur le climat de récréation et les incidents' },
+      { compteur: 'reussite', central: 1, delai: 3, cadenas: 3, source: 'effets sur l’attention documentés, d’ampleur modeste' },
+    ],
+    physique: {},
+    mot: "Mesure rarissime : les enseignants sont pour, les parents sont pour, les élèves sont contre et n'ont pas le droit de vote. Reste à savoir qui achète les casiers — indice : pas vous.",
+  },
+
+  /* ----------------------------- 33 · climat -------------------------- */
+  {
+    id: 'empathie',
+    label: 'Compétences psychosociales et prévention du harcèlement dès le CP',
+    famille: 'autorite',
+    porteurs: ['programmes finlandais et danois évalués', 'mission harcèlement'],
+    perimetre: 'ministeriel',
+    cout: 0.19, coutETP: 0, pol: 3,
+    theme: 'empathie', once: true, reforme: true,
+    vitrine: { parents: +2, enseignants: +1, presse: -3, compteurs: {} },
+    reel: [
+      { compteur: 'sante',    central: 5, delai: 4, cadenas: 4, source: 'programmes structurés (KiVa et apparentés) : réduction mesurée des violences entre élèves' },
+      { compteur: 'reussite', central: 2, delai: 5, cadenas: 3, source: 'un élève qui n’a pas peur apprend mieux : effet indirect robuste' },
+    ],
+    physique: {},
+    mot: "Les programmes danois ont vingt ans de preuve. Le vôtre aura vingt secondes au journal de 20 heures, sous le bandeau « L'école des bisous ».",
+  },
+
+  /* ----------------------------- 34 · autorité (comédie) -------------- */
+  {
+    id: 'surges',
+    label: 'Rétablir les surveillants généraux',
+    famille: 'autorite',
+    porteurs: ['Zemmour', 'la nostalgie'],
+    perimetre: 'ministeriel',
+    cout: 0.14, coutETP: 1500, pol: 3,
+    theme: 'surges', once: true, reforme: false,
+    vitrine: { parents: +4, enseignants: 0, presse: +4, compteurs: {} },
+    reel: [
+      { compteur: 'sante', central: 2, delai: 2, cadenas: 1, source: 'aucune évaluation : c’est un assistant d’éducation avec un nom d’avant. La présence adulte aide ; le costume, on ne sait pas' },
+    ],
+    physique: {},
+    mot: "Personne ne sait exactement ce que c'était, tout le monde s'en souvient avec émotion. Vous financez un souvenir — à variance maximale.",
+  },
+
+  /* ----------------------------- 35 · mixité (le levier doux) --------- */
+  {
+    id: 'secteurs',
+    label: 'Secteurs multi-collèges avec les départements volontaires',
+    famille: 'mixite',
+    porteurs: ['expérimentations parisiennes évaluées', 'départements volontaires', 'CSEN'],
+    perimetre: 'ministeriel',
+    cout: 0.08, coutETP: 0, pol: 8,
+    theme: 'secteurs', once: true, reforme: true,
+    vitrine: { parents: -4, enseignants: +2, presse: -1, compteurs: { egalite: +2 } },
+    reel: [
+      { compteur: 'egalite', central: 6, delai: 4, cadenas: 3, source: 'secteurs bi-collèges parisiens : la mixité progresse sans baisse des résultats des favorisés' },
+    ],
+    physique: { segregation: -1.2 },
+    mot: "Les évaluations montrent que les résultats des enfants favorisés ne baissent pas. Les craintes de leurs parents, si — et elles, elles votent.",
+  },
+
+  /* ----------------------------- 36 · mixité -------------------------- */
+  {
+    id: 'ghettos',
+    label: 'Fermer une centaine de « ghettos scolaires » et redéployer les élèves',
+    famille: 'mixite',
+    porteurs: ['Attal'],
+    perimetre: 'ministeriel',
+    cout: 0.35, coutETP: 0, pol: 11,
+    theme: 'ghettos', once: true, reforme: true,
+    vitrine: { parents: -2, enseignants: -3, presse: +5, compteurs: {} },
+    reel: [
+      { compteur: 'egalite', central: 4, delai: 4, cadenas: 2, source: 'jamais fait à cette échelle : dépend entièrement de la qualité des réaffectations' },
+    ],
+    physique: { segregation: -0.8 },
+    mot: "Fermer un collège que tout le monde évite : tout le monde est pour, sauf l'intégralité des personnes concernées, son maire, et le collège d'à côté.",
+  },
+
+  /* ----------------------------- 37 · mixité (l’arme nucléaire) ------- */
+  {
+    id: 'loi_carle',
+    label: 'Abroger la loi Carle et intégrer le privé sous contrat à la carte scolaire',
+    famille: 'mixite',
+    porteurs: ['Mélenchon', 'Glucksmann (version carte scolaire)', 'NFP'],
+    perimetre: 'matignon',
+    cout: -0.10, coutETP: 0, pol: 13,
+    theme: 'carle', once: true, reforme: true,
+    provocations: 2,                      // à elle seule, elle arme la guerre scolaire
+    vitrine: { parents: -6, enseignants: +4, presse: -2, compteurs: { egalite: +2 } },
+    reel: [
+      { compteur: 'egalite', central: 8, delai: 4, cadenas: 3, source: 'le privé sous contrat scolarise 40 % d’élèves très favorisés contre 26 % en 2000 : l’intégrer à la carte est le levier structurel' },
+    ],
+    physique: { segregation: -2.0 },
+    mot: "1984 : un million de personnes dans la rue, un ministre débarqué, une loi retirée. Mais vous, vous avez un plan.",
+  },
+
+  /* ----------------------------- 38 · rythmes (comédie tragique) ------ */
+  {
+    id: 'ete',
+    label: 'Raccourcir et zoner les vacances d’été',
+    famille: 'moyens',
+    porteurs: ['chronobiologistes', 'la recherche sur la perte estivale', 'personne d’autre'],
+    perimetre: 'ministeriel',
+    cout: 0.12, coutETP: 0, pol: 12,
+    theme: 'ete', once: true, reforme: true,
+    vitrine: { parents: -6, enseignants: -7, presse: +2, compteurs: {} },
+    reel: [
+      { compteur: 'egalite',  central: 5, delai: 4, cadenas: 3, source: 'la perte estivale d’apprentissages est massive et socialement très inégale' },
+      { compteur: 'reussite', central: 2, delai: 4, cadenas: 3, source: 'étalement de l’année : effet modeste mais convergent' },
+    ],
+    physique: {},
+    greve: { intensite: 3, theme: 'statut', segment: 'tous' },
+    mot: "Contre vous : les parents, les enseignants, les hôteliers, les colonies de vacances et le ministre du Tourisme. Pour vous : trois chronobiologistes, dont un en congé.",
+  },
+
+  /* ----------------------------- 39 · numérique ----------------------- */
+  {
+    id: 'ia_emi',
+    label: 'Éducation aux médias et à l’intelligence artificielle, heures dédiées',
+    famille: 'parcours',
+    porteurs: ['à peu près tout le monde, sans les heures'],
+    perimetre: 'ministeriel',
+    cout: 0.13, coutETP: 0, pol: 2,
+    theme: 'ia', once: true, reforme: false,
+    vitrine: { parents: +2, enseignants: 0, presse: +3, compteurs: {} },
+    reel: [
+      { compteur: 'reussite', central: 2, delai: 4, cadenas: 3, source: 'l’esprit critique s’enseigne ; les effets sont réels et lents' },
+      { compteur: 'sante',    central: 1, delai: 4, cadenas: 2, source: 'moins de conflits liés aux réseaux sociaux, si les adultes sont formés' },
+    ],
+    physique: {},
+    mot: "Vos élèves utilisent déjà l'IA pour leurs devoirs, et vos enseignants pour les corriger. Il serait temps que quelqu'un forme quelqu'un.",
+  },
+
+  /* ----------------------------- 40 · équité -------------------------- */
+  {
+    id: 'devoirs_faits',
+    label: 'Accompagnement aux devoirs systématique au collège',
+    famille: 'moyens',
+    porteurs: ['dispositif existant depuis 2017, à rendre effectif', 'EEF (tutorat)'],
+    perimetre: 'ministeriel',
+    cout: 0.24, coutETP: 0, pol: 3,
+    theme: 'devoirs', once: true, reforme: false,
+    vitrine: { parents: +5, enseignants: -1, presse: +2, compteurs: { egalite: +1 } },
+    reel: [
+      { compteur: 'egalite',  central: 4, delai: 3, cadenas: 4, source: 'EEF : le tutorat et l’aide aux devoirs encadrée comptent parmi les interventions les mieux documentées' },
+      { compteur: 'reussite', central: 2, delai: 3, cadenas: 4, source: 'idem — l’effet dépend de l’encadrement réel, pas de l’étude surveillée' },
+    ],
+    physique: {},
+    mot: "Le dispositif existe depuis 2017. Vous le rendez systématique — c'est-à-dire que vous allez découvrir qui, exactement, était volontaire.",
+  },
+];
+
+/* --------------------------------------------------------------------------
+   Cartes paramétriques : les curseurs et leurs effets différenciés.
+   -------------------------------------------------------------------------- */
+
+/* Revalorisation — chaîne 2 du brief (B.8-2) : revaloriser QUI, et contre quoi.
+   Même coût, trois pays différents. */
+const REVALORISATION = {
+  /* Combien on met sur la table. 1 Md€ récurrent ≈ +2 points de position
+     salariale vs les autres diplômés du supérieur (cf. POINTS_SALAIRE_PAR_MD). */
+  ampleurs: {
+    geste:     { label: 'Un geste (0,5 Md€)', cout: 0.5,
+                 mot: 'De quoi faire un communiqué. Pas de quoi faire une carrière.' },
+    plan:      { label: 'Un plan pluriannuel (1,3 Md€)', cout: 1.3,
+                 mot: 'L’ordre de grandeur d’une vraie mesure catégorielle. Il faudra la financer tous les ans, à vie.' },
+    rattrapage:{ label: 'Un rattrapage (2,6 Md€)', cout: 2.6,
+                 mot: 'Le quart de ce que réclame la FSU. Bercy va vous demander où vous avez trouvé ça.' },
+  },
+  cibles: {
+    debuts: {
+      label: 'Début de carrière (moins de 15 ans d’ancienneté)',
+      note: 'Les revalorisations de 2023 ont déjà ciblé les débuts. On recommence.',
+      positionSalariale: +4.0, adhesion: +2, attractiviteBonus: +9,
+      reel: [{ compteur: 'sante', central: 6, delai: 1, cadenas: 4, source: 'effet sur le vivier de concours dès l’année suivante' }],
+      mot: 'Les candidats arrivent vite. Les collègues de milieu de carrière, eux, comptent leurs années.',
+    },
+    milieux: {
+      label: 'Milieu de carrière (le décrochage de −14 % vs OCDE)',
+      note: 'Le point noir documenté par l’OCDE : 0 % d’évolution en dix ans pour les expérimentés.',
+      positionSalariale: +4.5, adhesion: +9, attractiviteBonus: +2,
+      reel: [{ compteur: 'sante', central: 7, delai: 2, cadenas: 3, source: 'OCDE 2025 : milieu de carrière −14 % vs moyenne OCDE ; principal moteur des démissions' }],
+      mot: 'Aucun effet sur les concours de l’an prochain, un effet massif sur ceux qui sont déjà là.',
+    },
+    tous: {
+      label: 'Tout le monde, uniformément',
+      note: 'Le saupoudrage : 4,92 € le point d’indice, réparti sur 814 927 ETP.',
+      positionSalariale: +2.5, adhesion: +4, attractiviteBonus: +4,
+      reel: [{ compteur: 'sante', central: 3, delai: 2, cadenas: 3, source: 'effet dilué : la même somme divisée par tout le corps' }],
+      mot: 'Personne n’est furieux, personne n’est content. Le degré zéro de la politique salariale, et souvent le plus sûr.',
+    },
+  },
+  contreparties: {
+    sans: {
+      label: 'Sans contrepartie',
+      porteurs: ['FSU', 'Mélenchon'],
+      pol: +4, adhesion: +7, presse: -3, paixBonus: 1.0, hna: 0,
+      mot: 'Bercy vous regardera comme si vous aviez rendu les clés de la maison.',
+    },
+    pacte: {
+      label: 'Contre missions supplémentaires (« pacte »)',
+      porteurs: ['Attal'],
+      pol: 0, adhesion: -3, presse: +2, paixBonus: 1.0, hna: -0.6,
+      note: '800 M€ au PLF 2025 pour ~34 % d’adhésion : les épuisés ne prennent pas de mission de plus.',
+      mot: 'Un tiers des enseignants signent. Ce sont ceux qui allaient déjà bien.',
+    },
+    evaluation: {
+      label: 'Contre évaluation, présence et formation obligatoire',
+      porteurs: ['Lisnard', 'Philippe'],
+      pol: -3, adhesion: -11, presse: +7, paixBonus: 1.0, hna: -0.3,
+      greve: { intensite: 4, theme: 'statut', segment: 'tous' },
+      mot: 'La presse adore. Les salles des professeurs beaucoup moins. Comptez une grève.',
+    },
+  },
+};
+
+/* Plafond de 19 élèves par classe — la « carte à deux financements » (B.8-3).
+   Le même affichage, deux conflits opposés. */
+const FINANCEMENT_19 = {
+  recrutement: {
+    label: 'Par recrutement de 78 000 ETP (21,3 → 19 = ~60 000 divisions à créer)',
+    cout: 5.6, coutETP: 78000, creditBercy: -26, adhesion: +7,
+    mot: 'Bercy vous répondra que vous recrutez pendant que le nombre d’élèves s’effondre. Il n’aura pas complètement tort.',
+  },
+  demographie: {
+    label: 'Par redéploiement intégral de la baisse démographique',
+    cout: 0.35, coutETP: 0, creditBercy: -9, adhesion: +3,
+    forceRestitutionMax: 0.10,   // interdit de rendre des postes à Bercy pendant la mesure
+    mot: 'Gratuit, ou presque. Sauf que vous venez de promettre à Bercy le contraire de ce que vous ferez en janvier.',
+  },
+};
+
+/* Les deux « mesures présidentielles » imposées en cours de mandat (aléa
+   initial, comme l'élection du jeu de référence). Le joueur les applique
+   (elles consomment son enveloppe) ou les abandonne (fatigue +15, capital −10). */
+/* Le Président élu en 2027 impose deux mesures « présidentielles » à caser dans
+   le mandat. L'Élysée aime le visible : le pool penche vitrine. */
+const MESURES_PRESIDENTIELLES = [
+  'differenciation', 'redoublement', 'autonomie', 'classe19', 'sante_scolaire',
+  'remplacement', 'uniforme', 'pause_numerique', 'brevet_barrage', 'internats',
+];
+
+const PAR_ID = Object.fromEntries(CATALOGUE.map((c) => [c.id, c]));
+
+/* ===== moteur/moteur.js ===== */
+/* ============================================================================
+   RUE DE GRENELLE — MOTEUR DE SIMULATION
+   ----------------------------------------------------------------------------
+   Moteur pur, sans aucune dépendance d'interface : il se joue en Node (pour les
+   simulations d'équilibrage) exactement comme il se jouera dans le navigateur.
+
+   Boucle : 5 années de mandat, de juin 2027 à mai 2032, 12 mois chacune.
+   Le joueur est représenté par une `politique` — un objet de fonctions de
+   décision. Les stratégies-types des simulations et l'interface React
+   implémentent la même interface.
+   ========================================================================== */
+
+
+
+
+/* ---------------------------------------------------------------- ALÉA --- */
+function rngDepuis(graine) {
+  let a = graine >>> 0;
+  return function () {
+    a |= 0; a = (a + 0x6D2B79F5) | 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+const borne = (x, min, max) => Math.max(min, Math.min(max, x));
+/* Loi normale (Box-Muller) pour le bruit des indicateurs affichés. */
+function normale(rng, mu = 0, sigma = 1) {
+  const u = Math.max(1e-9, rng()), v = rng();
+  return mu + sigma * Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
+}
+
+/* ------------------------------------------------------- CRÉATION D'ÉTAT --- */
+function creerPartie({ graine = 1, politique }) {
+  const rng = rngDepuis(graine);
+  const s = {
+    rng, graine, politique,
+    annee: 1, anneeCiv: 2027, mois: 5,        // juin 2027
+    fini: false, fin: null,
+
+    doctrine: null,                            // ordre des 5 compteurs, déclaré en juin
+    heritage: { ...K.COMPTEURS_INITIAUX },     // le système tel qu'on vous le laisse
+    vrai: { ...K.COMPTEURS_INITIAUX },         // la vérité, révélée au bilan
+    vitrine: { reussite: 0, egalite: 0, sante: 0, paix: 0, budget: 0 },
+    affiche: { ...K.COMPTEURS_INITIAUX },
+    bruit: { reussite: 0, egalite: 0, sante: 0, paix: 0, budget: 0 },
+
+    phys: { ...K.PHYSIQUE_INITIALE },
+    eleves: K.ELEVES_INITIAL,
+    ratioED: K.RATIO_ED_INITIAL,
+    hnaTemporaires: [],                        // effets temporaires sur les heures non assurées
+
+    capital: K.CAPITAL.initial,
+    creditBercy: K.CREDIT_BERCY_INITIAL,
+    fatigue: K.FATIGUE.initiale,
+
+    tresor: 0,                                 // Md€ disponibles pour mesures nouvelles
+    chargesRecurrentes: 0,                     // Md€/an déjà engagés à vie
+    palier: null, schemaEmploisDemande: 0,
+    restitutionMax: 1,                         // verrou éventuel (financement « démographie »)
+
+    effetsEnAttente: [],                       // { compteur, montant, anneeArrivee, source, carte }
+    reformesActives: [],                       // { id, anneeFin }
+    joue: new Set(), themes: new Set(), excl: new Set(),
+    mesuresPresidentielles: [], presidentiellesFaites: [], abandons: 0,
+    mesuresParAnnee: [],
+
+    syndicats: K.SYNDICATS.map((o) => ({ ...o })),
+    greves: [], pointsGreveCumules: 0,
+    convocations: 0, guerreScolaireArmee: false,
+
+    attractiviteCible: 0,
+    couvertureAnnoncee: K.PHYSIQUE_INITIALE.couvertureConcours,
+    anneesSansAnnonce: 0,
+    histoire: [],                              // trace annuelle pour le bilan
+    journal: [],
+  };
+
+  /* Deux mesures présidentielles imposées, tirées au sort à la prise de fonction. */
+  const pool = [...MESURES_PRESIDENTIELLES];
+  for (let i = 0; i < 2 && pool.length; i++) {
+    const j = Math.floor(rng() * pool.length);
+    s.mesuresPresidentielles.push({ id: pool.splice(j, 1)[0], anneeLimite: 2 + i * 2 });
+  }
+  return s;
+}
+
+const note = (s, texte, cat = 'info') => s.journal.push({ annee: s.annee, mois: s.mois, cat, texte });
+
+/* ============================================================================
+   1. EFFETS RÉELS : tirage sous incertitude
+   ========================================================================== */
+/* Le facteur d'implémentation est la leçon centrale : une réforme ne vaut que
+   ce que les personnels en font (Slavin — un programme mal implanté ≈ 0). */
+function facteurImplementation(s) {
+  const adh = K.IMPLEMENTATION.baseAdhesion + K.IMPLEMENTATION.penteAdhesion * (s.phys.adhesion / 100);
+  const fat = 1 - K.IMPLEMENTATION.penteFatigue * Math.max(0, s.fatigue - K.FATIGUE.initiale);
+  return Math.max(K.IMPLEMENTATION.plancher, adh * fat);
+}
+
+/* Capacité d'absorption : au-delà de 3 réformes actives, tout se dégrade. */
+function absorption(s) {
+  const n = s.reformesActives.filter((r) => r.anneeFin >= s.annee).length;
+  const exces = Math.max(0, n - K.ABSORPTION.seuil);
+  return {
+    nActives: n,
+    penalite: Math.max(K.ABSORPTION.plancher, 1 - K.ABSORPTION.penaliteParReforme * exces),
+    variance: 1 + K.ABSORPTION.varianceParReforme * exces,
+  };
+}
+
+function tirerEffetReel(s, effet, extraVariance = 1) {
+  const [bas, haut] = K.INTERVALLE_CADENAS[effet.cadenas];
+  const centre = (bas + haut) / 2;
+  const demiLargeur = ((haut - bas) / 2) * extraVariance;
+  const facteurPreuve = borne(centre + (s.rng() * 2 - 1) * demiLargeur, -1.0, 3.5);
+  return effet.central * facteurPreuve;
+}
+
+function programmerEffets(s, carte, effets, multiplicateur = 1) {
+  const abs = absorption(s);
+  const impl = facteurImplementation(s);
+  for (const e of effets) {
+    const brut = tirerEffetReel(s, e, abs.variance);
+    const montant = brut * impl * abs.penalite * multiplicateur;
+    s.effetsEnAttente.push({
+      compteur: e.compteur, montant, anneeArrivee: s.annee + e.delai,
+      carte: carte.id, cadenas: e.cadenas, source: e.source, central: e.central,
+    });
+    /* Ce qui met quatre ans à produire commence par coûter en affichage — et,
+       symétriquement, ce qui met quatre ans à NUIRE ne se voit pas non plus.
+       C'est toute la thèse du jeu : l'indicateur et la réalité ne parlent pas
+       du même moment. */
+    if (e.delai >= 4) s.vitrine[e.compteur] -= K.COUT_AFFICHAGE_LONG_TERME * Math.sign(e.central);
+  }
+}
+
+/* ============================================================================
+   2. CONFLIT SOCIAL
+   ========================================================================== */
+function evaluerMobilisation(s, greve) {
+  if (!greve) return null;
+  const sens = K.SENSIBILITES[greve.theme] || K.SENSIBILITES.moyens;
+  /* Une adhésion basse abaisse le seuil de déclenchement de toutes les organisations. */
+  const colere = (50 - s.phys.adhesion) / 22;
+  const mobilises = s.syndicats.filter((o) => greve.intensite * (sens[o.profil] || 1) + colere >= o.seuil);
+  if (!mobilises.length) return null;
+
+  const poidsMobilise = mobilises.reduce((a, o) => a + o.poids, 0) / 100;
+  const unite = mobilises.length >= 5 ? 1 + K.GREVE.bonusUnite : 1;
+  const segment = K.GREVE.segments[greve.segment] || 1;
+  const base = K.GREVE.baseParIntensite[greve.intensite] || 10;
+
+  const tauxMinistere = base * poidsMobilise * unite * segment * (1 + (50 - s.phys.adhesion) / 130);
+  return {
+    cause: greve.cause || greve.theme,
+    organisations: mobilises.map((o) => o.nom),
+    unite: mobilises.length >= 5,
+    tauxMinistere: +tauxMinistere.toFixed(1),
+    tauxSyndicats: +(tauxMinistere * K.GREVE.ecartSyndicats).toFixed(1),
+  };
+}
+
+function appliquerGreve(s, mob) {
+  if (!mob) return;
+  s.greves.push({ annee: s.annee, ...mob });
+  s.pointsGreveCumules += mob.tauxMinistere;
+  s.phys.adhesion -= mob.tauxMinistere * K.GREVE.coutAdhesionParPoint;
+  note(s, `Grève : ${mob.tauxMinistere} % selon le ministère, ${mob.tauxSyndicats} % selon l'intersyndicale (${mob.organisations.length} organisations).`, 'greve');
+}
+
+/* ============================================================================
+   3. RECALCUL DES COMPTEURS
+   ========================================================================== */
+/* Les compteurs VRAIS sont dérivés de l'état physique du système, auxquels
+   s'ajoutent les effets réels une fois leur délai écoulé (`acquis`). */
+function recalculerVrai(s) {
+  const p = s.phys;
+  const a = s.acquis || (s.acquis = { reussite: 0, egalite: 0, sante: 0, paix: 0, budget: 0 });
+
+  s.vrai.reussite = K.COMPTEURS_INITIAUX.reussite + a.reussite
+    - (p.heuresNonAssurees - 9.8) * 1.10
+    - (s.ratioED - K.RATIO_ED_INITIAL) * 2.2;
+
+  s.vrai.egalite = K.COMPTEURS_INITIAUX.egalite + a.egalite
+    - (p.segregation - K.PHYSIQUE_INITIALE.segregation) * 1.45;
+
+  s.vrai.sante = K.COMPTEURS_INITIAUX.sante + a.sante
+    + (p.couvertureConcours - 92) * 0.85
+    - (p.heuresNonAssurees - 9.8) * 1.50
+    + (p.adhesion - 25) * 0.30
+    + (p.affection - 90) * 0.15;
+
+  /* La paix sociale ne remonte jamais : l'histoire sociale du mandat est écrite. */
+  s.vrai.paix = K.COMPTEURS_INITIAUX.paix - s.pointsGreveCumules * K.GREVE.coutPaixParPointGreve + a.paix;
+
+  s.vrai.budget = K.COMPTEURS_INITIAUX.budget + a.budget
+    + (p.positionSalariale - K.PHYSIQUE_INITIALE.positionSalariale) * 3.0
+    + (s.creditBercy - K.CREDIT_BERCY_INITIAL) * 0.30;
+
+  for (const c of Object.keys(s.vrai)) s.vrai[c] = borne(s.vrai[c], 0, 100);
+}
+
+/* Ce que le joueur VOIT : héritage des prédécesseurs + vérité partielle +
+   effet-vitrine + bruit annuel. Les deux premières années, il est jugé sur ce
+   qu'il n'a pas fait. */
+function recalculerAffiche(s) {
+  const w = K.POIDS_HERITAGE[Math.min(4, s.annee - 1)];
+  for (const c of Object.keys(s.vrai)) {
+    s.affiche[c] = borne(s.heritage[c] * w + s.vrai[c] * (1 - w) + s.vitrine[c] + s.bruit[c], 0, 100);
+  }
+}
+
+function rafraichir(s) { recalculerVrai(s); recalculerAffiche(s); }
+
+/* ============================================================================
+   4. LES ÉTAPES DU CALENDRIER
+   ========================================================================== */
+
+/* --- JUIN (an 1) : déclaration de doctrine devant la presse ---------------- */
+function* etapeDoctrine(s) {
+  const ordre = yield { type: 'doctrine' };
+  s.doctrine = ordre;
+  s.poids = {};
+  ordre.forEach((c, i) => { s.poids[c] = K.POIDS_DOCTRINE[i]; });
+  note(s, `Doctrine déclarée : ${ordre.join(' > ')}. La presse a noté.`, 'doctrine');
+}
+
+/* --- JUILLET : lettre plafond de Bercy + résultats des concours ------------ */
+function* etapeJuillet(s) {
+  /* (a) Lettre plafond : la sanction externe non contrôlable. */
+  const palier = K.PALIERS_BERCY.find((p) => s.creditBercy >= p.seuil) || K.PALIERS_BERCY[K.PALIERS_BERCY.length - 1];
+  s.palier = palier;
+  s.schemaEmploisDemande = palier.schemaEmplois;
+  let marge = palier.marge;
+
+  if ((yield { type: 'lettrePlafond', palier }) === 'contester') {
+    s.capital -= 12;
+    if (s.rng() < 0.30 + s.capital / 400) {
+      marge += 0.28; s.schemaEmploisDemande = Math.round(s.schemaEmploisDemande * 0.55);
+      note(s, 'Arbitrage gagné à Matignon : la lettre plafond est desserrée.', 'bercy');
+    } else {
+      s.creditBercy -= 6;
+      note(s, 'Arbitrage perdu. Bercy note que vous avez essayé.', 'bercy');
+    }
+  }
+  s.margeAnnee = K.ENVELOPPE_BASE + marge;
+
+  /* (b) Résultats des concours : le thermomètre de l'attractivité, un an de retard. */
+  const cible = s.attractiviteCible || s.phys.couvertureConcours;
+  s.phys.couvertureConcours += (cible - s.phys.couvertureConcours) * K.ATTRACTIVITE.inertieCouverture;
+  s.phys.couvertureConcours = borne(s.phys.couvertureConcours, 55, 100);
+  note(s, `Concours : ${s.phys.couvertureConcours.toFixed(1)} % des postes pourvus.`, 'concours');
+}
+
+/* --- SEPTEMBRE : LA RENTRÉE. Le « 49.3 » du jeu. -------------------------- */
+function* etapeRentree(s) {
+  const p = s.phys;
+  const ratee = p.heuresNonAssurees > K.RENVOI.seuilHNARentreeRatee
+             || p.couvertureConcours < K.RENVOI.seuilCouvertureRentreeRatee;
+
+  if (ratee) {
+    p.parents -= 6;
+    s.vitrine.sante -= 3;
+    note(s, 'Rentrée dégradée : le comptage syndical des classes sans professeur commence dès le jour 1.', 'rentree');
+    if (p.adhesion < K.RENVOI.seuilAdhesionRentreeRatee || s.rng() < K.RENVOI.probaConvocRentreeRatee) {
+      s.convocations += 1;
+      note(s, `Convocation à Matignon (${s.convocations}/3) : « une rentrée ratée, ça ne se rattrape pas. »`, 'matignon');
+    }
+    /* Comment le ministre commente-t-il les chiffres ? Les deux existent. */
+    const rep = (yield { type: 'rentree', ratee }) || 'assumer';
+    if (rep === 'contester') { s.capital += 3; p.adhesion -= 2.5; s.vitrine.sante += 1.5; }
+    else { s.capital -= 2; p.adhesion += 1.5; }
+  } else {
+    p.parents += 3;
+    note(s, 'Rentrée sans incident majeur. Personne n\'en parlera.', 'rentree');
+  }
+
+  /* An 1 : PISA sciences (8 septembre) — mesure des élèves formés AVANT vous. */
+  if (s.annee === 1) {
+    const choc = -2.5 + normale(s.rng, 0, 1.6);
+    s.vitrine.reussite += choc;
+    s.capital -= 4;
+    note(s, `PISA sciences : le résultat porte sur des élèves scolarisés depuis dix ans. Vous répondez quand même. (${choc.toFixed(1)} pts affichés)`, 'pisa');
+    /* Grève interprofessionnelle du 29 septembre 2027, héritée du front unitaire. */
+    appliquerGreve(s, evaluerMobilisation(s, { intensite: 3, theme: 'moyens', segment: 'tous', cause: 'grève interprofessionnelle du 29 septembre' }));
+  }
+}
+
+/* --- DÉCEMBRE : vote du budget, publications DEPP, élections pro (an 1) ---- */
+function etapeDecembre(s) {
+  if (s.annee === 1) {
+    /* Élections professionnelles : re-pondération des 7 organisations pour la
+       suite du mandat. Une adhésion basse profite aux organisations de lutte. */
+    const derive = (25 - s.phys.adhesion) / 100;
+    for (const o of s.syndicats) {
+      const radical = o.profil === 'radical' || o.profil === 'frontal' || o.profil === 'rapport_de_force';
+      o.poids *= 1 + (radical ? derive : -derive) * 0.8;
+    }
+    const tot = s.syndicats.reduce((a, o) => a + o.poids, 0);
+    for (const o of s.syndicats) o.poids = (o.poids / tot) * 100;
+    note(s, 'Élections professionnelles : la représentativité est rebattue pour quatre ans.', 'syndicats');
+  }
+  /* Note de la DEPP : elle publie ce qu'elle mesure, y compris contre vous. */
+  if (s.phys.heuresNonAssurees > 11) { s.phys.parents -= 3; s.vitrine.sante -= 1.5; }
+}
+
+/* --- JANVIER : CSA ministériel, carte scolaire, DHG, et l'atelier de mesures */
+function* etapeJanvier(s) {
+  s.capital = Math.min(K.CAPITAL.plafond, s.capital + K.CAPITAL.parAn);
+
+  /* (a) Le tendanciel démographique de l'année. */
+  const baisse = K.BAISSE_ELEVES[s.anneeCiv] || -160;         // milliers d'élèves
+  const postesLiberables = Math.round((-baisse * 1000) / K.ELEVES_PAR_POSTE);
+
+  const ctx = { baisse, postesLiberables, schemaDemande: s.schemaEmploisDemande, restitutionMax: s.restitutionMax };
+  let { restitution, prive } = yield { type: 'carteScolaire', ...ctx };
+  restitution = borne(restitution, 0, s.restitutionMax);
+  prive = borne(prive, 0, 1);
+
+  const postesRendus = Math.round(restitution * postesLiberables);
+  const economie = postesRendus * K.CADRAGE.coutETPhorsCAS;
+
+  /* Bercy compare aux emplois qu'il a exigés en juillet. */
+  const ecart = postesRendus + s.schemaEmploisDemande;        // schéma négatif
+  s.creditBercy += ecart >= 0 ? Math.min(13, 4 + ecart / 700) : Math.max(-18, ecart / 260);
+  s.creditBercy = borne(s.creditBercy, 0, 100);
+
+  /* Les personnels comptent les suppressions, pas les intentions. */
+  s.phys.adhesion -= (postesRendus / 1000) * 1.05;
+  if (restitution > K.SEUIL_COLERE_MAIRES) {
+    s.capital -= 6; s.phys.parents -= 3;
+    note(s, 'Les maires invoquent la règle : aucune école ne ferme sans leur accord.', 'maires');
+  }
+
+  /* Encadrement : une division ≈ 1,35 ETP (décharges, options, remplaçants). */
+  const divisions = (s.eleves * 1000) / s.ratioED;
+  const divisionsNew = Math.max(1000, divisions - postesRendus / 1.35);
+  s.eleves = s.eleves + baisse;
+  s.ratioED = (s.eleves * 1000) / divisionsNew;
+
+  /* (b) Répartition de l'effort public / privé sous contrat. */
+  s.phys.segregation += (0.5 - prive) * 1.8;
+  if (prive > 0.78) {
+    s.provocationsPrive = (s.provocationsPrive || 0) + 1;
+    s.capital -= 5;
+    note(s, 'Le privé sous contrat se mobilise. Le mot « Savary » revient dans la presse.', 'prive');
+    /* Il faut insister pour déclencher une guerre scolaire : une année de
+       tension ne suffit pas, deux commencent à faire une histoire. */
+    if (s.provocationsPrive >= 2) s.guerreScolaireArmee = true;
+  }
+
+  /* (c) L'atelier de mesures — le cœur du jeu.
+     `margeAnnee` est la marge NOUVELLE de l'année (croissance de la mission +
+     concession de Bercy) ; `economie` est l'argent frais dégagé par les postes
+     rendus. Les charges déjà engagées sont dans la base : elles ne se
+     re-paient pas, elles ont consommé définitivement la marge des années
+     passées. C'est l'effet cliquet : vos décisions réduisent la marge de vos
+     successeurs, pas la vôtre. */
+  s.margeCumulee = (s.margeCumulee || 0) + s.margeAnnee + economie;
+  s.disponible = Math.max(0, s.tresor) + s.margeAnnee + economie;
+  s.economieCarteScolaire = economie;
+  s.tresor = s.disponible;
+  const dispo = mesuresDisponibles(s);
+  const choix = (yield { type: 'mesures', dispo, tresor: s.tresor, capital: s.capital }) || [];
+  appliquerMesures(s, choix);
+
+  /* Mesures présidentielles : les appliquer, ou les abandonner (et le payer). */
+  for (const mp of s.mesuresPresidentielles) {
+    if (mp.fait || mp.abandonnee) continue;
+    if (s.annee >= mp.anneeLimite) {
+      if (s.joue.has(mp.id)) { mp.fait = true; continue; }
+      mp.abandonnee = true; s.abandons += 1;
+      s.fatigue = Math.min(K.FATIGUE.max, s.fatigue + K.FATIGUE.parAbandon);
+      s.capital -= 10;
+      note(s, `Mesure présidentielle abandonnée (${mp.id}). L'Élysée s'en souviendra.`, 'elysee');
+    }
+  }
+}
+
+/* --- MARS : mobilisations de printemps ------------------------------------ */
+function etapeMars(s) {
+  for (const g of (s.grevesEnAttente || [])) appliquerGreve(s, evaluerMobilisation(s, g));
+  s.grevesEnAttente = [];
+  /* Une adhésion effondrée produit un conflit même sans mesure déclenchante. */
+  if (s.phys.adhesion < 12 && s.rng() < 0.55) {
+    appliquerGreve(s, evaluerMobilisation(s, { intensite: 3, theme: 'moyens', segment: 'tous', cause: 'mobilisation sur les moyens' }));
+  }
+}
+
+/* --- MAI : clôture de l'année scolaire, tendanciels, attractivité --------- */
+function etapeCloture(s) {
+  const p = s.phys;
+
+  /* Effets réels arrivés à échéance : ils entrent enfin dans la vérité. */
+  s.acquis = s.acquis || { reussite: 0, egalite: 0, sante: 0, paix: 0, budget: 0 };
+  for (const e of s.effetsEnAttente) {
+    if (!e.applique && e.anneeArrivee <= s.annee) { s.acquis[e.compteur] += e.montant; e.applique = true; }
+  }
+
+  /* Tendanciels : ce qui se dégrade tout seul si l'on ne fait rien. */
+  p.heuresNonAssurees += K.TENDANCIEL.heuresNonAssurees;
+  p.segregation += K.TENDANCIEL.segregation;
+  p.positionSalariale += K.TENDANCIEL.positionSalariale;
+  p.affection += K.TENDANCIEL.affection;
+  p.adhesion += K.TENDANCIEL.adhesion;
+
+  /* Effets temporaires sur les heures non assurées (ex. formation continue). */
+  s.hnaTemporaires = s.hnaTemporaires.filter((t) => {
+    p.heuresNonAssurees += t.delta;
+    t.reste -= 1;
+    if (t.reste <= 0) { p.heuresNonAssurees -= t.delta * t.applique; return false; }
+    t.applique = (t.applique || 0) + 1;
+    return true;
+  });
+  /* Postes non pourvus : le remplacement se dégrade mécaniquement. */
+  p.heuresNonAssurees += (K.ATTRACTIVITE.couvertureReference - p.couvertureConcours) * K.ATTRACTIVITE.effetHNAparPointCouv;
+  p.heuresNonAssurees = borne(p.heuresNonAssurees, 2, 26);
+
+  /* Inertie : les jauges d'opinion reviennent lentement vers leur moyenne. */
+  const cibleAdh = borne(
+    K.INERTIE_OPINION.cibleAdhesion
+      + (p.positionSalariale - K.PHYSIQUE_INITIALE.positionSalariale) * K.INERTIE_OPINION.gainParPointSalaire
+      - (p.heuresNonAssurees - 9.8) * K.INERTIE_OPINION.perteParPointHNA, 5, 80);
+  s.cibleAdhesion = cibleAdh;
+  p.adhesion += (cibleAdh - p.adhesion) * K.INERTIE_OPINION.vitesse;
+  p.parents  += (K.INERTIE_OPINION.cibleParents - p.parents) * K.INERTIE_OPINION.vitesseParents;
+
+  /* Conflictualité latente : le conflit sans la grève (préavis, motions,
+     boycott des instances). La paix sociale s'use même sans journée d'action. */
+  s.pointsGreveCumules += Math.max(0, (25 - p.adhesion) * K.GREVE.conflictualiteLatente);
+
+  p.adhesion = borne(p.adhesion, 0, 100);
+  p.affection = borne(p.affection, 40, 100);
+  p.parents = borne(p.parents, 0, 100);
+
+  /* Boucle d'attractivité : salaires + considération + conditions → candidats. */
+  const normSalaire = borne(100 + p.positionSalariale * 3.2, 0, 100);
+  const conditions = borne(100 - (p.heuresNonAssurees - 5) * 4.5 - (s.ratioED - 19) * 6, 0, 100);
+  const attractivite = K.ATTRACTIVITE.poidsSalaire * normSalaire
+                     + K.ATTRACTIVITE.poidsAdhesion * p.adhesion
+                     + K.ATTRACTIVITE.poidsConditions * conditions;
+  s.attractiviteCible = borne(K.ATTRACTIVITE.base + attractivite * K.ATTRACTIVITE.pente + (s.bonusAttractivite || 0), 55, 100);
+  s.bonusAttractivite = (s.bonusAttractivite || 0) * 0.55;
+
+  /* L'effet-vitrine s'use ; le bruit est retiré chaque année. */
+  for (const c of Object.keys(s.vitrine)) {
+    s.vitrine[c] *= K.DECROISSANCE_VITRINE;
+    s.bruit[c] = normale(s.rng, 0, K.BRUIT_AFFICHE);
+  }
+
+  /* Fatigue réformatrice : ne rien annoncer la fait retomber. */
+  if (!(s.mesuresParAnnee[s.annee - 1] || []).length) {
+    s.anneesSansAnnonce += 1;
+    s.fatigue = Math.max(0, s.fatigue + K.FATIGUE.parAnneeSansAnnonce);
+    /* Le système souffle — mais l'Élysée s'impatiente et la presse écrit
+       « ministre invisible ». L'immobilisme a aussi son prix politique. */
+    s.capital -= K.IMMOBILISME.capital;
+    s.phys.parents -= K.IMMOBILISME.parents;
+    note(s, 'Une année sans annonce : le système souffle, l\'Élysée s\'impatiente.', 'elysee');
+  }
+  if (absorption(s).nActives > K.ABSORPTION.seuil) s.anneesSurcharge = (s.anneesSurcharge || 0) + 1;
+  s.reformesActives = s.reformesActives.filter((r) => r.anneeFin >= s.annee);
+
+  rafraichir(s);
+  s.histoire.push({
+    annee: s.annee, anneeCiv: s.anneeCiv,
+    affiche: { ...s.affiche }, vrai: { ...s.vrai },
+    capital: s.capital, creditBercy: s.creditBercy, fatigue: s.fatigue,
+    hna: +p.heuresNonAssurees.toFixed(2), couverture: +p.couvertureConcours.toFixed(1),
+    adhesion: +p.adhesion.toFixed(1), parents: +p.parents.toFixed(1),
+    ratioED: +s.ratioED.toFixed(2), segregation: +p.segregation.toFixed(2),
+    positionSalariale: +p.positionSalariale.toFixed(2),
+    tresor: +s.tresor.toFixed(3), charges: +s.chargesRecurrentes.toFixed(3),
+    mesures: (s.mesuresParAnnee[s.annee - 1] || []).map((m) => m.id),
+  });
+
+  /* Survie politique. */
+  if (s.capital < 12 && s.rng() < K.RENVOI.probaConvocCapitalBas) {
+    s.convocations += 1;
+    note(s, `Convocation à Matignon (${s.convocations}/3) : capital politique épuisé.`, 'matignon');
+  }
+  if (p.parents < K.RENVOI.seuilParents && s.rng() < K.RENVOI.probaConvocParents) {
+    s.convocations += 1;
+    note(s, `Convocation à Matignon (${s.convocations}/3) : les fédérations de parents ont été reçues avant vous.`, 'matignon');
+  }
+  if (s.creditBercy < K.RENVOI.seuilCreditBercy && s.rng() < K.RENVOI.probaConvocBercy) {
+    s.convocations += 1;
+    note(s, `Convocation à Matignon (${s.convocations}/3) : Bercy a fait remonter le dossier.`, 'matignon');
+  }
+  if (s.vrai.paix < K.RENVOI.seuilPaixCritique && p.adhesion < 15) {
+    s.convocations += 1;
+    note(s, `Convocation à Matignon (${s.convocations}/3) : le pays enseignant est bloqué.`, 'matignon');
+  }
+  /* Remaniement : indépendant de vos mérites, modulé par votre solidité. */
+  if (!s.fini && s.annee < 5) {
+    const pRem = borne(K.RENVOI.remaniementBase
+      - s.capital / K.RENVOI.remaniementParCapital
+      - (p.parents - 45) / K.RENVOI.remaniementParParents,
+      K.RENVOI.remaniementMin, K.RENVOI.remaniementMax);
+    if (s.rng() < pRem) {
+      s.fini = true;
+      s.fin = { type: 'remaniement', annee: s.annee, texte: 'Remaniement. Rien de personnel : votre nom figurait dans une autre colonne du tableau. Vos réformes, elles, avaient encore trois ans devant elles.' };
+    }
+  }
+  if (s.convocations >= K.RENVOI.convocationsFatales) {
+    s.fini = true;
+    s.fin = { type: 'renvoi', annee: s.annee, texte: 'Remaniement. Vous quittez la rue de Grenelle. Durée moyenne d\'un ministre de l\'Éducation nationale : deux ans.' };
+  }
+  if (s.guerreScolaireArmee && s.capital < 22 && s.rng() < 0.26) {
+    s.fini = true;
+    s.fin = { type: 'guerre_scolaire', annee: s.annee, texte: 'Guerre scolaire. Un million de personnes dans la rue, comme en 1984. Le gouvernement retire le texte, et vous avec.' };
+  }
+}
+
+/* ============================================================================
+   5. MESURES : disponibilité, application
+   ========================================================================== */
+function estJouable(s, c) {
+  if (c.once && s.joue.has(c.id)) return false;
+  if (c.theme && s.themes.has(c.theme)) return false;
+  if (c.excl && s.excl.has(c.excl)) return false;
+  return true;
+}
+
+/* Le menu de janvier : 12 cartes tournantes sur le catalogue de 40, comme le
+   jeu de référence (système once/theme/excl + rotation déterministe).
+   Toujours proposées : la revalorisation (on revalorise à chaque budget, ou
+   jamais) et les mesures présidentielles encore à caser — l'Élysée s'assure
+   qu'elles restent sur votre bureau. */
+const TAILLE_MENU = 12;
+function mesuresDisponibles(s) {
+  const pool = CATALOGUE.filter((c) => estJouable(s, c));
+  const menu = [];
+  const pousse = (c) => { if (c && !menu.includes(c)) menu.push(c); };
+
+  pousse(pool.find((c) => c.id === 'revalorisation'));
+  for (const mp of s.mesuresPresidentielles) {
+    if (!mp.fait && !mp.abandonnee) pousse(pool.find((c) => c.id === mp.id));
+  }
+  const reste = pool.filter((c) => !menu.includes(c));
+  const dec = reste.length ? ((s.annee * 7 + (s.graine % 13)) % reste.length) : 0;
+  for (let i = 0; i < reste.length && menu.length < TAILLE_MENU; i++) {
+    pousse(reste[(dec + i) % reste.length]);
+  }
+  return menu;
+}
+
+/* Coût réel d'une carte, curseurs compris. */
+function coutDe(carte, options = {}) {
+  if (carte.parametrique === 'financement19') {
+    const f = FINANCEMENT_19[options.financement || 'demographie'];
+    return { cout: f.cout, coutETP: f.coutETP, pol: carte.pol };
+  }
+  if (carte.parametrique === 'revalorisation') {
+    const cp = REVALORISATION.contreparties[options.contrepartie || 'sans'];
+    const am = REVALORISATION.ampleurs[options.ampleur || 'plan'];
+    return { cout: am.cout, coutETP: 0, pol: carte.pol + cp.pol + Math.round(am.cout * 2) };
+  }
+  return { cout: carte.cout, coutETP: carte.coutETP, pol: carte.pol };
+}
+
+function appliquerMesures(s, choix) {
+  const retenues = [];
+  for (const ch of choix) {
+    const carte = PAR_ID[ch.id];
+    if (!carte) continue;
+    if (!mesuresDisponibles(s).includes(carte)) continue;
+    const { cout, coutETP, pol } = coutDe(carte, ch.options || {});
+    if (pol > s.capital) continue;                       // le capital bloque réellement
+    if (carte.perimetre === 'matignon' && pol * 2 > s.capital) continue;
+
+    const polReel = carte.perimetre === 'matignon' ? pol * 2 : pol;
+    s.capital -= polReel;
+    s.tresor -= cout;
+    s.chargesRecurrentes += cout;
+
+    s.joue.add(carte.id);
+    if (carte.theme) s.themes.add(carte.theme);
+    if (carte.excl) s.excl.add(carte.excl);
+    if (carte.reforme) {
+      s.fatigue = Math.min(K.FATIGUE.max, s.fatigue + K.FATIGUE.parReforme);
+      s.reformesActives.push({ id: carte.id, anneeFin: s.annee + K.ABSORPTION.dureeActive - 1 });
+    }
+
+    /* Vitrine : immédiate, visible, périssable. */
+    s.phys.parents += carte.vitrine.parents;
+    s.phys.adhesion += carte.vitrine.enseignants;
+    for (const [c, v] of Object.entries(carte.vitrine.compteurs || {})) s.vitrine[c] += v;
+
+    /* Physique. */
+    const ph = carte.physique || {};
+    if (ph.adhesion) s.phys.adhesion += ph.adhesion;
+    if (ph.affection) s.phys.affection += ph.affection;
+    if (ph.segregation) s.phys.segregation += ph.segregation;
+    if (ph.ratioED) s.ratioED += ph.ratioED;
+    if (ph.hna) s.hnaTemporaires.push({ delta: ph.hna.delta, reste: ph.hna.duree, applique: 0 });
+    if (ph.attractivite) s.bonusAttractivite = (s.bonusAttractivite || 0) + ph.attractivite;
+    if (carte.bercy) s.creditBercy = borne(s.creditBercy + carte.bercy, 0, 100);
+    if (carte.coutETP) s.ratioED -= carte.coutETP / 35000;   // les ETP créés desserrent l'encadrement
+
+    /* Effets réels, curseurs compris. */
+    let effets = carte.reel;
+    let mult = 1;
+    if (carte.parametrique === 'revalorisation') {
+      const cible = REVALORISATION.cibles[ch.options?.cible || 'tous'];
+      const cp = REVALORISATION.contreparties[ch.options?.contrepartie || 'sans'];
+      const am = REVALORISATION.ampleurs[ch.options?.ampleur || 'plan'];
+      const echelle = am.cout / 1.3;                 // l'ampleur module tout
+      s.phys.positionSalariale += am.cout * K.POINTS_SALAIRE_PAR_MD;
+      s.phys.adhesion += (cible.adhesion + cp.adhesion) * echelle;
+      s.bonusAttractivite = (s.bonusAttractivite || 0) + cible.attractiviteBonus * echelle;
+      mult *= echelle;
+      if (cp.hna) s.hnaTemporaires.push({ delta: cp.hna, reste: 99, applique: 0 });
+      effets = cible.reel;
+      if (cp.greve) (s.grevesEnAttente = s.grevesEnAttente || []).push({ ...cp.greve, cause: 'revalorisation sous conditions' });
+    }
+    if (carte.parametrique === 'financement19') {
+      const f = FINANCEMENT_19[ch.options?.financement || 'demographie'];
+      s.creditBercy = borne(s.creditBercy + f.creditBercy, 0, 100);
+      s.phys.adhesion += f.adhesion;
+      s.ratioED += (ch.options?.financement === 'recrutement') ? -2.0 : -0.9;
+      if (f.forceRestitutionMax !== undefined) s.restitutionMax = f.forceRestitutionMax;
+    }
+    /* Goulot de recrutement : l'argent ne produit qu'au rythme des postes pourvus. */
+    if (carte.goulot) mult *= borne(s.phys.couvertureConcours / 100, 0.3, 1) * 0.75;
+
+    programmerEffets(s, carte, effets, mult);
+    if (carte.greve) (s.grevesEnAttente = s.grevesEnAttente || []).push({ ...carte.greve, cause: carte.label });
+    if (carte.provocations) {
+      s.provocationsPrive = (s.provocationsPrive || 0) + carte.provocations;
+      if (s.provocationsPrive >= 2) s.guerreScolaireArmee = true;
+    }
+
+    retenues.push({ id: carte.id, options: ch.options || {}, cout, annee: s.annee });
+  }
+
+  /* Dépassement : possible, et cher. Il ne porte que sur les engagements
+     NOUVEAUX de l'année — au-delà, une charge trop lourde produit une
+     pénalité structurelle annuelle, plus douce mais persistante. */
+  if (s.tresor < 0) {
+    const dep = -s.tresor;
+    s.creditBercy = borne(s.creditBercy - K.SURCOUT.creditBercyParMd * dep, 0, 100);
+    s.capital -= K.SURCOUT.capitalParMd * dep;
+    note(s, `Dépassement de ${dep.toFixed(2)} Md€ : arbitrage interministériel arraché, crédit Bercy entamé.`, 'bercy');
+    s.tresor = 0;
+  }
+  const surEngagement = s.chargesRecurrentes - (s.margeCumulee || 0);
+  if (surEngagement > 0.05) {
+    s.creditBercy = borne(s.creditBercy - Math.min(K.SURCOUT.penaliteStructurelleMax, surEngagement * K.SURCOUT.penaliteStructurelleParMd), 0, 100);
+  }
+  s.mesuresParAnnee[s.annee - 1] = retenues;
+  s.phys.adhesion = borne(s.phys.adhesion, 0, 100);
+  s.phys.parents = borne(s.phys.parents, 0, 100);
+}
+
+/* ============================================================================
+   6. BOUCLE PRINCIPALE
+   ========================================================================== */
+/* Le mandat, pas à pas : un générateur qui s'interrompt à chaque décision.
+   `yield {type: ...}` = une question au joueur ; la réponse revient par
+   `gen.next(reponse)`. L'interface interactive et les stratégies simulées
+   pilotent EXACTEMENT le même déroulé — c'est la garantie que ce qui a été
+   équilibré est ce qui sera joué. Les yields `type:'etape'` sont
+   informatifs : l'interface y affiche le récit, les simulations les ignorent. */
+function* derouler(s) {
+  yield* etapeDoctrine(s);
+  rafraichir(s);
+  yield { type: 'etape', etape: 'ouverture' };
+
+  for (s.annee = 1; s.annee <= 5 && !s.fini; s.annee++) {
+    s.anneeCiv = 2026 + s.annee;                 // année civile de la carte scolaire
+    yield* etapeJuillet(s);   s.mois = 6;  yield { type: 'etape', etape: 'juillet' };
+    yield* etapeRentree(s);   s.mois = 8;  yield { type: 'etape', etape: 'rentree' };
+    etapeDecembre(s);         s.mois = 11; yield { type: 'etape', etape: 'decembre' };
+    yield* etapeJanvier(s);   s.mois = 0;
+    etapeMars(s);             s.mois = 2;  yield { type: 'etape', etape: 'mars' };
+    etapeCloture(s);          s.mois = 4;
+    rafraichir(s);
+    yield { type: 'etape', etape: 'cloture' };
+  }
+  if (!s.fini) { s.fini = true; s.fin = { type: 'mandat_complet', annee: 5, texte: 'Cinq rentrées. Vous partez debout — ce qui, rue de Grenelle, est déjà un résultat.' }; }
+  s.annee = Math.min(5, s.annee);
+}
+
+/* Pilote synchrone : joue un mandat entier avec une `politique` (objet de
+   fonctions de décision). C'est l'interface qu'utilisent les simulations. */
+function jouerMandat({ graine = 1, politique }) {
+  const s = creerPartie({ graine, politique });
+  const gen = derouler(s);
+  let res = gen.next();
+  while (!res.done) {
+    const q = res.value;
+    let rep;
+    if (q.type === 'doctrine') rep = politique.doctrine(s);
+    else if (q.type === 'lettrePlafond') rep = politique.lettrePlafond ? politique.lettrePlafond(s, q.palier) : 'accepter';
+    else if (q.type === 'rentree') rep = politique.rentree ? politique.rentree(s, q) : 'assumer';
+    else if (q.type === 'carteScolaire') rep = politique.carteScolaire(s, q);
+    else if (q.type === 'mesures') rep = politique.mesures(s, q.dispo, q) || [];
+    res = gen.next(rep);
+  }
+  return bilan(s);
+}
+
+/* ============================================================================
+   7. PROJECTION À DIX ANS — « si votre successeur maintient le cap »
+   ----------------------------------------------------------------------------
+   On ne plaque pas un bonus : on prolonge la physique du système sur cinq
+   années supplémentaires. Les effets encore en route arrivent, la boucle
+   d'attractivité continue de tourner dans le sens où le mandat l'a lancée, et
+   les charges récurrentes engagées continuent de produire.
+   Référence : Portugal, quinze ans de cap constant malgré l'alternance, seul
+   pays de l'OCDE en progression dans les trois domaines de PISA 2000-2018.
+   ========================================================================== */
+function projeterDixAns(s, constance) {
+  const p = { ...s.phys };
+  let ratio = s.ratioED;
+  const acquis = { ...(s.acquis || { reussite: 0, egalite: 0, sante: 0, paix: 0, budget: 0 }) };
+  const enRoute = s.effetsEnAttente.filter((e) => !e.applique).map((e) => ({ ...e }));
+  /* Sans constance, le successeur détricote : les effets encore en route
+     n'arrivent qu'à 60 %, et les dérives spontanées reprennent en entier. */
+  const complet = s.fin.type === 'mandat_complet';
+  const tenu = complet ? 1 : 0.70;
+  /* Rythme imprimé par le mandat, par an : c'est lui que le successeur prolonge. */
+  const ans = Math.max(1, s.histoire.length);
+  const rythme = {
+    positionSalariale: (p.positionSalariale - K.PHYSIQUE_INITIALE.positionSalariale) / ans,
+    segregation: (p.segregation - K.PHYSIQUE_INITIALE.segregation) / ans,
+    hna: (p.heuresNonAssurees - K.PHYSIQUE_INITIALE.heuresNonAssurees) / ans,
+  };
+  const k = constance ? K.PROJECTION.poursuiteDuCap : 0;
+
+  for (let an = s.annee + 1; an <= s.annee + 5; an++) {
+    for (const e of enRoute) {
+      if (!e.applique && e.anneeArrivee <= an) { acquis[e.compteur] += e.montant * tenu; e.applique = true; }
+    }
+    /* Le cap tenu gèle les dérives que le mandat a corrigées ; sinon elles reprennent. */
+    /* Si le cap tient, la dérive spontanée est neutralisée et la trajectoire du
+       mandat se prolonge ; sinon tout reprend comme avant vous. */
+    p.positionSalariale += constance ? rythme.positionSalariale * k : K.TENDANCIEL.positionSalariale;
+    p.segregation += constance ? rythme.segregation * k : K.TENDANCIEL.segregation;
+    p.affection += K.TENDANCIEL.affection * (constance ? 0.2 : 1);
+
+    const cibleAdh = borne(K.INERTIE_OPINION.cibleAdhesion
+      + (p.positionSalariale - K.PHYSIQUE_INITIALE.positionSalariale) * K.INERTIE_OPINION.gainParPointSalaire
+      - (p.heuresNonAssurees - 9.8) * K.INERTIE_OPINION.perteParPointHNA, 5, 80);
+    p.adhesion += (cibleAdh - p.adhesion) * K.INERTIE_OPINION.vitesse;
+
+    const normSalaire = borne(100 + p.positionSalariale * 3.2, 0, 100);
+    const conditions = borne(100 - (p.heuresNonAssurees - 5) * 4.5 - (ratio - 19) * 6, 0, 100);
+    const attractivite = K.ATTRACTIVITE.poidsSalaire * normSalaire
+                       + K.ATTRACTIVITE.poidsAdhesion * p.adhesion
+                       + K.ATTRACTIVITE.poidsConditions * conditions;
+    const cibleCouv = borne(K.ATTRACTIVITE.base + attractivite * K.ATTRACTIVITE.pente, 55, 100);
+    p.couvertureConcours += (cibleCouv - p.couvertureConcours) * K.ATTRACTIVITE.inertieCouverture;
+
+    p.heuresNonAssurees += (constance ? rythme.hna * k : K.TENDANCIEL.heuresNonAssurees)
+      + (K.ATTRACTIVITE.couvertureReference - p.couvertureConcours) * K.ATTRACTIVITE.effetHNAparPointCouv;
+    p.heuresNonAssurees = borne(p.heuresNonAssurees, 2, 26);
+  }
+
+  /* Le cap tenu compose : c'est l'effet Portugal, la seule façon de gagner. */
+  if (constance) for (const c of Object.keys(acquis)) if (acquis[c] > 0) acquis[c] *= 1 + K.PROJECTION.bonusConstance;
+
+  const v = {};
+  v.reussite = K.COMPTEURS_INITIAUX.reussite + acquis.reussite - (p.heuresNonAssurees - 9.8) * 1.10 - (ratio - K.RATIO_ED_INITIAL) * 2.2;
+  v.egalite  = K.COMPTEURS_INITIAUX.egalite + acquis.egalite - (p.segregation - K.PHYSIQUE_INITIALE.segregation) * 1.45;
+  v.sante    = K.COMPTEURS_INITIAUX.sante + acquis.sante + (p.couvertureConcours - 92) * 0.85
+             - (p.heuresNonAssurees - 9.8) * 1.50 + (p.adhesion - 25) * 0.30 + (p.affection - 90) * 0.15;
+  v.paix     = K.COMPTEURS_INITIAUX.paix - s.pointsGreveCumules * K.GREVE.coutPaixParPointGreve + acquis.paix;
+  v.budget   = K.COMPTEURS_INITIAUX.budget + acquis.budget
+             + (p.positionSalariale - K.PHYSIQUE_INITIALE.positionSalariale) * 3.0
+             + (s.creditBercy - K.CREDIT_BERCY_INITIAL) * 0.30;
+  for (const c of Object.keys(v)) v[c] = borne(v[c], 0, 100);
+  return v;
+}
+
+/* ============================================================================
+   8. BILAN : la vérité, et la projection à dix ans
+   ========================================================================== */
+function bilan(s) {
+  rafraichir(s);
+  const anneesJouees = s.histoire.length || 1;
+
+  /* Score de perception : ce que le tableau de bord affichait à votre départ. */
+  const scoreAffiche = s.doctrine.reduce((a, c, i) => a + (K.POIDS_DOCTRINE[i] * s.affiche[c]) / 100, 0);
+
+  /* Note de mandat : ce que le public a vu, année après année, rapporté au
+     quinquennat entier (les années non servies comptent pour zéro). */
+  const noteMandat = s.histoire.reduce((acc, h) => {
+    return acc + s.doctrine.reduce((a, c, i) => a + (K.POIDS_DOCTRINE[i] * h.affiche[c]) / 100, 0);
+  }, 0) / 5;   // rapporté au quinquennat entier : les années non servies comptent pour zéro
+
+  /* Score de bilan : la vérité, pondérée par la doctrine que le joueur a déclarée. */
+  const scoreBilan = s.doctrine.reduce((a, c, i) => a + (K.POIDS_DOCTRINE[i] * s.vrai[c]) / 100, 0);
+
+  /* Cohérence du cap : quelle part de ce que vous avez réellement produit
+     va dans le sens des deux priorités que vous aviez annoncées ? */
+  const prioritaires = s.doctrine.slice(0, 2);
+  let dirige = 0, total = 0;
+  for (const e of s.effetsEnAttente) {
+    total += Math.abs(e.montant);
+    if (prioritaires.includes(e.compteur) && e.montant > 0) dirige += e.montant;
+  }
+  const coherence = total > 0 ? dirige / total : 0;
+  const constance = s.fin.type === 'mandat_complet'
+                 && s.abandons <= K.PROJECTION.seuilAbandonsConstance
+                 && coherence >= K.PROJECTION.seuilCoherence
+                 && (s.anneesSurcharge || 0) <= K.PROJECTION.maxAnneesSurcharge;
+  const proj = projeterDixAns(s, constance);
+  const scoreProjection = s.doctrine.reduce((a, c, i) => a + (K.POIDS_DOCTRINE[i] * proj[c]) / 100, 0);
+
+  const auVert = (o) => Object.values(o).filter((v) => v >= 60).length;
+
+  return {
+    etat: s,
+    fin: s.fin,
+    anneesJouees,
+    doctrine: s.doctrine,
+    affiche: { ...s.affiche }, vrai: { ...s.vrai }, projection: proj,
+    noteMandat, scoreAffiche, scoreBilan, scoreProjection, constance, coherence,
+    compteursVertsBilan: auVert(s.vrai),
+    compteursVertsProjection: auVert(proj),
+    greves: s.greves.length,
+    pointsGreve: +s.pointsGreveCumules.toFixed(1),
+    fatigue: s.fatigue, abandons: s.abandons,
+    mesures: s.mesuresParAnnee.flat().map((m) => m.id),
+    histoire: s.histoire,
+    journal: s.journal,
+  };
+}
+
+/* ============================================================================
+   RUE DE GRENELLE — application (interface)
+   Pilote le générateur `derouler` du moteur : chaque yield est un écran.
+   La sauvegarde rejoue le journal des décisions sur la même graine.
+   ========================================================================== */
+'use strict';
+
+/* ---------------------------------------------------------------- outils --- */
+const $ = (sel) => document.querySelector(sel);
+const el = (tag, cls, html) => { const n = document.createElement(tag); if (cls) n.className = cls; if (html !== undefined) n.innerHTML = html; return n; };
+const alea = (arr) => arr[Math.floor(Math.random() * arr.length)];
+const fmt1 = (x) => (Math.round(x * 10) / 10).toLocaleString('fr-FR');
+const fmt0 = (x) => Math.round(x).toLocaleString('fr-FR');
+const signe = (x) => (x > 0 ? '+' + fmt1(x) : fmt1(x));
+const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;');
+/* typographie française pour les textes du moteur : décimales à virgule */
+const fr = (s) => esc(s).replace(/(\d)\.(\d)/g, '$1,$2');
+
+const NOMS_C = { reussite: 'Réussite', egalite: 'Inégalités', sante: 'Santé du système', paix: 'Paix sociale', budget: 'Budget & salaires' };
+const NOMS_C_LONGS = {
+  reussite: 'Réussite des élèves', egalite: 'Réduction des inégalités',
+  sante: 'Santé du système', paix: 'Paix sociale', budget: 'Budget et salaires',
+};
+const COULEURS_C = { reussite: 'var(--c-reussite)', egalite: 'var(--c-egalite)', sante: 'var(--c-sante)', paix: 'var(--c-paix)', budget: 'var(--c-budget)' };
+const FAMILLES = {
+  moyens: ['Moyens & encadrement', 'var(--c-reussite)'],
+  autonomie: ['Autonomie & évaluation', 'var(--c-budget)'],
+  parcours: ['Parcours & orientation', 'var(--c-sante)'],
+  autorite: ['Autorité & familles', 'var(--c-paix)'],
+  mixite: ['Mixité & carte scolaire', 'var(--c-egalite)'],
+};
+const MOIS_L = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'];
+
+/* ------------------------------------------------------- distribution ------ */
+/* Satire symétrique : personnages transparents, tout le monde y passe. */
+const CAST = {
+  pm: 'Barthélemy Roulette, Premier ministre',
+  bercy: 'Aymeric Sécateur, ministre des Comptes publics',
+  journal: 'La Gazette de Grenelle',
+  breves: ['Le Figareau', 'Libécole', 'Ouest-Trance', 'BFM Récré', 'La Craie du Matin'],
+};
+const COMPTES = [
+  { a: 'Craie Voyante', p: '@CraieVoyante · prof de lettres, voit tout venir', quand: (s) => s.phys.adhesion < 30, posts: [
+    'Nouveau plan ministériel reçu ce matin. Je le range avec les huit autres. Le classeur s’appelle « À appliquer dès que possible », il date de 2017.',
+    'On nous demande de restaurer l’autorité, le niveau, le lien avec les familles et la République. Toujours entre 8 h et 8 h 05, avant l’appel.',
+    'Le ministère parle de « co-construction ». C’est le nom administratif du moment où on nous informe après la presse.',
+  ] },
+  { a: 'Parent Délégué 67', p: '@ParentDelegue67 · FPCE, 3 enfants, 0 remplaçant', quand: (s) => s.phys.parents < 42, posts: [
+    'Jour 12 sans prof de maths en 4e. Le collège nous dit que « le rectorat est saisi ». Le rectorat doit être très occupé à se saisir.',
+    'On a reçu un questionnaire de satisfaction du ministère. Question 1 : êtes-vous satisfaits ? Il n’y avait pas de question 2.',
+  ] },
+  { a: 'Dirlo Fatigué', p: '@DirloFatigue · directeur d’école, 27e enquête de l’année', quand: () => true, posts: [
+    'Enquête ministérielle urgente : combien de prises électriques dans votre école ? C’est la troisième fois. Elles n’ont pas bougé.',
+    'J’ai une décharge de direction de 8 heures. J’ai passé 9 heures cette semaine à chercher un remplaçant. Le compte est bon.',
+  ] },
+  { a: 'Bercy Leaks', p: '@BercyLeaks · fuites certifiées conformes', quand: (s) => s.creditBercy < 30, posts: [
+    'Selon nos informations, la lettre plafond de la rue de Grenelle tient sur un timbre.',
+    'Note interne : « le ministère de l’Éducation demande des moyens ». Bercy a répondu « bien reçu », ce qui, en langage Bercy, veut dire non.',
+  ] },
+  { a: 'Jean-Michel Blanquette', p: '@JMBlanquette · ancien ministre, twitte avant le lever du soleil', quand: () => true, posts: [
+    'Ce que je vois rue de Grenelle me préoccupe. De mon temps, les choses étaient claires : elles étaient décidées, puis annoncées, puis re-annoncées.',
+    'Je dis les choses simplement : il faut de l’exigence, de la bienveillance, et un communiqué avant 7 heures.',
+  ] },
+  { a: 'Gabriel Attable', p: '@GAttable · ancien ministre aussi, disponible pour en reparler', quand: () => true, posts: [
+    'J’avais engagé exactement cette réforme. Ou son contraire. Dans les deux cas, j’invite le ministre à s’inspirer de mon bilan.',
+    'Le niveau, l’autorité, l’uniforme. Je mets ça là, au cas où quelqu’un chercherait un programme.',
+  ] },
+  { a: 'Jean-Luc Mélanchton', p: '@Melanchton · la réforme (de l’éducation) ou la mort', quand: () => true, posts: [
+    'Pendant que le ministre compte ses postes, le privé sous contrat compte ses IPS. Abrogation. Générale. Tout de suite.',
+    '19 élèves par classe. C’est écrit dans notre programme depuis 2012, page 34. Je vous attends page 34.',
+  ] },
+  { a: 'Marine de Montretout', p: '@MdeMontretout · l’école du bon sens', quand: () => true, posts: [
+    'Les Français veulent une école qui instruit. Le ministre propose un comité. Chacun jugera.',
+    'Uniforme, autorité, fondamentaux. Trois mots que la rue de Grenelle a rayés du dictionnaire — probablement lors d’un allègement des programmes.',
+  ] },
+];
+
+/* --------------------------------------------------------------- unes ------ */
+function unesPossibles(etape) {
+  const S = ETAT.s, dern = S.greves[S.greves.length - 1];
+  const u = [];
+  const pousser = (cond, titre, sous) => { if (cond) u.push({ titre, sous }); };
+  const j = nouvellesEntrees();
+  const a = (cat) => j.some((e) => e.cat === cat);
+
+  pousser(a('pisa'), 'PISA : la France piétine, le ministre répond',
+    'L’enquête mesure des élèves entrés au CP dix ans avant la nomination du ministre. Détail que le plateau de 20 h a choisi de garder pour lui.');
+  pousser(a('greve') && dern, `Grève dans l’éducation : ${fmt1(dern ? dern.tauxSyndicats : 0)} % de grévistes selon l’intersyndicale, ${fmt1(dern ? dern.tauxMinistere : 0)} % selon le ministère`,
+    'Les deux chiffres sont exacts. Ils ne comptent simplement pas la même chose, ce qui tombe bien : personne ne compte pareil.');
+  pousser(a('matignon'), 'Rue de Grenelle : Matignon convoque, le ministre « conforté »',
+    '« Conforté » est, dans la presse gouvernementale, le stade qui précède immédiatement « remplacé ».');
+  pousser(a('prive'), 'École privée : la tension monte, le mot « Savary » est lâché',
+    'Au ministère, on assure « assumer le dialogue ». Le dialogue a prévu de défiler un dimanche.');
+  pousser(a('rentree') && ETAT.rentreeRatee, 'Rentrée : le compteur des classes sans professeur tourne déjà',
+    'Le ministère parle de « tensions localisées ». La localisation : un peu partout.');
+  pousser(a('rentree') && !ETAT.rentreeRatee, 'Rentrée sans accroc rue de Grenelle',
+    'Un professeur devant chaque classe ou presque. L’information, jugée peu spectaculaire, est en page 12.');
+  pousser(a('bercy'), 'Budget de l’éducation : bras de fer avec Bercy',
+    'Les deux ministères partagent le même gouvernement, ce qui ne les a jamais rapprochés.');
+  pousser(a('concours'), `Concours : ${fmt1(S.phys.couvertureConcours)} % des postes pourvus`,
+    S.phys.couvertureConcours < 90 ? 'Le vivier est un lac. Le lac baisse.' : 'Le frémissement est confirmé par les autorités compétentes en frémissements.');
+  pousser(a('maires'), 'Fermetures de classes : les maires montent au créneau',
+    '« Aucune école ne ferme sans l’accord du maire. » Les maires viennent de relire la phrase à voix haute.');
+  pousser(a('elysee'), 'L’Élysée s’impatiente',
+    'Le Château rappelle qu’il existe, exercice dans lequel il excelle.');
+  pousser(etape === 'cloture', `An ${S.annee} du mandat : ce qui a changé, ce qui attend`,
+    'Le système scolaire bouge à la vitesse d’un paquebot. Le ministre rame, la presse chronomètre.');
+  pousser(true, 'Rue de Grenelle : le ministre poursuit sa route',
+    'Selon son entourage, « le cap est clair ». Le cap n’a pas souhaité répondre à nos questions.');
+  return u;
+}
+
+function nouvellesEntrees() {
+  return ETAT.s.journal.slice(ETAT.journalLu);
+}
+
+/* ---------------------------------------------------------------- HUD ----- */
+let instantane = null;
+function majHud() {
+  const S = ETAT.s;
+  $('#hud').hidden = false;
+  $('#hud-date').textContent = ETAT.dateLabel || 'juin 2027';
+  const zone = $('#hud-compteurs'); zone.innerHTML = '';
+  for (const c of Object.keys(NOMS_C)) {
+    const v = S.affiche[c];
+    const d = instantane ? v - instantane[c] : 0;
+    const j = el('div', 'jauge');
+    j.innerHTML = `<div class="nom"><span>${NOMS_C[c]}</span><b>${fmt0(v)}</b></div>
+      <div class="rail"><i style="width:${Math.max(2, Math.min(100, v))}%;background:${COULEURS_C[c]}"></i></div>
+      <div class="delta ${d > 0.6 ? 'up' : d < -0.6 ? 'down' : ''}">${Math.abs(d) > 0.6 ? (d > 0 ? '▲ ' : '▼ ') + fmt1(Math.abs(d)) : '&nbsp;'}</div>`;
+    if (S.doctrine && S.doctrine[0] === c) j.querySelector('.nom span').style.color = 'var(--bleu-rf)';
+    zone.appendChild(j);
+  }
+  instantane = { ...S.affiche };
+  $('#hud-sous').innerHTML = [
+    `Capital politique <b>${fmt0(S.capital)}</b>`,
+    `Crédit Bercy <b>${fmt0(S.creditBercy)}</b>`,
+    `Adhésion enseignante <b>${fmt0(S.phys.adhesion)}</b>`,
+    `Parents <b>${fmt0(S.phys.parents)}</b>`,
+    `Fatigue réformatrice <b>${fmt0(S.fatigue)}</b>`,
+    `Concours pourvus <b>${fmt1(S.phys.couvertureConcours)} %</b>`,
+    `Heures non assurées <b>${fmt1(S.phys.heuresNonAssurees)} %</b>`,
+  ].map((x) => `<span>${x}</span>`).join('');
+}
+
+/* ------------------------------------------------------------ écrans ------- */
+function scene(...blocs) {
+  const sc = $('#scene'); sc.innerHTML = '';
+  for (const b of blocs) sc.appendChild(b);
+  $('#suite').hidden = true;
+  window.scrollTo({ top: 0 });
+}
+function boutonSuite(label, ctx, action) {
+  $('#suite').hidden = false;
+  $('#suite-ctx').textContent = ctx || '';
+  const b = $('#suite-btn'); b.textContent = label;
+  b.onclick = action;
+}
+function docu(type, titre, dateLabel) {
+  const d = el('article', 'doc');
+  d.appendChild(el('div', 'entete-doc', `<span class="type">${type}</span><span class="date">${dateLabel || ETAT.dateLabel || ''}</span>`));
+  if (titre) d.appendChild(el('h2', '', titre));
+  return d;
+}
+
+/* --- accueil --------------------------------------------------------------- */
+function ecranAccueil(sauvegarde) {
+  const a = el('div', 'accueil');
+  a.innerHTML = `
+    <div class="tampon"><div class="rf">RÉPUBLIQUE FRANÇAISE</div><div style="font-size:.62rem;letter-spacing:.18em">MINISTÈRE DE L'ÉDUCATION NATIONALE</div></div>
+    <h1>Rue de Grenelle</h1>
+    <p class="devise">Vous êtes ministre de l'Éducation nationale. Cinq rentrées, cinq budgets, 1,2 million d'agents, 12 millions d'élèves — et une durée moyenne dans le poste de deux ans. Finir sera déjà une performance.</p>`;
+  const actions = el('div', 'actions'); actions.style.justifyContent = 'center';
+  if (sauvegarde) {
+    const rep = el('button', 'btn', 'Reprendre la partie en cours');
+    rep.onclick = () => demarrer(sauvegarde);
+    actions.appendChild(rep);
+    const neuf = el('button', 'btn sec', 'Nouveau mandat');
+    neuf.onclick = () => { localStorage.removeItem(CLE_SAUVE); demarrer(null); };
+    actions.appendChild(neuf);
+  } else {
+    const go = el('button', 'btn', 'Prendre vos fonctions — juin 2027');
+    go.onclick = () => demarrer(null);
+    actions.appendChild(go);
+  }
+  a.appendChild(actions);
+  a.appendChild(el('p', 'avertissement', 'Jeu pédagogique indépendant, sans lien avec le ministère de l’Éducation nationale. Les ordres de grandeur viennent de sources publiques (DEPP, PLF, OCDE, CSEN, EEF) ; chaque mesure cite ses porteurs réels et le niveau de preuve de son effet. Le jeu ne dit jamais qu’une doctrine est la bonne — il vous laisse en répondre.'));
+  scene(a);
+}
+
+/* --- passation ------------------------------------------------------------- */
+function ecranPassation() {
+  const S = ETAT.s;
+  const d = docu('Passation de pouvoirs', 'Bienvenue rue de Grenelle', 'juin 2027');
+  d.appendChild(el('p', 'chapo', 'Votre prédécesseur — le huitième en quatre ans — vous remet les clés du premier budget de l’État. Sur le bureau, un mot :'));
+  d.appendChild(el('div', 'note-passation',
+    '« Tout est dans les dossiers. Les dossiers sont dans les cartons. Les cartons sont au garde-meuble, la DGESCO sait lequel. Méfiez-vous de juillet, de septembre et de janvier — le reste de l’année est calme, sauf le reste de l’année. Bonne chance.'
+    + '<span class="ps">P.-S. — La photocopieuse du deuxième est en panne depuis 2019. C’est le dossier le plus consensuel du ministère : ne le réglez pas, il fédère. »</span>'));
+  const mp = S.mesuresPresidentielles.map((m) => `<b>${esc(PAR_ID[m.id].label)}</b> <span style="color:var(--encre-2)">(avant l’an ${m.anneeLimite})</span>`);
+  d.appendChild(el('p', '', `L’Élysée vous fait par ailleurs porter deux « priorités présidentielles », à engager pendant le mandat sous peine de disgrâce :`));
+  const ul = el('div', 'opts'); ul.style.gap = '6px';
+  for (const x of mp) ul.appendChild(el('div', 'opt', `<span class="badge-pr">Priorité présidentielle</span><br>${x}`));
+  d.appendChild(ul);
+  d.appendChild(el('p', '', 'Premier acte du mandat : déclarer votre doctrine devant la presse. Vous classerez les cinq compteurs du quinquennat par ordre de priorité — et vous serez noté, au bilan, contre votre propre classement.'));
+  scene(d);
+  boutonSuite('Déclarer ma doctrine', 'Conférence de presse de prise de fonction', () => ETAT.rendre(ETAT.enAttente));
+}
+
+/* --- doctrine --------------------------------------------------------------- */
+function ecranDoctrine() {
+  const ordre = ['reussite', 'egalite', 'sante', 'paix', 'budget'];
+  const d = docu('Conférence de presse', 'Votre doctrine, devant témoins', 'juin 2027');
+  d.appendChild(el('p', 'chapo', 'Classez les cinq compteurs. Le score final pondérera chacun selon VOTRE ordre (35 / 25 / 20 / 12 / 8). La presse garde une copie ; les oppositions aussi.'));
+  const liste = el('div', 'classement');
+  const rendreListe = () => {
+    liste.innerHTML = '';
+    ordre.forEach((c, i) => {
+      const r = el('div', 'rang');
+      r.innerHTML = `<span class="pastille" style="background:${COULEURS_C[c]}"></span>
+        <span class="lib">${NOMS_C_LONGS[c]}</span><span class="poids">${K.POIDS_DOCTRINE[i]} % du score</span>`;
+      const fl = el('div', 'fleches');
+      const haut = el('button', '', '↑'); haut.setAttribute('aria-label', 'Monter ' + NOMS_C[c]); haut.disabled = i === 0;
+      haut.onclick = () => { [ordre[i - 1], ordre[i]] = [ordre[i], ordre[i - 1]]; rendreListe(); };
+      const bas = el('button', '', '↓'); bas.setAttribute('aria-label', 'Descendre ' + NOMS_C[c]); bas.disabled = i === 4;
+      bas.onclick = () => { [ordre[i + 1], ordre[i]] = [ordre[i], ordre[i + 1]]; rendreListe(); };
+      fl.append(haut, bas); r.appendChild(fl);
+      liste.appendChild(r);
+    });
+  };
+  rendreListe();
+  d.appendChild(liste);
+  d.appendChild(el('p', '', '<span style="font-size:.85rem;color:var(--encre-2)">Conseil de votre directeur de cabinet : « Ce que vous mettez en premier, on vous le ressortira à chaque arbitrage contradictoire. Ce que vous mettez en dernier aussi. »</span>'));
+  const ok = el('button', 'btn', 'Annoncer ce classement à la presse');
+  ok.onclick = () => suivant([...ordre]);
+  d.appendChild(el('div', 'actions')).appendChild(ok);
+  scene(d);
+}
+
+/* --- lettre plafond --------------------------------------------------------- */
+function ecranBercy(q) {
+  const S = ETAT.s, p = q.palier;
+  const tons = {
+    confiant: 'Le ton est presque cordial. Presque.',
+    vigilant: 'Le ton est celui d’un créancier patient.',
+    ferme: 'Le ton est celui d’un huissier poli.',
+    comminatoire: 'Le ton est celui d’un huissier qui a cessé d’être poli.',
+  };
+  const d = docu('Lettre plafond — Matignon / Bercy', 'Le cadrage de votre prochain budget');
+  d.appendChild(el('p', 'chapo', `${CAST.bercy} vous adresse la lettre plafond. ${tons[p.ton]}`));
+  d.appendChild(el('div', 'depeche',
+    `OBJET : plafonds 2e circulaire budgétaire<br>
+     SCHÉMA D’EMPLOIS EXIGÉ : <b>${fmt0(p.schemaEmplois)} ETP</b><br>
+     MARGE EN MESURES NOUVELLES : <b>${fmt0(p.marge * 1000)} M€</b> (crédit Bercy : ${fmt0(S.creditBercy)}/100)<br>
+     RAPPEL : toute dépense pérenne engage vos successeurs. Les nôtres aussi.`));
+  const opts = el('div', 'opts');
+  const acc = el('button', 'opt', `<b>Accepter le cadrage</b><span class="det">Vous gardez vos munitions politiques pour janvier. Bercy note votre esprit de responsabilité, ce qui ne coûte rien à Bercy.</span>`);
+  acc.onclick = () => suivant('accepter');
+  const con = el('button', 'opt', `<b>Contester et porter l’arbitrage à Matignon</b><span class="det">Coût : 12 points de capital politique (il vous en reste ${fmt0(S.capital)}). Chances de gagner : moyennes, et décroissantes avec l’usage. Un ministre qui menace trop souvent finit par ne plus être craint, seulement remplacé.</span>`);
+  con.onclick = () => suivant('contester');
+  opts.append(acc, con); d.appendChild(opts);
+  scene(d);
+}
+
+/* --- rentrée ratée : la communication --------------------------------------- */
+function ecranRentree() {
+  const S = ETAT.s;
+  const d = docu('Cellule de crise — rentrée', 'Des classes sans professeur, et un micro devant vous');
+  d.appendChild(el('p', 'chapo', `Couverture des concours : ${fmt1(S.phys.couvertureConcours)} %. Heures non assurées : ${fmt1(S.phys.heuresNonAssurees)} %. Le comptage syndical des classes sans enseignant a commencé à 8 h 07. Il est 8 h 12.`));
+  const opts = el('div', 'opts');
+  const b1 = el('button', 'opt', `<b>Assumer les chiffres</b><span class="det">« La situation est difficile, voici ce que nous faisons. » Les personnels entendent qu’on ne leur ment pas ; l’opposition entend un aveu. Les deux ont raison.</span>`);
+  b1.onclick = () => suivant('assumer');
+  const b2 = el('button', 'opt', `<b>Contester le comptage syndical</b><span class="det">« Ces chiffres ne correspondent à aucune réalité observable. » Défendable une fois. La réalité observable, elle, revient chaque matin à 8 h.</span>`);
+  b2.onclick = () => suivant('contester');
+  opts.append(b1, b2); d.appendChild(opts);
+  scene(d);
+}
+
+/* --- carte scolaire ---------------------------------------------------------- */
+function ecranCarteScolaire(q) {
+  const S = ETAT.s;
+  const d = docu('Bordereau — carte scolaire & DHG', `Rentrée ${S.anneeCiv + 1} : le moment le plus conflictuel de l’année`);
+  d.classList.add('large');
+  d.appendChild(el('p', 'chapo',
+    `La démographie fait son œuvre : <b>${fmt0(Math.abs(q.baisse) * 1000)} élèves de moins</b> à la prochaine rentrée, soit ${fmt0(q.postesLiberables)} postes « libérables ». Bercy en exige ${fmt0(Math.abs(q.schemaDemande))}. Les maires, eux, exigent l’inverse. Les deux vous regardent.`));
+
+  let restitution = Math.min(q.restitutionMax, 0.4), prive = 0.5;
+  const c1 = el('div', 'curseur');
+  c1.innerHTML = `<label for="cur-rest">Postes rendus à Bercy ⟷ réinvestis dans l’encadrement</label>
+    <div class="aide">Précédents réels : rentrée 2025, 4 % des postes libérés rendus ; rentrée 2026, 60 %. Les deux ministres ont affirmé faire « le choix de l’école ».</div>
+    <input id="cur-rest" type="range" min="0" max="${q.restitutionMax}" step="0.05" value="${restitution}">
+    <div class="lecture" id="lec-rest"></div>`;
+  const c2 = el('div', 'curseur');
+  c2.innerHTML = `<label for="cur-prive">Répartition de l’effort : épargner le privé sous contrat ⟷ le faire contribuer</label>
+    <div class="aide">17 % des élèves, financement public à environ 73 %, IPS moyen très supérieur au public. Au-delà d’un certain point, le mot « Savary » réapparaît tout seul dans les dépêches.</div>
+    <input id="cur-prive" type="range" min="0" max="1" step="0.05" value="${prive}">
+    <div class="lecture" id="lec-prive"></div>`;
+  d.append(c1, c2);
+
+  const lire = () => {
+    const postes = Math.round(restitution * q.postesLiberables);
+    const eco = postes * K.CADRAGE.coutETPhorsCAS * 1000;
+    const ecart = postes - Math.abs(q.schemaDemande);
+    $('#lec-rest').innerHTML = `${fmt0(postes)} postes rendus · ${fmt0(eco)} M€ dégagés · ${ecart >= 0 ? 'Bercy servi (' + signe(ecart) + ' ETP)' : 'sous l’exigence Bercy (' + fmt0(ecart) + ' ETP)'}${restitution > K.SEUIL_COLERE_MAIRES ? ' · <span style="color:var(--rouge-rf)">zone de colère des maires</span>' : ''}`;
+    $('#lec-prive').innerHTML = prive < 0.35 ? 'Le privé est épargné : la ségrégation dérive en silence.'
+      : prive <= 0.65 ? 'Effort proportionnel aux effectifs : personne n’est content, personne ne défile.'
+      : prive <= 0.78 ? 'Le privé contribue davantage : protestations d’usage, encore contenues.'
+      : '<span style="color:var(--rouge-rf)">Le privé est mis à contribution frontale : provocation comptabilisée — à deux, la guerre scolaire s’arme.</span>';
+  };
+  scene(d);
+  $('#cur-rest').oninput = (e) => { restitution = +e.target.value; lire(); };
+  $('#cur-prive').oninput = (e) => { prive = +e.target.value; lire(); };
+  lire();
+  if (q.restitutionMax < 1) d.appendChild(el('p', '', `<span style="font-size:.82rem;color:var(--encre-2)">Votre engagement « 19 élèves par classe » plafonne la restitution à ${fmt0(q.restitutionMax * 100)} % : vous avez promis la démographie aux classes, pas à Bercy.</span>`));
+  const ok = el('button', 'btn', 'Arrêter la carte scolaire');
+  ok.onclick = () => suivant({ restitution, prive });
+  d.appendChild(el('div', 'actions')).appendChild(ok);
+}
+
+/* --- atelier de mesures ------------------------------------------------------ */
+function ecranAtelier(q) {
+  const S = ETAT.s;
+  const selection = new Map();   // id -> options
+  const enveloppe = q.tresor, capital = q.capital;
+
+  const d = el('article', 'doc large');
+  d.appendChild(el('div', 'entete-doc', `<span class="type">L’atelier — mesures de l’année</span><span class="date">${ETAT.dateLabel}</span>`));
+  d.appendChild(el('h2', '', 'Que portez-vous cette année ?'));
+  d.appendChild(el('p', 'chapo', 'L’effet vitrine est chiffré : vous le verrez. L’effet réel ne l’est pas : seuls le niveau de preuve (🔒) et le délai sont connus — vous découvrirez au bilan ce que vous avez produit. Et rien ne s’applique sans les personnels.'));
+
+  const solde = el('div', 'solde');
+  const grille = el('div', 'grille-cartes');
+
+  const coutSel = () => { let cout = 0, pol = 0, reformes = 0;
+    for (const [id, opt] of selection) { const c = PAR_ID[id]; const k = coutDe(c, opt);
+      cout += k.cout; pol += c.perimetre === 'matignon' ? k.pol * 2 : k.pol; if (c.reforme) reformes++; }
+    return { cout, pol, reformes }; };
+
+  const majSolde = () => {
+    const { cout, pol, reformes } = coutSel();
+    const abs = absorption(S);
+    const actives = abs.nActives + reformes;
+    solde.innerHTML = [
+      `Enveloppe <b class="${enveloppe - cout < 0 ? 'neg' : ''}">${fmt0((enveloppe - cout) * 1000)} M€</b>/${fmt0(enveloppe * 1000)}`,
+      `Capital <b class="${capital - pol < 0 ? 'neg' : ''}">${fmt0(capital - pol)}</b>/${fmt0(capital)}`,
+      `Réformes actives <b class="${actives > K.ABSORPTION.seuil ? 'neg' : ''}">${actives}</b>/${K.ABSORPTION.seuil} absorbables`,
+      `Implémentation ×<b>${(Math.round(facteurImplementation(S) * 100) / 100).toLocaleString('fr-FR')}</b> (adhésion ${fmt0(S.phys.adhesion)})`,
+      cout > enveloppe ? `<span class="neg">dépassement : −${fmt0(K.SURCOUT.creditBercyParMd * (cout - enveloppe))} crédit Bercy, −${fmt0(K.SURCOUT.capitalParMd * (cout - enveloppe))} capital</span>` : '',
+    ].filter(Boolean).map((x) => `<span>${x}</span>`).join('');
+    valider.disabled = pol > capital;
+    valider.textContent = selection.size ? `Annoncer ${selection.size} mesure${selection.size > 1 ? 's' : ''}` : 'Ne rien annoncer cette année';
+  };
+
+  const valider = el('button', 'btn', '');
+  const rendreCarte = (c) => {
+    const carte = el('button', 'carte');
+    const [famNom, famCoul] = FAMILLES[c.famille] || ['Divers', 'var(--encre-2)'];
+    carte.style.borderTopColor = famCoul;
+    const presid = S.mesuresPresidentielles.some((m) => m.id === c.id && !m.fait && !m.abandonnee);
+    const k0 = coutDe(c, {});
+    const vit = c.vitrine, vc = Object.entries(vit.compteurs || {});
+    carte.innerHTML = `
+      <span class="famille" style="color:${famCoul}">${famNom}${presid ? ' · <span class="badge-pr">priorité présidentielle</span>' : ''}</span>
+      <h3>${esc(c.label)}</h3>
+      <div class="porteurs">Porté par : <b>${c.porteurs.map(esc).join(' · ')}</b>${c.contre ? `<br>Contre : ${c.contre.map(esc).join(' · ')}` : ''}</div>
+      <div class="chiffres">
+        <span>${fmt0(k0.cout * 1000)} M€/an</span><span>${k0.pol}${c.perimetre === 'matignon' ? '×2' : ''} capital</span>
+        ${c.coutETP ? `<span>${fmt0(c.coutETP)} ETP</span>` : ''}
+        <span class="${vit.parents >= 0 ? 'pos' : 'neg'}">parents ${signe(vit.parents)}</span>
+        <span class="${vit.enseignants >= 0 ? 'pos' : 'neg'}">enseignants ${signe(vit.enseignants)}</span>
+        <span class="${vit.presse >= 0 ? 'pos' : 'neg'}">presse ${signe(vit.presse)}</span>
+        ${vc.map(([cc, v]) => `<span class="${v >= 0 ? 'pos' : 'neg'}">${NOMS_C[cc]} ${signe(v)} (vitrine)</span>`).join('')}
+      </div>
+      <div class="reels">${(c.reel || []).map((e) => `<div class="ligne"><span class="verrous">${'🔒'.repeat(e.cadenas)}${'·'.repeat(5 - e.cadenas)}</span><span>Effet réel sur <b>${NOMS_C[e.compteur]}</b>, vers l’an +${e.delai}</span></div><div class="src">${esc(e.source)}</div>`).join('')}
+      ${c.parametrique === 'revalorisation' ? '<div class="ligne"><span class="verrous">🔒🔒🔒··</span><span>Effet réel selon vos curseurs (réglez-les après sélection)</span></div>' : ''}</div>
+      ${c.greve ? `<div class="alerte-greve">⚠ Risque de mobilisation (intensité ${c.greve.intensite}/5, ${c.greve.theme})</div>` : ''}
+      ${c.provocations ? `<div class="alerte-greve">⚠ Provocation « guerre scolaire » (+${c.provocations})</div>` : ''}
+      <div class="mot">${esc(c.mot)}</div>`;
+
+    let zone = null;
+    const majParams = () => {
+      if (!selection.has(c.id) || !c.parametrique) return;
+      const opt = selection.get(c.id);
+      if (zone) zone.remove();
+      zone = el('div', 'curseurs-carte');
+      const sel = (nom, table, cle, format) => {
+        const w = el('div'); w.appendChild(el('label', '', nom));
+        const s = document.createElement('select');
+        for (const [k, v] of Object.entries(table)) { const o = document.createElement('option'); o.value = k; o.textContent = format(k, v); if (opt[cle] === k) o.selected = true; s.appendChild(o); }
+        s.onclick = (e) => e.stopPropagation();
+        s.onchange = (e) => { opt[cle] = e.target.value; majSolde(); };
+        w.appendChild(s); return w; };
+      if (c.parametrique === 'revalorisation') {
+        zone.append(
+          sel('Ampleur', REVALORISATION.ampleurs, 'ampleur', (k, v) => v.label),
+          sel('Cible', REVALORISATION.cibles, 'cible', (k, v) => v.label),
+          sel('Contrepartie', REVALORISATION.contreparties, 'contrepartie', (k, v) => `${v.label} — ${v.porteurs.join(', ')}`));
+      } else if (c.parametrique === 'financement19') {
+        zone.append(sel('Financement', FINANCEMENT_19, 'financement', (k, v) => `${v.label} (${fmt0(v.cout * 1000)} M€)`));
+      }
+      zone.onclick = (e) => e.stopPropagation();
+      carte.appendChild(zone);
+    };
+
+    carte.onclick = () => {
+      if (selection.has(c.id)) { selection.delete(c.id); carte.classList.remove('sel'); if (zone) { zone.remove(); zone = null; } }
+      else {
+        const opt = c.parametrique === 'revalorisation' ? { ampleur: 'plan', cible: 'milieux', contrepartie: 'sans' }
+          : c.parametrique === 'financement19' ? { financement: 'demographie' } : {};
+        selection.set(c.id, opt); carte.classList.add('sel'); majParams();
+      }
+      majSolde();
+    };
+    return carte;
+  };
+
+  for (const c of q.dispo) grille.appendChild(rendreCarte(c));
+  d.append(solde, grille);
+  const act = el('div', 'actions');
+  act.appendChild(valider);
+  valider.onclick = () => {
+    if (!selection.size) {
+      if (!confirm('Ne rien annoncer laisse le système souffler (fatigue −8)… et fait écrire « ministre invisible » (capital −7, parents −3,5). Confirmer ?')) return;
+    }
+    suivant([...selection].map(([id, options]) => ({ id, options })));
+  };
+  d.appendChild(act);
+  majSolde();
+  scene(d);
+}
+
+/* --- écrans narratifs (étapes) ---------------------------------------------- */
+function ecranEtape(etape) {
+  const S = ETAT.s;
+  const entrees = nouvellesEntrees();
+  const une = unesPossibles(etape)[0];
+
+  const j = el('article', 'journal');
+  j.innerHTML = `<div class="manchette"><span class="titre-j">${CAST.journal}</span><span class="ours">${ETAT.dateLabel} · n° ${1200 + S.annee * 37 + (S.mois || 0)} · 2,40 €</span></div>
+    <h2 class="une">${une.titre}</h2><p class="sous-une">${une.sous}</p>`;
+  if (entrees.length) {
+    const br = el('div', 'breves');
+    for (const e of entrees.slice(0, 6)) br.appendChild(el('div', 'breve', `${fr(e.texte)} <span class="sig">${alea(CAST.breves)}</span>`));
+    j.appendChild(br);
+  }
+
+  const fil = el('div', 'fil');
+  const dispo = COMPTES.filter((c) => c.quand(S));
+  for (const c of dispo.sort(() => Math.random() - 0.5).slice(0, etape === 'cloture' ? 3 : 2)) {
+    fil.appendChild(el('div', 'post', `<span class="auteur">${c.a}</span> <span class="pseudo">${c.p}</span><p>${alea(c.posts)}</p>`));
+  }
+
+  ETAT.journalLu = S.journal.length;
+  const ctx = {
+    ouverture: 'Votre doctrine est déclarée. Premier été au ministère.',
+    juillet: 'La double sanction de juillet est tombée : lettre plafond et concours.',
+    rentree: 'La rentrée est passée. Ou l’inverse.',
+    decembre: 'Budget voté, publications de décembre.',
+    mars: 'Les mobilisations de printemps.',
+    cloture: `Fin de l’année scolaire — an ${S.annee} sur 5.`,
+  }[etape] || '';
+  scene(j, fil);
+  boutonSuite('Continuer', ctx, () => suivant(undefined));
+}
+
+/* --- bilan final -------------------------------------------------------------- */
+function ecranBilan(B) {
+  const S = ETAT.s;
+  localStorage.removeItem(CLE_SAUVE);
+  const fins = {
+    mandat_complet: ['CINQ ANS RUE DE GRENELLE : IL PART DEBOUT', 'Aucun ministre de l’Éducation n’avait tenu un quinquennat entier depuis fort longtemps. Le déménageur est déçu.'],
+    renvoi: ['REMANIÉ', 'Trois convocations à Matignon font une porte. Vos cartons connaissaient le chemin.'],
+    remaniement: ['REMANIEMENT SURPRISE : LA COLONNE D’À CÔTÉ', 'Rien de personnel. Votre nom équilibrait un tableau qui ne vous concernait pas.'],
+    guerre_scolaire: ['GUERRE SCOLAIRE : LE TEXTE RETIRÉ, LE MINISTRE AUSSI', 'Un million de personnes dans la rue. Comme en 1984, à la mode près.'],
+  }[B.fin.type] || ['FIN DE MANDAT', ''];
+
+  const j = el('article', 'journal');
+  j.innerHTML = `<div class="manchette"><span class="titre-j">${CAST.journal}</span><span class="ours">édition spéciale · héritage</span></div>
+    <h2 class="une">${fins[0]}</h2><p class="sous-une">${fins[1] || esc(B.fin.texte)}</p>`;
+
+  const d = el('article', 'doc large');
+  d.appendChild(el('div', 'entete-doc', `<span class="type">Le bilan — la vérité, enfin</span><span class="date">${B.anneesJouees} an${B.anneesJouees > 1 ? 's' : ''} de mandat</span>`));
+
+  const sc = el('div', 'score-final');
+  const bloc = (val, lib, note) => { const b = el('div', 'score-bloc', `<div class="val">${fmt0(val)}<span style="font-size:.9rem;color:var(--encre-2)">/100</span></div><div class="lib">${lib}</div>${note ? `<div style="font-size:.72rem;color:var(--encre-2);margin-top:4px">${note}</div>` : ''}`); return b; };
+  sc.append(
+    bloc(B.scoreAffiche, 'Ce que le pays a vu', 'les indicateurs à votre départ'),
+    bloc(B.scoreBilan, 'Ce que vous avez fait', 'les effets réels, pondérés par VOTRE doctrine'),
+    bloc(B.scoreProjection, 'Dans dix ans',
+      B.constance ? 'si votre successeur tient votre cap — et il le peut'
+      : B.fin.type !== 'mandat_complet' ? 'mandat interrompu : le cap ne vous a pas survécu'
+      : 'cap incohérent avec votre doctrine : le successeur détricote'));
+  d.appendChild(sc);
+
+  d.appendChild(el('p', 'verdict', verdictProse(B)));
+
+  /* --- les cinq compteurs --- */
+  const t1 = el('div', 'defile');
+  t1.innerHTML = `<table class="bilan"><tr><th>Compteur (votre rang)</th><th class="num">Départ 2027</th><th class="num">Affiché</th><th class="num">Réel</th><th class="num">+10 ans</th></tr>
+    ${B.doctrine.map((c, i) => `<tr><td><span style="color:${COULEURS_C[c]}">●</span> ${NOMS_C_LONGS[c]} <span style="color:var(--encre-3)">(n° ${i + 1}, ${K.POIDS_DOCTRINE[i]} %)</span></td>
+      <td class="num">${fmt0(K.COMPTEURS_INITIAUX[c])}</td><td class="num">${fmt0(B.affiche[c])}</td>
+      <td class="num"><b>${fmt0(B.vrai[c])}</b></td><td class="num">${fmt0(B.projection[c])}</td></tr>`).join('')}</table>`;
+  d.appendChild(t1);
+
+  /* --- révélation des effets réels --- */
+  d.appendChild(el('h2', '', 'Ce que vos mesures ont réellement produit')).style.marginTop = '26px';
+  d.appendChild(el('p', 'chapo', 'À la signature, vous ne connaissiez que le niveau de preuve. Voici les tirages — implémentation comprise : une réforme portée par un corps enseignant à ' + fmt0(S.phys.adhesion) + ' d’adhésion ne rend pas ce qu’elle promet.'));
+  const parCarte = new Map();
+  for (const e of S.effetsEnAttente) { if (!parCarte.has(e.carte)) parCarte.set(e.carte, []); parCarte.get(e.carte).push(e); }
+  const t2 = el('div', 'defile');
+  let lignes = '';
+  for (const [id, effs] of parCarte) {
+    const c = PAR_ID[id];
+    lignes += effs.map((e, i) => `<tr>${i === 0 ? `<td rowspan="${effs.length}">${esc(c ? c.label : id)}</td>` : ''}
+      <td>${NOMS_C[e.compteur]}</td><td>${'🔒'.repeat(e.cadenas)}</td>
+      <td class="num"><span class="revele ${e.montant > 1 ? 'bon' : e.montant < -1 ? 'mauvais' : ''}">${signe(e.montant)}</span></td>
+      <td>${e.applique ? 'effet arrivé' : `arrive an ${e.anneeArrivee}${e.anneeArrivee > 5 ? ' — après vous' : ''}`}</td></tr>`).join('');
+  }
+  t2.innerHTML = `<table class="bilan"><tr><th>Mesure</th><th>Compteur</th><th>Preuve</th><th class="num">Effet réel tiré</th><th>Horizon</th></tr>${lignes || '<tr><td colspan="5">Aucune mesure engagée. Le système vous remercie du repos ; l’Histoire, moins.</td></tr>'}</table>`;
+  d.appendChild(t2);
+
+  /* --- doctrine déclarée vs menée --- */
+  d.appendChild(el('p', '', `<b>Doctrine déclarée contre doctrine menée :</b> ${fmt0((B.coherence || 0) * 100)} % de vos effets réels servent vos deux priorités déclarées${B.constance ? ' — cap tenu : vos gains composeront (référence Portugal, quinze ans de constance)' : ' — cap non tenu : sans constance, un successeur détricote et les dérives reprennent'}.
+    Grèves : <b>${B.greves}</b> journée${B.greves > 1 ? 's' : ''} · fatigue réformatrice finale : <b>${fmt0(B.fatigue)}</b>/100 · priorités présidentielles abandonnées : <b>${B.abandons}</b>.`));
+
+  const act = el('div', 'actions');
+  const rejouer = el('button', 'btn', 'Nouveau mandat (autres tirages, autres crises)');
+  rejouer.onclick = () => { localStorage.removeItem(CLE_SAUVE); location.reload(); };
+  act.appendChild(rejouer);
+  d.appendChild(act);
+  scene(j, d);
+}
+
+function verdictProse(B) {
+  const v = B.vrai, ecartPerception = B.scoreAffiche - B.scoreBilan;
+  if (B.fin.type === 'guerre_scolaire') return '« Il avait raison sur le fond », dira-t-on dans dix ans. C’est exactement ce qu’on a dit d’Alain Savary.';
+  if (B.scoreBilan >= 55 && B.constance) return 'Vous laissez un système en meilleur état que vous ne l’avez trouvé, un cap lisible, et des effets qui composeront après vous. Dans ce ministère, cela porte un nom : une exception.';
+  if (ecartPerception > 5) return 'Beau mandat, disent les sondages. Le bilan, lui, est plus discret : vous avez surtout gouverné le tableau de bord. Vos successeurs gouverneront le reste.';
+  if (B.scoreBilan - B.scoreAffiche > 3) return 'Le pays ne vous a pas vu travailler — les indicateurs regardaient ailleurs, comme toujours, avec dix ans de retard. Vos successeurs inaugureront vos résultats. Ils y penseront très fort.';
+  if (B.anneesJouees < 3) return 'Deux ans, comme la moyenne. Le système vous a survécu sans effort particulier : il a l’habitude.';
+  return 'Un mandat dans la moyenne haute de ce que la Ve République fait de ses ministres de l’Éducation : des choix, des renoncements, et un tableau de bord qui ne dit pas encore la vérité.';
+}
+
+/* -------------------------------------------------------- boucle & sauvegarde */
+const CLE_SAUVE = 'rue-de-grenelle-v1';
+const ETAT = { s: null, gen: null, journalLu: 0, pas: [], dateLabel: 'juin 2027', rentreeRatee: false, enAttente: null, rendre: null };
+
+function dateDe(q) {
+  const S = ETAT.s, an = S.anneeCiv || 2027;
+  if (q.type === 'doctrine') return 'juin 2027';
+  if (q.type === 'lettrePlafond') return `juillet ${an}`;
+  if (q.type === 'rentree') return `septembre ${an}`;
+  if (q.type === 'carteScolaire' || q.type === 'mesures') return `janvier ${an + 1}`;
+  const m = { ouverture: 'juin 2027', juillet: `juillet ${an}`, rentree: `septembre ${an}`, decembre: `décembre ${an}`, mars: `mars ${an + 1}`, cloture: `mai ${an + 1}` };
+  return m[q.etape] || `${MOIS_L[S.mois] || ''} ${an}`;
+}
+
+function rendre(q) {
+  ETAT.dateLabel = dateDe(q);
+  ETAT.rentreeRatee = ETAT.s.journal.some((e) => e.cat === 'rentree' && e.annee === ETAT.s.annee && e.texte.includes('dégradée'));
+  majHud();
+  if (q.type === 'doctrine') {
+    /* la passation s'affiche d'abord ; la doctrine est l'écran suivant */
+    if (!ETAT.passationVue) { ETAT.passationVue = true; ETAT.enAttente = q; ETAT.rendre = (qq) => { ETAT.dateLabel = dateDe(qq); majHud(); ecranDoctrine(); }; ecranPassation(); return; }
+    ecranDoctrine();
+  }
+  else if (q.type === 'lettrePlafond') ecranBercy(q);
+  else if (q.type === 'rentree') ecranRentree(q);
+  else if (q.type === 'carteScolaire') ecranCarteScolaire(q);
+  else if (q.type === 'mesures') ecranAtelier(q);
+  else if (q.type === 'etape') ecranEtape(q.etape);
+}
+
+function suivant(rep) {
+  ETAT.pas.push(rep === undefined ? null : rep);
+  sauvegarder();
+  const res = ETAT.gen.next(rep);
+  if (res.done) { const B = bilan(ETAT.s); majHud(); ecranBilan(B); return; }
+  rendre(res.value);
+}
+
+function sauvegarder() {
+  try { localStorage.setItem(CLE_SAUVE, JSON.stringify({ graine: ETAT.graine, pas: ETAT.pas })); } catch (e) { /* stockage indisponible : on joue sans filet */ }
+}
+
+function demarrer(sauve) {
+  ETAT.graine = sauve ? sauve.graine : (Math.floor(Math.random() * 2 ** 31) || 1);
+  ETAT.s = creerPartie({ graine: ETAT.graine, politique: null });
+  ETAT.gen = derouler(ETAT.s);
+  ETAT.pas = [];
+  ETAT.journalLu = 0;
+  ETAT.passationVue = false;
+  let res = ETAT.gen.next();
+  if (sauve && Array.isArray(sauve.pas)) {
+    for (const p of sauve.pas) {
+      if (res.done) break;
+      ETAT.pas.push(p);
+      ETAT.journalLu = ETAT.s.journal.length;
+      res = ETAT.gen.next(p === null ? undefined : p);
+    }
+    ETAT.passationVue = true;
+    ETAT.journalLu = Math.max(0, ETAT.s.journal.length - 6);
+  }
+  if (res.done) { const B = bilan(ETAT.s); majHud(); ecranBilan(B); return; }
+  rendre(res.value);
+}
+
+(function initialiser() {
+  let sauve = null;
+  try { sauve = JSON.parse(localStorage.getItem(CLE_SAUVE) || 'null'); } catch (e) { sauve = null; }
+  if (sauve && !(sauve.graine && Array.isArray(sauve.pas))) sauve = null;
+  ecranAccueil(sauve);
+})();
+
+</script>

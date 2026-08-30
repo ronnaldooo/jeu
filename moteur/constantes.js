@@ -243,14 +243,17 @@ export const GREVE = {
 /* Les sept organisations, pondérées par les élections professionnelles CSA 2022.
    `seuil` = intensité minimale (pondérée) qui les met en grève.
    `profil` : rapport de force / négociation / frontal / corporatiste / radical. */
+/* Les noms sont des pseudonymes transparents (satire symétrique : toutes les
+   organisations sont altérées du même degré). Les identifiants, pondérations
+   (élections CSA 2022) et profils correspondent aux organisations réelles. */
 export const SYNDICATS = [
-  { id: 'fsu',   nom: 'FSU',            poids: 34.05, seuil: 2.4, profil: 'rapport_de_force' },
-  { id: 'unsa',  nom: 'UNSA Éducation', poids: 19.37, seuil: 3.4, profil: 'reformiste' },
-  { id: 'fo',    nom: 'FNEC-FP-FO',     poids: 14.05, seuil: 1.8, profil: 'frontal' },
-  { id: 'cfdt',  nom: 'Sgen-CFDT',      poids: 7.80,  seuil: 3.7, profil: 'negociation' },
-  { id: 'cgt',   nom: "CGT Éduc'action", poids: 6.64, seuil: 1.7, profil: 'radical' },
-  { id: 'snalc', nom: 'SNALC',          poids: 6.21,  seuil: 3.0, profil: 'corporatiste' },
-  { id: 'sud',   nom: 'SUD Éducation',  poids: 5.09,  seuil: 1.5, profil: 'radical' },
+  { id: 'fsu',   nom: 'FUSE',             poids: 34.05, seuil: 2.4, profil: 'rapport_de_force' },
+  { id: 'unsa',  nom: 'UNISA Éducation',  poids: 19.37, seuil: 3.4, profil: 'reformiste' },
+  { id: 'fo',    nom: 'FNEC-OF',          poids: 14.05, seuil: 1.8, profil: 'frontal' },
+  { id: 'cfdt',  nom: 'Sgen-CFTD',        poids: 7.80,  seuil: 3.7, profil: 'negociation' },
+  { id: 'cgt',   nom: "CGT Éduc'axion",   poids: 6.64,  seuil: 1.7, profil: 'radical' },
+  { id: 'snalc', nom: 'SNACL',            poids: 6.21,  seuil: 3.0, profil: 'corporatiste' },
+  { id: 'sud',   nom: 'SÜD Éducation',    poids: 5.09,  seuil: 1.5, profil: 'radical' },
 ];
 
 /* Sensibilité de chaque profil aux thèmes de conflit (multiplie l'intensité). */
@@ -294,7 +297,7 @@ export const RENVOI = {
      moyenne dans le poste dépasse rarement deux ans. Le risque est modulé par
      le capital politique et l'opinion des familles : un ministre solide n'est
      pas à l'abri, il est seulement moins exposé. */
-  remaniementBase: 0.175,
+  remaniementBase: 0.19,
   remaniementParCapital: 900,
   remaniementParParents: 700,
   remaniementMin: 0.03, remaniementMax: 0.30,

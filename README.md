@@ -37,46 +37,49 @@ vous n'avez pas fait. Vos propres décisions, elles, produiront leurs effets
 après votre départ. Le bilan final révèle la vérité, puis la projette à dix ans
 — « si votre successeur maintient le cap ».
 
-## État du projet
+## Jouer
 
-**Phase 1 terminée : le moteur et son équilibrage.** Pas encore d'interface,
-délibérément — un jeu de gestion mal équilibré ne se rattrape pas à l'habillage,
-et les quatre cibles d'équilibrage se vérifient à moindre coût sur un moteur nu.
+**Ouvrez [`index.html`](index.html)** — le jeu tient dans un seul fichier, sans
+dépendance réseau obligatoire, sur ordinateur comme sur téléphone. La partie se
+sauvegarde toute seule ; un mandat se joue en 45 à 90 minutes.
 
-Les quatre cibles sont atteintes, sur trois jeux de graines indépendants :
-survivre cinq ans réussit à **55 %** pour un joueur attentif ; aucun des cinq
-compteurs n'est maximisable sans en sacrifier trois ou quatre ; la stratégie
-« tout vitrine » affiche **+4,9** de plus que sa réalité et la stratégie « tout
-réel » **−1,4** de moins, toutes deux perdantes face au jeu mixte ; mettre les
-cinq compteurs au vert en cinq ans est impossible, mais quatre y parviennent en
-projection décennale.
+Au menu : votre doctrine déclarée devant la presse (et opposable), la carte
+scolaire de janvier et ses deux curseurs, la lettre plafond de Bercy, un menu
+tournant de 12 mesures sur un catalogue de 40 — chacune avec ses porteurs
+politiques réels, son niveau de preuve, son risque de grève et son petit mot —,
+des unes de journal, un fil social de circonstance, et un bilan qui révèle,
+enfin, ce que vous avez vraiment produit.
 
-→ **[EQUILIBRAGE.md](EQUILIBRAGE.md)** — les constantes et leurs sources, les
-trajectoires des cinq compteurs pour six stratégies-types, les cinq erreurs de
-conception que les simulations ont révélées, et les paramètres à réexaminer
-après tests humains.
+## L'équilibrage
+
+Le jeu est équilibré par simulation (700 mandats par stratégie-type, trois jeux
+de graines) et l'interface pilote exactement le même moteur que les
+simulations. Les quatre cibles du cahier des charges sont tenues : survivre
+cinq ans réussit à **57 %** pour un joueur attentif ; aucun des cinq compteurs
+n'est maximisable sans en sacrifier d'autres ; « tout vitrine » fait un bon
+mandat et un mauvais bilan, « tout réel » l'inverse, et les deux perdent contre
+le jeu mixte ; mettre les cinq compteurs au vert en cinq ans est impossible —
+en dix ans, presque.
 
 ```bash
-npm run equilibrage     # banc d'essai : vérifie les 4 cibles
+npm run equilibrage     # banc d'essai : vérifie les 4 cibles (→ 4/4)
 npm run trajectoires    # trajectoires annuelles des 5 compteurs
+npm run construire      # réassemble index.html depuis moteur/ + interface/
 ```
 
-Aucune dépendance : Node 18+ suffit. Le moteur est du JavaScript pur, il
-tournera tel quel dans le navigateur.
+Aucune dépendance : Node 18+ suffit pour les simulations, un navigateur pour
+jouer.
 
 ```
-moteur/constantes.js         constantes du moteur, chacune commentée avec sa source
-moteur/catalogue.js          12 cartes-leçons + cartes paramétriques à curseurs
-moteur/moteur.js             calendrier, vitrine/réel, grève, attractivité, bilan, projection
+index.html                   LE JEU — fichier unique autonome
+moteur/                      constantes sourcées, catalogue de 40 cartes, moteur en générateur
 simulations/                 stratégies-types et bancs d'essai
+interface/                   gabarit (styles) + application (écrans, presse, bilan)
+outil/construire.js          assemblage
 ```
 
-**Prochaine étape** : porter le catalogue à une quarantaine de cartes, puis
-l'interface — calendrier mensuel, unes de journal, fil social, communiqué
-intersyndical, dépêche DEPP. Le moteur n'aura pas à changer : les stratégies de
-simulation et l'interface implémentent la même interface de décision, et chaque
-nouvelle carte peut être passée au banc d'essai avant d'être montrée à un
-joueur.
+→ **[EQUILIBRAGE.md](EQUILIBRAGE.md)** pour les constantes et leurs sources,
+les trajectoires simulées et les paramètres à revoir après tests humains.
 
 ## Sources et précautions
 

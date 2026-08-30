@@ -193,7 +193,7 @@ export const CATALOGUE = [
     porteurs: ['Philippe', 'Barnier (pacte pluriannuel)', 'Lisnard (recrutement par les directions)'],
     perimetre: 'ministeriel',
     cout: 0.12, coutETP: 0, pol: 9,
-    theme: 'autonomie', once: true, reforme: true,
+    theme: 'autonomie', once: true, excl: 'evaluation', reforme: true,
     vitrine: { parents: +4, enseignants: -11, presse: +8, compteurs: { reussite: +7 } },
     reel: [
       { compteur: 'reussite', central: 3, delai: 4, cadenas: 2, source: 'preuve faible : résultats contradictoires selon les systèmes, variance maximale' },
@@ -213,7 +213,7 @@ export const CATALOGUE = [
     perimetre: 'matignon',
     cout: -0.15, coutETP: 0, pol: 15,       // rapporte de l'argent, coûte tout le reste
     theme: 'prive', once: true, reforme: true,
-    guerreScolaire: true,                    // arme l'événement historique (Savary 1984)
+    provocations: 1,                         // une provocation : la guerre scolaire s'arme à 2
     vitrine: { parents: -5, enseignants: +5, presse: +3, compteurs: { egalite: 0 } },
     reel: [
       { compteur: 'egalite', central: 10, delai: 3, cadenas: 3, source: 'IPS privé 117,4 vs public 99,9 ; part d’élèves très favorisés dans le privé 26,4 % (2000) → 40,2 % (2021)' },
@@ -240,6 +240,518 @@ export const CATALOGUE = [
     physique: { hna: { delta: -2.2, duree: 99 } },
     greve: { intensite: 3, theme: 'statut', segment: 'tous' },
     mot: "Ramener les heures non assurées de 9,8 % à 5 % rendrait aux élèves plus d'heures que 4 000 postes n'en coûtent. Encore faut-il toucher au statut pour y arriver.",
+  },
+
+  /* ======================================================================
+     EXTENSION DU CATALOGUE — cartes 13 à 40 (phase 2)
+     Cinq familles doctrinales (B.7), porteurs réels cités, humour compris.
+     ====================================================================== */
+
+  /* ----------------------------- 13 · moyens ------------------------- */
+  {
+    id: 'maternelle',
+    label: 'Plan langage en maternelle, priorité aux réseaux d’éducation prioritaire',
+    famille: 'moyens',
+    porteurs: ['CSEN', 'économie de l’éducation (rendement des investissements précoces)', 'PS'],
+    perimetre: 'ministeriel',
+    cout: 0.28, coutETP: 1500, pol: 4,
+    theme: 'maternelle', once: true, reforme: true,
+    vitrine: { parents: +1, enseignants: +2, presse: 0, compteurs: {} },
+    reel: [
+      { compteur: 'reussite', central: 5, delai: 6, cadenas: 4, source: 'recherche convergente : le rendement éducatif est maximal aux âges précoces' },
+      { compteur: 'egalite',  central: 6, delai: 6, cadenas: 4, source: 'les écarts de vocabulaire sont installés à 4 ans ; l’intervention précoce les réduit' },
+    ],
+    physique: {},
+    mot: "L'euro le mieux investi du système, et le seul dont l'inauguration n'intéresse personne : les bénéficiaires ont quatre ans et ne votent pas.",
+  },
+
+  /* ----------------------------- 14 · moyens / équité ----------------- */
+  {
+    id: 'ep_progressive',
+    label: 'Refonte de l’éducation prioritaire : allocation progressive sur l’indice de position sociale',
+    famille: 'moyens',
+    porteurs: ['Cour des comptes', 'DEPP', 'une partie de l’encadrement'],
+    contre: ['les réseaux sortants du label, leurs maires et leurs équipes'],
+    perimetre: 'ministeriel',
+    cout: 0.15, coutETP: 0, pol: 10,
+    theme: 'ep', once: true, reforme: true,
+    vitrine: { parents: -2, enseignants: -4, presse: +2, compteurs: { egalite: +2 } },
+    reel: [
+      { compteur: 'egalite',  central: 7, delai: 4, cadenas: 3, source: 'la difficulté sociale est continue : l’allocation progressive atteint les établissements hors label' },
+      { compteur: 'reussite', central: 2, delai: 4, cadenas: 3, source: 'effet indirect via le ciblage des moyens' },
+    ],
+    physique: {},
+    greve: { intensite: 2, theme: 'moyens', segment: 'tous' },
+    mot: "Techniquement irréprochable : la difficulté sociale est continue, pas binaire. Politiquement : vous venez d'annoncer à cent collèges qu'ils perdent leur prime.",
+  },
+
+  /* ----------------------------- 15 · moyens ------------------------- */
+  {
+    id: 'titularisation',
+    label: 'Plan de titularisation des contractuels enseignants',
+    famille: 'moyens',
+    porteurs: ['intersyndicale', 'PS'],
+    perimetre: 'ministeriel',
+    cout: 0.30, coutETP: 0, pol: 5,
+    theme: 'contractuels', once: true, reforme: false,
+    vitrine: { parents: +1, enseignants: +6, presse: -1, compteurs: { sante: +2 } },
+    reel: [
+      { compteur: 'sante', central: 4, delai: 2, cadenas: 3, source: 'stabilisation et formation d’agents déjà en poste, souvent recrutés en quelques jours' },
+    ],
+    physique: { adhesion: +3 },
+    mot: "Ils font déjà cours depuis trois ans. Vous ne recrutez personne : vous reconnaissez l'existant, ce qui est à la fois moins cher et plus honnête.",
+  },
+
+  /* ----------------------------- 16 · moyens / climat ----------------- */
+  {
+    id: 'vie_scolaire',
+    label: 'Renforcer la vie scolaire : CPE et assistants d’éducation, contrats stabilisés',
+    famille: 'moyens',
+    porteurs: ['intersyndicale', 'recherche sur le climat scolaire', 'chefs d’établissement'],
+    perimetre: 'ministeriel',
+    cout: 0.33, coutETP: 4000, pol: 4,
+    theme: 'vie_scolaire', once: true, reforme: false,
+    vitrine: { parents: +3, enseignants: +5, presse: +1, compteurs: { sante: +3 } },
+    reel: [
+      { compteur: 'sante',    central: 5, delai: 2, cadenas: 4, source: 'la densité et la stabilité des adultes sont le facteur le mieux établi du climat scolaire' },
+      { compteur: 'reussite', central: 2, delai: 3, cadenas: 3, source: 'un climat apaisé rend du temps d’apprentissage effectif' },
+    ],
+    physique: {},
+    mot: "Le climat scolaire n'est pas un discours sur l'autorité : c'est un budget de surveillants. Le discours est gratuit, c'est bien pour ça qu'on l'entend plus souvent.",
+  },
+
+  /* ----------------------------- 17 · moyens (le rabot) --------------- */
+  {
+    id: 'hsa',
+    label: 'Recours massif aux heures supplémentaires plutôt qu’au recrutement',
+    famille: 'moyens',
+    porteurs: ['Bercy', 'tous les gouvernements depuis vingt ans'],
+    perimetre: 'ministeriel',
+    cout: 0.18, coutETP: 0, pol: 2,
+    once: false, reforme: false,          // le rabot est éternel : répétable chaque année
+    vitrine: { parents: +4, enseignants: -3, presse: +1, compteurs: { sante: +2 } },
+    reel: [
+      { compteur: 'sante', central: -2, delai: 3, cadenas: 3, source: 'l’intensification du travail nourrit l’épuisement et les démissions' },
+    ],
+    physique: { hna: { delta: -0.8, duree: 2 } },
+    mot: "Une HSA coûte cinquante fois moins qu'un poste. C'est aussi la différence entre embaucher un collègue et faire ses heures à sa place.",
+  },
+
+  /* ----------------------------- 18 · moyens ------------------------- */
+  {
+    id: 'formation_initiale',
+    label: 'Réforme de la formation initiale et du concours',
+    famille: 'moyens',
+    porteurs: ['tous vos prédécesseurs, sans exception'],
+    perimetre: 'ministeriel',
+    cout: 0.22, coutETP: 0, pol: 8,
+    theme: 'formation_initiale', once: true, reforme: true,
+    vitrine: { parents: 0, enseignants: -5, presse: +3, compteurs: {} },
+    reel: [
+      { compteur: 'sante',    central: 5, delai: 5, cadenas: 3, source: 'une formation en alternance mieux rémunérée reconstitue le vivier — après la transition' },
+      { compteur: 'reussite', central: 3, delai: 6, cadenas: 3, source: 'des néotitulaires mieux formés tiennent mieux leurs classes' },
+    ],
+    physique: { attractivite: -9 },       // la transition casse une année de recrutement
+    mot: "Chaque réforme de la formation casse une promotion le temps de la transition. La vôtre sera la neuvième en trente ans. Cette fois, c'est la bonne.",
+  },
+
+  /* ----------------------------- 19 · moyens / équité ----------------- */
+  {
+    id: 'decrochage',
+    label: 'Repérage précoce du décrochage : un référent par établissement',
+    famille: 'moyens',
+    porteurs: ['consensus de la recherche', 'missions locales', 'régions'],
+    perimetre: 'ministeriel',
+    cout: 0.26, coutETP: 0, pol: 3,
+    theme: 'decrochage', once: true, reforme: false,
+    vitrine: { parents: +2, enseignants: +1, presse: 0, compteurs: { egalite: +1 } },
+    reel: [
+      { compteur: 'egalite', central: 5, delai: 4, cadenas: 4, source: 'le repérage précoce est la mesure la mieux évaluée contre le décrochage' },
+      { compteur: 'sante',   central: 2, delai: 4, cadenas: 3, source: 'moins de sortants sans qualification, moins de classes ingérables' },
+    ],
+    physique: {},
+    mot: "Le décrochage est un processus, pas un événement. Intervenir en 5e coûte dix fois moins cher que raccrocher un jeune de 18 ans — et fait cent fois moins de communiqués.",
+  },
+
+  /* ----------------------------- 20 · moyens / interministériel ------- */
+  {
+    id: 'sante_mentale',
+    label: 'Conventions santé mentale : permanences des maisons des adolescents dans les établissements',
+    famille: 'moyens',
+    porteurs: ['fédérations de parents', 'agences régionales de santé'],
+    perimetre: 'ministeriel',
+    cout: 0.12, coutETP: 0, pol: 6,       // le coût est surtout de la négociation interministérielle
+    theme: 'sante_mentale', once: true, reforme: false,
+    vitrine: { parents: +4, enseignants: +1, presse: +2, compteurs: { sante: +2 } },
+    reel: [
+      { compteur: 'sante', central: 4, delai: 2, cadenas: 3, source: 'contourne le goulot de recrutement de la santé scolaire en mobilisant des personnels de santé publique' },
+    ],
+    physique: {},
+    mot: "Faire soigner vos élèves par le budget d'un autre ministère : l'art d'être efficace avec l'argent qu'on n'a pas. Le revers : votre politique dépend d'un partenaire qui ne vous doit rien.",
+  },
+
+  /* ----------------------------- 21 · compétences partagées ----------- */
+  {
+    id: 'bati',
+    label: 'Fonds d’amorçage pour la rénovation thermique du bâti scolaire',
+    famille: 'moyens',
+    porteurs: ['associations d’élus', 'parents d’élèves en juin'],
+    perimetre: 'matignon',                // l'État n'est pas propriétaire des murs
+    cout: 0.25, coutETP: 0, pol: 8,
+    theme: 'bati', once: true, reforme: false,
+    vitrine: { parents: +6, enseignants: +2, presse: +4, compteurs: {} },
+    reel: [
+      { compteur: 'sante',    central: 2, delai: 3, cadenas: 2, source: 'effet indirect : conditions de travail et d’étude' },
+      { compteur: 'reussite', central: 1, delai: 4, cadenas: 2, source: 'la littérature sur le confort thermique est mince mais cohérente' },
+    ],
+    physique: {},
+    mot: "Les écoles sont aux communes, les collèges aux départements, les lycées aux régions — et les photos de classes à 40 °C au ministre. Vous payez l'amorçage pour des murs qui ne sont pas à vous.",
+  },
+
+  /* ----------------------------- 22 · évaluation ---------------------- */
+  {
+    id: 'evaluation_diagnostic',
+    label: 'Évaluations nationales rendues aux équipes, avec accompagnement — sans publication',
+    famille: 'autonomie',
+    porteurs: ['DEPP', 'encadrement', 'chercheurs en évaluation'],
+    perimetre: 'ministeriel',
+    cout: 0.07, coutETP: 0, pol: 3,
+    theme: 'eval_diag', once: true, excl: 'evaluation', reforme: false,
+    vitrine: { parents: -1, enseignants: +4, presse: -2, compteurs: {} },
+    reel: [
+      { compteur: 'reussite', central: 4, delai: 3, cadenas: 4, source: 'EEF : le feedback est l’intervention la mieux documentée du répertoire' },
+      { compteur: 'egalite',  central: 2, delai: 3, cadenas: 3, source: 'le diagnostic oriente les moyens vers les besoins réels' },
+    ],
+    physique: {},
+    mot: "La presse titrera « le ministre renonce à la transparence ». En réalité vous choisissez entre deux outils : un thermomètre pour soigner, ou un thermomètre pour classer les malades.",
+  },
+
+  /* ----------------------------- 23 · autonomie ----------------------- */
+  {
+    id: 'cheque_education',
+    label: 'Chèque-éducation : financement attaché à l’élève, libre choix de l’établissement',
+    famille: 'autonomie',
+    porteurs: ['Lisnard'],
+    contre: ['la quasi-totalité de la recherche comparative', 'les fédérations du public'],
+    perimetre: 'matignon',
+    cout: 0.40, coutETP: 0, pol: 14,
+    theme: 'cheque', once: true, reforme: true,
+    provocations: 1,
+    vitrine: { parents: +3, enseignants: -8, presse: +6, compteurs: {} },
+    reel: [
+      { compteur: 'reussite', central: 1, delai: 4, cadenas: 1, source: 'aucun pays comparable ne l’a fait à l’échelle : preuve minimale, variance maximale' },
+      { compteur: 'egalite',  central: -6, delai: 4, cadenas: 2, source: 'les systèmes à libre choix accroissent le tri social (Chili, Suède)' },
+    ],
+    physique: { segregation: +1.0 },
+    greve: { intensite: 3, theme: 'prive', segment: 'tous' },
+    mot: "Aucun pays comparable ne l'a fait à l'échelle. Vous serez le pionnier, ou le cas d'école — au sens propre.",
+  },
+
+  /* ----------------------------- 24 · autonomie ----------------------- */
+  {
+    id: 'recrutement_direction',
+    label: 'Recrutement des enseignants par les chefs d’établissement',
+    famille: 'autonomie',
+    porteurs: ['Lisnard', 'Philippe (version expérimentale)'],
+    perimetre: 'ministeriel',
+    cout: 0.05, coutETP: 0, pol: 9,
+    theme: 'recrutement_local', once: true, reforme: true,
+    vitrine: { parents: +2, enseignants: -9, presse: +5, compteurs: {} },
+    reel: [
+      { compteur: 'reussite', central: 2, delai: 4, cadenas: 2, source: 'résultats contradictoires selon les systèmes ; dépend entièrement de la qualité des directions' },
+      { compteur: 'egalite',  central: -3, delai: 4, cadenas: 2, source: 'les établissements difficiles perdent au marché des mutations' },
+    ],
+    physique: {},
+    greve: { intensite: 3, theme: 'statut', segment: 'tous' },
+    mot: "Les établissements attractifs recruteront les meilleurs. Les autres recruteront.",
+  },
+
+  /* ----------------------------- 25 · autonomie ----------------------- */
+  {
+    id: 'pacte_pluriannuel',
+    label: 'Pacte pluriannuel : moyens garantis trois ans contre contractualisation d’objectifs',
+    famille: 'autonomie',
+    porteurs: ['Barnier', 'recteurs', 'associations d’élus'],
+    perimetre: 'ministeriel',
+    cout: 0.10, coutETP: 0, pol: 5,
+    theme: 'pluriannuel', once: true, reforme: false,
+    bercy: -3,                            // Bercy déteste s'engager au-delà de l'annualité
+    vitrine: { parents: +1, enseignants: +3, presse: +1, compteurs: {} },
+    reel: [
+      { compteur: 'sante', central: 3, delai: 3, cadenas: 3, source: 'la visibilité pluriannuelle stabilise les équipes et déclenche l’investissement local' },
+    ],
+    physique: { adhesion: +2 },
+    mot: "Une commune ne rénove pas une école qu'elle croit condamnée, un principal ne s'engage pas sur des moyens repris en février. La visibilité est une politique — que Bercy compte comme une reddition.",
+  },
+
+  /* ----------------------------- 26 · parcours ------------------------ */
+  {
+    id: 'groupes_besoins',
+    label: 'Groupes de besoins temporaires, à la main des équipes',
+    famille: 'parcours',
+    porteurs: ['Sgen-CFDT (l’a arrachée puis défendue)', 'IGÉSR (version souple)'],
+    perimetre: 'ministeriel',
+    cout: 0.24, coutETP: 0, pol: 4,
+    theme: 'groupes_besoins', once: true, excl: 'orientation', reforme: true,
+    vitrine: { parents: +2, enseignants: +1, presse: 0, compteurs: {} },
+    reel: [
+      { compteur: 'reussite', central: 3, delai: 3, cadenas: 3, source: 'différencier sans assigner : le compromis le plus étayé sur l’hétérogénéité' },
+      { compteur: 'egalite',  central: 2, delai: 3, cadenas: 3, source: 'regroupements courts et réversibles : pas d’effet d’étiquetage mesuré' },
+    ],
+    physique: {},
+    mot: "Différencier sans étiqueter. Exigeant, invisible, efficace là où les équipes y croient — c'est-à-dire là où vous ne décidez pas.",
+  },
+
+  /* ----------------------------- 27 · parcours ------------------------ */
+  {
+    id: 'brevet_barrage',
+    label: 'Brevet obligatoire pour l’entrée en seconde, avec classes « prépa-seconde »',
+    famille: 'parcours',
+    porteurs: ['Attal'],
+    contre: ['CSEN : les effets de barrage nourrissent le décrochage'],
+    perimetre: 'ministeriel',
+    cout: 0.30, coutETP: 0, pol: 7,
+    theme: 'brevet', once: true, excl: 'orientation', reforme: true,
+    vitrine: { parents: +5, enseignants: +1, presse: +6, compteurs: { reussite: +4 } },
+    reel: [
+      { compteur: 'reussite', central: 0, delai: 3, cadenas: 2, source: 'aucune preuve que l’effet de menace élève le niveau ; le redoublement déguisé, si' },
+      { compteur: 'egalite',  central: -5, delai: 3, cadenas: 3, source: 'le barrage frappe les élèves fragiles, socialement très typés' },
+    ],
+    physique: {},
+    mot: "« L'exigence. » Les recalés iront en prépa-seconde, c'est-à-dire au même endroit qu'avant, mais avec un nom qui rassure tout le monde sauf eux.",
+  },
+
+  /* ----------------------------- 28 · autorité (comédie) -------------- */
+  {
+    id: 'uniforme',
+    label: 'Généralisation de la tenue unique',
+    famille: 'autorite',
+    porteurs: ['une majorité constante de l’opinion', 'plusieurs candidats'],
+    perimetre: 'ministeriel',
+    cout: 0.09, coutETP: 0, pol: 2,
+    theme: 'uniforme', once: true, reforme: false,
+    vitrine: { parents: +5, enseignants: -1, presse: +5, compteurs: { sante: +1 } },
+    reel: [
+      { compteur: 'reussite', central: 0, delai: 2, cadenas: 2, source: 'l’expérimentation française n’a mesuré aucun effet sur les acquis ni sur le climat' },
+      { compteur: 'sante',    central: 1, delai: 2, cadenas: 2, source: 'léger effet déclaré d’appartenance dans certains établissements volontaires' },
+    ],
+    physique: {},
+    mot: "L'expérimentation a coûté trois millions d'euros et conclu à un effet principal : des polos. Mais quels polos.",
+  },
+
+  /* ----------------------------- 29 · parcours ------------------------ */
+  {
+    id: 'voie_pro',
+    label: 'Renforcer les savoirs fondamentaux au lycée professionnel',
+    famille: 'parcours',
+    porteurs: ['intersyndicale', 'chercheurs sur la poursuite d’études'],
+    perimetre: 'ministeriel',
+    cout: 0.28, coutETP: 0, pol: 4,
+    theme: 'voie_pro', once: true, reforme: true,
+    vitrine: { parents: 0, enseignants: +2, presse: -1, compteurs: {} },
+    reel: [
+      { compteur: 'egalite',  central: 4, delai: 4, cadenas: 3, source: 'la voie professionnelle accueille les élèves les plus défavorisés ; leur réussite en BTS dépend des bases' },
+      { compteur: 'reussite', central: 2, delai: 4, cadenas: 3, source: 'un tiers des lycéens sont concernés' },
+    ],
+    physique: {},
+    mot: "Un tiers des lycéens, zéro pour cent des éditoriaux.",
+  },
+
+  /* ----------------------------- 30 · autorité ------------------------ */
+  {
+    id: 'allocations',
+    label: 'Suspension des allocations familiales en cas d’absentéisme persistant',
+    famille: 'autorite',
+    porteurs: ['Zemmour', 'une partie de la droite', '60 % de l’opinion'],
+    contre: ['deux évaluations publiques : aucun effet durable'],
+    perimetre: 'matignon',
+    cout: 0.02, coutETP: 0, pol: 9,
+    theme: 'allocations', once: true, reforme: false,
+    vitrine: { parents: +4, enseignants: -2, presse: +7, compteurs: {} },
+    reel: [
+      { compteur: 'egalite', central: -4, delai: 3, cadenas: 4, source: 'dispositif Ciotti évalué : sans effet sur l’assiduité, frappe les familles les plus fragiles' },
+      { compteur: 'sante',   central: -1, delai: 3, cadenas: 3, source: 'casse le lien école-famille qu’il faudrait reconstruire' },
+    ],
+    physique: {},
+    mot: "Évaluée deux fois, enterrée deux fois, réclamée toujours. La mesure zombie du débat éducatif français : elle ne marche pas, mais elle marche très bien.",
+  },
+
+  /* ----------------------------- 31 · autorité ------------------------ */
+  {
+    id: 'internats',
+    label: 'Internats de rescolarisation pour élèves hautement perturbateurs',
+    famille: 'autorite',
+    porteurs: ['Lisnard', 'Zemmour', 'des chefs d’établissement épuisés'],
+    perimetre: 'ministeriel',
+    cout: 0.21, coutETP: 0, pol: 5,
+    theme: 'internats', once: true, reforme: false,
+    vitrine: { parents: +5, enseignants: +1, presse: +5, compteurs: {} },
+    reel: [
+      { compteur: 'sante',   central: 1, delai: 3, cadenas: 2, source: 'soulage les classes d’origine ; les trajectoires des élèves déplacés sont mal documentées' },
+      { compteur: 'egalite', central: -2, delai: 3, cadenas: 2, source: 'concentrer les élèves en rupture entre eux : l’effet de composition joue contre eux' },
+    ],
+    physique: {},
+    mot: "Sortir l'élève règle le problème de la classe et déplace celui de l'élève. Le transfert n'est pas une politique, mais il photographie très bien.",
+  },
+
+  /* ----------------------------- 32 · autorité ------------------------ */
+  {
+    id: 'pause_numerique',
+    label: 'Pause numérique : téléphones sous clé du portail à la sortie',
+    famille: 'autorite',
+    porteurs: ['acquis de 2025, à généraliser', 'fédérations de parents'],
+    perimetre: 'ministeriel',
+    cout: 0.11, coutETP: 0, pol: 2,
+    theme: 'portable', once: true, reforme: false,
+    vitrine: { parents: +6, enseignants: +2, presse: +4, compteurs: { sante: +2 } },
+    reel: [
+      { compteur: 'sante',    central: 3, delai: 2, cadenas: 3, source: 'effets mesurés sur le climat de récréation et les incidents' },
+      { compteur: 'reussite', central: 1, delai: 3, cadenas: 3, source: 'effets sur l’attention documentés, d’ampleur modeste' },
+    ],
+    physique: {},
+    mot: "Mesure rarissime : les enseignants sont pour, les parents sont pour, les élèves sont contre et n'ont pas le droit de vote. Reste à savoir qui achète les casiers — indice : pas vous.",
+  },
+
+  /* ----------------------------- 33 · climat -------------------------- */
+  {
+    id: 'empathie',
+    label: 'Compétences psychosociales et prévention du harcèlement dès le CP',
+    famille: 'autorite',
+    porteurs: ['programmes finlandais et danois évalués', 'mission harcèlement'],
+    perimetre: 'ministeriel',
+    cout: 0.19, coutETP: 0, pol: 3,
+    theme: 'empathie', once: true, reforme: true,
+    vitrine: { parents: +2, enseignants: +1, presse: -3, compteurs: {} },
+    reel: [
+      { compteur: 'sante',    central: 5, delai: 4, cadenas: 4, source: 'programmes structurés (KiVa et apparentés) : réduction mesurée des violences entre élèves' },
+      { compteur: 'reussite', central: 2, delai: 5, cadenas: 3, source: 'un élève qui n’a pas peur apprend mieux : effet indirect robuste' },
+    ],
+    physique: {},
+    mot: "Les programmes danois ont vingt ans de preuve. Le vôtre aura vingt secondes au journal de 20 heures, sous le bandeau « L'école des bisous ».",
+  },
+
+  /* ----------------------------- 34 · autorité (comédie) -------------- */
+  {
+    id: 'surges',
+    label: 'Rétablir les surveillants généraux',
+    famille: 'autorite',
+    porteurs: ['Zemmour', 'la nostalgie'],
+    perimetre: 'ministeriel',
+    cout: 0.14, coutETP: 1500, pol: 3,
+    theme: 'surges', once: true, reforme: false,
+    vitrine: { parents: +4, enseignants: 0, presse: +4, compteurs: {} },
+    reel: [
+      { compteur: 'sante', central: 2, delai: 2, cadenas: 1, source: 'aucune évaluation : c’est un assistant d’éducation avec un nom d’avant. La présence adulte aide ; le costume, on ne sait pas' },
+    ],
+    physique: {},
+    mot: "Personne ne sait exactement ce que c'était, tout le monde s'en souvient avec émotion. Vous financez un souvenir — à variance maximale.",
+  },
+
+  /* ----------------------------- 35 · mixité (le levier doux) --------- */
+  {
+    id: 'secteurs',
+    label: 'Secteurs multi-collèges avec les départements volontaires',
+    famille: 'mixite',
+    porteurs: ['expérimentations parisiennes évaluées', 'départements volontaires', 'CSEN'],
+    perimetre: 'ministeriel',
+    cout: 0.08, coutETP: 0, pol: 8,
+    theme: 'secteurs', once: true, reforme: true,
+    vitrine: { parents: -4, enseignants: +2, presse: -1, compteurs: { egalite: +2 } },
+    reel: [
+      { compteur: 'egalite', central: 6, delai: 4, cadenas: 3, source: 'secteurs bi-collèges parisiens : la mixité progresse sans baisse des résultats des favorisés' },
+    ],
+    physique: { segregation: -1.2 },
+    mot: "Les évaluations montrent que les résultats des enfants favorisés ne baissent pas. Les craintes de leurs parents, si — et elles, elles votent.",
+  },
+
+  /* ----------------------------- 36 · mixité -------------------------- */
+  {
+    id: 'ghettos',
+    label: 'Fermer une centaine de « ghettos scolaires » et redéployer les élèves',
+    famille: 'mixite',
+    porteurs: ['Attal'],
+    perimetre: 'ministeriel',
+    cout: 0.35, coutETP: 0, pol: 11,
+    theme: 'ghettos', once: true, reforme: true,
+    vitrine: { parents: -2, enseignants: -3, presse: +5, compteurs: {} },
+    reel: [
+      { compteur: 'egalite', central: 4, delai: 4, cadenas: 2, source: 'jamais fait à cette échelle : dépend entièrement de la qualité des réaffectations' },
+    ],
+    physique: { segregation: -0.8 },
+    mot: "Fermer un collège que tout le monde évite : tout le monde est pour, sauf l'intégralité des personnes concernées, son maire, et le collège d'à côté.",
+  },
+
+  /* ----------------------------- 37 · mixité (l’arme nucléaire) ------- */
+  {
+    id: 'loi_carle',
+    label: 'Abroger la loi Carle et intégrer le privé sous contrat à la carte scolaire',
+    famille: 'mixite',
+    porteurs: ['Mélenchon', 'Glucksmann (version carte scolaire)', 'NFP'],
+    perimetre: 'matignon',
+    cout: -0.10, coutETP: 0, pol: 13,
+    theme: 'carle', once: true, reforme: true,
+    provocations: 2,                      // à elle seule, elle arme la guerre scolaire
+    vitrine: { parents: -6, enseignants: +4, presse: -2, compteurs: { egalite: +2 } },
+    reel: [
+      { compteur: 'egalite', central: 8, delai: 4, cadenas: 3, source: 'le privé sous contrat scolarise 40 % d’élèves très favorisés contre 26 % en 2000 : l’intégrer à la carte est le levier structurel' },
+    ],
+    physique: { segregation: -2.0 },
+    mot: "1984 : un million de personnes dans la rue, un ministre débarqué, une loi retirée. Mais vous, vous avez un plan.",
+  },
+
+  /* ----------------------------- 38 · rythmes (comédie tragique) ------ */
+  {
+    id: 'ete',
+    label: 'Raccourcir et zoner les vacances d’été',
+    famille: 'moyens',
+    porteurs: ['chronobiologistes', 'la recherche sur la perte estivale', 'personne d’autre'],
+    perimetre: 'ministeriel',
+    cout: 0.12, coutETP: 0, pol: 12,
+    theme: 'ete', once: true, reforme: true,
+    vitrine: { parents: -6, enseignants: -7, presse: +2, compteurs: {} },
+    reel: [
+      { compteur: 'egalite',  central: 5, delai: 4, cadenas: 3, source: 'la perte estivale d’apprentissages est massive et socialement très inégale' },
+      { compteur: 'reussite', central: 2, delai: 4, cadenas: 3, source: 'étalement de l’année : effet modeste mais convergent' },
+    ],
+    physique: {},
+    greve: { intensite: 3, theme: 'statut', segment: 'tous' },
+    mot: "Contre vous : les parents, les enseignants, les hôteliers, les colonies de vacances et le ministre du Tourisme. Pour vous : trois chronobiologistes, dont un en congé.",
+  },
+
+  /* ----------------------------- 39 · numérique ----------------------- */
+  {
+    id: 'ia_emi',
+    label: 'Éducation aux médias et à l’intelligence artificielle, heures dédiées',
+    famille: 'parcours',
+    porteurs: ['à peu près tout le monde, sans les heures'],
+    perimetre: 'ministeriel',
+    cout: 0.13, coutETP: 0, pol: 2,
+    theme: 'ia', once: true, reforme: false,
+    vitrine: { parents: +2, enseignants: 0, presse: +3, compteurs: {} },
+    reel: [
+      { compteur: 'reussite', central: 2, delai: 4, cadenas: 3, source: 'l’esprit critique s’enseigne ; les effets sont réels et lents' },
+      { compteur: 'sante',    central: 1, delai: 4, cadenas: 2, source: 'moins de conflits liés aux réseaux sociaux, si les adultes sont formés' },
+    ],
+    physique: {},
+    mot: "Vos élèves utilisent déjà l'IA pour leurs devoirs, et vos enseignants pour les corriger. Il serait temps que quelqu'un forme quelqu'un.",
+  },
+
+  /* ----------------------------- 40 · équité -------------------------- */
+  {
+    id: 'devoirs_faits',
+    label: 'Accompagnement aux devoirs systématique au collège',
+    famille: 'moyens',
+    porteurs: ['dispositif existant depuis 2017, à rendre effectif', 'EEF (tutorat)'],
+    perimetre: 'ministeriel',
+    cout: 0.24, coutETP: 0, pol: 3,
+    theme: 'devoirs', once: true, reforme: false,
+    vitrine: { parents: +5, enseignants: -1, presse: +2, compteurs: { egalite: +1 } },
+    reel: [
+      { compteur: 'egalite',  central: 4, delai: 3, cadenas: 4, source: 'EEF : le tutorat et l’aide aux devoirs encadrée comptent parmi les interventions les mieux documentées' },
+      { compteur: 'reussite', central: 2, delai: 3, cadenas: 4, source: 'idem — l’effet dépend de l’encadrement réel, pas de l’étude surveillée' },
+    ],
+    physique: {},
+    mot: "Le dispositif existe depuis 2017. Vous le rendez systématique — c'est-à-dire que vous allez découvrir qui, exactement, était volontaire.",
   },
 ];
 
@@ -326,6 +838,11 @@ export const FINANCEMENT_19 = {
 /* Les deux « mesures présidentielles » imposées en cours de mandat (aléa
    initial, comme l'élection du jeu de référence). Le joueur les applique
    (elles consomment son enveloppe) ou les abandonne (fatigue +15, capital −10). */
-export const MESURES_PRESIDENTIELLES = ['differenciation', 'redoublement', 'autonomie', 'classe19', 'sante_scolaire', 'remplacement'];
+/* Le Président élu en 2027 impose deux mesures « présidentielles » à caser dans
+   le mandat. L'Élysée aime le visible : le pool penche vitrine. */
+export const MESURES_PRESIDENTIELLES = [
+  'differenciation', 'redoublement', 'autonomie', 'classe19', 'sante_scolaire',
+  'remplacement', 'uniforme', 'pause_numerique', 'brevet_barrage', 'internats',
+];
 
 export const PAR_ID = Object.fromEntries(CATALOGUE.map((c) => [c.id, c]));

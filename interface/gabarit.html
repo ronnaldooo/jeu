@@ -1,0 +1,225 @@
+<title>Rue de Grenelle</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,400;0,600;0,700;1,400&family=Newsreader:ital,opsz,wght@0,6..72,500;0,6..72,700;1,6..72,400;1,6..72,500&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* ============================================================
+   RUE DE GRENELLE — feuille de style
+   Papier administratif + presse. Trois états de thème :
+   :root = palette claire complète ; media dark gardée ;
+   [data-theme=dark] rejoue les mêmes valeurs.
+   ============================================================ */
+:root{
+  --bleu-rf:#000091; --bleu-rf-2:#2a2ac4;
+  --rouge-rf:#e1000f;
+  --papier:#f2f3f7; --fiche:#ffffff; --fiche-2:#eceef4;
+  --encre:#1e1f26; --encre-2:#565b6b; --encre-3:#8a8fa3;
+  --filet:#d8dae4; --filet-fort:#b9bdcf;
+  --or:#c9a227;
+  --c-reussite:#2a78d6; --c-egalite:#e87ba4; --c-sante:#1baf7a;
+  --c-paix:#eb6834; --c-budget:#eda100;
+  --ok:#0ca30c; --alerte:#d03b3b;
+  --ombre:0 1px 2px rgba(30,31,38,.07),0 4px 14px rgba(30,31,38,.06);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bleu-rf:#8585f6; --bleu-rf-2:#a2a2f8;
+    --rouge-rf:#ff5655;
+    --papier:#14151b; --fiche:#1d1e26; --fiche-2:#262834;
+    --encre:#ecedf3; --encre-2:#a6a9b8; --encre-3:#767b8e;
+    --filet:#33343e; --filet-fort:#484a58;
+    --or:#d9b545;
+    --c-reussite:#3987e5; --c-egalite:#d55181; --c-sante:#199e70;
+    --c-paix:#d95926; --c-budget:#c98500;
+    --ok:#0ca30c; --alerte:#e66767;
+    --ombre:0 1px 2px rgba(0,0,0,.4),0 4px 14px rgba(0,0,0,.3);
+  }
+}
+:root[data-theme="dark"]{
+  --bleu-rf:#8585f6; --bleu-rf-2:#a2a2f8;
+  --rouge-rf:#ff5655;
+  --papier:#14151b; --fiche:#1d1e26; --fiche-2:#262834;
+  --encre:#ecedf3; --encre-2:#a6a9b8; --encre-3:#767b8e;
+  --filet:#33343e; --filet-fort:#484a58;
+  --or:#d9b545;
+  --c-reussite:#3987e5; --c-egalite:#d55181; --c-sante:#199e70;
+  --c-paix:#d95926; --c-budget:#c98500;
+  --ok:#0ca30c; --alerte:#e66767;
+  --ombre:0 1px 2px rgba(0,0,0,.4),0 4px 14px rgba(0,0,0,.3);
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; background:var(--papier); color:var(--encre);
+  font:16px/1.55 "Public Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  min-height:100vh;
+}
+button{font:inherit; color:inherit}
+h1,h2,h3{text-wrap:balance; margin:0}
+
+/* ---------- HUD ---------- */
+#hud{position:sticky; top:0; z-index:20; background:var(--fiche); box-shadow:var(--ombre)}
+#hud .tricolore{height:4px; display:flex}
+#hud .tricolore i{flex:1}
+#hud .tricolore i:nth-child(1){background:#000091}
+#hud .tricolore i:nth-child(2){background:#f5f5fe}
+#hud .tricolore i:nth-child(3){background:#e1000f}
+#hud .barre{max-width:1100px; margin:0 auto; padding:8px 16px; display:flex; flex-wrap:wrap; gap:6px 18px; align-items:center}
+#hud .qui{font-weight:700; font-size:.78rem; letter-spacing:.09em; text-transform:uppercase; color:var(--encre); line-height:1.25}
+#hud .qui small{display:block; font-weight:400; letter-spacing:.02em; text-transform:none; color:var(--encre-2); font-size:.72rem}
+#hud .jauges{display:flex; flex-wrap:wrap; gap:4px 14px; margin-left:auto}
+.jauge{min-width:86px}
+.jauge .nom{font-size:.62rem; letter-spacing:.07em; text-transform:uppercase; color:var(--encre-2); display:flex; justify-content:space-between; gap:6px}
+.jauge .nom b{color:var(--encre); font-variant-numeric:tabular-nums; letter-spacing:0}
+.jauge .rail{height:4px; background:var(--fiche-2); border-radius:2px; margin-top:2px; overflow:hidden}
+.jauge .rail i{display:block; height:100%; border-radius:2px; transition:width .5s ease}
+.jauge .delta{font-size:.62rem; color:var(--encre-3); font-variant-numeric:tabular-nums}
+.jauge .delta.up{color:var(--ok)} .jauge .delta.down{color:var(--alerte)}
+#hud .sous{max-width:1100px; margin:0 auto; padding:0 16px 7px; display:flex; flex-wrap:wrap; gap:4px 16px; font-size:.7rem; color:var(--encre-2)}
+#hud .sous span{white-space:nowrap; font-variant-numeric:tabular-nums}
+#hud .sous b{color:var(--encre); font-weight:600}
+
+/* ---------- scène ---------- */
+#scene{max-width:1100px; margin:0 auto; padding:26px 16px 90px}
+.doc{background:var(--fiche); border:1px solid var(--filet); box-shadow:var(--ombre); padding:28px clamp(18px,4vw,44px); margin:0 auto; max-width:860px}
+.doc.large{max-width:1100px}
+.entete-doc{display:flex; justify-content:space-between; gap:12px; align-items:baseline; border-bottom:2px solid var(--encre); padding-bottom:10px; margin-bottom:18px}
+.entete-doc .type{font-size:.7rem; letter-spacing:.14em; text-transform:uppercase; font-weight:700; color:var(--bleu-rf)}
+.entete-doc .date{font-size:.75rem; color:var(--encre-2); font-variant-numeric:tabular-nums; white-space:nowrap}
+.doc h2{font-size:clamp(1.25rem,3vw,1.7rem); line-height:1.2; font-weight:700; margin:0 0 8px}
+.doc .chapo{color:var(--encre-2); max-width:62ch; margin:0 0 4px}
+.doc p{max-width:66ch}
+
+.actions{display:flex; flex-wrap:wrap; gap:10px; margin-top:22px}
+.btn{cursor:pointer; border:1px solid var(--bleu-rf); background:var(--bleu-rf); color:#fff;
+  padding:10px 18px; font-weight:600; font-size:.92rem; border-radius:0}
+:root[data-theme="dark"] .btn{color:#14151b}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .btn{color:#14151b} }
+.btn:hover{background:var(--bleu-rf-2); border-color:var(--bleu-rf-2)}
+.btn:focus-visible,.carte:focus-visible,.opt:focus-visible{outline:2px solid var(--bleu-rf); outline-offset:2px}
+.btn.sec{background:transparent; color:var(--bleu-rf)}
+.btn.sec:hover{background:var(--fiche-2)}
+.btn:disabled{opacity:.45; cursor:not-allowed}
+
+/* ---------- options (choix à réponses) ---------- */
+.opts{display:grid; gap:10px; margin-top:18px}
+.opt{cursor:pointer; text-align:left; background:var(--fiche); border:1px solid var(--filet); border-left:3px solid var(--filet-fort); padding:13px 16px}
+.opt:hover{border-color:var(--bleu-rf); border-left-color:var(--bleu-rf)}
+.opt b{display:block; margin-bottom:2px}
+.opt .det{font-size:.85rem; color:var(--encre-2); max-width:70ch}
+
+/* ---------- doctrine ---------- */
+.classement{display:grid; gap:8px; margin:18px 0; counter-reset:rang}
+.rang{display:flex; align-items:center; gap:12px; background:var(--fiche-2); border:1px solid var(--filet); padding:10px 14px}
+.rang::before{counter-increment:rang; content:counter(rang); font-weight:700; font-size:1.05rem; color:var(--bleu-rf); width:1.2em; text-align:center; font-variant-numeric:tabular-nums}
+.rang .pastille{width:10px; height:10px; border-radius:50%; flex:none}
+.rang .lib{flex:1; font-weight:600}
+.rang .poids{font-size:.75rem; color:var(--encre-2); font-variant-numeric:tabular-nums}
+.rang .fleches{display:flex; gap:4px}
+.rang .fleches button{cursor:pointer; border:1px solid var(--filet-fort); background:var(--fiche); width:30px; height:30px; font-size:.85rem}
+.rang .fleches button:hover{border-color:var(--bleu-rf); color:var(--bleu-rf)}
+
+/* ---------- curseurs (carte scolaire) ---------- */
+.curseur{margin:20px 0}
+.curseur label{font-weight:600; display:block; margin-bottom:2px}
+.curseur .aide{font-size:.83rem; color:var(--encre-2); max-width:70ch; margin-bottom:8px}
+.curseur input[type=range]{width:100%; accent-color:var(--bleu-rf)}
+.curseur .lecture{font-family:"IBM Plex Mono",monospace; font-size:.85rem; color:var(--encre); background:var(--fiche-2); padding:8px 12px; margin-top:6px; font-variant-numeric:tabular-nums}
+
+/* ---------- atelier / cartes-mesures ---------- */
+.solde{position:sticky; top:86px; z-index:5; background:var(--fiche); border:1px solid var(--filet-fort); padding:9px 14px; display:flex; flex-wrap:wrap; gap:6px 22px; font-family:"IBM Plex Mono",monospace; font-size:.82rem; margin-bottom:16px; font-variant-numeric:tabular-nums}
+.solde b{font-weight:500}
+.solde .neg{color:var(--alerte)}
+.grille-cartes{display:grid; grid-template-columns:repeat(auto-fill,minmax(310px,1fr)); gap:14px}
+.carte{cursor:pointer; text-align:left; background:var(--fiche); border:1px solid var(--filet); border-top:3px solid var(--filet-fort); padding:14px 16px 12px; display:flex; flex-direction:column; gap:8px; position:relative}
+.carte:hover{border-color:var(--bleu-rf)}
+.carte.sel{border-color:var(--bleu-rf); border-top-color:var(--bleu-rf); background:var(--fiche); box-shadow:inset 0 0 0 1px var(--bleu-rf)}
+.carte.sel::after{content:"SÉLECTIONNÉE"; position:absolute; top:8px; right:10px; font-size:.58rem; letter-spacing:.1em; font-weight:700; color:var(--bleu-rf)}
+.carte .famille{font-size:.62rem; letter-spacing:.11em; text-transform:uppercase; font-weight:700; padding-right:92px}
+.carte h3{font-size:.98rem; line-height:1.3; font-weight:600; padding-right:8px}
+.carte .porteurs{font-size:.74rem; color:var(--encre-2)}
+.carte .porteurs b{font-weight:600; color:var(--encre)}
+.carte .chiffres{display:flex; flex-wrap:wrap; gap:4px 14px; font-family:"IBM Plex Mono",monospace; font-size:.74rem; color:var(--encre-2); font-variant-numeric:tabular-nums}
+.carte .chiffres .neg{color:var(--alerte)} .carte .chiffres .pos{color:var(--ok)}
+.carte .reels{display:grid; gap:3px; font-size:.76rem}
+.carte .reels .ligne{display:flex; gap:8px; align-items:baseline}
+.carte .reels .verrous{letter-spacing:1px; white-space:nowrap}
+.carte .reels .src{color:var(--encre-3); font-size:.7rem}
+.carte .alerte-greve{font-size:.72rem; color:var(--rouge-rf); font-weight:600}
+.carte .mot{font-family:"Newsreader",georgia,serif; font-style:italic; font-size:.92rem; color:var(--encre-2); border-top:1px solid var(--filet); padding-top:8px; margin-top:auto; line-height:1.4}
+.carte .curseurs-carte{display:grid; gap:6px; border-top:1px dashed var(--filet-fort); padding-top:8px}
+.carte .curseurs-carte label{font-size:.7rem; text-transform:uppercase; letter-spacing:.07em; color:var(--encre-2); display:block}
+.carte select{width:100%; font:inherit; font-size:.82rem; padding:5px 6px; background:var(--fiche-2); color:var(--encre); border:1px solid var(--filet-fort)}
+.badge-pr{font-size:.62rem; font-weight:700; letter-spacing:.08em; color:var(--or); text-transform:uppercase}
+
+/* ---------- journal / presse ---------- */
+.journal{background:var(--fiche); border:1px solid var(--filet); box-shadow:var(--ombre); max-width:860px; margin:0 auto; padding:26px clamp(18px,4vw,44px); font-family:"Newsreader",georgia,serif}
+.journal .manchette{display:flex; justify-content:space-between; align-items:baseline; gap:10px; border-bottom:3px double var(--encre); padding-bottom:6px}
+.journal .titre-j{font-weight:700; font-size:1.25rem; letter-spacing:.01em}
+.journal .ours{font-family:"Public Sans",sans-serif; font-size:.66rem; color:var(--encre-2); letter-spacing:.06em; text-transform:uppercase; white-space:nowrap}
+.journal h2.une{font-size:clamp(1.5rem,4.4vw,2.3rem); line-height:1.08; font-weight:700; margin:16px 0 8px}
+.journal .sous-une{font-size:1.02rem; font-style:italic; color:var(--encre-2); max-width:60ch}
+.journal .breves{margin-top:18px; border-top:1px solid var(--encre); padding-top:10px; display:grid; gap:9px}
+.journal .breve{font-size:.94rem; line-height:1.35}
+.journal .breve b{font-weight:700}
+.journal .breve .sig{font-family:"Public Sans",sans-serif; font-size:.66rem; color:var(--encre-3); text-transform:uppercase; letter-spacing:.07em}
+
+/* ---------- fil social ---------- */
+.fil{max-width:860px; margin:14px auto 0; display:grid; gap:8px}
+.post{background:var(--fiche); border:1px solid var(--filet); padding:10px 14px; font-size:.88rem}
+.post .auteur{font-weight:700; font-size:.8rem}
+.post .pseudo{color:var(--encre-3); font-weight:400; font-size:.75rem}
+.post p{margin:3px 0 0; max-width:75ch}
+
+/* ---------- dépêche mono ---------- */
+.depeche{font-family:"IBM Plex Mono",monospace; font-size:.8rem; background:var(--fiche-2); border-left:3px solid var(--filet-fort); padding:10px 14px; margin:8px 0; color:var(--encre-2); max-width:75ch}
+.depeche b{color:var(--encre); font-weight:500}
+
+/* ---------- tableaux du bilan ---------- */
+.defile{overflow-x:auto}
+table.bilan{border-collapse:collapse; width:100%; font-size:.86rem; font-variant-numeric:tabular-nums}
+table.bilan th{font-size:.68rem; text-transform:uppercase; letter-spacing:.08em; color:var(--encre-2); text-align:left; padding:6px 10px; border-bottom:2px solid var(--encre)}
+table.bilan td{padding:7px 10px; border-bottom:1px solid var(--filet)}
+table.bilan .num{text-align:right}
+.verdict{font-family:"Newsreader",georgia,serif; font-size:1.15rem; font-style:italic; margin:14px 0; max-width:60ch; line-height:1.45}
+.score-final{display:flex; flex-wrap:wrap; gap:14px; margin:18px 0}
+.score-bloc{flex:1; min-width:150px; background:var(--fiche-2); border-top:3px solid var(--bleu-rf); padding:12px 16px}
+.score-bloc .val{font-size:1.9rem; font-weight:700; font-variant-numeric:tabular-nums; line-height:1.1}
+.score-bloc .lib{font-size:.68rem; text-transform:uppercase; letter-spacing:.08em; color:var(--encre-2)}
+.revele{color:var(--encre-3)} .revele.bon{color:var(--ok); font-weight:600} .revele.mauvais{color:var(--alerte); font-weight:600}
+
+/* ---------- accueil ---------- */
+.accueil{max-width:720px; margin:6vh auto 0; text-align:center}
+.accueil .tampon{display:inline-block; border:3px double var(--bleu-rf); color:var(--bleu-rf); padding:10px 26px; transform:rotate(-2.5deg); margin-bottom:26px}
+.accueil .tampon .rf{font-size:.68rem; letter-spacing:.28em; font-weight:700}
+.accueil h1{font-size:clamp(2.1rem,7vw,3.4rem); letter-spacing:.05em; font-weight:700; text-transform:uppercase}
+.accueil .devise{font-family:"Newsreader",georgia,serif; font-style:italic; font-size:1.12rem; color:var(--encre-2); margin:10px auto 26px; max-width:52ch}
+.accueil .avertissement{font-size:.72rem; color:var(--encre-3); max-width:58ch; margin:26px auto 0}
+.note-passation{font-family:"Newsreader",georgia,serif; font-size:1.05rem; background:var(--fiche-2); border:1px solid var(--filet); padding:16px 20px; margin:16px 0; line-height:1.5; max-width:62ch}
+.note-passation .ps{font-style:italic; color:var(--encre-2); display:block; margin-top:8px}
+
+.suite{position:fixed; bottom:0; left:0; right:0; z-index:15; background:var(--fiche); border-top:1px solid var(--filet); box-shadow:0 -4px 14px rgba(0,0,0,.06)}
+.suite .in{max-width:1100px; margin:0 auto; padding:10px 16px; display:flex; align-items:center; gap:16px; justify-content:space-between}
+.suite .contexte{font-size:.78rem; color:var(--encre-2)}
+@media (prefers-reduced-motion: reduce){ *{transition:none !important; animation:none !important} }
+@media (max-width:640px){
+  #hud{position:static}
+  #hud .jauges{margin-left:0; width:100%}
+  .solde{top:0}
+}
+</style>
+<div id="hud" hidden>
+  <div class="tricolore"><i></i><i></i><i></i></div>
+  <div class="barre">
+    <div class="qui">Ministère de l'Éducation nationale<small id="hud-date"></small></div>
+    <div class="jauges" id="hud-compteurs"></div>
+  </div>
+  <div class="sous" id="hud-sous"></div>
+</div>
+<div id="scene"></div>
+<div class="suite" id="suite" hidden><div class="in">
+  <div class="contexte" id="suite-ctx"></div>
+  <button class="btn" id="suite-btn">Continuer</button>
+</div></div>
+<script>
+/*__MOTEUR__*/
+/*__APP__*/
+</script>
