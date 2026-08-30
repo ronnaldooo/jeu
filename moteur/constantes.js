@@ -377,6 +377,69 @@ export const PROJETS_2027 = {
   },
 };
 
+/* ---------------------------------------------------------------------------
+   11. LES CINQ PRÉSIDENTS POSSIBLES DE 2027
+   ------------------------------------------------------------------------- */
+/* Le joueur ne choisit plus ses priorités dans l'absolu : il choisit la
+   Présidente ou le Président qui vient de le nommer — et hérite de sa
+   plateforme. Cinq archétypes, chacun assemblé à partir de propositions
+   publiques réelles (citées : neutralité par attribution) ; les personnages,
+   eux, sont fictifs et satiriques, comme le reste de la distribution.
+   La doctrine fixée pondère le score (35/25/20/12/8) et les deux « mesures
+   présidentielles » imposées sortent du programme du Président choisi. */
+export const PRESIDENTS = [
+  {
+    id: 'exigence',
+    nom: 'Paul-Henri Sévère',
+    slogan: 'La République de l’Exigence',
+    inspiration: 'assemblé à partir des projets publics de G. Attal (choc des savoirs), É. Philippe (résultats publiés) et D. Lisnard (évaluation)',
+    doctrine: ['reussite', 'budget', 'sante', 'egalite', 'paix'],
+    mesures: ['differenciation', 'brevet_barrage', 'autonomie', 'redoublement', 'uniforme'],
+    mandat: '« Je vous nomme pour redresser le niveau. Les évaluations remonteront, ou vous descendrez. Nous nous comprenons ? »',
+    decode: 'L’Élysée assume le terrain du « niveau » : exigence, certificats, résultats publiés. La salle des professeurs a déjà lu le programme — et pris date.',
+  },
+  {
+    id: 'egalite',
+    nom: 'Louise Quintal',
+    slogan: 'L’École de l’Égalité',
+    inspiration: 'assemblé à partir des projets publics de J.-L. Mélenchon (19 par classe, loi Carle), R. Glucksmann (privé et carte scolaire) et du NFP (financement conditionné)',
+    doctrine: ['egalite', 'reussite', 'sante', 'paix', 'budget'],
+    mesures: ['classe19', 'secteurs', 'dedoublement', 'aesh', 'prive_mixite'],
+    mandat: '« Je vous nomme pour que le code postal cesse de faire le bulletin scolaire. Le privé hurlera. C’est prévu au calendrier. »',
+    decode: 'L’Élysée ouvre le dossier le plus inflammable du pays : la mixité et le privé sous contrat. Le mot « Savary » est déjà dans les colonnes.',
+  },
+  {
+    id: 'serieux',
+    nom: 'Firmin Cadence',
+    slogan: 'Les Comptes et l’École',
+    inspiration: 'assemblé à partir des projets publics d’É. Philippe (+20 % financés par la démographie) et D. Lisnard (revalorisation conditionnée), avec Bercy au piano',
+    doctrine: ['budget', 'reussite', 'sante', 'egalite', 'paix'],
+    mesures: ['autonomie', 'remplacement', 'pacte_pluriannuel', 'evaluation_diagnostic'],
+    mandat: '« Je vous nomme pour prouver qu’on peut faire mieux sans dépenser plus. La démographie vous offre des marges : rendez-les fécondes. Et rendez-les. »',
+    decode: 'L’Élysée promet l’école ET l’équilibre des comptes. Bercy applaudit des deux mains, ce qui ne lui était pas arrivé depuis un ministère Pinay.',
+  },
+  {
+    id: 'ordre',
+    nom: 'Marguerite Talon',
+    slogan: 'L’Ordre à l’École',
+    inspiration: 'assemblé à partir des projets publics d’É. Zemmour (surveillants généraux, internats), M. Le Pen (autorité, uniforme) et de mesures portées à droite (allocations)',
+    doctrine: ['reussite', 'paix', 'budget', 'sante', 'egalite'],
+    mesures: ['internats', 'allocations', 'surges', 'uniforme', 'pause_numerique'],
+    mandat: '« Je vous nomme pour que l’école redevienne une école. Uniforme, silence, estrade. Le reste est de la sociologie. »',
+    decode: 'L’Élysée joue l’autorité et ses symboles. Très populaire, très photogénique — la recherche, elle, attendra dans le couloir.',
+  },
+  {
+    id: 'pacte',
+    nom: 'Antonin Verdier',
+    slogan: 'Le Pacte Enseignant',
+    inspiration: 'assemblé à partir des projets publics du PS (salaires à la moyenne OCDE), de R. Glucksmann (loi de programmation) et des demandes intersyndicales (formation, vie scolaire)',
+    doctrine: ['sante', 'reussite', 'egalite', 'budget', 'paix'],
+    mesures: ['formation', 'vie_scolaire', 'titularisation', 'sante_mentale'],
+    mandat: '« Je vous nomme pour réparer le métier. Rien ne se fera sans les personnels — j’ai lu ça dans toutes les notes, il serait temps d’essayer. »',
+    decode: 'L’Élysée parie sur le facteur humain : salaires, formation, considération. Le pari le plus documenté — et le plus lent à se voir.',
+  },
+];
+
 /* Taille du menu de mesures par année de mandat : on commence resserré pour
    que chaque carte soit vraiment lue, on élargit avec l'expérience du joueur. */
 export const TAILLES_MENU = [7, 9, 11, 12, 12];

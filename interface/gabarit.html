@@ -9,6 +9,7 @@
    ============================================================ */
 :root{
   --bleu-rf:#000091; --bleu-rf-2:#2a2ac4;
+  --papier-creme:#f6f1e6; --papier-creme-bord:#e3dbc8;
   --rouge-rf:#e1000f;
   --papier:#f2f3f7; --fiche:#ffffff; --fiche-2:#eceef4;
   --encre:#1e1f26; --encre-2:#565b6b; --encre-3:#8a8fa3;
@@ -22,6 +23,7 @@
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
     --bleu-rf:#8585f6; --bleu-rf-2:#a2a2f8;
+    --papier-creme:#232219; --papier-creme-bord:#3c3a2c;
     --rouge-rf:#ff5655;
     --papier:#14151b; --fiche:#1d1e26; --fiche-2:#262834;
     --encre:#ecedf3; --encre-2:#a6a9b8; --encre-3:#767b8e;
@@ -35,6 +37,7 @@
 }
 :root[data-theme="dark"]{
   --bleu-rf:#8585f6; --bleu-rf-2:#a2a2f8;
+  --papier-creme:#232219; --papier-creme-bord:#3c3a2c;
   --rouge-rf:#ff5655;
   --papier:#14151b; --fiche:#1d1e26; --fiche-2:#262834;
   --encre:#ecedf3; --encre-2:#a6a9b8; --encre-3:#767b8e;
@@ -46,6 +49,7 @@
   --ombre:0 1px 2px rgba(0,0,0,.4),0 4px 14px rgba(0,0,0,.3);
 }
 *{box-sizing:border-box}
+[hidden]{display:none !important}
 html{-webkit-text-size-adjust:100%}
 body{
   margin:0; background:var(--papier); color:var(--encre);
@@ -116,6 +120,55 @@ h1,h2,h3{text-wrap:balance; margin:0}
 .rang .fleches{display:flex; gap:4px}
 .rang .fleches button{cursor:pointer; border:1px solid var(--filet-fort); background:var(--fiche); width:30px; height:30px; font-size:.85rem}
 .rang .fleches button:hover{border-color:var(--bleu-rf); color:var(--bleu-rf)}
+
+/* ---------- documents papier (bordereaux, dossiers) ---------- */
+.doc.papier{background:var(--papier-creme); border-color:var(--papier-creme-bord)}
+
+/* ---------- HUD hiérarchisé : 3 grands + le reste replié ---------- */
+.jauge.grande{min-width:150px}
+.jauge.grande .nom{font-size:.7rem}
+.jauge.grande .nom b{font-size:.95rem}
+.jauge.grande .rail{height:7px}
+#hud .repli-btn{cursor:pointer; border:1px solid var(--filet-fort); background:var(--fiche); color:var(--encre-2); font-size:.68rem; font-weight:600; letter-spacing:.05em; padding:4px 10px; align-self:center}
+#hud .repli-btn:hover{border-color:var(--bleu-rf); color:var(--bleu-rf)}
+#hud .replie[hidden]{display:none}
+
+/* ---------- choix du Président ---------- */
+.grille-pres{display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:14px; margin-top:16px}
+.pres-carte{cursor:pointer; text-align:left; background:var(--fiche); border:1px solid var(--filet); border-top:3px solid var(--filet-fort); padding:16px 18px; display:flex; flex-direction:column; gap:8px}
+.pres-carte:hover{border-color:var(--bleu-rf)}
+.pres-carte.sel{border-color:var(--bleu-rf); box-shadow:inset 0 0 0 1px var(--bleu-rf)}
+.pres-carte .slogan{font-size:.66rem; letter-spacing:.12em; text-transform:uppercase; font-weight:700; color:var(--bleu-rf)}
+.pres-carte h3{font-size:1.06rem; font-weight:700}
+.pres-carte .inspi{font-size:.72rem; color:var(--encre-3); max-width:60ch}
+.pres-carte .prios{display:flex; flex-wrap:wrap; gap:4px}
+.pres-carte .prio{font-size:.68rem; font-weight:600; padding:2px 8px; border:1px solid var(--filet-fort); display:inline-flex; align-items:center; gap:5px}
+.pres-carte .prio .pastille{width:8px; height:8px; border-radius:50%}
+.pres-carte .prio.p1{border-color:var(--bleu-rf)}
+.pres-carte .mandat-q{font-family:"Newsreader",georgia,serif; font-style:italic; font-size:.92rem; color:var(--encre-2); border-top:1px solid var(--filet); padding-top:8px; line-height:1.4}
+.pres-carte .exigences{font-size:.72rem; color:var(--encre-2)}
+
+/* ---------- deltas d'acteurs (avant validation) ---------- */
+.deltas-acteurs{display:flex; flex-wrap:wrap; gap:6px; margin-top:10px}
+.delta-a{font-family:"IBM Plex Mono",monospace; font-size:.74rem; padding:3px 9px; border:1px solid var(--filet-fort); background:var(--fiche); font-variant-numeric:tabular-nums}
+.delta-a.pos{color:var(--ok); border-color:var(--ok)}
+.delta-a.neg{color:var(--alerte); border-color:var(--alerte)}
+
+/* ---------- tamponner ---------- */
+.btn.tamponner{transform:rotate(-1.5deg); letter-spacing:.06em; text-transform:uppercase; font-weight:700}
+.btn.tamponner:active{transform:rotate(-1.5deg) scale(1.12)}
+@media (prefers-reduced-motion: no-preference){ .btn.tamponner{transition:transform .15s ease-out} }
+
+/* ---------- risque de grève par réponse ---------- */
+.risque-ligne{display:flex; gap:10px; align-items:baseline; font-size:.76rem; color:var(--encre-2); margin-top:4px}
+.risque-ligne b{font-variant-numeric:tabular-nums}
+
+/* ---------- scellés ouverts ---------- */
+.scelles{background:var(--fiche); border:1px solid var(--filet); border-left:3px solid var(--or); max-width:860px; margin:0 auto 14px; padding:14px 18px}
+.scelles .titre-d{font-size:.68rem; letter-spacing:.12em; text-transform:uppercase; font-weight:700; color:var(--or); margin-bottom:6px}
+.scelles .ligne-s{display:flex; flex-wrap:wrap; gap:6px 14px; font-size:.85rem; padding:4px 0; border-top:1px dashed var(--filet)}
+.scelles .ligne-s:first-of-type{border-top:0}
+.scelles .val{font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums; font-weight:500}
 
 /* ---------- barre budgétaire ---------- */
 .budget-bloc{border:1px solid var(--filet); background:var(--fiche); padding:12px 16px; margin:0 0 14px}

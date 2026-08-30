@@ -254,6 +254,36 @@ par défaut passée à la fermeté) :
   le corps. Il n'y a pas de bonne réponse dans l'absolu, il y a une bonne
   réponse à quelqu'un.
 
+## 3 quater. La phase « Président & rapport de force »
+
+Retours de jeu de la deuxième session, plus les greffes du prototype d'UI
+fourni par le commanditaire (« Le Bureau », design handoff). Banc d'essai
+re-vérifié : 4/4 cibles sur trois graines.
+
+- **On choisit le Président, pas ses priorités dans l'absolu** : cinq
+  archétypes (`PRESIDENTS`), chacun assemblé à partir de propositions
+  publiques réelles citées (Attal/Philippe/Lisnard, Mélenchon/Glucksmann/NFP,
+  Zemmour/Le Pen, PS/intersyndicale…), personnages fictifs et satiriques.
+  Le choix fixe la doctrine ET les deux mesures présidentielles — qui ont
+  enfin un visage et une raison d'être. L'écran de classement libre et les
+  dépliants « Qui porte cette priorité en 2027 ? » disparaissent.
+- **La revendication syndicale** : second temps de l'audience d'octobre.
+  L'organisation majoritaire exige le retrait de la mesure en vigueur qu'elle
+  conteste le plus. Céder retire réellement la mesure du jeu (`retirerMesure` :
+  crédits récurrents restitués, effets non advenus annulés, priorité
+  présidentielle abandonnée le cas échéant) ; maintenir face à un profil
+  combatif dépose un préavis de grève. Le risque de grève est chiffré sur
+  chaque option avant de répondre.
+- **Greffes du prototype d'UI** : hiérarchie « 3 grands indicateurs (votre
+  doctrine) + le reste replié » dans le bandeau ; deltas d'acteurs affichés
+  en direct sous les curseurs de la carte scolaire, avant validation ;
+  « scellés ouverts » en clôture d'année (les effets réels qui arrivent sont
+  révélés, comparés à l'effet documenté) ; fond papier crème des documents
+  administratifs ; bouton « Tamponner ».
+- **Divers** : précédents de la carte scolaire dynamiques (vos propres
+  arbitrages passés dès l'an 2), formulation de la passation clarifiée,
+  sauvegardes re-versionnées (v2).
+
 ## 4. Les constantes du moteur
 
 Inchangées depuis la phase 1 (voir `moteur/constantes.js`, tout est commenté

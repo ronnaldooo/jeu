@@ -43,8 +43,9 @@ après votre départ. Le bilan final révèle la vérité, puis la projette à d
 dépendance réseau obligatoire, sur ordinateur comme sur téléphone. La partie se
 sauvegarde toute seule ; un mandat se joue en 45 à 90 minutes.
 
-Au menu : votre doctrine déclarée devant la presse — chaque priorité affiche
-les candidats de 2027 qui la portent, et la presse décode votre classement —,
+Au menu : le choix du Président de 2027 — cinq plateformes assemblées à
+partir des projets réels des candidats, qui fixent vos priorités et vous
+imposent deux mesures —,
 un été des cent jours à traverser avant la première rentrée, la carte scolaire
 de janvier et ses deux curseurs, la lettre plafond de Bercy, un menu progressif
 de mesures (7 cartes en première année, 12 en fin de mandat) tirées d'un

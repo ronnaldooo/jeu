@@ -76,12 +76,6 @@ export function creerPartie({ graine = 1, politique }) {
     journal: [],
   };
 
-  /* Deux mesures présidentielles imposées, tirées au sort à la prise de fonction. */
-  const pool = [...MESURES_PRESIDENTIELLES];
-  for (let i = 0; i < 2 && pool.length; i++) {
-    const j = Math.floor(rng() * pool.length);
-    s.mesuresPresidentielles.push({ id: pool.splice(j, 1)[0], anneeLimite: 2 + i * 2 });
-  }
   return s;
 }
 
@@ -217,13 +211,25 @@ export function rafraichir(s) { recalculerVrai(s); recalculerAffiche(s); }
    4. LES ÉTAPES DU CALENDRIER
    ========================================================================== */
 
-/* --- JUIN (an 1) : déclaration de doctrine devant la presse ---------------- */
+/* --- JUIN (an 1) : le choix du Président — et la plateforme qui va avec ----- */
 function* etapeDoctrine(s) {
-  const ordre = yield { type: 'doctrine' };
-  s.doctrine = ordre;
+  const id = yield { type: 'president', presidents: K.PRESIDENTS };
+  const p = K.PRESIDENTS.find((x) => x.id === id) || K.PRESIDENTS[0];
+  s.president = p;
+  s.doctrine = [...p.doctrine];
   s.poids = {};
-  ordre.forEach((c, i) => { s.poids[c] = K.POIDS_DOCTRINE[i]; });
-  note(s, `Doctrine déclarée : ${ordre.join(' > ')}. La presse a noté.`, 'doctrine');
+  s.doctrine.forEach((c, i) => { s.poids[c] = K.POIDS_DOCTRINE[i]; });
+
+  /* Les deux mesures présidentielles sortent du programme du Président
+     choisi : elles ont enfin un visage, et une raison d'être. */
+  const n = p.mesures.length;
+  const i0 = s.graine % n;
+  const i1 = (i0 + 1 + ((s.graine >> 2) % (n - 1))) % n;
+  s.mesuresPresidentielles = [
+    { id: p.mesures[i0], anneeLimite: 2 },
+    { id: p.mesures[i1 === i0 ? (i0 + 1) % n : i1], anneeLimite: 4 },
+  ];
+  note(s, `${p.nom} (« ${p.slogan} ») vous nomme rue de Grenelle. Doctrine du quinquennat : ${s.doctrine.join(' > ')}.`, 'doctrine');
 }
 
 /* --- L'ÉTÉ DES CENT JOURS (an 1) : deux crises avant la première rentrée --- */
@@ -330,6 +336,75 @@ function* etapeAudience(s) {
   const verdict = mult >= 0.8 ? 'bien' : mult >= 0 ? 'froid' : 'mal';
   s.derniereAudience = { org: org.nom, type: rep.type, verdict, mult };
   note(s, `Audience avec ${org.nom} : réponse « ${rep.type === 'ferme' ? 'fermeté' : rep.type === 'methode' ? 'méthode' : 'concession'} », ${verdict === 'bien' ? 'bien accueillie' : verdict === 'froid' ? 'accueillie froidement' : 'très mal reçue'}.`, 'audience');
+
+  /* Second temps : la revendication. L'organisation exige le retrait de la
+     mesure qu'elle conteste le plus. Céder la retire vraiment du jeu ;
+     maintenir face à un profil combatif, c'est provisionner une grève. */
+  const conteste = mesureContestee(s);
+  if (conteste) {
+    s.retraitsDemandes[conteste.id] = (s.retraitsDemandes[conteste.id] || 0) + 1;
+    const carte = PAR_ID[conteste.id];
+    const combatif = ['rapport_de_force', 'frontal', 'radical'].includes(org.profil);
+    const risque = evaluerMobilisation(s, {
+      intensite: combatif ? 4 : 3,
+      theme: (carte.greve && carte.greve.theme) || 'moyens',
+      segment: (carte.greve && carte.greve.segment) || 'tous',
+      cause: `maintien de « ${carte.label} »`,
+    });
+    const dec = yield { type: 'retrait', org, carte, mesure: conteste, risque, combatif };
+    if (dec === 'ceder') {
+      retirerMesure(s, conteste, org, poidsRel);
+    } else {
+      s.capital += 2;
+      s.phys.adhesion = borne(s.phys.adhesion - 1.8 * poidsRel, 0, 100);
+      if (combatif && risque) {
+        (s.grevesEnAttente = s.grevesEnAttente || []).push({
+          intensite: combatif ? 4 : 3,
+          theme: (carte.greve && carte.greve.theme) || 'moyens',
+          segment: (carte.greve && carte.greve.segment) || 'tous',
+          cause: `maintien de « ${carte.label} »`,
+        });
+        note(s, `${org.nom} quitte l’audience : préavis de grève déposé contre « ${carte.label} ».`, 'greve');
+      } else {
+        note(s, `Retrait refusé ; ${org.nom} « prend acte » — formule qui n'a jamais rien clos.`, 'audience');
+      }
+    }
+  }
+}
+
+/* La mesure que l'intersyndicale conteste le plus parmi celles en vigueur. */
+function mesureContestee(s) {
+  s.retirees = s.retirees || new Set();
+  s.retraitsDemandes = s.retraitsDemandes || {};
+  let best = null, bv = 0;
+  for (const m of s.mesuresParAnnee.flat()) {
+    if (s.retirees.has(m.id)) continue;
+    if ((s.retraitsDemandes[m.id] || 0) >= 2) continue;   // ils n'insistent que deux fois
+    const c = PAR_ID[m.id];
+    const score = (c.greve ? c.greve.intensite * 2 : 0) + Math.max(0, -(c.vitrine?.enseignants || 0));
+    if (score >= 4 && score > bv) { bv = score; best = m; }
+  }
+  return best;
+}
+
+/* Retirer une mesure sous la pression : elle sort réellement du jeu — les
+   crédits récurrents reviennent, les effets non advenus sont annulés. */
+function retirerMesure(s, m, org, poidsRel) {
+  const carte = PAR_ID[m.id];
+  s.retirees.add(m.id);
+  s.chargesRecurrentes = Math.max(0, s.chargesRecurrentes - m.cout);
+  for (const e of s.effetsEnAttente) {
+    if (e.carte === m.id && !e.applique) { e.retire = true; e.applique = true; }
+  }
+  s.reformesActives = s.reformesActives.filter((r) => r.id !== m.id);
+  s.phys.adhesion = borne(s.phys.adhesion + 4.5 * poidsRel, 0, 100);
+  s.phys.parents = borne(s.phys.parents - 3, 0, 100);
+  s.capital -= 4;
+  s.fatigue = Math.min(K.FATIGUE.max, s.fatigue + K.FATIGUE.parAbandon);
+  const mp = s.mesuresPresidentielles.find((x) => x.id === m.id);
+  if (mp) { mp.abandonnee = true; s.abandons += 1; s.capital -= 8;
+    note(s, 'L’Élysée apprend le retrait d’une priorité présidentielle par un communiqué syndical. Le téléphone sonne.', 'elysee'); }
+  note(s, `Retrait de « ${carte.label} » obtenu par ${org.nom}. La mesure sort du droit ; ses effets ne viendront jamais.`, 'retrait');
 }
 
 /* --- DÉCEMBRE : vote du budget, publications DEPP, élections pro (an 1) ---- */
@@ -365,6 +440,7 @@ function* etapeJanvier(s) {
 
   const postesRendus = Math.round(restitution * postesLiberables);
   s.dernierPostesRendus = postesRendus;
+  (s.historiqueRestitution = s.historiqueRestitution || []).push({ rentree: s.anneeCiv + 1, pct: Math.round(restitution * 100) });
   const economie = postesRendus * K.CADRAGE.coutETPhorsCAS;
 
   /* Bercy compare aux emplois qu'il a exigés en juillet. */
@@ -445,7 +521,7 @@ function etapeCloture(s) {
   /* Effets réels arrivés à échéance : ils entrent enfin dans la vérité. */
   s.acquis = s.acquis || { reussite: 0, egalite: 0, sante: 0, paix: 0, budget: 0 };
   for (const e of s.effetsEnAttente) {
-    if (!e.applique && e.anneeArrivee <= s.annee) { s.acquis[e.compteur] += e.montant; e.applique = true; }
+    if (!e.applique && e.anneeArrivee <= s.annee) { s.acquis[e.compteur] += e.montant; e.applique = true; e.anneeOuverture = s.annee; }
   }
 
   /* Tendanciels : ce qui se dégrade tout seul si l'on ne fait rien. */
@@ -770,13 +846,14 @@ export function jouerMandat({ graine = 1, politique }) {
   while (!res.done) {
     const q = res.value;
     let rep;
-    if (q.type === 'doctrine') rep = politique.doctrine(s);
+    if (q.type === 'president') rep = politique.president ? politique.president(s, q.presidents) : q.presidents[0].id;
     else if (q.type === 'lettrePlafond') rep = politique.lettrePlafond ? politique.lettrePlafond(s, q.palier) : 'accepter';
     else if (q.type === 'rentree') rep = politique.rentree ? politique.rentree(s, q) : 'assumer';
     else if (q.type === 'carteScolaire') rep = politique.carteScolaire(s, q);
     else if (q.type === 'mesures') rep = politique.mesures(s, q.dispo, q) || [];
     else if (q.type === 'dossier') rep = politique.dossier ? politique.dossier(s, q.dossier) : 1;
     else if (q.type === 'audience') rep = politique.audience ? politique.audience(s, q) : 1;
+    else if (q.type === 'retrait') rep = politique.retrait ? politique.retrait(s, q) : 'maintenir';
     res = gen.next(rep);
   }
   return bilan(s);

@@ -116,23 +116,34 @@ function nouvellesEntrees() {
 
 /* ---------------------------------------------------------------- HUD ----- */
 let instantane = null;
+let hudDeplie = false;
 function majHud() {
   const S = ETAT.s;
   $('#hud').hidden = false;
   $('#hud-date').textContent = ETAT.dateLabel || 'juin 2027';
   const zone = $('#hud-compteurs'); zone.innerHTML = '';
-  for (const c of Object.keys(NOMS_C)) {
+  const ordre = S.doctrine || Object.keys(NOMS_C);
+  const grands = ordre.slice(0, 3);
+  const petits = ordre.slice(3);
+  const jauge = (c, grande) => {
     const v = S.affiche[c];
     const d = instantane ? v - instantane[c] : 0;
-    const j = el('div', 'jauge');
+    const j = el('div', 'jauge' + (grande ? ' grande' : ''));
     j.innerHTML = `<div class="nom"><span>${NOMS_C[c]}</span><b>${fmt0(v)}</b></div>
       <div class="rail"><i style="width:${Math.max(2, Math.min(100, v))}%;background:${COULEURS_C[c]}"></i></div>
-      <div class="delta ${d > 0.6 ? 'up' : d < -0.6 ? 'down' : ''}">${Math.abs(d) > 0.6 ? (d > 0 ? '▲ ' : '▼ ') + fmt1(Math.abs(d)) : '&nbsp;'}</div>`;
+      <div class="delta ${d > 0.6 ? 'up' : d < -0.6 ? 'down' : ''}">${Math.abs(d) > 0.6 ? (d > 0 ? '▲ +' : '▼ −') + fmt1(Math.abs(d)) : '&nbsp;'}</div>`;
     if (S.doctrine && S.doctrine[0] === c) j.querySelector('.nom span').style.color = 'var(--bleu-rf)';
-    zone.appendChild(j);
-  }
+    return j;
+  };
+  for (const c of grands) zone.appendChild(jauge(c, true));
+  const btn = el('button', 'repli-btn', hudDeplie ? '▾ replier' : '▸ tout le tableau de bord');
+  btn.onclick = () => { hudDeplie = !hudDeplie; majHud(); };
+  zone.appendChild(btn);
+  if (hudDeplie) for (const c of petits) zone.appendChild(jauge(c, false));
   instantane = { ...S.affiche };
-  $('#hud-sous').innerHTML = [
+  const sous = $('#hud-sous');
+  sous.hidden = !hudDeplie;
+  sous.innerHTML = [
     `Capital politique <b>${fmt0(S.capital)}</b>`,
     `Crédit Bercy <b>${fmt0(S.creditBercy)}</b>`,
     `Adhésion enseignante <b>${fmt0(S.phys.adhesion)}</b>`,
@@ -188,66 +199,60 @@ function ecranAccueil(sauvegarde) {
   scene(a);
 }
 
-/* --- passation ------------------------------------------------------------- */
-function ecranPassation() {
+/* --- le choix du Président --------------------------------------------------- */
+function ecranPresident(q) {
+  const d = docu('Mai 2027 — second tour', 'Qui vient d’être élu(e) ?', 'mai 2027');
+  d.classList.add('large');
+  d.appendChild(el('p', 'chapo', 'Vous ne choisissez pas vos priorités dans l’absolu : vous choisissez la Présidente ou le Président qui vous nomme — et vous héritez de sa plateforme. Elle fixe vos cinq priorités (et le barème de votre bilan : 35 / 25 / 20 / 12 / 8), et deux mesures de son programme vous seront imposées. Chaque profil est assemblé à partir de propositions publiques réelles.'));
+  const grille = el('div', 'grille-pres');
+  let choisi = null;
+  const bas = el('div', 'actions');
+  const ok = el('button', 'btn', 'Accepter la nomination');
+  ok.disabled = true;
+  ok.onclick = () => suivant(choisi);
+  q.presidents.forEach((pr) => {
+    const c = el('button', 'pres-carte');
+    c.innerHTML = `
+      <span class="slogan">${esc(pr.slogan)}</span>
+      <h3>${esc(pr.nom)}</h3>
+      <div class="inspi">${esc(pr.inspiration)}.</div>
+      <div class="prios">${pr.doctrine.map((cc, i) => `<span class="prio${i === 0 ? ' p1' : ''}"><span class="pastille" style="background:${COULEURS_C[cc]}"></span>${i + 1}. ${NOMS_C[cc]}</span>`).join('')}</div>
+      <div class="exigences">Exigera notamment : ${pr.mesures.slice(0, 3).map((m) => esc(PAR_ID[m].label.split(':')[0].split(',')[0])).join(' · ')}…</div>
+      <div class="mandat-q">${esc(pr.mandat)}</div>`;
+    c.onclick = () => {
+      choisi = pr.id;
+      grille.querySelectorAll('.pres-carte').forEach((n) => n.classList.remove('sel'));
+      c.classList.add('sel');
+      ok.disabled = false;
+      ok.textContent = `Accepter la nomination de ${pr.nom}`;
+    };
+    grille.appendChild(c);
+  });
+  d.appendChild(grille);
+  bas.appendChild(ok);
+  d.appendChild(bas);
+  scene(d);
+}
+
+/* --- passation (intégrée à l'ouverture) -------------------------------------- */
+function blocPassation() {
   const S = ETAT.s;
   const d = docu('Passation de pouvoirs', 'Bienvenue rue de Grenelle', 'juin 2027');
-  d.appendChild(el('p', 'chapo', 'Votre prédécesseur — le huitième en quatre ans — vous remet les clés du premier budget de l’État. Sur le bureau, un mot :'));
+  d.classList.add('papier');
+  d.appendChild(el('p', 'chapo', `${esc(S.president.nom)} vous confie le ministère de l’Éducation nationale — le premier budget de l’État : 64,5 milliards d’euros par an, dont 92,7 % de salaires. Votre prédécesseur, huitième en quatre ans, laisse un mot :`));
   d.appendChild(el('div', 'note-passation',
     '« Tout est dans les dossiers. Les dossiers sont dans les cartons. Les cartons sont au garde-meuble, la DGESCO sait lequel. Méfiez-vous de juillet, de septembre et de janvier — le reste de l’année est calme, sauf le reste de l’année. Bonne chance.'
     + '<span class="ps">P.-S. — La photocopieuse du deuxième est en panne depuis 2019. C’est le dossier le plus consensuel du ministère : ne le réglez pas, il fédère. »</span>'));
-  const mp = S.mesuresPresidentielles.map((m) => `<b>${esc(PAR_ID[m.id].label)}</b> <span style="color:var(--encre-2)">(avant l’an ${m.anneeLimite})</span>`);
-  d.appendChild(el('p', '', `Un ministre n’est pas un électron libre : vous portez aussi le programme sur lequel la Présidente a été élue. Deux « priorités présidentielles » vous sont imposées — chacune à engager avant son échéance. Les abandonner coûte cher : <b>−10 de capital politique, +15 de fatigue réformatrice</b>, et un abandon de trop vous prive du bénéfice du « cap tenu » au bilan. Elles resteront affichées dans votre menu de mesures jusqu’à ce que vous les traitiez — l’Élysée y veille.`));
+  d.appendChild(el('p', '', `L’Élysée vous transmet ses deux exigences, tirées du programme sur lequel ${esc(S.president.nom)} vient d’être élu(e). À engager avant leur échéance : les abandonner coûte <b>−10 de capital, +15 de fatigue</b>, et un abandon de trop vous prive du bénéfice du « cap tenu » au bilan.`));
   const ul = el('div', 'opts'); ul.style.gap = '6px';
-  for (const x of mp) ul.appendChild(el('div', 'opt', `<span class="badge-pr">Priorité présidentielle</span><br>${x}`));
+  for (const m of S.mesuresPresidentielles) {
+    ul.appendChild(el('div', 'opt', `<span class="badge-pr">Priorité présidentielle — avant l’an ${m.anneeLimite}</span><br><b>${esc(PAR_ID[m.id].label)}</b>`));
+  }
   d.appendChild(ul);
-  d.appendChild(el('p', '', 'Premier acte du mandat : déclarer votre doctrine devant la presse. Vous classerez les cinq compteurs du quinquennat par ordre de priorité — et vous serez noté, au bilan, contre votre propre classement.'));
-  scene(d);
-  boutonSuite('Déclarer ma doctrine', 'Conférence de presse de prise de fonction', () => ETAT.rendre(ETAT.enAttente));
+  return d;
 }
 
-/* --- doctrine --------------------------------------------------------------- */
-function ecranDoctrine() {
-  const ordre = ['reussite', 'egalite', 'sante', 'paix', 'budget'];
-  const d = docu('Conférence de presse', 'Votre doctrine, devant témoins', 'juin 2027');
-  d.appendChild(el('p', 'chapo', 'Classez les cinq compteurs. Le score final pondérera chacun selon VOTRE ordre (35 / 25 / 20 / 12 / 8). Aucune priorité n’est neutre : chacune est déjà au cœur de projets pour 2027 — dépliez pour voir lesquels. La presse garde une copie ; les oppositions aussi.'));
-  const liste = el('div', 'classement');
-  const deplies = new Set();
-  const rendreListe = () => {
-    liste.innerHTML = '';
-    ordre.forEach((c, i) => {
-      const bloc = el('div', 'rang-bloc');
-      const pr = K.PROJETS_2027[c];
-      const r = el('div', 'rang');
-      r.innerHTML = `<span class="pastille" style="background:${COULEURS_C[c]}"></span>
-        <span class="lib">${NOMS_C_LONGS[c]}</span><span class="poids">${K.POIDS_DOCTRINE[i]} % du score</span>`;
-      const fl = el('div', 'fleches');
-      const haut = el('button', '', '↑'); haut.setAttribute('aria-label', 'Monter ' + NOMS_C[c]); haut.disabled = i === 0;
-      haut.onclick = () => { [ordre[i - 1], ordre[i]] = [ordre[i], ordre[i - 1]]; rendreListe(); };
-      const bas = el('button', '', '↓'); bas.setAttribute('aria-label', 'Descendre ' + NOMS_C[c]); bas.disabled = i === 4;
-      bas.onclick = () => { [ordre[i + 1], ordre[i]] = [ordre[i], ordre[i + 1]]; rendreListe(); };
-      fl.append(haut, bas); r.appendChild(fl);
-      bloc.appendChild(r);
-      bloc.appendChild(el('p', 'sous-titre', pr.sousTitre));
-      const det = document.createElement('details');
-      if (deplies.has(c)) det.open = true;
-      det.ontoggle = () => { if (det.open) deplies.add(c); else deplies.delete(c); };
-      det.innerHTML = `<summary>Qui porte cette priorité en 2027 ?</summary>` +
-        pr.porteurs.map((x) => `<p class="projet"><b>${esc(x.qui)}</b> — ${esc(x.quoi)}.</p>`).join('');
-      bloc.appendChild(det);
-      liste.appendChild(bloc);
-    });
-  };
-  rendreListe();
-  d.appendChild(liste);
-  d.appendChild(el('p', '', '<span style="font-size:.85rem;color:var(--encre-2)">Conseil de votre directeur de cabinet : « Ce que vous mettez en premier, on vous le ressortira à chaque arbitrage contradictoire. Ce que vous mettez en dernier aussi. »</span>'));
-  const ok = el('button', 'btn', 'Annoncer ce classement à la presse');
-  ok.onclick = () => suivant([...ordre]);
-  d.appendChild(el('div', 'actions')).appendChild(ok);
-  scene(d);
-}
-
-/* --- lettre plafond --------------------------------------------------------- */
+/* --- lettre plafond ---/* --- lettre plafond --------------------------------------------------------- */
 function ecranBercy(q) {
   const S = ETAT.s, p = q.palier;
   const tons = {
@@ -290,7 +295,7 @@ function ecranRentree() {
 function ecranCarteScolaire(q) {
   const S = ETAT.s;
   const d = docu('Bordereau — carte scolaire & DHG', `Rentrée ${S.anneeCiv + 1} : le moment le plus conflictuel de l’année`);
-  d.classList.add('large');
+  d.classList.add('large', 'papier');
   d.appendChild(el('p', 'chapo',
     `La démographie fait son œuvre : <b>${fmt0(Math.abs(q.baisse) * 1000)} élèves de moins</b> à la prochaine rentrée, soit ${fmt0(q.postesLiberables)} postes « libérables ». Bercy en exige ${fmt0(Math.abs(q.schemaDemande))}. Les maires, eux, exigent l’inverse. Les deux vous regardent.`));
 
@@ -304,7 +309,9 @@ function ecranCarteScolaire(q) {
   let restitution = Math.min(q.restitutionMax, 0.4), prive = 0.5;
   const c1 = el('div', 'curseur');
   c1.innerHTML = `<label for="cur-rest">Postes rendus à Bercy ⟷ réinvestis dans l’encadrement</label>
-    <div class="aide">Précédents réels : rentrée 2025, 4 % des postes libérés rendus ; rentrée 2026, 60 %. Les deux ministres ont affirmé faire « le choix de l’école ».</div>
+    <div class="aide">${(S.historiqueRestitution && S.historiqueRestitution.length)
+      ? 'Vos précédents : ' + S.historiqueRestitution.map((h) => `rentrée ${h.rentree}, ${h.pct} % rendus`).join(' ; ') + '. (Pour mémoire, avant vous : 4 % en 2025, 60 % en 2026.)'
+      : 'Précédents réels : rentrée 2025, 4 % des postes libérés rendus ; rentrée 2026, 60 %. Les deux ministres ont affirmé faire « le choix de l’école ».'}</div>
     <input id="cur-rest" type="range" min="0" max="${q.restitutionMax}" step="0.05" value="${restitution}">
     <div class="lecture" id="lec-rest"></div>`;
   const c2 = el('div', 'curseur');
@@ -314,6 +321,8 @@ function ecranCarteScolaire(q) {
     <div class="lecture" id="lec-prive"></div>`;
   d.append(c1, c2);
 
+  const deltas = el('div', 'deltas-acteurs');
+  d.appendChild(deltas);
   const lire = () => {
     const postes = Math.round(restitution * q.postesLiberables);
     const eco = postes * K.CADRAGE.coutETPhorsCAS * 1000;
@@ -326,13 +335,22 @@ function ecranCarteScolaire(q) {
       : prive <= 0.65 ? 'Effort proportionnel aux effectifs : personne n’est content, personne ne défile.'
       : prive <= 0.78 ? 'Le privé contribue davantage : protestations d’usage, encore contenues.'
       : '<span style="color:var(--rouge-rf)">Le privé est mis à contribution frontale : provocation comptabilisée — à deux, la guerre scolaire s’arme.</span>';
+
+    /* Les acteurs réagissent AVANT que vous ne signiez — mêmes formules que le moteur. */
+    const ecart2 = postes + q.schemaDemande;
+    const dSynd = -(postes / 1000) * 1.05;
+    const dBercy = ecart2 >= 0 ? Math.min(13, 4 + ecart2 / 700) : Math.max(-18, ecart2 / 260);
+    const badge = (nom, v, seuil = 0.4) => `<span class="delta-a ${v > seuil ? 'pos' : v < -seuil ? 'neg' : ''}">${nom} ${v > 0 ? '+' : ''}${fmt1(v)}</span>`;
+    deltas.innerHTML = badge('INTERSYNDICALE', dSynd) + badge('BERCY', dBercy)
+      + `<span class="delta-a ${restitution > K.SEUIL_COLERE_MAIRES ? 'neg' : ''}">MAIRES ${restitution > K.SEUIL_COLERE_MAIRES ? '−6 (colère)' : '0'}</span>`
+      + `<span class="delta-a ${prive > 0.78 ? 'neg' : ''}">PRIVÉ ${prive > 0.78 ? 'provocation +1' : prive < 0.35 ? 'épargné' : 'neutre'}</span>`;
   };
   scene(d);
   $('#cur-rest').oninput = (e) => { restitution = +e.target.value; lire(); };
   $('#cur-prive').oninput = (e) => { prive = +e.target.value; lire(); };
   lire();
   if (q.restitutionMax < 1) d.appendChild(el('p', '', `<span style="font-size:.82rem;color:var(--encre-2)">Votre engagement « 19 élèves par classe » plafonne la restitution à ${fmt0(q.restitutionMax * 100)} % : vous avez promis la démographie aux classes, pas à Bercy.</span>`));
-  const ok = el('button', 'btn', 'Arrêter la carte scolaire');
+  const ok = el('button', 'btn tamponner', 'Tamponner la carte scolaire');
   ok.onclick = () => suivant({ restitution, prive });
   d.appendChild(el('div', 'actions')).appendChild(ok);
 }
@@ -506,6 +524,7 @@ function ecranAtelier(q) {
 function ecranDossier(q) {
   const dos = q.dossier;
   const d = docu('L’été des cent jours — dossier de crise', dos.titre, 'été 2027');
+  d.classList.add('papier');
   d.appendChild(el('p', 'chapo', dos.contexte));
   const opts = el('div', 'opts');
   dos.options.forEach((o, i) => {
@@ -571,6 +590,43 @@ function ecranAudience(q) {
   scene(d);
 }
 
+/* --- la revendication : céder ou maintenir ----------------------------------- */
+function ecranRetrait(q) {
+  const { org, carte, mesure, risque, combatif } = q;
+  const d = docu('Audience — la revendication', `${org.nom} exige un retrait`);
+  d.classList.add('papier');
+  d.appendChild(el('div', 'note-passation', `« Venons-en au fond. Nous demandons le retrait de <b>« ${esc(carte.label)} »</b>. Nos instances sont mandatées. Votre réponse, monsieur le ministre ? »`));
+  d.appendChild(el('p', '', `<span style="font-size:.85rem;color:var(--encre-2)">Céder retire réellement la mesure du jeu : ses ${fmt0(mesure.cout * 1000)} M€/an reviennent à votre marge, mais ses effets encore à venir sont annulés — et si c'était une priorité présidentielle, l'Élysée l'apprendra par communiqué syndical.</span>`));
+  const opts = el('div', 'opts');
+
+  const bMaintenir = el('button', 'opt', `<b>Maintenir la mesure</b>
+    <span class="det">« Cette mesure a été décidée, elle sera appliquée. » Capital +2, adhésion en baisse.</span>
+    <span class="risque-ligne">Risque de grève : <b style="color:${combatif && risque ? 'var(--rouge-rf)' : 'var(--ok)'}">${combatif && risque ? '~' + fmt1(risque.tauxMinistere) + ' % de grévistes (préavis probable)' : 'contenu — le profil de l’organisation ne s’y prête pas'}</b></span>`);
+  bMaintenir.onclick = () => finRetrait('maintenir');
+  const bCeder = el('button', 'opt', `<b>Céder — retirer la mesure</b>
+    <span class="det">Adhésion en hausse, ${fmt0(mesure.cout * 1000)} M€/an récupérés · capital −4, fatigue +15, parents déçus — et les effets attendus de la mesure ne viendront jamais.</span>
+    <span class="risque-ligne">Risque de grève : <b style="color:var(--ok)">désamorcé</b></span>`);
+  bCeder.onclick = () => finRetrait('ceder');
+  opts.append(bMaintenir, bCeder);
+  d.appendChild(opts);
+
+  function finRetrait(dec) {
+    opts.querySelectorAll('.opt').forEach((n) => { n.disabled = true; });
+    const box = el('div', 'decryptage');
+    box.style.borderLeftColor = dec === 'ceder' ? 'var(--c-sante)' : 'var(--rouge-rf)';
+    box.innerHTML = dec === 'ceder'
+      ? `<div class="titre-d" style="color:var(--c-sante)">Vous cédez</div><p><i>« Nous saluons un ministre qui sait entendre. »</i> — La mesure sort du droit. La presse titrera sur le recul ; les salles des professeurs, sur l’écoute. Les deux auront raison.</p>`
+      : `<div class="titre-d" style="color:var(--rouge-rf)">Vous maintenez</div><p><i>« Nous en tirerons les conséquences. »</i> — ${combatif ? 'La délégation quitte l’audience. Le préavis sera déposé avant la fin de semaine.' : 'La délégation transmettra à ses instances. Le rapport de force est noté, de part et d’autre.'}</p>`;
+    d.appendChild(box);
+    const act = el('div', 'actions');
+    const ok = el('button', 'btn', 'Clore l’audience');
+    ok.onclick = () => suivant(dec);
+    act.appendChild(ok); d.appendChild(act);
+    ok.scrollIntoView({ block: 'nearest' });
+  }
+  scene(d);
+}
+
 /* --- écrans narratifs (étapes) ---------------------------------------------- */
 function ecranEtape(etape) {
   const S = ETAT.s;
@@ -578,12 +634,29 @@ function ecranEtape(etape) {
   const une = unesPossibles(etape)[0];
 
   const blocs = [];
-  if (etape === 'ouverture' && S.doctrine) {
+  if (etape === 'ouverture' && S.president) {
+    blocs.push(blocPassation());
     const dec = el('div', 'decode');
-    dec.appendChild(el('div', 'titre-d', 'La presse décode votre doctrine'));
-    for (const c of S.doctrine.slice(0, 2)) dec.appendChild(el('p', '', K.PROJETS_2027[c].decode));
-    dec.appendChild(el('p', '', `<span style="color:var(--encre-3);font-size:.8rem">En queue de classement : ${NOMS_C_LONGS[S.doctrine[4]].toLowerCase()} (8 % du score). Ses défenseurs relisent votre conférence de presse en prenant des notes.</span>`));
+    dec.appendChild(el('div', 'titre-d', 'La presse décode le quinquennat qui s’ouvre'));
+    dec.appendChild(el('p', '', esc(S.president.decode)));
+    dec.appendChild(el('p', '', `<span style="color:var(--encre-3);font-size:.8rem">Dernière priorité de la plateforme : ${NOMS_C_LONGS[S.doctrine[4]].toLowerCase()} (8 % de votre bilan). Ses défenseurs archivent soigneusement le programme présidentiel, au cas où.</span>`));
     blocs.push(dec);
+  }
+
+  if (etape === 'cloture') {
+    const ouverts = S.effetsEnAttente.filter((e) => e.anneeOuverture === S.annee && !e.retire);
+    if (ouverts.length) {
+      const sc = el('div', 'scelles');
+      sc.appendChild(el('div', 'titre-d', 'Scellés ouverts cette année — les effets réels arrivent'));
+      for (const e of ouverts) {
+        const c = PAR_ID[e.carte];
+        sc.appendChild(el('div', 'ligne-s', `<span>${esc(c ? c.label : e.carte)}</span><span>→ ${NOMS_C[e.compteur]}</span>
+          <span class="val" style="color:${e.montant > 1 ? 'var(--ok)' : e.montant < -1 ? 'var(--alerte)' : 'var(--encre-2)'}">${signe(e.montant)}</span>
+          <span style="color:var(--encre-3);font-size:.76rem">preuve ${'🔒'.repeat(e.cadenas)} · documenté ~${signe(e.central)}</span>`));
+      }
+      sc.appendChild(el('p', '', '<span style="font-size:.76rem;color:var(--encre-3)">Ce que vous aviez signé sous incertitude entre aujourd’hui dans les compteurs — implémentation comprise. Les scellés restants s’ouvriront plus tard, certains après vous.</span>'));
+      blocs.push(sc);
+    }
   }
 
   const j = el('article', 'journal');
@@ -670,7 +743,7 @@ function ecranBilan(B) {
       <td>${NOMS_C[e.compteur]}</td><td>${'🔒'.repeat(e.cadenas)}</td>
       <td class="num">${signe(e.central)}</td>
       <td class="num"><span class="revele ${e.montant > 1 ? 'bon' : e.montant < -1 ? 'mauvais' : ''}">${signe(e.montant)}</span>${verdictTirage}</td>
-      <td>${e.applique ? 'effet arrivé' : `arrive an ${e.anneeArrivee}${e.anneeArrivee > 5 ? ' — après vous' : ''}`}</td></tr>`;
+      <td>${e.retire ? '<span style="color:var(--rouge-rf)">retirée sous la pression syndicale — effet annulé</span>' : e.applique ? 'effet arrivé' : `arrive an ${e.anneeArrivee}${e.anneeArrivee > 5 ? ' — après vous' : ''}`}</td></tr>`;
     }).join('');
   }
   t2.innerHTML = `<table class="bilan"><tr><th>Mesure</th><th>Compteur</th><th>Preuve</th><th class="num">Effet documenté</th><th class="num">Effet réel tiré</th><th>Horizon</th></tr>${lignes || '<tr><td colspan="6">Aucune mesure engagée. Le système vous remercie du repos ; l’Histoire, moins.</td></tr>'}</table>`;
@@ -699,12 +772,13 @@ function verdictProse(B) {
 }
 
 /* -------------------------------------------------------- boucle & sauvegarde */
-const CLE_SAUVE = 'rue-de-grenelle-v1';
+const CLE_SAUVE = 'rue-de-grenelle-v2';   // v2 : choix du Président (les sauvegardes v1 sont incompatibles)
 const ETAT = { s: null, gen: null, journalLu: 0, pas: [], dateLabel: 'juin 2027', rentreeRatee: false, enAttente: null, rendre: null };
 
 function dateDe(q) {
   const S = ETAT.s, an = S.anneeCiv || 2027;
-  if (q.type === 'doctrine') return 'juin 2027';
+  if (q.type === 'president') return 'mai 2027';
+  if (q.type === 'retrait') return `octobre ${ETAT.s.anneeCiv || 2027}`;
   if (q.type === 'dossier') return 'été 2027';
   if (q.type === 'audience') return `octobre ${ETAT.s.anneeCiv || 2027}`;
   if (q.type === 'lettrePlafond') return `juillet ${an}`;
@@ -718,11 +792,8 @@ function rendre(q) {
   ETAT.dateLabel = dateDe(q);
   ETAT.rentreeRatee = ETAT.s.journal.some((e) => e.cat === 'rentree' && e.annee === ETAT.s.annee && e.texte.includes('dégradée'));
   majHud();
-  if (q.type === 'doctrine') {
-    /* la passation s'affiche d'abord ; la doctrine est l'écran suivant */
-    if (!ETAT.passationVue) { ETAT.passationVue = true; ETAT.enAttente = q; ETAT.rendre = (qq) => { ETAT.dateLabel = dateDe(qq); majHud(); ecranDoctrine(); }; ecranPassation(); return; }
-    ecranDoctrine();
-  }
+  if (q.type === 'president') ecranPresident(q);
+  else if (q.type === 'retrait') ecranRetrait(q);
   else if (q.type === 'dossier') ecranDossier(q);
   else if (q.type === 'audience') ecranAudience(q);
   else if (q.type === 'lettrePlafond') ecranBercy(q);
@@ -750,7 +821,6 @@ function demarrer(sauve) {
   ETAT.gen = derouler(ETAT.s);
   ETAT.pas = [];
   ETAT.journalLu = 0;
-  ETAT.passationVue = false;
   let res = ETAT.gen.next();
   if (sauve && Array.isArray(sauve.pas)) {
     for (const p of sauve.pas) {
@@ -759,7 +829,6 @@ function demarrer(sauve) {
       ETAT.journalLu = ETAT.s.journal.length;
       res = ETAT.gen.next(p === null ? undefined : p);
     }
-    ETAT.passationVue = true;
     ETAT.journalLu = Math.max(0, ETAT.s.journal.length - 6);
   }
   if (res.done) { const B = bilan(ETAT.s); majHud(); ecranBilan(B); return; }
