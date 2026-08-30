@@ -8,7 +8,6 @@
 
 import { coutDe } from '../moteur/moteur.js';
 import { REVALORISATION, FINANCEMENT_19 } from '../moteur/catalogue.js';
-import { PRESIDENTS } from '../moteur/constantes.js';
 
 /* Valeur « vitrine » d'une carte : ce que le joueur voit immédiatement. */
 function valeurVitrine(c) {
@@ -48,15 +47,6 @@ function valeurReelle(c, poids = null, anneesRestantes = null) {
 /* Risque de conflit porté par la carte. */
 function risqueGreve(c) { return c.greve ? c.greve.intensite * 1.6 : 0; }
 
-/* L'Élysée a imposé deux mesures présidentielles. Les ignorer coûte 10 points
-   de capital, 15 de fatigue, et interdit le bonus de constance : un ministre
-   avisé les case dans son mandat, même si elles ne sont pas les siennes. */
-function urgencePresidentielle(c, s) {
-  const mp = (s.mesuresPresidentielles || []).find((m) => m.id === c.id && !m.fait && !m.abandonnee);
-  if (!mp) return 0;
-  return s.annee >= mp.anneeLimite - 1 ? 22 : 9;
-}
-
 /* Choisit les cartes tenables dans l'enveloppe et le capital disponibles. */
 function selectionner(s, dispo, ctx, scorer, { toleranceDepassement = 0.15, options = () => ({}), concentration = 0, maxCartes = 3 } = {}) {
   let classees = dispo
@@ -87,8 +77,7 @@ function selectionner(s, dispo, ctx, scorer, { toleranceDepassement = 0.15, opti
 
 /* -------------------------------------------------------------------------- */
 export const PASSIF = {
-  doctrine: (s, suggestion) => suggestion,
-  president: () => 'serieux',
+  doctrine: () => ['reussite', 'egalite', 'sante', 'budget', 'paix'],
   retrait: () => 'maintenir',
   nom: 'Passif (ne rien faire)',
   audience: () => 0,               // le ministre immobile défend la ligne, faute d'en avoir une
@@ -112,8 +101,7 @@ function dossierVers(cle) {
 }
 
 export const TOUT_VITRINE = {
-  doctrine: (s, suggestion) => suggestion,
-  president: () => 'ordre',
+  doctrine: () => ['reussite', 'budget', 'egalite', 'sante', 'paix'],
   retrait: () => 'maintenir',
   nom: 'Tout vitrine',
   dossier: dossierVers('parents'),
@@ -126,7 +114,7 @@ export const TOUT_VITRINE = {
   /* Une grève est une mauvaise image : la vitrine achète la paix autant que
      l'applaudissement. Elle prend le « pacte » plutôt que l'évaluation. */
   mesures: (s, dispo, ctx) => selectionner(s, dispo, ctx,
-    (c) => valeurVitrine(c) - risqueGreve(c) * 2.2 + urgencePresidentielle(c, s),
+    (c) => valeurVitrine(c) - risqueGreve(c) * 2.2,
     { toleranceDepassement: 0.35, options: () => ({ ampleur: 'geste', cible: 'debuts', contrepartie: 'pacte', financement: 'demographie' }) }),
 };
 
@@ -136,8 +124,7 @@ export const TOUT_VITRINE = {
    désintéresse ouvertement de ce que montre le tableau de bord. Ce n'est pas
    un joueur suicidaire — c'est un joueur qui ne regarde pas les sondages. */
 export const TOUT_REEL = {
-  doctrine: (s, suggestion) => suggestion,
-  president: () => 'pacte',
+  doctrine: () => ['reussite', 'egalite', 'sante', 'budget', 'paix'],
   retrait: () => 'maintenir',
   nom: 'Tout réel',
   doctrine: () => ['reussite', 'egalite', 'sante', 'budget', 'paix'],
@@ -152,15 +139,14 @@ export const TOUT_REEL = {
     (c) => valeurReelle(c) * 1.6
          - risqueGreve(c) * 1.5
          + (c.physique?.adhesion || 0) * 1.0
-         + urgencePresidentielle(c, s),
+        ,
     { toleranceDepassement: 0.35, concentration: 0.5,
       options: () => ({ ampleur: 'plan', cible: 'milieux', contrepartie: 'sans', financement: 'demographie' }) }),
 };
 
 /* -------------------------------------------------------------------------- */
 export const SYNDICAL = {
-  doctrine: (s, suggestion) => suggestion,
-  president: () => 'pacte',
+  doctrine: () => ['sante', 'paix', 'budget', 'egalite', 'reussite'],
   retrait: () => 'ceder',
   nom: 'Paix sociale d’abord',
   dossier: dossierVers('adhesion'),
@@ -170,7 +156,7 @@ export const SYNDICAL = {
   carteScolaire: () => ({ restitution: 0.05, prive: 0.5 }),
   rentree: () => 'assumer',
   mesures: (s, dispo, ctx) => selectionner(s, dispo, ctx,
-    (c) => (c.vitrine?.enseignants || 0) * 2 + (c.physique?.adhesion || 0) * 1.5 - risqueGreve(c) * 3 + urgencePresidentielle(c, s),
+    (c) => (c.vitrine?.enseignants || 0) * 2 + (c.physique?.adhesion || 0) * 1.5 - risqueGreve(c) * 3,
     { toleranceDepassement: 0.35, options: () => ({ ampleur: 'plan', cible: 'milieux', contrepartie: 'sans', financement: 'demographie' }) }),
 };
 
@@ -178,8 +164,7 @@ export const SYNDICAL = {
 /* Le « joueur attentif » : il équilibre vitrine et réel, surveille l'adhésion
    (dont dépend l'implémentation), tient le crédit Bercy et évite les grèves. */
 export const MIXTE = {
-  doctrine: (s, suggestion) => suggestion,
-  president: () => 'pacte',
+  doctrine: () => ['sante', 'reussite', 'egalite', 'budget', 'paix'],
   retrait: (s, q) => (q.combatif && s.phys.adhesion < 18 ? 'ceder' : 'maintenir'),
   nom: 'Mixte (joueur attentif)',
   dossier: (s, d) => { let best = 0, bv = -1e9;
@@ -206,7 +191,7 @@ export const MIXTE = {
          + (c.physique?.adhesion || 0) * 1.2
          + (c.vitrine?.enseignants || 0) * (adhBasse ? 1.3 : 0.4)
          + (c.parametrique === 'revalorisation' && adhBasse ? 9 : 0)
-         + urgencePresidentielle(c, s);
+        ;
   }, {
     toleranceDepassement: s.creditBercy > 45 ? 0.5 : 0.2,
     options: () => ({ ampleur: s.tresor > 2.2 ? 'rattrapage' : s.tresor > 1.1 ? 'plan' : 'geste',
@@ -234,11 +219,9 @@ export function politiqueAleatoire(rng, poids) {
     financement: fins[Math.floor(rng() * fins.length)],
   };
   const bruitCarte = {};
-  const pres = PRESIDENTS[Math.floor(rng() * PRESIDENTS.length)].id;
   return {
     nom: 'aléatoire',
-    president: () => pres,
-    doctrine: () => ordre,          // le hasard déclare sa propre feuille de route
+    doctrine: () => ordre,
     retrait: () => (rng() < 0.3 ? 'ceder' : 'maintenir'),
     doctrine: () => ordre,
     lettrePlafond: () => (contester ? 'contester' : 'accepter'),
@@ -279,7 +262,7 @@ export function doctrinaire(ordre) {
            + (c.physique?.adhesion || 0) * 1.0
            + (c.vitrine?.enseignants || 0) * (adhBasse ? 1.0 : 0.3)
            + (c.parametrique === 'revalorisation' ? (poids.budget >= 34 ? 26 : adhBasse ? 8 : 0) : 0)
-           + urgencePresidentielle(c, s);
+          ;
     }, {
       toleranceDepassement: 0.3,
       concentration: 0.55,
@@ -295,11 +278,14 @@ export function doctrinaire(ordre) {
   };
 }
 
-export const DOCTRINAIRES = PRESIDENTS.map((p) => {
-  const d = doctrinaire([...p.doctrine]);
-  d.nom = 'Doctrinaire · ' + p.id;
-  d.president = () => p.id;
-  d.doctrine = (s, suggestion) => suggestion;   // aligné : il a choisi ce président
+export const DOCTRINAIRES = [
+  ['reussite', 'sante', 'egalite', 'budget', 'paix'],
+  ['egalite', 'reussite', 'sante', 'paix', 'budget'],
+  ['sante', 'budget', 'reussite', 'paix', 'egalite'],
+  ['budget', 'sante', 'reussite', 'paix', 'egalite'],
+  ['paix', 'sante', 'egalite', 'reussite', 'budget'],
+].map((ordre) => {
+  const d = doctrinaire(ordre);
   d.retrait = () => 'maintenir';
   return d;
 });

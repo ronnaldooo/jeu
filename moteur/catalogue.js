@@ -896,16 +896,6 @@ export const FINANCEMENT_19 = {
   },
 };
 
-/* Les deux « mesures présidentielles » imposées en cours de mandat (aléa
-   initial, comme l'élection du jeu de référence). Le joueur les applique
-   (elles consomment son enveloppe) ou les abandonne (fatigue +15, capital −10). */
-/* Le Président élu en 2027 impose deux mesures « présidentielles » à caser dans
-   le mandat. L'Élysée aime le visible : le pool penche vitrine. */
-export const MESURES_PRESIDENTIELLES = [
-  'differenciation', 'redoublement', 'autonomie', 'classe19', 'sante_scolaire',
-  'remplacement', 'uniforme', 'pause_numerique', 'brevet_barrage', 'internats',
-];
-
 /* --------------------------------------------------------------------------
    L'ÉTÉ DES CENT JOURS — dossiers de crise de la première année.
    Entre la nomination (juin 2027) et la première rentrée, le nouveau ministre

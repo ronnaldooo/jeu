@@ -11,7 +11,7 @@
    ========================================================================== */
 
 import * as K from './constantes.js';
-import { CATALOGUE, PAR_ID, REVALORISATION, FINANCEMENT_19, MESURES_PRESIDENTIELLES, DOSSIERS_ETE, AUDIENCES, RECEPTION } from './catalogue.js';
+import { CATALOGUE, PAR_ID, REVALORISATION, FINANCEMENT_19, DOSSIERS_ETE, AUDIENCES, RECEPTION } from './catalogue.js';
 
 /* ---------------------------------------------------------------- ALÉA --- */
 export function rngDepuis(graine) {
@@ -62,7 +62,7 @@ export function creerPartie({ graine = 1, politique }) {
     effetsEnAttente: [],                       // { compteur, montant, anneeArrivee, source, carte }
     reformesActives: [],                       // { id, anneeFin }
     joue: new Set(), themes: new Set(), excl: new Set(),
-    mesuresPresidentielles: [], presidentiellesFaites: [], abandons: 0,
+    abandons: 0,
     mesuresParAnnee: [],
 
     syndicats: K.SYNDICATS.map((o) => ({ ...o })),
@@ -211,63 +211,19 @@ export function rafraichir(s) { recalculerVrai(s); recalculerAffiche(s); }
    4. LES ÉTAPES DU CALENDRIER
    ========================================================================== */
 
-/* Les deux exigences que CE président poserait sur votre bureau. */
-export function exigencesDe(s, p) {
-  const n = p.mesures.length;
-  const i0 = s.graine % n;
-  let i1 = (i0 + 1 + ((s.graine >> 2) % (n - 1))) % n;
-  if (i1 === i0) i1 = (i0 + 1) % n;
-  return [
-    { id: p.mesures[i0], anneeLimite: 2 },
-    { id: p.mesures[i1], anneeLimite: 4 },
-  ];
-}
-
-/* --- MAI-JUIN (an 1) : l'élection a eu lieu. On vous propose Grenelle. ------ */
-/* Le suffrage universel ne vous a pas consulté : un Président sort des urnes,
-   avec sa plateforme et ses deux exigences. Vous pouvez décliner — une fois
-   avec élégance, ensuite chaque refus coûte 5 de capital : on ne se fait pas
-   désirer indéfiniment dans une République qui a des listes de remplaçants. */
+/* --- JUIN (an 1) : on vous propose Grenelle, vous fixez votre cap ----------- */
+/* Un gouvernement se forme — vous n'avez pas choisi sa composition et le jeu
+   ne vous dira pas qui l'a formé : ce n'est pas votre sujet. Votre sujet, le
+   premier jour, c'est de dire devant la presse ce que vous allez chercher.
+   Le score final pondérera les cinq compteurs selon VOTRE classement : vous
+   serez noté contre votre propre parole, et rien d'autre. */
 function* etapeDoctrine(s) {
-  const debut = s.graine % K.PRESIDENTS.length;
-  const pas = 1 + ((s.graine >> 4) % (K.PRESIDENTS.length - 1));
-  let k = 0, refus = 0, p;
-  for (;;) {
-    p = K.PRESIDENTS[(debut + k * pas) % K.PRESIDENTS.length];
-    const rep = yield { type: 'nomination', president: p, refus, exigences: exigencesDe(s, p) };
-    if (rep !== 'refuser') break;
-    refus += 1;
-    if (refus >= 2) s.capital -= 5;
-    note(s, `Vous déclinez la proposition de ${p.nom}. ${refus === 1 ? 'Élégant.' : 'Le Tout-Paris commente, et pas en bien.'}`, 'elysee');
-    k += 1;
-  }
-  s.president = p;
-  s.refusNominations = refus;
-  s.mesuresPresidentielles = exigencesDe(s, p);
-  note(s, `${p.nom} (« ${p.slogan} ») vous nomme rue de Grenelle.`, 'doctrine');
-
-  /* Second acte : VOUS déclarez votre feuille de route devant la presse.
-     La plateforme présidentielle est proposée par défaut ; vous pouvez la
-     réordonner — c'est votre marge de manœuvre — mais l'Élysée compte les
-     rangs déplacés. Le score final pondérera vos compteurs selon VOTRE
-     classement : vous restez noté contre votre propre parole. */
-  const ordre = (yield { type: 'doctrine', president: p, suggestion: [...p.doctrine] }) || [...p.doctrine];
+  yield { type: 'nomination' };
+  const ordre = (yield { type: 'doctrine' }) || Object.keys(K.COMPTEURS_INITIAUX);
   s.doctrine = [...ordre];
   s.poids = {};
   s.doctrine.forEach((c, i) => { s.poids[c] = K.POIDS_DOCTRINE[i]; });
-
-  let ecart = 0;
-  s.doctrine.forEach((c, i) => { ecart += Math.abs(i - p.doctrine.indexOf(c)); });
-  s.ecartDoctrine = ecart;
-  if (ecart === 0) {
-    s.capital = Math.min(K.CAPITAL.plafond, s.capital + K.DOCTRINE_ELYSEE.bonusAlignement);
-    note(s, `Feuille de route alignée sur la plateforme présidentielle. L'Élysée apprécie la loyauté (capital +${K.DOCTRINE_ELYSEE.bonusAlignement}).`, 'elysee');
-  } else {
-    const cout = Math.min(K.DOCTRINE_ELYSEE.coutMax, ecart * K.DOCTRINE_ELYSEE.coutParEcart);
-    s.capital -= cout;
-    note(s, `Vous déclarez une feuille de route qui s'écarte de la plateforme présidentielle (${ecart} rang${ecart > 1 ? 's' : ''} déplacé${ecart > 1 ? 's' : ''}). L'Élysée l'a remarqué avant la fin de votre conférence de presse (capital −${Math.round(cout)}).`, 'elysee');
-  }
-  note(s, `Doctrine déclarée : ${s.doctrine.join(' > ')}.`, 'doctrine');
+  note(s, `Feuille de route déclarée : ${s.doctrine.join(' > ')}. La presse garde une copie.`, 'doctrine');
 }
 
 /* --- L'ÉTÉ DES CENT JOURS (an 1) : deux crises avant la première rentrée --- */
@@ -439,9 +395,7 @@ function retirerMesure(s, m, org, poidsRel) {
   s.phys.parents = borne(s.phys.parents - 3, 0, 100);
   s.capital -= 4;
   s.fatigue = Math.min(K.FATIGUE.max, s.fatigue + K.FATIGUE.parAbandon);
-  const mp = s.mesuresPresidentielles.find((x) => x.id === m.id);
-  if (mp) { mp.abandonnee = true; s.abandons += 1; s.capital -= 8;
-    note(s, 'L’Élysée apprend le retrait d’une priorité présidentielle par un communiqué syndical. Le téléphone sonne.', 'elysee'); }
+  s.abandons += 1;
   note(s, `Retrait de « ${carte.label} » obtenu par ${org.nom}. La mesure sort du droit ; ses effets ne viendront jamais.`, 'retrait');
 }
 
@@ -525,21 +479,6 @@ function* etapeJanvier(s) {
   const choix = (yield { type: 'mesures', dispo, tresor: s.tresor, capital: s.capital }) || [];
   appliquerMesures(s, choix);
 
-  /* Mesures présidentielles : les appliquer, ou les abandonner (et le payer). */
-  for (const mp of s.mesuresPresidentielles) {
-    if (mp.fait || mp.abandonnee) continue;
-    if (s.joue.has(mp.id)) { mp.fait = true; continue; }
-    if (s.annee === mp.anneeLimite - 1) {
-      note(s, `Courrier de l'Élysée : la priorité présidentielle « ${PAR_ID[mp.id].label} » attend toujours. Échéance : l'an prochain.`, 'elysee');
-    }
-    if (s.annee >= mp.anneeLimite) {
-      if (s.joue.has(mp.id)) { mp.fait = true; continue; }
-      mp.abandonnee = true; s.abandons += 1;
-      s.fatigue = Math.min(K.FATIGUE.max, s.fatigue + K.FATIGUE.parAbandon);
-      s.capital -= 10;
-      note(s, `Mesure présidentielle abandonnée (${mp.id}). L'Élysée s'en souviendra.`, 'elysee');
-    }
-  }
 }
 
 /* --- MARS : mobilisations de printemps ------------------------------------ */
@@ -713,9 +652,6 @@ export function mesuresDisponibles(s) {
   const pousse = (c) => { if (c && !menu.includes(c)) menu.push(c); };
 
   pousse(pool.find((c) => c.id === 'revalorisation'));
-  for (const mp of s.mesuresPresidentielles) {
-    if (!mp.fait && !mp.abandonnee) pousse(pool.find((c) => c.id === mp.id));
-  }
 
   /* Votre doctrine ouvre d'abord les dossiers qui la servent : en début de
      mandat, l'essentiel du menu est aligné sur vos priorités déclarées ;
@@ -884,10 +820,8 @@ export function jouerMandat({ graine = 1, politique }) {
   while (!res.done) {
     const q = res.value;
     let rep;
-    if (q.type === 'nomination') rep = politique.president
-      ? (q.president.id === politique.president(s) ? 'accepter' : 'refuser')
-      : 'accepter';
-    else if (q.type === 'doctrine') rep = politique.doctrine ? politique.doctrine(s, q.suggestion) : q.suggestion;
+    if (q.type === 'nomination') rep = 'accepter';
+    else if (q.type === 'doctrine') rep = politique.doctrine ? politique.doctrine(s) : Object.keys(K.COMPTEURS_INITIAUX);
     else if (q.type === 'lettrePlafond') rep = politique.lettrePlafond ? politique.lettrePlafond(s, q.palier) : 'accepter';
     else if (q.type === 'rentree') rep = politique.rentree ? politique.rentree(s, q) : 'assumer';
     else if (q.type === 'carteScolaire') rep = politique.carteScolaire(s, q);

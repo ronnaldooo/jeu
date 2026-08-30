@@ -133,20 +133,10 @@ h1,h2,h3{text-wrap:balance; margin:0}
 #hud .repli-btn:hover{border-color:var(--bleu-rf); color:var(--bleu-rf)}
 #hud .replie[hidden]{display:none}
 
-/* ---------- choix du Président ---------- */
-.grille-pres{display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:14px; margin-top:16px}
-.pres-carte{cursor:pointer; text-align:left; background:var(--fiche); border:1px solid var(--filet); border-top:3px solid var(--filet-fort); padding:16px 18px; display:flex; flex-direction:column; gap:8px}
-.pres-carte:hover{border-color:var(--bleu-rf)}
-.pres-carte.sel{border-color:var(--bleu-rf); box-shadow:inset 0 0 0 1px var(--bleu-rf)}
-.pres-carte .slogan{font-size:.66rem; letter-spacing:.12em; text-transform:uppercase; font-weight:700; color:var(--bleu-rf)}
-.pres-carte h3{font-size:1.06rem; font-weight:700}
-.pres-carte .inspi{font-size:.72rem; color:var(--encre-3); max-width:60ch}
 .prios{display:flex; flex-wrap:wrap; gap:4px}
 .prio{font-size:.68rem; font-weight:600; padding:2px 8px; border:1px solid var(--filet-fort); display:inline-flex; align-items:center; gap:5px}
 .prio .pastille{width:8px; height:8px; border-radius:50%}
 .prio.p1{border-color:var(--bleu-rf)}
-.pres-carte .mandat-q{font-family:"Newsreader",georgia,serif; font-style:italic; font-size:.92rem; color:var(--encre-2); border-top:1px solid var(--filet); padding-top:8px; line-height:1.4}
-.pres-carte .exigences{font-size:.72rem; color:var(--encre-2)}
 
 /* ---------- deltas d'acteurs (avant validation) ---------- */
 .deltas-acteurs{display:flex; flex-wrap:wrap; gap:6px; margin-top:10px}
@@ -193,7 +183,6 @@ h1,h2,h3{text-wrap:balance; margin:0}
 /* ---------- effets d'image ---------- */
 .chiffres .image{color:var(--encre-3); border-bottom:1px dashed var(--filet-fort)}
 .note-image{font-size:.72rem; color:var(--encre-3); max-width:70ch}
-.echeance-pr{font-size:.72rem; color:var(--or); font-weight:600}
 
 /* ---------- projets 2027 (doctrine) ---------- */
 .rang-bloc{background:var(--fiche-2); border:1px solid var(--filet)}
@@ -262,7 +251,6 @@ h1,h2,h3{text-wrap:balance; margin:0}
 .carte .curseurs-carte{display:grid; gap:6px; border-top:1px dashed var(--filet-fort); padding-top:8px}
 .carte .curseurs-carte label{font-size:.7rem; text-transform:uppercase; letter-spacing:.07em; color:var(--encre-2); display:block}
 .carte select{width:100%; font:inherit; font-size:.82rem; padding:5px 6px; background:var(--fiche-2); color:var(--encre); border:1px solid var(--filet-fort)}
-.badge-pr{font-size:.62rem; font-weight:700; letter-spacing:.08em; color:var(--or); text-transform:uppercase}
 
 /* ---------- journal / presse ---------- */
 .journal{background:var(--fiche); border:1px solid var(--filet); box-shadow:var(--ombre); max-width:860px; margin:0 auto; padding:26px clamp(18px,4vw,44px); font-family:"Newsreader",georgia,serif}

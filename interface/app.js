@@ -199,125 +199,61 @@ function ecranAccueil(sauvegarde) {
   scene(a);
 }
 
-/* --- la nomination : l'élection a eu lieu, pas pour vous ---------------------- */
-function ecranNomination(q) {
-  const pr = q.president;
-  const elu = pr.genre === 'f' ? 'élue Présidente' : 'élu Président';
-  const j = el('article', 'journal');
-  j.innerHTML = q.refus === 0
-    ? `<div class="manchette"><span class="titre-j">${CAST.journal}</span><span class="ours">édition spéciale · second tour</span></div>
-       <h2 class="une">${esc(pr.nom)} ${elu} de la République</h2>
-       <p class="sous-une">« ${esc(pr.slogan)} » l’emporte. ${esc(pr.decode)}</p>`
-    : `<div class="manchette"><span class="titre-j">${CAST.journal}</span><span class="ours">rembobinage · uchronie n° ${q.refus}</span></div>
-       <h2 class="une">Et si le second tour avait basculé ?</h2>
-       <p class="sous-une">Vous avez décliné : le jeu rebat les cartes du printemps 2027. Dans cette variante, c’est ${esc(pr.nom)} (« ${esc(pr.slogan)} ») qui l’emporte. ${esc(pr.decode)}</p>`;
-
-  const d = docu('Appel de l’Élysée', 'On vous propose la rue de Grenelle', 'juin 2027');
+/* --- la nomination : on vous propose Grenelle -------------------------------- */
+function ecranNomination() {
+  const d = docu('Appel de Matignon', 'On vous propose la rue de Grenelle', 'juin 2027');
   d.classList.add('papier');
-  d.appendChild(el('p', 'chapo', q.refus === 0
-    ? 'Trois jours après le second tour, votre téléphone sonne. C’est le secrétariat général de l’Élysée. Le portefeuille : l’Éducation nationale. Vous n’avez pas choisi ce Président — le suffrage universel ne vous a pas consulté — mais c’est lui qui fixe la plateforme.'
-    : q.refus === 1
-    ? 'Le téléphone sonne de nouveau. Autre destin, autre plateforme. Décliner une fois passe pour de l’élégance ; la suite se paie (−5 de capital par refus supplémentaire).'
-    : 'Le téléphone sonne encore — plus sèchement. Dans les salons, on commence à murmurer que vous vous faites désirer. Chaque refus coûte désormais 5 points de capital.'));
-  d.appendChild(el('div', 'note-passation', esc(pr.mandat)));
-  d.appendChild(el('p', '', `<span style="font-size:.78rem;color:var(--encre-3)">${esc(pr.inspiration)}.</span>`));
-  d.appendChild(el('p', '', '<b>La plateforme qui deviendrait votre doctrine</b> (et le barème de votre bilan — 35 / 25 / 20 / 12 / 8) :'));
-  const prios = el('div', 'prios');
-  pr.doctrine.forEach((cc, i) => prios.appendChild(el('span', 'prio' + (i === 0 ? ' p1' : ''),
-    `<span class="pastille" style="background:${COULEURS_C[cc]}"></span>${i + 1}. ${NOMS_C[cc]}`)));
-  prios.style.cssText = 'display:flex;flex-wrap:wrap;gap:4px;margin:8px 0';
-  d.appendChild(prios);
-  d.appendChild(el('p', '', '<b>Les deux exigences déjà posées sur le bureau :</b>'));
-  const ul = el('div', 'opts'); ul.style.gap = '6px';
-  for (const m of q.exigences) {
-    ul.appendChild(el('div', 'opt', `<span class="badge-pr">à engager avant l’an ${m.anneeLimite}</span><br><b>${esc(PAR_ID[m.id].label)}</b>`));
-  }
-  d.appendChild(ul);
+  d.appendChild(el('p', 'chapo', 'Le gouvernement se forme. Votre téléphone sonne : le portefeuille proposé est l’Éducation nationale — le premier budget de l’État, 64,5 milliards d’euros par an, 1,2 million d’agents, 12 millions d’élèves. La durée moyenne dans le poste dépasse rarement deux ans.'));
+  d.appendChild(el('div', 'note-passation',
+    'Votre prédécesseur, huitième en quatre ans, laisse un mot : « Tout est dans les dossiers. Les dossiers sont dans les cartons. Les cartons sont au garde-meuble, la DGESCO sait lequel. Méfiez-vous de juillet, de septembre et de janvier — le reste de l’année est calme, sauf le reste de l’année. Bonne chance.'
+    + '<span class="ps">P.-S. — La photocopieuse du deuxième est en panne depuis 2019. C’est le dossier le plus consensuel du ministère : ne le réglez pas, il fédère. »</span>'));
+  d.appendChild(el('p', '', 'Vous acceptez. Dès demain, devant la presse, vous direz vous-même ce que vous allez chercher pendant cinq ans.'));
   const act = el('div', 'actions');
-  const oui = el('button', 'btn tamponner', 'Accepter la nomination');
-  oui.onclick = () => suivant('accepter');
-  const non = el('button', 'btn sec', q.refus === 0 ? 'Décliner — attendre un autre destin' : 'Décliner encore (−5 capital)');
-  non.onclick = () => suivant('refuser');
-  act.append(oui, non);
+  const ok = el('button', 'btn tamponner', 'Accepter le ministère');
+  ok.onclick = () => suivant('accepter');
+  act.appendChild(ok);
   d.appendChild(act);
-  scene(j, d);
+  scene(d);
 }
 
 /* --- votre feuille de route : le classement que VOUS déclarez ---------------- */
-function ecranDoctrine(q) {
-  const pr = q.president;
-  const suggestion = q.suggestion;
-  const ordre = [...suggestion];
-
+function ecranDoctrine() {
+  const ordre = Object.keys(NOMS_C);
   const d = docu('Conférence de presse — prise de fonction', 'Votre feuille de route, devant témoins', 'juin 2027');
-  d.appendChild(el('p', 'chapo', `${esc(pr.nom)} vous a nommé sur la plateforme « ${esc(pr.slogan)} », proposée ci-dessous dans son ordre. Vous n’êtes pas obligé de la reprendre telle quelle : un ministre a sa marge. Mais l’Élysée compte les rangs que vous déplacez, et la presse garde une copie du classement — <b>c’est sur VOTRE ordre que votre bilan sera noté</b> (35 / 25 / 20 / 12 / 8).`));
+  d.appendChild(el('p', 'chapo', 'Premier acte du mandat : classer les cinq compteurs du quinquennat par ordre de priorité. Aucune priorité n’est neutre — chacune est au cœur de projets politiques réellement débattus, et la presse le relèvera dès demain. Surtout : <b>c’est sur VOTRE ordre que votre bilan sera noté</b> (35 / 25 / 20 / 12 / 8). Vous serez jugé contre votre propre parole, et rien d’autre.'));
 
   const liste = el('div', 'classement');
-  const jauge = el('div', 'mecanisme');
-
-  const majEcart = () => {
-    let ecart = 0;
-    ordre.forEach((c, i) => { ecart += Math.abs(i - suggestion.indexOf(c)); });
-    const cout = Math.min(K.DOCTRINE_ELYSEE.coutMax, ecart * K.DOCTRINE_ELYSEE.coutParEcart);
-    jauge.innerHTML = ecart === 0
-      ? `<div class="titre-d">Alignement avec l’Élysée</div><p style="margin:0">Vous reprenez la plateforme présidentielle mot pour mot. <b style="color:var(--ok)">Capital +${K.DOCTRINE_ELYSEE.bonusAlignement}</b> — la loyauté du premier jour se paie comptant. Reste à savoir si c’est la vôtre.</p>`
-      : `<div class="titre-d">Écart avec la plateforme présidentielle</div><p style="margin:0"><b>${ecart} rang${ecart > 1 ? 's' : ''} déplacé${ecart > 1 ? 's' : ''}</b> par rapport à ce sur quoi ${esc(pr.nom)} a été ${pr.genre === 'f' ? 'élue' : 'élu'}. <b style="color:var(--alerte)">Capital −${Math.round(cout)}</b>. Vous gouvernez avec votre boussole ; l’Élysée s’en souviendra au premier arbitrage.</p>`;
-  };
-
   const rendreListe = () => {
     liste.innerHTML = '';
     ordre.forEach((c, i) => {
-      const rangPres = suggestion.indexOf(c);
       const bloc = el('div', 'rang-bloc');
       const r = el('div', 'rang');
-      const deplace = i !== rangPres;
       r.innerHTML = `<span class="pastille" style="background:${COULEURS_C[c]}"></span>
         <span class="lib">${NOMS_C_LONGS[c]}</span>
-        <span class="poids">${K.POIDS_DOCTRINE[i]} % du bilan${deplace ? ` · <span style="color:var(--alerte)">Élysée : n° ${rangPres + 1}</span>` : ''}</span>`;
+        <span class="poids">${K.POIDS_DOCTRINE[i]} % du bilan</span>`;
       const fl = el('div', 'fleches');
       const haut = el('button', '', '↑'); haut.setAttribute('aria-label', 'Monter ' + NOMS_C[c]); haut.disabled = i === 0;
-      haut.onclick = () => { [ordre[i - 1], ordre[i]] = [ordre[i], ordre[i - 1]]; rendreListe(); majEcart(); };
-      const bas = el('button', '', '↓'); bas.setAttribute('aria-label', 'Descendre ' + NOMS_C[c]); bas.disabled = i === 4;
-      bas.onclick = () => { [ordre[i + 1], ordre[i]] = [ordre[i], ordre[i + 1]]; rendreListe(); majEcart(); };
+      haut.onclick = () => { [ordre[i - 1], ordre[i]] = [ordre[i], ordre[i - 1]]; rendreListe(); };
+      const bas = el('button', '', '↓'); bas.setAttribute('aria-label', 'Descendre ' + NOMS_C[c]); bas.disabled = i === ordre.length - 1;
+      bas.onclick = () => { [ordre[i + 1], ordre[i]] = [ordre[i], ordre[i + 1]]; rendreListe(); };
       fl.append(haut, bas); r.appendChild(fl);
       bloc.appendChild(r);
       bloc.appendChild(el('p', 'sous-titre', K.PROJETS_2027[c].sousTitre));
       liste.appendChild(bloc);
     });
   };
-  rendreListe(); majEcart();
-  d.append(liste, jauge);
-
+  rendreListe();
+  d.appendChild(liste);
   const act = el('div', 'actions');
   const ok = el('button', 'btn tamponner', 'Annoncer ce classement');
   ok.onclick = () => suivant([...ordre]);
-  const remettre = el('button', 'btn sec', 'Reprendre la plateforme présidentielle');
-  remettre.onclick = () => { ordre.splice(0, 5, ...suggestion); rendreListe(); majEcart(); };
-  act.append(ok, remettre);
+  act.appendChild(ok);
   d.appendChild(act);
   d.appendChild(el('p', '', '<span style="font-size:.82rem;color:var(--encre-2)">Votre directeur de cabinet, à voix basse : « Ce que vous mettez en premier, on vous le ressortira à chaque arbitrage contradictoire. Ce que vous mettez en dernier aussi. »</span>'));
   scene(d);
 }
 
-/* --- passation (intégrée à l'ouverture) -------------------------------------- */
-function blocPassation() {
-  const S = ETAT.s;
-  const d = docu('Passation de pouvoirs', 'Bienvenue rue de Grenelle', 'juin 2027');
-  d.classList.add('papier');
-  d.appendChild(el('p', 'chapo', `${esc(S.president.nom)} vous confie le ministère de l’Éducation nationale — le premier budget de l’État : 64,5 milliards d’euros par an, dont 92,7 % de salaires. Votre prédécesseur, huitième en quatre ans, laisse un mot :`));
-  d.appendChild(el('div', 'note-passation',
-    '« Tout est dans les dossiers. Les dossiers sont dans les cartons. Les cartons sont au garde-meuble, la DGESCO sait lequel. Méfiez-vous de juillet, de septembre et de janvier — le reste de l’année est calme, sauf le reste de l’année. Bonne chance.'
-    + '<span class="ps">P.-S. — La photocopieuse du deuxième est en panne depuis 2019. C’est le dossier le plus consensuel du ministère : ne le réglez pas, il fédère. »</span>'));
-  d.appendChild(el('p', '', `L’Élysée vous transmet ses deux exigences, tirées du programme sur lequel ${esc(S.president.nom)} vient d’être ${S.president.genre === 'f' ? 'élue' : 'élu'}. À engager avant leur échéance : les abandonner coûte <b>−10 de capital, +15 de fatigue</b>, et un abandon de trop vous prive du bénéfice du « cap tenu » au bilan.`));
-  const ul = el('div', 'opts'); ul.style.gap = '6px';
-  for (const m of S.mesuresPresidentielles) {
-    ul.appendChild(el('div', 'opt', `<span class="badge-pr">Priorité présidentielle — avant l’an ${m.anneeLimite}</span><br><b>${esc(PAR_ID[m.id].label)}</b>`));
-  }
-  d.appendChild(ul);
-  return d;
-}
-
-/* --- lettre plafond ---/* --- lettre plafond --------------------------------------------------------- */
+/* --- lettre plafond ---/* --- lettre plafond ---/* --- lettre plafond --------------------------------------------------------- */
 function ecranBercy(q) {
   const S = ETAT.s, p = q.palier;
   const tons = {
@@ -483,7 +419,6 @@ function ecranAtelier(q) {
     carte.tabIndex = 0;
     const [famNom, famCoul] = FAMILLES[c.famille] || ['Divers', 'var(--encre-2)'];
     carte.style.borderTopColor = famCoul;
-    const presid = S.mesuresPresidentielles.some((m) => m.id === c.id && !m.fait && !m.abandonnee);
     const k0 = coutDe(c, {});
     const vit = c.vitrine, vc = Object.entries(vit.compteurs || {});
     const cadMax = Math.max(0, ...(c.reel || []).map((e) => e.cadenas), c.parametrique === 'revalorisation' ? 3 : 0);
@@ -492,11 +427,10 @@ function ecranAtelier(q) {
     const tete = el('div', '');
     tete.style.cssText = 'display:flex;flex-direction:column;gap:6px;cursor:pointer';
     tete.innerHTML = `
-      <span class="famille" style="color:${famCoul}">${famNom}${presid ? ' · <span class="badge-pr">priorité présidentielle</span>' : ''}</span>
+      <span class="famille" style="color:${famCoul}">${famNom}</span>
       <h3>${esc(c.label)}</h3>
       <div class="chiffres"><span>${fmt0(k0.cout * 1000)} M€/an</span><span>${k0.pol}${c.perimetre === 'matignon' ? '×2' : ''} capital</span><span>preuve ${'🔒'.repeat(cadMax)}${'·'.repeat(Math.max(0, 5 - cadMax))}</span></div>
-      <div class="plie">Porté par : ${c.porteurs.map(esc).join(' · ')}</div>
-      ${presid ? `<div class="echeance-pr">Exigée par l’Élysée — à engager avant l’an ${(S.mesuresPresidentielles.find((m) => m.id === c.id) || {}).anneeLimite} (sinon : capital −10, fatigue +15, cap non tenu)</div>` : ''}`;
+      <div class="plie">Porté par : ${c.porteurs.map(esc).join(' · ')}</div>`;
 
     /* --- corps, déplié à la demande --- */
     const corps = el('div', 'corps');
@@ -699,12 +633,11 @@ function ecranEtape(etape) {
   const une = unesPossibles(etape)[0];
 
   const blocs = [];
-  if (etape === 'ouverture' && S.president) {
-    blocs.push(blocPassation());
+  if (etape === 'ouverture' && S.doctrine) {
     const dec = el('div', 'decode');
-    dec.appendChild(el('div', 'titre-d', 'La presse décode le quinquennat qui s’ouvre'));
-    dec.appendChild(el('p', '', esc(S.president.decode)));
-    dec.appendChild(el('p', '', `<span style="color:var(--encre-3);font-size:.8rem">Dernière priorité de la plateforme : ${NOMS_C_LONGS[S.doctrine[4]].toLowerCase()} (8 % de votre bilan). Ses défenseurs archivent soigneusement le programme présidentiel, au cas où.</span>`));
+    dec.appendChild(el('div', 'titre-d', 'La presse décode votre feuille de route'));
+    for (const c of S.doctrine.slice(0, 2)) dec.appendChild(el('p', '', K.PROJETS_2027[c].decode));
+    dec.appendChild(el('p', '', `<span style="color:var(--encre-3);font-size:.8rem">En queue de classement : ${NOMS_C_LONGS[S.doctrine[4]].toLowerCase()} (8 % de votre bilan). Ses défenseurs relisent votre conférence de presse en prenant des notes.</span>`));
     blocs.push(dec);
   }
 
@@ -734,7 +667,7 @@ function ecranEtape(etape) {
   }
 
   const fil = el('div', 'fil');
-  const dispo = COMPTES.filter((c) => c.quand(S) && (!S.president || c.a !== S.president.nom));
+  const dispo = COMPTES.filter((c) => c.quand(S));
   for (const c of dispo.sort(() => Math.random() - 0.5).slice(0, etape === 'cloture' ? 3 : 2)) {
     fil.appendChild(el('div', 'post', `<span class="auteur">${c.a}</span> <span class="pseudo">${c.p}</span><p>${alea(c.posts)}</p>`));
   }
@@ -816,8 +749,7 @@ function ecranBilan(B) {
 
   /* --- doctrine déclarée vs menée --- */
   d.appendChild(el('p', '', `<b>Doctrine déclarée contre doctrine menée :</b> ${fmt0((B.coherence || 0) * 100)} % de vos effets réels servent vos deux priorités déclarées${B.constance ? ' — cap tenu : vos gains composeront (référence Portugal, quinze ans de constance)' : ' — cap non tenu : sans constance, un successeur détricote et les dérives reprennent'}.
-    Écart initial avec la plateforme de ${esc(S.president.nom)} : <b>${S.ecartDoctrine || 0}</b> rang${(S.ecartDoctrine || 0) > 1 ? 's' : ''} déplacé${(S.ecartDoctrine || 0) > 1 ? 's' : ''}${S.ecartDoctrine ? ' — vous avez gouverné avec votre propre boussole' : ' — vous avez suivi la plateforme à la lettre'}.
-    Grèves : <b>${B.greves}</b> journée${B.greves > 1 ? 's' : ''} · fatigue réformatrice finale : <b>${fmt0(B.fatigue)}</b>/100 · priorités présidentielles abandonnées : <b>${B.abandons}</b>.`));
+    Grèves : <b>${B.greves}</b> journée${B.greves > 1 ? 's' : ''} · fatigue réformatrice finale : <b>${fmt0(B.fatigue)}</b>/100 · mesures retirées sous la pression : <b>${B.abandons}</b>.`));
 
   const act = el('div', 'actions');
   const rejouer = el('button', 'btn', 'Nouveau mandat (autres tirages, autres crises)');
@@ -838,7 +770,7 @@ function verdictProse(B) {
 }
 
 /* -------------------------------------------------------- boucle & sauvegarde */
-const CLE_SAUVE = 'rue-de-grenelle-v2';   // v2 : choix du Président (les sauvegardes v1 sont incompatibles)
+const CLE_SAUVE = 'rue-de-grenelle-v3';   // v3 : feuille de route libre (formats antérieurs incompatibles)
 const ETAT = { s: null, gen: null, journalLu: 0, pas: [], dateLabel: 'juin 2027', rentreeRatee: false, enAttente: null, rendre: null };
 
 function dateDe(q) {
@@ -859,8 +791,8 @@ function rendre(q) {
   ETAT.dateLabel = dateDe(q);
   ETAT.rentreeRatee = ETAT.s.journal.some((e) => e.cat === 'rentree' && e.annee === ETAT.s.annee && e.texte.includes('dégradée'));
   majHud();
-  if (q.type === 'nomination') ecranNomination(q);
-  else if (q.type === 'doctrine') ecranDoctrine(q);
+  if (q.type === 'nomination') ecranNomination();
+  else if (q.type === 'doctrine') ecranDoctrine();
   else if (q.type === 'retrait') ecranRetrait(q);
   else if (q.type === 'dossier') ecranDossier(q);
   else if (q.type === 'audience') ecranAudience(q);

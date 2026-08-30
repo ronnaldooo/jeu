@@ -325,11 +325,12 @@ export const PROJECTION = {
 /* ---------------------------------------------------------------------------
    10. LES PROJETS DE 2027                                       [source B.7]
    ------------------------------------------------------------------------- */
-/* Chaque compteur du score est au cœur du projet de candidats réels à la
-   présidentielle de 2027 (propositions publiques, août 2026). La doctrine que
-   déclare le joueur le situe donc, qu'il le veuille ou non, sur une carte
-   politique existante — c'est le premier enseignement du jeu : il n'y a pas
-   de priorité neutre. Neutralité par attribution : on cite, on ne juge pas. */
+/* Chaque compteur du score est au cœur de projets politiques réels débattus en
+   2027 (propositions publiques, août 2026). La feuille de route que déclare le
+   joueur le situe donc, qu'il le veuille ou non, sur une carte politique
+   existante — c'est le premier enseignement du jeu : il n'y a pas de priorité
+   neutre. Le `decode` sert à la revue de presse du premier jour.
+   Neutralité par attribution : on cite, on ne juge pas. */
 export const PROJETS_2027 = {
   reussite: {
     sousTitre: 'Les acquis des élèves, mesurés par les évaluations nationales et internationales.',
@@ -376,76 +377,6 @@ export const PROJETS_2027 = {
     decode: 'Le sérieux budgétaire appliqué à l’école : c’est la ligne Philippe-Lisnard. Bercy vous adore déjà ; la salle des professeurs a un doute.',
   },
 };
-
-/* ---------------------------------------------------------------------------
-   11. LES CINQ PRÉSIDENTS POSSIBLES DE 2027
-   ------------------------------------------------------------------------- */
-/* Le joueur ne choisit plus ses priorités dans l'absolu : il choisit la
-   Présidente ou le Président qui vient de le nommer — et hérite de sa
-   plateforme. Cinq archétypes, chacun assemblé à partir de propositions
-   publiques réelles (citées : neutralité par attribution) ; les personnages,
-   eux, sont fictifs et satiriques, comme le reste de la distribution.
-   La doctrine fixée pondère le score (35/25/20/12/8) et les deux « mesures
-   présidentielles » imposées sortent du programme du Président choisi. */
-export const PRESIDENTS = [
-  {
-    id: 'exigence',
-    nom: 'Gabriel Attable', genre: 'm',
-    slogan: 'Le Choc des Savoirs, le Retour',
-    inspiration: 'assemblé à partir des projets publics de G. Attal (choc des savoirs), É. Philippe (résultats publiés) et D. Lisnard (évaluation)',
-    doctrine: ['reussite', 'budget', 'sante', 'egalite', 'paix'],
-    mesures: ['differenciation', 'brevet_barrage', 'autonomie', 'redoublement', 'uniforme'],
-    mandat: '« Je vous nomme pour finir ce que j’avais commencé rue de Grenelle. Le niveau remontera, ou vous descendrez. Nous nous comprenons ? »',
-    decode: 'L’Élysée assume le terrain du « niveau » : exigence, certificats, résultats publiés. La salle des professeurs a déjà lu le programme — et pris date.',
-  },
-  {
-    id: 'egalite',
-    nom: 'Jean-Luc Mélanchton', genre: 'm',
-    slogan: 'L’École de l’Égalité',
-    inspiration: 'assemblé à partir des projets publics de J.-L. Mélenchon (19 par classe, loi Carle), R. Glucksmann (privé et carte scolaire) et du NFP (financement conditionné)',
-    doctrine: ['egalite', 'reussite', 'sante', 'paix', 'budget'],
-    mesures: ['classe19', 'secteurs', 'dedoublement', 'aesh', 'prive_mixite'],
-    mandat: '« Je vous nomme pour que le code postal cesse de faire le bulletin scolaire. Le privé hurlera. C’est prévu au calendrier. »',
-    decode: 'L’Élysée ouvre le dossier le plus inflammable du pays : la mixité et le privé sous contrat. Le mot « Savary » est déjà dans les colonnes.',
-  },
-  {
-    id: 'serieux',
-    nom: 'Édouard Filippe', genre: 'm',
-    slogan: 'Le Sérieux et la Craie',
-    inspiration: 'assemblé à partir des projets publics d’É. Philippe (+20 % financés par la démographie) et D. Lisnard (revalorisation conditionnée), avec Bercy au piano',
-    doctrine: ['budget', 'reussite', 'sante', 'egalite', 'paix'],
-    mesures: ['autonomie', 'remplacement', 'pacte_pluriannuel', 'evaluation_diagnostic'],
-    mandat: '« Je vous nomme pour prouver qu’on peut faire mieux sans dépenser plus. La démographie vous offre des marges : rendez-les fécondes. Et rendez-les. »',
-    decode: 'L’Élysée promet l’école ET l’équilibre des comptes. Bercy applaudit des deux mains, ce qui ne lui était pas arrivé depuis un ministère Pinay.',
-  },
-  {
-    id: 'ordre',
-    nom: 'Marine Lapine', genre: 'f',
-    slogan: 'L’Ordre à l’École',
-    inspiration: 'assemblé à partir des projets publics d’É. Zemmour (surveillants généraux, internats), M. Le Pen (autorité, uniforme) et de mesures portées à droite (allocations)',
-    doctrine: ['reussite', 'paix', 'budget', 'sante', 'egalite'],
-    mesures: ['internats', 'allocations', 'surges', 'uniforme', 'pause_numerique'],
-    mandat: '« Je vous nomme pour que l’école redevienne une école. Uniforme, silence, estrade. Le reste est de la sociologie. »',
-    decode: 'L’Élysée joue l’autorité et ses symboles. Très populaire, très photogénique — la recherche, elle, attendra dans le couloir.',
-  },
-  {
-    id: 'pacte',
-    nom: 'Raphaël Glucksberg', genre: 'm',
-    slogan: 'Le Pacte Enseignant',
-    inspiration: 'assemblé à partir des projets publics du PS (salaires à la moyenne OCDE), de R. Glucksmann (loi de programmation) et des demandes intersyndicales (formation, vie scolaire)',
-    doctrine: ['sante', 'reussite', 'egalite', 'budget', 'paix'],
-    mesures: ['formation', 'vie_scolaire', 'titularisation', 'sante_mentale'],
-    mandat: '« Je vous nomme pour réparer le métier. Rien ne se fera sans les personnels — j’ai lu ça dans toutes les notes, il serait temps d’essayer. »',
-    decode: 'L’Élysée parie sur le facteur humain : salaires, formation, considération. Le pari le plus documenté — et le plus lent à se voir.',
-  },
-];
-
-/* Écart entre la plateforme du Président et la feuille de route que le
-   ministre déclare devant la presse. S'aligner rassure l'Élysée ; s'en
-   écarter est possible — c'est même la marge de manœuvre politique d'un
-   ministre — mais cela se paie en capital gouvernemental dès le premier jour.
-   Écart = somme des déplacements de rang (0 si identique, 12 si inversé). */
-export const DOCTRINE_ELYSEE = { bonusAlignement: 6, coutParEcart: 1.8, coutMax: 20 };
 
 /* Taille du menu de mesures par année de mandat : on commence resserré pour
    que chaque carte soit vraiment lue, on élargit avec l'expérience du joueur. */
