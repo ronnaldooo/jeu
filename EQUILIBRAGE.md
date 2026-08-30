@@ -270,6 +270,13 @@ re-vérifié : 4/4 cibles sur trois graines.
   capital, et chaque refus « rembobine » le second tour (une d'uchronie).
   Chaque nouvelle partie tire un autre Président. Le compte satirique
   homonyme du Président élu disparaît du fil social.
+- **La feuille de route reste déclarée par le ministre** (`DOCTRINE_ELYSEE`) :
+  après la nomination, le joueur ordonne lui-même les cinq compteurs — la
+  plateforme présidentielle est proposée par défaut, il peut s'en écarter.
+  S'aligner rapporte 6 de capital ; chaque rang déplacé en coûte 1,8
+  (plafonné à 20). Le bilan reste pondéré par SON classement : il est noté
+  contre sa propre parole, pas contre celle du Président. L'écart initial
+  est rappelé au bilan.
 - **La revendication syndicale** : second temps de l'audience d'octobre.
   L'organisation majoritaire exige le retrait de la mesure en vigueur qu'elle
   conteste le plus. Céder retire réellement la mesure du jeu (`retirerMesure` :

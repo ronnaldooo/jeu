@@ -243,11 +243,31 @@ function* etapeDoctrine(s) {
   }
   s.president = p;
   s.refusNominations = refus;
-  s.doctrine = [...p.doctrine];
+  s.mesuresPresidentielles = exigencesDe(s, p);
+  note(s, `${p.nom} (« ${p.slogan} ») vous nomme rue de Grenelle.`, 'doctrine');
+
+  /* Second acte : VOUS déclarez votre feuille de route devant la presse.
+     La plateforme présidentielle est proposée par défaut ; vous pouvez la
+     réordonner — c'est votre marge de manœuvre — mais l'Élysée compte les
+     rangs déplacés. Le score final pondérera vos compteurs selon VOTRE
+     classement : vous restez noté contre votre propre parole. */
+  const ordre = (yield { type: 'doctrine', president: p, suggestion: [...p.doctrine] }) || [...p.doctrine];
+  s.doctrine = [...ordre];
   s.poids = {};
   s.doctrine.forEach((c, i) => { s.poids[c] = K.POIDS_DOCTRINE[i]; });
-  s.mesuresPresidentielles = exigencesDe(s, p);
-  note(s, `${p.nom} (« ${p.slogan} ») vous nomme rue de Grenelle. Doctrine du quinquennat : ${s.doctrine.join(' > ')}.`, 'doctrine');
+
+  let ecart = 0;
+  s.doctrine.forEach((c, i) => { ecart += Math.abs(i - p.doctrine.indexOf(c)); });
+  s.ecartDoctrine = ecart;
+  if (ecart === 0) {
+    s.capital = Math.min(K.CAPITAL.plafond, s.capital + K.DOCTRINE_ELYSEE.bonusAlignement);
+    note(s, `Feuille de route alignée sur la plateforme présidentielle. L'Élysée apprécie la loyauté (capital +${K.DOCTRINE_ELYSEE.bonusAlignement}).`, 'elysee');
+  } else {
+    const cout = Math.min(K.DOCTRINE_ELYSEE.coutMax, ecart * K.DOCTRINE_ELYSEE.coutParEcart);
+    s.capital -= cout;
+    note(s, `Vous déclarez une feuille de route qui s'écarte de la plateforme présidentielle (${ecart} rang${ecart > 1 ? 's' : ''} déplacé${ecart > 1 ? 's' : ''}). L'Élysée l'a remarqué avant la fin de votre conférence de presse (capital −${Math.round(cout)}).`, 'elysee');
+  }
+  note(s, `Doctrine déclarée : ${s.doctrine.join(' > ')}.`, 'doctrine');
 }
 
 /* --- L'ÉTÉ DES CENT JOURS (an 1) : deux crises avant la première rentrée --- */
@@ -867,6 +887,7 @@ export function jouerMandat({ graine = 1, politique }) {
     if (q.type === 'nomination') rep = politique.president
       ? (q.president.id === politique.president(s) ? 'accepter' : 'refuser')
       : 'accepter';
+    else if (q.type === 'doctrine') rep = politique.doctrine ? politique.doctrine(s, q.suggestion) : q.suggestion;
     else if (q.type === 'lettrePlafond') rep = politique.lettrePlafond ? politique.lettrePlafond(s, q.palier) : 'accepter';
     else if (q.type === 'rentree') rep = politique.rentree ? politique.rentree(s, q) : 'assumer';
     else if (q.type === 'carteScolaire') rep = politique.carteScolaire(s, q);

@@ -87,6 +87,7 @@ function selectionner(s, dispo, ctx, scorer, { toleranceDepassement = 0.15, opti
 
 /* -------------------------------------------------------------------------- */
 export const PASSIF = {
+  doctrine: (s, suggestion) => suggestion,
   president: () => 'serieux',
   retrait: () => 'maintenir',
   nom: 'Passif (ne rien faire)',
@@ -111,6 +112,7 @@ function dossierVers(cle) {
 }
 
 export const TOUT_VITRINE = {
+  doctrine: (s, suggestion) => suggestion,
   president: () => 'ordre',
   retrait: () => 'maintenir',
   nom: 'Tout vitrine',
@@ -134,6 +136,7 @@ export const TOUT_VITRINE = {
    désintéresse ouvertement de ce que montre le tableau de bord. Ce n'est pas
    un joueur suicidaire — c'est un joueur qui ne regarde pas les sondages. */
 export const TOUT_REEL = {
+  doctrine: (s, suggestion) => suggestion,
   president: () => 'pacte',
   retrait: () => 'maintenir',
   nom: 'Tout réel',
@@ -156,6 +159,7 @@ export const TOUT_REEL = {
 
 /* -------------------------------------------------------------------------- */
 export const SYNDICAL = {
+  doctrine: (s, suggestion) => suggestion,
   president: () => 'pacte',
   retrait: () => 'ceder',
   nom: 'Paix sociale d’abord',
@@ -174,6 +178,7 @@ export const SYNDICAL = {
 /* Le « joueur attentif » : il équilibre vitrine et réel, surveille l'adhésion
    (dont dépend l'implémentation), tient le crédit Bercy et évite les grèves. */
 export const MIXTE = {
+  doctrine: (s, suggestion) => suggestion,
   president: () => 'pacte',
   retrait: (s, q) => (q.combatif && s.phys.adhesion < 18 ? 'ceder' : 'maintenir'),
   nom: 'Mixte (joueur attentif)',
@@ -233,6 +238,7 @@ export function politiqueAleatoire(rng, poids) {
   return {
     nom: 'aléatoire',
     president: () => pres,
+    doctrine: () => ordre,          // le hasard déclare sa propre feuille de route
     retrait: () => (rng() < 0.3 ? 'ceder' : 'maintenir'),
     doctrine: () => ordre,
     lettrePlafond: () => (contester ? 'contester' : 'accepter'),
@@ -293,6 +299,7 @@ export const DOCTRINAIRES = PRESIDENTS.map((p) => {
   const d = doctrinaire([...p.doctrine]);
   d.nom = 'Doctrinaire · ' + p.id;
   d.president = () => p.id;
+  d.doctrine = (s, suggestion) => suggestion;   // aligné : il a choisi ce président
   d.retrait = () => 'maintenir';
   return d;
 });
