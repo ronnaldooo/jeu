@@ -117,6 +117,42 @@ h1,h2,h3{text-wrap:balance; margin:0}
 .rang .fleches button{cursor:pointer; border:1px solid var(--filet-fort); background:var(--fiche); width:30px; height:30px; font-size:.85rem}
 .rang .fleches button:hover{border-color:var(--bleu-rf); color:var(--bleu-rf)}
 
+/* ---------- projets 2027 (doctrine) ---------- */
+.rang-bloc{background:var(--fiche-2); border:1px solid var(--filet)}
+.rang-bloc .rang{background:transparent; border:0}
+.rang-bloc details{padding:0 14px 10px 44px}
+.rang-bloc summary{cursor:pointer; font-size:.76rem; color:var(--bleu-rf); font-weight:600; list-style:none}
+.rang-bloc summary::before{content:"▸ "; }
+.rang-bloc details[open] summary::before{content:"▾ "}
+.rang-bloc .sous-titre{font-size:.76rem; color:var(--encre-2); padding:0 14px 6px 44px; margin:-4px 0 0; max-width:70ch}
+.rang-bloc .projet{font-size:.8rem; margin:6px 0 0; max-width:70ch}
+.rang-bloc .projet b{color:var(--encre)}
+.decode{background:var(--fiche); border:1px solid var(--filet); border-left:3px solid var(--bleu-rf); padding:14px 18px; max-width:860px; margin:0 auto 14px}
+.decode .titre-d{font-size:.68rem; letter-spacing:.12em; text-transform:uppercase; font-weight:700; color:var(--bleu-rf); margin-bottom:6px}
+.decode p{margin:6px 0; font-size:.92rem; max-width:72ch}
+
+/* ---------- dossier d'été ---------- */
+.decryptage{background:var(--fiche-2); border-left:3px solid var(--or); padding:12px 16px; margin-top:16px}
+.decryptage .titre-d{font-size:.66rem; letter-spacing:.12em; text-transform:uppercase; font-weight:700; color:var(--or)}
+.decryptage p{margin:6px 0 0; font-size:.92rem; max-width:70ch}
+
+/* ---------- comprendre l'effet ---------- */
+.legende-cadenas{font-size:.76rem; color:var(--encre-2); background:var(--fiche-2); border:1px solid var(--filet); padding:8px 14px; margin:0 0 14px; max-width:72ch}
+.carte .corps{display:none; flex-direction:column; gap:8px}
+.carte.ouverte .corps{display:flex}
+.carte .barre-actions{display:flex; gap:8px; margin-top:2px}
+.carte .btn-mini{cursor:pointer; font-size:.74rem; font-weight:600; padding:6px 10px; border:1px solid var(--filet-fort); background:var(--fiche); color:var(--encre-2)}
+.carte .btn-mini:hover{border-color:var(--bleu-rf); color:var(--bleu-rf)}
+.carte .btn-retenir{border-color:var(--bleu-rf); color:var(--bleu-rf)}
+.carte.sel .btn-retenir{background:var(--bleu-rf); color:var(--fiche)}
+.carte .comprendre{display:none; background:var(--fiche-2); border-left:3px solid var(--c-sante); padding:10px 12px; font-size:.8rem}
+.carte .comprendre.visible{display:block}
+.carte .comprendre .titre-d{font-size:.62rem; letter-spacing:.1em; text-transform:uppercase; font-weight:700; color:var(--c-sante)}
+.carte .comprendre p{margin:5px 0; max-width:70ch}
+.carte .comprendre .idee{border-top:1px dashed var(--filet-fort); margin-top:8px; padding-top:8px}
+.carte .comprendre .idee .titre-d{color:var(--rouge-rf)}
+.carte .plie{font-size:.78rem; color:var(--encre-2)}
+
 /* ---------- curseurs (carte scolaire) ---------- */
 .curseur{margin:20px 0}
 .curseur label{font-weight:600; display:block; margin-bottom:2px}

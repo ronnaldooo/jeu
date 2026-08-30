@@ -11,7 +11,7 @@
    ========================================================================== */
 
 import * as K from './constantes.js';
-import { CATALOGUE, PAR_ID, REVALORISATION, FINANCEMENT_19, MESURES_PRESIDENTIELLES } from './catalogue.js';
+import { CATALOGUE, PAR_ID, REVALORISATION, FINANCEMENT_19, MESURES_PRESIDENTIELLES, DOSSIERS_ETE } from './catalogue.js';
 
 /* ---------------------------------------------------------------- ALÉA --- */
 export function rngDepuis(graine) {
@@ -224,6 +224,23 @@ function* etapeDoctrine(s) {
   s.poids = {};
   ordre.forEach((c, i) => { s.poids[c] = K.POIDS_DOCTRINE[i]; });
   note(s, `Doctrine déclarée : ${ordre.join(' > ')}. La presse a noté.`, 'doctrine');
+}
+
+/* --- L'ÉTÉ DES CENT JOURS (an 1) : deux crises avant la première rentrée --- */
+function* etapeEte(s) {
+  const dec = s.graine % DOSSIERS_ETE.length;
+  for (let k = 0; k < 2; k++) {
+    const dossier = DOSSIERS_ETE[(dec + k) % DOSSIERS_ETE.length];
+    const idx = yield { type: 'dossier', dossier };
+    const opt = dossier.options[Math.max(0, Math.min(dossier.options.length - 1, idx | 0))];
+    const e = opt.effets || {};
+    if (e.parents) s.phys.parents = borne(s.phys.parents + e.parents, 0, 100);
+    if (e.adhesion) s.phys.adhesion = borne(s.phys.adhesion + e.adhesion, 0, 100);
+    if (e.capital) s.capital = Math.min(K.CAPITAL.plafond, s.capital + e.capital);
+    if (e.collectivitesBonus) s.capital += 2;                    // les élus s'en souviendront en janvier
+    if (e.bercyMalus) s.creditBercy = borne(s.creditBercy - 4, 0, 100);
+    note(s, `Été 2027 — ${dossier.titre} : « ${opt.titre} »`, 'ete');
+  }
 }
 
 /* --- JUILLET : lettre plafond de Bercy + résultats des concours ------------ */
@@ -528,8 +545,8 @@ function estJouable(s, c) {
    Toujours proposées : la revalorisation (on revalorise à chaque budget, ou
    jamais) et les mesures présidentielles encore à caser — l'Élysée s'assure
    qu'elles restent sur votre bureau. */
-export const TAILLE_MENU = 12;
 export function mesuresDisponibles(s) {
+  const TAILLE_MENU = K.TAILLES_MENU[Math.min(4, s.annee - 1)];
   const pool = CATALOGUE.filter((c) => estJouable(s, c));
   const menu = [];
   const pousse = (c) => { if (c && !menu.includes(c)) menu.push(c); };
@@ -667,6 +684,8 @@ export function* derouler(s) {
   yield* etapeDoctrine(s);
   rafraichir(s);
   yield { type: 'etape', etape: 'ouverture' };
+  yield* etapeEte(s);
+  rafraichir(s);
 
   for (s.annee = 1; s.annee <= 5 && !s.fini; s.annee++) {
     s.anneeCiv = 2026 + s.annee;                 // année civile de la carte scolaire
@@ -697,6 +716,7 @@ export function jouerMandat({ graine = 1, politique }) {
     else if (q.type === 'rentree') rep = politique.rentree ? politique.rentree(s, q) : 'assumer';
     else if (q.type === 'carteScolaire') rep = politique.carteScolaire(s, q);
     else if (q.type === 'mesures') rep = politique.mesures(s, q.dispo, q) || [];
+    else if (q.type === 'dossier') rep = politique.dossier ? politique.dossier(s, q.dossier) : 1;
     res = gen.next(rep);
   }
   return bilan(s);

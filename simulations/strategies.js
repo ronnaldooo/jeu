@@ -95,8 +95,20 @@ export const PASSIF = {
 };
 
 /* -------------------------------------------------------------------------- */
+/* Réponses aux dossiers d'été : l'option qui maximise ce que chaque
+   archétype regarde. Par défaut (absence de méthode), le pilote choisit
+   l'option 1 — la voie médiane. */
+function dossierVers(cle) {
+  return (s, d) => {
+    let best = 0, bv = -1e9;
+    d.options.forEach((o, i) => { const v = (o.effets || {})[cle] || 0; if (v > bv) { bv = v; best = i; } });
+    return best;
+  };
+}
+
 export const TOUT_VITRINE = {
   nom: 'Tout vitrine',
+  dossier: dossierVers('parents'),
   doctrine: () => ['reussite', 'budget', 'egalite', 'sante', 'paix'],
   lettrePlafond: () => 'accepter',
   /* Rendre les postes fait plaisir à Bercy et paie les annonces. */
@@ -136,6 +148,7 @@ export const TOUT_REEL = {
 /* -------------------------------------------------------------------------- */
 export const SYNDICAL = {
   nom: 'Paix sociale d’abord',
+  dossier: dossierVers('adhesion'),
   doctrine: () => ['sante', 'paix', 'budget', 'egalite', 'reussite'],
   lettrePlafond: () => 'contester',
   carteScolaire: () => ({ restitution: 0.05, prive: 0.5 }),
@@ -150,6 +163,9 @@ export const SYNDICAL = {
    (dont dépend l'implémentation), tient le crédit Bercy et évite les grèves. */
 export const MIXTE = {
   nom: 'Mixte (joueur attentif)',
+  dossier: (s, d) => { let best = 0, bv = -1e9;
+    d.options.forEach((o, i) => { const e = o.effets || {}; const v = (e.adhesion || 0) * 1.2 + (e.parents || 0) + (e.capital || 0) * 0.8; if (v > bv) { bv = v; best = i; } });
+    return best; },
   doctrine: () => ['sante', 'reussite', 'egalite', 'budget', 'paix'],
   lettrePlafond: (s) => (s.creditBercy < 30 && s.capital > 45 ? 'contester' : 'accepter'),
   carteScolaire: (s, ctx) => {

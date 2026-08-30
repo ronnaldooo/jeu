@@ -43,12 +43,16 @@ après votre départ. Le bilan final révèle la vérité, puis la projette à d
 dépendance réseau obligatoire, sur ordinateur comme sur téléphone. La partie se
 sauvegarde toute seule ; un mandat se joue en 45 à 90 minutes.
 
-Au menu : votre doctrine déclarée devant la presse (et opposable), la carte
-scolaire de janvier et ses deux curseurs, la lettre plafond de Bercy, un menu
-tournant de 12 mesures sur un catalogue de 40 — chacune avec ses porteurs
-politiques réels, son niveau de preuve, son risque de grève et son petit mot —,
-des unes de journal, un fil social de circonstance, et un bilan qui révèle,
-enfin, ce que vous avez vraiment produit.
+Au menu : votre doctrine déclarée devant la presse — chaque priorité affiche
+les candidats de 2027 qui la portent, et la presse décode votre classement —,
+un été des cent jours à traverser avant la première rentrée, la carte scolaire
+de janvier et ses deux curseurs, la lettre plafond de Bercy, un menu progressif
+de mesures (7 cartes en première année, 12 en fin de mandat) tirées d'un
+catalogue de 40 — chacune avec ses porteurs politiques réels, son niveau de
+preuve, un panneau « Comprendre l'effet » qui dit ce que montrent vraiment les
+études (et l'idée reçue qu'elles contredisent), son risque de grève et son
+petit mot —, des unes de journal, un fil social de circonstance, et un bilan
+qui révèle, enfin, ce que vous avez vraiment produit.
 
 ## L'équilibrage
 

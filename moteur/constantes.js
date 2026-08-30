@@ -297,7 +297,7 @@ export const RENVOI = {
      moyenne dans le poste dépasse rarement deux ans. Le risque est modulé par
      le capital politique et l'opinion des familles : un ministre solide n'est
      pas à l'abri, il est seulement moins exposé. */
-  remaniementBase: 0.19,
+  remaniementBase: 0.205,
   remaniementParCapital: 900,
   remaniementParParents: 700,
   remaniementMin: 0.03, remaniementMax: 0.30,
@@ -321,6 +321,65 @@ export const PROJECTION = {
   seuilCoherence: 0.45,       // part des effets dirigés vers les priorités déclarées
   maxAnneesSurcharge: 2,      // années passées au-delà de la capacité d'absorption
 };
+
+/* ---------------------------------------------------------------------------
+   10. LES PROJETS DE 2027                                       [source B.7]
+   ------------------------------------------------------------------------- */
+/* Chaque compteur du score est au cœur du projet de candidats réels à la
+   présidentielle de 2027 (propositions publiques, août 2026). La doctrine que
+   déclare le joueur le situe donc, qu'il le veuille ou non, sur une carte
+   politique existante — c'est le premier enseignement du jeu : il n'y a pas
+   de priorité neutre. Neutralité par attribution : on cite, on ne juge pas. */
+export const PROJETS_2027 = {
+  reussite: {
+    sousTitre: 'Les acquis des élèves, mesurés par les évaluations nationales et internationales.',
+    porteurs: [
+      { qui: 'Gabriel Attal', quoi: 'le « choc des savoirs » : exigence, certificats, groupes, brevet obligatoire' },
+      { qui: 'Édouard Philippe', quoi: 'l’autonomie des établissements jugée sur les résultats, publiés' },
+      { qui: 'David Lisnard', quoi: 'évaluation systématique et rémunération conditionnée' },
+    ],
+    decode: 'Vous entrez sur le terrain du « niveau », celui où campent Attal, Philippe et Lisnard — avec chacun un chemin incompatible avec les deux autres.',
+  },
+  egalite: {
+    sousTitre: 'Le poids de l’origine sociale sur les résultats — le point le plus faible de la France dans les comparaisons.',
+    porteurs: [
+      { qui: 'Jean-Luc Mélenchon', quoi: '19 élèves par classe maximum, abrogation de la loi Carle' },
+      { qui: 'Raphaël Glucksmann', quoi: 'le privé sous contrat intégré à la carte scolaire' },
+      { qui: 'le NFP', quoi: 'financement du privé conditionné à la mixité sociale' },
+    ],
+    decode: 'Priorité revendiquée par toute la gauche — Mélenchon, Glucksmann, le NFP — avec le privé sous contrat en ligne de mire. Le mot « Savary » n’est jamais loin.',
+  },
+  sante: {
+    sousTitre: 'Attractivité du métier, remplacement, moral : la capacité du système à fonctionner.',
+    porteurs: [
+      { qui: 'le PS', quoi: 'salaires alignés sur la moyenne de l’OCDE' },
+      { qui: 'Raphaël Glucksmann', quoi: 'une loi de programmation de revalorisation pluriannuelle' },
+      { qui: 'Gabriel Attal', quoi: '+200 à +500 € par mois (chiffré à 2,5 Md€)' },
+    ],
+    decode: 'La revalorisation traverse tout le spectre — du PS à Attal — mais chacun paie différemment : sans condition, contre missions, ou contre évaluation. Le diable est dans la contrepartie.',
+  },
+  paix: {
+    sousTitre: 'Grèves, mobilisations, climat social : l’histoire du mandat, qui ne s’efface pas.',
+    porteurs: [
+      { qui: 'Michel Barnier', quoi: 'le pacte pluriannuel : de la visibilité contre du calme' },
+      { qui: 'aucun programme', quoi: 'ne la revendique — mais tous la supposent acquise' },
+    ],
+    decode: 'Aucun candidat ne fait campagne sur la paix scolaire : elle ne rapporte des voix que quand elle manque. Vous venez d’en faire une priorité — c’est original, et invérifiable en meeting.',
+  },
+  budget: {
+    sousTitre: 'Tenir la lettre plafond ET rattraper les salaires : la quadrature du premier budget de l’État.',
+    porteurs: [
+      { qui: 'Édouard Philippe', quoi: '+20 % en 5 ans, financés par la baisse démographique' },
+      { qui: 'David Lisnard', quoi: 'la même somme, conditionnée à l’autonomie et à la présence' },
+      { qui: 'la FSU', quoi: '(côté personnels) un rattrapage de +20 % du point, chiffré à 10 Md€' },
+    ],
+    decode: 'Le sérieux budgétaire appliqué à l’école : c’est la ligne Philippe-Lisnard. Bercy vous adore déjà ; la salle des professeurs a un doute.',
+  },
+};
+
+/* Taille du menu de mesures par année de mandat : on commence resserré pour
+   que chaque carte soit vraiment lue, on élargit avec l'expérience du joueur. */
+export const TAILLES_MENU = [7, 9, 11, 12, 12];
 
 export const MOIS = ['janvier','février','mars','avril','mai','juin',
                      'juillet','août','septembre','octobre','novembre','décembre'];

@@ -210,11 +210,14 @@ function ecranPassation() {
 function ecranDoctrine() {
   const ordre = ['reussite', 'egalite', 'sante', 'paix', 'budget'];
   const d = docu('Conférence de presse', 'Votre doctrine, devant témoins', 'juin 2027');
-  d.appendChild(el('p', 'chapo', 'Classez les cinq compteurs. Le score final pondérera chacun selon VOTRE ordre (35 / 25 / 20 / 12 / 8). La presse garde une copie ; les oppositions aussi.'));
+  d.appendChild(el('p', 'chapo', 'Classez les cinq compteurs. Le score final pondérera chacun selon VOTRE ordre (35 / 25 / 20 / 12 / 8). Aucune priorité n’est neutre : chacune est déjà au cœur de projets pour 2027 — dépliez pour voir lesquels. La presse garde une copie ; les oppositions aussi.'));
   const liste = el('div', 'classement');
+  const deplies = new Set();
   const rendreListe = () => {
     liste.innerHTML = '';
     ordre.forEach((c, i) => {
+      const bloc = el('div', 'rang-bloc');
+      const pr = K.PROJETS_2027[c];
       const r = el('div', 'rang');
       r.innerHTML = `<span class="pastille" style="background:${COULEURS_C[c]}"></span>
         <span class="lib">${NOMS_C_LONGS[c]}</span><span class="poids">${K.POIDS_DOCTRINE[i]} % du score</span>`;
@@ -224,7 +227,15 @@ function ecranDoctrine() {
       const bas = el('button', '', '↓'); bas.setAttribute('aria-label', 'Descendre ' + NOMS_C[c]); bas.disabled = i === 4;
       bas.onclick = () => { [ordre[i + 1], ordre[i]] = [ordre[i], ordre[i + 1]]; rendreListe(); };
       fl.append(haut, bas); r.appendChild(fl);
-      liste.appendChild(r);
+      bloc.appendChild(r);
+      bloc.appendChild(el('p', 'sous-titre', pr.sousTitre));
+      const det = document.createElement('details');
+      if (deplies.has(c)) det.open = true;
+      det.ontoggle = () => { if (det.open) deplies.add(c); else deplies.delete(c); };
+      det.innerHTML = `<summary>Qui porte cette priorité en 2027 ?</summary>` +
+        pr.porteurs.map((x) => `<p class="projet"><b>${esc(x.qui)}</b> — ${esc(x.quoi)}.</p>`).join('');
+      bloc.appendChild(det);
+      liste.appendChild(bloc);
     });
   };
   rendreListe();
@@ -325,7 +336,8 @@ function ecranAtelier(q) {
   const d = el('article', 'doc large');
   d.appendChild(el('div', 'entete-doc', `<span class="type">L’atelier — mesures de l’année</span><span class="date">${ETAT.dateLabel}</span>`));
   d.appendChild(el('h2', '', 'Que portez-vous cette année ?'));
-  d.appendChild(el('p', 'chapo', 'L’effet vitrine est chiffré : vous le verrez. L’effet réel ne l’est pas : seuls le niveau de preuve (🔒) et le délai sont connus — vous découvrirez au bilan ce que vous avez produit. Et rien ne s’applique sans les personnels.'));
+  d.appendChild(el('p', 'chapo', 'L’effet vitrine est chiffré : vous le verrez. L’effet réel ne l’est pas : seuls le niveau de preuve (🔒) et le délai sont connus — vous découvrirez au bilan ce que vous avez produit. Dépliez une carte, puis « Comprendre l’effet » pour lire ce que disent réellement les études. Et rien ne s’applique sans les personnels.'));
+  d.appendChild(el('div', 'legende-cadenas', '<b>Échelle de preuve</b> (d’après le Teaching &amp; Learning Toolkit de l’EEF) — 🔒🔒🔒🔒🔒 : plus de 90 études concordantes, l’effet tiré reste proche de l’annonce (±20 %) · 🔒🔒🔒 : preuve correcte, l’effet peut aller de la moitié au double · 🔒 : quasi aucune évaluation, l’effet peut aller du négatif au triple. Un cadenas n’est pas un jugement : c’est la largeur de votre pari.'));
 
   const solde = el('div', 'solde');
   const grille = el('div', 'grille-cartes');
@@ -352,18 +364,29 @@ function ecranAtelier(q) {
 
   const valider = el('button', 'btn', '');
   const rendreCarte = (c) => {
-    const carte = el('button', 'carte');
+    const carte = el('div', 'carte');
+    carte.tabIndex = 0;
     const [famNom, famCoul] = FAMILLES[c.famille] || ['Divers', 'var(--encre-2)'];
     carte.style.borderTopColor = famCoul;
     const presid = S.mesuresPresidentielles.some((m) => m.id === c.id && !m.fait && !m.abandonnee);
     const k0 = coutDe(c, {});
     const vit = c.vitrine, vc = Object.entries(vit.compteurs || {});
-    carte.innerHTML = `
+    const cadMax = Math.max(0, ...(c.reel || []).map((e) => e.cadenas), c.parametrique === 'revalorisation' ? 3 : 0);
+
+    /* --- tête, toujours visible : l'essentiel en trois lignes --- */
+    const tete = el('div', '');
+    tete.style.cssText = 'display:flex;flex-direction:column;gap:6px;cursor:pointer';
+    tete.innerHTML = `
       <span class="famille" style="color:${famCoul}">${famNom}${presid ? ' · <span class="badge-pr">priorité présidentielle</span>' : ''}</span>
       <h3>${esc(c.label)}</h3>
-      <div class="porteurs">Porté par : <b>${c.porteurs.map(esc).join(' · ')}</b>${c.contre ? `<br>Contre : ${c.contre.map(esc).join(' · ')}` : ''}</div>
+      <div class="chiffres"><span>${fmt0(k0.cout * 1000)} M€/an</span><span>${k0.pol}${c.perimetre === 'matignon' ? '×2' : ''} capital</span><span>preuve ${'🔒'.repeat(cadMax)}${'·'.repeat(Math.max(0, 5 - cadMax))}</span></div>
+      <div class="plie">Porté par : ${c.porteurs.map(esc).join(' · ')}</div>`;
+
+    /* --- corps, déplié à la demande --- */
+    const corps = el('div', 'corps');
+    corps.innerHTML = `
+      ${c.contre ? `<div class="porteurs">Contre : ${c.contre.map(esc).join(' · ')}</div>` : ''}
       <div class="chiffres">
-        <span>${fmt0(k0.cout * 1000)} M€/an</span><span>${k0.pol}${c.perimetre === 'matignon' ? '×2' : ''} capital</span>
         ${c.coutETP ? `<span>${fmt0(c.coutETP)} ETP</span>` : ''}
         <span class="${vit.parents >= 0 ? 'pos' : 'neg'}">parents ${signe(vit.parents)}</span>
         <span class="${vit.enseignants >= 0 ? 'pos' : 'neg'}">enseignants ${signe(vit.enseignants)}</span>
@@ -375,6 +398,17 @@ function ecranAtelier(q) {
       ${c.greve ? `<div class="alerte-greve">⚠ Risque de mobilisation (intensité ${c.greve.intensite}/5, ${c.greve.theme})</div>` : ''}
       ${c.provocations ? `<div class="alerte-greve">⚠ Provocation « guerre scolaire » (+${c.provocations})</div>` : ''}
       <div class="mot">${esc(c.mot)}</div>`;
+
+    /* --- panneau « comprendre l'effet » : la preuve, en clair --- */
+    const comp = el('div', 'comprendre');
+    comp.innerHTML = `<div class="titre-d">Ce que disent les études</div><p>${esc(c.preuve || '')}</p>`
+      + (c.ideeRecue ? `<div class="idee"><div class="titre-d">L’idée reçue</div><p>${esc(c.ideeRecue)}</p></div>` : '');
+
+    const barre = el('div', 'barre-actions');
+    const bComp = el('button', 'btn-mini', 'Comprendre l’effet 🔒');
+    bComp.onclick = (e) => { e.stopPropagation(); carte.classList.add('ouverte'); comp.classList.toggle('visible'); };
+    const bRet = el('button', 'btn-mini btn-retenir', 'Retenir');
+    barre.append(bComp, bRet);
 
     let zone = null;
     const majParams = () => {
@@ -398,18 +432,24 @@ function ecranAtelier(q) {
         zone.append(sel('Financement', FINANCEMENT_19, 'financement', (k, v) => `${v.label} (${fmt0(v.cout * 1000)} M€)`));
       }
       zone.onclick = (e) => e.stopPropagation();
-      carte.appendChild(zone);
+      corps.appendChild(zone);
     };
 
-    carte.onclick = () => {
-      if (selection.has(c.id)) { selection.delete(c.id); carte.classList.remove('sel'); if (zone) { zone.remove(); zone = null; } }
+    bRet.onclick = (e) => {
+      e.stopPropagation();
+      if (selection.has(c.id)) { selection.delete(c.id); carte.classList.remove('sel'); bRet.textContent = 'Retenir'; if (zone) { zone.remove(); zone = null; } }
       else {
         const opt = c.parametrique === 'revalorisation' ? { ampleur: 'plan', cible: 'milieux', contrepartie: 'sans' }
           : c.parametrique === 'financement19' ? { financement: 'demographie' } : {};
-        selection.set(c.id, opt); carte.classList.add('sel'); majParams();
+        selection.set(c.id, opt); carte.classList.add('sel', 'ouverte'); bRet.textContent = 'Retirer'; majParams();
       }
       majSolde();
     };
+    const basculer = () => carte.classList.toggle('ouverte');
+    tete.onclick = basculer;
+    carte.onkeydown = (e) => { if (e.key === 'Enter' && e.target === carte) basculer(); };
+
+    carte.append(tete, barre, corps, comp);
     return carte;
   };
 
@@ -428,11 +468,50 @@ function ecranAtelier(q) {
   scene(d);
 }
 
+/* --- dossier de crise (l'été des cent jours) -------------------------------- */
+function ecranDossier(q) {
+  const dos = q.dossier;
+  const d = docu('L’été des cent jours — dossier de crise', dos.titre, 'été 2027');
+  d.appendChild(el('p', 'chapo', dos.contexte));
+  const opts = el('div', 'opts');
+  dos.options.forEach((o, i) => {
+    const b = el('button', 'opt', `<b>${esc(o.titre)}</b>`);
+    b.onclick = () => {
+      opts.querySelectorAll('.opt').forEach((n, k) => {
+        n.disabled = true;
+        if (k !== i) n.style.opacity = '.38';
+        else { n.style.borderLeftColor = 'var(--bleu-rf)'; n.style.borderColor = 'var(--bleu-rf)'; }
+      });
+      const dec = el('div', 'decryptage');
+      dec.appendChild(el('div', 'titre-d', 'Ce que cette décision vous apprend'));
+      dec.appendChild(el('p', '', esc(o.decryptage)));
+      d.appendChild(dec);
+      const act = el('div', 'actions');
+      const ok = el('button', 'btn', 'Poursuivre');
+      ok.onclick = () => suivant(i);
+      act.appendChild(ok); d.appendChild(act);
+      ok.scrollIntoView({ block: 'nearest' });
+    };
+    opts.appendChild(b);
+  });
+  d.appendChild(opts);
+  scene(d);
+}
+
 /* --- écrans narratifs (étapes) ---------------------------------------------- */
 function ecranEtape(etape) {
   const S = ETAT.s;
   const entrees = nouvellesEntrees();
   const une = unesPossibles(etape)[0];
+
+  const blocs = [];
+  if (etape === 'ouverture' && S.doctrine) {
+    const dec = el('div', 'decode');
+    dec.appendChild(el('div', 'titre-d', 'La presse décode votre doctrine'));
+    for (const c of S.doctrine.slice(0, 2)) dec.appendChild(el('p', '', K.PROJETS_2027[c].decode));
+    dec.appendChild(el('p', '', `<span style="color:var(--encre-3);font-size:.8rem">En queue de classement : ${NOMS_C_LONGS[S.doctrine[4]].toLowerCase()} (8 % du score). Ses défenseurs relisent votre conférence de presse en prenant des notes.</span>`));
+    blocs.push(dec);
+  }
 
   const j = el('article', 'journal');
   j.innerHTML = `<div class="manchette"><span class="titre-j">${CAST.journal}</span><span class="ours">${ETAT.dateLabel} · n° ${1200 + S.annee * 37 + (S.mois || 0)} · 2,40 €</span></div>
@@ -451,14 +530,14 @@ function ecranEtape(etape) {
 
   ETAT.journalLu = S.journal.length;
   const ctx = {
-    ouverture: 'Votre doctrine est déclarée. Premier été au ministère.',
+    ouverture: 'Votre doctrine est déclarée. L’été, lui, a ses propres plans.',
     juillet: 'La double sanction de juillet est tombée : lettre plafond et concours.',
     rentree: 'La rentrée est passée. Ou l’inverse.',
     decembre: 'Budget voté, publications de décembre.',
     mars: 'Les mobilisations de printemps.',
     cloture: `Fin de l’année scolaire — an ${S.annee} sur 5.`,
   }[etape] || '';
-  scene(j, fil);
+  scene(...blocs, j, fil);
   boutonSuite('Continuer', ctx, () => suivant(undefined));
 }
 
@@ -547,6 +626,7 @@ const ETAT = { s: null, gen: null, journalLu: 0, pas: [], dateLabel: 'juin 2027'
 function dateDe(q) {
   const S = ETAT.s, an = S.anneeCiv || 2027;
   if (q.type === 'doctrine') return 'juin 2027';
+  if (q.type === 'dossier') return 'été 2027';
   if (q.type === 'lettrePlafond') return `juillet ${an}`;
   if (q.type === 'rentree') return `septembre ${an}`;
   if (q.type === 'carteScolaire' || q.type === 'mesures') return `janvier ${an + 1}`;
@@ -563,6 +643,7 @@ function rendre(q) {
     if (!ETAT.passationVue) { ETAT.passationVue = true; ETAT.enAttente = q; ETAT.rendre = (qq) => { ETAT.dateLabel = dateDe(qq); majHud(); ecranDoctrine(); }; ecranPassation(); return; }
     ecranDoctrine();
   }
+  else if (q.type === 'dossier') ecranDossier(q);
   else if (q.type === 'lettrePlafond') ecranBercy(q);
   else if (q.type === 'rentree') ecranRentree(q);
   else if (q.type === 'carteScolaire') ecranCarteScolaire(q);

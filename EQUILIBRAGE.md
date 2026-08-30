@@ -190,6 +190,32 @@ Fins de partie : mandat_complet 65 % · remaniement 35 % · renvoi 0 %
   brevet-barrage : un seul par mandat), et deux cartes à variance maximale
   assumée (1 cadenas : surveillants généraux, uniforme).
 
+## 3 bis. La phase pédagogique (améliorations demandées après tests)
+
+Quatre changements orientés compréhension, sans toucher à l'économie du jeu
+(banc d'essai re-vérifié : 4/4 cibles sur trois graines, `remaniementBase`
+0,19 → 0,205 pour compenser les petits bonus de l'été) :
+
+- **Les projets de 2027 dès la doctrine** (`PROJETS_2027` dans les
+  constantes) : chaque compteur affiche, au moment du classement, les candidats
+  réels qui en font leur priorité et leur proposition phare ; après l'annonce,
+  un encart « la presse décode votre doctrine » situe le joueur sur la carte
+  politique. Premier enseignement du jeu : il n'y a pas de priorité neutre.
+- **L'été des cent jours** : deux dossiers de crise (tirés de quatre : canicule
+  et bâti, agression d'un enseignant, polémique de manuel, petite phrase de
+  rentrée) entre la nomination et la première rentrée. Effets volontairement
+  modestes ; chaque option porte un décryptage — le début de partie est plus
+  dense, et chaque décision enseigne quelque chose.
+- **« Comprendre l'effet »** : les 40 cartes portent désormais un champ
+  `preuve` (ce que disent les études, sourcé : DEPP, CSEN, EEF, IGÉSR, OCDE)
+  et, pour 15 d'entre elles, un champ `ideeRecue` qui déconstruit explicitement
+  la croyance associée (uniforme, redoublement, allocations, groupes de niveau,
+  surveillants généraux, devoirs, mixité…). Une légende explique l'échelle des
+  cadenas (5 = plus de 90 études ; 1 = quasi aucune évaluation).
+- **Densité maîtrisée** : menu progressif (`TAILLES_MENU` : 7 cartes en an 1,
+  9, 11, puis 12) et cartes repliées par défaut — titre, coût, niveau de preuve
+  et porteurs en tête ; le détail, le mot et la preuve se déplient.
+
 ## 4. Les constantes du moteur
 
 Inchangées depuis la phase 1 (voir `moteur/constantes.js`, tout est commenté
@@ -197,7 +223,7 @@ avec sa source), à trois ajustements près :
 
 | Constante | Avant | Après | Raison |
 |---|---|---|---|
-| `RENVOI.remaniementBase` | 0,155 | 0,19 | recaler la survie du joueur attentif dans la fenêtre 40-62 % après l'élargissement du catalogue |
+| `RENVOI.remaniementBase` | 0,155 | 0,205 | recaler la survie du joueur attentif dans la fenêtre 40-62 % après l'élargissement du catalogue |
 | guerre scolaire | armement instantané | 2 provocations, proba 0,26/an si capital < 22 | rendre l'équité jouable sans retirer la tragédie |
 | `MESURES_PRESIDENTIELLES` | 6 cartes | 10 cartes (penchant vitrine) | l'Élysée aime le visible |
 
@@ -211,7 +237,7 @@ d'implémentation indexé sur l'adhésion (Slavin), capacité d'absorption de
 
 | Paramètre | Valeur | Ce qu'il faut regarder |
 |---|---|---|
-| `RENVOI.remaniementBase` | 0,19 | Une fin subie par tirage peut frustrer. Si les testeurs la trouvent arbitraire, 0,15 et compenser par les convocations (qui, elles, se méritent). |
+| `RENVOI.remaniementBase` | 0,205 | Une fin subie par tirage peut frustrer. Si les testeurs la trouvent arbitraire, 0,15 et compenser par les convocations (qui, elles, se méritent). |
 | Rotation du menu | 12/40 | Vérifier qu'un joueur qui vise une doctrine trouve ses cartes assez souvent ; sinon, garantir 1 carte de chaque famille par menu. |
 | `PALIERS_BERCY[0].marge` | 1,35 Md€ | Contrôle l'ambition possible sur cinq ans. |
 | `GREVE.conflictualiteLatente` | 0,42 | La paix sociale baisse sans grève visible ; l'interface l'explique-t-elle assez ? |
