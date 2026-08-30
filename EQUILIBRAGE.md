@@ -260,23 +260,15 @@ Retours de jeu de la deuxième session, plus les greffes du prototype d'UI
 fourni par le commanditaire (« Le Bureau », design handoff). Banc d'essai
 re-vérifié : 4/4 cibles sur trois graines.
 
-- **La nomination est un tirage au sort refusable** : l'élection a eu lieu
-  sans vous — un Président sort des urnes (parmi cinq archétypes
-  `PRESIDENTS`, à pseudonymes transparents : Gabriel Attable, Jean-Luc
-  Mélanchton, Édouard Filippe, Marine Lapine, Raphaël Glucksberg — chacun
-  assemblé à partir de propositions publiques réelles citées), avec sa
-  plateforme et ses deux exigences visibles AVANT d'accepter. On peut
-  décliner : le premier refus est élégant, les suivants coûtent 5 de
-  capital, et chaque refus « rembobine » le second tour (une d'uchronie).
-  Chaque nouvelle partie tire un autre Président. Le compte satirique
-  homonyme du Président élu disparaît du fil social.
-- **La feuille de route reste déclarée par le ministre** (`DOCTRINE_ELYSEE`) :
-  après la nomination, le joueur ordonne lui-même les cinq compteurs — la
-  plateforme présidentielle est proposée par défaut, il peut s'en écarter.
-  S'aligner rapporte 6 de capital ; chaque rang déplacé en coûte 1,8
-  (plafonné à 20). Le bilan reste pondéré par SON classement : il est noté
-  contre sa propre parole, pas contre celle du Président. L'écart initial
-  est rappelé au bilan.
+- **Plus de couche présidentielle du tout** (retirée après tests) : le jeu ne
+  dit pas qui a été élu, n'impose aucune plateforme et aucune « mesure
+  présidentielle ». Le joueur accepte le ministère, puis **classe librement**
+  les cinq compteurs devant la presse — c'est sur son propre ordre que le
+  bilan le note. Les trois tentatives successives (doctrine fixée par un
+  Président choisi, puis tiré au sort, puis plateforme suggérée avec coût
+  d'écart) ajoutaient une couche que les tests n'ont jamais rendue lisible :
+  « on ne comprend pas ce que ça fait là ni pourquoi ». La simplification
+  n'a coûté aucune cible d'équilibrage.
 - **La revendication syndicale** : second temps de l'audience d'octobre.
   L'organisation majoritaire exige le retrait de la mesure en vigueur qu'elle
   conteste le plus. Céder retire réellement la mesure du jeu (`retirerMesure` :
