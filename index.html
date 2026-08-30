@@ -146,10 +146,10 @@ h1,h2,h3{text-wrap:balance; margin:0}
 .pres-carte .slogan{font-size:.66rem; letter-spacing:.12em; text-transform:uppercase; font-weight:700; color:var(--bleu-rf)}
 .pres-carte h3{font-size:1.06rem; font-weight:700}
 .pres-carte .inspi{font-size:.72rem; color:var(--encre-3); max-width:60ch}
-.pres-carte .prios{display:flex; flex-wrap:wrap; gap:4px}
-.pres-carte .prio{font-size:.68rem; font-weight:600; padding:2px 8px; border:1px solid var(--filet-fort); display:inline-flex; align-items:center; gap:5px}
-.pres-carte .prio .pastille{width:8px; height:8px; border-radius:50%}
-.pres-carte .prio.p1{border-color:var(--bleu-rf)}
+.prios{display:flex; flex-wrap:wrap; gap:4px}
+.prio{font-size:.68rem; font-weight:600; padding:2px 8px; border:1px solid var(--filet-fort); display:inline-flex; align-items:center; gap:5px}
+.prio .pastille{width:8px; height:8px; border-radius:50%}
+.prio.p1{border-color:var(--bleu-rf)}
 .pres-carte .mandat-q{font-family:"Newsreader",georgia,serif; font-style:italic; font-size:.92rem; color:var(--encre-2); border-top:1px solid var(--filet); padding-top:8px; line-height:1.4}
 .pres-carte .exigences{font-size:.72rem; color:var(--encre-2)}
 
@@ -734,17 +734,17 @@ const PROJETS_2027 = {
 const PRESIDENTS = [
   {
     id: 'exigence',
-    nom: 'Paul-Henri Sévère',
-    slogan: 'La République de l’Exigence',
+    nom: 'Gabriel Attable', genre: 'm',
+    slogan: 'Le Choc des Savoirs, le Retour',
     inspiration: 'assemblé à partir des projets publics de G. Attal (choc des savoirs), É. Philippe (résultats publiés) et D. Lisnard (évaluation)',
     doctrine: ['reussite', 'budget', 'sante', 'egalite', 'paix'],
     mesures: ['differenciation', 'brevet_barrage', 'autonomie', 'redoublement', 'uniforme'],
-    mandat: '« Je vous nomme pour redresser le niveau. Les évaluations remonteront, ou vous descendrez. Nous nous comprenons ? »',
+    mandat: '« Je vous nomme pour finir ce que j’avais commencé rue de Grenelle. Le niveau remontera, ou vous descendrez. Nous nous comprenons ? »',
     decode: 'L’Élysée assume le terrain du « niveau » : exigence, certificats, résultats publiés. La salle des professeurs a déjà lu le programme — et pris date.',
   },
   {
     id: 'egalite',
-    nom: 'Louise Quintal',
+    nom: 'Jean-Luc Mélanchton', genre: 'm',
     slogan: 'L’École de l’Égalité',
     inspiration: 'assemblé à partir des projets publics de J.-L. Mélenchon (19 par classe, loi Carle), R. Glucksmann (privé et carte scolaire) et du NFP (financement conditionné)',
     doctrine: ['egalite', 'reussite', 'sante', 'paix', 'budget'],
@@ -754,8 +754,8 @@ const PRESIDENTS = [
   },
   {
     id: 'serieux',
-    nom: 'Firmin Cadence',
-    slogan: 'Les Comptes et l’École',
+    nom: 'Édouard Filippe', genre: 'm',
+    slogan: 'Le Sérieux et la Craie',
     inspiration: 'assemblé à partir des projets publics d’É. Philippe (+20 % financés par la démographie) et D. Lisnard (revalorisation conditionnée), avec Bercy au piano',
     doctrine: ['budget', 'reussite', 'sante', 'egalite', 'paix'],
     mesures: ['autonomie', 'remplacement', 'pacte_pluriannuel', 'evaluation_diagnostic'],
@@ -764,7 +764,7 @@ const PRESIDENTS = [
   },
   {
     id: 'ordre',
-    nom: 'Marguerite Talon',
+    nom: 'Marine Lapine', genre: 'f',
     slogan: 'L’Ordre à l’École',
     inspiration: 'assemblé à partir des projets publics d’É. Zemmour (surveillants généraux, internats), M. Le Pen (autorité, uniforme) et de mesures portées à droite (allocations)',
     doctrine: ['reussite', 'paix', 'budget', 'sante', 'egalite'],
@@ -774,7 +774,7 @@ const PRESIDENTS = [
   },
   {
     id: 'pacte',
-    nom: 'Antonin Verdier',
+    nom: 'Raphaël Glucksberg', genre: 'm',
     slogan: 'Le Pacte Enseignant',
     inspiration: 'assemblé à partir des projets publics du PS (salaires à la moyenne OCDE), de R. Glucksmann (loi de programmation) et des demandes intersyndicales (formation, vie scolaire)',
     doctrine: ['sante', 'reussite', 'egalite', 'budget', 'paix'],
@@ -2104,24 +2104,42 @@ function rafraichir(s) { recalculerVrai(s); recalculerAffiche(s); }
    4. LES ÉTAPES DU CALENDRIER
    ========================================================================== */
 
-/* --- JUIN (an 1) : le choix du Président — et la plateforme qui va avec ----- */
+/* Les deux exigences que CE président poserait sur votre bureau. */
+function exigencesDe(s, p) {
+  const n = p.mesures.length;
+  const i0 = s.graine % n;
+  let i1 = (i0 + 1 + ((s.graine >> 2) % (n - 1))) % n;
+  if (i1 === i0) i1 = (i0 + 1) % n;
+  return [
+    { id: p.mesures[i0], anneeLimite: 2 },
+    { id: p.mesures[i1], anneeLimite: 4 },
+  ];
+}
+
+/* --- MAI-JUIN (an 1) : l'élection a eu lieu. On vous propose Grenelle. ------ */
+/* Le suffrage universel ne vous a pas consulté : un Président sort des urnes,
+   avec sa plateforme et ses deux exigences. Vous pouvez décliner — une fois
+   avec élégance, ensuite chaque refus coûte 5 de capital : on ne se fait pas
+   désirer indéfiniment dans une République qui a des listes de remplaçants. */
 function* etapeDoctrine(s) {
-  const id = yield { type: 'president', presidents: K.PRESIDENTS };
-  const p = K.PRESIDENTS.find((x) => x.id === id) || K.PRESIDENTS[0];
+  const debut = s.graine % K.PRESIDENTS.length;
+  const pas = 1 + ((s.graine >> 4) % (K.PRESIDENTS.length - 1));
+  let k = 0, refus = 0, p;
+  for (;;) {
+    p = K.PRESIDENTS[(debut + k * pas) % K.PRESIDENTS.length];
+    const rep = yield { type: 'nomination', president: p, refus, exigences: exigencesDe(s, p) };
+    if (rep !== 'refuser') break;
+    refus += 1;
+    if (refus >= 2) s.capital -= 5;
+    note(s, `Vous déclinez la proposition de ${p.nom}. ${refus === 1 ? 'Élégant.' : 'Le Tout-Paris commente, et pas en bien.'}`, 'elysee');
+    k += 1;
+  }
   s.president = p;
+  s.refusNominations = refus;
   s.doctrine = [...p.doctrine];
   s.poids = {};
   s.doctrine.forEach((c, i) => { s.poids[c] = K.POIDS_DOCTRINE[i]; });
-
-  /* Les deux mesures présidentielles sortent du programme du Président
-     choisi : elles ont enfin un visage, et une raison d'être. */
-  const n = p.mesures.length;
-  const i0 = s.graine % n;
-  const i1 = (i0 + 1 + ((s.graine >> 2) % (n - 1))) % n;
-  s.mesuresPresidentielles = [
-    { id: p.mesures[i0], anneeLimite: 2 },
-    { id: p.mesures[i1 === i0 ? (i0 + 1) % n : i1], anneeLimite: 4 },
-  ];
+  s.mesuresPresidentielles = exigencesDe(s, p);
   note(s, `${p.nom} (« ${p.slogan} ») vous nomme rue de Grenelle. Doctrine du quinquennat : ${s.doctrine.join(' > ')}.`, 'doctrine');
 }
 
@@ -2739,7 +2757,9 @@ function jouerMandat({ graine = 1, politique }) {
   while (!res.done) {
     const q = res.value;
     let rep;
-    if (q.type === 'president') rep = politique.president ? politique.president(s, q.presidents) : q.presidents[0].id;
+    if (q.type === 'nomination') rep = politique.president
+      ? (q.president.id === politique.president(s) ? 'accepter' : 'refuser')
+      : 'accepter';
     else if (q.type === 'lettrePlafond') rep = politique.lettrePlafond ? politique.lettrePlafond(s, q.palier) : 'accepter';
     else if (q.type === 'rentree') rep = politique.rentree ? politique.rentree(s, q) : 'assumer';
     else if (q.type === 'carteScolaire') rep = politique.carteScolaire(s, q);
@@ -3081,39 +3101,48 @@ function ecranAccueil(sauvegarde) {
   scene(a);
 }
 
-/* --- le choix du Président --------------------------------------------------- */
-function ecranPresident(q) {
-  const d = docu('Mai 2027 — second tour', 'Qui vient d’être élu(e) ?', 'mai 2027');
-  d.classList.add('large');
-  d.appendChild(el('p', 'chapo', 'Vous ne choisissez pas vos priorités dans l’absolu : vous choisissez la Présidente ou le Président qui vous nomme — et vous héritez de sa plateforme. Elle fixe vos cinq priorités (et le barème de votre bilan : 35 / 25 / 20 / 12 / 8), et deux mesures de son programme vous seront imposées. Chaque profil est assemblé à partir de propositions publiques réelles.'));
-  const grille = el('div', 'grille-pres');
-  let choisi = null;
-  const bas = el('div', 'actions');
-  const ok = el('button', 'btn', 'Accepter la nomination');
-  ok.disabled = true;
-  ok.onclick = () => suivant(choisi);
-  q.presidents.forEach((pr) => {
-    const c = el('button', 'pres-carte');
-    c.innerHTML = `
-      <span class="slogan">${esc(pr.slogan)}</span>
-      <h3>${esc(pr.nom)}</h3>
-      <div class="inspi">${esc(pr.inspiration)}.</div>
-      <div class="prios">${pr.doctrine.map((cc, i) => `<span class="prio${i === 0 ? ' p1' : ''}"><span class="pastille" style="background:${COULEURS_C[cc]}"></span>${i + 1}. ${NOMS_C[cc]}</span>`).join('')}</div>
-      <div class="exigences">Exigera notamment : ${pr.mesures.slice(0, 3).map((m) => esc(PAR_ID[m].label.split(':')[0].split(',')[0])).join(' · ')}…</div>
-      <div class="mandat-q">${esc(pr.mandat)}</div>`;
-    c.onclick = () => {
-      choisi = pr.id;
-      grille.querySelectorAll('.pres-carte').forEach((n) => n.classList.remove('sel'));
-      c.classList.add('sel');
-      ok.disabled = false;
-      ok.textContent = `Accepter la nomination de ${pr.nom}`;
-    };
-    grille.appendChild(c);
-  });
-  d.appendChild(grille);
-  bas.appendChild(ok);
-  d.appendChild(bas);
-  scene(d);
+/* --- la nomination : l'élection a eu lieu, pas pour vous ---------------------- */
+function ecranNomination(q) {
+  const pr = q.president;
+  const elu = pr.genre === 'f' ? 'élue Présidente' : 'élu Président';
+  const j = el('article', 'journal');
+  j.innerHTML = q.refus === 0
+    ? `<div class="manchette"><span class="titre-j">${CAST.journal}</span><span class="ours">édition spéciale · second tour</span></div>
+       <h2 class="une">${esc(pr.nom)} ${elu} de la République</h2>
+       <p class="sous-une">« ${esc(pr.slogan)} » l’emporte. ${esc(pr.decode)}</p>`
+    : `<div class="manchette"><span class="titre-j">${CAST.journal}</span><span class="ours">rembobinage · uchronie n° ${q.refus}</span></div>
+       <h2 class="une">Et si le second tour avait basculé ?</h2>
+       <p class="sous-une">Vous avez décliné : le jeu rebat les cartes du printemps 2027. Dans cette variante, c’est ${esc(pr.nom)} (« ${esc(pr.slogan)} ») qui l’emporte. ${esc(pr.decode)}</p>`;
+
+  const d = docu('Appel de l’Élysée', 'On vous propose la rue de Grenelle', 'juin 2027');
+  d.classList.add('papier');
+  d.appendChild(el('p', 'chapo', q.refus === 0
+    ? 'Trois jours après le second tour, votre téléphone sonne. C’est le secrétariat général de l’Élysée. Le portefeuille : l’Éducation nationale. Vous n’avez pas choisi ce Président — le suffrage universel ne vous a pas consulté — mais c’est lui qui fixe la plateforme.'
+    : q.refus === 1
+    ? 'Le téléphone sonne de nouveau. Autre destin, autre plateforme. Décliner une fois passe pour de l’élégance ; la suite se paie (−5 de capital par refus supplémentaire).'
+    : 'Le téléphone sonne encore — plus sèchement. Dans les salons, on commence à murmurer que vous vous faites désirer. Chaque refus coûte désormais 5 points de capital.'));
+  d.appendChild(el('div', 'note-passation', esc(pr.mandat)));
+  d.appendChild(el('p', '', `<span style="font-size:.78rem;color:var(--encre-3)">${esc(pr.inspiration)}.</span>`));
+  d.appendChild(el('p', '', '<b>La plateforme qui deviendrait votre doctrine</b> (et le barème de votre bilan — 35 / 25 / 20 / 12 / 8) :'));
+  const prios = el('div', 'prios');
+  pr.doctrine.forEach((cc, i) => prios.appendChild(el('span', 'prio' + (i === 0 ? ' p1' : ''),
+    `<span class="pastille" style="background:${COULEURS_C[cc]}"></span>${i + 1}. ${NOMS_C[cc]}`)));
+  prios.style.cssText = 'display:flex;flex-wrap:wrap;gap:4px;margin:8px 0';
+  d.appendChild(prios);
+  d.appendChild(el('p', '', '<b>Les deux exigences déjà posées sur le bureau :</b>'));
+  const ul = el('div', 'opts'); ul.style.gap = '6px';
+  for (const m of q.exigences) {
+    ul.appendChild(el('div', 'opt', `<span class="badge-pr">à engager avant l’an ${m.anneeLimite}</span><br><b>${esc(PAR_ID[m.id].label)}</b>`));
+  }
+  d.appendChild(ul);
+  const act = el('div', 'actions');
+  const oui = el('button', 'btn tamponner', 'Accepter la nomination');
+  oui.onclick = () => suivant('accepter');
+  const non = el('button', 'btn sec', q.refus === 0 ? 'Décliner — attendre un autre destin' : 'Décliner encore (−5 capital)');
+  non.onclick = () => suivant('refuser');
+  act.append(oui, non);
+  d.appendChild(act);
+  scene(j, d);
 }
 
 /* --- passation (intégrée à l'ouverture) -------------------------------------- */
@@ -3125,7 +3154,7 @@ function blocPassation() {
   d.appendChild(el('div', 'note-passation',
     '« Tout est dans les dossiers. Les dossiers sont dans les cartons. Les cartons sont au garde-meuble, la DGESCO sait lequel. Méfiez-vous de juillet, de septembre et de janvier — le reste de l’année est calme, sauf le reste de l’année. Bonne chance.'
     + '<span class="ps">P.-S. — La photocopieuse du deuxième est en panne depuis 2019. C’est le dossier le plus consensuel du ministère : ne le réglez pas, il fédère. »</span>'));
-  d.appendChild(el('p', '', `L’Élysée vous transmet ses deux exigences, tirées du programme sur lequel ${esc(S.president.nom)} vient d’être élu(e). À engager avant leur échéance : les abandonner coûte <b>−10 de capital, +15 de fatigue</b>, et un abandon de trop vous prive du bénéfice du « cap tenu » au bilan.`));
+  d.appendChild(el('p', '', `L’Élysée vous transmet ses deux exigences, tirées du programme sur lequel ${esc(S.president.nom)} vient d’être ${S.president.genre === 'f' ? 'élue' : 'élu'}. À engager avant leur échéance : les abandonner coûte <b>−10 de capital, +15 de fatigue</b>, et un abandon de trop vous prive du bénéfice du « cap tenu » au bilan.`));
   const ul = el('div', 'opts'); ul.style.gap = '6px';
   for (const m of S.mesuresPresidentielles) {
     ul.appendChild(el('div', 'opt', `<span class="badge-pr">Priorité présidentielle — avant l’an ${m.anneeLimite}</span><br><b>${esc(PAR_ID[m.id].label)}</b>`));
@@ -3551,7 +3580,7 @@ function ecranEtape(etape) {
   }
 
   const fil = el('div', 'fil');
-  const dispo = COMPTES.filter((c) => c.quand(S));
+  const dispo = COMPTES.filter((c) => c.quand(S) && (!S.president || c.a !== S.president.nom));
   for (const c of dispo.sort(() => Math.random() - 0.5).slice(0, etape === 'cloture' ? 3 : 2)) {
     fil.appendChild(el('div', 'post', `<span class="auteur">${c.a}</span> <span class="pseudo">${c.p}</span><p>${alea(c.posts)}</p>`));
   }
@@ -3659,7 +3688,7 @@ const ETAT = { s: null, gen: null, journalLu: 0, pas: [], dateLabel: 'juin 2027'
 
 function dateDe(q) {
   const S = ETAT.s, an = S.anneeCiv || 2027;
-  if (q.type === 'president') return 'mai 2027';
+  if (q.type === 'nomination') return 'juin 2027';
   if (q.type === 'retrait') return `octobre ${ETAT.s.anneeCiv || 2027}`;
   if (q.type === 'dossier') return 'été 2027';
   if (q.type === 'audience') return `octobre ${ETAT.s.anneeCiv || 2027}`;
@@ -3674,7 +3703,7 @@ function rendre(q) {
   ETAT.dateLabel = dateDe(q);
   ETAT.rentreeRatee = ETAT.s.journal.some((e) => e.cat === 'rentree' && e.annee === ETAT.s.annee && e.texte.includes('dégradée'));
   majHud();
-  if (q.type === 'president') ecranPresident(q);
+  if (q.type === 'nomination') ecranNomination(q);
   else if (q.type === 'retrait') ecranRetrait(q);
   else if (q.type === 'dossier') ecranDossier(q);
   else if (q.type === 'audience') ecranAudience(q);

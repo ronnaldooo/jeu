@@ -260,13 +260,16 @@ Retours de jeu de la deuxième session, plus les greffes du prototype d'UI
 fourni par le commanditaire (« Le Bureau », design handoff). Banc d'essai
 re-vérifié : 4/4 cibles sur trois graines.
 
-- **On choisit le Président, pas ses priorités dans l'absolu** : cinq
-  archétypes (`PRESIDENTS`), chacun assemblé à partir de propositions
-  publiques réelles citées (Attal/Philippe/Lisnard, Mélenchon/Glucksmann/NFP,
-  Zemmour/Le Pen, PS/intersyndicale…), personnages fictifs et satiriques.
-  Le choix fixe la doctrine ET les deux mesures présidentielles — qui ont
-  enfin un visage et une raison d'être. L'écran de classement libre et les
-  dépliants « Qui porte cette priorité en 2027 ? » disparaissent.
+- **La nomination est un tirage au sort refusable** : l'élection a eu lieu
+  sans vous — un Président sort des urnes (parmi cinq archétypes
+  `PRESIDENTS`, à pseudonymes transparents : Gabriel Attable, Jean-Luc
+  Mélanchton, Édouard Filippe, Marine Lapine, Raphaël Glucksberg — chacun
+  assemblé à partir de propositions publiques réelles citées), avec sa
+  plateforme et ses deux exigences visibles AVANT d'accepter. On peut
+  décliner : le premier refus est élégant, les suivants coûtent 5 de
+  capital, et chaque refus « rembobine » le second tour (une d'uchronie).
+  Chaque nouvelle partie tire un autre Président. Le compte satirique
+  homonyme du Président élu disparaît du fil social.
 - **La revendication syndicale** : second temps de l'audience d'octobre.
   L'organisation majoritaire exige le retrait de la mesure en vigueur qu'elle
   conteste le plus. Céder retire réellement la mesure du jeu (`retirerMesure` :

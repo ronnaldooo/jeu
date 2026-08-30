@@ -390,17 +390,17 @@ export const PROJETS_2027 = {
 export const PRESIDENTS = [
   {
     id: 'exigence',
-    nom: 'Paul-Henri Sévère',
-    slogan: 'La République de l’Exigence',
+    nom: 'Gabriel Attable', genre: 'm',
+    slogan: 'Le Choc des Savoirs, le Retour',
     inspiration: 'assemblé à partir des projets publics de G. Attal (choc des savoirs), É. Philippe (résultats publiés) et D. Lisnard (évaluation)',
     doctrine: ['reussite', 'budget', 'sante', 'egalite', 'paix'],
     mesures: ['differenciation', 'brevet_barrage', 'autonomie', 'redoublement', 'uniforme'],
-    mandat: '« Je vous nomme pour redresser le niveau. Les évaluations remonteront, ou vous descendrez. Nous nous comprenons ? »',
+    mandat: '« Je vous nomme pour finir ce que j’avais commencé rue de Grenelle. Le niveau remontera, ou vous descendrez. Nous nous comprenons ? »',
     decode: 'L’Élysée assume le terrain du « niveau » : exigence, certificats, résultats publiés. La salle des professeurs a déjà lu le programme — et pris date.',
   },
   {
     id: 'egalite',
-    nom: 'Louise Quintal',
+    nom: 'Jean-Luc Mélanchton', genre: 'm',
     slogan: 'L’École de l’Égalité',
     inspiration: 'assemblé à partir des projets publics de J.-L. Mélenchon (19 par classe, loi Carle), R. Glucksmann (privé et carte scolaire) et du NFP (financement conditionné)',
     doctrine: ['egalite', 'reussite', 'sante', 'paix', 'budget'],
@@ -410,8 +410,8 @@ export const PRESIDENTS = [
   },
   {
     id: 'serieux',
-    nom: 'Firmin Cadence',
-    slogan: 'Les Comptes et l’École',
+    nom: 'Édouard Filippe', genre: 'm',
+    slogan: 'Le Sérieux et la Craie',
     inspiration: 'assemblé à partir des projets publics d’É. Philippe (+20 % financés par la démographie) et D. Lisnard (revalorisation conditionnée), avec Bercy au piano',
     doctrine: ['budget', 'reussite', 'sante', 'egalite', 'paix'],
     mesures: ['autonomie', 'remplacement', 'pacte_pluriannuel', 'evaluation_diagnostic'],
@@ -420,7 +420,7 @@ export const PRESIDENTS = [
   },
   {
     id: 'ordre',
-    nom: 'Marguerite Talon',
+    nom: 'Marine Lapine', genre: 'f',
     slogan: 'L’Ordre à l’École',
     inspiration: 'assemblé à partir des projets publics d’É. Zemmour (surveillants généraux, internats), M. Le Pen (autorité, uniforme) et de mesures portées à droite (allocations)',
     doctrine: ['reussite', 'paix', 'budget', 'sante', 'egalite'],
@@ -430,7 +430,7 @@ export const PRESIDENTS = [
   },
   {
     id: 'pacte',
-    nom: 'Antonin Verdier',
+    nom: 'Raphaël Glucksberg', genre: 'm',
     slogan: 'Le Pacte Enseignant',
     inspiration: 'assemblé à partir des projets publics du PS (salaires à la moyenne OCDE), de R. Glucksmann (loi de programmation) et des demandes intersyndicales (formation, vie scolaire)',
     doctrine: ['sante', 'reussite', 'egalite', 'budget', 'paix'],

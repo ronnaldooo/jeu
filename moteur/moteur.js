@@ -211,24 +211,42 @@ export function rafraichir(s) { recalculerVrai(s); recalculerAffiche(s); }
    4. LES ÉTAPES DU CALENDRIER
    ========================================================================== */
 
-/* --- JUIN (an 1) : le choix du Président — et la plateforme qui va avec ----- */
+/* Les deux exigences que CE président poserait sur votre bureau. */
+export function exigencesDe(s, p) {
+  const n = p.mesures.length;
+  const i0 = s.graine % n;
+  let i1 = (i0 + 1 + ((s.graine >> 2) % (n - 1))) % n;
+  if (i1 === i0) i1 = (i0 + 1) % n;
+  return [
+    { id: p.mesures[i0], anneeLimite: 2 },
+    { id: p.mesures[i1], anneeLimite: 4 },
+  ];
+}
+
+/* --- MAI-JUIN (an 1) : l'élection a eu lieu. On vous propose Grenelle. ------ */
+/* Le suffrage universel ne vous a pas consulté : un Président sort des urnes,
+   avec sa plateforme et ses deux exigences. Vous pouvez décliner — une fois
+   avec élégance, ensuite chaque refus coûte 5 de capital : on ne se fait pas
+   désirer indéfiniment dans une République qui a des listes de remplaçants. */
 function* etapeDoctrine(s) {
-  const id = yield { type: 'president', presidents: K.PRESIDENTS };
-  const p = K.PRESIDENTS.find((x) => x.id === id) || K.PRESIDENTS[0];
+  const debut = s.graine % K.PRESIDENTS.length;
+  const pas = 1 + ((s.graine >> 4) % (K.PRESIDENTS.length - 1));
+  let k = 0, refus = 0, p;
+  for (;;) {
+    p = K.PRESIDENTS[(debut + k * pas) % K.PRESIDENTS.length];
+    const rep = yield { type: 'nomination', president: p, refus, exigences: exigencesDe(s, p) };
+    if (rep !== 'refuser') break;
+    refus += 1;
+    if (refus >= 2) s.capital -= 5;
+    note(s, `Vous déclinez la proposition de ${p.nom}. ${refus === 1 ? 'Élégant.' : 'Le Tout-Paris commente, et pas en bien.'}`, 'elysee');
+    k += 1;
+  }
   s.president = p;
+  s.refusNominations = refus;
   s.doctrine = [...p.doctrine];
   s.poids = {};
   s.doctrine.forEach((c, i) => { s.poids[c] = K.POIDS_DOCTRINE[i]; });
-
-  /* Les deux mesures présidentielles sortent du programme du Président
-     choisi : elles ont enfin un visage, et une raison d'être. */
-  const n = p.mesures.length;
-  const i0 = s.graine % n;
-  const i1 = (i0 + 1 + ((s.graine >> 2) % (n - 1))) % n;
-  s.mesuresPresidentielles = [
-    { id: p.mesures[i0], anneeLimite: 2 },
-    { id: p.mesures[i1 === i0 ? (i0 + 1) % n : i1], anneeLimite: 4 },
-  ];
+  s.mesuresPresidentielles = exigencesDe(s, p);
   note(s, `${p.nom} (« ${p.slogan} ») vous nomme rue de Grenelle. Doctrine du quinquennat : ${s.doctrine.join(' > ')}.`, 'doctrine');
 }
 
@@ -846,7 +864,9 @@ export function jouerMandat({ graine = 1, politique }) {
   while (!res.done) {
     const q = res.value;
     let rep;
-    if (q.type === 'president') rep = politique.president ? politique.president(s, q.presidents) : q.presidents[0].id;
+    if (q.type === 'nomination') rep = politique.president
+      ? (q.president.id === politique.president(s) ? 'accepter' : 'refuser')
+      : 'accepter';
     else if (q.type === 'lettrePlafond') rep = politique.lettrePlafond ? politique.lettrePlafond(s, q.palier) : 'accepter';
     else if (q.type === 'rentree') rep = politique.rentree ? politique.rentree(s, q) : 'assumer';
     else if (q.type === 'carteScolaire') rep = politique.carteScolaire(s, q);
