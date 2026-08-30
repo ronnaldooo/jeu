@@ -286,6 +286,35 @@ re-vérifié : 4/4 cibles sur trois graines.
   arbitrages passés dès l'an 2), formulation de la passation clarifiée,
   sauvegardes re-versionnées (v2).
 
+## 3 quinquies. Trois fenêtres de décision par an
+
+Le joueur attendait janvier 2028 pour prendre sa première décision de fond —
+sept écrans sans agir. Le calendrier compte désormais **trois moments où l'on
+annonce**, chacun avec sa maille propre :
+
+| Fenêtre | Quand | Enveloppe | Annonces | Dépassement |
+|---|---|---|---|---|
+| Prise de fonction | juin 2027, une fois | 300 M€ de redéploiement | 2 | non |
+| Circulaire de rentrée | chaque septembre | 120 M€ de redéploiement | 1 | non |
+| Arbitrage de janvier | chaque janvier | marge Bercy + carte scolaire | 3 | **oui** |
+
+Deux règles nouvelles, toutes deux réalistes et toutes deux structurantes :
+
+- **`ANNONCES_MAX`** plafonne le nombre de mesures par fenêtre. La contrainte
+  n'est pas budgétaire mais réglementaire et humaine : calendrier du Conseil
+  supérieur de l'éducation, textes à écrire, capacité à accompagner. Un
+  ministre qui annonce six réformes dans l'année n'en applique aucune.
+- **Le dépassement d'enveloppe n'est possible qu'en janvier.** On n'arrache
+  pas un arbitrage interministériel pour une circulaire de rentrée : elle se
+  finance par redéploiement, ou ne se finance pas.
+
+Sans ces deux règles, l'ouverture de deux fenêtres supplémentaires faisait
+passer les stratégies de 8 à 15 mesures par mandat et la survie du joueur
+attentif de 53 % à **21 %** : capital épuisé, crédit Bercy détruit par des
+dépassements triplés, et 20 % de guerres scolaires par accumulation de
+provocations. Avec elles, la survie revient à 51-55 % et les quatre cibles
+sont tenues sans autre retouche.
+
 ## 4. Les constantes du moteur
 
 Inchangées depuis la phase 1 (voir `moteur/constantes.js`, tout est commenté
