@@ -63,6 +63,7 @@ export function creerPartie({ graine = 1, politique }) {
     effetsEnAttente: [],                       // { compteur, montant, anneeArrivee, source, carte }
     reformesActives: [],                       // { id, anneeFin }
     joue: new Set(), themes: new Set(), excl: new Set(),
+    decouvertes: new Set(),          // dossiers déjà remontés sur le bureau
     abandons: 0,
     mesuresParAnnee: [],
 
@@ -497,6 +498,7 @@ function crediter(s, montant) {
    juin (prise de fonction, an 1), septembre (circulaire de rentrée) et janvier
    (l'arbitrage principal, adossé à la carte scolaire). */
 function* etapeMesures(s, opts) {
+  const neufs = ouvrirNouveauxDossiers(s);
   const dispo = mesuresDisponibles(s, opts.taille);
   const maxAnnonces = K.ANNONCES_MAX[opts.moment] || 3;
   /* On n'arrache un arbitrage interministériel qu'au moment du budget. Une
@@ -504,7 +506,7 @@ function* etapeMesures(s, opts) {
   const depassementAutorise = opts.moment === 'janvier';
   const choix = (yield {
     type: 'mesures', moment: opts.moment, dispo, maxAnnonces, depassementAutorise,
-    tresor: s.tresor, capital: s.capital,
+    tresor: s.tresor, capital: s.capital, nouveaux: neufs.map((c) => c.id),
   }) || [];
   appliquerMesures(s, choix, maxAnnonces, depassementAutorise);
 }
@@ -647,10 +649,60 @@ function etapeCloture(s) {
 /* ============================================================================
    5. MESURES : disponibilité, application
    ========================================================================== */
+/* --------------------------------------------------------------------------
+   DÉCOUVERTE PROGRESSIVE DU CATALOGUE
+   --------------------------------------------------------------------------
+   Un ministre ne connaît pas son ministère le jour de sa nomination. Les
+   dossiers remontent : parce qu'un rapport tombe, parce qu'un indicateur se
+   dégrade, parce qu'une mesure déjà prise en appelle une autre. Une partie du
+   catalogue n'est donc pas sur le bureau au premier jour — elle s'y ajoute au
+   fil du mandat, et le joueur en est informé.
+
+   Chaque déclencheur est nommé et testable ; les seuils reprennent ceux que le
+   moteur utilise déjà ailleurs, pour qu'un dossier remonte au moment où la
+   situation qu'il traite devient réellement visible.
+   -------------------------------------------------------------------------- */
+const DECLENCHEURS = {
+  apres_un_an:            (s) => s.annee >= 2,
+  heures_perdues:         (s) => s.phys.heuresNonAssurees >= 10.6,
+  reussite_basse:         (s) => s.annee >= 2 && s.affiche.reussite <= 46,
+  segregation_haute:      (s) => s.phys.segregation >= 18.6,
+  maires_en_colere:       (s) => (s.historiqueRestitution || []).some((h) => h.pct > 55),
+  apres_pause_numerique:  (s) => s.joue.has('pause_numerique'),
+};
+
+export function estDecouverte(s, c) {
+  const d = c.decouverte;
+  if (!d) return true;
+  if (s.decouvertes && s.decouvertes.has(c.id)) return true;   // une fois ouvert, il le reste
+  if (d.annee && s.annee < d.annee) return false;
+  if (d.si && !(DECLENCHEURS[d.si] || (() => true))(s)) return false;
+  return true;
+}
+
+/* Enregistre les dossiers qui viennent d'apparaître et renvoie la liste, pour
+   que l'atelier puisse les signaler au joueur. Appelé une fois par fenêtre. */
+function ouvrirNouveauxDossiers(s) {
+  s.decouvertes = s.decouvertes || new Set();
+  const neufs = [];
+  for (const c of CATALOGUE) {
+    if (!c.decouverte || s.decouvertes.has(c.id)) continue;
+    if (!estDecouverte(s, c)) continue;
+    s.decouvertes.add(c.id);
+    neufs.push(c);
+    if (c.decouverte.note) note(s, c.decouverte.note, 'dossier');
+  }
+  if (neufs.length) {
+    note(s, `${neufs.length} nouveau${neufs.length > 1 ? 'x' : ''} dossier${neufs.length > 1 ? 's' : ''} sur votre bureau : ${neufs.map((c) => c.label).join(' · ')}.`, 'dossier');
+  }
+  return neufs;
+}
+
 function estJouable(s, c) {
   if (c.once && s.joue.has(c.id)) return false;
   if (c.theme && s.themes.has(c.theme)) return false;
   if (c.excl && s.excl.has(c.excl)) return false;
+  if (!estDecouverte(s, c)) return false;
   return true;
 }
 
@@ -824,6 +876,10 @@ function appliquerMesures(s, choix, maxAnnonces = 3, depassementAutorise = true)
 export function* derouler(s) {
   yield* etapeDoctrine(s);
   rafraichir(s);
+  /* La note de cadrage que la direction générale remet à tout nouveau ministre
+     avant son premier arbitrage : budget, démographie, niveaux. Tous les
+     chiffres viennent de `moteur/reperes.js` et sont sourcés. */
+  yield { type: 'reperes' };
   /* Juin : on n'attend pas le prochain budget pour agir. La loi de finances
      votée par le prédécesseur laisse une marge de redéploiement. */
   crediter(s, K.ENVELOPPE_PRISE_FONCTION);
@@ -860,6 +916,7 @@ export function jouerMandat({ graine = 1, politique }) {
     const q = res.value;
     let rep;
     if (q.type === 'nomination') rep = 'accepter';
+    else if (q.type === 'reperes') rep = null;   // la note de cadrage se lit, elle ne se décide pas
     else if (q.type === 'doctrine') rep = politique.doctrine ? politique.doctrine(s) : Object.keys(K.COMPTEURS_INITIAUX);
     else if (q.type === 'lettrePlafond') rep = politique.lettrePlafond ? politique.lettrePlafond(s, q.palier) : 'accepter';
     else if (q.type === 'rentree') rep = politique.rentree ? politique.rentree(s, q) : 'assumer';

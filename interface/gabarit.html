@@ -313,6 +313,54 @@ table.bilan .num{text-align:right}
 .suite{position:fixed; bottom:0; left:0; right:0; z-index:15; background:var(--fiche); border-top:1px solid var(--filet); box-shadow:0 -4px 14px rgba(0,0,0,.06)}
 .suite .in{max-width:1100px; margin:0 auto; padding:10px 16px; display:flex; align-items:center; gap:16px; justify-content:space-between}
 .suite .contexte{font-size:.78rem; color:var(--encre-2)}
+
+/* ---------- repères sourcés : note de cadrage + onglet « comprendre » ---------- */
+.reperes{margin:18px 0}
+.rep-theme{border:1px solid var(--filet); background:var(--fiche); margin-bottom:12px}
+.rep-theme > summary{cursor:pointer; padding:12px 16px; list-style:none; display:flex; align-items:baseline; gap:12px; flex-wrap:wrap}
+.rep-theme > summary::-webkit-details-marker{display:none}
+.rep-theme > summary::before{content:'+'; font-family:"IBM Plex Mono",monospace; font-weight:700; color:var(--bleu-rf); width:1ch}
+.rep-theme[open] > summary::before{content:'−'}
+.rep-theme > summary h4{font-size:.95rem; font-weight:700; margin:0}
+.rep-theme > summary .res{font-family:"Newsreader",georgia,serif; font-style:italic; color:var(--encre-2); font-size:.86rem; flex:1; min-width:14ch}
+.rep-corps{padding:0 16px 16px; border-top:1px solid var(--filet)}
+.rep-liste{list-style:none; margin:14px 0 0; padding:0}
+.rep-liste li{display:flex; gap:14px; padding:9px 0; border-bottom:1px dotted var(--filet); align-items:baseline}
+.rep-liste li:last-child{border-bottom:0}
+.rep-liste .v{font-family:"IBM Plex Mono",monospace; font-weight:700; font-size:.95rem; color:var(--bleu-rf); min-width:9.5em; flex-shrink:0; font-variant-numeric:tabular-nums}
+.rep-liste .l{font-size:.86rem; line-height:1.5}
+.rep-liste .l cite{display:block; font-style:normal; font-size:.7rem; color:var(--encre-3); margin-top:3px}
+.rep-liste .l cite a{color:inherit}
+.rep-retenir{margin-top:16px; background:var(--fiche-2); border-left:3px solid var(--bleu-rf); padding:12px 16px; font-family:"Newsreader",georgia,serif; font-size:1rem; line-height:1.5}
+.rep-retenir b{font-family:"Public Sans",system-ui,sans-serif; font-size:.66rem; text-transform:uppercase; letter-spacing:.1em; display:block; color:var(--encre-2); margin-bottom:5px}
+.rep-serie{display:flex; align-items:flex-end; gap:5px; height:132px; margin:18px 0 4px; padding-top:6px}
+.rep-serie .col{flex:1; display:flex; flex-direction:column; justify-content:flex-end; align-items:center; gap:4px; min-width:0}
+.rep-serie .bar{width:100%; background:var(--bleu-rf); opacity:.85}
+.rep-serie .col.prev .bar{background:repeating-linear-gradient(45deg,var(--bleu-rf),var(--bleu-rf) 3px,transparent 3px,transparent 6px); border:1px solid var(--bleu-rf)}
+.rep-serie .md{font-family:"IBM Plex Mono",monospace; font-size:.66rem; font-variant-numeric:tabular-nums}
+.rep-serie .an{font-size:.62rem; color:var(--encre-3); font-variant-numeric:tabular-nums}
+.rep-serie-note{font-size:.72rem; color:var(--encre-3); line-height:1.5}
+.rep-sources{margin-top:8px; font-size:.74rem; line-height:1.6}
+.rep-sources li{margin-bottom:7px}
+.rep-sources .org{font-weight:600}
+
+#comprendre-btn{position:fixed; left:12px; bottom:12px; z-index:30; font-size:.74rem; padding:7px 13px; border:1px solid var(--filet); background:var(--fiche); color:var(--encre-2); cursor:pointer; box-shadow:0 2px 8px rgba(0,0,0,.08); border-radius:2px}
+#comprendre-btn:hover{color:var(--bleu-rf); border-color:var(--bleu-rf)}
+#comprendre{position:fixed; inset:0; z-index:60; background:var(--papier); overflow-y:auto; overscroll-behavior:contain; padding:0 16px 60px}
+#comprendre .in{max-width:920px; margin:0 auto}
+#comprendre .tete{position:sticky; top:0; z-index:2; background:var(--papier); padding:16px 0 12px; margin-bottom:6px; border-bottom:1px solid var(--filet); display:flex; align-items:center; justify-content:space-between; gap:16px}
+#comprendre .tete h2{margin:0; font-size:1.35rem}
+#comprendre h3{margin:22px 0 8px; font-size:1rem}
+#comprendre .chapo{margin:14px 0 18px}
+body:has(#comprendre:not([hidden])) #comprendre-btn{display:none}
+body:has(.suite:not([hidden])) #comprendre-btn{bottom:62px}
+.nouveau-dossier{display:inline-block; font-size:.6rem; font-weight:700; text-transform:uppercase; letter-spacing:.09em; background:var(--bleu-rf); color:#fff; padding:2px 7px; margin-left:8px; vertical-align:middle}
+.bandeau-neuf{background:var(--fiche-2); border-left:3px solid var(--bleu-rf); padding:10px 14px; font-size:.82rem; margin:14px 0; line-height:1.5}
+@media (max-width:640px){
+  .rep-liste li{flex-direction:column; gap:2px}
+  .rep-liste .v{min-width:0}
+  #comprendre-btn{left:8px; bottom:8px}
+}
 @media (prefers-reduced-motion: reduce){ *{transition:none !important; animation:none !important} }
 @media (max-width:640px){
   #hud{position:static}
@@ -329,6 +377,8 @@ table.bilan .num{text-align:right}
   <div class="sous" id="hud-sous"></div>
 </div>
 <div id="scene"></div>
+<button id="comprendre-btn" hidden>Comprendre le jeu</button>
+<div id="comprendre" hidden><div class="in"><div class="tete"><h2>Comprendre le jeu</h2><button class="btn secondaire" id="comprendre-fermer">Fermer</button></div><div id="comprendre-corps"></div></div></div>
 <div class="suite" id="suite" hidden><div class="in">
   <div class="contexte" id="suite-ctx"></div>
   <button class="btn" id="suite-btn">Continuer</button>

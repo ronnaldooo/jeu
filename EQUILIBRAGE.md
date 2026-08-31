@@ -351,6 +351,88 @@ dans le débat public. Les mêmes 2,5 Md€ concentrés sur les débuts de carri
 donnent 673 €/mois — la démonstration arithmétique de ce que « cibler » veut
 dire.
 
+## 3 septies. La phase « sources » — desserrer, expliquer, enrichir
+
+Quatre demandes, une exigence : **tout ce qui est ajouté doit être sourcé sur
+des sites officiels.** La recherche a précédé le code, et c'est elle qui a
+fixé les chiffres — pas l'inverse.
+
+### a) Le budget desserré, parce que la réalité l'a desserré
+
+Le blocage signalé par les testeurs (« bloqué trop vite à cause du budget »)
+était fondé, et la correction était disponible dans les documents budgétaires :
+les lettres plafonds du 16 juillet 2026 portent la mission interministérielle
+« Enseignement scolaire » à **65,3 Md€ au PLF 2027, soit +0,8 Md€ (+1,2 %)**,
+là où le budget 2026 progressait de +0,26 %. Le jeu s'ouvrait donc sur le
+cadrage de l'année précédente.
+
+| Constante | Avant | Après | Justification |
+|---|---|---|---|
+| `CADRAGE.missionHorsCAS` | 64,49 | **65,30** | plafond prévisionnel PLF 2027 |
+| `ENVELOPPE_BASE` | 0,17 | **0,42** | ~la moitié des +0,8 Md€ est pré-engagée (recrutement, protection sociale complémentaire, allocations de stage) |
+| `ENVELOPPE_PRISE_FONCTION` | 0,30 | **0,55** | marge de redéploiement de juin |
+| `ENVELOPPE_RENTREE` | 0,12 | **0,22** | circulaire de rentrée |
+| `PALIERS_BERCY[*].marge` | 1,35 / 0,72 / 0,38 / 0,05 | **1,80 / 1,05 / 0,62 / 0,18** | translation du même écart entre paliers |
+| `CREDIT_BERCY_INITIAL` | 40 | **48** | le mandat s'ouvre sur un budget en hausse, pas sur une purge |
+| `TAILLES_MENU` | 7/9/11/12/12 | **7/10/12/14/14** | 55 cartes au lieu de 40 : sans cela, la moitié du catalogue ne serait jamais vue |
+
+Résultat mesuré : **4/4 cibles** sur quatre jeux de graines indépendants
+(1000, 55555, 987654, 424242), survie du joueur attentif 45-50 %. Le
+desserrement ne casse rien : il déplace le moment où la contrainte mord, de
+la première année vers la troisième — ce qui est le bon moment, puisque
+c'est là que l'effet cliquet des mesures pérennes commence vraiment à peser.
+
+### b) La note de cadrage (juin 2027)
+
+Un nouvel écran s'intercale entre la déclaration de doctrine et les premières
+annonces : trois fiches — l'argent, les élèves qui manquent, ce que savent les
+élèves — avec une série budgétaire 2019-2027 en graphique, et **chaque chiffre
+suivi de sa source cliquable**. Aucune recommandation : l'état du système, et
+rien d'autre.
+
+### c) L'onglet « Comprendre le jeu »
+
+Bouton fixe en bas à gauche, disponible sur tous les écrans. Il ouvre les
+**neuf fiches** de `moteur/reperes.js` (50 chiffres, 31 sources), dont la
+neuvième explique la mécanique du jeu lui-même : l'échelle des cadenas, l'écart
+vitrine/réel, le facteur d'implémentation. La liste complète des sources est
+en pied de panneau.
+
+Un choix éditorial notable : là où deux sources officielles donnent des
+chiffres différents — le remplacement, mesuré à 4,3 % du temps scolaire par le
+Sénat (juin 2025) et à 9,3 % au collège-lycée par la Cour des comptes
+(décembre 2025) — **les deux sont affichés**, avec la raison de l'écart. Le
+désaccord entre sources est une donnée pédagogique, pas une négligence.
+
+### d) Quinze mesures de plus, découvertes en jouant
+
+Le catalogue passe de 40 à **55 cartes**. Les quinze nouvelles ne sont pas sur
+le bureau au premier jour : chacune porte un champ `decouverte` qui dit à
+quelle condition le dossier remonte.
+
+| Déclencheur | Ce qu'il modélise | Cartes |
+|---|---|---|
+| `{ annee: 2 }` / `{ annee: 3 }` | on découvre son ministère avec le temps | tutorat, PFMP, cantine, orientation, année de 38 semaines, évaluation d'établissement |
+| `apres_un_an` | idem, après la première rentrée | lecture explicite, directeurs d'école, statut AED, plan Mayotte-Guyane |
+| `heures_perdues` (HNA ≥ 10,6) | un rapport tombe quand le sujet devient visible | absences institutionnelles |
+| `reussite_basse` | TIMSS revient dans l'actualité | plan mathématiques |
+| `segregation_haute` | l'écart d'IPS force le sujet | affectation au lycée |
+| `maires_en_colere` | vos fermetures de classes ont été comptées | ruralité |
+| `apres_pause_numerique` | une mesure en appelle une autre | pause numérique au lycée |
+
+Mesuré sur 400 parties : **6,8 ouvertures de dossier par partie**, 89 % des
+parties en voient au moins une, et **les 15 cartes sont proposées au menu**
+au moins une fois sur l'ensemble des stratégies testées. Le joueur est prévenu
+par un bandeau et par un badge « nouveau dossier » sur la carte concernée.
+
+Toutes portent, comme les précédentes, leurs porteurs réels, leur niveau de
+preuve, une idée reçue déconstruite et leur source : EEF (tutorat +4 mois,
+code alphabétique +5 mois), Cour des comptes (deux tiers des absences non
+remplacées sont d'origine institutionnelle), OCDE (36 semaines contre 38,
+7 h de présence par jour au collège contre 5), décret du 11 août 2023
+(allocation de stage : 50/75/100 € par semaine), rapport Villani-Torossian,
+Conseil d'évaluation de l'école.
+
 ## 4. Les constantes du moteur
 
 Inchangées depuis la phase 1 (voir `moteur/constantes.js`, tout est commenté
@@ -373,8 +455,9 @@ d'implémentation indexé sur l'adhésion (Slavin), capacité d'absorption de
 | Paramètre | Valeur | Ce qu'il faut regarder |
 |---|---|---|
 | `RENVOI.remaniementBase` | 0,205 | Une fin subie par tirage peut frustrer. Si les testeurs la trouvent arbitraire, 0,15 et compenser par les convocations (qui, elles, se méritent). |
-| Rotation du menu | 12/40 | Vérifier qu'un joueur qui vise une doctrine trouve ses cartes assez souvent ; sinon, garantir 1 carte de chaque famille par menu. |
-| `PALIERS_BERCY[0].marge` | 1,35 Md€ | Contrôle l'ambition possible sur cinq ans. |
+| Rotation du menu | 14/55 | Vérifier qu'un joueur qui vise une doctrine trouve ses cartes assez souvent ; sinon, garantir 1 carte de chaque famille par menu. |
+| `PALIERS_BERCY[0].marge` | 1,80 Md€ | Contrôle l'ambition possible sur cinq ans. Desserré en phase « sources » ; à resserrer si les testeurs trouvent le mandat trop confortable en fin de course. |
+| Seuils de `DECLENCHEURS` | HNA 10,6 · IPS 18,6 · réussite 46 | Vérifier que les dossiers remontent au moment où le joueur ressent le problème, pas avant ni longtemps après. |
 | `GREVE.conflictualiteLatente` | 0,42 | La paix sociale baisse sans grève visible ; l'interface l'explique-t-elle assez ? |
 | Effets d'équité | — | L'optimum Inégalités (48,4) reste sous les autres : c'est la thèse assumée. Si les testeurs le vivent comme une impasse, +1 à +2 sur `secteurs` et `ep_progressive`. |
 | Humour | — | Les « mots » des cartes et le fil social : vérifier que la satire reste symétrique à l'usage (elle l'est par construction dans les textes). |
@@ -383,6 +466,8 @@ d'implémentation indexé sur l'adhésion (Slavin), capacité d'absorption de
 
 *Jeu pédagogique indépendant, sans lien avec le ministère de l'Éducation
 nationale. Ordres de grandeur issus de sources publiques (DEPP, PLF, Sénat,
-OCDE/TALIS, Cour des comptes, IGÉSR, CSEN, EEF), datés d'août 2026. Le jeu ne
+OCDE/TALIS, Cour des comptes, IGÉSR, CSEN, EEF), datés d'août 2026 et listés
+avec leur adresse dans `moteur/reperes.js` et dans l'onglet « Comprendre le
+jeu » du jeu lui-même. Le jeu ne
 dit jamais qu'une doctrine est la bonne : chaque carte cite ses porteurs réels
 et le niveau de preuve de son effet.*

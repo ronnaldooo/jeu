@@ -24,6 +24,7 @@ function nomsExportes(src) {
 
 const constantes = lire('moteur/constantes.js');
 const catalogue = lire('moteur/catalogue.js');
+const reperes = lire('moteur/reperes.js');
 const moteur = lire('moteur/moteur.js');
 const app = lire('interface/app.js');
 const gabarit = lire('interface/gabarit.html');
@@ -35,6 +36,8 @@ const bundle = [
   `const K = { ${K.join(', ')} };   // espace de noms attendu par le moteur`,
   '/* ===== moteur/catalogue.js ===== */',
   aplatir(catalogue),
+  '/* ===== moteur/reperes.js ===== */',
+  aplatir(reperes),
   '/* ===== moteur/moteur.js ===== */',
   aplatir(moteur),
 ].join('\n');

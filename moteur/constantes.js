@@ -12,8 +12,14 @@
    1. CADRAGE BUDGÉTAIRE                                          [source B.1]
    ------------------------------------------------------------------------- */
 export const CADRAGE = {
-  missionHorsCAS: 64.49,      // Md€ CP, PLF 2026 (Sénat)
-  missionAvecCAS: 89.64,      // Md€ (CAS Pensions ≈ 25 Md€)
+  /* Le mandat s'ouvre sur le PLF 2027. Les lettres plafonds du 16 juillet 2026
+     fixent la mission interministérielle « Enseignement scolaire » à 65,3 Md€,
+     soit +0,8 Md€ (+1,2 %) sur les 64,49 Md€ du budget 2026 — la première
+     hausse supérieure à l'inflation depuis 2024. C'est la marge que vous
+     héritez, et elle n'est pas nulle : le jeu la fait sentir. */
+  missionHorsCAS: 65.30,      // Md€, plafond prévisionnel PLF 2027
+  mission2026: 64.49,         // Md€ CP hors CAS, budget 2026 voté (Sénat)
+  missionAvecCAS: 89.64,      // Md€ pensions comprises, budget 2026 (Sénat)
   titre2: 58.4,               // Md€ de masse salariale = 92,7 % de la mission
   partMasseSalariale: 0.927,  // ce qui n'est PAS arbitrable
   etpEnseignants: 814927,     // ETP (74 % des 1,2 M de personnels)
@@ -24,16 +30,19 @@ export const CADRAGE = {
 };
 
 /* Marge de manœuvre annuelle réellement arbitrable, avant carte scolaire.
-   Le PLF 2026 progresse de +0,26 % : l'essentiel est pré-engagé.
+   Le PLF 2027 apporte +0,8 Md€, mais une bonne moitié est déjà engagée par le
+   prédécesseur : réforme du recrutement et de la formation initiale, protection
+   sociale complémentaire, allocations de stage en voie professionnelle. Reste
+   ce que le nouveau ministre peut réellement affecter.
    C'est la contrainte structurante du jeu — l'équivalent du « mur des 3 % ». */
-export const ENVELOPPE_BASE = 0.17;   // Md€ de mesures nouvelles « gratuites »
+export const ENVELOPPE_BASE = 0.42;   // Md€ de mesures nouvelles « gratuites »
 
 /* Un ministre n'attend pas le budget suivant pour agir : il arrive dans une loi
    de finances déjà votée par son prédécesseur, et il y redéploie. Deux fenêtres
    plus précoces que l'arbitrage de janvier, volontairement étroites — on ne
    refait pas un budget, on déplace des crédits et on signe des circulaires. */
-export const ENVELOPPE_PRISE_FONCTION = 0.30;  // Md€, juin 2027, une seule fois
-export const ENVELOPPE_RENTREE = 0.12;         // Md€, chaque septembre (circulaire de rentrée)
+export const ENVELOPPE_PRISE_FONCTION = 0.55;  // Md€, juin 2027, une seule fois
+export const ENVELOPPE_RENTREE = 0.22;         // Md€, chaque septembre (circulaire de rentrée)
 export const TAILLE_MENU_COURT = 5;            // menus resserrés hors janvier
 
 /* Combien d'annonces une fenêtre peut porter. La contrainte n'est pas
@@ -46,10 +55,10 @@ export const ANNONCES_MAX = { prise_fonction: 2, rentree: 1, janvier: 3 };
 /* Paliers de la lettre plafond de juillet, selon le crédit Bercy.  [B.6, C.4]
    schemaEmplois = ETP que Bercy EXIGE de rendre ; marge = Md€ concédés. */
 export const PALIERS_BERCY = [
-  { seuil: 75, schemaEmplois: -800,  marge: 1.35, ton: 'confiant' },
-  { seuil: 55, schemaEmplois: -2200, marge: 0.72, ton: 'vigilant' },
-  { seuil: 35, schemaEmplois: -4000, marge: 0.38, ton: 'ferme' },
-  { seuil: 0,  schemaEmplois: -6200, marge: 0.05, ton: 'comminatoire' },
+  { seuil: 75, schemaEmplois: -800,  marge: 1.80, ton: 'confiant' },
+  { seuil: 55, schemaEmplois: -2200, marge: 1.05, ton: 'vigilant' },
+  { seuil: 35, schemaEmplois: -4000, marge: 0.62, ton: 'ferme' },
+  { seuil: 0,  schemaEmplois: -6200, marge: 0.18, ton: 'comminatoire' },
 ];
 
 /* Dépasser l'enveloppe est possible — et cher. C'est le seul moyen de financer
@@ -291,7 +300,7 @@ export const CAPITAL = { initial: 50, parAn: 30, plafond: 100 };
    rien (c'est bon pour l'implémentation des réformes suivantes), mais un
    ministre qui n'annonce rien n'est pas un ministre qui dure. */
 export const IMMOBILISME = { capital: 7, parents: 3.5 };
-export const CREDIT_BERCY_INITIAL = 40;
+export const CREDIT_BERCY_INITIAL = 48;
 
 /* Convocation à Matignon : 3 convocations cumulées = renvoi.
    Durée réelle moyenne d'un ministre de l'EN ≈ 2 ans : finir est une performance. */
@@ -395,7 +404,7 @@ export const PROJETS_2027 = {
 
 /* Taille du menu de mesures par année de mandat : on commence resserré pour
    que chaque carte soit vraiment lue, on élargit avec l'expérience du joueur. */
-export const TAILLES_MENU = [7, 9, 11, 12, 12];
+export const TAILLES_MENU = [7, 10, 12, 14, 14];
 
 export const MOIS = ['janvier','février','mars','avril','mai','juin',
                      'juillet','août','septembre','octobre','novembre','décembre'];
