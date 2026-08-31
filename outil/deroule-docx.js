@@ -1,0 +1,417 @@
+/* ============================================================================
+   DOCUMENT DE RELECTURE — « Déroulé du jeu et grandes étapes »
+   ----------------------------------------------------------------------------
+   Génère le .docx remis pour relecture et corrections. Ce n'est PAS une brique
+   du jeu : le jeu lui-même n'a aucune dépendance. Cet outil-là en a une.
+
+     npm install docx        (une seule fois, hors dépôt)
+     node outil/deroule-docx.js "Rue de Grenelle - deroule du jeu.docx"
+
+   Le document décrit ce que le jeu FAIT ; il doit donc être régénéré après
+   toute modification du calendrier, des seuils ou du catalogue. Les encadrés
+   gris « À relire » sont les questions ouvertes soumises au relecteur.
+   ========================================================================== */
+const {
+  Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType,
+  Table, TableRow, TableCell, WidthType, ShadingType, BorderStyle,
+  TableOfContents, PageBreak, LevelFormat, convertInchesToTwip,
+} = require('docx');
+const fs = require('fs');
+
+/* ---------- helpers ---------- */
+const T = (t, o = {}) => new TextRun({ text: t, ...o });
+const P = (t, o = {}) => new Paragraph({ children: typeof t === 'string' ? [T(t)] : t, ...o });
+const H1 = (t) => new Paragraph({ text: t, heading: HeadingLevel.HEADING_1, spacing: { before: 360, after: 160 } });
+const H2 = (t) => new Paragraph({ text: t, heading: HeadingLevel.HEADING_2, spacing: { before: 280, after: 120 } });
+const H3 = (t) => new Paragraph({ text: t, heading: HeadingLevel.HEADING_3, spacing: { before: 220, after: 90 } });
+const BODY = (t) => new Paragraph({ children: typeof t === 'string' ? [T(t)] : t, spacing: { after: 120 }, alignment: AlignmentType.JUSTIFIED });
+const PUCE = (t) => new Paragraph({ children: typeof t === 'string' ? [T(t)] : t, numbering: { reference: 'puces', level: 0 }, spacing: { after: 70 } });
+const VIDE = () => new Paragraph({ text: '', spacing: { after: 80 } });
+
+/* Encadré « à relire » : c'est là que l'utilisateur est invité à écrire. */
+const ENCADRE = (titre, texte) => new Table({
+  columnWidths: [9360],
+  width: { size: 9360, type: WidthType.DXA },
+  rows: [new TableRow({ children: [new TableCell({
+    width: { size: 9360, type: WidthType.DXA },
+    shading: { type: ShadingType.CLEAR, fill: 'F2F3F7' },
+    margins: { top: 120, bottom: 120, left: 160, right: 160 },
+    children: [
+      new Paragraph({ children: [T(titre, { bold: true, size: 18, color: '000091', allCaps: true })], spacing: { after: 60 } }),
+      new Paragraph({ children: [T(texte, { size: 20, italics: true, color: '444444' })] }),
+    ],
+  })] })],
+});
+
+const LARGEUR = 9360;
+function tableau(entetes, lignes, largeurs) {
+  const w = largeurs || entetes.map(() => Math.floor(LARGEUR / entetes.length));
+  const cell = (txt, i, opts = {}) => new TableCell({
+    width: { size: w[i], type: WidthType.DXA },
+    shading: opts.entete ? { type: ShadingType.CLEAR, fill: '000091' } : (opts.zebre ? { type: ShadingType.CLEAR, fill: 'F7F8FB' } : undefined),
+    margins: { top: 80, bottom: 80, left: 110, right: 110 },
+    children: (() => { const segs = String(txt).split(/\u2029| \| /);
+      return segs.map((seg, k) => new Paragraph({
+        children: [T(seg, { bold: !!opts.entete || (segs.length > 1 && k === 0),
+                            color: opts.entete ? 'FFFFFF' : undefined, size: 19 })],
+        spacing: { after: segs.length > 1 && k < segs.length - 1 ? 60 : 0 },
+      })); })(),
+  });
+  return new Table({
+    columnWidths: w,
+    width: { size: LARGEUR, type: WidthType.DXA },
+    rows: [
+      new TableRow({ tableHeader: true, children: entetes.map((h, i) => cell(h, i, { entete: true })) }),
+      ...lignes.map((l, k) => new TableRow({ children: l.map((c, i) => cell(c, i, { zebre: k % 2 === 1 })) })),
+    ],
+  });
+}
+
+/* ============================ CONTENU ============================ */
+const enfants = [];
+const A = (...x) => enfants.push(...x);
+
+/* ---- page de titre ---- */
+A(
+  new Paragraph({ text: '', spacing: { after: 1400 } }),
+  new Paragraph({ children: [T('RUE DE GRENELLE', { bold: true, size: 56, color: '000091' })], alignment: AlignmentType.CENTER, spacing: { after: 120 } }),
+  new Paragraph({ children: [T('Devenir ministre de l’Éducation nationale', { size: 30, color: '565B6B' })], alignment: AlignmentType.CENTER, spacing: { after: 480 } }),
+  new Paragraph({ children: [T('Déroulé du jeu et grandes étapes', { bold: true, size: 28 })], alignment: AlignmentType.CENTER, spacing: { after: 100 } }),
+  new Paragraph({ children: [T('Document de travail destiné à la relecture et aux corrections', { size: 22, italics: true, color: '565B6B' })], alignment: AlignmentType.CENTER, spacing: { after: 1000 } }),
+  new Paragraph({ children: [T('Version du 31 août 2026', { size: 20, color: '8A8FA3' })], alignment: AlignmentType.CENTER }),
+  new Paragraph({ children: [T('Jeu en ligne : https://ronnaldooo.github.io/jeu/', { size: 20, color: '8A8FA3' })], alignment: AlignmentType.CENTER }),
+  new Paragraph({ children: [T('Code et sources : https://github.com/ronnaldooo/jeu', { size: 20, color: '8A8FA3' })], alignment: AlignmentType.CENTER, spacing: { after: 600 } }),
+  new Paragraph({ children: [new PageBreak()] }),
+);
+
+/* ---- comment relire ---- */
+A(H1('Comment relire ce document'));
+A(BODY('Ce document décrit ce que le jeu fait aujourd’hui, étape par étape, dans l’ordre où le joueur les rencontre. Il n’est pas une notice : c’est un support de relecture. Chaque section se termine par un encadré gris « À relire » qui signale les points sur lesquels un avis extérieur serait le plus utile.'));
+A(BODY('Trois façons d’annoter, au choix :'));
+A(PUCE('écrire directement dans les encadrés gris ;'));
+A(PUCE('utiliser les commentaires Word (Révision → Nouveau commentaire) — c’est le plus facile à reporter dans le code ;'));
+A(PUCE('activer le suivi des modifications et récrire les textes que vous voulez changer : les formulations du jeu sont dans des fichiers séparés, une phrase corrigée ici se remplace telle quelle.'));
+A(VIDE());
+A(BODY([
+  T('Un repère utile pour vos remarques : ', {}),
+  T('presque tout ce qui est chiffré dans le jeu est un paramètre isolé', { bold: true }),
+  T(' (fichier ', {}), T('moteur/constantes.js', { font: 'Consolas', size: 19 }),
+  T('), et presque tout ce qui est rédigé est une chaîne de caractères isolée (fichiers ', {}),
+  T('moteur/catalogue.js', { font: 'Consolas', size: 19 }), T(' et ', {}),
+  T('moteur/reperes.js', { font: 'Consolas', size: 19 }),
+  T('). Autrement dit : « cette mesure devrait coûter plus cher », « ce délai est trop court », « cette phrase est fausse » sont des corrections rapides. En revanche « il faudrait une étape supplémentaire en mars » touche à la structure et demande un rééquilibrage complet.', {}),
+]));
+A(VIDE());
+A(ENCADRE('À relire', 'Y a-t-il des parties du jeu dont vous voudriez le détail et qui ne figurent pas ici ?'));
+A(new Paragraph({ children: [new PageBreak()] }));
+
+/* ---- sommaire ---- */
+A(H1('Sommaire'));
+A(new TableOfContents('Sommaire', { hyperlink: true, headingStyleRange: '1-3' }));
+A(BODY([T('(Dans Word : clic droit sur le sommaire → Mettre à jour les champs.)', { italics: true, size: 19, color: '8A8FA3' })]));
+A(new Paragraph({ children: [new PageBreak()] }));
+
+/* ============ 1. EN UN COUP D'ŒIL ============ */
+A(H1('1. Le jeu en un coup d’œil'));
+A(BODY('Le joueur est nommé ministre de l’Éducation nationale en juin 2027 et joue cinq années scolaires, de la rentrée 2027 à mai 2032. Une partie complète dure 45 à 90 minutes. Le jeu se joue dans un navigateur, sur ordinateur ou sur téléphone, sans compte et sans installation ; la partie se sauvegarde toute seule.'));
+A(BODY('Il s’adresse au grand public et d’abord aux personnels du système éducatif. Il ne cherche pas à convaincre : chaque mesure cite ses porteurs politiques réels et le niveau de preuve de son effet.'));
+
+A(H2('Les trois règles qui font le jeu'));
+A(tableau(
+  ['Règle', 'Ce qu’elle produit sur le joueur'],
+  [
+    ['L’écart vitrine / réel Toute mesure a un effet d’annonce, chiffré et immédiat, et un effet réel, jamais affiché, qui arrive avec 1 à 8 ans de retard.',
+     'Le tableau de bord ment. Le joueur pilote pendant cinq ans avec des indicateurs qui ne mesurent pas ce qu’il croit, et découvre la vérité au bilan.'],
+    ['Le niveau de preuve (les cadenas) De 1 à 5 cadenas selon la solidité des études disponibles, avec la source affichée.',
+     'À 5 cadenas, l’effet obtenu reste proche de l’annonce (± 20 %). À 1 cadenas, il peut aller du négatif au triple. Un cadenas n’est pas un jugement de valeur : c’est la largeur du pari.'],
+    ['Rien ne s’applique tout seul L’effet d’une réforme est multiplié par l’adhésion des personnels ; au-delà de trois réformes actives, toutes se dégradent.',
+     'À 25 d’adhésion — le niveau de départ — le joueur récolte 63 % de ce qu’il a semé. Annoncer beaucoup revient à ne rien produire.'],
+  ],
+  [4400, 4960],
+));
+
+A(VIDE());
+A(H2('Les cinq compteurs'));
+A(BODY('Tout le jeu se lit dans cinq compteurs sur 100. Leur valeur de départ n’est pas arbitraire : elle est justifiée dans le code, source par source.'));
+A(tableau(
+  ['Compteur', 'Départ', 'Ce qu’il mesure'],
+  [
+    ['Réussite des élèves', '41', 'Acquis mesurés par les évaluations nationales et internationales (TIMSS CM1 : 484 contre 524 dans l’Union européenne).'],
+    ['Réduction des inégalités', '34', 'Poids de l’origine sociale sur les résultats. Écart d’indice de position sociale public/privé : 99,9 contre 117,4.'],
+    ['Santé du système', '29', 'Attractivité, remplacement, moral. 9,8 % d’heures non assurées ; formation continue au dernier rang des 48 pays de TALIS.'],
+    ['Paix sociale', '78', 'Le mandat ne s’ouvre pas sur une page blanche : front intersyndical unitaire, grève de septembre 2026, boycott des instances.'],
+    ['Budget et salaires', '30', 'Salaires inférieurs de 26 % (élémentaire) et 18 % (collège) aux autres diplômés du supérieur ; point d’indice gelé depuis 2023.'],
+  ],
+  [2600, 900, 5860],
+));
+A(VIDE());
+A(ENCADRE('À relire', 'Ces cinq compteurs sont-ils les bons ? Leur valeur de départ vous paraît-elle juste — notamment « Paix sociale » à 78, qui suppose qu’on hérite d’un conflit ouvert mais pas d’un blocage ?'));
+A(new Paragraph({ children: [new PageBreak()] }));
+
+/* ============ 2. DÉROULÉ ============ */
+A(H1('2. Le déroulé, écran par écran'));
+A(BODY('Le jeu suit le calendrier réel d’un ministre. Une année de mandat comporte dix rendez-vous, dont six appellent une décision. Ce qui suit décrit l’enchaînement exact.'));
+
+A(H2('2.1 L’ouverture — juin 2027'));
+
+A(H3('Écran 1 · L’appel de Matignon'));
+A(BODY('Le gouvernement se forme, le téléphone sonne. Le portefeuille proposé est l’Éducation nationale : premier budget de l’État — 65,3 milliards d’euros au projet de loi de finances qui s’annonce, 1,2 million d’agents, 12 millions d’élèves. La durée moyenne dans le poste dépasse rarement deux ans.'));
+A(BODY('Le prédécesseur, huitième en quatre ans, laisse un mot de passation. Le joueur peut refuser la nomination — le jeu s’arrête alors, ce qui est une fin comme une autre.'));
+A(BODY([T('Point de règle : ', { bold: true }), T('on ne dit jamais qui a été élu président. Le joueur choisit lui-même ses priorités ; aucune n’est imposée par l’Élysée.')]));
+
+A(H3('Écran 2 · La conférence de presse — votre feuille de route'));
+A(BODY('Premier acte du mandat : classer les cinq compteurs par ordre de priorité, devant la presse. Ce classement décide de la pondération du score final : 35 / 25 / 20 / 12 / 8 points.'));
+A(BODY([T('C’est le ressort principal du jeu : ', {}), T('le joueur est noté contre sa propre parole', { bold: true }), T('. Un ministre qui annonce la réduction des inégalités et qui passe cinq ans à tenir le budget aura un mauvais score, même si le budget est excellent. Les oppositions lui ressortent sa déclaration à chaque arbitrage contradictoire.')]));
+A(BODY('Chaque priorité est présentée avec les projets politiques réels qui la portent en 2027 — Attal, Philippe, Lisnard, le PS, Glucksmann, Mélenchon, le NFP, la FSU — de sorte que le joueur comprenne qu’aucune priorité n’est neutre. Le jeu cite, il ne juge pas.'));
+
+A(H3('Écran 3 · La note de cadrage (nouveau)'));
+A(BODY('Avant toute décision, la direction générale remet trois fiches : l’argent, les élèves qui manquent, ce que savent les élèves. Chaque chiffre porte sa source officielle, cliquable. Une série budgétaire 2019-2027 en graphique montre d’un coup d’œil que la progression du budget 2026 (+0,26 %) est la plus faible de la période, et que le PLF 2027 apporte +0,8 milliard.'));
+A(BODY('Aucune recommandation : l’état du système, et rien d’autre. Les six autres fiches sont accessibles à tout moment par l’onglet « Comprendre le jeu ».'));
+
+A(H3('Écran 4 · Les premières annonces'));
+A(BODY('Un nouveau ministre n’attend pas le budget suivant : la loi de finances votée par son prédécesseur laisse une marge de redéploiement. Enveloppe : 550 millions d’euros, deux annonces au maximum, menu resserré à 5 ou 7 cartes.'));
+A(BODY('La limite à deux annonces n’est pas budgétaire mais humaine et réglementaire : calendrier du Conseil supérieur de l’éducation, textes à écrire, capacité du ministère à accompagner ce qu’il annonce.'));
+
+A(H3('Écran 5 · L’été des cent jours'));
+A(BODY('Avant la première rentrée, un dossier de crise tombe au hasard parmi quatre, chacun avec trois réponses possibles :'));
+A(PUCE('la canicule de juillet et des écoles à 40 °C ;'));
+A(PUCE('un professeur agressé fin août, la vidéo circule ;'));
+A(PUCE('une page de manuel sortie de son contexte, polémique d’août ;'));
+A(PUCE('l’interview de rentrée, et le choix de sa petite phrase.'));
+A(BODY('Ces dossiers ne coûtent rien en budget et beaucoup en positionnement : ils fixent l’image du ministre avant qu’il ait rien fait.'));
+A(VIDE());
+A(ENCADRE('À relire', 'L’ouverture fait cinq écrans avant la première rentrée. Est-ce trop long ? La note de cadrage arrive-t-elle au bon moment — avant les premières annonces, ou faudrait-il la placer avant la feuille de route ?'));
+
+A(H2('2.2 L’année type — cinq fois de suite'));
+A(BODY('À partir de septembre 2027, chaque année suit le même cycle. Les lignes marquées « DÉCISION » appellent un choix du joueur ; les autres sont des points d’étape où il lit ce qui s’est produit.'));
+A(tableau(
+  ['Mois', 'Rendez-vous', 'Ce qui se joue'],
+  [
+    ['Juillet', 'La lettre plafond de Bercy — DÉCISION', 'Bercy fixe le schéma d’emplois exigé (de −800 à −6 200 ETP) et la marge concédée (de 1,80 à 0,18 milliard), selon le crédit dont le ministre dispose. Il peut accepter ou contester : contester coûte 12 points de capital politique et réussit environ une fois sur trois.'],
+    ['Juillet', 'Les résultats des concours', 'Le thermomètre de l’attractivité — avec un an de retard sur les décisions. C’est ici que la boucle salaires → candidats → remplacement → conditions devient visible.'],
+    ['Septembre', 'La rentrée — DÉCISION si elle est ratée', 'Si les heures non assurées dépassent 12,5 % ou la couverture des concours descend sous 88 %, la rentrée est « dégradée » : le comptage syndical commence dès le jour 1. Le ministre choisit d’assumer ou de contester les chiffres — les deux existent dans la réalité, et les deux coûtent quelque chose.'],
+    ['Septembre', 'La circulaire de rentrée — DÉCISION', 'Une mesure, pas davantage : la circulaire porte un message, pas un programme. Elle se finance par redéploiement (220 millions), sans arbitrage interministériel possible.'],
+    ['Octobre', 'L’audience syndicale — DÉCISION (deux temps)', 'Face-à-face avec l’organisation majoritaire du moment. Voir le détail au § 3.3.'],
+    ['Décembre', 'Élections professionnelles (an 1) et note de la DEPP', 'La représentativité des sept organisations est rebattue pour quatre ans : une adhésion basse profite aux organisations de lutte. La DEPP publie ce qu’elle mesure, y compris contre le ministre.'],
+    ['Janvier', 'La carte scolaire — DÉCISION', 'L’arbitrage central du jeu. Voir le détail au § 3.1.'],
+    ['Janvier', 'L’atelier — DÉCISION', 'Le budget de l’année devient des décisions : jusqu’à trois annonces, et le seul moment où l’on peut arracher un dépassement d’enveloppe.'],
+    ['Mars', 'Les mobilisations de printemps', 'Les grèves provisionnées pendant l’année se déclenchent. Une adhésion effondrée produit un conflit même sans mesure déclenchante.'],
+    ['Mai', 'La clôture', 'Les effets réels arrivés à échéance entrent dans la vérité (invisible). Les tendanciels jouent : +0,7 point d’heures non assurées, −0,8 de position salariale, −0,9 d’attachement au métier. Le fil de presse et le fil social commentent l’année.'],
+  ],
+  [1100, 2900, 5360],
+));
+A(VIDE());
+A(ENCADRE('À relire', 'Le calendrier vous paraît-il fidèle ? Manque-t-il un rendez-vous que vit réellement un ministre (le comité social d’administration ? les résultats du baccalauréat en juillet ? la conférence de presse de rentrée ?).'));
+
+A(H2('2.3 La fin de partie'));
+A(BODY('Quatre façons de terminer — et une seule qui consiste à aller au bout.'));
+A(tableau(
+  ['Fin', 'Déclenchement'],
+  [
+    ['Mandat complet (5 ans)', 'Survivre aux cinq années. « Vous partez debout — ce qui, rue de Grenelle, est déjà un résultat. »'],
+    ['Renvoi', 'Trois convocations à Matignon. Une convocation s’obtient par une rentrée ratée, un capital politique épuisé, des familles qui décrochent, ou Bercy qui fait remonter le dossier.'],
+    ['Remaniement', 'Un tirage annuel, modulé par le capital politique et l’opinion des familles. C’est la première cause de fin de mandat dans la vraie vie : plus de trente ministres depuis 1958.'],
+    ['Guerre scolaire', 'Deux provocations sur le privé sous contrat, puis un capital politique bas. « Un million de personnes dans la rue, comme en 1984. Le gouvernement retire le texte, et vous avec. »'],
+  ],
+  [2600, 6760],
+));
+A(BODY('Un joueur attentif survit cinq ans dans 45 à 50 % des parties. C’est un choix : finir doit être une performance, pas un dû.'));
+A(VIDE());
+A(ENCADRE('À relire', 'Le remaniement est un tirage : on peut perdre sans avoir démérité. C’est fidèle à la réalité, mais est-ce frustrant à jouer ? Faut-il baisser sa probabilité et compenser par les convocations, qui, elles, se méritent ?'));
+A(new Paragraph({ children: [new PageBreak()] }));
+
+/* ============ 3. LES QUATRE DÉCISIONS ============ */
+A(H1('3. Les quatre décisions structurantes'));
+
+A(H2('3.1 La carte scolaire (janvier) — l’arbitrage central'));
+A(BODY('C’est le cœur politique du jeu, et il tient en deux curseurs.'));
+A(BODY([T('Le premier : que fait-on des postes que la démographie libère ?', { bold: true })]));
+A(BODY('La France perdra 1 676 800 élèves d’ici 2035, soit 14,2 % de sa population scolaire. Chaque année, cette baisse « rend » des milliers de postes. Le curseur va de 0 % (tout est réinvesti dans l’encadrement) à 100 % (tout est rendu à Bercy).'));
+A(BODY('Les deux précédents réels sont donnés au joueur, et ils sont opposés : rentrée 2025, −106 000 élèves pour seulement −470 postes (4 %) ; rentrée 2026, −161 000 élèves pour −4 032 postes titulaires (60 %). Le même chiffre démographique, deux pays différents à l’arrivée.'));
+A(BODY('Conséquences : Bercy compare aux emplois qu’il avait exigés en juillet et ajuste le crédit du ministre ; les personnels comptent les suppressions, pas les intentions ; au-delà de 55 % de restitution, les maires invoquent la règle « aucune école ne ferme sans notre accord » et le capital politique chute.'));
+A(BODY([T('Le second : comment l’effort est-il réparti entre public et privé sous contrat ?', { bold: true })]));
+A(BODY('Épargner le privé fait monter la ségrégation ; le faire contribuer au-delà de 78 % déclenche une provocation. Deux provocations arment la guerre scolaire — il faut donc insister pour la déclencher : une année de tension ne suffit pas, deux commencent à faire une histoire.'));
+A(VIDE());
+A(ENCADRE('À relire', 'Le seuil de colère des maires (55 %) et celui de la provocation sur le privé (78 %) sont des jugements de ma part. Vous paraissent-ils placés au bon endroit ?'));
+
+A(H2('3.2 L’atelier de mesures — le catalogue'));
+A(BODY('Le catalogue compte 55 cartes réparties en cinq familles : moyens et encadrement, autonomie et évaluation, parcours et orientation, autorité et familles, mixité et carte scolaire.'));
+A(H3('Ce que porte chaque carte'));
+A(tableau(
+  ['Élément', 'Exemple, sur la carte « Redoublement facilité »'],
+  [
+    ['Coût et capital politique', '550 millions d’euros par an, 3 points de capital.'],
+    ['Porteurs réels', '« Une large majorité de l’opinion », plusieurs candidats de droite.'],
+    ['Effet vitrine (affiché)', 'Parents +9, presse +6, compteur Réussite +8.'],
+    ['Effet réel (caché)', 'Réussite −7 à 3 ans (4 cadenas), Inégalités −8 à 4 ans (4 cadenas).'],
+    ['Ce que disent les études', 'Note n° 15 du Conseil scientifique de l’éducation nationale : effet moyen négatif, décrochage accru, coût d’une année de scolarité. L’« effet de menace » n’a jamais été démontré.'],
+    ['L’idée reçue déconstruite', '« Le redoublement, c’était mieux avant. » Les pays qui font le plus redoubler ne réussissent pas mieux.'],
+    ['Le mot de la carte', '« Coûteux, contre-productif, et populaire. Le miroir exact de la formation continue : tout ce que le tableau de bord adore et que le bilan déteste. »'],
+  ],
+  [2900, 6460],
+));
+A(H3('La découverte progressive (nouveau)'));
+A(BODY('Quinze cartes ne sont pas sur le bureau le premier jour. Elles remontent quand la situation les appelle : au bout d’un an ou deux, quand un rapport tombe (les heures perdues dépassent 10,6 %), quand un indicateur se dégrade (la ségrégation, la réussite), quand les maires ont compté les fermetures de classes, ou quand une mesure en appelle une autre (la pause numérique au collège fait demander la même chose au lycée).'));
+A(BODY('Le joueur est prévenu par un bandeau et par un badge « nouveau dossier ». Mesuré sur 400 parties : 6,8 ouvertures de dossier par partie, et 89 % des parties en voient au moins une.'));
+A(H3('La carte salariale, entièrement paramétrable'));
+A(BODY('La revalorisation n’est pas une carte comme les autres : elle a trois curseurs, et le chiffrage s’affiche en direct.'));
+A(tableau(
+  ['Curseur', 'Options', 'Ce que ça change'],
+  [
+    ['Combien', 'De 200 millions à 5 milliards par an', 'Le panneau affiche le nombre d’enseignants concernés, le brut mensuel moyen, l’équivalent en points d’indice, la part du rattrapage réclamé par la FSU.'],
+    ['Comment', 'Point d’indice / prime / pacte contre missions', 'Le point d’indice coûte 43 % de plus à l’État (CAS Pensions) et est irréversible ; la prime coûte le prix affiché mais un successeur peut l’arrêter ; le pacte fait baisser les heures non assurées et l’adhésion.'],
+    ['Pour qui', 'Débuts de carrière / milieu de carrière / tout le corps', '2,5 milliards sur tout le corps donnent 256 € par mois ; les mêmes 2,5 milliards concentrés sur les débuts donnent 673 €. C’est la démonstration arithmétique de ce que « cibler » veut dire.'],
+  ],
+  [1500, 2900, 4960],
+));
+A(VIDE());
+A(ENCADRE('À relire', 'Manque-t-il des mesures que vous attendriez dans un tel catalogue ? Y en a-t-il dont la formulation, les porteurs ou l’effet vous paraissent inexacts ? C’est la partie la plus facile à corriger : une carte est un bloc de texte isolé.'));
+
+A(H2('3.3 L’audience syndicale (octobre) — en deux temps'));
+A(BODY('Sept organisations, pondérées par les résultats réels des élections professionnelles de 2022, avec des profils de négociation distincts : rapport de force, réformiste, frontal, négociation, radical, corporatiste. Les noms sont des pseudonymes transparents ; les poids et les profils sont ceux des organisations réelles.'));
+A(BODY([T('Premier temps : la question.', { bold: true }), T(' Le ministre reçoit l’organisation majoritaire du moment sur un sujet — les postes, les salaires, le remplacement, les concours, une grève, sa doctrine. Trois réponses possibles : la fermeté, la méthode, la concession. Une matrice croise le type de réponse et le profil de l’organisation : la fermeté rassure l’opinion et coûte le corps ; la méthode paie en adhésion selon le profil ; la concession paie partout mais se paie à Bercy. Le verdict est affiché — bien accueillie, accueillie froidement, très mal reçue.')]));
+A(BODY([T('Second temps : la revendication.', { bold: true }), T(' L’organisation exige le retrait de la mesure qu’elle conteste le plus. Céder la retire vraiment du jeu : ses effets réels ne viendront jamais, et le compteur d’abandons monte — ce qui coûtera le bonus de constance au bilan. Maintenir face à un profil combatif, c’est provisionner une grève pour le printemps.')]));
+A(BODY('Les grèves sont chiffrées à partir d’un étalon historique — le 10 février 2011, 16,99 % d’enseignants grévistes — et affichées avec deux nombres : celui du ministère et celui de l’intersyndicale, environ 1,7 fois plus élevé.'));
+A(VIDE());
+A(ENCADRE('À relire', 'Les profils syndicaux et la matrice d’accueil des réponses sont des simplifications assumées. Sonnent-elles juste pour quelqu’un qui connaît ces organisations ? La satire des noms reste-t-elle acceptable et symétrique ?'));
+
+A(H2('3.4 La lettre plafond (juillet) — la contrainte extérieure'));
+A(BODY('Bercy n’est pas un adversaire à battre : c’est un cadre. Selon le crédit dont le ministre dispose, quatre paliers, du ton « confiant » au ton « comminatoire » :'));
+A(tableau(
+  ['Crédit Bercy', 'Schéma d’emplois exigé', 'Marge concédée', 'Ton'],
+  [
+    ['75 et plus', '−800 ETP', '1,80 Md€', 'confiant'],
+    ['55 à 74', '−2 200 ETP', '1,05 Md€', 'vigilant'],
+    ['35 à 54', '−4 000 ETP', '0,62 Md€', 'ferme'],
+    ['moins de 35', '−6 200 ETP', '0,18 Md€', 'comminatoire'],
+  ],
+  [2200, 2600, 2200, 2360],
+));
+A(BODY('Le ministre commence à 48 — donc au palier « ferme ». Le crédit monte quand il tient ses engagements en janvier, descend quand il dépasse son enveloppe. C’est le seul indicateur du jeu que le joueur peut vraiment reconstruire en tête.'));
+A(new Paragraph({ children: [new PageBreak()] }));
+
+/* ============ 4. LE BILAN ============ */
+A(H1('4. Le bilan — le moment où le jeu dit ce qu’il avait à dire'));
+A(BODY('Le bilan est la seule partie du jeu où la vérité est affichée. Il se lit en quatre temps.'));
+A(tableau(
+  ['Temps', 'Ce qui est révélé'],
+  [
+    ['1. Ce que vous affichiez', 'Les cinq compteurs tels que le tableau de bord les montrait, année après année. C’est le mandat vu de l’extérieur, celui dont la presse a rendu compte.'],
+    ['2. Ce que vous avez produit', 'Les mêmes cinq compteurs, en vrai. L’écart entre les deux colonnes est le sujet du jeu : il se lit d’un coup d’œil, et c’est en général le moment où les joueurs s’arrêtent.'],
+    ['3. Les scellés', 'Mesure par mesure, l’effet réel obtenu, avec la fourchette qui était possible et la source. Le joueur voit enfin ce qu’il avait parié — et si le hasard du niveau de preuve a joué pour ou contre lui.'],
+    ['4. La projection à dix ans', 'Non pas un bonus plaqué, mais la physique du système prolongée de cinq ans : les effets encore en route arrivent, la boucle d’attractivité continue de tourner dans le sens qu’on lui a donné. Référence : le Portugal, seul pays de l’OCDE en progression dans les trois domaines de PISA entre 2000 et 2018, après quinze ans de cap constant malgré l’alternance.'],
+  ],
+  [2400, 6960],
+));
+A(BODY('Le score final est pondéré par la feuille de route déclarée en juin 2027 : 35 / 25 / 20 / 12 / 8. Deux bonus s’y ajoutent : la constance (avoir peu abandonné) et la cohérence (la part de ce qu’on a réellement produit qui va dans le sens de ce qu’on avait annoncé).'));
+A(BODY([T('La leçon visée, en une phrase : ', {}), T('mettre les cinq compteurs au vert est impossible en cinq ans, et presque possible en dix.', { bold: true }), T(' La victoire existe ; elle demande plus de temps qu’un mandat.')]));
+A(VIDE());
+A(ENCADRE('À relire', 'Le bilan est long. Faut-il l’alléger, ou au contraire y ajouter quelque chose — une comparaison avec les autres stratégies types, une phrase de conclusion plus explicite sur ce que la partie a montré ?'));
+A(new Paragraph({ children: [new PageBreak()] }));
+
+/* ============ 5. TRANSVERSAL ============ */
+A(H1('5. Ce qui tourne en arrière-plan'));
+A(BODY('Sept mécaniques fonctionnent en continu, sans écran dédié. Elles expliquent la plupart des surprises que rencontre un joueur.'));
+A(tableau(
+  ['Mécanique', 'Ce qu’elle fait'],
+  [
+    ['L’effet cliquet budgétaire', 'Toute mesure pérenne consomme pour toujours la marge nouvelle de l’année — pour le ministre et pour ses successeurs. C’est ce qui rend la troisième année plus dure que la première.'],
+    ['La boucle d’attractivité', 'Salaires + considération + conditions → candidats → couverture des concours → remplacement → conditions. Rétroaction positive, à forte inertie : trois à cinq ans, soit plus qu’un mandat.'],
+    ['La capacité d’absorption', 'Au-delà de trois réformes simultanément actives, chaque réforme supplémentaire rabote l’effet de toutes et élargit leur incertitude. Une réforme « occupe » le système trois ans.'],
+    ['La fatigue réformatrice', 'Sept ministres en trois ans avant vous. Elle monte à chaque réforme et à chaque abandon, redescend quand on n’annonce rien — mais un ministre qui n’annonce rien n’est pas un ministre qui dure.'],
+    ['Le poids de l’héritage', 'Les deux premières années, 60 % du signal affiché vient de ce qu’on n’a pas fait. Le ministre est jugé sur le mandat de son prédécesseur.'],
+    ['Le coût d’affichage du long terme', 'Une réforme dont l’effet arrive dans quatre ans ou plus consomme des moyens visibles pour un résultat invisible. C’est ce qui rend la politique de long terme électoralement irrationnelle.'],
+    ['La presse et le fil social', 'Unes de journal, comptes qui commentent selon l’état du système : un directeur d’école fatigué, un parent délégué sans remplaçant, un ancien ministre qui tweete avant le lever du soleil. C’est la respiration du jeu — et l’endroit où passe l’humour.'],
+  ],
+  [2600, 6760],
+));
+A(VIDE());
+A(ENCADRE('À relire', 'Ces mécaniques sont invisibles par construction. Le jeu les explique-t-il assez pour qu’on comprenne ce qui nous arrive, sans les expliciter au point de tuer l’effet de surprise ?'));
+
+A(H1('6. L’onglet « Comprendre le jeu »'));
+A(BODY('Un bouton fixe en bas à gauche de chaque écran ouvre neuf fiches de référence, une cinquantaine de chiffres, trente et une sources officielles portant chacune l’organisme, la date et le lien du document.'));
+A(tableau(
+  ['Fiche', 'Ce qu’elle contient'],
+  [
+    ['L’argent', 'Série budgétaire 2019-2027, part de la masse salariale, dépense par élève comparée à l’OCDE.'],
+    ['Les élèves qui manquent', 'Projections démographiques à 2035, rentrée 2026, origine de la baisse.'],
+    ['Ce que savent les élèves', 'PISA 2022, TIMSS 2023, PIRLS 2021, évaluations nationales 2025.'],
+    ['Le poids de l’origine', 'Indices de position sociale public/privé, décrochage, reproduction sociale.'],
+    ['Ceux qui font tourner l’école', 'Salaires comparés, âge du corps, formation continue, concours 2025.'],
+    ['Les heures qui manquent', 'Remplacement, AESH, santé scolaire.'],
+    ['Le temps et les classes', 'Heures d’enseignement, semaines, taille des classes, redoublement.'],
+    ['Le climat scolaire', 'Harcèlement, pause numérique.'],
+    ['Comment le jeu note les mesures', 'L’échelle des cadenas, l’écart vitrine/réel, le facteur d’implémentation.'],
+  ],
+  [3000, 6360],
+));
+A(BODY([T('Un parti pris à signaler : ', {}), T('quand deux sources officielles se contredisent, les deux sont affichées.', { bold: true }), T(' Le remplacement vaut 4,3 % du temps scolaire selon le Sénat (juin 2025) et 9,3 % au collège-lycée selon la Cour des comptes (décembre 2025). Deux périmètres, un même diagnostic : le désaccord entre sources est une donnée pédagogique, pas une négligence.')]));
+A(VIDE());
+A(ENCADRE('À relire', 'C’est la partie où votre relecture m’est la plus utile : un chiffre faux ou mal daté dans cet onglet décrédibilise tout le reste. Chaque chiffre est sur une ligne isolée dans le fichier moteur/reperes.js — une correction est immédiate.'));
+
+A(H1('7. Usage en formation'));
+A(BODY('Le jeu a été conçu pour être joué puis discuté. Les moments les plus productifs observés en conception :'));
+A(PUCE('le bilan final, où l’écart entre l’affiché et le réel se lit d’un coup d’œil — c’est le moment de la discussion collective ;'));
+A(PUCE('la comparaison de deux parties menées avec des feuilles de route opposées, qui montre que le désaccord politique porte sur les priorités et non sur les faits ;'));
+A(PUCE('les panneaux « Comprendre l’effet », qui déconstruisent quinze idées reçues et fonctionnent seuls, même sans jouer ;'));
+A(PUCE('l’onglet « Comprendre le jeu », qui donne sourcées les données de cadrage qu’on passe habituellement une demi-journée à rassembler avant une formation.'));
+A(BODY('Le jeu tient dans un seul fichier HTML : il peut être déposé sur un ENT, distribué sur clé, ou ouvert hors connexion dans une salle sans réseau.'));
+A(VIDE());
+A(ENCADRE('À relire', 'Faut-il un livret d’accompagnement pour l’animateur — questions de débriefing, points de vigilance, durée conseillée ? Et faudrait-il une partie courte (une ou deux années) pour un usage en une heure ?'));
+
+A(H1('8. Ce que je sais devoir surveiller'));
+A(BODY('Pour être complet, voici les points sur lesquels j’ai des doutes et où votre avis tranchera.'));
+A(tableau(
+  ['Point', 'Le doute'],
+  [
+    ['La durée', 'Une partie complète dure 45 à 90 minutes. C’est long pour une découverte, court pour une formation d’une demi-journée.'],
+    ['Le remaniement aléatoire', 'Fidèle à la réalité, potentiellement frustrant. Actuellement environ 20 % par an, modulé par le capital politique.'],
+    ['La voie de l’égalité', 'C’est le compteur le plus difficile à faire monter, et c’est une thèse assumée du jeu. Si elle est vécue comme une impasse plutôt que comme une difficulté, il faut la rendre un peu plus accessible.'],
+    ['La densité de texte', 'Chaque carte porte beaucoup d’information. Un joueur pressé lit la tête de carte et ignore le reste ; un joueur curieux lit tout. Le pli est fait pour ça, mais l’équilibre est fragile.'],
+    ['L’humour', 'La satire est symétrique par construction — tout le monde y passe, personne n’est nommé. Reste à vérifier qu’elle est perçue comme telle par des personnels du système, qui sont le public visé.'],
+    ['Les sources bloquées', 'Le réseau de mon environnement de travail bloque education.gouv.fr, senat.fr et oecd.org : les chiffres viennent des extraits indexés de ces documents, pas de leur lecture directe. Les liens du jeu pointent bien vers les originaux, mais une vérification humaine reste utile.'],
+  ],
+  [2600, 6760],
+));
+A(VIDE());
+A(ENCADRE('À relire', 'Y a-t-il un point qui vous gêne davantage que ceux-ci ? Ou un point de cette liste qui, selon vous, n’en est pas un ?'));
+
+/* ---- pied de document ---- */
+A(new Paragraph({ text: '', spacing: { before: 400 } }));
+A(new Paragraph({
+  border: { top: { style: BorderStyle.SINGLE, size: 6, color: 'D8DAE4' } },
+  spacing: { before: 200, after: 120 }, children: [T('')],
+}));
+A(new Paragraph({ children: [T('Jeu pédagogique indépendant, sans lien avec le ministère de l’Éducation nationale. Les personnages, les organisations syndicales et les titres de presse sont des pseudonymes transparents ; les propositions politiques citées sont réelles et attribuées à leurs auteurs. Code sous licence MIT, contenus sous licence CC BY-SA 4.0.', { size: 18, italics: true, color: '8A8FA3' })], alignment: AlignmentType.JUSTIFIED }));
+
+/* ============================ DOCUMENT ============================ */
+const doc = new Document({
+  creator: 'Rue de Grenelle',
+  title: 'Rue de Grenelle — déroulé du jeu et grandes étapes',
+  description: 'Document de travail destiné à la relecture et aux corrections',
+  styles: {
+    default: {
+      document: { run: { font: 'Calibri', size: 22, color: '1E1F26' }, paragraph: { spacing: { line: 276 } } },
+      heading1: { run: { font: 'Calibri', size: 32, bold: true, color: '000091' } },
+      heading2: { run: { font: 'Calibri', size: 26, bold: true, color: '1E1F26' } },
+      heading3: { run: { font: 'Calibri', size: 23, bold: true, color: '565B6B' } },
+    },
+  },
+  numbering: {
+    config: [{
+      reference: 'puces',
+      levels: [{ level: 0, format: LevelFormat.BULLET, text: '•', alignment: AlignmentType.LEFT,
+        style: { paragraph: { indent: { left: convertInchesToTwip(0.3), hanging: convertInchesToTwip(0.18) } } } }],
+    }],
+  },
+  features: { updateFields: true },
+  sections: [{
+    properties: { page: { size: { width: 11906, height: 16838 }, margin: { top: 1134, bottom: 1134, left: 1134, right: 1134 } } },
+    children: enfants,
+  }],
+});
+
+Packer.toBuffer(doc).then((b) => {
+  fs.writeFileSync(process.argv[2] || 'rue-de-grenelle-deroule.docx', b);
+  console.log('écrit :', (b.length / 1024).toFixed(0), 'Ko');
+});
