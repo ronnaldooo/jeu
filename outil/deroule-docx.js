@@ -78,7 +78,7 @@ A(
   new Paragraph({ children: [T('Devenir ministre de l’Éducation nationale', { size: 30, color: '565B6B' })], alignment: AlignmentType.CENTER, spacing: { after: 480 } }),
   new Paragraph({ children: [T('Déroulé du jeu et grandes étapes', { bold: true, size: 28 })], alignment: AlignmentType.CENTER, spacing: { after: 100 } }),
   new Paragraph({ children: [T('Document de travail destiné à la relecture et aux corrections', { size: 22, italics: true, color: '565B6B' })], alignment: AlignmentType.CENTER, spacing: { after: 1000 } }),
-  new Paragraph({ children: [T('Version du 31 août 2026', { size: 20, color: '8A8FA3' })], alignment: AlignmentType.CENTER }),
+  new Paragraph({ children: [T('Version du 31 août 2026 — intègre le rapport HCSP « Niveau scolaire »', { size: 20, color: '8A8FA3' })], alignment: AlignmentType.CENTER }),
   new Paragraph({ children: [T('Jeu en ligne : https://ronnaldooo.github.io/jeu/', { size: 20, color: '8A8FA3' })], alignment: AlignmentType.CENTER }),
   new Paragraph({ children: [T('Code et sources : https://github.com/ronnaldooo/jeu', { size: 20, color: '8A8FA3' })], alignment: AlignmentType.CENTER, spacing: { after: 600 } }),
   new Paragraph({ children: [new PageBreak()] }),
@@ -235,7 +235,7 @@ A(VIDE());
 A(ENCADRE('À relire', 'Le seuil de colère des maires (55 %) et celui de la provocation sur le privé (78 %) sont des jugements de ma part. Vous paraissent-ils placés au bon endroit ?'));
 
 A(H2('3.2 L’atelier de mesures — le catalogue'));
-A(BODY('Le catalogue compte 55 cartes réparties en cinq familles : moyens et encadrement, autonomie et évaluation, parcours et orientation, autorité et familles, mixité et carte scolaire.'));
+A(BODY('Le catalogue compte 65 cartes réparties en cinq familles : moyens et encadrement, autonomie et évaluation, parcours et orientation, autorité et familles, mixité et carte scolaire.'));
 A(H3('Ce que porte chaque carte'));
 A(tableau(
   ['Élément', 'Exemple, sur la carte « Redoublement facilité »'],
@@ -250,9 +250,13 @@ A(tableau(
   ],
   [2900, 6460],
 ));
-A(H3('La découverte progressive (nouveau)'));
-A(BODY('Quinze cartes ne sont pas sur le bureau le premier jour. Elles remontent quand la situation les appelle : au bout d’un an ou deux, quand un rapport tombe (les heures perdues dépassent 10,6 %), quand un indicateur se dégrade (la ségrégation, la réussite), quand les maires ont compté les fermetures de classes, ou quand une mesure en appelle une autre (la pause numérique au collège fait demander la même chose au lycée).'));
-A(BODY('Le joueur est prévenu par un bandeau et par un badge « nouveau dossier ». Mesuré sur 400 parties : 6,8 ouvertures de dossier par partie, et 89 % des parties en voient au moins une.'));
+A(H3('La découverte progressive'));
+A(BODY('Vingt-cinq cartes ne sont pas sur le bureau le premier jour. Elles remontent quand la situation les appelle : au bout d’un an ou deux, quand un rapport tombe (les heures perdues dépassent 10,6 %), quand un indicateur se dégrade (la ségrégation, la réussite), quand les maires ont compté les fermetures de classes, ou quand une mesure en appelle une autre (la pause numérique au collège fait demander la même chose au lycée).'));
+A(BODY('Le joueur est prévenu par un bandeau et par un badge « nouveau dossier ». Mesuré sur 400 parties : 9,3 ouvertures de dossier par partie, et 89 % des parties en voient au moins une. Sur l’ensemble des stratégies testées, les 65 cartes sont proposées au menu au moins une fois.'));
+A(H3('Les recommandations d’août 2026, jouables'));
+A(BODY('Dix cartes sont tirées des onze recommandations du rapport du Haut-commissariat à la Stratégie et au Plan « Niveau scolaire : éléments de diagnostic et propositions » (août 2026). Elles arrivent sur le bureau à la date où le rapport paraît, c’est-à-dire pendant le mandat : rendre les réformes évaluables et publier les résultats, séparer inspection et accompagnement, reconnaître la coordination pédagogique, inscrire la formation dans les obligations de service au collège, revenir à la semaine de quatre jours et demi, expérimenter la spécialisation des professeurs des écoles, évaluer publiquement les manuels du primaire, un plan sciences à l’école, le rétablissement des techniques opératoires, et un cadre national d’usage de l’intelligence artificielle.'));
+A(BODY([T('Le même rapport a servi à ', {}), T('corriger', { bold: true }), T(' une carte. Le suivi de long terme du dédoublement établit que les bénéfices observés de la fin du CP à la fin du CE1 n’apparaissent plus à l’entrée en sixième. Le jeu affichait un effet d’égalité de +8 à quatre ans avec quatre cadenas — c’est-à-dire exactement l’excès de confiance qu’il prétend enseigner. La carte est ramenée à +5 avec trois cadenas, et ses textes sont récrits autour du démenti. C’était le test du dispositif : une source contraire doit pouvoir déplacer un paramètre, pas seulement s’ajouter en note de bas de page.')]));
+
 A(H3('La carte salariale, entièrement paramétrable'));
 A(BODY('La revalorisation n’est pas une carte comme les autres : elle a trois curseurs, et le chiffrage s’affiche en direct.'));
 A(tableau(
@@ -329,7 +333,7 @@ A(VIDE());
 A(ENCADRE('À relire', 'Ces mécaniques sont invisibles par construction. Le jeu les explique-t-il assez pour qu’on comprenne ce qui nous arrive, sans les expliciter au point de tuer l’effet de surprise ?'));
 
 A(H1('6. L’onglet « Comprendre le jeu »'));
-A(BODY('Un bouton fixe en bas à gauche de chaque écran ouvre neuf fiches de référence, une cinquantaine de chiffres, trente et une sources officielles portant chacune l’organisme, la date et le lien du document.'));
+A(BODY('Un bouton fixe en bas à gauche de chaque écran ouvre dix fiches de référence, 74 chiffres, trente-deux sources officielles portant chacune l’organisme, la date et le lien du document.'));
 A(tableau(
   ['Fiche', 'Ce qu’elle contient'],
   [
@@ -340,7 +344,8 @@ A(tableau(
     ['Ceux qui font tourner l’école', 'Salaires comparés, âge du corps, formation continue, concours 2025.'],
     ['Les heures qui manquent', 'Remplacement, AESH, santé scolaire.'],
     ['Le temps et les classes', 'Heures d’enseignement, semaines, taille des classes, redoublement.'],
-    ['Le climat scolaire', 'Harcèlement, pause numérique.'],
+    ['Le climat scolaire', 'Harcèlement, pause numérique, temps d’écran.'],
+    ['Pourquoi le niveau baisse', 'Le diagnostic du Haut-commissariat à la Stratégie et au Plan (août 2026), y compris ce qu’il écarte : ni le volume horaire, sauf en sciences, ni les élèves allophones.'],
     ['Comment le jeu note les mesures', 'L’échelle des cadenas, l’écart vitrine/réel, le facteur d’implémentation.'],
   ],
   [3000, 6360],
@@ -369,6 +374,7 @@ A(tableau(
     ['La voie de l’égalité', 'C’est le compteur le plus difficile à faire monter, et c’est une thèse assumée du jeu. Si elle est vécue comme une impasse plutôt que comme une difficulté, il faut la rendre un peu plus accessible.'],
     ['La densité de texte', 'Chaque carte porte beaucoup d’information. Un joueur pressé lit la tête de carte et ignore le reste ; un joueur curieux lit tout. Le pli est fait pour ça, mais l’équilibre est fragile.'],
     ['L’humour', 'La satire est symétrique par construction — tout le monde y passe, personne n’est nommé. Reste à vérifier qu’elle est perçue comme telle par des personnels du système, qui sont le public visé.'],
+    ['Le catalogue à 65 cartes', 'Le catalogue a doublé depuis la première version. Chaque carte est proposée au moins une fois sur l’ensemble des stratégies testées, mais un joueur donné n’en verra qu’une partie. Est-ce une bonne chose — de la rejouabilité — ou de la frustration ?'],
     ['Les sources bloquées', 'Le réseau de mon environnement de travail bloque education.gouv.fr, senat.fr et oecd.org : les chiffres viennent des extraits indexés de ces documents, pas de leur lecture directe. Les liens du jeu pointent bien vers les originaux, mais une vérification humaine reste utile.'],
   ],
   [2600, 6760],
