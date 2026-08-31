@@ -58,7 +58,7 @@ traverser avant la première rentrée, la carte scolaire de janvier et ses deux
 curseurs, la lettre plafond de Bercy, les face-à-face syndicaux où l'on peut
 céder ou tenir, une revalorisation entièrement paramétrable (montant,
 instrument, cible), et un menu progressif de mesures — 7 cartes en première
-année, 14 en fin de mandat, tirées d'un catalogue de **55**, dont quinze qu'on
+année, 14 en fin de mandat, tirées d'un catalogue de **65**, dont vingt-cinq qu'on
 ne découvre qu'en jouant, quand un rapport tombe ou qu'un indicateur se
 dégrade. Chaque carte porte ses porteurs politiques réels, son niveau de
 preuve, un panneau « Comprendre l'effet » qui dit ce que montrent vraiment les
@@ -67,10 +67,10 @@ petit mot. Plus des unes de journal, un fil social de circonstance, et un bilan
 qui révèle, enfin, ce que vous avez vraiment produit.
 
 **Un bouton « Comprendre le jeu » est disponible en bas à gauche de chaque
-écran.** Il ouvre neuf fiches de référence — budget, démographie, niveaux,
+écran.** Il ouvre dix fiches de référence — budget, démographie, niveaux,
 inégalités, métier enseignant, remplacement, organisation du temps, climat
-scolaire, et la mécanique du jeu elle-même — soit une cinquantaine de chiffres,
-chacun suivi de sa source officielle, cliquable.
+scolaire, pourquoi le niveau baisse, et la mécanique du jeu elle-même — soit
+74 chiffres, chacun suivi de sa source officielle, cliquable.
 
 ## L'équilibrage
 
@@ -112,8 +112,8 @@ jouer.
 
 ```
 index.html                   LE JEU — fichier unique autonome
-moteur/                      constantes sourcées, catalogue de 55 cartes, repères sourcés, moteur en générateur
-moteur/reperes.js            les 9 fiches de référence et leurs 31 sources officielles
+moteur/                      constantes sourcées, catalogue de 65 cartes, repères sourcés, moteur en générateur
+moteur/reperes.js            les 10 fiches de référence et leurs 32 sources officielles
 simulations/                 stratégies-types et bancs d'essai
 interface/                   gabarit (styles) + application (écrans, presse, bilan)
 outil/construire.js          assemblage
@@ -129,7 +129,10 @@ Les paramètres viennent de sources publiques datées d'août 2026 : DEPP
 démographiques à l'horizon 2035, indice de position sociale), documents
 budgétaires du PLF et rapports du Sénat, plafonds prévisionnels du PLF 2027,
 OCDE (PISA, TALIS, *Regards sur l'éducation*), Cour des comptes, IGÉSR, CSEN,
-Education Endowment Foundation pour les tailles d'effet. Les chiffres sont
+Education Endowment Foundation pour les tailles d'effet, et le rapport du
+Haut-commissariat à la Stratégie et au Plan « Niveau scolaire : éléments de
+diagnostic et propositions » (août 2026), dont dix des onze recommandations
+sont jouables dans le catalogue. Les chiffres sont
 utilisés comme **ordres de grandeur** : ils servent à faire comprendre des
 proportions et des arbitrages, pas à documenter une année précise.
 
@@ -139,7 +142,11 @@ la date et un lien vers le document : elles sont rassemblées dans
 Quand deux sources officielles publient des chiffres différents — le
 remplacement, mesuré à 4,3 % du temps scolaire par le Sénat en juin 2025 et à
 9,3 % au collège-lycée par la Cour des comptes en décembre 2025 — le jeu
-affiche les deux et explique l'écart.
+affiche les deux et explique l'écart. Et quand une source récente contredit le
+paramétrage du jeu, c'est le jeu qui change : le suivi de long terme du
+dédoublement montrant que l'avantage acquis en CP n'est plus visible à
+l'entrée en sixième, l'effet de cette carte a été revu à la baisse et son
+niveau de preuve abaissé d'un cadenas.
 
 Les sept organisations syndicales sont pondérées par les résultats réels des
 élections professionnelles de 2022, avec des profils de négociation

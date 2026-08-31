@@ -27,6 +27,9 @@ export const CADRAGE = {
   coutETPavecCAS: 0.000110,   // Md€/an = 110 k€ : le vrai coût d'un poste
   coutPointIndice: 0.49,      // Md€/an pour 1 % de point, périmètre EN seul
   depenseParEleve: 10920,     // € (DEPP 2024, tous niveaux)
+  /* Détail 2024 par niveau (HCSP, août 2026) : ce que coûte réellement un
+     élève selon l'année où on le regarde. C'est l'arbitrage caché du système. */
+  depenseParEleveNiveau: { ecole: 9100, college: 10500, lgt: 13000, lp: 14700 },
 };
 
 /* Marge de manœuvre annuelle réellement arbitrable, avant carte scolaire.
@@ -404,7 +407,7 @@ export const PROJETS_2027 = {
 
 /* Taille du menu de mesures par année de mandat : on commence resserré pour
    que chaque carte soit vraiment lue, on élargit avec l'expérience du joueur. */
-export const TAILLES_MENU = [7, 10, 12, 14, 14];
+export const TAILLES_MENU = [8, 11, 13, 15, 15];
 
 export const MOIS = ['janvier','février','mars','avril','mai','juin',
                      'juillet','août','septembre','octobre','novembre','décembre'];

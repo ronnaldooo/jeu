@@ -433,6 +433,93 @@ remplacées sont d'origine institutionnelle), OCDE (36 semaines contre 38,
 (allocation de stage : 50/75/100 € par semaine), rapport Villani-Torossian,
 Conseil d'évaluation de l'école.
 
+<<<<<<< HEAD
+## 3 octies. Le rapport HCSP d'août 2026 — la source qui corrige le jeu
+
+Le Haut-commissariat à la Stratégie et au Plan a publié en août 2026
+« Niveau scolaire : éléments de diagnostic et propositions » (rapporteur
+Pierre-Yves Cusset), rapport d'un groupe de travail réunissant la DEPP, des
+chercheurs et des personnalités qualifiées. C'est la source la plus complète
+et la plus récente dont le jeu dispose, et elle a servi à trois choses.
+
+### a) Corriger une carte que le jeu présentait à tort comme acquise
+
+Le suivi de long terme du dédoublement change la conclusion : les bénéfices
+observés de la fin du CP à la fin du CE1 **n'apparaissent plus à l'entrée en
+sixième**. Le jeu affichait `egalite +8 à 4 ans, 4 cadenas` — c'est-à-dire
+exactement l'excès de confiance que le jeu prétend enseigner.
+
+| Carte | Avant | Après |
+|---|---|---|
+| `dedoublement` — égalité | central 8, 4 cadenas | **central 5, 3 cadenas** |
+| `dedoublement` — réussite | central 2, 4 cadenas | **central 1, 3 cadenas** |
+
+`preuve`, `ideeRecue` et le mot de la carte ont été récrits autour du démenti.
+C'était le test du dispositif : une source contraire doit pouvoir déplacer
+un paramètre, pas seulement s'ajouter en note de bas de page.
+
+Trois autres cartes ont été enrichies plutôt que corrigées :
+`lecture_explicite` (la moitié des enseignants employant la méthode la plus
+efficace exercent dans une quinzaine de circonscriptions où un accompagnement
+avait été organisé — ce n'est pas la circulaire qui diffuse une méthode),
+`formation` (l'efficacité dépend de l'intensité, de la durée et de l'ancrage
+dans la pratique) et `revalorisation` (367 000 + 485 000 enseignants : toute
+mesure générale coûte cher ou ne fait rien).
+
+### b) Rendre jouables les onze recommandations
+
+Le rapport ne fait pas que diagnostiquer : il recommande. Dix cartes en sont
+tirées, portées à la découverte progressive et datées de la parution du
+rapport — c'est-à-dire pendant le mandat du joueur.
+
+| Carte | Recommandation | Ce qu'elle apporte au jeu |
+|---|---|---|
+| `evaluabilite` | 1 et 2 | La seule carte dont l'effet est d'empêcher les suivantes d'être prises à l'aveugle. Coût dérisoire, effet à 6 ans, 4 cadenas. |
+| `accompagnement_separe` | 6 | Sépare inspection et accompagnement, crée l'équivalent des conseillers pédagogiques au collège. |
+| `coordination_pedago` | 7 | Reconnaît la coordination pédagogique — la seule réponse au « dans un système où les difficultés sont perçues comme individuelles, les réponses le sont aussi ». |
+| `ors_college` | 8 | Inscrit formation et animation dans les obligations de service au collège. Grève d'intensité 4 sur le statut. |
+| `semaine_45` | 11 | Quatre jours et demi à l'école. Périmètre Matignon, capital 10, vitrine négative des deux côtés. |
+| `specialisation_pe` | 9 | Spécialisation certifiée des professeurs des écoles. |
+| `manuels` | 10 | Information publique sur la qualité des manuels — deux adversaires organisés pour sept centièmes de milliard. |
+| `sciences_primaire` | ch. 3 | La seule discipline où le volume horaire est réellement en cause : 47 h déclarées pour 72 recommandées. |
+| `calcul_automatismes` | ch. 3 | Techniques opératoires et automatisation ; le volume horaire de maths, lui, est supérieur à la moyenne internationale. |
+| `ia_cadre` | ch. 5 | Classée par le rapport en « point de vigilance », pas en recommandation : 1 cadenas, et c'est le message. |
+
+Catalogue : 55 → **65 cartes**, dont 25 à découverte progressive.
+`TAILLES_MENU` passe de 7/10/12/14/14 à **8/11/13/15/15** : vérifié, les
+65 cartes sont proposées au moins une fois sur l'ensemble des stratégies
+testées (250 parties × 6 stratégies), et les 25 cartes à découvrir aussi.
+
+### c) Remplacer des chiffres approchés par des chiffres exacts
+
+La fiche « Comprendre le jeu » gagne une dixième entrée — **« Pourquoi le
+niveau baisse »**, qui expose le diagnostic du rapport, y compris ce qu'il
+**écarte** : ni le volume horaire (sauf en sciences), ni les élèves
+allophones. Les autres fiches passent de 50 à **74 chiffres**.
+
+Remplacements notables :
+
+| Donnée | Avant | Après (HCSP 2026) |
+|---|---|---|
+| Dépense par élève | 13 545 $ toutes filières | + le détail 2024 : **9 100 € école, 10 500 € collège, 13 000 € LGT, 14 700 € LP** |
+| Taille des classes | 21,3 moyenne, collège 23,4 | **21,5 primaire, 25,8 collège** — le plus élevé d'Europe |
+| Temps scolaire | « ~600 h de plus que l'OCDE » | **864 h contre 730 h, 973 h contre 851 h** (moyennes européennes) |
+| Français en élémentaire | « 59 % français + maths » | **38 % lecture/écriture/littérature contre 25 % dans l'UE** |
+| Ségrégation | « elle progresse » | **la ségrégation entre collèges publics a diminué** ; c'est l'écart public/privé qui se creuse |
+
+Ajouts : la semaine de quatre jours (93 % des communes, cas unique dans
+l'OCDE), la Journée défense et citoyenneté (un quart des jeunes de 17-18 ans
+en difficulté prononcée de lecture), les candidats par poste (5 → 2,5 dans le
+premier degré ; 0,7 à Créteil), les non-titulaires (+43 % en sept ans),
+l'école inclusive (232 400 élèves en 2006 → 563 400 en 2024), les écrans
+(2 h 36 par jour à 10 ans et demi), l'encadrement (1 inspecteur pour 280
+enseignants).
+
+Équilibrage revérifié après tous ces changements : **4/4 sur quatre jeux de
+graines**, survie du joueur attentif 45-50 %.
+
+=======
+>>>>>>> origin/main
 ## 4. Les constantes du moteur
 
 Inchangées depuis la phase 1 (voir `moteur/constantes.js`, tout est commenté
@@ -455,7 +542,11 @@ d'implémentation indexé sur l'adhésion (Slavin), capacité d'absorption de
 | Paramètre | Valeur | Ce qu'il faut regarder |
 |---|---|---|
 | `RENVOI.remaniementBase` | 0,205 | Une fin subie par tirage peut frustrer. Si les testeurs la trouvent arbitraire, 0,15 et compenser par les convocations (qui, elles, se méritent). |
+<<<<<<< HEAD
+| Rotation du menu | 15/65 | Vérifier qu'un joueur qui vise une doctrine trouve ses cartes assez souvent ; sinon, garantir 1 carte de chaque famille par menu. |
+=======
 | Rotation du menu | 14/55 | Vérifier qu'un joueur qui vise une doctrine trouve ses cartes assez souvent ; sinon, garantir 1 carte de chaque famille par menu. |
+>>>>>>> origin/main
 | `PALIERS_BERCY[0].marge` | 1,80 Md€ | Contrôle l'ambition possible sur cinq ans. Desserré en phase « sources » ; à resserrer si les testeurs trouvent le mandat trop confortable en fin de course. |
 | Seuils de `DECLENCHEURS` | HNA 10,6 · IPS 18,6 · réussite 46 | Vérifier que les dossiers remontent au moment où le joueur ressent le problème, pas avant ni longtemps après. |
 | `GREVE.conflictualiteLatente` | 0,42 | La paix sociale baisse sans grève visible ; l'interface l'explique-t-elle assez ? |
