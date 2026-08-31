@@ -36,7 +36,7 @@ export const CATALOGUE = [
       { compteur: 'sante',    central: 6, delai: 3, cadenas: 4, source: 'TALIS 2024 : France dernière des 48 pays, marge maximale' },
     ],
     physique: { hna: { delta: +1.5, duree: 2 }, adhesion: +5 },
-    preuve: 'La formation continue est l’intervention au meilleur rendement documenté du répertoire : l’Education Endowment Foundation classe le feedback et la métacognition — cœur des formations efficaces — à +6 et +7/8 mois de progrès par an, au plus haut niveau de preuve (plus de 90 études). Condition : des formations longues, disciplinaires et suivies. La France est classée dernière des 48 pays de l’enquête TALIS 2024 pour la formation continue de ses enseignants : la marge de progression est maximale.',
+    preuve: 'Attention au format : le HCSP (août 2026) rappelle que l’efficacité des dispositifs de formation continue est très variable selon leur intensité, leur contenu et leur ancrage dans la pratique. Ce qui marche est intensif, long, centré sur la pratique, et combine formation et accompagnement en classe. La formation continue est l’intervention au meilleur rendement documenté du répertoire : l’Education Endowment Foundation classe le feedback et la métacognition — cœur des formations efficaces — à +6 et +7/8 mois de progrès par an, au plus haut niveau de preuve (plus de 90 études). Condition : des formations longues, disciplinaires et suivies. La France est classée dernière des 48 pays de l’enquête TALIS 2024 pour la formation continue de ses enseignants : la marge de progression est maximale.',
     ideeRecue: '« Former les profs, on le fait déjà. » En volume réel, un enseignant français reçoit parmi les plus faibles quantités de formation continue du monde développé — et souvent hors de sa discipline.',
     mot: "L'effet réel le plus solide du catalogue. Il coûte deux ans d'heures non assurées, et personne ne vous en félicitera avant votre départ.",
   },
@@ -74,7 +74,7 @@ export const CATALOGUE = [
     vitrine: { parents: 0, enseignants: +6, presse: +2, compteurs: { budget: +5 } },
     reel: [],   // construits par le moteur selon les curseurs
     physique: {},
-    preuve: 'Les salaires effectifs des enseignants français sont inférieurs de 26 % (élémentaire) et 18 % (collège) à ceux des autres diplômés du supérieur (OCDE 2025) ; un certifié débutant est passé de 2 SMIC en 1980 à 1,08 SMIC en 2025. Le point décisif est la cible : les revalorisations de 2023 ont ciblé les débuts de carrière ; le milieu de carrière, lui, a décroché de 14 points par rapport à l’OCDE en dix ans — c’est là que se joue l’usure du corps.',
+    preuve: 'Le Haut-commissariat à la Stratégie et au Plan (août 2026) pose le problème en deux lignes : avec 367 000 enseignants dans le premier degré et 485 000 dans le second, toute revalorisation générale coûte très cher — à moins de rester modérée, et donc sans effet sur l’attractivité. Sa recommandation est de cibler les affectations et les missions où la pénurie est la plus criante. Pour mémoire, la revalorisation des débuts de carrière de 2023 a coûté 2 Md€ par an en année pleine. Les salaires effectifs des enseignants français sont inférieurs de 26 % (élémentaire) et 18 % (collège) à ceux des autres diplômés du supérieur (OCDE 2025) ; un certifié débutant est passé de 2 SMIC en 1980 à 1,08 SMIC en 2025. Le point décisif est la cible : les revalorisations de 2023 ont ciblé les débuts de carrière ; le milieu de carrière, lui, a décroché de 14 points par rapport à l’OCDE en dix ans — c’est là que se joue l’usure du corps.',
     ideeRecue: '« Augmenter tout le monde pareil, c’est plus juste. » Le saupoudrage est l’option la mieux acceptée et la moins efficace : diluée sur 814 927 équivalents temps plein, la même somme ne change ni l’attractivité ni les démissions.',
     mot: "Trois façons de dépenser exactement la même somme, et trois pays différents à l'arrivée.",
   },
@@ -90,13 +90,13 @@ export const CATALOGUE = [
     theme: 'taille_classe', once: true, excl: 'encadrement', reforme: true,
     vitrine: { parents: +5, enseignants: +3, presse: +4, compteurs: { egalite: +5 } },
     reel: [
-      { compteur: 'egalite',  central: 8, delai: 4, cadenas: 4, source: 'DEPP 2021 (15 000 élèves, 408 écoles) : +8 % d’écart-type en français, +13 % en maths ; élèves en très grande difficulté −7,8 / −12,5 pts' },
-      { compteur: 'reussite', central: 2, delai: 4, cadenas: 4, source: 'DEPP 2021 : bénéfice limité voire nul pour les meilleurs élèves' },
+      { compteur: 'egalite',  central: 5, delai: 4, cadenas: 3, source: 'DEPP 2021 : +8 % d’écart-type en français, +13 % en maths en fin de CP — mais l’avantage n’est plus visible à l’entrée en sixième (HCSP 2026)' },
+      { compteur: 'reussite', central: 1, delai: 4, cadenas: 3, source: 'DEPP 2021 : bénéfice limité voire nul pour les meilleurs élèves ; effets de long terme non confirmés' },
     ],
     physique: {},
-    preuve: 'Évaluation DEPP 2021 sur 15 000 élèves et 408 écoles : +8 % d’écart-type en français et +13 % en maths en fin de CP, avec un effet concentré sur les élèves en grande difficulté — et un bénéfice limité, voire nul, pour les meilleurs. La littérature internationale (expérience STAR, travaux Piketty-Valdenaire) confirme : réduire la taille des classes agit surtout aux âges précoces et pour les élèves défavorisés.',
-    ideeRecue: '« Moins d’élèves par classe, ça marche pour tout le monde. » L’effet moyen est modeste : c’est un levier d’égalité bien plus qu’un levier de niveau général. La même carte bouge fort le compteur Inégalités, peu le compteur Réussite.',
-    mot: "Fait beaucoup pour les inégalités, presque rien pour la moyenne. Aucun journal ne titrera là-dessus, et c'est bien le problème.",
+    preuve: 'Évaluation DEPP 2021 sur 15 000 élèves et 408 écoles : +8 % d’écart-type en français et +13 % en maths en fin de CP, effet concentré sur les élèves en grande difficulté. Mais le suivi de long terme change la conclusion : selon le Haut-commissariat à la Stratégie et au Plan (août 2026), les bénéfices observés de la fin du CP à la fin du CE1 n’apparaissent plus à l’entrée en sixième. La prudence s’impose dans les deux sens — cette première cohorte n’avait pas bénéficié du dédoublement en grande section.',
+    ideeRecue: '« Le dédoublement, c’est prouvé, ça marche. » C’est prouvé à court terme, et démenti à moyen terme par le suivi de la première cohorte. Le rapport du HCSP en tire une recommandation explicite : ne pas tout miser sur la taille des classes, et cibler précisément — d’autant que la faiblesse des acquis touche tous les profils d’élèves, pas seulement les plus fragiles.',
+    mot: "La mesure la plus évaluée du répertoire français. C'est aussi la seule dont l'évaluation, en grandissant, a retiré une partie de ce qu'elle avait promis.",
   },
 
   /* ------------------------------------------------------------------ 5 --- */
@@ -862,8 +862,8 @@ export const CATALOGUE = [
       { compteur: 'egalite',  central: 5, delai: 4, cadenas: 4, source: 'EEF : effet renforcé pour les élèves les plus éloignés de la lecture à l’entrée au CP' },
     ],
     physique: { adhesion: -3 },
-    preuve: 'L’enseignement systématique et explicite du code alphabétique est classé à +5 mois de progrès au plus haut niveau de preuve par l’Education Endowment Foundation. Les évaluations nationales de CP montrent d’ailleurs des progrès continus depuis 2019 sur les compétences les plus directement travaillées. L’effet est concentré sur les débuts d’apprentissage et sur les élèves les plus éloignés de l’écrit.',
-    ideeRecue: '« La guerre des méthodes de lecture est un faux débat entretenu par la politique. » Le débat scientifique, lui, est largement clos depuis vingt ans. Ce qui reste ouvert — et ce qui décide de l’effet réel — c’est la formation des maîtres et la liberté pédagogique : un protocole imposé d’en haut à des enseignants qui n’y adhèrent pas produit environ zéro.',
+    preuve: 'L’enseignement systématique et explicite du code est classé à +5 mois de progrès au plus haut niveau de preuve par l’Education Endowment Foundation. Le rapport du HCSP d’août 2026 précise le tableau français : plus personne n’emploie la « méthode globale », mais la méthode phonique synthétique stricte — la plus efficace, singulièrement pour les élèves de condition modeste — reste minoritaire, la majorité des enseignants recourant à des méthodes mixtes. Enjeu de fond : près d’un jeune sur quatre a des difficultés prononcées en lecture à 17-18 ans, aux tests de la Journée défense et citoyenneté.',
+    ideeRecue: '« Il suffit de prescrire la bonne méthode. » Le fait le plus instructif du dossier est ailleurs : la moitié des enseignants qui emploient la méthode la plus efficace exercent dans une quinzaine de circonscriptions où l’inspection et les conseillers pédagogiques avaient organisé un accompagnement spécifique. Ce n’est pas la circulaire qui diffuse une méthode, c’est l’accompagnement de proximité — et il ne s’achète pas en une rentrée.',
     mot: "Preuve maximale, coût minimal, et une salle des professeurs qui vous demandera de quel droit un ministre décide comment on apprend à lire.",
   },
 
@@ -1148,6 +1148,234 @@ export const CATALOGUE = [
     preuve: 'Mayotte et la Guyane cumulent les écarts les plus élevés du système français : rotations scolaires faute de salles, taux de non-scolarisation sans équivalent hexagonal, part de contractuels et rotation des équipes très supérieures à la moyenne. Ce sont aussi les seuls territoires où la démographie scolaire progresse alors qu’elle recule partout ailleurs — le « dividende démographique » n’y existe pas.',
     ideeRecue: '« Le problème est démographique, il se réglera tout seul. » Il ne se règle nulle part tout seul, et surtout pas là : ce sont les deux académies où le nombre d’élèves augmente.',
     mot: "La baisse démographique finance vos réformes partout — sauf là où il faudrait le plus les financer.",
+  },
+
+  /* ======================================================================
+     EXTENSION DU CATALOGUE — cartes 56 à 65 (phase 5)
+     Les onze recommandations du rapport « Niveau scolaire : éléments de
+     diagnostic et propositions » (Haut-commissariat à la Stratégie et au
+     Plan, août 2026), rendues jouables. Elles arrivent sur le bureau à la
+     date où le rapport paraît — c'est-à-dire pendant votre mandat.
+     ====================================================================== */
+
+  /* ----------------------------- 56 · autonomie ----------------------- */
+  {
+    id: 'evaluabilite',
+    label: 'Rendre toute réforme évaluable, et publier les résultats',
+    famille: 'autonomie',
+    porteurs: ['Haut-commissariat à la Stratégie et au Plan (recommandations 1 et 2)', 'Conseil d’analyse économique'],
+    contre: ['tous ceux qui préfèrent annoncer avant de savoir — c’est-à-dire tout le monde, un jour ou l’autre'],
+    perimetre: 'ministeriel',
+    cout: 0.09, coutETP: 250, pol: 5,
+    theme: 'evaluabilite', once: true, reforme: false,
+    decouverte: { si: 'apres_un_an', note: 'Le Haut-commissariat à la Stratégie et au Plan publie son rapport sur le niveau scolaire. Sa première recommandation vous concerne directement.' },
+    vitrine: { parents: +1, enseignants: 0, presse: -2, compteurs: {} },
+    reel: [
+      { compteur: 'reussite', central: 6, delai: 6, cadenas: 4, source: 'HCSP 2026 : « on ne devrait pas pouvoir changer de cap avant d’avoir évalué les effets des politiques menées jusqu’ici »' },
+      { compteur: 'sante',    central: 4, delai: 5, cadenas: 3, source: 'HCSP 2026 : l’enchaînement des réformes non évaluées est cité par les enseignants de collège comme source de stress avant la discipline en classe' },
+    ],
+    physique: { adhesion: +2 },
+    preuve: 'Première recommandation du rapport du Haut-commissariat à la Stratégie et au Plan (août 2026) : tout nouveau dispositif doit être conçu, dès l’amont, pour que ses effets sur les résultats des élèves soient mesurables et effectivement mesurés. Seconde recommandation : les résultats de ces évaluations doivent être rendus publics. Le rapport ajoute la contrainte qui fait mal : il faut laisser le temps aux réformes de produire des résultats avant d’en changer.',
+    ideeRecue: '« On évalue déjà tout. » On mesure beaucoup — la France dispose d’un dispositif d’évaluations nationales exhaustives sans équivalent à l’étranger. On évalue rarement : mesurer le niveau des élèves n’est pas la même chose que mesurer l’effet d’une politique, ce qui suppose de l’avoir prévu avant de la lancer.',
+    mot: "La seule carte du catalogue dont l'effet consiste à empêcher vos successeurs de faire n'importe quoi. Vous compris.",
+  },
+
+  /* ----------------------------- 57 · moyens -------------------------- */
+  {
+    id: 'accompagnement_separe',
+    label: 'Séparer inspection et accompagnement, créer des conseillers pédagogiques au collège',
+    famille: 'moyens',
+    porteurs: ['HCSP (recommandation 6)', 'Cnesco', 'associations de corps d’inspection'],
+    perimetre: 'ministeriel',
+    cout: 0.41, coutETP: 3200, pol: 5,
+    theme: 'accompagnement', once: true, reforme: true,
+    decouverte: { si: 'apres_un_an' },
+    vitrine: { parents: 0, enseignants: +6, presse: 0, compteurs: { sante: +3 } },
+    reel: [
+      { compteur: 'reussite', central: 8, delai: 5, cadenas: 4, source: 'HCSP 2026 : les inspections, malgré leurs limites, ont un effet mesurable sur la capacité des enseignants à faire progresser leurs élèves' },
+      { compteur: 'sante',    central: 6, delai: 3, cadenas: 3, source: 'HCSP 2026 : un inspecteur pour 280 enseignants au primaire, 240 au collège, et aucun équivalent des conseillers pédagogiques dans le second degré' },
+    ],
+    physique: { adhesion: +6 },
+    preuve: 'Le rapport du HCSP identifie là un angle mort du système : on compte un inspecteur pour 280 enseignants dans le premier degré et un pour 240 dans le second, et les inspecteurs, accaparés par la mise en œuvre des réformes, se sont éloignés des classes. Or confondre celui qui évalue et celui qui accompagne rend le second rôle presque impossible à tenir. Le second degré n’a même pas d’équivalent des conseillers pédagogiques de circonscription.',
+    ideeRecue: '« Les profs ne veulent pas qu’on entre dans leur classe. » Ce qu’ils refusent, c’est le jugement. L’observation entre pairs, elle, est la pratique la plus rare en France et l’une des mieux corrélées à l’efficacité ailleurs — et là où elle a été organisée, elle a été adoptée.',
+    mot: "Il n'y a pas de mot pour cette carte : elle est ennuyeuse, invisible, et probablement la plus efficace de la page.",
+  },
+
+  /* ----------------------------- 58 · autonomie ----------------------- */
+  {
+    id: 'coordination_pedago',
+    label: 'Reconnaître la coordination pédagogique : décharges, certification, adjoint pédagogique au collège',
+    famille: 'autonomie',
+    porteurs: ['HCSP (recommandation 7)', 'chefs d’établissement', 'une partie des équipes'],
+    perimetre: 'ministeriel',
+    cout: 0.36, coutETP: 2400, pol: 4,
+    theme: 'coordination', once: true, excl: 'gouvernance', reforme: true,
+    decouverte: { si: 'apres_un_an' },
+    vitrine: { parents: 0, enseignants: +4, presse: +1, compteurs: { sante: +3 } },
+    reel: [
+      { compteur: 'reussite', central: 6, delai: 5, cadenas: 3, source: 'HCSP 2026 : le pilotage pédagogique de proximité, appuyé sur les évaluations nationales, est jugé indispensable' },
+      { compteur: 'sante',    central: 4, delai: 3, cadenas: 3, source: 'HCSP 2026 : l’autonomie pédagogique est vécue en France comme individuelle, jamais comme collective' },
+    ],
+    physique: { adhesion: +4 },
+    preuve: 'Le HCSP formule le diagnostic en une phrase : « dans un système où les difficultés sont perçues comme individuelles, les réponses le sont aussi. » Il propose de reconnaître les fonctions de coordination — organiser les temps entre collègues d’une discipline ou d’un cycle, faire vivre les résultats des évaluations nationales, monter des formations — par des certifications, des indemnités plus substantielles et des décharges. Au collège, la fonction pourrait revenir à un adjoint du principal dont ce serait la mission principale.',
+    ideeRecue: '« Il y a déjà des coordonnateurs de discipline. » Il y a des indemnités et des bonnes volontés. Il n’y a ni temps garanti, ni formation, ni légitimité — c’est-à-dire aucune des trois conditions pour que la fonction existe autrement que sur le papier.',
+    mot: "Créer un chef pédagogique dans un établissement français : ce qui, vu de l'étranger, s'appelle simplement « un établissement ».",
+  },
+
+  /* ----------------------------- 59 · moyens -------------------------- */
+  {
+    id: 'ors_college',
+    label: 'Inscrire formation et animation pédagogique dans les obligations de service au collège',
+    famille: 'moyens',
+    porteurs: ['HCSP (recommandation 8)', 'commission Thélot (2004)', 'rapport Joxe (1972)'],
+    contre: ['toucher aux obligations de service, c’est toucher au statut : l’intersyndicale s’y oppose en bloc'],
+    perimetre: 'ministeriel',
+    cout: 0.52, coutETP: 0, pol: 8,
+    theme: 'ors', once: true, reforme: true,
+    decouverte: { si: 'apres_un_an' },
+    vitrine: { parents: +2, enseignants: -4, presse: +3, compteurs: { sante: +2 } },
+    reel: [
+      { compteur: 'sante',    central: 7, delai: 4, cadenas: 3, source: 'HCSP 2026 : le premier degré sanctuarise 18 h de formation et d’animation pédagogique ; le second degré n’identifie aucun temps dédié' },
+      { compteur: 'reussite', central: 5, delai: 6, cadenas: 3, source: 'HCSP 2026 : 56 % des modules de formation suivis dans le premier degré en 2023-2024 l’ont été dans le cadre de l’animation pédagogique' },
+    ],
+    physique: { adhesion: -2 },
+    greve: { intensite: 4, theme: 'statut', segment: 'college' },
+    preuve: 'Le professeur des écoles a 24 heures d’enseignement plus 108 heures annualisées, dont 18 pour la formation et l’animation pédagogique : un temps sanctuarisé, et 56 % des formations suivies dans le premier degré passent par là. Le certifié a 18 heures devant élèves et rien d’autre de compté — la formation continue y est obligatoire sans temps identifié. Il ne s’agit pas d’allonger le temps de travail, qui ne se résume pas aux heures de cours, mais de rendre le travail collectif possible, visible et valorisable.',
+    ideeRecue: '« Les profs du secondaire refusent depuis toujours d’être présents davantage. » La commission Thélot proposait en 2004 d’allonger la présence de 4 à 8 heures contre rémunération, sans obligation pour les enseignants en poste. La proposition est restée lettre morte — mais elle n’a jamais été mise aux voix.',
+    mot: "Le premier degré a un temps de formation dans son statut. Le second n'en a pas. Cinquante ans que c'est ainsi, et cinquante ans que chaque ministre découvre pourquoi.",
+  },
+
+  /* ----------------------------- 60 · parcours ------------------------ */
+  {
+    id: 'semaine_45',
+    label: 'Revenir à la semaine de quatre jours et demi à l’école',
+    famille: 'parcours',
+    porteurs: ['HCSP (recommandation 11)', 'chronobiologistes', 'Académie de médecine'],
+    contre: ['les communes, qui financent le périscolaire', 'une majorité de familles et d’enseignants attachés au mercredi'],
+    perimetre: 'matignon',
+    cout: 0.42, coutETP: 0, pol: 10,
+    theme: 'rythmes', once: true, excl: 'calendrier', reforme: true,
+    decouverte: { si: 'apres_un_an', note: 'La question des rythmes scolaires remonte : la France est le seul pays de l’OCDE où la semaine de quatre jours est majoritaire.' },
+    vitrine: { parents: -9, enseignants: -7, presse: +6, compteurs: { reussite: +2 } },
+    reel: [
+      { compteur: 'reussite', central: 7, delai: 5, cadenas: 2, source: 'HCSP 2026 : 93 % des communes en semaine de quatre jours, cas unique dans l’OCDE ; journées d’école exceptionnellement longues' },
+      { compteur: 'sante',    central: 2, delai: 4, cadenas: 2, source: 'l’effet passe par le sommeil et la fatigue, mieux documentés que l’effet direct sur les acquis' },
+    ],
+    physique: {},
+    greve: { intensite: 4, theme: 'statut', segment: '1erdegre' },
+    preuve: 'La France est le seul pays de l’OCDE où la majorité des écoles — 93 % des communes — organise les cours sur quatre jours ; ailleurs, la règle est quatre jours et demi ou cinq. Avec 864 heures annuelles en élémentaire contre 730 en moyenne européenne, la conséquence arithmétique est connue : des journées d’école parmi les plus longues du monde développé. Le HCSP recommande le retour à quatre jours et demi au minimum, en tenant compte des contraintes des familles et des enseignants.',
+    ideeRecue: '« On a déjà essayé, ça n’a pas marché. » La réforme de 2013 a échoué sur son financement et sa méthode — le périscolaire à la charge des communes, sans moyens ni concertation — et non sur son diagnostic, qui n’a jamais été contesté par les chronobiologistes. C’est la mise en œuvre qui a été abandonnée, pas la question.',
+    mot: "Deux ministres s'y sont brûlés en dix ans. Le rapport le redemande quand même, ce qui en dit long sur la solidité du diagnostic — et sur le peu de poids qu'a un diagnostic.",
+  },
+
+  /* ----------------------------- 61 · moyens -------------------------- */
+  {
+    id: 'specialisation_pe',
+    label: 'Expérimenter la spécialisation certifiée des professeurs des écoles',
+    famille: 'moyens',
+    porteurs: ['HCSP (recommandation 9)'],
+    contre: ['la polyvalence est un principe fondateur du métier : y toucher inquiète bien au-delà des syndicats'],
+    perimetre: 'ministeriel',
+    cout: 0.24, coutETP: 600, pol: 6,
+    theme: 'polyvalence', once: true, reforme: true,
+    decouverte: { si: 'reussite_basse' },
+    vitrine: { parents: +1, enseignants: -3, presse: +2, compteurs: { reussite: +2 } },
+    reel: [
+      { compteur: 'reussite', central: 7, delai: 5, cadenas: 2, source: 'HCSP 2026 : les enseignants du premier degré se disent souvent peu à l’aise en sciences, et moins qu’en mathématiques' },
+      { compteur: 'sante',    central: 3, delai: 4, cadenas: 2, source: 'HCSP 2026 : la spécialisation ouvre des trajectoires professionnelles dans un métier à progression uniforme' },
+    ],
+    physique: { adhesion: -2, affection: +2 },
+    greve: { intensite: 2, theme: 'statut', segment: '1erdegre' },
+    preuve: 'Le professeur des écoles est réputé parfaitement polyvalent ; au collège, on n’enseigne qu’une discipline. Le HCSP note que cette frontière n’a rien d’évident, et propose — sans remettre en cause le principe général — d’expérimenter des spécialisations reconnues par une certification, par cycle d’apprentissage ou par discipline, susceptibles d’évoluer en cours de carrière. Le déficit est documenté : en CM1, 47 heures de sciences déclarées pour 72 recommandées.',
+    ideeRecue: '« La polyvalence, c’est ce qui fait la force de l’école primaire française. » C’est surtout une organisation, née d’une histoire, et que presque aucun de nos voisins ne pousse aussi loin. Elle suppose qu’un même adulte soit également compétent en lecture, en géométrie, en sciences expérimentales et en éducation musicale — pour vingt-quatre heures par semaine devant vingt et un élèves.',
+    mot: "Toucher à la polyvalence du professeur des écoles, c'est toucher à 1882. Le rapport le propose « à titre expérimental », ce qui est la formule administrative pour « nous savons ce que nous demandons ».",
+  },
+
+  /* ----------------------------- 62 · autonomie ----------------------- */
+  {
+    id: 'manuels',
+    label: 'Évaluation publique de la qualité des manuels du primaire',
+    famille: 'autonomie',
+    porteurs: ['HCSP (recommandation 10)', 'précédents portugais et japonais'],
+    contre: ['les éditeurs scolaires', 'les organisations syndicales, qui y voient une atteinte à la liberté pédagogique'],
+    perimetre: 'ministeriel',
+    cout: 0.07, coutETP: 150, pol: 6,
+    theme: 'manuels', once: true, reforme: false,
+    decouverte: { si: 'apres_un_an' },
+    vitrine: { parents: +4, enseignants: -5, presse: +4, compteurs: { reussite: +2 } },
+    reel: [
+      { compteur: 'reussite', central: 6, delai: 4, cadenas: 3, source: 'HCSP 2026 : pour certains apprentissages fondamentaux, les manuels dictent largement les pratiques des enseignants' },
+      { compteur: 'egalite',  central: 3, delai: 5, cadenas: 2, source: 'l’effet passe par les classes où le manuel tient lieu de progression, plus fréquentes là où l’accompagnement manque' },
+    ],
+    physique: { adhesion: -4 },
+    greve: { intensite: 3, theme: 'pedagogie', segment: '1erdegre' },
+    preuve: 'Les enquêtes en classe montrent que, pour les apprentissages fondamentaux au moins, le manuel dicte largement la pratique — or leur qualité et leur orientation didactique sont très variables, et la France est l’un des rares pays sans aucune certification. Le HCSP écarte la labellisation, à laquelle éditeurs et syndicats s’opposent frontalement, et propose une information qualitative publique par une commission de spécialistes et d’enseignants : place réservée aux domaines du programme, exactitude des définitions, conformité aux connaissances scientifiques, qualité des exercices, approche didactique servie.',
+    ideeRecue: '« Un ministre n’a pas à dire aux enseignants quel manuel choisir. » Il ne le dit pas : il publie ce qu’un manuel contient. C’est le refus même de publier cette information qui est une position — et elle n’est défendue nulle part au nom de l’intérêt des élèves.',
+    mot: "Informer sur le contenu d'un manuel scolaire : on croirait une mesure sans adversaire. Elle en a deux, et ils sont organisés.",
+  },
+
+  /* ----------------------------- 63 · moyens -------------------------- */
+  {
+    id: 'sciences_primaire',
+    label: 'Plan sciences à l’école : horaire garanti et formation des maîtres',
+    famille: 'moyens',
+    porteurs: ['HCSP', 'Académie des sciences', 'La main à la pâte'],
+    perimetre: 'ministeriel',
+    cout: 0.26, coutETP: 800, pol: 3,
+    theme: 'sciences', once: true, reforme: true,
+    decouverte: { si: 'reussite_basse' },
+    vitrine: { parents: +3, enseignants: +1, presse: +3, compteurs: { reussite: +2 } },
+    reel: [
+      { compteur: 'reussite', central: 7, delai: 5, cadenas: 3, source: 'HCSP 2026 : 47 h de sciences déclarées en CM1 pour 72 h recommandées, contre 58 h dans l’Union européenne' },
+      { compteur: 'sante',    central: 2, delai: 4, cadenas: 2, source: 'le vivier de recrutement en physique-chimie au collège est jugé très fragile : peu de candidats, postes non pourvus, recours aux contractuels' },
+    ],
+    physique: { hna: { delta: +0.4, duree: 2 }, adhesion: +2 },
+    preuve: 'C’est la seule discipline où le volume horaire est vraiment en cause : les enseignants déclarent 47 heures annuelles de sciences en CM1 pour 72 recommandées, soit un déficit de 35 %, quand leurs homologues européens en déclarent 58. Les enseignants du premier degré se disent souvent peu à l’aise avec cet enseignement — moins qu’avec les mathématiques. Le rapport pointe aussi que la promotion des démarches d’investigation, utiles pour l’intérêt des élèves, a pu se faire au détriment de l’acquisition des concepts fondamentaux.',
+    ideeRecue: '« Les sciences, ça s’apprend au collège. » Les écarts observés à TIMSS existent déjà en CM1, et la France est le pays où l’horaire réel s’écarte le plus de l’horaire prescrit. Ce qui n’est pas enseigné à l’école n’est pas rattrapé ensuite : c’est reporté sur des professeurs de physique-chimie qu’on ne parvient déjà plus à recruter.',
+    mot: "Trente-cinq pour cent de l'horaire officiel simplement absent des emplois du temps. Personne ne l'a décidé ; c'est ce qui rend la chose difficile à corriger.",
+  },
+
+  /* ----------------------------- 64 · moyens -------------------------- */
+  {
+    id: 'calcul_automatismes',
+    label: 'Techniques opératoires et automatismes : rétablir l’entraînement en calcul',
+    famille: 'moyens',
+    porteurs: ['HCSP', 'Conseil scientifique de l’éducation nationale', 'programmes 2025'],
+    perimetre: 'ministeriel',
+    cout: 0.14, coutETP: 0, pol: 3,
+    theme: 'calcul', once: true, reforme: true,
+    decouverte: { si: 'reussite_basse' },
+    vitrine: { parents: +6, enseignants: -2, presse: +4, compteurs: { reussite: +3 } },
+    reel: [
+      { compteur: 'reussite', central: 7, delai: 4, cadenas: 3, source: 'HCSP 2026 : la moindre importance accordée aux techniques opératoires explique une part de la baisse des résultats en calcul en fin d’élémentaire' },
+      { compteur: 'egalite',  central: 4, delai: 5, cadenas: 2, source: 'l’automatisation libère la mémoire de travail pour le raisonnement — bénéfice plus net pour les élèves les plus fragiles' },
+    ],
+    physique: {},
+    preuve: 'Le volume horaire de mathématiques n’est pas en cause : les élèves français reçoivent près de 1 450 heures entre 6 et 14 ans, pour une moyenne internationale de 1 100. Le HCSP désigne trois autres causes : la moindre place accordée aux techniques opératoires, qui explique une partie de la baisse en calcul ; l’introduction longtemps trop tardive des décimaux et des fractions, avancée en CE1 dans les derniers programmes ; et la rareté de l’enseignement explicite de la résolution de problèmes ouverts, introduit au cycle 3 en 2025.',
+    ideeRecue: '« Poser une division, c’est du par-cœur, l’essentiel est de comprendre. » Les deux ne s’opposent pas : l’automatisation libère la mémoire de travail, sans quoi l’élève dépense en calcul l’attention qu’il devrait consacrer au raisonnement. C’est l’un des rares points où les neurosciences cognitives et les enseignants les plus traditionnels tombent d’accord.',
+    mot: "La seule carte qui plaise à la fois au Conseil scientifique et à votre grand-oncle. Profitez-en, cela n'arrivera plus.",
+  },
+
+  /* ----------------------------- 65 · autorite ------------------------ */
+  {
+    id: 'ia_cadre',
+    label: 'Cadre national d’usage de l’intelligence artificielle en classe',
+    famille: 'autorite',
+    porteurs: ['HCSP (point de vigilance)', 'filière EdTech française', 'inspection générale'],
+    contre: ['ceux qui trouvent qu’on va trop vite', 'ceux qui trouvent qu’on va trop lentement — souvent dans la même réunion'],
+    perimetre: 'ministeriel',
+    cout: 0.22, coutETP: 400, pol: 4,
+    theme: 'ia', once: true, excl: 'numerique_educ', reforme: true,
+    decouverte: { annee: 3, note: 'Les usages « sauvages » de l’intelligence artificielle explosent chez les élèves comme chez les enseignants. On vous demande un cadre.' },
+    vitrine: { parents: +5, enseignants: +3, presse: +6, compteurs: { reussite: +2 } },
+    reel: [
+      { compteur: 'reussite', central: 3, delai: 5, cadenas: 1, source: 'HCSP 2026 : outils expérimentés à grande échelle avec des résultats encourageants, mais évolutions trop rapides pour une preuve établie' },
+      { compteur: 'egalite',  central: -2, delai: 5, cadenas: 1, source: 'HCSP 2026 : le renforcement des inégalités figure parmi les risques identifiés, au même titre que la « spoliation cognitive »' },
+    ],
+    physique: { adhesion: +2 },
+    preuve: 'Le HCSP classe l’intelligence artificielle parmi ses points de vigilance, pas parmi ses recommandations — et la nuance est le message. Les usages se développent massivement et sans cadre, chez les élèves comme chez les enseignants ; des outils issus de la filière EdTech française sont expérimentés à grande échelle avec des résultats encourageants. Mais quatre risques sont explicitement nommés : la « spoliation cognitive » si l’IA prend en charge la réflexion à la place de l’élève, l’hyperpersonnalisation doublée d’un contrôle excessif, le renforcement des inégalités, et les questions éthiques, juridiques et environnementales.',
+    ideeRecue: '« Interdire, ou généraliser. » Le rapport ne tranche ni dans un sens ni dans l’autre, et c’est un choix argumenté : les évolutions sont trop rapides pour qu’une preuve solide existe, et un cadre qui se contenterait d’interdire serait contourné dans l’heure. Un cadenas sur les acquis : le jeu vous laisse la prendre, il ne vous promet rien.',
+    mot: "Vous légiférez sur une technologie qui aura changé deux fois avant la publication du décret. C'est aussi ce que fera votre successeur.",
   },
 ];
 
