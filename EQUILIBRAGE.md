@@ -433,6 +433,7 @@ remplacées sont d'origine institutionnelle), OCDE (36 semaines contre 38,
 (allocation de stage : 50/75/100 € par semaine), rapport Villani-Torossian,
 Conseil d'évaluation de l'école.
 
+<<<<<<< HEAD
 ## 3 octies. Le rapport HCSP d'août 2026 — la source qui corrige le jeu
 
 Le Haut-commissariat à la Stratégie et au Plan a publié en août 2026
@@ -517,6 +518,8 @@ enseignants).
 Équilibrage revérifié après tous ces changements : **4/4 sur quatre jeux de
 graines**, survie du joueur attentif 45-50 %.
 
+=======
+>>>>>>> origin/main
 ## 4. Les constantes du moteur
 
 Inchangées depuis la phase 1 (voir `moteur/constantes.js`, tout est commenté
@@ -539,7 +542,11 @@ d'implémentation indexé sur l'adhésion (Slavin), capacité d'absorption de
 | Paramètre | Valeur | Ce qu'il faut regarder |
 |---|---|---|
 | `RENVOI.remaniementBase` | 0,205 | Une fin subie par tirage peut frustrer. Si les testeurs la trouvent arbitraire, 0,15 et compenser par les convocations (qui, elles, se méritent). |
+<<<<<<< HEAD
 | Rotation du menu | 15/65 | Vérifier qu'un joueur qui vise une doctrine trouve ses cartes assez souvent ; sinon, garantir 1 carte de chaque famille par menu. |
+=======
+| Rotation du menu | 14/55 | Vérifier qu'un joueur qui vise une doctrine trouve ses cartes assez souvent ; sinon, garantir 1 carte de chaque famille par menu. |
+>>>>>>> origin/main
 | `PALIERS_BERCY[0].marge` | 1,80 Md€ | Contrôle l'ambition possible sur cinq ans. Desserré en phase « sources » ; à resserrer si les testeurs trouvent le mandat trop confortable en fin de course. |
 | Seuils de `DECLENCHEURS` | HNA 10,6 · IPS 18,6 · réussite 46 | Vérifier que les dossiers remontent au moment où le joueur ressent le problème, pas avant ni longtemps après. |
 | `GREVE.conflictualiteLatente` | 0,42 | La paix sociale baisse sans grève visible ; l'interface l'explique-t-elle assez ? |
