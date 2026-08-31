@@ -203,7 +203,7 @@ function ecranAccueil(sauvegarde) {
 function ecranNomination() {
   const d = docu('Appel de Matignon', 'On vous propose la rue de Grenelle', 'juin 2027');
   d.classList.add('papier');
-  d.appendChild(el('p', 'chapo', 'Le gouvernement se forme. Votre téléphone sonne : le portefeuille proposé est l’Éducation nationale — le premier budget de l’État, 64,5 milliards d’euros par an, 1,2 million d’agents, 12 millions d’élèves. La durée moyenne dans le poste dépasse rarement deux ans.'));
+  d.appendChild(el('p', 'chapo', 'Le gouvernement se forme. Votre téléphone sonne : le portefeuille proposé est l’Éducation nationale — le premier budget de l’État — 65,3 milliards d’euros au projet de loi de finances qui s’annonce, 1,2 million d’agents, 12 millions d’élèves. La durée moyenne dans le poste dépasse rarement deux ans.'));
   d.appendChild(el('div', 'note-passation',
     'Votre prédécesseur, huitième en quatre ans, laisse un mot : « Tout est dans les dossiers. Les dossiers sont dans les cartons. Les cartons sont au garde-meuble, la DGESCO sait lequel. Méfiez-vous de juillet, de septembre et de janvier — le reste de l’année est calme, sauf le reste de l’année. Bonne chance.'
     + '<span class="ps">P.-S. — La photocopieuse du deuxième est en panne depuis 2019. C’est le dossier le plus consensuel du ministère : ne le réglez pas, il fédère. »</span>'));
@@ -386,7 +386,7 @@ function ecranAtelier(q) {
   d.appendChild(el('h2', '', MOM.titre));
   d.appendChild(el('p', 'chapo', (MOM.chapo || MOM.titreSuite) + ' L’effet vitrine est chiffré : vous le verrez. L’effet réel ne l’est pas — seuls le niveau de preuve (🔒) et le délai sont connus, et vous découvrirez au bilan ce que vous avez produit. Rien ne s’applique sans les personnels.'));
   /* Le budget, en vrai : tout le mandat se joue dans un liseré. */
-  const M = K.CADRAGE.missionHorsCAS;                       // 64,49 Md€
+  const M = K.CADRAGE.missionHorsCAS;                       // 65,30 Md€ (plafond PLF 2027)
   const salaires = M * K.CADRAGE.partMasseSalariale;
   const engages = S.chargesRecurrentes;
   const libre = Math.max(0, q.tresor);
@@ -406,6 +406,18 @@ function ecranAtelier(q) {
     </div>
     <div class="budget-legende" style="margin-top:6px"><span>Le liseré vert est tout ce que vous pouvez décider cette année : <b>${fmt1((libre / M) * 100)} %</b> du budget. Chaque mesure pérenne le réduit pour toujours — pour vous et vos successeurs.</span></div>`;
   d.appendChild(bb);
+
+  if ((q.nouveaux || []).length) {
+    /* On n'annonce que ce que le joueur voit réellement dans le menu : les
+       autres dossiers ouverts attendront leur tour de rotation. */
+    const ici = q.nouveaux.map((id) => PAR_ID[id]).filter((c) => c && q.dispo.includes(c));
+    const ailleurs = q.nouveaux.length - ici.length;
+    if (ici.length) {
+      d.appendChild(el('div', 'bandeau-neuf',
+        `<b>${ici.length} dossier${ici.length > 1 ? 's remontent' : ' remonte'} sur votre bureau.</b> Le catalogue ne vous est pas remis en entier le premier jour : un ministre découvre son ministère au fil des rapports, des indicateurs et des crises. ${ici.map((c) => `« ${esc(c.label)} »`).join(', ')}.`
+        + (ailleurs ? ` ${ailleurs} autre${ailleurs > 1 ? 's se sont ouverts' : ' s’est ouvert'} en coulisse : ${ailleurs > 1 ? 'ils arriveront' : 'il arrivera'} dans un prochain menu.` : '')));
+    }
+  }
 
   d.appendChild(el('div', 'legende-cadenas', '<b>Échelle de preuve</b> (d’après le Teaching &amp; Learning Toolkit de l’EEF) — 🔒🔒🔒🔒🔒 : plus de 90 études concordantes, l’effet tiré reste proche de l’annonce (±20 %) · 🔒🔒🔒 : preuve correcte, l’effet peut aller de la moitié au double · 🔒 : quasi aucune évaluation, l’effet peut aller du négatif au triple. Un cadenas n’est pas un jugement : c’est la largeur de votre pari.'));
 
@@ -455,7 +467,7 @@ function ecranAtelier(q) {
     tete.style.cssText = 'display:flex;flex-direction:column;gap:6px;cursor:pointer';
     tete.innerHTML = `
       <span class="famille" style="color:${famCoul}">${famNom}</span>
-      <h3>${esc(c.label)}</h3>
+      <h3>${esc(c.label)}${(q.nouveaux || []).includes(c.id) ? '<span class="nouveau-dossier">nouveau dossier</span>' : ''}</h3>
       <div class="chiffres"><span>${fmt0(k0.cout * 1000)} M€/an</span><span>${k0.pol}${c.perimetre === 'matignon' ? '×2' : ''} capital</span><span>preuve ${'🔒'.repeat(cadMax)}${'·'.repeat(Math.max(0, 5 - cadMax))}</span></div>
       <div class="plie">Porté par : ${c.porteurs.map(esc).join(' · ')}</div>`;
 
@@ -833,6 +845,88 @@ function verdictProse(B) {
   return 'Un mandat dans la moyenne haute de ce que la Ve République fait de ses ministres de l’Éducation : des choix, des renoncements, et un tableau de bord qui ne dit pas encore la vérité.';
 }
 
+/* --- repères sourcés : rendu partagé ---------------------------------------- */
+/* La même fonction sert la note de cadrage de juin 2027 et l'onglet permanent
+   « Comprendre le jeu ». Chaque chiffre porte sa source, cliquable. */
+function citer(idSource) {
+  const S = SOURCES[idSource];
+  if (!S) return '';
+  const lib = `${esc(S.org)} — ${esc(S.titre)} (${esc(S.date)})`;
+  return `<cite>${S.url ? `<a href="${S.url}" target="_blank" rel="noopener">${lib}</a>` : lib}</cite>`;
+}
+
+function serieBudget() {
+  /* Une décimale toujours affichée : « 56 » à côté de « 52,3 » se lit mal. */
+  const md1 = (x) => x.toLocaleString('fr-FR', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+  const max = Math.max(...SERIE_BUDGET.map((b) => b.md));
+  const min = Math.min(...SERIE_BUDGET.map((b) => b.md)) - 3;
+  const g = el('div', '');
+  g.innerHTML = `<div class="rep-serie">${SERIE_BUDGET.map((b) => {
+    const h = Math.round(18 + ((b.md - min) / (max - min)) * 74);
+    return `<div class="col${b.prevision ? ' prev' : ''}"><span class="md">${md1(b.md)}</span>`
+         + `<i class="bar" style="height:${h}px"></i><span class="an">${b.annee}</span></div>`;
+  }).join('')}</div>`
+  + `<p class="rep-serie-note">Crédits de paiement de la mission « Enseignement scolaire », en milliards d’euros courants, hors contribution au compte d’affectation spéciale Pensions. 2021 n’est pas représentée : le périmètre de la mission a changé cette année-là. La dernière colonne, hachurée, est le plafond prévisionnel du PLF 2027 — celui sur lequel s’ouvre votre mandat.</p>`
+  + `<ul class="rep-liste">${SERIE_BUDGET.filter((b) => b.note).map((b) => `<li><span class="v">${b.annee}</span><span class="l">${fr(b.note)}${citer(b.src)}</span></li>`).join('')}</ul>`;
+  return g;
+}
+
+function blocReperes(cles, ouvert) {
+  const z = el('div', 'reperes');
+  for (const r of REPERES) {
+    if (cles && !cles.includes(r.cle)) continue;
+    const dt = el('details', 'rep-theme');
+    if (ouvert === 'tous' || (Array.isArray(ouvert) && ouvert.includes(r.cle))) dt.open = true;
+    dt.innerHTML = `<summary><h4>${esc(r.titre)}</h4><span class="res">${fr(r.resume)}</span></summary>`;
+    const c = el('div', 'rep-corps');
+    if (r.serie === 'budget') c.appendChild(serieBudget());
+    c.appendChild(el('ul', 'rep-liste', r.chiffres.map((x) =>
+      `<li><span class="v">${fr(x.v)}</span><span class="l">${fr(x.l)}.${citer(x.src)}</span></li>`).join('')));
+    c.appendChild(el('div', 'rep-retenir', `<b>Ce qu’il faut en retenir</b>${fr(r.aRetenir)}`));
+    dt.appendChild(c);
+    z.appendChild(dt);
+  }
+  return z;
+}
+
+/* --- juin 2027 : la note de cadrage remise au ministre ----------------------- */
+function ecranReperes() {
+  const d = el('article', 'doc large');
+  d.appendChild(el('div', 'entete-doc', `<span class="type">Note de cadrage — direction générale</span><span class="date">${ETAT.dateLabel}</span>`));
+  d.appendChild(el('h2', '', 'Ce que vous devez savoir avant votre première décision'));
+  d.appendChild(el('p', 'chapo', 'Trois pages, remises à tout nouveau ministre le jour de sa prise de fonction. Elles ne contiennent aucune recommandation : seulement l’état du système, avec ses sources. Vous pourrez les rouvrir à tout moment par le bouton « Comprendre le jeu », en bas à gauche de l’écran.'));
+  d.appendChild(blocReperes(['budget', 'demographie', 'niveaux'], ['budget']));
+  d.appendChild(el('p', 'note-passation', 'Trois chiffres à garder en tête pendant tout le mandat : votre marge nouvelle se compte en centaines de millions quand la mission pèse 65 milliards ; la démographie vous rendra des milliers de postes chaque année, et c’est vous qui déciderez à qui ; et aucune enquête internationale publiée pendant votre mandat ne mesurera quoi que ce soit de ce que vous aurez fait.<span class="ps">Les six autres fiches — inégalités, métier, remplacement, organisation, climat scolaire, niveaux de preuve — sont dans l’onglet « Comprendre le jeu ».</span>'));
+  const ok = el('button', 'btn tamponner', 'J’ai lu — passer aux premières annonces');
+  ok.onclick = () => suivant(null);
+  d.appendChild(el('div', 'actions')).appendChild(ok);
+  scene(d);
+}
+
+/* --- l'onglet permanent ------------------------------------------------------ */
+function ouvrirComprendre() {
+  const c = $('#comprendre-corps');
+  c.innerHTML = '';
+  const t = el('div', '');
+  t.innerHTML = `<p class="chapo">Les données de référence sur lesquelles le jeu est construit, thème par thème, avec leurs sources. Rien ici n’est simulé : ce sont les chiffres publiés par la DEPP, le Sénat, la Cour des comptes et l’OCDE, tels qu’ils étaient en août 2026. Le moteur du jeu les utilise comme état de départ ; la fiche « Comment le jeu note les mesures » explique le reste.</p>`;
+  c.appendChild(t);
+  c.appendChild(blocReperes(null, ['preuve']));
+  const src = el('div', '');
+  src.innerHTML = `<h3>Toutes les sources</h3><ul class="rep-sources">${
+    Object.values(SOURCES).sort((a, b) => a.org.localeCompare(b.org, 'fr')).map((S) =>
+      `<li><span class="org">${esc(S.org)}</span> — ${S.url ? `<a href="${S.url}" target="_blank" rel="noopener">${esc(S.titre)}</a>` : esc(S.titre)} <span style="color:var(--encre-3)">(${esc(S.date)})</span></li>`).join('')
+  }</ul>
+  <p class="rep-serie-note">Les personnages, les organisations syndicales et les titres de presse du jeu sont des pseudonymes transparents : la satire est symétrique, personne n’est épargné. En revanche, les propositions politiques citées sur les cartes sont réelles et attribuées à leurs auteurs, et tous les chiffres ci-dessus sont vérifiables aux adresses indiquées.</p>`;
+  c.appendChild(src);
+  $('#comprendre').hidden = false;
+  $('#comprendre').scrollTop = 0;
+  document.documentElement.style.overflow = 'hidden';
+}
+function fermerComprendre() {
+  $('#comprendre').hidden = true;
+  document.documentElement.style.overflow = '';
+}
+
 /* -------------------------------------------------------- boucle & sauvegarde */
 const CLE_SAUVE = 'rue-de-grenelle-v3';   // v3 : feuille de route libre (formats antérieurs incompatibles)
 const ETAT = { s: null, gen: null, journalLu: 0, pas: [], dateLabel: 'juin 2027', rentreeRatee: false, enAttente: null, rendre: null };
@@ -841,6 +935,7 @@ function dateDe(q) {
   const S = ETAT.s, an = S.anneeCiv || 2027;
   if (q.type === 'nomination') return 'juin 2027';
   if (q.type === 'doctrine') return 'juin 2027';
+  if (q.type === 'reperes') return 'juin 2027';
   if (q.type === 'retrait') return `octobre ${ETAT.s.anneeCiv || 2027}`;
   if (q.type === 'dossier') return 'été 2027';
   if (q.type === 'audience') return `octobre ${ETAT.s.anneeCiv || 2027}`;
@@ -861,6 +956,7 @@ function rendre(q) {
   majHud();
   if (q.type === 'nomination') ecranNomination();
   else if (q.type === 'doctrine') ecranDoctrine();
+  else if (q.type === 'reperes') ecranReperes();
   else if (q.type === 'retrait') ecranRetrait(q);
   else if (q.type === 'dossier') ecranDossier(q);
   else if (q.type === 'audience') ecranAudience(q);
@@ -903,7 +999,12 @@ function demarrer(sauve) {
   rendre(res.value);
 }
 
+$('#comprendre-btn').onclick = ouvrirComprendre;
+$('#comprendre-fermer').onclick = fermerComprendre;
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !$('#comprendre').hidden) fermerComprendre(); });
+
 (function initialiser() {
+  $('#comprendre-btn').hidden = false;
   let sauve = null;
   try { sauve = JSON.parse(localStorage.getItem(CLE_SAUVE) || 'null'); } catch (e) { sauve = null; }
   if (sauve && !(sauve.graine && Array.isArray(sauve.pas))) sauve = null;

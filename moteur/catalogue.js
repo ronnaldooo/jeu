@@ -816,6 +816,339 @@ export const CATALOGUE = [
     ideeRecue: '« Les devoirs, c’est aux parents de s’en occuper. » C’est exactement ainsi que l’école transforme les inégalités familiales en inégalités scolaires — chaque soir, gratuitement.',
     mot: "Le dispositif existe depuis 2017. Vous le rendez systématique — c'est-à-dire que vous allez découvrir qui, exactement, était volontaire.",
   },
+
+  /* ======================================================================
+     EXTENSION DU CATALOGUE — cartes 41 à 55 (phase 4)
+     Ces cartes ne sont PAS sur le bureau au premier jour : chacune porte un
+     champ `decouverte` qui dit à quelle condition le dossier remonte. Un
+     ministre ne connaît pas son ministère en juin ; il l'apprend, dossier par
+     dossier, souvent parce qu'un rapport tombe ou parce qu'une crise éclate.
+     ====================================================================== */
+
+  /* ----------------------------- 41 · moyens -------------------------- */
+  {
+    id: 'tutorat',
+    label: 'Tutorat intensif en petits groupes pour les élèves les plus fragiles',
+    famille: 'moyens',
+    porteurs: ['Education Endowment Foundation', 'programmes de rattrapage post-Covid britanniques et néerlandais'],
+    perimetre: 'ministeriel',
+    cout: 0.58, coutETP: 0, pol: 4,
+    theme: 'tutorat', once: true, reforme: true,
+    decouverte: { annee: 2, note: 'Les évaluations nationales de septembre remontent : la DEPP vous propose un dispositif de rattrapage ciblé.' },
+    vitrine: { parents: +4, enseignants: +2, presse: +2, compteurs: { reussite: +3, egalite: +2 } },
+    reel: [
+      { compteur: 'reussite', central: 8, delai: 3, cadenas: 5, source: 'EEF : tutorat en petits groupes +4 mois de progrès, tutorat individuel +5 mois, plus de 60 études' },
+      { compteur: 'egalite',  central: 7, delai: 3, cadenas: 4, source: 'EEF : effet supérieur pour les élèves défavorisés, à condition que le ciblage soit réel' },
+    ],
+    physique: {},
+    preuve: 'Le tutorat est, avec le feedback, l’intervention la mieux documentée du répertoire de l’Education Endowment Foundation : +4 mois de progrès pour le tutorat en petits groupes, +5 mois en individuel, sur plus de soixante études. Les conditions sont connues et exigeantes : trois séances par semaine, des groupes de un à trois élèves, douze semaines au moins, des tuteurs formés.',
+    ideeRecue: '« Du soutien scolaire, on en fait déjà partout. » Ce qui existe partout, c’est l’aide diffuse en classe entière. Ce qui produit l’effet mesuré, c’est un protocole intensif et court — et c’est justement ce qui coûte, parce qu’il faut du temps d’adulte qualifié en plus.',
+    mot: "L'une des rares cartes à cinq cadenas du catalogue. Elle ne fera jamais la une, mais elle est la seule dont vous serez à peu près sûr au bilan.",
+  },
+
+  /* ----------------------------- 42 · moyens -------------------------- */
+  {
+    id: 'lecture_explicite',
+    label: 'Enseignement explicite du code et de la fluence, CP-CE1',
+    famille: 'moyens',
+    porteurs: ['Conseil scientifique de l’éducation nationale', 'Education Endowment Foundation'],
+    perimetre: 'ministeriel',
+    cout: 0.19, coutETP: 0, pol: 4,
+    theme: 'lecture', once: true, reforme: true,
+    decouverte: { si: 'apres_un_an' },
+    vitrine: { parents: +3, enseignants: -3, presse: +2, compteurs: { reussite: +3 } },
+    reel: [
+      { compteur: 'reussite', central: 9, delai: 4, cadenas: 5, source: 'EEF : enseignement systématique du code +5 mois de progrès, niveau de preuve maximal' },
+      { compteur: 'egalite',  central: 5, delai: 4, cadenas: 4, source: 'EEF : effet renforcé pour les élèves les plus éloignés de la lecture à l’entrée au CP' },
+    ],
+    physique: { adhesion: -3 },
+    preuve: 'L’enseignement systématique et explicite du code alphabétique est classé à +5 mois de progrès au plus haut niveau de preuve par l’Education Endowment Foundation. Les évaluations nationales de CP montrent d’ailleurs des progrès continus depuis 2019 sur les compétences les plus directement travaillées. L’effet est concentré sur les débuts d’apprentissage et sur les élèves les plus éloignés de l’écrit.',
+    ideeRecue: '« La guerre des méthodes de lecture est un faux débat entretenu par la politique. » Le débat scientifique, lui, est largement clos depuis vingt ans. Ce qui reste ouvert — et ce qui décide de l’effet réel — c’est la formation des maîtres et la liberté pédagogique : un protocole imposé d’en haut à des enseignants qui n’y adhèrent pas produit environ zéro.',
+    mot: "Preuve maximale, coût minimal, et une salle des professeurs qui vous demandera de quel droit un ministre décide comment on apprend à lire.",
+  },
+
+  /* ----------------------------- 43 · moyens -------------------------- */
+  {
+    id: 'absences_institutionnelles',
+    label: 'Sortir examens, réunions et formations du temps de classe',
+    famille: 'moyens',
+    porteurs: ['Cour des comptes', 'fédérations de parents'],
+    contre: ['déplacer ces heures hors du temps de classe, c’est allonger la présence des enseignants dans l’établissement'],
+    perimetre: 'ministeriel',
+    cout: 0.21, coutETP: 0, pol: 6,
+    theme: 'remplacement', once: true, reforme: false,
+    decouverte: { si: 'heures_perdues', note: 'La Cour des comptes publie son rapport sur la gestion des absences. Il est sur toutes les tables.' },
+    vitrine: { parents: +7, enseignants: -5, presse: +4, compteurs: { sante: +4 } },
+    reel: [
+      { compteur: 'sante',    central: 7, delai: 2, cadenas: 4, source: 'Cour des comptes 2025 : deux tiers des absences non remplacées ont une cause institutionnelle, pas individuelle' },
+      { compteur: 'reussite', central: 4, delai: 3, cadenas: 4, source: 'le temps d’enseignement effectivement reçu est un déterminant direct des acquis' },
+    ],
+    physique: { hna: { delta: -1.9, duree: 99 } },
+    greve: { intensite: 2, theme: 'statut', segment: 'college' },
+    preuve: 'La Cour des comptes établit en décembre 2025 que 9,3 % des heures sont perdues au collège et au lycée, et surtout que les deux tiers des absences non remplacées ne sont pas individuelles : elles sont produites par le système lui-même — surveillance et correction d’examens, formation, réunions, sorties. Le rapport sénatorial de juin 2025 mesure 4,3 % du temps scolaire perdu en moyenne et 7,4 % dans le second degré : deux chiffres officiels, deux périmètres, un même diagnostic.',
+    ideeRecue: '« Les profs sont trop souvent absents. » Un tiers seulement de ces absences relève de raisons individuelles. Les deux autres tiers, c’est l’institution qui convoque ses propres enseignants pendant les heures de cours — puis qui s’étonne que les heures manquent.',
+    mot: "La mesure la moins chère du catalogue pour rendre des heures aux élèves. Elle consiste à demander au ministère d'arrêter de se déranger lui-même.",
+  },
+
+  /* ----------------------------- 44 · parcours ------------------------ */
+  {
+    id: 'pfmp',
+    label: 'Doubler l’allocation de stage et le suivi en lycée professionnel',
+    famille: 'parcours',
+    porteurs: ['prolongement du décret du 11 août 2023', 'régions', 'branches professionnelles'],
+    perimetre: 'ministeriel',
+    cout: 0.35, coutETP: 900, pol: 3,
+    theme: 'voie_pro', once: true, reforme: false,
+    decouverte: { annee: 2 },
+    vitrine: { parents: +4, enseignants: +3, presse: +2, compteurs: { egalite: +3 } },
+    reel: [
+      { compteur: 'egalite',  central: 6, delai: 3, cadenas: 3, source: 'la voie professionnelle scolarise un tiers des lycéens et concentre les élèves d’origine populaire' },
+      { compteur: 'reussite', central: 3, delai: 4, cadenas: 2, source: 'l’effet sur les acquis passe par la persévérance : la gratification réduit l’abandon en cours de cursus' },
+    ],
+    physique: {},
+    preuve: 'Depuis le décret du 11 août 2023, les périodes de formation en milieu professionnel sont gratifiées par l’État : 50 € par semaine en seconde ou première année de CAP, 75 € puis 100 € ensuite, soit jusqu’à 2 100 € sur un cursus de baccalauréat professionnel. Le levier est social avant d’être pédagogique : la voie professionnelle accueille les élèves les plus fragiles — 40 % en difficulté en français et 70 % en mathématiques, contre 6 % et 20 % dans les voies générale et technologique — et le taux d’insertion six mois après le diplôme ne dépasse pas 40 %.',
+    ideeRecue: '« Le lycée professionnel, c’est l’apprentissage en moins bien. » Il scolarise un tiers des lycéens, dans des territoires et des familles où l’apprentissage n’offre pas d’alternative : c’est le seul lycée de beaucoup de communes.',
+    mot: "Un tiers des lycéens, et la moitié de l'attention médiatique d'une réforme du bac général.",
+  },
+
+  /* ----------------------------- 45 · moyens -------------------------- */
+  {
+    id: 'annee_38',
+    label: 'Étaler l’année scolaire sur 38 semaines et alléger les journées',
+    famille: 'parcours',
+    porteurs: ['OCDE', 'chronobiologistes', 'une partie des fédérations de parents'],
+    contre: ['le tourisme, les collectivités, les familles, et à peu près tout le monde en juillet'],
+    perimetre: 'matignon',
+    cout: 0.30, coutETP: 0, pol: 9,
+    theme: 'rythmes', once: true, excl: 'calendrier', reforme: true,
+    decouverte: { annee: 3, note: 'Le rapport annuel de l’OCDE relance le sujet des rythmes. Matignon demande une note.' },
+    vitrine: { parents: -6, enseignants: -4, presse: +5, compteurs: { reussite: +2 } },
+    reel: [
+      { compteur: 'reussite', central: 6, delai: 5, cadenas: 2, source: 'OCDE 2025 : mêmes heures réparties sur 36 semaines contre 38, 7 h de présence par jour au collège contre 5 ailleurs' },
+      { compteur: 'sante',    central: 3, delai: 4, cadenas: 2, source: 'la charge quotidienne est un déterminant du climat scolaire et de la fatigue enseignante' },
+    ],
+    physique: {},
+    greve: { intensite: 3, theme: 'statut', segment: 'tous' },
+    preuve: 'Les élèves français reçoivent 864 heures d’enseignement par an en élémentaire et 973 au collège, soit environ 600 heures de plus que la moyenne de l’OCDE sur l’ensemble de la scolarité obligatoire. Ces heures tiennent dans 36 semaines quand la moyenne est de 38 : les journées sont donc parmi les plus longues du monde développé — 7 heures de présence quotidienne au collège contre 5 ailleurs. Le niveau de preuve sur les rythmes reste faible : deux cadenas, pas davantage.',
+    ideeRecue: '« Les élèves français n’ont pas assez d’heures de cours. » Ils en ont plus que presque partout ailleurs, sur moins de jours, avec la plus forte proportion de français et de mathématiques de l’OCDE — pour des résultats moyens. Ce n’est pas le volume qui manque.',
+    mot: "Aucun ministre n'a jamais gagné une bataille sur les rythmes scolaires. Aucun n'a jamais résisté à l'envie d'essayer.",
+  },
+
+  /* ----------------------------- 46 · autonomie ----------------------- */
+  {
+    id: 'directeurs',
+    label: 'Décharge complète et statut pour les directeurs d’école',
+    famille: 'autonomie',
+    porteurs: ['SNPDEN', 'associations de directeurs', 'plusieurs rapports parlementaires'],
+    contre: ['la FSU refuse un supérieur hiérarchique dans l’école'],
+    perimetre: 'ministeriel',
+    cout: 0.44, coutETP: 3800, pol: 6,
+    theme: 'direction', once: true, excl: 'gouvernance', reforme: true,
+    decouverte: { si: 'apres_un_an' },
+    vitrine: { parents: +2, enseignants: +4, presse: +1, compteurs: { sante: +4 } },
+    reel: [
+      { compteur: 'sante',    central: 6, delai: 3, cadenas: 3, source: 'la charge administrative des directeurs est identifiée comme un facteur d’usure majeur dans le premier degré' },
+      { compteur: 'reussite', central: 3, delai: 5, cadenas: 3, source: 'EEF : le pilotage pédagogique d’équipe est une condition d’efficacité des interventions, pas un effet en soi' },
+    ],
+    physique: { adhesion: +4, affection: +3 },
+    greve: { intensite: 2, theme: 'statut', segment: '1erdegre' },
+    preuve: 'L’école primaire française est le seul niveau du système sans chef d’établissement : le directeur d’école est un enseignant déchargé, sans autorité hiérarchique, qui absorbe l’administratif, la sécurité, le lien avec la mairie et les familles. C’est un facteur d’usure documenté, et le maillon par lequel passe — ou ne passe pas — toute réforme pédagogique du premier degré.',
+    ideeRecue: '« Un statut, c’est juste une prime et un titre. » C’est aussi la question de savoir qui, dans une école, peut demander à une équipe de faire quelque chose. La réponse actuelle est : personne. C’est pour cela que la mesure est à la fois populaire chez les directeurs et combattue par la principale fédération.',
+    mot: "Le seul niveau du système éducatif où personne n'est le chef. Ce n'est pas un oubli, c'est une position politique — vieille de quarante ans.",
+  },
+
+  /* ----------------------------- 47 · moyens -------------------------- */
+  {
+    id: 'plan_maths',
+    label: 'Plan mathématiques : formation disciplinaire en école, par constellations',
+    famille: 'moyens',
+    porteurs: ['rapport Villani-Torossian', 'DEPP (TIMSS)', 'sociétés savantes'],
+    perimetre: 'ministeriel',
+    cout: 0.28, coutETP: 700, pol: 3,
+    theme: 'formation_maths', once: true, reforme: true,
+    decouverte: { si: 'reussite_basse', note: 'TIMSS retombe dans l’actualité : 484 en CM1 contre 524 dans l’Union européenne. La question vous sera posée.' },
+    vitrine: { parents: +3, enseignants: +2, presse: +3, compteurs: { reussite: +2 } },
+    reel: [
+      { compteur: 'reussite', central: 7, delai: 4, cadenas: 4, source: 'EEF : la formation disciplinaire longue et située est l’un des rares leviers de formation à effet mesuré' },
+      { compteur: 'sante',    central: 3, delai: 3, cadenas: 3, source: 'TALIS : le sentiment de compétence disciplinaire est un déterminant du maintien dans le métier' },
+    ],
+    physique: { hna: { delta: +0.6, duree: 2 }, adhesion: +3 },
+    preuve: 'Les élèves de CM1 obtiennent 484 en mathématiques à TIMSS 2023, contre 524 pour la moyenne des pays de l’Union européenne et 525 pour l’OCDE ; 15 % n’atteignent pas le niveau minimal, et les résultats sont stables depuis 2019. Le rapport Villani-Torossian a établi le diagnostic : les professeurs des écoles sont très majoritairement issus de filières littéraires et reçoivent peu de formation disciplinaire en mathématiques. Le format « constellations » — petits groupes d’enseignants suivis dans la durée par un pair formé — est celui dont l’effet est le mieux étayé.',
+    ideeRecue: '« Le niveau en maths baisse partout, c’est une tendance mondiale. » L’écart de la France à ses voisins européens en CM1 est de 40 points et il ne se réduit pas : ce n’est pas une dérive commune, c’est un décrochage propre.',
+    mot: "Quarante points d'écart avec la moyenne européenne dès le CM1. On ne les rattrape pas en changeant le programme du lycée.",
+  },
+
+  /* ----------------------------- 48 · mixite -------------------------- */
+  {
+    id: 'affelnet',
+    label: 'Affectation au lycée pilotée par la mixité sociale',
+    famille: 'mixite',
+    porteurs: ['expérience parisienne depuis 2021', 'chercheurs en économie de l’éducation'],
+    contre: ['les fédérations de parents des secteurs favorisés', 'une partie des élus locaux'],
+    perimetre: 'ministeriel',
+    cout: 0.05, coutETP: 0, pol: 7,
+    theme: 'affectation', once: true, excl: 'sectorisation', reforme: true,
+    decouverte: { si: 'segregation_haute' },
+    vitrine: { parents: -5, enseignants: +2, presse: +3, compteurs: { egalite: +4 } },
+    reel: [
+      { compteur: 'egalite',  central: 8, delai: 3, cadenas: 3, source: 'l’algorithme d’affectation parisien a réduit la ségrégation entre lycées sans dégrader les résultats moyens' },
+      { compteur: 'reussite', central: -1, delai: 4, cadenas: 2, source: 'les évaluations disponibles ne montrent pas d’effet négatif sur les acquis, mais le suivi reste court' },
+    ],
+    physique: { segregation: -1.6 },
+    preuve: 'Depuis 2021, l’affectation en seconde à Paris pondère les vœux par l’indice de position sociale : la ségrégation entre lycées a reculé sans dégradation mesurée des résultats. Le levier est puissant parce qu’il ne coûte presque rien — c’est un paramètre d’algorithme — et fragile pour la même raison : un successeur le change en une circulaire.',
+    ideeRecue: '« La mixité sociale, c’est bon pour les uns et mauvais pour les autres. » Les travaux disponibles concluent à un gain net pour les élèves défavorisés et à un effet proche de zéro pour les favorisés. Ce que perdent ces derniers n’est pas mesuré en points : c’est un entre-soi.',
+    mot: "Cinq millions d'euros, un paramètre d'algorithme, et la totalité des associations de parents du 5e arrondissement.",
+  },
+
+  /* ----------------------------- 49 · moyens -------------------------- */
+  {
+    id: 'cantine',
+    label: 'Cantine à un euro et petits déjeuners en éducation prioritaire',
+    famille: 'moyens',
+    porteurs: ['dispositifs existants à généraliser', 'collectivités', 'associations de lutte contre la pauvreté'],
+    perimetre: 'ministeriel',
+    cout: 0.33, coutETP: 0, pol: 2,
+    theme: 'social', once: true, reforme: false,
+    decouverte: { annee: 2 },
+    vitrine: { parents: +8, enseignants: +3, presse: +4, compteurs: { egalite: +3 } },
+    reel: [
+      { compteur: 'egalite',  central: 5, delai: 3, cadenas: 3, source: 'les dispositifs d’alimentation scolaire ciblés améliorent l’assiduité et la disponibilité aux apprentissages' },
+      { compteur: 'reussite', central: 2, delai: 4, cadenas: 2, source: 'l’effet sur les acquis est indirect et modeste : il passe par la présence et l’attention' },
+    ],
+    physique: {},
+    preuve: 'La restauration scolaire relève des collectivités, mais l’État finance depuis 2019 la tarification à un euro dans les communes qui s’y engagent, et les petits déjeuners en éducation prioritaire. La littérature sur l’alimentation scolaire est convergente sur l’assiduité et la disponibilité aux apprentissages, plus modeste sur les acquis eux-mêmes.',
+    ideeRecue: '« Ce n’est pas le rôle de l’école. » C’est déjà son rôle depuis 1881 dans les faits, et le seul repas complet de la journée pour une part non négligeable des élèves d’éducation prioritaire.',
+    mot: "La carte la moins contestée du catalogue. Profitez-en, il n'y en a qu'une.",
+  },
+
+  /* ----------------------------- 50 · autorite ------------------------ */
+  {
+    id: 'pause_lycee',
+    label: 'Extension de la pause numérique au lycée',
+    famille: 'autorite',
+    porteurs: ['prolongement de la mesure de 2025', 'plusieurs candidats', 'une majorité de proviseurs'],
+    perimetre: 'ministeriel',
+    cout: 0.16, coutETP: 0, pol: 3,
+    theme: 'numerique_tel', once: true, reforme: false,
+    decouverte: { si: 'apres_pause_numerique', note: 'La pause numérique tourne au collège. Les proviseurs de lycée demandent la même chose.' },
+    vitrine: { parents: +7, enseignants: +4, presse: +5, compteurs: { reussite: +3, sante: +2 } },
+    reel: [
+      { compteur: 'sante',    central: 3, delai: 2, cadenas: 2, source: 'ministère 2025 : climat scolaire amélioré et signalements de cyberharcèlement en baisse dans les 200 collèges expérimentateurs' },
+      { compteur: 'reussite', central: 2, delai: 4, cadenas: 1, source: 'aucune évaluation indépendante publiée à ce jour : l’effet sur les acquis est une hypothèse, pas un résultat' },
+    ],
+    physique: {},
+    preuve: 'La mise à l’écart des téléphones a été expérimentée dans environ 200 collèges et auprès de 32 000 élèves en 2024-2025, puis généralisée au collège à la rentrée 2025. Le ministère fait état d’un climat scolaire amélioré et d’une baisse des signalements de cyberharcèlement ; aucune évaluation indépendante n’a été publiée. C’est le profil classique d’une mesure généralisée avant d’être évaluée : un cadenas sur les acquis.',
+    ideeRecue: '« On a la preuve que ça marche. » On a le retour du ministère qui l’a décidée, sur les établissements qui se sont portés volontaires. C’est un indice, pas une preuve — et c’est exactement ce que mesure le nombre de cadenas.',
+    mot: "Populaire, peu chère, applaudie en salle des professeurs. Un cadenas sur les acquis : le jeu vous laisse la prendre, il ne vous promet rien.",
+  },
+
+  /* ----------------------------- 51 · moyens -------------------------- */
+  {
+    id: 'ruralite',
+    label: 'Contrats territoriaux et moratoire sur les fermetures en zone rurale',
+    famille: 'moyens',
+    porteurs: ['Association des maires ruraux', 'sénateurs de tous bords', 'préfets'],
+    contre: ['Bercy, qui y voit le renoncement à la dividende démographique'],
+    perimetre: 'ministeriel',
+    cout: 0.38, coutETP: 1800, pol: 5,
+    theme: 'ruralite', once: true, reforme: false,
+    decouverte: { si: 'maires_en_colere', note: 'L’Association des maires ruraux demande une audience. Elle a compté vos fermetures de classes.' },
+    vitrine: { parents: +6, enseignants: +3, presse: +3, compteurs: { paix: +3, egalite: +2 } },
+    reel: [
+      { compteur: 'egalite',  central: 4, delai: 4, cadenas: 2, source: 'les élèves ruraux réussissent bien au collège mais s’auto-censurent à l’orientation : l’effet passe par l’offre de proximité' },
+      { compteur: 'paix',     central: 5, delai: 1, cadenas: 3, source: 'le conflit sur la carte scolaire est d’abord un conflit avec les maires, pas avec les syndicats' },
+    ],
+    physique: {},
+    preuve: 'La baisse démographique frappe d’abord les écoles rurales, où une classe fermée est souvent la dernière. Le verrou politique reconduit depuis plusieurs années — aucune fermeture d’école sans l’accord du maire — a un coût budgétaire direct : il empêche de convertir la démographie en postes rendus. Les élèves ruraux réussissent plutôt bien au collège mais s’orientent moins vers les filières longues : l’enjeu est l’offre de proximité, pas le niveau.',
+    ideeRecue: '« Une école à huit élèves, ce n’est pas raisonnable. » Ce n’est pas raisonnable comptablement. C’est la seule chose qui reste dans certaines communes, et c’est de cette phrase-là que sont faites les crises de carte scolaire.',
+    mot: "Vous n'achetez pas des résultats, vous achetez la paix avec six cents maires. C'est parfois exactement ce qu'il faut acheter.",
+  },
+
+  /* ----------------------------- 52 · autonomie ----------------------- */
+  {
+    id: 'evaluation_ecoles',
+    label: 'Généraliser l’évaluation des établissements, avec suites données',
+    famille: 'autonomie',
+    porteurs: ['Conseil d’évaluation de l’école', 'Cour des comptes', 'Édouard Philippe'],
+    contre: ['la crainte d’un classement déguisé'],
+    perimetre: 'ministeriel',
+    cout: 0.17, coutETP: 600, pol: 4,
+    theme: 'evaluation_etab', once: true, excl: 'evaluation', reforme: true,
+    decouverte: { annee: 3 },
+    vitrine: { parents: +3, enseignants: -3, presse: +3, compteurs: { reussite: +2 } },
+    reel: [
+      { compteur: 'reussite', central: 5, delai: 5, cadenas: 3, source: 'l’effet des démarches d’auto-évaluation dépend entièrement des moyens donnés aux suites : sans suites, il est nul' },
+      { compteur: 'sante',    central: -2, delai: 2, cadenas: 3, source: 'toute évaluation non accompagnée est vécue comme un contrôle et pèse sur l’adhésion' },
+    ],
+    physique: { adhesion: -3 },
+    greve: { intensite: 2, theme: 'evaluation', segment: 'tous' },
+    preuve: 'Le Conseil d’évaluation de l’école conduit depuis 2020 un cycle d’évaluations d’établissement combinant auto-évaluation et regard externe. Le point faible identifié par la Cour des comptes est constant : les rapports concluent, et rien ne suit. L’effet mesuré des démarches d’évaluation dépend presque entièrement des moyens affectés aux suites — accompagnement, formation, marges d’organisation.',
+    ideeRecue: '« Évaluer, c’est déjà agir. » Évaluer sans donner de suites, c’est produire un document et une rancune. C’est la différence entre cette carte et un classement des établissements : elle ne vaut que par ce qu’on met derrière.',
+    mot: "Le rapport d'évaluation est le seul produit du ministère dont la production est garantie et l'usage, facultatif.",
+  },
+
+  /* ----------------------------- 53 · moyens -------------------------- */
+  {
+    id: 'aed_statut',
+    label: 'CDI et formation pour les assistants d’éducation',
+    famille: 'moyens',
+    porteurs: ['prolongement de la loi de 2022', 'l’ensemble des organisations syndicales'],
+    perimetre: 'ministeriel',
+    cout: 0.29, coutETP: 0, pol: 3,
+    theme: 'vie_scolaire', once: true, reforme: false,
+    decouverte: { si: 'apres_un_an' },
+    vitrine: { parents: +2, enseignants: +5, presse: +1, compteurs: { sante: +3, paix: +2 } },
+    reel: [
+      { compteur: 'sante',    central: 5, delai: 2, cadenas: 3, source: 'la rotation des équipes de vie scolaire est un déterminant direct du climat des établissements' },
+      { compteur: 'egalite',  central: 3, delai: 4, cadenas: 2, source: 'l’effet passe par le suivi des élèves les plus fragiles, qui repose largement sur la vie scolaire' },
+    ],
+    physique: { adhesion: +3 },
+    preuve: 'La loi de 2022 a ouvert la possibilité d’un contrat à durée indéterminée aux assistants d’éducation après six ans. Dans les faits, la vie scolaire reste l’un des services les plus instables des établissements : équipes renouvelées chaque année, peu ou pas de formation, et la charge du suivi quotidien des élèves les plus fragiles. Le climat scolaire se construit là, pas dans les circulaires.',
+    ideeRecue: '« Les surveillants, ce sont des étudiants de passage. » C’est le modèle de 1937, encore inscrit dans les textes. Les établissements qui vont bien sont ceux qui ont réussi, à titre local, à s’en écarter.',
+    mot: "Le service qui connaît le mieux les élèves est aussi celui dont on renouvelle l'équipe tous les ans. Personne ne trouve ça bizarre depuis 1937.",
+  },
+
+  /* ----------------------------- 54 · parcours ------------------------ */
+  {
+    id: 'orientation',
+    label: 'Heures d’orientation encadrées et rétablissement des psychologues de l’éducation',
+    famille: 'parcours',
+    porteurs: ['régions (compétentes depuis 2018)', 'fédérations de parents', 'Cour des comptes'],
+    perimetre: 'ministeriel',
+    cout: 0.31, coutETP: 1500, pol: 3,
+    theme: 'orientation', once: true, reforme: false,
+    decouverte: { annee: 2 },
+    vitrine: { parents: +5, enseignants: +2, presse: +2, compteurs: { egalite: +3 } },
+    reel: [
+      { compteur: 'egalite',  central: 6, delai: 4, cadenas: 3, source: 'à résultats scolaires égaux, l’origine sociale continue de commander les vœux d’orientation : c’est là que se joue l’auto-censure' },
+      { compteur: 'reussite', central: 2, delai: 5, cadenas: 2, source: 'l’effet sur les acquis est indirect, il passe par l’adéquation entre la filière et l’élève' },
+    ],
+    physique: {},
+    preuve: 'Les 54 heures annuelles dédiées à l’orientation existent dans les textes depuis 2018 ; leur mise en œuvre effective est très inégale, faute d’heures fléchées et de personnels. Le mécanisme d’inégalité est documenté : à résultats scolaires identiques, l’origine sociale continue de commander les vœux. Le corps des psychologues de l’éducation nationale compte environ 5 500 personnes pour 7 500 postes.',
+    ideeRecue: '« L’orientation, c’est le rôle des familles. » C’est précisément le problème : quand elle l’est, elle reproduit exactement ce que les familles savent déjà de l’école — et rien de ce qu’elles n’en savent pas.',
+    mot: "Le moment où le système décide de ce que deviendront les élèves est aussi celui où il leur consacre le moins de temps d'adulte formé.",
+  },
+
+  /* ----------------------------- 55 · moyens -------------------------- */
+  {
+    id: 'outremer',
+    label: 'Plan d’urgence pour Mayotte, la Guyane et les territoires en tension',
+    famille: 'moyens',
+    porteurs: ['préfets', 'parlementaires ultramarins', 'Défenseur des droits'],
+    perimetre: 'matignon',
+    cout: 0.46, coutETP: 2200, pol: 5,
+    theme: 'outremer', once: true, reforme: false,
+    decouverte: { si: 'apres_un_an', note: 'Une note de la direction générale remonte la situation scolaire à Mayotte et en Guyane. Elle n’est pas rassurante.' },
+    vitrine: { parents: +2, enseignants: +3, presse: +4, compteurs: { egalite: +4 } },
+    reel: [
+      { compteur: 'egalite',  central: 7, delai: 4, cadenas: 3, source: 'les écarts d’accès à la scolarisation et de résultats entre ces territoires et l’hexagone sont les plus élevés du système' },
+      { compteur: 'sante',    central: 3, delai: 3, cadenas: 3, source: 'ces académies concentrent les plus fortes proportions de contractuels et les plus faibles taux de couverture' },
+    ],
+    physique: { adhesion: +2 },
+    preuve: 'Mayotte et la Guyane cumulent les écarts les plus élevés du système français : rotations scolaires faute de salles, taux de non-scolarisation sans équivalent hexagonal, part de contractuels et rotation des équipes très supérieures à la moyenne. Ce sont aussi les seuls territoires où la démographie scolaire progresse alors qu’elle recule partout ailleurs — le « dividende démographique » n’y existe pas.',
+    ideeRecue: '« Le problème est démographique, il se réglera tout seul. » Il ne se règle nulle part tout seul, et surtout pas là : ce sont les deux académies où le nombre d’élèves augmente.',
+    mot: "La baisse démographique finance vos réformes partout — sauf là où il faudrait le plus les financer.",
+  },
 ];
 
 /* --------------------------------------------------------------------------
