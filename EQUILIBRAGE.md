@@ -628,6 +628,121 @@ fois par partie, et l'archétype de **l'affaire** — l'événement où aucune o
 n'est bonne. Chacune ajoute un système d'événements, pas seulement des données ;
 elles méritent d'être décidées, pas glissées.
 
+## 3 decies. Les turbulences — ce qui vous arrive et que vous n'avez pas décidé
+
+Sur les six causes documentées de chute d'un ministre de l'Éducation, **une
+seule relève de la politique éducative**. Les cinq autres tiennent à la
+posture, à la communication, au hasard biographique ou au périmètre de la
+nomination. Un ministre tombe plus souvent sur une phrase que sur un bilan —
+et un jeu qui n'aurait que des compteurs de résultats scolaires ne pourrait
+pas représenter ce qui met réellement fin aux carrières.
+
+Trois briques, une seule idée : **ce qui déstabilise ne se décide pas.**
+
+### a) Le profil, tiré à la nomination
+
+Quatre origines (la maison, la haute fonction publique, un mandat local, la
+société civile) et trois périmètres (plein exercice, périmètre élargi,
+ministre délégué), tirés au sort et affichés dès l'écran de nomination.
+
+| | Effet |
+|---|---|
+| Origine | adhésion −8 à +7, capital −4 à +7, crédibilité −4 à +10, et **une ou deux affaires auxquelles elle expose** |
+| Périmètre | capital −9 à +9, crédit Bercy −7 à +4, et un **plafond d'adhésion** abaissé de 15 points pour le périmètre élargi |
+
+Règle absolue tenue : **aucun profil n'est meilleur qu'un autre au sens des
+compteurs éducatifs.** Ils exposent différemment, c'est tout. Le joueur n'a pas
+choisi son handicap — comme dans la réalité, où la fusion Éducation-Sports de
+janvier 2024 a été lue comme un déclassement avant que la ministre n'ait rien
+décidé.
+
+### b) La crédibilité — la ressource de parole
+
+Nouvelle jauge, distincte du capital politique, initialisée à **62**. Elle
+multiplie tout l'effet-vitrine par `0,55 + 0,90 × (crédibilité / 100)` : à 62,
+×1,11 ; à 20, ×0,73 ; à 95, ×1,41. À crédibilité effondrée, la meilleure mesure
+du catalogue ne porte plus.
+
+Elle se dégrade vite et se reconstitue lentement (+4/an) :
+
+| Événement | Crédibilité |
+|---|---|
+| Requalifier une mesure sous pression | **−9** |
+| Abandonner une mesure | −5 |
+| Affaire, selon la réponse | −3 à −24 |
+
+C'est le lien qui manquait entre la requalification (phase précédente) et son
+coût : se dédire ne coûtait qu'un peu de fatigue, cela coûte désormais la
+parole. Elle est affichée au tableau de bord déplié, avec le multiplicateur en
+clair.
+
+### c) Les affaires — tirage conditionnel, jamais aléatoire pur
+
+Six archétypes, **pseudonymisés intégralement** : les situations sont inspirées
+de faits publics, les personnages sont fictifs, et aucune affaire n'est rejouée
+sous le nom de qui que ce soit. Ce qu'on garde, c'est la forme — le
+déclencheur, la cinétique, l'issue.
+
+| Archétype | Ce qui est reproché | Résonne avec |
+|---|---|---|
+| Le lieu | la distance avec le terrain | remplacement, rythmes, obligations de service |
+| L'école de vos enfants | la défiance envers le service public | privé, affectation, sectorisation |
+| Le privilège | l'écart entre ce qu'on exige et ce qu'on s'applique | obligations de service, évaluation, autonomie |
+| Le faux nez | l'instrumentalisation de l'État | manuels, numérique, uniforme, évaluations |
+| L'illégitimité | le droit même d'occuper le poste | rien — elle est **subie** |
+| Votre passé | une défaillance antérieure à la nomination | rien — elle est **subie** |
+
+**Le tirage.** Probabilité de base 9,5 % par an, **×2,6 si le ministre a joué
+une carte du même thème dans l'année**, ×1,7 si son profil y est exposé,
+plafonnée à 42 %, deux affaires par partie au maximum. C'est la règle la plus
+fidèle au réel de tout le dossier : *on n'est pas puni pour ce qu'on fait, on
+est puni pour l'écart.*
+
+Mesuré sur 500 parties : **40 % des parties ne voient aucune affaire**, 42 %
+en voient une, 18 % en voient deux ; **28 % des affaires qui sortent sont
+résonantes** — c'est-à-dire déclenchées par ce que le ministre venait de faire.
+Le bandeau de l'écran le dit explicitement quand c'est le cas.
+
+**Trois réponses, toujours** : assumer sobrement, se défendre sur les faits,
+contre-attaquer. La troisième est la plus tentante et la plus coûteuse. Aucune
+ne touche un compteur éducatif : elles agissent toutes sur adhésion,
+crédibilité et capital.
+
+**L'affaire qui se dégonfle.** Une sur quatre est démentie, classée, ou close
+par un remboursement. **Le joueur récupère la moitié du coût, pas la
+totalité.** C'est vrai, et c'est ce que le public retient le plus mal.
+
+**Une seule réponse est fatale à elle seule** — et ce n'est pas la plus grave
+sur le fond : c'est celle où le ministre justifie la scolarisation privée de
+ses enfants par un défaut du service public dont il vient de prendre la tête.
+Elle transforme un fait privé en jugement professionnel, unifie les sept
+organisations dans la journée, et ouvre une sixième fin de partie (`affaire`).
+
+### d) Les garde-fous, tenus
+
+- **Pseudonymisation intégrale**, y compris pour les affaires closes.
+- **Aucune affaire à connotation raciste, sexiste ou identitaire jouable.**
+  L'archétype de l'illégitimité existe comme **subi** — un flux d'attaques qui
+  affecte le ministre selon son profil — jamais comme une carte que le joueur
+  ou un adversaire pourrait « jouer ». On modélise la réalité d'une exposition ;
+  on ne fabrique pas un simulateur de dénigrement.
+- **Le profil n'est jamais un critère de compétence.**
+- Les défenses et les issues sont restituées : une affaire médiatique n'est pas
+  une culpabilité, et le jeu le dit à l'écran.
+
+Équilibrage revérifié : **4/4 sur trois jeux de graines**, survie 42-50 %.
+Nouvelle répartition des fins : remaniement 45 %, mandat complet 44 %, renvoi
+9 %, guerre scolaire 1 %, affaire 1 %.
+
+### e) Toujours en attente
+
+De la partie E : la **cinétique à cinq paliers** de la réforme contestée
+(contestation → tribunes → défection interne → désaveu d'une instance → grève
+de retrait), le **dérapage verbal** comme registre de sortie médiatique, et la
+**boucle hebdomadaire en crise**. De la partie D : le **choc exogène** majeur et
+les **effets de bord** révélés à N+2. Chacune change le rythme du jeu, pas
+seulement ses données.
+
 ## 4. Les constantes du moteur
 
 Inchangées depuis la phase 1 (voir `moteur/constantes.js`, tout est commenté

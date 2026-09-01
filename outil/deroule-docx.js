@@ -78,7 +78,7 @@ A(
   new Paragraph({ children: [T('Devenir ministre de l’Éducation nationale', { size: 30, color: '565B6B' })], alignment: AlignmentType.CENTER, spacing: { after: 480 } }),
   new Paragraph({ children: [T('Déroulé du jeu et grandes étapes', { bold: true, size: 28 })], alignment: AlignmentType.CENTER, spacing: { after: 100 } }),
   new Paragraph({ children: [T('Document de travail destiné à la relecture et aux corrections', { size: 22, italics: true, color: '565B6B' })], alignment: AlignmentType.CENTER, spacing: { after: 1000 } }),
-  new Paragraph({ children: [T('Version du 1er septembre 2026', { size: 20, color: '8A8FA3' })], alignment: AlignmentType.CENTER }),
+  new Paragraph({ children: [T('Version du 1er septembre 2026 — ajoute les turbulences', { size: 20, color: '8A8FA3' })], alignment: AlignmentType.CENTER }),
   new Paragraph({ children: [T('Jeu en ligne : https://ronnaldooo.github.io/jeu/', { size: 20, color: '8A8FA3' })], alignment: AlignmentType.CENTER }),
   new Paragraph({ children: [T('Code et sources : https://github.com/ronnaldooo/jeu', { size: 20, color: '8A8FA3' })], alignment: AlignmentType.CENTER, spacing: { after: 600 } }),
   new Paragraph({ children: [new PageBreak()] }),
@@ -157,6 +157,7 @@ A(H2('2.1 L’ouverture — juin 2027'));
 A(H3('Écran 1 · L’appel de Matignon'));
 A(BODY('Le gouvernement se forme, le téléphone sonne. Le portefeuille proposé est l’Éducation nationale : premier budget de l’État — 65,3 milliards d’euros au projet de loi de finances qui s’annonce, 1,2 million d’agents, 12 millions d’élèves. La durée moyenne dans le poste dépasse rarement deux ans.'));
 A(BODY('Le prédécesseur, huitième en quatre ans, laisse un mot de passation. Le joueur peut refuser la nomination — le jeu s’arrête alors, ce qui est une fin comme une autre.'));
+A(BODY([T('Deux choses sont tirées au sort et affichées sur cet écran : ', {}), T('votre profil', { bold: true }), T(' (vous venez de la maison, de la haute fonction publique, d’un mandat local ou de la société civile) et ', {}), T('le périmètre de votre nomination', { bold: true }), T(' (plein exercice, périmètre élargi, ministre délégué). Vous n’avez choisi ni l’un ni l’autre. La règle absolue est qu’aucun profil n’est meilleur qu’un autre au sens des compteurs éducatifs : ils décident seulement de ce sur quoi vous serez attaquable, et de la patience de Matignon. Le périmètre élargi, par exemple, donne du poids dans les arbitrages budgétaires et abaisse de quinze points le plafond d’adhésion enseignante pour toute la partie.', {})]));
 A(BODY([T('Point de règle : ', { bold: true }), T('on ne dit jamais qui a été élu président. Le joueur choisit lui-même ses priorités ; aucune n’est imposée par l’Élysée.')]));
 
 A(H3('Écran 2 · La conférence de presse — votre feuille de route'));
@@ -204,13 +205,14 @@ A(VIDE());
 A(ENCADRE('À relire', 'Le calendrier vous paraît-il fidèle ? Manque-t-il un rendez-vous que vit réellement un ministre (le comité social d’administration ? les résultats du baccalauréat en juillet ? la conférence de presse de rentrée ?).'));
 
 A(H2('2.3 La fin de partie'));
-A(BODY('Quatre façons de terminer — et une seule qui consiste à aller au bout.'));
+A(BODY('Cinq façons de terminer — et une seule qui consiste à aller au bout.'));
 A(tableau(
   ['Fin', 'Déclenchement'],
   [
     ['Mandat complet (5 ans)', 'Survivre aux cinq années. « Vous partez debout — ce qui, rue de Grenelle, est déjà un résultat. »'],
     ['Renvoi', 'Trois convocations à Matignon. Une convocation s’obtient par une rentrée ratée, un capital politique épuisé, des familles qui décrochent, ou Bercy qui fait remonter le dossier.'],
     ['Remaniement', 'Un tirage annuel, modulé par le capital politique et l’opinion des familles. C’est la première cause de fin de mandat dans la vraie vie : plus de trente ministres depuis 1958.'],
+    ['Affaire', 'La seule réponse fatale du répertoire des polémiques personnelles : justifier la scolarisation privée de ses enfants par un défaut du service public. Les sept organisations publient un communiqué commun dans la journée.'],
     ['Guerre scolaire', 'Deux provocations sur le privé sous contrat, puis un capital politique bas. « Un million de personnes dans la rue, comme en 1984. Le gouvernement retire le texte, et vous avec. »'],
   ],
   [2600, 6760],
@@ -293,6 +295,29 @@ A(tableau(
 ));
 A(BODY('Le ministre commence à 48 — donc au palier « ferme ». Le crédit monte quand il tient ses engagements en janvier, descend quand il dépasse son enveloppe. C’est le seul indicateur du jeu que le joueur peut vraiment reconstruire en tête.'));
 A(new Paragraph({ children: [new PageBreak()] }));
+
+A(H2('3.5 Les turbulences — ce qui vous arrive et que vous n’avez pas décidé'));
+A(BODY('Sur les six causes documentées de chute d’un ministre de l’Éducation, une seule relève de la politique éducative. Les cinq autres tiennent à la posture, à la communication, au hasard biographique ou au périmètre de la nomination. Un ministre tombe plus souvent sur une phrase que sur un bilan — et un jeu qui n’aurait que des compteurs de résultats scolaires ne pourrait pas représenter ce qui met réellement fin aux carrières.'));
+A(H3('La crédibilité, la ressource de parole'));
+A(BODY('Une jauge distincte du capital politique, initialisée à 62. Elle multiplie tout l’effet d’annonce : à 62, les mesures valent ×1,11 ; à 20, ×0,73 ; à 95, ×1,41. À crédibilité effondrée, la meilleure mesure du catalogue ne porte plus. Elle se reconstitue de quatre points par an et se perd beaucoup plus vite : neuf points pour une mesure requalifiée, cinq pour un abandon, jusqu’à vingt-quatre pour une affaire mal gérée. C’est ce qui donne enfin un prix à la requalification : se dédire ne coûtait qu’un peu de fatigue, cela coûte désormais la parole.'));
+A(H3('Les affaires personnelles'));
+A(BODY('Six archétypes, intégralement pseudonymisés : les situations sont inspirées de faits publics, les personnages sont fictifs, et aucune affaire n’est rejouée sous le nom de qui que ce soit. Ce qu’on garde, c’est la forme — le déclencheur, la cinétique, l’issue.'));
+A(tableau(
+  ['Archétype', 'Ce qui est reproché', 'Se déclenche quand'],
+  [
+    ['Le lieu', 'La distance avec le terrain', 'Vous avez légiféré sur le remplacement, les rythmes ou les obligations de service.'],
+    ['L’école de vos enfants', 'La défiance envers le service public', 'Vous avez touché au privé, à l’affectation ou à la sectorisation.'],
+    ['Le privilège', 'L’écart entre ce que vous exigez et ce que vous vous appliquez', 'Vous avez exigé de la présence, de l’évaluation ou du contrôle.'],
+    ['Le faux nez', 'L’instrumentalisation de l’État', 'Vous avez joué une carte de communication : manuels, numérique, uniforme, évaluations.'],
+    ['L’illégitimité', 'Votre droit même d’occuper le poste', 'Rien. Elle est subie, selon votre profil.'],
+    ['Votre passé', 'Une défaillance antérieure à votre nomination', 'Rien. Elle est subie.'],
+  ],
+  [2100, 3100, 4160],
+));
+A(BODY('Le tirage n’est jamais purement aléatoire : 9,5 % par an de base, multiplié par 2,6 si vous avez joué une carte du même thème dans l’année, par 1,7 si votre profil y expose, plafonné à 42 %, deux affaires par partie au maximum. C’est la règle la plus fidèle au réel de tout le dossier : on n’est pas puni pour ce qu’on fait, on est puni pour l’écart. Mesuré sur 500 parties : 40 % des parties ne voient aucune affaire, 41 % en voient une, 19 % en voient deux, et un quart des affaires qui sortent sont déclenchées par ce que le ministre venait de faire — l’écran le signale quand c’est le cas.'));
+A(BODY('Trois réponses toujours : assumer sobrement, se défendre sur les faits, contre-attaquer. La troisième est la plus tentante et la plus coûteuse. Aucune ne touche un compteur éducatif. Une affaire sur quatre se dégonfle — démentie, classée, close par un remboursement — et le joueur ne récupère alors que la moitié du coût : c’est vrai, et c’est ce que le public retient le plus mal. Une seule réponse du répertoire est fatale à elle seule, et ce n’est pas la plus grave sur le fond : c’est celle où le ministre justifie la scolarisation privée de ses enfants par un défaut du service public dont il vient de prendre la tête.'));
+A(VIDE());
+A(ENCADRE('À relire', 'La fréquence vous paraît-elle juste — quatre parties sur dix sans aucune affaire ? Et le garde-fou principal : l’archétype de l’attaque en illégitimité existe uniquement comme subi, jamais comme une carte jouable par qui que ce soit. On modélise la réalité d’une exposition, on ne fabrique pas un simulateur de dénigrement. Cette ligne vous semble-t-elle au bon endroit ?'));
 
 /* ============ 4. LE BILAN ============ */
 A(H1('4. Le bilan — le moment où le jeu dit ce qu’il avait à dire'));

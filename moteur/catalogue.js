@@ -1733,4 +1733,158 @@ export const REPLIQUES = {
   ],
 };
 
+/* ============================================================================
+   LES AFFAIRES — six archétypes de polémique personnelle          [source G]
+   ----------------------------------------------------------------------------
+   Situations inspirées de faits publics ; les personnages sont fictifs et
+   aucune affaire n'est rejouée sous le nom de qui que ce soit. Ce qu'on garde,
+   c'est la FORME : le déclencheur, la cinétique, l'issue.
+
+   Aucune de ces affaires ne fait bouger un compteur éducatif. Elles agissent
+   toutes sur les trois jauges relationnelles — adhésion, crédibilité, capital.
+   Un jeu qui n'aurait que des compteurs de résultats scolaires ne pourrait pas
+   représenter ce qui met réellement fin aux carrières ministérielles.
+
+   `themes` : les thèmes de mesure avec lesquels l'affaire résonne. Une carte
+   jouée sur le même thème dans l'année triple la probabilité qu'elle sorte.
+   ========================================================================== */
+export const AFFAIRES = [
+  {
+    id: 'lieu',
+    titre: 'Le lieu',
+    manchette: 'Le ministre était en vacances quand le protocole est tombé',
+    themes: ['remplacement', 'rythmes', 'ors', 'ete', 'accompagnement'],
+    recit: 'Un site d’information révèle — et le ministère confirme — que vous vous trouviez à l’étranger, en congé, le soir où votre cabinet transmettait à la presse la circulaire que les équipes ont découverte le lendemain matin. Le fait est exact, il est régulier, et il est indéfendable.',
+    lecon: 'On ne vous reproche pas un acte, on vous reproche un signe. La défense factuelle est solide et catégoriellement inadaptée : à un signe, on ne répond pas par un bilan.',
+    reponses: [
+      { type: 'assumer', label: 'Assumer sobrement : « j’ai pris trois jours, je le referais »',
+        det: 'Vous ne vous excusez pas et vous ne vous justifiez pas. La séquence dure quatre jours au lieu de trois semaines.',
+        adhesion: -8, credibilite: -6, capital: -3, parents: -2,
+        suite: 'La formule est jugée sèche, et refermer le dossier en quatre jours est ce que personne n’avait réussi avant vous.' },
+      { type: 'defendre', label: 'Se défendre sur les faits : « quelle réunion n’ai-je pas tenue ? »',
+        det: 'Vous démontrez, chiffres à l’appui, qu’aucun acte n’a manqué. C’est vrai, et cela ne répond pas à la question posée.',
+        adhesion: -13, credibilite: -4, capital: -2, parents: -4,
+        suite: 'Vous avez raison sur les faits et tort sur le terrain. Une organisation résume le grief en une phrase que la presse reprendra tout l’hiver : pendant ce temps, les personnels, eux, font tenir l’école.' },
+      { type: 'contre', label: 'Mettre en cause ceux qui ont sorti l’information',
+        det: 'Vous dénoncez une campagne et une fuite organisée. C’est la réponse la plus tentante du répertoire, et la plus chère.',
+        adhesion: -16, credibilite: -12, capital: -6, parents: -5,
+        suite: 'La question de la fuite a désormais son propre article. L’affaire dure trois semaines de plus, et personne ne parle plus de la circulaire.' },
+    ],
+  },
+  {
+    id: 'ecole_enfants',
+    titre: 'L’école de vos enfants',
+    manchette: 'Les enfants du ministre scolarisés dans le privé',
+    themes: ['prive', 'affectation', 'secteurs', 'carle', 'cheque', 'ghettos'],
+    recit: 'La presse révèle que vos enfants sont scolarisés dans un établissement privé sous contrat. Le fait est banal — de nombreux responsables publics font ce choix sans que cela fasse chuter personne. Ce qui suivra, en revanche, ne l’est pas.',
+    lecon: 'Le point de bascule n’est jamais la révélation. C’est la justification. Expliquer son choix par un défaut du service public dont on vient de prendre la tête transforme un fait privé en jugement professionnel — et cela, le corps ne le pardonne pas.',
+    reponses: [
+      { type: 'assumer', label: 'Assumer sobrement, sans commenter le service public',
+        det: '« C’est un choix de famille, il ne dit rien de l’école publique, dont je suis le ministre. » Le dossier se referme en une semaine.',
+        adhesion: -6, credibilite: -3, capital: -2, parents: 0,
+        suite: 'Une semaine de commentaires, puis plus rien. C’était la seule sortie possible, et elle était disponible dès la première question.' },
+      { type: 'defendre', label: 'Justifier par un manque du service public',
+        det: '« Il y a des heures qui ne sont pas sérieusement remplacées. » Vous dites tout haut ce que disent les familles — sauf que vous êtes le ministre.',
+        adhesion: -26, credibilite: -14, capital: -14, parents: +3, unite: true, fatal: 0.42,
+        suite: 'Les sept organisations publient un communiqué commun dans la journée — elles ne s’étaient pas accordées sur une virgule depuis février. L’intersyndicale dépose un préavis. Matignon ne dément pas assez vite les rumeurs de remplacement.' },
+      { type: 'contre', label: 'Ne pas répondre et refuser toute question sur le sujet',
+        det: 'Le silence est une position. Elle tient rarement plus de trois conférences de presse.',
+        adhesion: -12, credibilite: -10, capital: -6, parents: -4,
+        suite: 'La question revient à chaque point presse pendant trois mois. Elle a ouvert un dossier que le ministère ne contrôle pas : le financement du privé sous contrat, immédiatement saisi par toutes les oppositions.' },
+    ],
+  },
+  {
+    id: 'privilege',
+    titre: 'Le privilège',
+    manchette: 'Un traitement perçu sans service fait',
+    themes: ['ors', 'evaluation_etab', 'remplacement', 'autonomie', 'recrutement_local', 'pluriannuel'],
+    recit: 'Un hebdomadaire satirique révèle que vous percevez, depuis des années, le traitement attaché à un poste universitaire où vous n’assurez plus d’enseignement, au titre d’une décharge parfaitement régulière. Le montant est dérisoire à l’échelle d’un budget de 65 milliards. Ce n’est pas la question.',
+    lecon: 'L’affaire est dévastatrice parce qu’elle porte exactement sur ce que le ministère demande à ses agents : faire ses heures. On n’est pas puni pour ce qu’on fait, on est puni pour l’écart entre ce qu’on exige des autres et ce qu’on s’applique à soi-même.',
+    reponses: [
+      { type: 'assumer', label: 'Renoncer immédiatement au poste et rembourser',
+        det: 'Vous démissionnez du poste et remboursez les sommes perçues. Le geste coûte, il clôt.',
+        adhesion: -5, credibilite: -4, capital: -5, parents: -1,
+        suite: 'La droite parle de précipitation, la gauche de aveu. Le dossier est mort en dix jours, ce qui est le seul résultat qui compte.' },
+      { type: 'defendre', label: 'Rappeler que le régime de décharge est parfaitement légal',
+        det: 'Il l’est, et cela n’a jamais été démenti. Vous produisez les textes.',
+        adhesion: -15, credibilite: -11, capital: -4, parents: -3,
+        suite: 'Vous avez publié les textes. Une salle des professeurs a publié son emploi du temps. Les deux documents ont circulé côte à côte.' },
+      { type: 'contre', label: 'Rappeler que la question du service fait se pose partout ailleurs',
+        det: 'Vous élargissez le débat au service effectif dans la fonction publique. Techniquement pertinent, politiquement suicidaire.',
+        adhesion: -22, credibilite: -14, capital: -8, parents: 0, unite: true,
+        suite: 'Vous venez d’ouvrir, depuis la position la plus faible possible, le seul dossier sur lequel l’unité syndicale est immédiate.' },
+    ],
+  },
+  {
+    id: 'faux_nez',
+    titre: 'Le faux nez',
+    manchette: 'Une association d’élèves financée par le ministère, et créée par lui',
+    themes: ['manuels', 'numerique_tel', 'portable', 'ia', 'uniforme', 'eval_diag'],
+    recit: 'Deux rédactions révèlent qu’une association de lycéens très favorable à vos réformes, subventionnée par le ministère, aurait été suscitée par votre entourage — au moment où une organisation lycéenne historique voyait, elle, sa subvention divisée par quatre. Une enquête est ouverte, visant les dirigeants de l’association.',
+    lecon: 'Ce grief-là ne relève pas de la vie privée mais du mélange des genres : l’appareil d’État et des fonds publics au service d’une communication. C’est le reproche le plus lourd du répertoire, et paradoxalement celui qui emporte le moins de ministres. On n’en tombe pas ; on y perd sa voix.',
+    reponses: [
+      { type: 'assumer', label: 'Suspendre la subvention et saisir l’inspection générale',
+        det: 'Vous ouvrez vous-même le dossier plutôt que d’attendre qu’on vous l’ouvre.',
+        adhesion: -4, credibilite: -8, capital: -6, parents: -2,
+        suite: 'L’inspection travaillera huit mois. D’ici là, le sujet est administratif, ce qui est la meilleure chose qui puisse lui arriver.' },
+      { type: 'defendre', label: 'Défendre le pluralisme : « toutes les associations sont soutenues »',
+        det: 'Vous produisez le tableau des subventions. Il contient précisément le chiffre qui pose problème.',
+        adhesion: -9, credibilite: -16, capital: -5, parents: -3,
+        suite: 'Le tableau que vous avez publié est devenu l’illustration de l’article. Ce n’est pas ce que vous aviez prévu.' },
+      { type: 'contre', label: 'Dénoncer une manœuvre d’organisations politisées',
+        det: 'Vous mettez en cause, sur un plateau, ceux qui vous interrogent.',
+        adhesion: -13, credibilite: -24, capital: -7, parents: -4,
+        suite: 'Mettre en cause ceux qui posent la question a toujours le même effet : ils posent la question plus longtemps. Votre parole vaut désormais moins que le communiqué de n’importe qui.' },
+    ],
+  },
+  {
+    id: 'illegitimite',
+    titre: 'L’illégitimité',
+    manchette: 'Le procès en incompétence, et il n’est pas question d’école',
+    themes: [],                 // ne résonne avec aucune mesure : elle est subie
+    subie: true,
+    recit: 'Depuis votre nomination, une partie de la presse d’opinion et des responsables politiques contestent moins vos décisions que votre droit d’occuper le poste : votre parcours, vos travaux antérieurs, vos prises de position d’avant. Aucune de vos mesures n’est discutée. C’est vous qui l’êtes.',
+    lecon: 'Cette affaire-là ne récompense aucune bonne gestion et ne se réduit par aucune décision. Elle existe dans le jeu comme subie, jamais comme une carte que l’on pourrait jouer contre quelqu’un. On modélise la réalité d’une exposition ; on ne fabrique pas un simulateur de dénigrement.',
+    reponses: [
+      { type: 'assumer', label: 'Ne pas entrer dans le débat et rester sur les dossiers',
+        det: 'Vous répondez à chaque question par une mesure. C’est fatigant, et c’est ce qui use le moins vite.',
+        adhesion: -2, credibilite: -5, capital: -6, parents: -2,
+        suite: 'Le flux ne s’arrête pas ; il cesse simplement de progresser. Sur ce dossier-là, c’est une victoire.' },
+      { type: 'defendre', label: 'Répondre point par point, publiquement',
+        det: 'Vous consacrez une conférence de presse entière à votre propre parcours.',
+        adhesion: -4, credibilite: -9, capital: -10, parents: -4,
+        suite: 'Vous avez passé une heure à parler de vous. C’est une heure que vous n’avez pas passée à parler d’école, et c’était exactement le but de l’exercice.' },
+      { type: 'contre', label: 'Demander l’arbitrage de l’Élysée',
+        det: 'Vous montez au Château chercher un soutien public. Il vient — et il a un prix.',
+        adhesion: -3, credibilite: -3, capital: -12, parents: 0, captation: true,
+        suite: 'Le soutien est venu, chaleureux et bref. En échange, l’Élysée annoncera lui-même votre prochaine mesure : vous en gardez le coût, il en garde le bénéfice.' },
+    ],
+  },
+  {
+    id: 'passe',
+    titre: 'Votre passé',
+    manchette: 'Un dossier antérieur à votre nomination refait surface',
+    themes: [],
+    subie: true,
+    recit: 'Une commission d’enquête parlementaire s’intéresse à une fonction que vous occupiez bien avant d’être ministre, et à ce que vous saviez alors. Vous contestez. L’audition durera cinq heures et sera retransmise.',
+    lecon: 'Une affaire héritée n’éjecte pas : elle fragilise. Elle abaisse le seuil de déclenchement de toutes les autres crises et elle consume l’agenda. Un cabinet d’analyse du risque politique l’a formulé mieux que personne : elle enhardit les adversaires — et les alliés supposés — à agir pour d’autres motifs.',
+    reponses: [
+      { type: 'assumer', label: 'Publier l’intégralité des pièces, sans attendre',
+        det: 'Vous mettez tout en ligne le jour même de la convocation.',
+        adhesion: -3, credibilite: -6, capital: -7, parents: -3, fragilise: 2,
+        suite: 'La transparence immédiate n’a jamais éteint une commission d’enquête. Elle a souvent empêché la deuxième vague, celle des contradictions.' },
+      { type: 'defendre', label: 'Répondre à l’audition en contestant point par point',
+        det: 'Cinq heures d’affrontement retransmis. Vous êtes bon. Cela ne suffira pas.',
+        adhesion: -5, credibilite: -10, capital: -11, parents: -5, fragilise: 3,
+        suite: 'Les extraits qui circulent le lendemain ne sont pas ceux que vous auriez choisis. Ils ne le sont jamais.' },
+      { type: 'contre', label: 'Dénoncer une cabale et refuser de vous expliquer davantage',
+        det: 'Vous mettez en cause la commission elle-même.',
+        adhesion: -8, credibilite: -18, capital: -14, parents: -7, fragilise: 5,
+        suite: 'Le rapport, quand il sortira, retiendra un « défaut d’action ». D’ici là, chaque incident ordinaire de votre ministère se lira à travers ce dossier.' },
+    ],
+  },
+];
+
+export const AFFAIRE_PAR_ID = Object.fromEntries(AFFAIRES.map((a) => [a.id, a]));
+
 export const PAR_ID = Object.fromEntries(CATALOGUE.map((c) => [c.id, c]));

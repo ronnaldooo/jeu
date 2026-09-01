@@ -384,6 +384,104 @@ export const RENVOI = {
   remaniementMin: 0.03, remaniementMax: 0.30,
 };
 
+/* ===========================================================================
+   11. LES TURBULENCES — profil, crédibilité, affaires        [source E, G]
+   ---------------------------------------------------------------------------
+   Sur les six causes documentées de chute d'un ministre de l'Éducation, UNE
+   SEULE relève de la politique éducative. Les cinq autres tiennent à la
+   posture, à la communication, au hasard biographique ou au périmètre de la
+   nomination. Un ministre tombe plus souvent sur une phrase que sur un bilan.
+
+   Trois règles ont guidé l'écriture de ce bloc :
+   · les situations sont inspirées de faits publics, les personnages sont
+     fictifs et aucune affaire n'est rejouée sous le nom de qui que ce soit ;
+   · une affaire médiatique n'est pas une culpabilité : une sur quatre se
+     dégonfle, et le coût politique reste largement encaissé ;
+   · le profil détermine des EXPOSITIONS, jamais des capacités. Aucun profil
+     n'est meilleur qu'un autre au sens des compteurs éducatifs.
+   ========================================================================= */
+
+/* Le profil du ministre, tiré à la nomination. Il ne change aucun compteur
+   éducatif : il change ce qu'on vous reprochera. */
+export const PROFILS = [
+  {
+    id: 'serail', nom: 'Vous venez de la maison',
+    detail: 'Ancien recteur, passé par l’administration centrale. Les personnels savent que vous connaissez le terrain ; la presse écrira que vous êtes le candidat de la continuité.',
+    adhesion: +7, capital: -4, credibilite: +10,
+    expose: ['privilege'],
+  },
+  {
+    id: 'hautfonc', nom: 'Vous venez de la haute fonction publique',
+    detail: 'Inspection générale des finances, cabinets ministériels. Vous savez tenir un arbitrage à Bercy ; on vous soupçonnera de tenir des comptes plutôt que des classes.',
+    adhesion: -3, capital: +5, credibilite: +4,
+    expose: ['privilege', 'faux_nez'],
+  },
+  {
+    id: 'elu', nom: 'Vous venez d’un mandat local',
+    detail: 'Maire, puis parlementaire. Vous connaissez les cartes scolaires par les maires qui les subissent ; on vous rappellera vos anciennes déclarations.',
+    adhesion: +2, capital: +2, credibilite: -2,
+    expose: ['faux_nez', 'lieu'],
+  },
+  {
+    id: 'civile', nom: 'Vous venez de la société civile',
+    detail: 'Chercheur, chef d’entreprise ou dirigeant associatif. On vous a nommé pour votre regard neuf ; on vous le reprochera dès la première difficulté.',
+    adhesion: -8, capital: +7, credibilite: -4,
+    expose: ['illegitimite', 'ecole_enfants'],
+  },
+];
+
+/* Le périmètre de la nomination. Le joueur ne l'a pas choisi — comme dans la
+   réalité, où la fusion Éducation-Sports de janvier 2024 a été lue comme un
+   déclassement avant que la ministre n'ait rien décidé. */
+export const PERIMETRES = [
+  {
+    id: 'plein', nom: 'Ministre de plein exercice',
+    detail: 'Le portefeuille seul, comme le réclament les organisations syndicales. Personne ne vous fera le reproche d’être ailleurs.',
+    capital: 0, plafondAdhesion: 0, bercy: 0, patience: 0, poids: 5,
+  },
+  {
+    id: 'elargi', nom: 'Périmètre élargi — Éducation, Jeunesse et Sports',
+    detail: 'Trois portefeuilles, un ministre. Vous pesez davantage dans les arbitrages budgétaires ; la salle des professeurs vous appellera « ministre à mi-temps » avant votre première circulaire.',
+    capital: +9, plafondAdhesion: -15, bercy: +4, patience: -1, poids: 3,
+  },
+  {
+    id: 'delegue', nom: 'Ministre délégué, rattaché à un ministre d’État',
+    detail: 'Vous n’arbitrez pas seul et vous ne signez pas tout. En contrepartie, on vous laissera plus longtemps : personne ne réclame la tête d’un ministre délégué.',
+    capital: -9, plafondAdhesion: -4, bercy: -7, patience: +1, poids: 2,
+  },
+];
+
+/* LA CRÉDIBILITÉ — la ressource de parole, distincte du capital politique.
+   Elle conditionne l'efficacité de tout ce que le ministre annonce : à
+   crédibilité effondrée, l'annonce ne porte plus, quelle que soit la mesure.
+   Elle se dégrade vite (affaire, revirement, requalification) et se reconstitue
+   très lentement. C'est la jauge qui manque à la plupart des jeux de gestion,
+   et celle sur laquelle les carrières se jouent réellement. */
+export const CREDIBILITE = {
+  initiale: 62,
+  parAn: +4,                 // reconstitution lente
+  parRequalification: -9,    // un revirement se paie en parole
+  parAbandon: -5,
+  parRentreeRatee: -4,
+  /* Facteur appliqué à l'effet-vitrine : 0,55 + 0,90 × (crédibilité / 100).
+     À 62 → ×1,11. À 20 → ×0,73. À 95 → ×1,41. */
+  base: 0.55, pente: 0.90,
+};
+
+/* Probabilité qu'une affaire sorte, par an. Faible en soi ; multipliée quand
+   elle résonne avec ce que le ministre vient de faire — c'est la règle la plus
+   fidèle au réel de tout le dossier : on n'est pas puni pour ce qu'on fait, on
+   est puni pour l'ÉCART entre ce qu'on exige des autres et ce qu'on s'applique. */
+export const AFFAIRES_TIRAGE = {
+  base: 0.095,               // probabilité par an qu'une affaire sorte, hors résonance
+  resonance: 2.6,            // ×2,6 si le ministre a joué une carte du même thème
+  exposition: 1.7,           // ×1,7 si son profil y est exposé
+  plafondAnnuel: 0.42,       // même très exposé, l'année peut être calme
+  maxParPartie: 2,
+  probaDegonflement: 0.25,   // une sur quatre se dégonfle — le coût reste à moitié
+  remboursement: 0.5,
+};
+
 /* ---------------------------------------------------------------------------
    9. PROJECTION À DIX ANS                                     [source B.5, B.8-8]
    ------------------------------------------------------------------------- */

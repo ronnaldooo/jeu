@@ -108,7 +108,12 @@ h1,h2,h3{text-wrap:balance; margin:0}
 .opt{cursor:pointer; text-align:left; background:var(--fiche); border:1px solid var(--filet); border-left:3px solid var(--filet-fort); padding:13px 16px}
 .opt:hover{border-color:var(--bleu-rf); border-left-color:var(--bleu-rf)}
 .opt b{display:block; margin-bottom:2px}
-.opt .det{font-size:.85rem; color:var(--encre-2); max-width:70ch}
+.opt .det{display:block; font-size:.85rem; color:var(--encre-2); max-width:70ch}
+.opt .det.mot{margin-top:5px; font-family:"Newsreader",georgia,serif; font-style:italic; color:var(--encre-3)}
+.opt .chiffres{display:flex; flex-wrap:wrap; gap:3px 14px; margin-top:7px; padding-top:6px; border-top:1px dotted var(--filet);
+  font-family:"IBM Plex Mono",monospace; font-size:.74rem; color:var(--encre-2); font-variant-numeric:tabular-nums}
+.opt .chiffres .neg{color:var(--alerte)} .opt .chiffres .pos{color:var(--ok)}
+.opt .chiffres b{display:inline; margin:0}
 
 /* ---------- doctrine ---------- */
 .classement{display:grid; gap:8px; margin:18px 0; counter-reset:rang}
@@ -396,6 +401,16 @@ table.bilan .num{text-align:right}
 #comprendre .chapo{margin:14px 0 18px}
 body:has(#comprendre:not([hidden])) #comprendre-btn{display:none}
 body:has(.suite:not([hidden])) #comprendre-btn{bottom:62px}
+/* ---------- profil du ministre et affaires ---------- */
+.profil-bloc{border:1px solid var(--filet); background:var(--fiche-2); padding:13px 16px; margin:14px 0}
+.profil-bloc .titre-d{font-size:.62rem; letter-spacing:.1em; text-transform:uppercase; font-weight:700; color:var(--bleu-rf); margin-bottom:8px}
+.profil-ligne{display:flex; gap:12px; align-items:baseline; padding:6px 0; border-bottom:1px dotted var(--filet); flex-wrap:wrap}
+.profil-ligne:last-of-type{border-bottom:0}
+.profil-ligne b{min-width:17ch; flex-shrink:0; font-size:.88rem}
+.profil-ligne span{font-size:.84rem; color:var(--encre-2); line-height:1.5; flex:1; min-width:16ch}
+.profil-note{font-size:.78rem; color:var(--encre-3); margin:9px 0 0; line-height:1.5; font-style:italic}
+#hud-sous b.neg{color:var(--alerte)}
+@media (max-width:640px){ .profil-ligne b{min-width:0} }
 .ligne-s .requal{display:inline-block; font-size:.6rem; font-weight:700; text-transform:uppercase; letter-spacing:.08em; background:var(--c-budget); color:#1a1a19; padding:1px 6px; margin-left:7px; vertical-align:middle}
 .nouveau-dossier{display:inline-block; font-size:.6rem; font-weight:700; text-transform:uppercase; letter-spacing:.09em; background:var(--bleu-rf); color:#fff; padding:2px 7px; margin-left:8px; vertical-align:middle}
 .bandeau-neuf{background:var(--fiche-2); border-left:3px solid var(--bleu-rf); padding:10px 14px; font-size:.82rem; margin:14px 0; line-height:1.5}
