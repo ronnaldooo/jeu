@@ -4,8 +4,12 @@
    Génère le .docx remis pour relecture et corrections. Ce n'est PAS une brique
    du jeu : le jeu lui-même n'a aucune dépendance. Cet outil-là en a une.
 
-     npm install docx        (une seule fois, hors dépôt)
-     node outil/deroule-docx.js "Rue de Grenelle - deroule du jeu.docx"
+     npm install docx                     (une seule fois, hors du dépôt)
+     NODE_PATH=<ou-est-docx>/node_modules \\
+       node outil/deroule-docx.cjs "Rue de Grenelle - deroule du jeu.docx"
+
+   Extension .cjs et non .js : le dépôt est en modules ES, cet outil-là est en
+   CommonJS parce que le paquet docx l'est.
 
    Le document décrit ce que le jeu FAIT ; il doit donc être régénéré après
    toute modification du calendrier, des seuils ou du catalogue. Les encadrés
