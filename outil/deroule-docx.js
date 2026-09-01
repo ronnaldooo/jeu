@@ -28,20 +28,29 @@ const BODY = (t) => new Paragraph({ children: typeof t === 'string' ? [T(t)] : t
 const PUCE = (t) => new Paragraph({ children: typeof t === 'string' ? [T(t)] : t, numbering: { reference: 'puces', level: 0 }, spacing: { after: 70 } });
 const VIDE = () => new Paragraph({ text: '', spacing: { after: 80 } });
 
-/* Encadré « à relire » : c'est là que l'utilisateur est invité à écrire. */
-const ENCADRE = (titre, texte) => new Table({
-  columnWidths: [9360],
-  width: { size: 9360, type: WidthType.DXA },
-  rows: [new TableRow({ children: [new TableCell({
+/* Encadré « à relire » : c'est là que le relecteur est invité à écrire.
+   Chaque question est numérotée et enregistrée, pour être reprise en fin de
+   document dans un tableau récapitulatif avec une colonne à remplir. */
+const QUESTIONS = [];
+const ENCADRE = (titre, texte, section) => {
+  QUESTIONS.push({ n: QUESTIONS.length + 1, section: section || '', texte });
+  const num = QUESTIONS.length;
+  return new Table({
+    columnWidths: [9360],
     width: { size: 9360, type: WidthType.DXA },
-    shading: { type: ShadingType.CLEAR, fill: 'F2F3F7' },
-    margins: { top: 120, bottom: 120, left: 160, right: 160 },
-    children: [
-      new Paragraph({ children: [T(titre, { bold: true, size: 18, color: '000091', allCaps: true })], spacing: { after: 60 } }),
-      new Paragraph({ children: [T(texte, { size: 20, italics: true, color: '444444' })] }),
-    ],
-  })] })],
-});
+    rows: [new TableRow({ children: [new TableCell({
+      width: { size: 9360, type: WidthType.DXA },
+      shading: { type: ShadingType.CLEAR, fill: 'F2F3F7' },
+      margins: { top: 120, bottom: 120, left: 160, right: 160 },
+      children: [
+        new Paragraph({ children: [T(`${titre} — question ${num}`, { bold: true, size: 18, color: '000091', allCaps: true })], spacing: { after: 60 } }),
+        new Paragraph({ children: [T(texte, { size: 20, italics: true, color: '444444' })], spacing: { after: 90 } }),
+        new Paragraph({ children: [T('Votre réponse : ', { size: 19, color: '8A8FA3' }),
+          T('………………………………………………………………………………………………………………………………', { size: 19, color: 'C9C9C9' })] }),
+      ],
+    })] })],
+  });
+};
 
 const LARGEUR = 9360;
 function tableau(entetes, lignes, largeurs) {
@@ -102,7 +111,7 @@ A(BODY([
   T('). Autrement dit : « cette mesure devrait coûter plus cher », « ce délai est trop court », « cette phrase est fausse » sont des corrections rapides. En revanche « il faudrait une étape supplémentaire en mars » touche à la structure et demande un rééquilibrage complet.', {}),
 ]));
 A(VIDE());
-A(ENCADRE('À relire', 'Y a-t-il des parties du jeu dont vous voudriez le détail et qui ne figurent pas ici ?'));
+A(ENCADRE('À relire', 'Y a-t-il des parties du jeu dont vous voudriez le détail et qui ne figurent pas ici ?', 'Comment relire'));
 A(new Paragraph({ children: [new PageBreak()] }));
 
 /* ---- sommaire ---- */
@@ -145,7 +154,7 @@ A(tableau(
   [2600, 900, 5860],
 ));
 A(VIDE());
-A(ENCADRE('À relire', 'Ces cinq compteurs sont-ils les bons ? Leur valeur de départ vous paraît-elle juste — notamment « Paix sociale » à 78, qui suppose qu’on hérite d’un conflit ouvert mais pas d’un blocage ?'));
+A(ENCADRE('À relire', 'Ces cinq compteurs sont-ils les bons ? Leur valeur de départ vous paraît-elle juste — notamment « Paix sociale » à 78, qui suppose qu’on hérite d’un conflit ouvert mais pas d’un blocage ?', '1 · En un coup d’œil'));
 A(new Paragraph({ children: [new PageBreak()] }));
 
 /* ============ 2. DÉROULÉ ============ */
@@ -191,7 +200,7 @@ A(PUCE('une page de manuel sortie de son contexte, polémique d’août ;'));
 A(PUCE('l’interview de rentrée, et le choix de sa petite phrase.'));
 A(BODY('Ces dossiers ne coûtent rien en budget et beaucoup en positionnement : ils fixent l’image du ministre avant qu’il ait rien fait.'));
 A(VIDE());
-A(ENCADRE('À relire', 'L’ouverture fait six écrans avant la première rentrée. Est-ce encore le bon rythme ? Et l’avance de gestion : les trois options vous paraissent-elles bien dosées — 550, 950 ou 1 400 millions, contre 0, 45 ou 60 % de restitution promise ?'));
+A(ENCADRE('À relire', 'L’ouverture fait six écrans avant la première rentrée. Est-ce encore le bon rythme ? Et l’avance de gestion : les trois options vous paraissent-elles bien dosées — 550, 950 ou 1 400 millions, contre 0, 45 ou 60 % de restitution promise ?', '2.1 · L’ouverture'));
 
 A(H2('2.2 L’année type — cinq fois de suite'));
 A(BODY('À partir de septembre 2027, chaque année suit le même cycle. Les lignes marquées « DÉCISION » appellent un choix du joueur ; les autres sont des points d’étape où il lit ce qui s’est produit.'));
@@ -212,7 +221,7 @@ A(tableau(
   [1100, 2900, 5360],
 ));
 A(VIDE());
-A(ENCADRE('À relire', 'Le calendrier vous paraît-il fidèle ? Manque-t-il un rendez-vous que vit réellement un ministre (le comité social d’administration ? les résultats du baccalauréat en juillet ? la conférence de presse de rentrée ?).'));
+A(ENCADRE('À relire', 'Le calendrier vous paraît-il fidèle ? Manque-t-il un rendez-vous que vit réellement un ministre (le comité social d’administration ? les résultats du baccalauréat en juillet ? la conférence de presse de rentrée ?).', '2.2 · L’année type'));
 
 A(H2('2.3 La fin de partie'));
 A(BODY('Cinq façons de terminer — et une seule qui consiste à aller au bout.'));
@@ -229,7 +238,7 @@ A(tableau(
 ));
 A(BODY('Un joueur attentif survit cinq ans dans 45 à 50 % des parties. C’est un choix : finir doit être une performance, pas un dû.'));
 A(VIDE());
-A(ENCADRE('À relire', 'Le remaniement est un tirage : on peut perdre sans avoir démérité. C’est fidèle à la réalité, mais est-ce frustrant à jouer ? Faut-il baisser sa probabilité et compenser par les convocations, qui, elles, se méritent ?'));
+A(ENCADRE('À relire', 'Le remaniement est un tirage : on peut perdre sans avoir démérité. C’est fidèle à la réalité, mais est-ce frustrant à jouer ? Faut-il baisser sa probabilité et compenser par les convocations, qui, elles, se méritent ?', '2.3 · La fin de partie'));
 A(new Paragraph({ children: [new PageBreak()] }));
 
 /* ============ 3. LES QUATRE DÉCISIONS ============ */
@@ -244,7 +253,7 @@ A(BODY('Conséquences : Bercy compare aux emplois qu’il avait exigés en juill
 A(BODY([T('Le second : comment l’effort est-il réparti entre public et privé sous contrat ?', { bold: true })]));
 A(BODY('Épargner le privé fait monter la ségrégation ; le faire contribuer au-delà de 78 % déclenche une provocation. Deux provocations arment la guerre scolaire — il faut donc insister pour la déclencher : une année de tension ne suffit pas, deux commencent à faire une histoire.'));
 A(VIDE());
-A(ENCADRE('À relire', 'Le seuil de colère des maires (55 %) et celui de la provocation sur le privé (78 %) sont des jugements de ma part. Vous paraissent-ils placés au bon endroit ?'));
+A(ENCADRE('À relire', 'Le seuil de colère des maires (55 %) et celui de la provocation sur le privé (78 %) sont des jugements de ma part. Vous paraissent-ils placés au bon endroit ?', '3.1 · La carte scolaire'));
 
 A(H2('3.2 L’atelier de mesures — le catalogue'));
 A(BODY('Le catalogue compte 65 cartes réparties en cinq familles : moyens et encadrement, autonomie et évaluation, parcours et orientation, autorité et familles, mixité et carte scolaire.'));
@@ -281,7 +290,7 @@ A(tableau(
   [1500, 2900, 4960],
 ));
 A(VIDE());
-A(ENCADRE('À relire', 'Manque-t-il des mesures que vous attendriez dans un tel catalogue ? Y en a-t-il dont la formulation, les porteurs ou l’effet vous paraissent inexacts ? C’est la partie la plus facile à corriger : une carte est un bloc de texte isolé.'));
+A(ENCADRE('À relire', 'Manque-t-il des mesures que vous attendriez dans un tel catalogue ? Y en a-t-il dont la formulation, les porteurs ou l’effet vous paraissent inexacts ? C’est la partie la plus facile à corriger : une carte est un bloc de texte isolé.', '3.2 · Le catalogue'));
 
 A(H2('3.3 L’audience syndicale (octobre) — en deux temps'));
 A(BODY('Sept organisations, pondérées par les résultats réels des élections professionnelles de 2022, avec des profils de négociation distincts : rapport de force, réformiste, frontal, négociation, radical, corporatiste. Les noms sont des pseudonymes transparents ; les poids et les profils sont ceux des organisations réelles.'));
@@ -289,7 +298,7 @@ A(BODY([T('Premier temps : la question.', { bold: true }), T(' Le ministre reço
 A(BODY([T('Second temps : la revendication.', { bold: true }), T(' L’organisation exige le retrait de la mesure qu’elle conteste le plus. Trois réponses sont possibles. ', {}), T('Céder', { bold: true }), T(' retire vraiment la mesure du jeu : ses effets réels ne viendront jamais, et le compteur d’abandons monte. ', {}), T('Maintenir', { bold: true }), T(' face à un profil combatif, c’est provisionner une grève pour le printemps. ', {}), T('Requalifier', { bold: true }), T(' — la renommer et la rendre facultative — ne coûte presque rien sur le moment : le conflit se dénoue, les crédits restent inscrits, l’annonce survit. C’est le geste politique le plus fréquent du système français, et le seul dont le prix n’apparaît qu’au bilan : la mesure requalifiée produit moins d’un cinquième de ce qu’elle promettait. Précédent : le « choc des savoirs » de décembre 2023, requalifié en « groupes de besoins », puis vidé de son obligation.', {})]));
 A(BODY('Les grèves sont chiffrées à partir d’un étalon historique — le 10 février 2011, 16,99 % d’enseignants grévistes — et affichées avec deux nombres : celui du ministère et celui de l’intersyndicale, environ 1,7 fois plus élevé.'));
 A(VIDE());
-A(ENCADRE('À relire', 'Les profils syndicaux et la matrice d’accueil des réponses sont des simplifications assumées. Sonnent-elles juste pour quelqu’un qui connaît ces organisations ? La satire des noms reste-t-elle acceptable et symétrique ?'));
+A(ENCADRE('À relire', 'Les profils syndicaux et la matrice d’accueil des réponses sont des simplifications assumées. Sonnent-elles juste pour quelqu’un qui connaît ces organisations ? La satire des noms reste-t-elle acceptable et symétrique ?', '3.3 · L’audience syndicale'));
 
 A(H2('3.4 La lettre plafond (juillet) — la contrainte extérieure'));
 A(BODY('Bercy n’est pas un adversaire à battre : c’est un cadre. Selon le crédit dont le ministre dispose, quatre paliers, du ton « confiant » au ton « comminatoire » :'));
@@ -327,7 +336,7 @@ A(tableau(
 A(BODY('Le tirage n’est jamais purement aléatoire : 9,5 % par an de base, multiplié par 2,6 si vous avez joué une carte du même thème dans l’année, par 1,7 si votre profil y expose, plafonné à 42 %, deux affaires par partie au maximum. C’est la règle la plus fidèle au réel de tout le dossier : on n’est pas puni pour ce qu’on fait, on est puni pour l’écart. Mesuré sur 500 parties : 40 % des parties ne voient aucune affaire, 41 % en voient une, 19 % en voient deux, et un quart des affaires qui sortent sont déclenchées par ce que le ministre venait de faire — l’écran le signale quand c’est le cas.'));
 A(BODY('Trois réponses toujours : assumer sobrement, se défendre sur les faits, contre-attaquer. La troisième est la plus tentante et la plus coûteuse. Aucune ne touche un compteur éducatif. Une affaire sur quatre se dégonfle — démentie, classée, close par un remboursement — et le joueur ne récupère alors que la moitié du coût : c’est vrai, et c’est ce que le public retient le plus mal. Une seule réponse du répertoire est fatale à elle seule, et ce n’est pas la plus grave sur le fond : c’est celle où le ministre justifie la scolarisation privée de ses enfants par un défaut du service public dont il vient de prendre la tête.'));
 A(VIDE());
-A(ENCADRE('À relire', 'La fréquence vous paraît-elle juste — quatre parties sur dix sans aucune affaire ? Et le garde-fou principal : l’archétype de l’attaque en illégitimité existe uniquement comme subi, jamais comme une carte jouable par qui que ce soit. On modélise la réalité d’une exposition, on ne fabrique pas un simulateur de dénigrement. Cette ligne vous semble-t-elle au bon endroit ?'));
+A(ENCADRE('À relire', 'La fréquence vous paraît-elle juste — quatre parties sur dix sans aucune affaire ? Et le garde-fou principal : l’archétype de l’attaque en illégitimité existe uniquement comme subi, jamais comme une carte jouable par qui que ce soit. On modélise la réalité d’une exposition, on ne fabrique pas un simulateur de dénigrement. Cette ligne vous semble-t-elle au bon endroit ?', '3.5 · Les turbulences'));
 
 /* ============ 4. LE BILAN ============ */
 A(H1('4. Le bilan — le moment où le jeu dit ce qu’il avait à dire'));
@@ -345,7 +354,7 @@ A(tableau(
 A(BODY('Le score final est pondéré par la feuille de route déclarée en juin 2027 : 35 / 25 / 20 / 12 / 8. Deux bonus s’y ajoutent : la constance (avoir peu abandonné) et la cohérence (la part de ce qu’on a réellement produit qui va dans le sens de ce qu’on avait annoncé).'));
 A(BODY([T('La leçon visée, en une phrase : ', {}), T('mettre les cinq compteurs au vert est impossible en cinq ans, et presque possible en dix.', { bold: true }), T(' La victoire existe ; elle demande plus de temps qu’un mandat.')]));
 A(VIDE());
-A(ENCADRE('À relire', 'Le bilan est long. Faut-il l’alléger, ou au contraire y ajouter quelque chose — une comparaison avec les autres stratégies types, une phrase de conclusion plus explicite sur ce que la partie a montré ?'));
+A(ENCADRE('À relire', 'Le bilan est long. Faut-il l’alléger, ou au contraire y ajouter quelque chose — une comparaison avec les autres stratégies types, une phrase de conclusion plus explicite sur ce que la partie a montré ?', '4 · Le bilan'));
 A(new Paragraph({ children: [new PageBreak()] }));
 
 /* ============ 5. TRANSVERSAL ============ */
@@ -366,7 +375,7 @@ A(tableau(
   [2600, 6760],
 ));
 A(VIDE());
-A(ENCADRE('À relire', 'Ces mécaniques sont invisibles par construction. Le jeu les explique-t-il assez pour qu’on comprenne ce qui nous arrive, sans les expliciter au point de tuer l’effet de surprise ?'));
+A(ENCADRE('À relire', 'Ces mécaniques sont invisibles par construction. Le jeu les explique-t-il assez pour qu’on comprenne ce qui nous arrive, sans les expliciter au point de tuer l’effet de surprise ?', '5 · L’arrière-plan'));
 
 A(H1('6. L’onglet « Comprendre le jeu »'));
 A(BODY('Un bouton fixe en bas à gauche de chaque écran ouvre onze fiches de référence, 80 chiffres, trente-quatre sources officielles portant chacune l’organisme, la date et le lien du document.'));
@@ -389,7 +398,7 @@ A(tableau(
 ));
 A(BODY([T('Un parti pris à signaler : ', {}), T('quand deux sources officielles se contredisent, les deux sont affichées.', { bold: true }), T(' Le remplacement vaut 4,3 % du temps scolaire selon le Sénat (juin 2025) et 9,3 % au collège-lycée selon la Cour des comptes (décembre 2025). Deux périmètres, un même diagnostic : le désaccord entre sources est une donnée pédagogique, pas une négligence.')]));
 A(VIDE());
-A(ENCADRE('À relire', 'C’est la partie où votre relecture m’est la plus utile : un chiffre faux ou mal daté dans cet onglet décrédibilise tout le reste. Chaque chiffre est sur une ligne isolée dans le fichier moteur/reperes.js — une correction est immédiate.'));
+A(ENCADRE('À relire', 'C’est la partie où votre relecture m’est la plus utile : un chiffre faux ou mal daté dans cet onglet décrédibilise tout le reste. Chaque chiffre est sur une ligne isolée dans le fichier moteur/reperes.js — une correction est immédiate.', '6 · Comprendre le jeu'));
 
 A(H1('7. Usage en formation'));
 A(BODY('Le jeu a été conçu pour être joué puis discuté. Les moments les plus productifs observés en conception :'));
@@ -399,7 +408,7 @@ A(PUCE('les panneaux « Comprendre l’effet », qui déconstruisent quinze idé
 A(PUCE('l’onglet « Comprendre le jeu », qui donne sourcées les données de cadrage qu’on passe habituellement une demi-journée à rassembler avant une formation.'));
 A(BODY('Le jeu tient dans un seul fichier HTML : il peut être déposé sur un ENT, distribué sur clé, ou ouvert hors connexion dans une salle sans réseau.'));
 A(VIDE());
-A(ENCADRE('À relire', 'Faut-il un livret d’accompagnement pour l’animateur — questions de débriefing, points de vigilance, durée conseillée ? Et faudrait-il une partie courte (une ou deux années) pour un usage en une heure ?'));
+A(ENCADRE('À relire', 'Faut-il un livret d’accompagnement pour l’animateur — questions de débriefing, points de vigilance, durée conseillée ? Et faudrait-il une partie courte (une ou deux années) pour un usage en une heure ?', '7 · Usage en formation'));
 
 A(H1('8. Ce que je sais devoir surveiller'));
 A(BODY('Pour être complet, voici les points sur lesquels j’ai des doutes et où votre avis tranchera.'));
@@ -418,7 +427,21 @@ A(tableau(
   [2600, 6760],
 ));
 A(VIDE());
-A(ENCADRE('À relire', 'Y a-t-il un point qui vous gêne davantage que ceux-ci ? Ou un point de cette liste qui, selon vous, n’en est pas un ?'));
+A(ENCADRE('À relire', 'Y a-t-il un point qui vous gêne davantage que ceux-ci ? Ou un point de cette liste qui, selon vous, n’en est pas un ?', '8 · Points de vigilance'));
+
+/* ============ 9. RÉCAPITULATIF DES QUESTIONS ============ */
+A(new Paragraph({ children: [new PageBreak()] }));
+A(H1('9. Toutes les questions, en un seul endroit'));
+A(BODY('Les quatorze encadrés gris du document, rassemblés ici pour que vous puissiez y répondre d’une traite si vous préférez. La colonne de droite est vide : elle est à vous. Une réponse d’un mot suffit — « oui », « trop », « à revoir » — je saurai quoi en faire.'));
+A(tableau(
+  ['N°', 'Où', 'La question', 'Votre réponse'],
+  QUESTIONS.map((q) => [String(q.n), q.section, q.texte, '']),
+  [560, 1700, 4600, 2500],
+));
+A(VIDE());
+A(BODY([T('Et une quinzième, qui n’est dans aucun encadré : ', {}), T('qu’est-ce qui manque ?', { bold: true }), T(' Ce document décrit ce que le jeu fait ; il ne dit pas ce qu’il devrait faire et ne fait pas. Si en le lisant vous pensez à un moment du métier qui n’est pas représenté — un rendez-vous, un acteur, une décision — c’est la remarque qui m’aidera le plus.', {})]));
+A(VIDE());
+A(ENCADRE('À écrire', 'Ce qui manque au jeu, selon vous :', '9 · Récapitulatif'));
 
 /* ---- pied de document ---- */
 A(new Paragraph({ text: '', spacing: { before: 400 } }));
