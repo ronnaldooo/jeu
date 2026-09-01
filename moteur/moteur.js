@@ -11,7 +11,7 @@
    ========================================================================== */
 
 import * as K from './constantes.js';
-import { CATALOGUE, PAR_ID, AFFAIRES, AFFAIRE_PAR_ID, REVALORISATION, chiffrerRevalorisation, FINANCEMENT_19, DOSSIERS_ETE, AUDIENCES, RECEPTION } from './catalogue.js';
+import { CATALOGUE, PAR_ID, AFFAIRES, AFFAIRE_PAR_ID, POLEMIQUES_RENTREE, LIVRAISON_PISA, PLATEAU, REVALORISATION, chiffrerRevalorisation, FINANCEMENT_19, DOSSIERS_ETE, AUDIENCES, RECEPTION } from './catalogue.js';
 
 /* ---------------------------------------------------------------- ALÉA --- */
 export function rngDepuis(graine) {
@@ -359,6 +359,8 @@ function* etapeRentree(s) {
 /* Chaque rentrée s'accompagne d'une circulaire : quelques mesures, financées
    par redéploiement dans le budget en cours. Étroit, mais immédiat — et c'est
    le moment où le pays regarde l'école. */
+/* La circulaire de rentrée porte trois messages, pas un programme. Elle se
+   finance par redéploiement — et par ce que Bercy a bien voulu débloquer. */
 function* etapeCirculaireRentree(s) {
   crediter(s, K.ENVELOPPE_RENTREE);
   yield* etapeMesures(s, { moment: 'rentree', taille: K.TAILLE_MENU_COURT });
@@ -411,8 +413,13 @@ function* etapeAudience(s) {
     } else if (dec === 'requalifier') {
       requalifierMesure(s, conteste, org, poidsRel);
     } else {
+      /* Tenir plaît aux familles et à la presse, déplaît au corps. Céder fait
+         l'inverse. Le ministre ne peut pas satisfaire tout le monde, et le jeu
+         doit le faire sentir à chaque fois. */
       s.capital += 2;
-      s.phys.adhesion = borne(s.phys.adhesion - 1.8 * poidsRel, 0, 100);
+      s.phys.parents = borne(s.phys.parents + 2.5, 0, 100);
+      s.vitrine.paix -= 1.2;
+      s.phys.adhesion = borne(s.phys.adhesion - 1.8 * poidsRel, 0, s.plafondAdhesion);
       if (combatif && risque) {
         (s.grevesEnAttente = s.grevesEnAttente || []).push({
           intensite: combatif ? 4 : 3,
@@ -485,6 +492,69 @@ function retirerMesure(s, m, org, poidsRel) {
   s.credibilite = borne(s.credibilite + K.CREDIBILITE.parAbandon, 0, 100);
   s.abandons += 1;
   note(s, `Retrait de « ${carte.label} » obtenu par ${org.nom}. La mesure sort du droit ; ses effets ne viendront jamais.`, 'retrait');
+}
+
+/* --- SEPTEMBRE (an 2) : la polémique qui s'installe ------------------------ */
+/* Elle ne porte jamais sur l'école, elle porte sur l'ordre public à l'école, et
+   elle occupe l'agenda pendant des semaines — devant les postes non pourvus
+   dont personne ne parlera. */
+function* etapePolemique(s) {
+  const p = POLEMIQUES_RENTREE[(s.graine + s.annee) % POLEMIQUES_RENTREE.length];
+  const idx = yield { type: 'polemique', polemique: p };
+  const r = p.reponses[Math.max(0, Math.min(2, idx | 0))];
+  s.phys.parents = borne(s.phys.parents + r.parents, 0, 100);
+  s.phys.adhesion = borne(s.phys.adhesion + r.adhesion, 0, s.plafondAdhesion);
+  s.credibilite = borne(s.credibilite + r.credibilite, 0, 100);
+  s.capital = borne(s.capital + r.capital, 0, K.CAPITAL.plafond);
+  s.vitrine.paix += r.presse * 0.25;
+  /* L'agenda confisqué : ce que la polémique occupe, elle ne le rend pas. */
+  s.agendaConfisque = (s.agendaConfisque || 0) + r.agenda;
+  note(s, `Polémique de rentrée « ${p.titre} » : réponse ${r.type === 'ferme' ? 'de fermeté' : r.type === 'methode' ? 'de méthode' : 'd’esquive'}. ${r.agenda} semaines d’agenda consommées.`, 'polemique');
+}
+
+/* --- OCTOBRE (an 2) : la livraison internationale -------------------------- */
+/* Le ministre n'a pas le choix d'annoncer. Il a le choix de ce qu'il annonce,
+   et de ce que cela déclenche en salle des professeurs. */
+function* etapeLivraison(s) {
+  yield { type: 'livraison', livraison: LIVRAISON_PISA };
+  const avant = s.joue.size;
+  yield* etapeMesures(s, { moment: 'livraison', taille: K.TAILLE_MENU_COURT });
+  const prises = [...s.joue].slice(avant).map((id) => PAR_ID[id]).filter(Boolean);
+  const enflamme = prises.filter((c) => LIVRAISON_PISA.enflamme.includes(c.famille)).length;
+  const apaise = prises.filter((c) => LIVRAISON_PISA.apaise.includes(c.famille)).length;
+  if (enflamme > apaise) {
+    (s.grevesEnAttente = s.grevesEnAttente || []).push({
+      intensite: 3 + (enflamme > 1 ? 1 : 0), theme: 'pedagogie', segment: 'tous',
+      cause: 'annonces prises sous le coup de la livraison internationale',
+    });
+    note(s, 'Les annonces de l’après-PISA sont reçues comme une mise en cause des personnels. Un préavis est déposé pour le printemps.', 'greve');
+  } else if (apaise > 0) {
+    s.phys.adhesion = borne(s.phys.adhesion + 3, 0, s.plafondAdhesion);
+  }
+}
+
+/* --- DÉCEMBRE : le plateau de vingt heures --------------------------------- */
+/* Trois questions. La troisième n'était pas dans le brief, et c'est celle dont
+   on se souviendra. Un ministre tombe plus souvent sur une phrase que sur un
+   bilan : le jeu doit le rendre jouable. */
+function* etapePlateau(s) {
+  const reps = (yield { type: 'plateau', plateau: PLATEAU }) || [];
+  let derapage = false;
+  PLATEAU.questions.forEach((q, i) => {
+    const r = q.reponses[Math.max(0, Math.min(q.reponses.length - 1, reps[i] | 0))];
+    s.credibilite = borne(s.credibilite + (r.credibilite || 0), 0, 100);
+    s.phys.parents = borne(s.phys.parents + (r.parents || 0), 0, 100);
+    s.phys.adhesion = borne(s.phys.adhesion + (r.adhesion || 0), 0, s.plafondAdhesion);
+    if (r.presse) s.vitrine.paix += r.presse * 0.2;
+    if (r.derapage) derapage = true;
+  });
+  if (derapage) {
+    s.derapages = (s.derapages || 0) + 1;
+    s.pointsGreveCumules += 2.0;
+    note(s, 'Le passage au journal de 20 heures a produit une séquence dont on reparlera. Les excuses n’y changeront rien : ce type de perte est le seul du jeu qui ne se rattrape pas.', 'plateau');
+  } else {
+    note(s, 'Passage au journal de 20 heures sans accroc. Personne n’en parlera demain, ce qui est le meilleur résultat possible.', 'plateau');
+  }
 }
 
 /* --- L'AFFAIRE : tirage conditionnel, jamais aléatoire pur ----------------- */
@@ -719,9 +789,33 @@ function* etapeMesures(s, opts) {
 }
 
 /* --- MARS : mobilisations de printemps ------------------------------------ */
-function etapeMars(s) {
+function* etapeMars(s) {
   for (const g of (s.grevesEnAttente || [])) appliquerGreve(s, evaluerMobilisation(s, g));
   s.grevesEnAttente = [];
+
+  /* Le printemps rouvre le dossier : ce qui n'a pas été retiré à l'automne
+     revient sur la table, et l'intersyndicale a eu six mois pour s'organiser. */
+  const conteste = mesureContestee(s);
+  if (conteste && s.rng() < K.RETRAIT_MARS.proba) {
+    const tri = [...s.syndicats].sort((a, b) => b.poids - a.poids);
+    const org = tri[0];
+    const carte = PAR_ID[conteste.id];
+    const poidsRel = org.poids / 34;
+    const risque = evaluerMobilisation(s, {
+      intensite: 4, theme: (carte.greve && carte.greve.theme) || 'moyens',
+      segment: (carte.greve && carte.greve.segment) || 'tous',
+      cause: `maintien de « ${carte.label} » au printemps`,
+    });
+    const dec = yield { type: 'retrait', org, carte, mesure: conteste, risque, combatif: true, printemps: true };
+    if (dec === 'ceder') retirerMesure(s, conteste, org, poidsRel);
+    else if (dec === 'requalifier') requalifierMesure(s, conteste, org, poidsRel);
+    else {
+      s.capital += 2;
+      s.phys.adhesion = borne(s.phys.adhesion - 2.4 * poidsRel, 0, s.plafondAdhesion);
+      appliquerGreve(s, risque);
+      note(s, `Printemps : ${org.nom} maintient son mot d’ordre de retrait sur « ${carte.label} ». La mobilisation a lieu.`, 'greve');
+    }
+  }
   /* Une adhésion effondrée produit un conflit même sans mesure déclenchante. */
   if (s.phys.adhesion < 12 && s.rng() < 0.55) {
     appliquerGreve(s, evaluerMobilisation(s, { intensite: 3, theme: 'moyens', segment: 'tous', cause: 'mobilisation sur les moyens' }));
@@ -1120,14 +1214,23 @@ export function* derouler(s) {
     s.anneeCiv = 2026 + s.annee;                 // année civile de la carte scolaire
     yield* etapeJuillet(s);   s.mois = 6;  yield { type: 'etape', etape: 'juillet' };
     yield* etapeRentree(s);   s.mois = 8;
+    if (s.annee >= 2 && !s.polemiqueFaite) { s.polemiqueFaite = true; yield* etapePolemique(s); }
     yield* etapeCirculaireRentree(s);        yield { type: 'etape', etape: 'rentree' };
+    /* La livraison internationale de l'automne : elle tombe une fois, et elle
+       oblige. Le joueur ne choisit pas d'annoncer, il choisit quoi. */
+    if (s.annee === 2) { s.mois = 9; yield* etapeLivraison(s); }
     yield* etapeAudience(s);  s.mois = 9;
     etapeDecembre(s);         s.mois = 11;
     yield* etapeAffaire(s);
     if (s.fini) break;
+    /* Le plateau : quand la crédibilité est basse ou qu'une affaire vient de
+       sortir, on ne « propose » plus au ministre de venir s'expliquer. */
+    if (!s.plateauFait && (s.annee >= 2) && (s.credibilite < 58 || (s.affaires || []).length > 0 || s.annee >= 3)) {
+      s.plateauFait = true; yield* etapePlateau(s);
+    }
     yield { type: 'etape', etape: 'decembre' };
     yield* etapeJanvier(s);   s.mois = 0;
-    etapeMars(s);             s.mois = 2;  yield { type: 'etape', etape: 'mars' };
+    yield* etapeMars(s);      s.mois = 2;  yield { type: 'etape', etape: 'mars' };
     etapeCloture(s);          s.mois = 4;
     rafraichir(s);
     yield { type: 'etape', etape: 'cloture' };
@@ -1152,6 +1255,11 @@ export function jouerMandat({ graine = 1, politique }) {
     else if (q.type === 'avance') rep = politique.avance ? politique.avance(s, q) : 1;
     else if (q.type === 'intention') rep = politique.intention ? politique.intention(s, q) : 1;
     else if (q.type === 'affaire') rep = politique.affaire ? politique.affaire(s, q) : 0;
+    else if (q.type === 'polemique') rep = politique.polemique ? politique.polemique(s, q) : 1;
+    else if (q.type === 'livraison') rep = null;
+    /* Défaut délibérément médiocre : le plateau ne doit rien offrir à qui ne
+       s'y prépare pas — sinon l'immobilisme paie, ce qui serait faux. */
+    else if (q.type === 'plateau') rep = politique.plateau ? politique.plateau(s, q) : [1, 1, 1];
     else if (q.type === 'doctrine') rep = politique.doctrine ? politique.doctrine(s) : Object.keys(K.COMPTEURS_INITIAUX);
     else if (q.type === 'lettrePlafond') rep = politique.lettrePlafond ? politique.lettrePlafond(s, q.palier) : 'accepter';
     else if (q.type === 'rentree') rep = politique.rentree ? politique.rentree(s, q) : 'assumer';

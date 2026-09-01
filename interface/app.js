@@ -352,6 +352,108 @@ function ecranBercy(q) {
   scene(d);
 }
 
+/* --- septembre (an 2) : la polémique qui s'installe -------------------------- */
+function ecranPolemique(q) {
+  const p = q.polemique;
+  const d = docu('Rentrée — la question qui occupe l’antenne', esc(p.titre));
+  d.classList.add('papier');
+  d.appendChild(el('p', 'chapo', fr(p.recit)));
+  const opts = el('div', 'opts');
+  p.reponses.forEach((r, i) => {
+    const eff = [
+      r.parents ? `parents ${signe(r.parents)}` : '',
+      r.adhesion ? `enseignants ${signe(r.adhesion)}` : '',
+      r.presse ? `presse ${signe(r.presse)}` : '',
+      r.credibilite ? `crédibilité ${signe(r.credibilite)}` : '',
+      r.capital ? `capital ${signe(r.capital)}` : '',
+      `<b class="neg">${r.agenda} semaines d’agenda</b>`,
+    ].filter(Boolean);
+    const b = el('button', 'opt',
+      `<b>${esc(r.label)}</b><span class="det">${fr(r.det)}</span>`
+      + `<span class="chiffres">${eff.map((x) => `<span>${x}</span>`).join('')}</span>`);
+    b.onclick = () => fin(i, r);
+    opts.appendChild(b);
+  });
+  d.appendChild(opts);
+  d.appendChild(el('p', 'note-passation', 'Aucune de ces réponses ne fait bouger un compteur d’acquis. Elles décident seulement de combien de semaines vous parlerez d’autre chose que d’école — et devant qui vous aurez raison.'));
+  function fin(i, r) {
+    opts.querySelectorAll('.opt').forEach((n) => { n.disabled = true; });
+    const box = el('div', 'decryptage');
+    box.innerHTML = `<div class="titre-d">Ce qui suit</div><p>${fr(r.suite)}</p>`;
+    d.appendChild(box);
+    const act = el('div', 'actions');
+    const ok = el('button', 'btn', 'Passer à la rentrée');
+    ok.onclick = () => suivant(i);
+    act.appendChild(ok); d.appendChild(act);
+    box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+  scene(d);
+}
+
+/* --- octobre (an 2) : la livraison internationale ---------------------------- */
+function ecranLivraison(q) {
+  const L = q.livraison;
+  const d = docu('Livraison internationale — 11 heures', esc(L.titre));
+  d.appendChild(el('p', 'chapo', fr(L.recit)));
+  d.appendChild(serieNiveaux());
+  d.appendChild(el('div', 'decryptage',
+    `<div class="titre-d">Ce que le poste exige</div><p>${fr(L.contrainte)}</p>`));
+  const ok = el('button', 'btn tamponner', 'Préparer les annonces de ce soir');
+  ok.onclick = () => suivant(null);
+  d.appendChild(el('div', 'actions')).appendChild(ok);
+  scene(d);
+}
+
+/* --- décembre : le plateau de vingt heures ---------------------------------- */
+function ecranPlateau(q) {
+  const P = q.plateau;
+  const rep = new Array(P.questions.length).fill(null);
+  const d = docu('Journal de 20 heures — plateau', esc(P.titre));
+  d.classList.add('papier');
+  d.appendChild(el('p', 'chapo', fr(P.recit)));
+
+  const zone = el('div', '');
+  let courante = 0;
+  function poser() {
+    zone.innerHTML = '';
+    if (courante >= P.questions.length) { conclure(); return; }
+    const qu = P.questions[courante];
+    const bloc = el('section', 'entretien-q');
+    bloc.appendChild(el('div', 'plateau-num', `Question ${courante + 1} sur ${P.questions.length}`));
+    bloc.appendChild(el('h3', '', fr(qu.q)));
+    if (qu.aparte) bloc.appendChild(el('p', 'aparte', fr(qu.aparte)));
+    const opts = el('div', 'opts');
+    qu.reponses.forEach((r, k) => {
+      const b = el('button', 'opt', `<b>${esc(r.label)}</b>`);
+      b.onclick = () => {
+        rep[courante] = k;
+        opts.querySelectorAll('.opt').forEach((n) => { n.disabled = true; });
+        b.classList.add('choisi');
+        const box = el('div', 'decryptage');
+        if (r.derapage) box.style.borderLeftColor = 'var(--rouge-rf)';
+        box.innerHTML = `<div class="titre-d"${r.derapage ? ' style="color:var(--rouge-rf)"' : ''}>${r.derapage ? 'Dérapage' : 'En plateau'}</div><p>${fr(r.suite)}</p>`;
+        bloc.appendChild(box);
+        const suite = el('button', 'btn', courante < P.questions.length - 1 ? 'Question suivante' : 'Fin de la séquence');
+        suite.onclick = () => { courante += 1; poser(); };
+        bloc.appendChild(el('div', 'actions')).appendChild(suite);
+        box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      };
+      opts.appendChild(b);
+    });
+    bloc.appendChild(opts);
+    zone.appendChild(bloc);
+  }
+  function conclure() {
+    zone.appendChild(el('p', 'note-passation', 'Onze minutes. Sur les six causes documentées de chute d’un ministre de l’Éducation, une seule relève de la politique éducative — les cinq autres ressemblent à ce que vous venez de vivre.'));
+    const ok = el('button', 'btn tamponner', 'Quitter le plateau');
+    ok.onclick = () => suivant(rep);
+    zone.appendChild(el('div', 'actions')).appendChild(ok);
+  }
+  d.appendChild(zone);
+  poser();
+  scene(d);
+}
+
 /* --- l'affaire : la polémique qui ne concerne pas l'école --------------------- */
 function ecranAffaire(q) {
   const a = q.affaire;
@@ -656,6 +758,11 @@ function ecranAtelier(q) {
       type: 'Circulaire de rentrée',
       titre: 'Que met-on dans la circulaire de rentrée ?',
       titreSuite: 'Une mesure, pas davantage : la circulaire de rentrée porte un message, pas un programme. Elle se finance par redéploiement — pas d’arbitrage interministériel en septembre.',
+    },
+    livraison: {
+      type: 'Après la livraison — vos annonces de ce soir',
+      titre: 'Trois mesures pour le niveau des élèves',
+      chapo: 'Vous n’avez pas le choix d’annoncer : à 20 heures, on attend des mesures. Vous avez le choix de celles-ci. Selon les familles de mesures retenues, la salle des professeurs applaudira, haussera les épaules, ou déposera un préavis pour le printemps.',
     },
     janvier: {
       type: 'L’atelier — l’arbitrage de janvier',
@@ -1330,6 +1437,9 @@ function dateDe(q) {
   if (q.type === 'profil') return 'juin 2027';
   if (q.type === 'intention') return 'juin 2027';
   if (q.type === 'affaire') return `décembre ${an}`;
+  if (q.type === 'polemique') return `septembre ${an}`;
+  if (q.type === 'livraison') return `octobre ${an}`;
+  if (q.type === 'plateau') return `décembre ${an}`;
   if (q.type === 'retrait') return `octobre ${ETAT.s.anneeCiv || 2027}`;
   if (q.type === 'dossier') return 'été 2027';
   if (q.type === 'audience') return `octobre ${ETAT.s.anneeCiv || 2027}`;
@@ -1356,6 +1466,9 @@ function rendre(q) {
   else if (q.type === 'profil') ecranProfil(q);
   else if (q.type === 'intention') ecranIntention(q);
   else if (q.type === 'affaire') ecranAffaire(q);
+  else if (q.type === 'polemique') ecranPolemique(q);
+  else if (q.type === 'livraison') ecranLivraison(q);
+  else if (q.type === 'plateau') ecranPlateau(q);
   else if (q.type === 'retrait') ecranRetrait(q);
   else if (q.type === 'dossier') ecranDossier(q);
   else if (q.type === 'audience') ecranAudience(q);

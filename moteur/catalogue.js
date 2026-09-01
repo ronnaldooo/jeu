@@ -1887,4 +1887,117 @@ export const AFFAIRES = [
 
 export const AFFAIRE_PAR_ID = Object.fromEntries(AFFAIRES.map((a) => [a.id, a]));
 
+/* ============================================================================
+   LES RENDEZ-VOUS DE L'ANNÉE 2 — la polémique, la livraison, le plateau
+   ----------------------------------------------------------------------------
+   Un mandat n'est pas cinq fois la même année. La deuxième apporte ce que la
+   première n'avait pas : une polémique identitaire qui s'installe et qu'aucune
+   décision n'éteint, une livraison internationale sur laquelle on est sommé
+   d'annoncer, et un plateau de vingt heures où l'on répond en direct.
+   ========================================================================== */
+
+/* La polémique de rentrée. Elle ne porte jamais sur l'école, elle porte sur
+   l'ordre public à l'école — et elle occupe l'agenda six semaines. */
+export const POLEMIQUES_RENTREE = [
+  {
+    id: 'vetement',
+    titre: 'Un vêtement, et six semaines d’agenda',
+    recit: 'Des chefs d’établissement signalent des tenues qu’ils ne savent pas qualifier. La question arrive au journal de 20 heures avant d’arriver sur votre bureau. En quarante-huit heures, elle est devenue le sujet de la rentrée — devant les 2 800 postes non pourvus dont personne ne parlera.',
+    reponses: [
+      { label: 'Publier une circulaire d’interdiction claire', type: 'ferme',
+        det: 'Le texte sort en trois jours. Il sera attaqué au Conseil d’État, et il tiendra probablement.',
+        parents: +7, adhesion: -4, presse: +6, credibilite: +2, capital: -3, agenda: 2,
+        suite: 'Les familles approuvent largement, les chefs d’établissement respirent, et vous venez de consacrer votre rentrée à un sujet qui ne fera bouger aucun compteur d’acquis.' },
+      { label: 'Renvoyer à l’appréciation des équipes, avec un cadre', type: 'methode',
+        det: 'Vous refusez la circulaire et donnez une doctrine d’application aux recteurs.',
+        parents: -3, adhesion: +5, presse: -4, credibilite: -2, capital: -1, agenda: 3,
+        suite: 'La position est défendable et impossible à résumer en une phrase. Elle vous vaudra six semaines de questions au lieu de deux.' },
+      { label: 'Refuser d’entrer dans le sujet', type: 'esquive',
+        det: '« Ma priorité, ce sont les savoirs. » C’est vrai, et cela ne fera pas disparaître la question.',
+        parents: -6, adhesion: +2, presse: -7, credibilite: -5, capital: -4, agenda: 4,
+        suite: 'La question revient à chaque point presse. Au bout d’un mois, ce n’est plus la polémique qui vous coûte : c’est de donner l’impression de la fuir.' },
+    ],
+  },
+  {
+    id: 'harcelement',
+    titre: 'Un drame, et la chaîne des signalements',
+    recit: 'Un élève de troisième s’est donné la mort. Le collège avait été alerté. La famille a saisi la justice et les médias le même jour, et le mot « défaillance » est prononcé dès le premier journal.',
+    reponses: [
+      { label: 'Vous rendre sur place et diligenter une inspection', type: 'ferme',
+        det: 'Vous partez le jour même. L’inspection générale rendra son rapport dans six semaines.',
+        parents: +6, adhesion: +2, presse: +4, credibilite: +3, capital: -4, agenda: 2,
+        suite: 'La présence physique est ce qui se voit le plus et se conteste le moins. Le rapport, lui, dira ce qu’il dira.' },
+      { label: 'Annoncer un plan national de plus', type: 'methode',
+        det: 'Un dispositif existe déjà. Vous en annoncez le renforcement.',
+        parents: +2, adhesion: -3, presse: -2, credibilite: -4, capital: -2, agenda: 3,
+        suite: 'Les personnels comptent les plans successifs sur les doigts d’une main, et n’en manquent pas un. Annoncer un plan là où un plan existe déjà se paie en crédibilité.' },
+      { label: 'Rappeler que la responsabilité est locale', type: 'esquive',
+        det: 'C’est juridiquement exact. Personne ne retiendra la nuance.',
+        parents: -9, adhesion: -6, presse: -8, credibilite: -8, capital: -6, agenda: 4,
+        suite: 'La phrase tourne en boucle. Le lendemain, trois autres familles témoignent, et ce n’est plus un fait divers : c’est votre gestion.' },
+    ],
+  },
+];
+
+/* La livraison internationale de l'automne. Le ministre n'a pas le choix
+   d'annoncer : il a le choix de ce qu'il annonce, et de ce que cela déclenche. */
+export const LIVRAISON_PISA = {
+  titre: 'PISA tombe, et vous devez répondre ce soir',
+  recit: 'Les résultats de l’enquête internationale sont publiés à 11 heures. Ils portent sur des élèves entrés au cours préparatoire dix ans avant votre nomination. À midi, trois chaînes demandent une réaction. À 20 heures, on attendra des mesures — pas une explication méthodologique.',
+  contrainte: 'Vous devez annoncer trois mesures pour le niveau des élèves. Ce n’est pas une option du jeu : c’est ce que le poste exige. Selon celles que vous retenez, la salle des professeurs applaudit, hausse les épaules, ou dépose un préavis.',
+  /* Les familles de mesures qui apaisent ou qui enflamment, une fois annoncées
+     sous la pression d'une livraison internationale. */
+  apaise: ['moyens', 'parcours'],
+  enflamme: ['autorite', 'autonomie'],
+};
+
+/* Le plateau de vingt heures. Trois questions, et l'une d'elles n'a rien à voir
+   avec la politique éducative : c'est celle dont on se souviendra.
+   Précédent : un ministre en exercice mis en difficulté, en direct, sur
+   l'orthographe de mots courants. */
+export const PLATEAU = {
+  titre: 'Vingt heures, plateau, sept millions de personnes',
+  recit: 'La séquence dure onze minutes. Le journaliste a préparé trois questions ; la troisième n’était pas dans le brief transmis à votre cabinet.',
+  questions: [
+    {
+      id: 'bilan',
+      q: '« Monsieur le ministre, en deux ans, le niveau des élèves a-t-il monté ? »',
+      reponses: [
+        { label: 'Donner le chiffre, y compris s’il est mauvais', credibilite: +6, parents: +2, adhesion: +3,
+          suite: 'La franchise sur un mauvais chiffre est le placement le plus rentable du plateau. Elle ne se rejoue pas deux fois.' },
+        { label: 'Répondre par les moyens engagés', credibilite: -2, parents: -1, adhesion: +1,
+          suite: 'Le journaliste répète la question. Vous répétez la réponse. Le public a compris avant vous deux.' },
+        { label: 'Contester la pertinence de la mesure', credibilite: -7, parents: -4, adhesion: 0,
+          suite: 'Contester l’instrument quand il donne tort est ce que font tous les ministres, et le public le sait aussi.' },
+      ],
+    },
+    {
+      id: 'profs',
+      q: '« Les enseignants disent qu’ils n’en peuvent plus. Que leur répondez-vous ? »',
+      reponses: [
+        { label: 'Reconnaître, sans promettre ce que vous ne pouvez pas tenir', credibilite: +4, adhesion: +7, parents: 0,
+          suite: 'La phrase circule en salle des professeurs le lendemain matin. C’est le seul public qui vérifie.' },
+        { label: 'Rappeler les revalorisations déjà accordées', credibilite: 0, adhesion: -5, parents: +2,
+          suite: 'Répondre à de la fatigue par un tableau de rémunération est une erreur de registre, et elle se paie longtemps.' },
+        { label: 'Évoquer l’absentéisme et les heures non faites', credibilite: -6, adhesion: -18, parents: +4, derapage: true,
+          suite: 'La phrase touche l’estime professionnelle et non la politique. Elle unifie en une nuit des organisations qui ne s’entendent sur rien. Aucune excuse ne la rattrapera.' },
+      ],
+    },
+    {
+      id: 'dictee',
+      q: '« Une dernière, pour le plaisir : pouvez-vous nous épeler “dilemme” ? »',
+      aparte: 'Ce n’était pas dans le brief. Le plateau sourit. Sept millions de personnes attendent.',
+      reponses: [
+        { label: '« D-I-L-E-M-M-E. »', credibilite: +5, parents: +4, adhesion: +4, presse: +5,
+          suite: 'Onze secondes, et la séquence la plus partagée de votre mandat sera celle-là. C’est absurde, et c’est ainsi.' },
+        { label: '« D-I-L-E-M-N-E. »', credibilite: -14, parents: -9, adhesion: -8, presse: -12, derapage: true,
+          suite: 'L’extrait fait le tour des réseaux avant la fin de l’émission. Le ministre de l’Éducation nationale qui ne sait pas écrire « dilemme » : plus personne ne retiendra rien d’autre de vos onze minutes, ni de votre semaine.' },
+        { label: 'Refuser l’exercice : « je ne suis pas là pour ça »', credibilite: -6, parents: -5, adhesion: +2, presse: -4,
+          suite: 'Refuser est plus digne et se lit comme un aveu. Le lendemain, trois éditorialistes expliquent que vous auriez dû accepter.' },
+      ],
+    },
+  ],
+};
+
+
 export const PAR_ID = Object.fromEntries(CATALOGUE.map((c) => [c.id, c]));

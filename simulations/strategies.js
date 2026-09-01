@@ -82,6 +82,8 @@ function selectionner(s, dispo, ctx, scorer, { toleranceDepassement = 0.15, opti
 
 /* -------------------------------------------------------------------------- */
 export const PASSIF = {
+  polemique: () => 2,          // il esquive, et l'esquive se paie
+  plateau: () => [1, 1, 2],    // il n'a rien préparé
   entretien: () => [0, 0, 0],   // il répond franchement : il n'a rien à cacher, faute d'avoir rien fait
   profil: () => 0,
   intention: () => 1,
@@ -109,6 +111,8 @@ function dossierVers(cle) {
 }
 
 export const TOUT_VITRINE = {
+  polemique: () => 0,          // la fermeté fait de meilleures images
+  plateau: () => [2, 2, 0],    // il conteste l'instrument et met en cause les personnels
   entretien: () => [2, 2, 2],   // il ment sur les trois : rien ne doit ternir l'annonce
   profil: () => 3,
   intention: () => 0,
@@ -137,6 +141,8 @@ export const TOUT_VITRINE = {
    désintéresse ouvertement de ce que montre le tableau de bord. Ce n'est pas
    un joueur suicidaire — c'est un joueur qui ne regarde pas les sondages. */
 export const TOUT_REEL = {
+  polemique: () => 1,
+  plateau: () => [0, 0, 0],    // il donne le chiffre, même mauvais
   entretien: () => [1, 1, 1],   // il déclare tout, y compris ce qui le dessert
   profil: () => 0,
   intention: () => 2,
@@ -162,6 +168,8 @@ export const TOUT_REEL = {
 
 /* -------------------------------------------------------------------------- */
 export const SYNDICAL = {
+  polemique: () => 1,
+  plateau: () => [1, 0, 0],
   entretien: () => [0, 0, 1],
   profil: () => 0,
   intention: () => 2,
@@ -183,6 +191,8 @@ export const SYNDICAL = {
 /* Le « joueur attentif » : il équilibre vitrine et réel, surveille l'adhésion
    (dont dépend l'implémentation), tient le crédit Bercy et évite les grèves. */
 export const MIXTE = {
+  polemique: () => 0,
+  plateau: () => [0, 0, 0],
   entretien: () => [0, 0, 1],   // franc là où c'est gratuit, prudent là où ça coûte
   profil: () => 2,
   intention: () => 1,
@@ -254,6 +264,8 @@ export function politiqueAleatoire(rng, poids) {
     retrait: () => { const r = rng(); return r < 0.25 ? 'ceder' : r < 0.5 ? 'requalifier' : 'maintenir'; },
     doctrine: () => ordre,
     lettrePlafond: () => (contester ? 'contester' : 'accepter'),
+    polemique: () => Math.floor(rng() * 3),
+    plateau: () => [Math.floor(rng() * 3), Math.floor(rng() * 3), Math.floor(rng() * 3)],
     entretien: () => [Math.floor(rng() * 3), Math.floor(rng() * 3), Math.floor(rng() * 3)],
     profil: () => Math.floor(rng() * 4),
     intention: () => intentionTiree,

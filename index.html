@@ -442,6 +442,7 @@ table.bilan .num{text-align:right}
 body:has(#comprendre:not([hidden])) #comprendre-btn{display:none}
 body:has(.suite:not([hidden])) #comprendre-btn{bottom:62px}
 /* entretien de l'Élysée, profil déclaré, fléchage de la rallonge */
+.plateau-num{font-size:.62rem; text-transform:uppercase; letter-spacing:.1em; font-weight:700; color:var(--rouge-rf); margin-bottom:5px}
 .entretien-q{border-top:1px solid var(--filet); padding-top:14px; margin-top:16px}
 .entretien-q:first-child{border-top:0; margin-top:8px}
 .entretien-q h3{font-size:1rem; font-weight:700; margin:0 0 3px}
@@ -552,7 +553,7 @@ const TAILLE_MENU_COURT = 5;            // menus resserrés hors janvier
    supérieur de l'éducation, les textes à écrire, et la capacité du ministère
    à accompagner ce qu'il annonce. Un ministre qui annonce six réformes dans
    l'année n'en applique aucune. */
-const ANNONCES_MAX = { prise_fonction: 3, rentree: 3, janvier: 3 };
+const ANNONCES_MAX = { prise_fonction: 3, rentree: 3, livraison: 3, janvier: 3 };
 
 /* ---------------------------------------------------------------------------
    L'AVANCE DE GESTION — le premier arbitrage, juin 2027
@@ -620,6 +621,11 @@ const INTENTIONS_POSTES = [
     restitution: 0.10, bercy: -9, adhesion: +7,
     mot: 'Vous venez de dépenser, en une phrase, la moitié de ce que Bercy vous aurait concédé en janvier.' },
 ];
+
+/* Le printemps rouvre le dossier des mesures contestées : ce qui n'a pas été
+   retiré à l'automne revient, et l'intersyndicale a eu six mois pour préparer
+   sa mobilisation. Une réforme n'est jamais acquise tant qu'elle est jeune. */
+const RETRAIT_MARS = { proba: 0.42 };
 
 /* Le prix du manquement : Bercy compare l'engagement de juin à la restitution
    de janvier. Un ministre qui ne tient pas sa signature ne la redonne pas. */
@@ -1139,7 +1145,7 @@ const TAILLES_MENU = [8, 11, 14, 16, 16];
 const MOIS = ['janvier','février','mars','avril','mai','juin',
                      'juillet','août','septembre','octobre','novembre','décembre'];
 
-const K = { CADRAGE, ENVELOPPE_BASE, ENVELOPPE_PRISE_FONCTION, ENVELOPPE_RENTREE, TAILLE_MENU_COURT, ANNONCES_MAX, AVANCE_GESTION, REFUS_BERCY, INTENTIONS_POSTES, MANQUEMENT_ENGAGEMENT, TROISIEME_ANNONCE, PALIERS_BERCY, SURCOUT, POINTS_SALAIRE_PAR_MD, BAISSE_ELEVES, ELEVES_INITIAL, ELEVES_PAR_POSTE, RATIO_ED_INITIAL, SEUIL_COLERE_MAIRES, COMPTEURS_INITIAUX, COMPTEURS_META, POIDS_DOCTRINE, PHYSIQUE_INITIALE, INERTIE_OPINION, TENDANCIEL, INTERVALLE_CADENAS, ABSORPTION, REQUALIFICATION, FATIGUE, IMPLEMENTATION, POIDS_HERITAGE, REVERSION, BRUIT_AFFICHE, COUT_AFFICHAGE_LONG_TERME, DECROISSANCE_VITRINE, ATTRACTIVITE, GREVE, SYNDICATS, SENSIBILITES, CAPITAL, IMMOBILISME, CREDIT_BERCY_INITIAL, RENVOI, PROFILS, ENTRETIEN, MENSONGE, CREDIBILITE, AFFAIRES_TIRAGE, PROJECTION, PROJETS_2027, TAILLES_MENU, MOIS };   // espace de noms attendu par le moteur
+const K = { CADRAGE, ENVELOPPE_BASE, ENVELOPPE_PRISE_FONCTION, ENVELOPPE_RENTREE, TAILLE_MENU_COURT, ANNONCES_MAX, AVANCE_GESTION, REFUS_BERCY, INTENTIONS_POSTES, RETRAIT_MARS, MANQUEMENT_ENGAGEMENT, TROISIEME_ANNONCE, PALIERS_BERCY, SURCOUT, POINTS_SALAIRE_PAR_MD, BAISSE_ELEVES, ELEVES_INITIAL, ELEVES_PAR_POSTE, RATIO_ED_INITIAL, SEUIL_COLERE_MAIRES, COMPTEURS_INITIAUX, COMPTEURS_META, POIDS_DOCTRINE, PHYSIQUE_INITIALE, INERTIE_OPINION, TENDANCIEL, INTERVALLE_CADENAS, ABSORPTION, REQUALIFICATION, FATIGUE, IMPLEMENTATION, POIDS_HERITAGE, REVERSION, BRUIT_AFFICHE, COUT_AFFICHAGE_LONG_TERME, DECROISSANCE_VITRINE, ATTRACTIVITE, GREVE, SYNDICATS, SENSIBILITES, CAPITAL, IMMOBILISME, CREDIT_BERCY_INITIAL, RENVOI, PROFILS, ENTRETIEN, MENSONGE, CREDIBILITE, AFFAIRES_TIRAGE, PROJECTION, PROJETS_2027, TAILLES_MENU, MOIS };   // espace de noms attendu par le moteur
 /* ===== moteur/catalogue.js ===== */
 
 
@@ -3030,6 +3036,119 @@ const AFFAIRES = [
 
 const AFFAIRE_PAR_ID = Object.fromEntries(AFFAIRES.map((a) => [a.id, a]));
 
+/* ============================================================================
+   LES RENDEZ-VOUS DE L'ANNÉE 2 — la polémique, la livraison, le plateau
+   ----------------------------------------------------------------------------
+   Un mandat n'est pas cinq fois la même année. La deuxième apporte ce que la
+   première n'avait pas : une polémique identitaire qui s'installe et qu'aucune
+   décision n'éteint, une livraison internationale sur laquelle on est sommé
+   d'annoncer, et un plateau de vingt heures où l'on répond en direct.
+   ========================================================================== */
+
+/* La polémique de rentrée. Elle ne porte jamais sur l'école, elle porte sur
+   l'ordre public à l'école — et elle occupe l'agenda six semaines. */
+const POLEMIQUES_RENTREE = [
+  {
+    id: 'vetement',
+    titre: 'Un vêtement, et six semaines d’agenda',
+    recit: 'Des chefs d’établissement signalent des tenues qu’ils ne savent pas qualifier. La question arrive au journal de 20 heures avant d’arriver sur votre bureau. En quarante-huit heures, elle est devenue le sujet de la rentrée — devant les 2 800 postes non pourvus dont personne ne parlera.',
+    reponses: [
+      { label: 'Publier une circulaire d’interdiction claire', type: 'ferme',
+        det: 'Le texte sort en trois jours. Il sera attaqué au Conseil d’État, et il tiendra probablement.',
+        parents: +7, adhesion: -4, presse: +6, credibilite: +2, capital: -3, agenda: 2,
+        suite: 'Les familles approuvent largement, les chefs d’établissement respirent, et vous venez de consacrer votre rentrée à un sujet qui ne fera bouger aucun compteur d’acquis.' },
+      { label: 'Renvoyer à l’appréciation des équipes, avec un cadre', type: 'methode',
+        det: 'Vous refusez la circulaire et donnez une doctrine d’application aux recteurs.',
+        parents: -3, adhesion: +5, presse: -4, credibilite: -2, capital: -1, agenda: 3,
+        suite: 'La position est défendable et impossible à résumer en une phrase. Elle vous vaudra six semaines de questions au lieu de deux.' },
+      { label: 'Refuser d’entrer dans le sujet', type: 'esquive',
+        det: '« Ma priorité, ce sont les savoirs. » C’est vrai, et cela ne fera pas disparaître la question.',
+        parents: -6, adhesion: +2, presse: -7, credibilite: -5, capital: -4, agenda: 4,
+        suite: 'La question revient à chaque point presse. Au bout d’un mois, ce n’est plus la polémique qui vous coûte : c’est de donner l’impression de la fuir.' },
+    ],
+  },
+  {
+    id: 'harcelement',
+    titre: 'Un drame, et la chaîne des signalements',
+    recit: 'Un élève de troisième s’est donné la mort. Le collège avait été alerté. La famille a saisi la justice et les médias le même jour, et le mot « défaillance » est prononcé dès le premier journal.',
+    reponses: [
+      { label: 'Vous rendre sur place et diligenter une inspection', type: 'ferme',
+        det: 'Vous partez le jour même. L’inspection générale rendra son rapport dans six semaines.',
+        parents: +6, adhesion: +2, presse: +4, credibilite: +3, capital: -4, agenda: 2,
+        suite: 'La présence physique est ce qui se voit le plus et se conteste le moins. Le rapport, lui, dira ce qu’il dira.' },
+      { label: 'Annoncer un plan national de plus', type: 'methode',
+        det: 'Un dispositif existe déjà. Vous en annoncez le renforcement.',
+        parents: +2, adhesion: -3, presse: -2, credibilite: -4, capital: -2, agenda: 3,
+        suite: 'Les personnels comptent les plans successifs sur les doigts d’une main, et n’en manquent pas un. Annoncer un plan là où un plan existe déjà se paie en crédibilité.' },
+      { label: 'Rappeler que la responsabilité est locale', type: 'esquive',
+        det: 'C’est juridiquement exact. Personne ne retiendra la nuance.',
+        parents: -9, adhesion: -6, presse: -8, credibilite: -8, capital: -6, agenda: 4,
+        suite: 'La phrase tourne en boucle. Le lendemain, trois autres familles témoignent, et ce n’est plus un fait divers : c’est votre gestion.' },
+    ],
+  },
+];
+
+/* La livraison internationale de l'automne. Le ministre n'a pas le choix
+   d'annoncer : il a le choix de ce qu'il annonce, et de ce que cela déclenche. */
+const LIVRAISON_PISA = {
+  titre: 'PISA tombe, et vous devez répondre ce soir',
+  recit: 'Les résultats de l’enquête internationale sont publiés à 11 heures. Ils portent sur des élèves entrés au cours préparatoire dix ans avant votre nomination. À midi, trois chaînes demandent une réaction. À 20 heures, on attendra des mesures — pas une explication méthodologique.',
+  contrainte: 'Vous devez annoncer trois mesures pour le niveau des élèves. Ce n’est pas une option du jeu : c’est ce que le poste exige. Selon celles que vous retenez, la salle des professeurs applaudit, hausse les épaules, ou dépose un préavis.',
+  /* Les familles de mesures qui apaisent ou qui enflamment, une fois annoncées
+     sous la pression d'une livraison internationale. */
+  apaise: ['moyens', 'parcours'],
+  enflamme: ['autorite', 'autonomie'],
+};
+
+/* Le plateau de vingt heures. Trois questions, et l'une d'elles n'a rien à voir
+   avec la politique éducative : c'est celle dont on se souviendra.
+   Précédent : un ministre en exercice mis en difficulté, en direct, sur
+   l'orthographe de mots courants. */
+const PLATEAU = {
+  titre: 'Vingt heures, plateau, sept millions de personnes',
+  recit: 'La séquence dure onze minutes. Le journaliste a préparé trois questions ; la troisième n’était pas dans le brief transmis à votre cabinet.',
+  questions: [
+    {
+      id: 'bilan',
+      q: '« Monsieur le ministre, en deux ans, le niveau des élèves a-t-il monté ? »',
+      reponses: [
+        { label: 'Donner le chiffre, y compris s’il est mauvais', credibilite: +6, parents: +2, adhesion: +3,
+          suite: 'La franchise sur un mauvais chiffre est le placement le plus rentable du plateau. Elle ne se rejoue pas deux fois.' },
+        { label: 'Répondre par les moyens engagés', credibilite: -2, parents: -1, adhesion: +1,
+          suite: 'Le journaliste répète la question. Vous répétez la réponse. Le public a compris avant vous deux.' },
+        { label: 'Contester la pertinence de la mesure', credibilite: -7, parents: -4, adhesion: 0,
+          suite: 'Contester l’instrument quand il donne tort est ce que font tous les ministres, et le public le sait aussi.' },
+      ],
+    },
+    {
+      id: 'profs',
+      q: '« Les enseignants disent qu’ils n’en peuvent plus. Que leur répondez-vous ? »',
+      reponses: [
+        { label: 'Reconnaître, sans promettre ce que vous ne pouvez pas tenir', credibilite: +4, adhesion: +7, parents: 0,
+          suite: 'La phrase circule en salle des professeurs le lendemain matin. C’est le seul public qui vérifie.' },
+        { label: 'Rappeler les revalorisations déjà accordées', credibilite: 0, adhesion: -5, parents: +2,
+          suite: 'Répondre à de la fatigue par un tableau de rémunération est une erreur de registre, et elle se paie longtemps.' },
+        { label: 'Évoquer l’absentéisme et les heures non faites', credibilite: -6, adhesion: -18, parents: +4, derapage: true,
+          suite: 'La phrase touche l’estime professionnelle et non la politique. Elle unifie en une nuit des organisations qui ne s’entendent sur rien. Aucune excuse ne la rattrapera.' },
+      ],
+    },
+    {
+      id: 'dictee',
+      q: '« Une dernière, pour le plaisir : pouvez-vous nous épeler “dilemme” ? »',
+      aparte: 'Ce n’était pas dans le brief. Le plateau sourit. Sept millions de personnes attendent.',
+      reponses: [
+        { label: '« D-I-L-E-M-M-E. »', credibilite: +5, parents: +4, adhesion: +4, presse: +5,
+          suite: 'Onze secondes, et la séquence la plus partagée de votre mandat sera celle-là. C’est absurde, et c’est ainsi.' },
+        { label: '« D-I-L-E-M-N-E. »', credibilite: -14, parents: -9, adhesion: -8, presse: -12, derapage: true,
+          suite: 'L’extrait fait le tour des réseaux avant la fin de l’émission. Le ministre de l’Éducation nationale qui ne sait pas écrire « dilemme » : plus personne ne retiendra rien d’autre de vos onze minutes, ni de votre semaine.' },
+        { label: 'Refuser l’exercice : « je ne suis pas là pour ça »', credibilite: -6, parents: -5, adhesion: +2, presse: -4,
+          suite: 'Refuser est plus digne et se lit comme un aveu. Le lendemain, trois éditorialistes expliquent que vous auriez dû accepter.' },
+      ],
+    },
+  ],
+};
+
+
 const PAR_ID = Object.fromEntries(CATALOGUE.map((c) => [c.id, c]));
 
 /* ===== moteur/reperes.js ===== */
@@ -3898,6 +4017,8 @@ function* etapeRentree(s) {
 /* Chaque rentrée s'accompagne d'une circulaire : quelques mesures, financées
    par redéploiement dans le budget en cours. Étroit, mais immédiat — et c'est
    le moment où le pays regarde l'école. */
+/* La circulaire de rentrée porte trois messages, pas un programme. Elle se
+   finance par redéploiement — et par ce que Bercy a bien voulu débloquer. */
 function* etapeCirculaireRentree(s) {
   crediter(s, K.ENVELOPPE_RENTREE);
   yield* etapeMesures(s, { moment: 'rentree', taille: K.TAILLE_MENU_COURT });
@@ -3950,8 +4071,13 @@ function* etapeAudience(s) {
     } else if (dec === 'requalifier') {
       requalifierMesure(s, conteste, org, poidsRel);
     } else {
+      /* Tenir plaît aux familles et à la presse, déplaît au corps. Céder fait
+         l'inverse. Le ministre ne peut pas satisfaire tout le monde, et le jeu
+         doit le faire sentir à chaque fois. */
       s.capital += 2;
-      s.phys.adhesion = borne(s.phys.adhesion - 1.8 * poidsRel, 0, 100);
+      s.phys.parents = borne(s.phys.parents + 2.5, 0, 100);
+      s.vitrine.paix -= 1.2;
+      s.phys.adhesion = borne(s.phys.adhesion - 1.8 * poidsRel, 0, s.plafondAdhesion);
       if (combatif && risque) {
         (s.grevesEnAttente = s.grevesEnAttente || []).push({
           intensite: combatif ? 4 : 3,
@@ -4024,6 +4150,69 @@ function retirerMesure(s, m, org, poidsRel) {
   s.credibilite = borne(s.credibilite + K.CREDIBILITE.parAbandon, 0, 100);
   s.abandons += 1;
   note(s, `Retrait de « ${carte.label} » obtenu par ${org.nom}. La mesure sort du droit ; ses effets ne viendront jamais.`, 'retrait');
+}
+
+/* --- SEPTEMBRE (an 2) : la polémique qui s'installe ------------------------ */
+/* Elle ne porte jamais sur l'école, elle porte sur l'ordre public à l'école, et
+   elle occupe l'agenda pendant des semaines — devant les postes non pourvus
+   dont personne ne parlera. */
+function* etapePolemique(s) {
+  const p = POLEMIQUES_RENTREE[(s.graine + s.annee) % POLEMIQUES_RENTREE.length];
+  const idx = yield { type: 'polemique', polemique: p };
+  const r = p.reponses[Math.max(0, Math.min(2, idx | 0))];
+  s.phys.parents = borne(s.phys.parents + r.parents, 0, 100);
+  s.phys.adhesion = borne(s.phys.adhesion + r.adhesion, 0, s.plafondAdhesion);
+  s.credibilite = borne(s.credibilite + r.credibilite, 0, 100);
+  s.capital = borne(s.capital + r.capital, 0, K.CAPITAL.plafond);
+  s.vitrine.paix += r.presse * 0.25;
+  /* L'agenda confisqué : ce que la polémique occupe, elle ne le rend pas. */
+  s.agendaConfisque = (s.agendaConfisque || 0) + r.agenda;
+  note(s, `Polémique de rentrée « ${p.titre} » : réponse ${r.type === 'ferme' ? 'de fermeté' : r.type === 'methode' ? 'de méthode' : 'd’esquive'}. ${r.agenda} semaines d’agenda consommées.`, 'polemique');
+}
+
+/* --- OCTOBRE (an 2) : la livraison internationale -------------------------- */
+/* Le ministre n'a pas le choix d'annoncer. Il a le choix de ce qu'il annonce,
+   et de ce que cela déclenche en salle des professeurs. */
+function* etapeLivraison(s) {
+  yield { type: 'livraison', livraison: LIVRAISON_PISA };
+  const avant = s.joue.size;
+  yield* etapeMesures(s, { moment: 'livraison', taille: K.TAILLE_MENU_COURT });
+  const prises = [...s.joue].slice(avant).map((id) => PAR_ID[id]).filter(Boolean);
+  const enflamme = prises.filter((c) => LIVRAISON_PISA.enflamme.includes(c.famille)).length;
+  const apaise = prises.filter((c) => LIVRAISON_PISA.apaise.includes(c.famille)).length;
+  if (enflamme > apaise) {
+    (s.grevesEnAttente = s.grevesEnAttente || []).push({
+      intensite: 3 + (enflamme > 1 ? 1 : 0), theme: 'pedagogie', segment: 'tous',
+      cause: 'annonces prises sous le coup de la livraison internationale',
+    });
+    note(s, 'Les annonces de l’après-PISA sont reçues comme une mise en cause des personnels. Un préavis est déposé pour le printemps.', 'greve');
+  } else if (apaise > 0) {
+    s.phys.adhesion = borne(s.phys.adhesion + 3, 0, s.plafondAdhesion);
+  }
+}
+
+/* --- DÉCEMBRE : le plateau de vingt heures --------------------------------- */
+/* Trois questions. La troisième n'était pas dans le brief, et c'est celle dont
+   on se souviendra. Un ministre tombe plus souvent sur une phrase que sur un
+   bilan : le jeu doit le rendre jouable. */
+function* etapePlateau(s) {
+  const reps = (yield { type: 'plateau', plateau: PLATEAU }) || [];
+  let derapage = false;
+  PLATEAU.questions.forEach((q, i) => {
+    const r = q.reponses[Math.max(0, Math.min(q.reponses.length - 1, reps[i] | 0))];
+    s.credibilite = borne(s.credibilite + (r.credibilite || 0), 0, 100);
+    s.phys.parents = borne(s.phys.parents + (r.parents || 0), 0, 100);
+    s.phys.adhesion = borne(s.phys.adhesion + (r.adhesion || 0), 0, s.plafondAdhesion);
+    if (r.presse) s.vitrine.paix += r.presse * 0.2;
+    if (r.derapage) derapage = true;
+  });
+  if (derapage) {
+    s.derapages = (s.derapages || 0) + 1;
+    s.pointsGreveCumules += 2.0;
+    note(s, 'Le passage au journal de 20 heures a produit une séquence dont on reparlera. Les excuses n’y changeront rien : ce type de perte est le seul du jeu qui ne se rattrape pas.', 'plateau');
+  } else {
+    note(s, 'Passage au journal de 20 heures sans accroc. Personne n’en parlera demain, ce qui est le meilleur résultat possible.', 'plateau');
+  }
 }
 
 /* --- L'AFFAIRE : tirage conditionnel, jamais aléatoire pur ----------------- */
@@ -4258,9 +4447,33 @@ function* etapeMesures(s, opts) {
 }
 
 /* --- MARS : mobilisations de printemps ------------------------------------ */
-function etapeMars(s) {
+function* etapeMars(s) {
   for (const g of (s.grevesEnAttente || [])) appliquerGreve(s, evaluerMobilisation(s, g));
   s.grevesEnAttente = [];
+
+  /* Le printemps rouvre le dossier : ce qui n'a pas été retiré à l'automne
+     revient sur la table, et l'intersyndicale a eu six mois pour s'organiser. */
+  const conteste = mesureContestee(s);
+  if (conteste && s.rng() < K.RETRAIT_MARS.proba) {
+    const tri = [...s.syndicats].sort((a, b) => b.poids - a.poids);
+    const org = tri[0];
+    const carte = PAR_ID[conteste.id];
+    const poidsRel = org.poids / 34;
+    const risque = evaluerMobilisation(s, {
+      intensite: 4, theme: (carte.greve && carte.greve.theme) || 'moyens',
+      segment: (carte.greve && carte.greve.segment) || 'tous',
+      cause: `maintien de « ${carte.label} » au printemps`,
+    });
+    const dec = yield { type: 'retrait', org, carte, mesure: conteste, risque, combatif: true, printemps: true };
+    if (dec === 'ceder') retirerMesure(s, conteste, org, poidsRel);
+    else if (dec === 'requalifier') requalifierMesure(s, conteste, org, poidsRel);
+    else {
+      s.capital += 2;
+      s.phys.adhesion = borne(s.phys.adhesion - 2.4 * poidsRel, 0, s.plafondAdhesion);
+      appliquerGreve(s, risque);
+      note(s, `Printemps : ${org.nom} maintient son mot d’ordre de retrait sur « ${carte.label} ». La mobilisation a lieu.`, 'greve');
+    }
+  }
   /* Une adhésion effondrée produit un conflit même sans mesure déclenchante. */
   if (s.phys.adhesion < 12 && s.rng() < 0.55) {
     appliquerGreve(s, evaluerMobilisation(s, { intensite: 3, theme: 'moyens', segment: 'tous', cause: 'mobilisation sur les moyens' }));
@@ -4659,14 +4872,23 @@ function* derouler(s) {
     s.anneeCiv = 2026 + s.annee;                 // année civile de la carte scolaire
     yield* etapeJuillet(s);   s.mois = 6;  yield { type: 'etape', etape: 'juillet' };
     yield* etapeRentree(s);   s.mois = 8;
+    if (s.annee >= 2 && !s.polemiqueFaite) { s.polemiqueFaite = true; yield* etapePolemique(s); }
     yield* etapeCirculaireRentree(s);        yield { type: 'etape', etape: 'rentree' };
+    /* La livraison internationale de l'automne : elle tombe une fois, et elle
+       oblige. Le joueur ne choisit pas d'annoncer, il choisit quoi. */
+    if (s.annee === 2) { s.mois = 9; yield* etapeLivraison(s); }
     yield* etapeAudience(s);  s.mois = 9;
     etapeDecembre(s);         s.mois = 11;
     yield* etapeAffaire(s);
     if (s.fini) break;
+    /* Le plateau : quand la crédibilité est basse ou qu'une affaire vient de
+       sortir, on ne « propose » plus au ministre de venir s'expliquer. */
+    if (!s.plateauFait && (s.annee >= 2) && (s.credibilite < 58 || (s.affaires || []).length > 0 || s.annee >= 3)) {
+      s.plateauFait = true; yield* etapePlateau(s);
+    }
     yield { type: 'etape', etape: 'decembre' };
     yield* etapeJanvier(s);   s.mois = 0;
-    etapeMars(s);             s.mois = 2;  yield { type: 'etape', etape: 'mars' };
+    yield* etapeMars(s);      s.mois = 2;  yield { type: 'etape', etape: 'mars' };
     etapeCloture(s);          s.mois = 4;
     rafraichir(s);
     yield { type: 'etape', etape: 'cloture' };
@@ -4691,6 +4913,11 @@ function jouerMandat({ graine = 1, politique }) {
     else if (q.type === 'avance') rep = politique.avance ? politique.avance(s, q) : 1;
     else if (q.type === 'intention') rep = politique.intention ? politique.intention(s, q) : 1;
     else if (q.type === 'affaire') rep = politique.affaire ? politique.affaire(s, q) : 0;
+    else if (q.type === 'polemique') rep = politique.polemique ? politique.polemique(s, q) : 1;
+    else if (q.type === 'livraison') rep = null;
+    /* Défaut délibérément médiocre : le plateau ne doit rien offrir à qui ne
+       s'y prépare pas — sinon l'immobilisme paie, ce qui serait faux. */
+    else if (q.type === 'plateau') rep = politique.plateau ? politique.plateau(s, q) : [1, 1, 1];
     else if (q.type === 'doctrine') rep = politique.doctrine ? politique.doctrine(s) : Object.keys(K.COMPTEURS_INITIAUX);
     else if (q.type === 'lettrePlafond') rep = politique.lettrePlafond ? politique.lettrePlafond(s, q.palier) : 'accepter';
     else if (q.type === 'rentree') rep = politique.rentree ? politique.rentree(s, q) : 'assumer';
@@ -5194,6 +5421,108 @@ function ecranBercy(q) {
   scene(d);
 }
 
+/* --- septembre (an 2) : la polémique qui s'installe -------------------------- */
+function ecranPolemique(q) {
+  const p = q.polemique;
+  const d = docu('Rentrée — la question qui occupe l’antenne', esc(p.titre));
+  d.classList.add('papier');
+  d.appendChild(el('p', 'chapo', fr(p.recit)));
+  const opts = el('div', 'opts');
+  p.reponses.forEach((r, i) => {
+    const eff = [
+      r.parents ? `parents ${signe(r.parents)}` : '',
+      r.adhesion ? `enseignants ${signe(r.adhesion)}` : '',
+      r.presse ? `presse ${signe(r.presse)}` : '',
+      r.credibilite ? `crédibilité ${signe(r.credibilite)}` : '',
+      r.capital ? `capital ${signe(r.capital)}` : '',
+      `<b class="neg">${r.agenda} semaines d’agenda</b>`,
+    ].filter(Boolean);
+    const b = el('button', 'opt',
+      `<b>${esc(r.label)}</b><span class="det">${fr(r.det)}</span>`
+      + `<span class="chiffres">${eff.map((x) => `<span>${x}</span>`).join('')}</span>`);
+    b.onclick = () => fin(i, r);
+    opts.appendChild(b);
+  });
+  d.appendChild(opts);
+  d.appendChild(el('p', 'note-passation', 'Aucune de ces réponses ne fait bouger un compteur d’acquis. Elles décident seulement de combien de semaines vous parlerez d’autre chose que d’école — et devant qui vous aurez raison.'));
+  function fin(i, r) {
+    opts.querySelectorAll('.opt').forEach((n) => { n.disabled = true; });
+    const box = el('div', 'decryptage');
+    box.innerHTML = `<div class="titre-d">Ce qui suit</div><p>${fr(r.suite)}</p>`;
+    d.appendChild(box);
+    const act = el('div', 'actions');
+    const ok = el('button', 'btn', 'Passer à la rentrée');
+    ok.onclick = () => suivant(i);
+    act.appendChild(ok); d.appendChild(act);
+    box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+  scene(d);
+}
+
+/* --- octobre (an 2) : la livraison internationale ---------------------------- */
+function ecranLivraison(q) {
+  const L = q.livraison;
+  const d = docu('Livraison internationale — 11 heures', esc(L.titre));
+  d.appendChild(el('p', 'chapo', fr(L.recit)));
+  d.appendChild(serieNiveaux());
+  d.appendChild(el('div', 'decryptage',
+    `<div class="titre-d">Ce que le poste exige</div><p>${fr(L.contrainte)}</p>`));
+  const ok = el('button', 'btn tamponner', 'Préparer les annonces de ce soir');
+  ok.onclick = () => suivant(null);
+  d.appendChild(el('div', 'actions')).appendChild(ok);
+  scene(d);
+}
+
+/* --- décembre : le plateau de vingt heures ---------------------------------- */
+function ecranPlateau(q) {
+  const P = q.plateau;
+  const rep = new Array(P.questions.length).fill(null);
+  const d = docu('Journal de 20 heures — plateau', esc(P.titre));
+  d.classList.add('papier');
+  d.appendChild(el('p', 'chapo', fr(P.recit)));
+
+  const zone = el('div', '');
+  let courante = 0;
+  function poser() {
+    zone.innerHTML = '';
+    if (courante >= P.questions.length) { conclure(); return; }
+    const qu = P.questions[courante];
+    const bloc = el('section', 'entretien-q');
+    bloc.appendChild(el('div', 'plateau-num', `Question ${courante + 1} sur ${P.questions.length}`));
+    bloc.appendChild(el('h3', '', fr(qu.q)));
+    if (qu.aparte) bloc.appendChild(el('p', 'aparte', fr(qu.aparte)));
+    const opts = el('div', 'opts');
+    qu.reponses.forEach((r, k) => {
+      const b = el('button', 'opt', `<b>${esc(r.label)}</b>`);
+      b.onclick = () => {
+        rep[courante] = k;
+        opts.querySelectorAll('.opt').forEach((n) => { n.disabled = true; });
+        b.classList.add('choisi');
+        const box = el('div', 'decryptage');
+        if (r.derapage) box.style.borderLeftColor = 'var(--rouge-rf)';
+        box.innerHTML = `<div class="titre-d"${r.derapage ? ' style="color:var(--rouge-rf)"' : ''}>${r.derapage ? 'Dérapage' : 'En plateau'}</div><p>${fr(r.suite)}</p>`;
+        bloc.appendChild(box);
+        const suite = el('button', 'btn', courante < P.questions.length - 1 ? 'Question suivante' : 'Fin de la séquence');
+        suite.onclick = () => { courante += 1; poser(); };
+        bloc.appendChild(el('div', 'actions')).appendChild(suite);
+        box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      };
+      opts.appendChild(b);
+    });
+    bloc.appendChild(opts);
+    zone.appendChild(bloc);
+  }
+  function conclure() {
+    zone.appendChild(el('p', 'note-passation', 'Onze minutes. Sur les six causes documentées de chute d’un ministre de l’Éducation, une seule relève de la politique éducative — les cinq autres ressemblent à ce que vous venez de vivre.'));
+    const ok = el('button', 'btn tamponner', 'Quitter le plateau');
+    ok.onclick = () => suivant(rep);
+    zone.appendChild(el('div', 'actions')).appendChild(ok);
+  }
+  d.appendChild(zone);
+  poser();
+  scene(d);
+}
+
 /* --- l'affaire : la polémique qui ne concerne pas l'école --------------------- */
 function ecranAffaire(q) {
   const a = q.affaire;
@@ -5498,6 +5827,11 @@ function ecranAtelier(q) {
       type: 'Circulaire de rentrée',
       titre: 'Que met-on dans la circulaire de rentrée ?',
       titreSuite: 'Une mesure, pas davantage : la circulaire de rentrée porte un message, pas un programme. Elle se finance par redéploiement — pas d’arbitrage interministériel en septembre.',
+    },
+    livraison: {
+      type: 'Après la livraison — vos annonces de ce soir',
+      titre: 'Trois mesures pour le niveau des élèves',
+      chapo: 'Vous n’avez pas le choix d’annoncer : à 20 heures, on attend des mesures. Vous avez le choix de celles-ci. Selon les familles de mesures retenues, la salle des professeurs applaudira, haussera les épaules, ou déposera un préavis pour le printemps.',
     },
     janvier: {
       type: 'L’atelier — l’arbitrage de janvier',
@@ -6172,6 +6506,9 @@ function dateDe(q) {
   if (q.type === 'profil') return 'juin 2027';
   if (q.type === 'intention') return 'juin 2027';
   if (q.type === 'affaire') return `décembre ${an}`;
+  if (q.type === 'polemique') return `septembre ${an}`;
+  if (q.type === 'livraison') return `octobre ${an}`;
+  if (q.type === 'plateau') return `décembre ${an}`;
   if (q.type === 'retrait') return `octobre ${ETAT.s.anneeCiv || 2027}`;
   if (q.type === 'dossier') return 'été 2027';
   if (q.type === 'audience') return `octobre ${ETAT.s.anneeCiv || 2027}`;
@@ -6198,6 +6535,9 @@ function rendre(q) {
   else if (q.type === 'profil') ecranProfil(q);
   else if (q.type === 'intention') ecranIntention(q);
   else if (q.type === 'affaire') ecranAffaire(q);
+  else if (q.type === 'polemique') ecranPolemique(q);
+  else if (q.type === 'livraison') ecranLivraison(q);
+  else if (q.type === 'plateau') ecranPlateau(q);
   else if (q.type === 'retrait') ecranRetrait(q);
   else if (q.type === 'dossier') ecranDossier(q);
   else if (q.type === 'audience') ecranAudience(q);

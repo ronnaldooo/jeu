@@ -53,7 +53,7 @@ export const TAILLE_MENU_COURT = 5;            // menus resserrés hors janvier
    supérieur de l'éducation, les textes à écrire, et la capacité du ministère
    à accompagner ce qu'il annonce. Un ministre qui annonce six réformes dans
    l'année n'en applique aucune. */
-export const ANNONCES_MAX = { prise_fonction: 3, rentree: 3, janvier: 3 };
+export const ANNONCES_MAX = { prise_fonction: 3, rentree: 3, livraison: 3, janvier: 3 };
 
 /* ---------------------------------------------------------------------------
    L'AVANCE DE GESTION — le premier arbitrage, juin 2027
@@ -121,6 +121,11 @@ export const INTENTIONS_POSTES = [
     restitution: 0.10, bercy: -9, adhesion: +7,
     mot: 'Vous venez de dépenser, en une phrase, la moitié de ce que Bercy vous aurait concédé en janvier.' },
 ];
+
+/* Le printemps rouvre le dossier des mesures contestées : ce qui n'a pas été
+   retiré à l'automne revient, et l'intersyndicale a eu six mois pour préparer
+   sa mobilisation. Une réforme n'est jamais acquise tant qu'elle est jeune. */
+export const RETRAIT_MARS = { proba: 0.42 };
 
 /* Le prix du manquement : Bercy compare l'engagement de juin à la restitution
    de janvier. Un ministre qui ne tient pas sa signature ne la redonne pas. */
