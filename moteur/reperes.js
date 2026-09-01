@@ -232,7 +232,7 @@ export const SERIE_BUDGET = [
 export const REPERES = [
   {
     cle: 'budget',
-    titre: 'L’argent',
+    titre: 'Un budget contraint',
     resume: 'Le premier budget de l’État en effectifs, et le plus rigide en euros.',
     chiffres: [
       { v: '64,49 Md€', l: 'crédits de paiement de la mission « Enseignement scolaire » au budget 2026, hors contribution au CAS Pensions', src: 'senat_plf26' },
@@ -249,7 +249,7 @@ export const REPERES = [
   },
   {
     cle: 'demographie',
-    titre: 'Les élèves qui manquent',
+    titre: 'Une baisse démographique',
     resume: 'La donnée qui commande tout le reste, et dont personne ne parle en campagne.',
     chiffres: [
       { v: '−1 676 800', l: 'élèves de moins en 2035 qu’aujourd’hui dans le public et le privé sous contrat, scénario de référence', src: 'depp_proj35' },
@@ -261,8 +261,8 @@ export const REPERES = [
   },
   {
     cle: 'niveaux',
-    titre: 'Ce que savent les élèves',
-    resume: 'Trois enquêtes, trois âges, trois messages qui ne disent pas la même chose.',
+    titre: 'Des résultats préoccupants',
+    resume: 'Ce que mesurent les évaluations nationales et internationales, à trois âges différents.',
     chiffres: [
       { v: '474 / 474 / 487', l: 'PISA 2022, élèves de 15 ans : mathématiques, compréhension de l’écrit, sciences. Moyennes OCDE : 472, 476, 485 — la France est dans la moyenne', src: 'pisa22' },
       { v: 'baisse « sans précédent »', l: 'c’est le mot de l’OCDE pour la chute en mathématiques entre 2018 et 2022 ; elle suit une période de stabilité', src: 'pisa22' },
@@ -277,7 +277,7 @@ export const REPERES = [
   },
   {
     cle: 'inegalites',
-    titre: 'Le poids de l’origine',
+    titre: 'Les inégalités sociales',
     resume: 'Le point où la France est régulièrement la plus mal classée.',
     chiffres: [
       { v: '99,9 vs 117,4', l: 'indice de position sociale médian des collèges publics et des collèges privés sous contrat (2023-2024) ; l’écart se creuse d’environ 2 points par an', src: 'senat_mixite' },
@@ -292,7 +292,7 @@ export const REPERES = [
   },
   {
     cle: 'metier',
-    titre: 'Ceux qui font tourner l’école',
+    titre: 'Le métier enseignant',
     resume: 'Un million de personnes, dont la moitié de la carrière se joue sur un point d’indice.',
     chiffres: [
       { v: '−26 % / −18 %', l: 'salaires effectifs des enseignants d’élémentaire et de collège par rapport aux autres diplômés du supérieur à temps plein (2024). Moyennes OCDE : −17 % et −13 %', src: 'ocde25' },
@@ -311,7 +311,7 @@ export const REPERES = [
   },
   {
     cle: 'moyens',
-    titre: 'Les heures qui manquent',
+    titre: 'Le remplacement',
     resume: 'Le sujet dont les familles parlent, et que les statistiques mesurent mal.',
     chiffres: [
       { v: '4,3 % et 7,4 %', l: 'part du temps scolaire perdu faute de remplacement, en moyenne et dans le second degré (rapport sénatorial, juin 2025)', src: 'senat_rempl' },
@@ -329,7 +329,7 @@ export const REPERES = [
   },
   {
     cle: 'organisation',
-    titre: 'Le temps et les classes',
+    titre: 'Le temps scolaire et les classes',
     resume: 'La France est une anomalie horaire dans l’OCDE, dans les deux sens.',
     chiffres: [
       { v: '864 h / 973 h', l: 'heures d’enseignement par an en élémentaire et au collège, contre 730 h et 851 h en moyenne européenne : les élèves français ont plus d’heures que presque partout', src: 'hcsp26' },
@@ -385,6 +385,76 @@ export const REPERES = [
     ],
     aRetenir: 'Les cadenas reprennent l’échelle de niveau de preuve de l’Education Endowment Foundation, l’organisme britannique qui synthétise les méta-analyses en éducation. Un effet moyen élevé mais mal établi vaut souvent moins qu’un effet modeste et solide : c’est la leçon que le bilan de fin de mandat vous administrera.',
   },
+];
+
+/* ---------------------------------------------------------------------------
+   TRAJECTOIRE DES EFFECTIFS D'ÉLÈVES — constaté puis projeté
+   ---------------------------------------------------------------------------
+   Millions d'élèves, public et privé sous contrat, premier et second degrés.
+   Les rentrées 2027 à 2031 sont celles que le joueur arbitre. Les valeurs
+   suivent la trajectoire DEPP du scénario de référence, calée sur ses deux
+   points publiés : la rentrée 2026 et l'horizon 2035 (−1 676 800 élèves).
+   ------------------------------------------------------------------------- */
+export const SERIE_ELEVES = [
+  { annee: 2026, m: 11.61, constate: true },
+  { annee: 2027, m: 11.45 },
+  { annee: 2028, m: 11.28 },
+  { annee: 2029, m: 11.10 },
+  { annee: 2030, m: 10.92 },
+  { annee: 2031, m: 10.75 },
+  { annee: 2033, m: 10.34 },
+  { annee: 2035, m: 9.93 },   /* 11,61 − 1,6768 : cale la courbe sur le chiffre publié */
+];
+
+/* ---------------------------------------------------------------------------
+   LA NOTE DE CADRAGE DE LA DGESCO — version courte, remise avant la première
+   décision. Règle : un graphique et TROIS chiffres par page, pas davantage.
+   Le détail complet reste dans l'onglet « Comprendre le jeu ».
+   ------------------------------------------------------------------------- */
+export const CADRAGE_INITIAL = [
+  {
+    cle: 'budget',
+    titre: 'Un budget contraint',
+    phrase: 'Vous héritez du premier budget de l’État en effectifs. Il augmente — un peu — et il est presque entièrement pré-engagé.',
+    graphique: 'budget',
+    chiffres: [
+      { v: '65,3 Md€', l: 'le budget de la mission « Enseignement scolaire » en 2027, hors pensions', src: 'plafonds27' },
+      { v: '+0,8 Md€', l: 'ce qui est nouveau cette année, soit +1,2 % — et une bonne moitié est déjà engagée par votre prédécesseur', src: 'plafonds27' },
+      { v: '93 %', l: 'de ce budget est de la masse salariale : ce que vous ne pouvez pas arbitrer dans l’année', src: 'cc_neb24' },
+    ],
+    aRetenir: 'Tout votre mandat se joue dans le liseré qui reste.',
+  },
+  {
+    cle: 'demographie',
+    titre: 'Une baisse démographique',
+    phrase: 'Il y aura chaque année moins d’élèves. C’est la seule bonne nouvelle budgétaire de votre mandat, et le sujet le plus explosif de votre calendrier.',
+    graphique: 'eleves',
+    chiffres: [
+      { v: '−1 676 800', l: 'élèves de moins en 2035 qu’aujourd’hui, soit −14,2 % de la population scolaire', src: 'depp_proj35' },
+      { v: '≈ 6 600', l: 'postes que la démographie « libère » chaque rentrée. C’est vous qui décidez à qui ils vont', src: 'depp_proj35' },
+      { v: '4 % ou 60 %', l: 'les deux précédents récents de restitution à Bercy : rentrée 2025 puis rentrée 2026. Le même chiffre démographique, deux pays différents', src: 'senat_plf26' },
+    ],
+    aRetenir: 'Rendre ces postes ou les réinvestir : c’est l’arbitrage de janvier, chaque année.',
+  },
+  {
+    cle: 'niveaux',
+    titre: 'Des résultats préoccupants',
+    phrase: 'Trois évaluations, trois âges. Elles ne disent pas la même chose, et aucune ne mesurera ce que vous ferez.',
+    graphique: 'niveaux',
+    chiffres: [
+      { v: '484 contre 524', l: 'score des CM1 français en mathématiques (TIMSS 2023) face à la moyenne de l’Union européenne. Stable depuis 2019, mais loin', src: 'timss23' },
+      { v: 'baisse « sans précédent »', l: 'le mot de l’OCDE pour la chute en mathématiques à 15 ans entre 2018 et 2022. La France reste dans la moyenne : tout le monde a baissé', src: 'pisa22' },
+      { v: '1 jeune sur 4', l: 'a des difficultés prononcées en lecture à 17-18 ans, aux tests de la Journée défense et citoyenneté', src: 'hcsp26' },
+    ],
+    aRetenir: 'Un élève de PISA 2027 est entré au CP en 2018 : vous répondrez de ce que vous n’avez pas fait.',
+  },
+];
+
+/* Comparaisons du petit graphique « niveaux » : France face à sa référence. */
+export const COMPARAISONS_NIVEAUX = [
+  { libelle: 'Mathématiques, CM1', fr: 484, ref: 524, refNom: 'moyenne UE', src: 'timss23' },
+  { libelle: 'Mathématiques, 15 ans', fr: 474, ref: 472, refNom: 'moyenne OCDE', src: 'pisa22' },
+  { libelle: 'Compréhension de l’écrit, CM1', fr: 514, ref: 527, refNom: 'moyenne UE', src: 'pirls21' },
 ];
 
 export const PAR_CLE = Object.fromEntries(REPERES.map((r) => [r.cle, r]));

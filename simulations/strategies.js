@@ -88,6 +88,7 @@ export const PASSIF = {
   audience: () => 0,               // le ministre immobile défend la ligne, faute d'en avoir une
   doctrine: () => ['reussite', 'egalite', 'sante', 'budget', 'paix'],
   lettrePlafond: () => 'accepter',
+  avance: () => 1,   // la réserve, sans plus
   carteScolaire: () => ({ restitution: 0.6, prive: 0.5 }),
   mesures: () => [],
   rentree: () => 'assumer',
@@ -114,7 +115,8 @@ export const TOUT_VITRINE = {
   doctrine: () => ['reussite', 'budget', 'egalite', 'sante', 'paix'],
   lettrePlafond: () => 'accepter',
   /* Rendre les postes fait plaisir à Bercy et paie les annonces. */
-  carteScolaire: () => ({ restitution: 0.52, prive: 0.15 }),
+  avance: () => 2,   // tout de suite, tout l'argent : c'est la définition de la vitrine
+  carteScolaire: () => ({ restitution: 0.62, prive: 0.15 }),
   rentree: () => 'contester',
   /* Une grève est une mauvaise image : la vitrine achète la paix autant que
      l'applaudissement. Elle prend le « pacte » plutôt que l'évaluation. */
@@ -134,7 +136,8 @@ export const TOUT_REEL = {
   nom: 'Tout réel',
   doctrine: () => ['reussite', 'egalite', 'sante', 'budget', 'paix'],
   lettrePlafond: () => 'accepter',
-  carteScolaire: () => ({ restitution: 0.45, prive: 0.6 }),
+  avance: () => 1,   // il prend la réserve et tient sa signature
+  carteScolaire: () => ({ restitution: 0.47, prive: 0.6 }),
   rentree: () => 'assumer',
   /* Il connaît Slavin : une réforme mal implantée a un effet nul. Il protège
      donc l'adhésion — non par souci d'opinion, mais parce que c'est le
@@ -158,6 +161,7 @@ export const SYNDICAL = {
   audience: () => 2,               // toujours concéder
   doctrine: () => ['sante', 'paix', 'budget', 'egalite', 'reussite'],
   lettrePlafond: () => 'contester',
+  avance: () => 0,   // signer un engagement de restitution serait se renier
   carteScolaire: () => ({ restitution: 0.05, prive: 0.5 }),
   rentree: () => 'assumer',
   mesures: (s, dispo, ctx) => selectionner(s, dispo, ctx,
@@ -177,6 +181,8 @@ export const MIXTE = {
     return best; },
   doctrine: () => ['sante', 'reussite', 'egalite', 'budget', 'paix'],
   lettrePlafond: (s) => (s.creditBercy < 30 && s.capital > 45 ? 'contester' : 'accepter'),
+  /* Il prend la réserve : de quoi agir en juin, à un prix qu'il sait payer. */
+  avance: () => 1,
   carteScolaire: (s, ctx) => {
     /* Rendre juste assez d'emplois pour tenir Bercy, jamais au-delà de la colère
        des maires ; épargner le privé quand la ségrégation est contenue. */
@@ -215,7 +221,7 @@ export function politiqueAleatoire(rng, poids) {
   const cibles = Object.keys(REVALORISATION.cibles);
   const instrs = Object.keys(REVALORISATION.instruments);
   const fins = Object.keys(FINANCEMENT_19);
-  const restBase = rng(), privBase = rng(), tol = rng() * 0.9;
+  let restBase = rng(); const privBase = rng(), tol = rng() * 0.9;
   const contester = rng() < 0.5;
   const opt = {
     montant: 0.3 + rng() * 2.6,
@@ -223,6 +229,11 @@ export function politiqueAleatoire(rng, poids) {
     instrument: instrs[Math.floor(rng() * instrs.length)],
     financement: fins[Math.floor(rng() * fins.length)],
   };
+  /* Cohérence minimale : qui signe un engagement le tient plus souvent qu'il
+     ne le trahit — sinon la carte scolaire de janvier n'est plus qu'un tirage. */
+  const avanceTiree = Math.floor(rng() * 3);
+  const engage = [0, 0.45, 0.60][avanceTiree];
+  if (engage > 0 && rng() < 0.7) restBase = Math.max(restBase, engage);
   const bruitCarte = {};
   return {
     nom: 'aléatoire',
@@ -230,6 +241,7 @@ export function politiqueAleatoire(rng, poids) {
     retrait: () => (rng() < 0.3 ? 'ceder' : 'maintenir'),
     doctrine: () => ordre,
     lettrePlafond: () => (contester ? 'contester' : 'accepter'),
+    avance: () => avanceTiree,
     carteScolaire: () => ({ restitution: restBase, prive: privBase }),
     rentree: () => (rng() < 0.5 ? 'assumer' : 'contester'),
     mesures: (s, dispo, ctx) => selectionner(s, dispo, ctx, (c) => {

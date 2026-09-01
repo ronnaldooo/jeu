@@ -55,6 +55,48 @@ export const TAILLE_MENU_COURT = 5;            // menus resserrés hors janvier
    l'année n'en applique aucune. */
 export const ANNONCES_MAX = { prise_fonction: 2, rentree: 1, janvier: 3 };
 
+/* ---------------------------------------------------------------------------
+   L'AVANCE DE GESTION — le premier arbitrage, juin 2027
+   ---------------------------------------------------------------------------
+   Un ministre qui arrive en juin n'a pas de budget à lui : la loi de finances
+   est votée. Mais il a un levier réel, et un seul — la RÉSERVE DE PRÉCAUTION.
+   Chaque programme est gelé dès le début de l'exercice (taux de mise en réserve
+   de 0,5 % sur les crédits de personnel et de 5 % hors personnel, reconduits
+   d'une loi de finances à l'autre). Sur une mission de 65 Md€, cela immobilise
+   plusieurs centaines de millions d'euros que Bercy peut dégeler — ou pas.
+
+   Le dégel n'est jamais gratuit : il se paie en engagement sur le schéma
+   d'emplois de l'exercice suivant. C'est exactement l'échange que le jeu
+   propose au joueur dès son premier jour, et le manquement se paie en janvier.
+   ------------------------------------------------------------------------- */
+export const AVANCE_GESTION = [
+  {
+    id: 'rien',
+    titre: 'Ne rien demander',
+    detail: 'Vous vous en tenez aux crédits que votre prédécesseur a laissés disponibles. Bercy apprécie les ministres qui ne commencent pas par tendre la main.',
+    bonus: 0, restitution: 0, schema: 0, capital: 0, bercy: +4,
+    mot: 'Sobre. Vous aurez de quoi faire une chose, et une seule.',
+  },
+  {
+    id: 'reserve',
+    titre: 'Demander le dégel de la réserve de précaution',
+    detail: 'Le dégel partiel de la mise en réserve, contre un engagement écrit à restituer au moins 45 % des postes que la démographie libérera en janvier.',
+    bonus: 0.40, restitution: 0.45, schema: 0, capital: -2, bercy: 0,
+    mot: 'La demande normale d’un ministre normal. Elle s’obtient, et elle se paie en janvier.',
+  },
+  {
+    id: 'avance',
+    titre: 'Arracher une avance large à l’arbitrage',
+    detail: 'Vous montez au Premier ministre pour obtenir le dégel intégral et une avance sur l’exercice suivant. En échange : 60 % de restitution en janvier et un schéma d’emplois durci de 1 500 équivalents temps plein.',
+    bonus: 0.85, restitution: 0.60, schema: -1500, capital: -7, bercy: -5,
+    mot: 'Trois mesures dès juin. Et un mois de janvier dont vous vous souviendrez.',
+  },
+];
+
+/* Le prix du manquement : Bercy compare l'engagement de juin à la restitution
+   de janvier. Un ministre qui ne tient pas sa signature ne la redonne pas. */
+export const MANQUEMENT_ENGAGEMENT = { creditBercy: 16, capital: 6 };
+
 /* Paliers de la lettre plafond de juillet, selon le crédit Bercy.  [B.6, C.4]
    schemaEmplois = ETP que Bercy EXIGE de rendre ; marge = Md€ concédés. */
 export const PALIERS_BERCY = [

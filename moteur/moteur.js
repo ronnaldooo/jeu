@@ -64,6 +64,7 @@ export function creerPartie({ graine = 1, politique }) {
     reformesActives: [],                       // { id, anneeFin }
     joue: new Set(), themes: new Set(), excl: new Set(),
     decouvertes: new Set(),          // dossiers déjà remontés sur le bureau
+    avance: null, engagementRestitution: 0, schemaAvance: 0,
     abandons: 0,
     mesuresParAnnee: [],
 
@@ -250,7 +251,7 @@ function* etapeJuillet(s) {
   /* (a) Lettre plafond : la sanction externe non contrôlable. */
   const palier = K.PALIERS_BERCY.find((p) => s.creditBercy >= p.seuil) || K.PALIERS_BERCY[K.PALIERS_BERCY.length - 1];
   s.palier = palier;
-  s.schemaEmploisDemande = palier.schemaEmplois;
+  s.schemaEmploisDemande = palier.schemaEmplois + (s.annee === 1 ? (s.schemaAvance || 0) : 0);
   let marge = palier.marge;
 
   if ((yield { type: 'lettrePlafond', palier }) === 'contester') {
@@ -451,6 +452,20 @@ function* etapeJanvier(s) {
   s.creditBercy += ecart >= 0 ? Math.min(13, 4 + ecart / 700) : Math.max(-18, ecart / 260);
   s.creditBercy = borne(s.creditBercy, 0, 100);
 
+  /* La signature de juin. Bercy compare l'engagement à la restitution réelle,
+     une seule fois — celle qui suit l'avance. */
+  if (s.engagementRestitution > 0) {
+    if (restitution + 1e-9 < s.engagementRestitution) {
+      s.creditBercy = borne(s.creditBercy - K.MANQUEMENT_ENGAGEMENT.creditBercy, 0, 100);
+      s.capital -= K.MANQUEMENT_ENGAGEMENT.capital;
+      note(s, `Engagement de juin non tenu : ${Math.round(restitution * 100)} % restitués pour ${Math.round(s.engagementRestitution * 100)} % promis. Bercy verse la lettre au dossier.`, 'bercy');
+    } else {
+      s.creditBercy = borne(s.creditBercy + 6, 0, 100);
+      note(s, 'Engagement de juin tenu. Bercy vous accorde le bénéfice du doute pour la suite.', 'bercy');
+    }
+    s.engagementRestitution = 0;
+  }
+
   /* Les personnels comptent les suppressions, pas les intentions. */
   s.phys.adhesion -= (postesRendus / 1000) * 1.05;
   if (restitution > K.SEUIL_COLERE_MAIRES) {
@@ -489,6 +504,21 @@ function* etapeJanvier(s) {
 
 /* Crédite la trésorerie d'argent frais. `margeCumulee` mémorise tout ce que
    le mandat a reçu : c'est elle qui mesure le sur-engagement. */
+/* --- JUIN : l'avance de gestion, premier arbitrage du mandat -------------- */
+function* etapeAvance(s) {
+  const idx = yield { type: 'avance', options: K.AVANCE_GESTION };
+  const o = K.AVANCE_GESTION[Math.max(0, Math.min(K.AVANCE_GESTION.length - 1, idx | 0))];
+  s.avance = o.id;
+  s.engagementRestitution = o.restitution;
+  s.schemaAvance = o.schema;              // durcissement du schéma d'emplois de l'an 1
+  s.capital = borne(s.capital + o.capital, 0, K.CAPITAL.plafond);
+  s.creditBercy = borne(s.creditBercy + o.bercy, 0, 100);
+  if (o.bonus > 0) crediter(s, o.bonus);
+  note(s, o.bonus > 0
+    ? `Avance de gestion obtenue : ${fmtMd(o.bonus)} Md€ dégelés contre un engagement de ${Math.round(o.restitution * 100)} % de restitution en janvier.`
+    : 'Aucune demande à Bercy. Vous partez avec ce que votre prédécesseur a laissé.', 'bercy');
+}
+
 function crediter(s, montant) {
   s.margeCumulee = (s.margeCumulee || 0) + montant;
   s.tresor = Math.max(0, s.tresor) + montant;
@@ -881,7 +911,9 @@ export function* derouler(s) {
      chiffres viennent de `moteur/reperes.js` et sont sourcés. */
   yield { type: 'reperes' };
   /* Juin : on n'attend pas le prochain budget pour agir. La loi de finances
-     votée par le prédécesseur laisse une marge de redéploiement. */
+     votée par le prédécesseur laisse une marge de redéploiement — et la
+     réserve de précaution, elle, se négocie. */
+  yield* etapeAvance(s);
   crediter(s, K.ENVELOPPE_PRISE_FONCTION);
   yield* etapeMesures(s, { moment: 'prise_fonction', taille: K.TAILLE_MENU_COURT });
   rafraichir(s);
@@ -917,6 +949,7 @@ export function jouerMandat({ graine = 1, politique }) {
     let rep;
     if (q.type === 'nomination') rep = 'accepter';
     else if (q.type === 'reperes') rep = null;   // la note de cadrage se lit, elle ne se décide pas
+    else if (q.type === 'avance') rep = politique.avance ? politique.avance(s, q) : 1;
     else if (q.type === 'doctrine') rep = politique.doctrine ? politique.doctrine(s) : Object.keys(K.COMPTEURS_INITIAUX);
     else if (q.type === 'lettrePlafond') rep = politique.lettrePlafond ? politique.lettrePlafond(s, q.palier) : 'accepter';
     else if (q.type === 'rentree') rep = politique.rentree ? politique.rentree(s, q) : 'assumer';

@@ -349,6 +349,48 @@ table.bilan .num{text-align:right}
 .rep-sources li{margin-bottom:7px}
 .rep-sources .org{font-weight:600}
 
+/* ---------- note de cadrage : pages courtes, graphiques honnêtes ---------- */
+.cadrage-bloc{border:1px solid var(--filet); background:var(--fiche); padding:16px 18px 14px; margin:16px 0}
+.cadrage-bloc h3{font-size:1.05rem; font-weight:700; margin:0 0 4px}
+.cadrage-phrase{font-family:"Newsreader",georgia,serif; font-size:1.02rem; line-height:1.5; color:var(--encre-2); margin:0 0 10px; max-width:66ch}
+.cadrage-retenir{margin:12px 0 0; padding-top:10px; border-top:1px solid var(--filet); font-size:.86rem; font-weight:600; color:var(--bleu-rf)}
+.cadrage-bloc .rep-liste{margin-top:10px}
+
+.rep-courbe{width:100%; height:150px; display:block; margin-top:6px; overflow:visible}
+.rep-courbe .axe{stroke:var(--filet-fort); stroke-width:1}
+.rep-courbe .aire{fill:var(--bleu-rf); opacity:.10}
+.rep-courbe .trait{fill:none; stroke:var(--bleu-rf); stroke-width:2.5; vector-effect:non-scaling-stroke}
+.rep-courbe .trait.projete{stroke-dasharray:5 4; opacity:.75}
+.rep-courbe .pt{fill:var(--bleu-rf)}
+.rep-courbe .pt.projete{fill:var(--fiche); stroke:var(--bleu-rf); stroke-width:1.5}
+.rep-courbe-lab{display:flex; justify-content:space-between; font-size:.62rem; color:var(--encre-3); font-variant-numeric:tabular-nums; margin-top:-14px}
+.rep-courbe-lab .constate{color:var(--encre-2); font-weight:600}
+.rep-courbe-bornes{margin:8px 0 2px; font-size:.86rem}
+.rep-courbe-bornes b{font-family:"IBM Plex Mono",monospace; color:var(--bleu-rf)}
+.rep-courbe-bornes span{color:var(--encre-3); margin:0 4px}
+
+.rep-pertes{display:flex; align-items:flex-start; gap:6px; margin:14px 0 4px; border-top:2px solid var(--filet-fort); padding-top:2px}
+.rep-pertes .col{flex:1; display:flex; flex-direction:column; align-items:center; gap:3px; min-width:0}
+.rep-pertes .an{font-size:.62rem; color:var(--encre-3); font-variant-numeric:tabular-nums}
+.rep-pertes .bar{width:100%; background:var(--filet-fort)}
+.rep-pertes .col.vous .bar{background:var(--bleu-rf)}
+.rep-pertes .nb{font-family:"IBM Plex Mono",monospace; font-size:.66rem; font-variant-numeric:tabular-nums; color:var(--encre-2)}
+.rep-pertes .col.vous .nb{color:var(--bleu-rf); font-weight:600}
+.rep-pertes-lgd{display:flex; align-items:center; gap:6px; font-size:.7rem; color:var(--encre-3); margin-top:8px; flex-wrap:wrap}
+.rep-pertes-lgd i{width:11px; height:11px; display:inline-block; flex-shrink:0}
+.rep-pertes-lgd i.vous{background:var(--bleu-rf)} .rep-pertes-lgd i.apres{background:var(--filet-fort); margin-left:10px}
+.rep-comp{display:flex; flex-direction:column; gap:12px; margin:12px 0 4px}
+.comp-titre{font-size:.72rem; text-transform:uppercase; letter-spacing:.07em; color:var(--encre-2); font-weight:700; margin-bottom:5px; display:flex; gap:10px; align-items:baseline; flex-wrap:wrap}
+.comp-ligne{display:flex; align-items:center; gap:9px; margin-bottom:3px}
+.comp-ligne .qui{font-size:.72rem; color:var(--encre-3); width:11ch; flex-shrink:0; text-align:right}
+.comp-ligne .piste{flex:1; min-width:0}
+.comp-ligne i{height:13px; display:block}
+.comp-ligne i.fr{background:var(--bleu-rf)}
+.comp-ligne i.ref{background:var(--filet-fort)}
+.comp-ligne b{font-family:"IBM Plex Mono",monospace; font-size:.8rem; font-variant-numeric:tabular-nums; width:4ch; flex-shrink:0}
+.comp-ecart{font-size:.7rem; font-weight:700; letter-spacing:0; text-transform:none}
+.comp-ecart.neg{color:var(--alerte)} .comp-ecart.pos{color:var(--ok)}
+@media (max-width:640px){ .comp-ligne .qui{width:8ch} }
 #comprendre-btn{position:fixed; left:12px; bottom:12px; z-index:30; font-size:.74rem; padding:7px 13px; border:1px solid var(--filet); background:var(--fiche); color:var(--encre-2); cursor:pointer; box-shadow:0 2px 8px rgba(0,0,0,.08); border-radius:2px}
 #comprendre-btn:hover{color:var(--bleu-rf); border-color:var(--bleu-rf)}
 #comprendre{position:fixed; inset:0; z-index:60; background:var(--papier); overflow-y:auto; overscroll-behavior:contain; padding:0 16px 60px}
@@ -448,6 +490,48 @@ const TAILLE_MENU_COURT = 5;            // menus resserrés hors janvier
    à accompagner ce qu'il annonce. Un ministre qui annonce six réformes dans
    l'année n'en applique aucune. */
 const ANNONCES_MAX = { prise_fonction: 2, rentree: 1, janvier: 3 };
+
+/* ---------------------------------------------------------------------------
+   L'AVANCE DE GESTION — le premier arbitrage, juin 2027
+   ---------------------------------------------------------------------------
+   Un ministre qui arrive en juin n'a pas de budget à lui : la loi de finances
+   est votée. Mais il a un levier réel, et un seul — la RÉSERVE DE PRÉCAUTION.
+   Chaque programme est gelé dès le début de l'exercice (taux de mise en réserve
+   de 0,5 % sur les crédits de personnel et de 5 % hors personnel, reconduits
+   d'une loi de finances à l'autre). Sur une mission de 65 Md€, cela immobilise
+   plusieurs centaines de millions d'euros que Bercy peut dégeler — ou pas.
+
+   Le dégel n'est jamais gratuit : il se paie en engagement sur le schéma
+   d'emplois de l'exercice suivant. C'est exactement l'échange que le jeu
+   propose au joueur dès son premier jour, et le manquement se paie en janvier.
+   ------------------------------------------------------------------------- */
+const AVANCE_GESTION = [
+  {
+    id: 'rien',
+    titre: 'Ne rien demander',
+    detail: 'Vous vous en tenez aux crédits que votre prédécesseur a laissés disponibles. Bercy apprécie les ministres qui ne commencent pas par tendre la main.',
+    bonus: 0, restitution: 0, schema: 0, capital: 0, bercy: +4,
+    mot: 'Sobre. Vous aurez de quoi faire une chose, et une seule.',
+  },
+  {
+    id: 'reserve',
+    titre: 'Demander le dégel de la réserve de précaution',
+    detail: 'Le dégel partiel de la mise en réserve, contre un engagement écrit à restituer au moins 45 % des postes que la démographie libérera en janvier.',
+    bonus: 0.40, restitution: 0.45, schema: 0, capital: -2, bercy: 0,
+    mot: 'La demande normale d’un ministre normal. Elle s’obtient, et elle se paie en janvier.',
+  },
+  {
+    id: 'avance',
+    titre: 'Arracher une avance large à l’arbitrage',
+    detail: 'Vous montez au Premier ministre pour obtenir le dégel intégral et une avance sur l’exercice suivant. En échange : 60 % de restitution en janvier et un schéma d’emplois durci de 1 500 équivalents temps plein.',
+    bonus: 0.85, restitution: 0.60, schema: -1500, capital: -7, bercy: -5,
+    mot: 'Trois mesures dès juin. Et un mois de janvier dont vous vous souviendrez.',
+  },
+];
+
+/* Le prix du manquement : Bercy compare l'engagement de juin à la restitution
+   de janvier. Un ministre qui ne tient pas sa signature ne la redonne pas. */
+const MANQUEMENT_ENGAGEMENT = { creditBercy: 16, capital: 6 };
 
 /* Paliers de la lettre plafond de juillet, selon le crédit Bercy.  [B.6, C.4]
    schemaEmplois = ETP que Bercy EXIGE de rendre ; marge = Md€ concédés. */
@@ -806,7 +890,7 @@ const TAILLES_MENU = [8, 11, 13, 15, 15];
 const MOIS = ['janvier','février','mars','avril','mai','juin',
                      'juillet','août','septembre','octobre','novembre','décembre'];
 
-const K = { CADRAGE, ENVELOPPE_BASE, ENVELOPPE_PRISE_FONCTION, ENVELOPPE_RENTREE, TAILLE_MENU_COURT, ANNONCES_MAX, PALIERS_BERCY, SURCOUT, POINTS_SALAIRE_PAR_MD, BAISSE_ELEVES, ELEVES_INITIAL, ELEVES_PAR_POSTE, RATIO_ED_INITIAL, SEUIL_COLERE_MAIRES, COMPTEURS_INITIAUX, COMPTEURS_META, POIDS_DOCTRINE, PHYSIQUE_INITIALE, INERTIE_OPINION, TENDANCIEL, INTERVALLE_CADENAS, ABSORPTION, FATIGUE, IMPLEMENTATION, POIDS_HERITAGE, BRUIT_AFFICHE, COUT_AFFICHAGE_LONG_TERME, DECROISSANCE_VITRINE, ATTRACTIVITE, GREVE, SYNDICATS, SENSIBILITES, CAPITAL, IMMOBILISME, CREDIT_BERCY_INITIAL, RENVOI, PROJECTION, PROJETS_2027, TAILLES_MENU, MOIS };   // espace de noms attendu par le moteur
+const K = { CADRAGE, ENVELOPPE_BASE, ENVELOPPE_PRISE_FONCTION, ENVELOPPE_RENTREE, TAILLE_MENU_COURT, ANNONCES_MAX, AVANCE_GESTION, MANQUEMENT_ENGAGEMENT, PALIERS_BERCY, SURCOUT, POINTS_SALAIRE_PAR_MD, BAISSE_ELEVES, ELEVES_INITIAL, ELEVES_PAR_POSTE, RATIO_ED_INITIAL, SEUIL_COLERE_MAIRES, COMPTEURS_INITIAUX, COMPTEURS_META, POIDS_DOCTRINE, PHYSIQUE_INITIALE, INERTIE_OPINION, TENDANCIEL, INTERVALLE_CADENAS, ABSORPTION, FATIGUE, IMPLEMENTATION, POIDS_HERITAGE, BRUIT_AFFICHE, COUT_AFFICHAGE_LONG_TERME, DECROISSANCE_VITRINE, ATTRACTIVITE, GREVE, SYNDICATS, SENSIBILITES, CAPITAL, IMMOBILISME, CREDIT_BERCY_INITIAL, RENVOI, PROJECTION, PROJETS_2027, TAILLES_MENU, MOIS };   // espace de noms attendu par le moteur
 /* ===== moteur/catalogue.js ===== */
 
 
@@ -2729,7 +2813,7 @@ const SERIE_BUDGET = [
 const REPERES = [
   {
     cle: 'budget',
-    titre: 'L’argent',
+    titre: 'Un budget contraint',
     resume: 'Le premier budget de l’État en effectifs, et le plus rigide en euros.',
     chiffres: [
       { v: '64,49 Md€', l: 'crédits de paiement de la mission « Enseignement scolaire » au budget 2026, hors contribution au CAS Pensions', src: 'senat_plf26' },
@@ -2746,7 +2830,7 @@ const REPERES = [
   },
   {
     cle: 'demographie',
-    titre: 'Les élèves qui manquent',
+    titre: 'Une baisse démographique',
     resume: 'La donnée qui commande tout le reste, et dont personne ne parle en campagne.',
     chiffres: [
       { v: '−1 676 800', l: 'élèves de moins en 2035 qu’aujourd’hui dans le public et le privé sous contrat, scénario de référence', src: 'depp_proj35' },
@@ -2758,8 +2842,8 @@ const REPERES = [
   },
   {
     cle: 'niveaux',
-    titre: 'Ce que savent les élèves',
-    resume: 'Trois enquêtes, trois âges, trois messages qui ne disent pas la même chose.',
+    titre: 'Des résultats préoccupants',
+    resume: 'Ce que mesurent les évaluations nationales et internationales, à trois âges différents.',
     chiffres: [
       { v: '474 / 474 / 487', l: 'PISA 2022, élèves de 15 ans : mathématiques, compréhension de l’écrit, sciences. Moyennes OCDE : 472, 476, 485 — la France est dans la moyenne', src: 'pisa22' },
       { v: 'baisse « sans précédent »', l: 'c’est le mot de l’OCDE pour la chute en mathématiques entre 2018 et 2022 ; elle suit une période de stabilité', src: 'pisa22' },
@@ -2774,7 +2858,7 @@ const REPERES = [
   },
   {
     cle: 'inegalites',
-    titre: 'Le poids de l’origine',
+    titre: 'Les inégalités sociales',
     resume: 'Le point où la France est régulièrement la plus mal classée.',
     chiffres: [
       { v: '99,9 vs 117,4', l: 'indice de position sociale médian des collèges publics et des collèges privés sous contrat (2023-2024) ; l’écart se creuse d’environ 2 points par an', src: 'senat_mixite' },
@@ -2789,7 +2873,7 @@ const REPERES = [
   },
   {
     cle: 'metier',
-    titre: 'Ceux qui font tourner l’école',
+    titre: 'Le métier enseignant',
     resume: 'Un million de personnes, dont la moitié de la carrière se joue sur un point d’indice.',
     chiffres: [
       { v: '−26 % / −18 %', l: 'salaires effectifs des enseignants d’élémentaire et de collège par rapport aux autres diplômés du supérieur à temps plein (2024). Moyennes OCDE : −17 % et −13 %', src: 'ocde25' },
@@ -2808,7 +2892,7 @@ const REPERES = [
   },
   {
     cle: 'moyens',
-    titre: 'Les heures qui manquent',
+    titre: 'Le remplacement',
     resume: 'Le sujet dont les familles parlent, et que les statistiques mesurent mal.',
     chiffres: [
       { v: '4,3 % et 7,4 %', l: 'part du temps scolaire perdu faute de remplacement, en moyenne et dans le second degré (rapport sénatorial, juin 2025)', src: 'senat_rempl' },
@@ -2826,7 +2910,7 @@ const REPERES = [
   },
   {
     cle: 'organisation',
-    titre: 'Le temps et les classes',
+    titre: 'Le temps scolaire et les classes',
     resume: 'La France est une anomalie horaire dans l’OCDE, dans les deux sens.',
     chiffres: [
       { v: '864 h / 973 h', l: 'heures d’enseignement par an en élémentaire et au collège, contre 730 h et 851 h en moyenne européenne : les élèves français ont plus d’heures que presque partout', src: 'hcsp26' },
@@ -2882,6 +2966,76 @@ const REPERES = [
     ],
     aRetenir: 'Les cadenas reprennent l’échelle de niveau de preuve de l’Education Endowment Foundation, l’organisme britannique qui synthétise les méta-analyses en éducation. Un effet moyen élevé mais mal établi vaut souvent moins qu’un effet modeste et solide : c’est la leçon que le bilan de fin de mandat vous administrera.',
   },
+];
+
+/* ---------------------------------------------------------------------------
+   TRAJECTOIRE DES EFFECTIFS D'ÉLÈVES — constaté puis projeté
+   ---------------------------------------------------------------------------
+   Millions d'élèves, public et privé sous contrat, premier et second degrés.
+   Les rentrées 2027 à 2031 sont celles que le joueur arbitre. Les valeurs
+   suivent la trajectoire DEPP du scénario de référence, calée sur ses deux
+   points publiés : la rentrée 2026 et l'horizon 2035 (−1 676 800 élèves).
+   ------------------------------------------------------------------------- */
+const SERIE_ELEVES = [
+  { annee: 2026, m: 11.61, constate: true },
+  { annee: 2027, m: 11.45 },
+  { annee: 2028, m: 11.28 },
+  { annee: 2029, m: 11.10 },
+  { annee: 2030, m: 10.92 },
+  { annee: 2031, m: 10.75 },
+  { annee: 2033, m: 10.34 },
+  { annee: 2035, m: 9.93 },   /* 11,61 − 1,6768 : cale la courbe sur le chiffre publié */
+];
+
+/* ---------------------------------------------------------------------------
+   LA NOTE DE CADRAGE DE LA DGESCO — version courte, remise avant la première
+   décision. Règle : un graphique et TROIS chiffres par page, pas davantage.
+   Le détail complet reste dans l'onglet « Comprendre le jeu ».
+   ------------------------------------------------------------------------- */
+const CADRAGE_INITIAL = [
+  {
+    cle: 'budget',
+    titre: 'Un budget contraint',
+    phrase: 'Vous héritez du premier budget de l’État en effectifs. Il augmente — un peu — et il est presque entièrement pré-engagé.',
+    graphique: 'budget',
+    chiffres: [
+      { v: '65,3 Md€', l: 'le budget de la mission « Enseignement scolaire » en 2027, hors pensions', src: 'plafonds27' },
+      { v: '+0,8 Md€', l: 'ce qui est nouveau cette année, soit +1,2 % — et une bonne moitié est déjà engagée par votre prédécesseur', src: 'plafonds27' },
+      { v: '93 %', l: 'de ce budget est de la masse salariale : ce que vous ne pouvez pas arbitrer dans l’année', src: 'cc_neb24' },
+    ],
+    aRetenir: 'Tout votre mandat se joue dans le liseré qui reste.',
+  },
+  {
+    cle: 'demographie',
+    titre: 'Une baisse démographique',
+    phrase: 'Il y aura chaque année moins d’élèves. C’est la seule bonne nouvelle budgétaire de votre mandat, et le sujet le plus explosif de votre calendrier.',
+    graphique: 'eleves',
+    chiffres: [
+      { v: '−1 676 800', l: 'élèves de moins en 2035 qu’aujourd’hui, soit −14,2 % de la population scolaire', src: 'depp_proj35' },
+      { v: '≈ 6 600', l: 'postes que la démographie « libère » chaque rentrée. C’est vous qui décidez à qui ils vont', src: 'depp_proj35' },
+      { v: '4 % ou 60 %', l: 'les deux précédents récents de restitution à Bercy : rentrée 2025 puis rentrée 2026. Le même chiffre démographique, deux pays différents', src: 'senat_plf26' },
+    ],
+    aRetenir: 'Rendre ces postes ou les réinvestir : c’est l’arbitrage de janvier, chaque année.',
+  },
+  {
+    cle: 'niveaux',
+    titre: 'Des résultats préoccupants',
+    phrase: 'Trois évaluations, trois âges. Elles ne disent pas la même chose, et aucune ne mesurera ce que vous ferez.',
+    graphique: 'niveaux',
+    chiffres: [
+      { v: '484 contre 524', l: 'score des CM1 français en mathématiques (TIMSS 2023) face à la moyenne de l’Union européenne. Stable depuis 2019, mais loin', src: 'timss23' },
+      { v: 'baisse « sans précédent »', l: 'le mot de l’OCDE pour la chute en mathématiques à 15 ans entre 2018 et 2022. La France reste dans la moyenne : tout le monde a baissé', src: 'pisa22' },
+      { v: '1 jeune sur 4', l: 'a des difficultés prononcées en lecture à 17-18 ans, aux tests de la Journée défense et citoyenneté', src: 'hcsp26' },
+    ],
+    aRetenir: 'Un élève de PISA 2027 est entré au CP en 2018 : vous répondrez de ce que vous n’avez pas fait.',
+  },
+];
+
+/* Comparaisons du petit graphique « niveaux » : France face à sa référence. */
+const COMPARAISONS_NIVEAUX = [
+  { libelle: 'Mathématiques, CM1', fr: 484, ref: 524, refNom: 'moyenne UE', src: 'timss23' },
+  { libelle: 'Mathématiques, 15 ans', fr: 474, ref: 472, refNom: 'moyenne OCDE', src: 'pisa22' },
+  { libelle: 'Compréhension de l’écrit, CM1', fr: 514, ref: 527, refNom: 'moyenne UE', src: 'pirls21' },
 ];
 
 const PAR_CLE = Object.fromEntries(REPERES.map((r) => [r.cle, r]));
@@ -2953,6 +3107,7 @@ function creerPartie({ graine = 1, politique }) {
     reformesActives: [],                       // { id, anneeFin }
     joue: new Set(), themes: new Set(), excl: new Set(),
     decouvertes: new Set(),          // dossiers déjà remontés sur le bureau
+    avance: null, engagementRestitution: 0, schemaAvance: 0,
     abandons: 0,
     mesuresParAnnee: [],
 
@@ -3139,7 +3294,7 @@ function* etapeJuillet(s) {
   /* (a) Lettre plafond : la sanction externe non contrôlable. */
   const palier = K.PALIERS_BERCY.find((p) => s.creditBercy >= p.seuil) || K.PALIERS_BERCY[K.PALIERS_BERCY.length - 1];
   s.palier = palier;
-  s.schemaEmploisDemande = palier.schemaEmplois;
+  s.schemaEmploisDemande = palier.schemaEmplois + (s.annee === 1 ? (s.schemaAvance || 0) : 0);
   let marge = palier.marge;
 
   if ((yield { type: 'lettrePlafond', palier }) === 'contester') {
@@ -3340,6 +3495,20 @@ function* etapeJanvier(s) {
   s.creditBercy += ecart >= 0 ? Math.min(13, 4 + ecart / 700) : Math.max(-18, ecart / 260);
   s.creditBercy = borne(s.creditBercy, 0, 100);
 
+  /* La signature de juin. Bercy compare l'engagement à la restitution réelle,
+     une seule fois — celle qui suit l'avance. */
+  if (s.engagementRestitution > 0) {
+    if (restitution + 1e-9 < s.engagementRestitution) {
+      s.creditBercy = borne(s.creditBercy - K.MANQUEMENT_ENGAGEMENT.creditBercy, 0, 100);
+      s.capital -= K.MANQUEMENT_ENGAGEMENT.capital;
+      note(s, `Engagement de juin non tenu : ${Math.round(restitution * 100)} % restitués pour ${Math.round(s.engagementRestitution * 100)} % promis. Bercy verse la lettre au dossier.`, 'bercy');
+    } else {
+      s.creditBercy = borne(s.creditBercy + 6, 0, 100);
+      note(s, 'Engagement de juin tenu. Bercy vous accorde le bénéfice du doute pour la suite.', 'bercy');
+    }
+    s.engagementRestitution = 0;
+  }
+
   /* Les personnels comptent les suppressions, pas les intentions. */
   s.phys.adhesion -= (postesRendus / 1000) * 1.05;
   if (restitution > K.SEUIL_COLERE_MAIRES) {
@@ -3378,6 +3547,21 @@ function* etapeJanvier(s) {
 
 /* Crédite la trésorerie d'argent frais. `margeCumulee` mémorise tout ce que
    le mandat a reçu : c'est elle qui mesure le sur-engagement. */
+/* --- JUIN : l'avance de gestion, premier arbitrage du mandat -------------- */
+function* etapeAvance(s) {
+  const idx = yield { type: 'avance', options: K.AVANCE_GESTION };
+  const o = K.AVANCE_GESTION[Math.max(0, Math.min(K.AVANCE_GESTION.length - 1, idx | 0))];
+  s.avance = o.id;
+  s.engagementRestitution = o.restitution;
+  s.schemaAvance = o.schema;              // durcissement du schéma d'emplois de l'an 1
+  s.capital = borne(s.capital + o.capital, 0, K.CAPITAL.plafond);
+  s.creditBercy = borne(s.creditBercy + o.bercy, 0, 100);
+  if (o.bonus > 0) crediter(s, o.bonus);
+  note(s, o.bonus > 0
+    ? `Avance de gestion obtenue : ${fmtMd(o.bonus)} Md€ dégelés contre un engagement de ${Math.round(o.restitution * 100)} % de restitution en janvier.`
+    : 'Aucune demande à Bercy. Vous partez avec ce que votre prédécesseur a laissé.', 'bercy');
+}
+
 function crediter(s, montant) {
   s.margeCumulee = (s.margeCumulee || 0) + montant;
   s.tresor = Math.max(0, s.tresor) + montant;
@@ -3770,7 +3954,9 @@ function* derouler(s) {
      chiffres viennent de `moteur/reperes.js` et sont sourcés. */
   yield { type: 'reperes' };
   /* Juin : on n'attend pas le prochain budget pour agir. La loi de finances
-     votée par le prédécesseur laisse une marge de redéploiement. */
+     votée par le prédécesseur laisse une marge de redéploiement — et la
+     réserve de précaution, elle, se négocie. */
+  yield* etapeAvance(s);
   crediter(s, K.ENVELOPPE_PRISE_FONCTION);
   yield* etapeMesures(s, { moment: 'prise_fonction', taille: K.TAILLE_MENU_COURT });
   rafraichir(s);
@@ -3806,6 +3992,7 @@ function jouerMandat({ graine = 1, politique }) {
     let rep;
     if (q.type === 'nomination') rep = 'accepter';
     else if (q.type === 'reperes') rep = null;   // la note de cadrage se lit, elle ne se décide pas
+    else if (q.type === 'avance') rep = politique.avance ? politique.avance(s, q) : 1;
     else if (q.type === 'doctrine') rep = politique.doctrine ? politique.doctrine(s) : Object.keys(K.COMPTEURS_INITIAUX);
     else if (q.type === 'lettrePlafond') rep = politique.lettrePlafond ? politique.lettrePlafond(s, q.palier) : 'accepter';
     else if (q.type === 'rentree') rep = politique.rentree ? politique.rentree(s, q) : 'assumer';
@@ -4224,6 +4411,36 @@ function ecranBercy(q) {
   const con = el('button', 'opt', `<b>Contester et porter l’arbitrage à Matignon</b><span class="det">Coût : 12 points de capital politique (il vous en reste ${fmt0(S.capital)}). Chances de gagner : moyennes, et décroissantes avec l’usage. Un ministre qui menace trop souvent finit par ne plus être craint, seulement remplacé.</span>`);
   con.onclick = () => suivant('contester');
   opts.append(acc, con); d.appendChild(opts);
+  scene(d);
+}
+
+/* --- juin 2027 : l'avance de gestion, premier arbitrage du mandat ------------ */
+function ecranAvance(q) {
+  const S = ETAT.s;
+  const d = docu('Note du secrétariat général — négociation de gestion', 'Votre premier arbitrage : la réserve de précaution');
+  d.appendChild(el('p', 'chapo', 'Vous arrivez en juin sur un budget déjà voté. Un seul levier existe pour agir tout de suite : la <b>réserve de précaution</b>, cette part des crédits que Bercy gèle en début d’exercice sur chaque programme et ne dégèle qu’en gestion. Elle immobilise plusieurs centaines de millions d’euros sur votre mission.'));
+  d.appendChild(el('div', 'depeche',
+    `OBJET : dégel de la mise en réserve — exercice en cours<br>
+     ENVELOPPE ACQUISE SANS DEMANDE : <b>${fmt0(K.ENVELOPPE_PRISE_FONCTION * 1000)} M€</b><br>
+     CONTREPARTIE DE TOUT DÉGEL : engagement écrit sur la restitution de postes en janvier<br>
+     RAPPEL : Bercy compare toujours l’engagement de juin au schéma d’emplois de janvier.`));
+  const opts = el('div', 'opts');
+  q.options.forEach((o, i) => {
+    const gains = [];
+    if (o.bonus) gains.push(`<b class="pos">+${fmt0(o.bonus * 1000)} M€</b> dès juin`);
+    if (o.restitution) gains.push(`<b class="neg">${Math.round(o.restitution * 100)} % de restitution</b> promis en janvier`);
+    if (o.schema) gains.push(`<b class="neg">${fmt0(o.schema)} ETP</b> de schéma d’emplois en plus`);
+    if (o.capital) gains.push(`capital ${signe(o.capital)}`);
+    if (o.bercy) gains.push(`crédit Bercy ${signe(o.bercy)}`);
+    const b = el('button', 'opt',
+      `<b>${esc(o.titre)}</b><span class="det">${fr(o.detail)}</span>`
+      + `<span class="chiffres">${gains.map((g) => `<span>${g}</span>`).join('')}</span>`
+      + `<span class="det mot">« ${fr(o.mot)} »</span>`);
+    b.onclick = () => suivant(i);
+    opts.appendChild(b);
+  });
+  d.appendChild(opts);
+  d.appendChild(el('p', 'note-passation', 'Un engagement non tenu en janvier coûte 16 points de crédit Bercy et 6 de capital politique — davantage que ce que l’avance vous aura rapporté. Un engagement tenu vous en rend 6. La signature de juin est le premier des cinq arbitrages de carte scolaire, pris avant même de savoir ce que la démographie vous donnera.'));
   scene(d);
 }
 
@@ -4804,20 +5021,98 @@ function citer(idSource) {
   return `<cite>${S.url ? `<a href="${S.url}" target="_blank" rel="noopener">${lib}</a>` : lib}</cite>`;
 }
 
+/* --- graphiques de la note de cadrage ---------------------------------------- */
+/* Règle : les barres partent TOUJOURS de zéro. Un axe tronqué transforme une
+   hausse de 1,2 % en mur, et ce jeu passe son temps à dire que les chiffres
+   affichés mentent — il ne va pas commencer par mentir lui-même. */
+const md1 = (x) => x.toLocaleString('fr-FR', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+
 function serieBudget() {
-  /* Une décimale toujours affichée : « 56 » à côté de « 52,3 » se lit mal. */
-  const md1 = (x) => x.toLocaleString('fr-FR', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
   const max = Math.max(...SERIE_BUDGET.map((b) => b.md));
-  const min = Math.min(...SERIE_BUDGET.map((b) => b.md)) - 3;
   const g = el('div', '');
-  g.innerHTML = `<div class="rep-serie">${SERIE_BUDGET.map((b) => {
-    const h = Math.round(18 + ((b.md - min) / (max - min)) * 74);
-    return `<div class="col${b.prevision ? ' prev' : ''}"><span class="md">${md1(b.md)}</span>`
-         + `<i class="bar" style="height:${h}px"></i><span class="an">${b.annee}</span></div>`;
-  }).join('')}</div>`
-  + `<p class="rep-serie-note">Crédits de paiement de la mission « Enseignement scolaire », en milliards d’euros courants, hors contribution au compte d’affectation spéciale Pensions. 2021 n’est pas représentée : le périmètre de la mission a changé cette année-là. La dernière colonne, hachurée, est le plafond prévisionnel du PLF 2027 — celui sur lequel s’ouvre votre mandat.</p>`
-  + `<ul class="rep-liste">${SERIE_BUDGET.filter((b) => b.note).map((b) => `<li><span class="v">${b.annee}</span><span class="l">${fr(b.note)}${citer(b.src)}</span></li>`).join('')}</ul>`;
+  g.innerHTML = `<div class="rep-serie" role="img" aria-label="Budget de la mission Enseignement scolaire, de 52,3 milliards d’euros en 2019 à 65,3 milliards en 2027">`
+    + SERIE_BUDGET.map((b) => {
+        const h = Math.round((b.md / max) * 118);      // proportionnel, base zéro
+        return `<div class="col${b.prevision ? ' prev' : ''}"><span class="md">${md1(b.md)}</span>`
+             + `<i class="bar" style="height:${h}px"></i><span class="an">${b.annee}</span></div>`;
+      }).join('')
+    + `</div>`
+    + `<p class="rep-serie-note">Mission « Enseignement scolaire », milliards d’euros courants, hors pensions. <b>Barres à base zéro</b> : la hausse est réelle mais modeste — +25 % en huit ans d’euros courants, à peu près l’inflation. La colonne hachurée est le plafond prévisionnel de 2027.</p>`;
   return g;
+}
+
+/* Effectifs d'élèves. On ne représente PAS le niveau : à échelle honnête, une
+   courbe de 11,6 à 10,1 millions paraît plate et cache le phénomène. Le sujet
+   n'est pas le nombre d'élèves, c'est le nombre d'élèves PERDUS — donc des
+   barres cumulées qui descendent depuis zéro. Même honnêteté d'échelle, sujet
+   correctement cadré. */
+function serieEleves() {
+  const base = SERIE_ELEVES[0];
+  const pertes = SERIE_ELEVES.slice(1).map((p) => ({
+    annee: p.annee,
+    milliers: Math.round((base.m - p.m) * 1000),
+    arbitree: p.annee >= 2027 && p.annee <= 2031,     // les rentrées que le joueur décide
+  }));
+  const max = Math.max(...pertes.map((p) => p.milliers));
+  const g = el('div', '');
+  g.innerHTML = `
+  <div class="rep-pertes" role="img" aria-label="Élèves perdus par rapport à la rentrée 2026 : 160 000 dès 2027, environ 1 680 000 en 2035">
+    ${pertes.map((p) => {
+      const h = Math.round((p.milliers / max) * 104) + 4;
+      return `<div class="col${p.arbitree ? ' vous' : ''}">`
+           + `<span class="an">${p.annee}</span>`
+           + `<i class="bar" style="height:${h}px"></i>`
+           + `<span class="nb">−${fmt0(p.milliers)}k</span></div>`;
+    }).join('')}
+  </div>
+  <div class="rep-pertes-lgd"><i class="vous"></i>les cinq rentrées que vous arbitrez<i class="apres"></i>celles de vos successeurs</div>
+  <div class="rep-courbe-bornes"><b>11,6 M d’élèves</b> à la rentrée 2026 <span>→</span> <b>9,9 M</b> projetés en 2035, soit <b>−1,7 million</b></div>
+  <p class="rep-serie-note">Élèves perdus depuis la rentrée 2026, en milliers (DEPP, scénario de référence). À un poste pour vingt-quatre élèves, cela « libère » environ <b>70 000 postes</b> d’ici 2035 : la matière de tous vos arbitrages de janvier.</p>`;
+  return g;
+}
+
+/* Niveaux : trois comparaisons France / référence, barres appariées. */
+function serieNiveaux() {
+  const g = el('div', '');
+  g.innerHTML = `<div class="rep-comp">${COMPARAISONS_NIVEAUX.map((c) => {
+    const mx = 600, pf = (c.fr / mx) * 100, pr = (c.ref / mx) * 100;
+    const ecart = c.fr - c.ref;
+    const ligne = (cls, qui, val, pct) =>
+      `<div class="comp-ligne"><span class="qui">${esc(qui)}</span>`
+      + `<span class="piste"><i class="${cls}" style="width:${pct.toFixed(1)}%"></i></span><b>${val}</b></div>`;
+    return `<div class="comp">
+      <div class="comp-titre">${esc(c.libelle)} <span class="comp-ecart ${ecart >= 0 ? 'pos' : 'neg'}">${ecart >= 0 ? '+' : '−'}${Math.abs(ecart)} pts</span></div>
+      ${ligne('fr', 'France', c.fr, pf)}
+      ${ligne('ref', c.refNom, c.ref, pr)}
+    </div>`;
+  }).join('')}</div>
+  <p class="rep-serie-note">Scores moyens, échelles graduées autour de 500, barres à base zéro. Les écarts sont réels sans être des gouffres — et ils suffisent à séparer la France de ses voisins européens.</p>`;
+  return g;
+}
+
+/* --- juin 2027 : la note de cadrage, en trois pages courtes ------------------- */
+function ecranReperes() {
+  const d = el('article', 'doc large');
+  d.appendChild(el('div', 'entete-doc', `<span class="type">Note de cadrage — direction générale de l’enseignement scolaire (DGESCO)</span><span class="date">${ETAT.dateLabel}</span>`));
+  d.appendChild(el('h2', '', 'Trois choses à savoir avant votre première décision'));
+  d.appendChild(el('p', 'chapo', 'La note que la DGESCO remet à tout nouveau ministre le jour de sa prise de fonction. Aucune recommandation : trois constats, trois chiffres chacun, et leurs sources. Le détail complet est à tout moment dans « Comprendre le jeu », en bas à gauche de l’écran.'));
+
+  const GRAPH = { budget: serieBudget, eleves: serieEleves, niveaux: serieNiveaux };
+  for (const b of CADRAGE_INITIAL) {
+    const bloc = el('section', 'cadrage-bloc');
+    bloc.appendChild(el('h3', '', esc(b.titre)));
+    bloc.appendChild(el('p', 'cadrage-phrase', fr(b.phrase)));
+    if (GRAPH[b.graphique]) bloc.appendChild(GRAPH[b.graphique]());
+    bloc.appendChild(el('ul', 'rep-liste', b.chiffres.map((x) =>
+      `<li><span class="v">${fr(x.v)}</span><span class="l">${fr(x.l)}.${citer(x.src)}</span></li>`).join('')));
+    bloc.appendChild(el('p', 'cadrage-retenir', fr(b.aRetenir)));
+    d.appendChild(bloc);
+  }
+
+  const ok = el('button', 'btn tamponner', 'J’ai lu — passer aux premières annonces');
+  ok.onclick = () => suivant(null);
+  d.appendChild(el('div', 'actions')).appendChild(ok);
+  scene(d);
 }
 
 function blocReperes(cles, ouvert) {
@@ -4836,20 +5131,6 @@ function blocReperes(cles, ouvert) {
     z.appendChild(dt);
   }
   return z;
-}
-
-/* --- juin 2027 : la note de cadrage remise au ministre ----------------------- */
-function ecranReperes() {
-  const d = el('article', 'doc large');
-  d.appendChild(el('div', 'entete-doc', `<span class="type">Note de cadrage — direction générale</span><span class="date">${ETAT.dateLabel}</span>`));
-  d.appendChild(el('h2', '', 'Ce que vous devez savoir avant votre première décision'));
-  d.appendChild(el('p', 'chapo', 'Trois pages, remises à tout nouveau ministre le jour de sa prise de fonction. Elles ne contiennent aucune recommandation : seulement l’état du système, avec ses sources. Vous pourrez les rouvrir à tout moment par le bouton « Comprendre le jeu », en bas à gauche de l’écran.'));
-  d.appendChild(blocReperes(['budget', 'demographie', 'niveaux'], ['budget']));
-  d.appendChild(el('p', 'note-passation', 'Trois chiffres à garder en tête pendant tout le mandat : votre marge nouvelle se compte en centaines de millions quand la mission pèse 65 milliards ; la démographie vous rendra des milliers de postes chaque année, et c’est vous qui déciderez à qui ; et aucune enquête internationale publiée pendant votre mandat ne mesurera quoi que ce soit de ce que vous aurez fait.<span class="ps">Les six autres fiches — inégalités, métier, remplacement, organisation, climat scolaire, niveaux de preuve — sont dans l’onglet « Comprendre le jeu ».</span>'));
-  const ok = el('button', 'btn tamponner', 'J’ai lu — passer aux premières annonces');
-  ok.onclick = () => suivant(null);
-  d.appendChild(el('div', 'actions')).appendChild(ok);
-  scene(d);
 }
 
 /* --- l'onglet permanent ------------------------------------------------------ */
@@ -4885,6 +5166,7 @@ function dateDe(q) {
   if (q.type === 'nomination') return 'juin 2027';
   if (q.type === 'doctrine') return 'juin 2027';
   if (q.type === 'reperes') return 'juin 2027';
+  if (q.type === 'avance') return 'juin 2027';
   if (q.type === 'retrait') return `octobre ${ETAT.s.anneeCiv || 2027}`;
   if (q.type === 'dossier') return 'été 2027';
   if (q.type === 'audience') return `octobre ${ETAT.s.anneeCiv || 2027}`;
@@ -4906,6 +5188,7 @@ function rendre(q) {
   if (q.type === 'nomination') ecranNomination();
   else if (q.type === 'doctrine') ecranDoctrine();
   else if (q.type === 'reperes') ecranReperes();
+  else if (q.type === 'avance') ecranAvance(q);
   else if (q.type === 'retrait') ecranRetrait(q);
   else if (q.type === 'dossier') ecranDossier(q);
   else if (q.type === 'audience') ecranAudience(q);
