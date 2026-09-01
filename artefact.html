@@ -16,7 +16,7 @@
   --filet:#d8dae4; --filet-fort:#b9bdcf;
   --or:#c9a227;
   --c-reussite:#2a78d6; --c-egalite:#e87ba4; --c-sante:#1baf7a;
-  --c-paix:#eb6834; --c-budget:#eda100;
+  --c-paix:#eb6834; --c-budget:#eda100; --c-violet:#7b4ad1;
   --ok:#0ca30c; --alerte:#d03b3b;
   --ombre:0 1px 2px rgba(30,31,38,.07),0 4px 14px rgba(30,31,38,.06);
 }
@@ -30,7 +30,7 @@
     --filet:#33343e; --filet-fort:#484a58;
     --or:#d9b545;
     --c-reussite:#3987e5; --c-egalite:#d55181; --c-sante:#199e70;
-    --c-paix:#d95926; --c-budget:#c98500;
+    --c-paix:#d95926; --c-budget:#c98500; --c-violet:#a385f0;
     --ok:#0ca30c; --alerte:#e66767;
     --ombre:0 1px 2px rgba(0,0,0,.4),0 4px 14px rgba(0,0,0,.3);
   }
@@ -44,7 +44,7 @@
   --filet:#33343e; --filet-fort:#484a58;
   --or:#d9b545;
   --c-reussite:#3987e5; --c-egalite:#d55181; --c-sante:#199e70;
-  --c-paix:#d95926; --c-budget:#c98500;
+  --c-paix:#d95926; --c-budget:#c98500; --c-violet:#a385f0;
   --ok:#0ca30c; --alerte:#e66767;
   --ombre:0 1px 2px rgba(0,0,0,.4),0 4px 14px rgba(0,0,0,.3);
 }
@@ -356,29 +356,64 @@ table.bilan .num{text-align:right}
 .cadrage-retenir{margin:12px 0 0; padding-top:10px; border-top:1px solid var(--filet); font-size:.86rem; font-weight:600; color:var(--bleu-rf)}
 .cadrage-bloc .rep-liste{margin-top:10px}
 
-.rep-courbe{width:100%; height:150px; display:block; margin-top:6px; overflow:visible}
-.rep-courbe .axe{stroke:var(--filet-fort); stroke-width:1}
-.rep-courbe .aire{fill:var(--bleu-rf); opacity:.10}
-.rep-courbe .trait{fill:none; stroke:var(--bleu-rf); stroke-width:2.5; vector-effect:non-scaling-stroke}
-.rep-courbe .trait.projete{stroke-dasharray:5 4; opacity:.75}
-.rep-courbe .pt{fill:var(--bleu-rf)}
-.rep-courbe .pt.projete{fill:var(--fiche); stroke:var(--bleu-rf); stroke-width:1.5}
-.rep-courbe-lab{display:flex; justify-content:space-between; font-size:.62rem; color:var(--encre-3); font-variant-numeric:tabular-nums; margin-top:-14px}
-.rep-courbe-lab .constate{color:var(--encre-2); font-weight:600}
-.rep-courbe-bornes{margin:8px 0 2px; font-size:.86rem}
-.rep-courbe-bornes b{font-family:"IBM Plex Mono",monospace; color:var(--bleu-rf)}
-.rep-courbe-bornes span{color:var(--encre-3); margin:0 4px}
+/* graphiques de la note de cadrage */
+.accroche{display:flex; gap:16px; align-items:baseline; margin:6px 0 14px; flex-wrap:wrap}
+.accroche b{font-size:clamp(1.9rem,5vw,2.6rem); font-weight:700; color:var(--bleu-rf); line-height:1; font-variant-numeric:tabular-nums; flex-shrink:0}
+.accroche p{margin:0; font-family:"Newsreader",georgia,serif; font-size:1.04rem; line-height:1.5; flex:1; min-width:20ch; max-width:60ch}
+.accroche cite{display:block; font-style:normal; font-size:.7rem; color:var(--encre-3); margin-top:4px}
+.accroche cite a{color:inherit}
 
-.rep-pertes{display:flex; align-items:flex-start; gap:6px; margin:14px 0 4px; border-top:2px solid var(--filet-fort); padding-top:2px}
-.rep-pertes .col{flex:1; display:flex; flex-direction:column; align-items:center; gap:3px; min-width:0}
-.rep-pertes .an{font-size:.62rem; color:var(--encre-3); font-variant-numeric:tabular-nums}
-.rep-pertes .bar{width:100%; background:var(--filet-fort)}
-.rep-pertes .col.vous .bar{background:var(--bleu-rf)}
-.rep-pertes .nb{font-family:"IBM Plex Mono",monospace; font-size:.66rem; font-variant-numeric:tabular-nums; color:var(--encre-2)}
-.rep-pertes .col.vous .nb{color:var(--bleu-rf); font-weight:600}
-.rep-pertes-lgd{display:flex; align-items:center; gap:6px; font-size:.7rem; color:var(--encre-3); margin-top:8px; flex-wrap:wrap}
-.rep-pertes-lgd i{width:11px; height:11px; display:inline-block; flex-shrink:0}
-.rep-pertes-lgd i.vous{background:var(--bleu-rf)} .rep-pertes-lgd i.apres{background:var(--filet-fort); margin-left:10px}
+/* Histogramme : valeurs, tracé et années dans trois rangées de même gabarit,
+   pour que l'axe, les barres et les libellés ne puissent pas se décaler. */
+.rep-plot{position:relative; height:132px; padding-left:30px; margin:2px 0 0}
+.rep-plot .grad{position:absolute; left:30px; right:0; height:1px; background:var(--filet); z-index:0}
+.rep-plot .grad b{position:absolute; left:-30px; top:-7px; width:24px; text-align:right;
+  font-size:.64rem; font-weight:400; color:var(--encre-3); font-variant-numeric:tabular-nums; display:block}
+.rep-cols{position:absolute; inset:0 0 0 30px; display:flex; align-items:flex-end; gap:5px; z-index:1}
+.rep-cols .col{flex:1; display:flex; align-items:flex-end; min-width:0}
+.rep-cols .bar{width:100%; background:var(--bleu-rf)}
+.rep-cols .col.prev .bar{background:repeating-linear-gradient(45deg,var(--bleu-rf),var(--bleu-rf) 3px,transparent 3px,transparent 6px); border:1px solid var(--bleu-rf)}
+.rep-valeurs,.rep-annees{display:flex; gap:5px; padding-left:30px}
+.rep-valeurs span,.rep-annees span{flex:1; text-align:center; min-width:0; font-variant-numeric:tabular-nums}
+.rep-valeurs span{font-family:"IBM Plex Mono",monospace; font-size:.68rem; padding-bottom:3px}
+.rep-annees span{font-size:.62rem; color:var(--encre-3); padding-top:4px}
+
+@media (max-width:640px){
+  .rep-plot,.rep-valeurs,.rep-annees{padding-left:22px}
+  .rep-plot .grad{left:22px} .rep-plot .grad b{left:-22px; width:18px; font-size:.58rem}
+  .rep-cols{inset:0 0 0 22px; gap:3px}
+  .rep-valeurs,.rep-annees{gap:3px}
+  .rep-valeurs span{font-size:.58rem} .rep-annees span{font-size:.55rem}
+  .accroche b{font-size:2rem}
+}
+.rep-courbe{width:100%; height:auto; display:block; margin:10px 0 4px; overflow:visible}
+.rep-courbe .grille{stroke:var(--filet); stroke-width:1}
+.rep-courbe .tick{font-size:9px; fill:var(--encre-3); font-family:"IBM Plex Mono",monospace}
+.rep-courbe .an{font-size:9.5px; fill:var(--encre-3); font-family:"IBM Plex Mono",monospace}
+.rep-courbe .trait{fill:none; stroke-width:2.6; stroke-linejoin:round; stroke-linecap:round}
+.rep-courbe .trait.constate{stroke:var(--bleu-rf)}
+.rep-courbe .trait.projete{stroke:var(--c-violet); stroke-dasharray:6 4}
+.rep-courbe .trait.chute{stroke:var(--rouge-rf)}
+.rep-courbe .pt.constate{fill:var(--bleu-rf)}
+.rep-courbe .pt.projete{fill:var(--fiche); stroke:var(--c-violet); stroke-width:2}
+.rep-courbe .pt.chute{fill:var(--rouge-rf)}
+.rep-courbe .val{font-size:11px; font-weight:700; font-family:"IBM Plex Mono",monospace}
+.rep-courbe .val.constate{fill:var(--bleu-rf)}
+.rep-courbe .val.projete{fill:var(--c-violet)}
+.rep-courbe .val.chute{fill:var(--rouge-rf)}
+.rep-courbe .annot{font-size:11px; font-weight:700; fill:var(--rouge-rf)}
+
+.rep-lgd{display:flex; align-items:center; gap:6px; flex-wrap:wrap; font-size:.72rem; color:var(--encre-2); margin:2px 0 8px}
+.rep-lgd i{width:16px; height:3px; display:inline-block; flex-shrink:0; margin-left:8px}
+.rep-lgd i:first-child{margin-left:0}
+.rep-lgd i.c-bleu{background:var(--bleu-rf)}
+.rep-lgd i.c-bleu-bloc{height:11px; background:var(--bleu-rf)}
+.rep-lgd i.c-violet{background:var(--c-violet)}
+.rep-lgd i.c-rouge{background:var(--rouge-rf)}
+.rep-lgd i.c-hachure{height:11px; background:repeating-linear-gradient(45deg,var(--bleu-rf),var(--bleu-rf) 2px,transparent 2px,transparent 4px); border:1px solid var(--bleu-rf)}
+.rep-lgd .unite{margin-left:auto; color:var(--encre-3); font-style:italic}
+@media (max-width:640px){ .rep-lgd .unite{margin-left:0; width:100%} }
+
 .rep-comp{display:flex; flex-direction:column; gap:12px; margin:12px 0 4px}
 .comp-titre{font-size:.72rem; text-transform:uppercase; letter-spacing:.07em; color:var(--encre-2); font-weight:700; margin-bottom:5px; display:flex; gap:10px; align-items:baseline; flex-wrap:wrap}
 .comp-ligne{display:flex; align-items:center; gap:9px; margin-bottom:3px}
@@ -3327,7 +3362,9 @@ const REPERES = [
    points publiés : la rentrée 2026 et l'horizon 2035 (−1 676 800 élèves).
    ------------------------------------------------------------------------- */
 const SERIE_ELEVES = [
-  { annee: 2026, m: 11.61, constate: true },
+  { annee: 2024, m: 11.88, constate: true },
+  { annee: 2025, m: 11.77, constate: true },   /* rentrée 2025 : −106 000 élèves */
+  { annee: 2026, m: 11.61, constate: true },   /* rentrée 2026 : −161 000 élèves */
   { annee: 2027, m: 11.45 },
   { annee: 2028, m: 11.28 },
   { annee: 2029, m: 11.10 },
@@ -3335,6 +3372,23 @@ const SERIE_ELEVES = [
   { annee: 2031, m: 10.75 },
   { annee: 2033, m: 10.34 },
   { annee: 2035, m: 9.93 },   /* 11,61 − 1,6768 : cale la courbe sur le chiffre publié */
+];
+
+/* ---------------------------------------------------------------------------
+   PISA — MATHÉMATIQUES, ÉLÈVES DE 15 ANS, FRANCE
+   ---------------------------------------------------------------------------
+   L'échelle de mathématiques est ancrée sur 2003, année où la discipline était
+   le domaine majeur de l'enquête : la série commence donc là. La chute de 2022
+   est la plus forte mesurée en France depuis la création de PISA.
+   ------------------------------------------------------------------------- */
+const SERIE_PISA_MATHS = [
+  { annee: 2003, score: 511 },
+  { annee: 2006, score: 496 },
+  { annee: 2009, score: 497 },
+  { annee: 2012, score: 495 },
+  { annee: 2015, score: 493 },
+  { annee: 2018, score: 495 },
+  { annee: 2022, score: 474, chute: true },
 ];
 
 /* ---------------------------------------------------------------------------
@@ -3346,35 +3400,32 @@ const CADRAGE_INITIAL = [
   {
     cle: 'budget',
     titre: 'Un budget contraint',
-    phrase: 'Vous héritez du premier budget de l’État en effectifs. Il augmente — un peu — et il est presque entièrement pré-engagé.',
+    accroche: { v: '65,3 Md€', l: 'C’est le budget de l’Éducation nationale en 2027, hors pensions — le premier budget de l’État. Il augmente, un peu, et il est presque entièrement pré-engagé.', src: 'plafonds27' },
     graphique: 'budget',
     chiffres: [
-      { v: '65,3 Md€', l: 'le budget de la mission « Enseignement scolaire » en 2027, hors pensions', src: 'plafonds27' },
-      { v: '+0,8 Md€', l: 'ce qui est nouveau cette année, soit +1,2 % — et une bonne moitié est déjà engagée par votre prédécesseur', src: 'plafonds27' },
+      { v: '+0,8 Md€', l: 'ce qui est nouveau cette année, soit +1,2 %. Une bonne moitié est déjà engagée par votre prédécesseur', src: 'plafonds27' },
       { v: '93 %', l: 'de ce budget est de la masse salariale : ce que vous ne pouvez pas arbitrer dans l’année', src: 'cc_neb24' },
     ],
-    aRetenir: 'Tout votre mandat se joue dans le liseré qui reste.',
+    aRetenir: 'Tout votre mandat se joue dans le liséré qui reste.',
   },
   {
     cle: 'demographie',
     titre: 'Une baisse démographique',
-    phrase: 'Il y aura chaque année moins d’élèves. C’est la seule bonne nouvelle budgétaire de votre mandat, et le sujet le plus explosif de votre calendrier.',
+    accroche: { v: '−1 676 800', l: 'C’est le nombre d’élèves que le système éducatif aura perdus d’ici 2035, soit 14,2 % de sa population scolaire.', src: 'depp_proj35' },
     graphique: 'eleves',
     chiffres: [
-      { v: '−1 676 800', l: 'élèves de moins en 2035 qu’aujourd’hui, soit −14,2 % de la population scolaire', src: 'depp_proj35' },
-      { v: '≈ 6 600', l: 'postes que la démographie « libère » chaque rentrée. C’est vous qui décidez à qui ils vont', src: 'depp_proj35' },
-      { v: '4 % ou 60 %', l: 'les deux précédents récents de restitution à Bercy : rentrée 2025 puis rentrée 2026. Le même chiffre démographique, deux pays différents', src: 'senat_plf26' },
+      { v: '≈ 6 600', l: 'postes que la démographie « libère » chaque rentrée, à raison d’un poste pour vingt-quatre élèves. C’est vous qui décidez à qui ils vont', src: 'depp_proj35' },
+      { v: '4 % ou 60 %', l: 'les deux précédents récents de restitution à Bercy — rentrée 2025, puis rentrée 2026. Le même chiffre démographique, deux pays différents', src: 'senat_plf26' },
     ],
     aRetenir: 'Rendre ces postes ou les réinvestir : c’est l’arbitrage de janvier, chaque année.',
   },
   {
     cle: 'niveaux',
     titre: 'Des résultats préoccupants',
-    phrase: 'Trois évaluations, trois âges. Elles ne disent pas la même chose, et aucune ne mesurera ce que vous ferez.',
+    accroche: { v: '−21 points', l: 'C’est ce que les élèves français de 15 ans ont perdu en mathématiques entre 2018 et 2022. La plus forte baisse mesurée en France depuis la création de l’enquête PISA.', src: 'pisa22' },
     graphique: 'niveaux',
     chiffres: [
-      { v: '484 contre 524', l: 'score des CM1 français en mathématiques (TIMSS 2023) face à la moyenne de l’Union européenne. Stable depuis 2019, mais loin', src: 'timss23' },
-      { v: 'baisse « sans précédent »', l: 'le mot de l’OCDE pour la chute en mathématiques à 15 ans entre 2018 et 2022. La France reste dans la moyenne : tout le monde a baissé', src: 'pisa22' },
+      { v: '484 contre 524', l: 'le score des CM1 français en mathématiques face à la moyenne de l’Union européenne (TIMSS 2023). Stable depuis 2019, mais loin', src: 'timss23' },
       { v: '1 jeune sur 4', l: 'a des difficultés prononcées en lecture à 17-18 ans, aux tests de la Journée défense et citoyenneté', src: 'hcsp26' },
     ],
     aRetenir: 'Un élève de PISA 2027 est entré au CP en 2018 : vous répondrez de ce que vous n’avez pas fait.',
@@ -5658,86 +5709,111 @@ function citer(idSource) {
 }
 
 /* --- graphiques de la note de cadrage ---------------------------------------- */
-/* Règle : les barres partent TOUJOURS de zéro. Un axe tronqué transforme une
-   hausse de 1,2 % en mur, et ce jeu passe son temps à dire que les chiffres
-   affichés mentent — il ne va pas commencer par mentir lui-même. */
+/* Deux règles. Les BARRES partent toujours de zéro : un axe tronqué transforme
+   une hausse de 1,2 % en mur, et ce jeu passe son temps à dire que les chiffres
+   affichés mentent. Les COURBES, elles, ont le droit à une échelle resserrée —
+   c'est l'usage pour une série temporelle — à condition que l'axe soit gradué
+   et légendé, ce qu'il est ici. */
 const md1 = (x) => x.toLocaleString('fr-FR', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
 
 function serieBudget() {
-  const max = Math.max(...SERIE_BUDGET.map((b) => b.md));
-  const g = el('div', '');
-  g.innerHTML = `<div class="rep-serie" role="img" aria-label="Budget de la mission Enseignement scolaire, de 52,3 milliards d’euros en 2019 à 65,3 milliards en 2027">`
-    + SERIE_BUDGET.map((b) => {
-        const h = Math.round((b.md / max) * 118);      // proportionnel, base zéro
-        return `<div class="col${b.prevision ? ' prev' : ''}"><span class="md">${md1(b.md)}</span>`
-             + `<i class="bar" style="height:${h}px"></i><span class="an">${b.annee}</span></div>`;
-      }).join('')
-    + `</div>`
-    + `<p class="rep-serie-note">Mission « Enseignement scolaire », milliards d’euros courants, hors pensions. <b>Barres à base zéro</b> : la hausse est réelle mais modeste — +25 % en huit ans d’euros courants, à peu près l’inflation. La colonne hachurée est le plafond prévisionnel de 2027.</p>`;
-  return g;
-}
-
-/* Effectifs d'élèves. On ne représente PAS le niveau : à échelle honnête, une
-   courbe de 11,6 à 10,1 millions paraît plate et cache le phénomène. Le sujet
-   n'est pas le nombre d'élèves, c'est le nombre d'élèves PERDUS — donc des
-   barres cumulées qui descendent depuis zéro. Même honnêteté d'échelle, sujet
-   correctement cadré. */
-function serieEleves() {
-  const base = SERIE_ELEVES[0];
-  const pertes = SERIE_ELEVES.slice(1).map((p) => ({
-    annee: p.annee,
-    milliers: Math.round((base.m - p.m) * 1000),
-    arbitree: p.annee >= 2027 && p.annee <= 2031,     // les rentrées que le joueur décide
-  }));
-  const max = Math.max(...pertes.map((p) => p.milliers));
+  const max = 70, HP = 132;                        // graduation ronde, hauteur de tracé
+  const grads = [0, 20, 40, 60];
+  /* Valeurs et années sont dans leurs propres rangées, avec le même retrait à
+     gauche et la même gouttière que les barres : rien ne peut se chevaucher. */
   const g = el('div', '');
   g.innerHTML = `
-  <div class="rep-pertes" role="img" aria-label="Élèves perdus par rapport à la rentrée 2026 : 160 000 dès 2027, environ 1 680 000 en 2035">
-    ${pertes.map((p) => {
-      const h = Math.round((p.milliers / max) * 104) + 4;
-      return `<div class="col${p.arbitree ? ' vous' : ''}">`
-           + `<span class="an">${p.annee}</span>`
-           + `<i class="bar" style="height:${h}px"></i>`
-           + `<span class="nb">−${fmt0(p.milliers)}k</span></div>`;
-    }).join('')}
+  <div class="rep-valeurs">${SERIE_BUDGET.map((b) => `<span>${md1(b.md)}</span>`).join('')}</div>
+  <div class="rep-plot" role="img" aria-label="Budget de l’enseignement scolaire, de 52,3 milliards d’euros en 2019 à 65,3 milliards en 2027">
+    ${grads.map((v) => `<i class="grad" style="bottom:${((v / max) * HP).toFixed(1)}px"><b>${v}</b></i>`).join('')}
+    <div class="rep-cols">
+      ${SERIE_BUDGET.map((b) => `<div class="col${b.prevision ? ' prev' : ''}">`
+        + `<i class="bar" style="height:${((b.md / max) * HP).toFixed(1)}px"></i></div>`).join('')}
+    </div>
   </div>
-  <div class="rep-pertes-lgd"><i class="vous"></i>les cinq rentrées que vous arbitrez<i class="apres"></i>celles de vos successeurs</div>
-  <div class="rep-courbe-bornes"><b>11,6 M d’élèves</b> à la rentrée 2026 <span>→</span> <b>9,9 M</b> projetés en 2035, soit <b>−1,7 million</b></div>
-  <p class="rep-serie-note">Élèves perdus depuis la rentrée 2026, en milliers (DEPP, scénario de référence). À un poste pour vingt-quatre élèves, cela « libère » environ <b>70 000 postes</b> d’ici 2035 : la matière de tous vos arbitrages de janvier.</p>`;
+  <div class="rep-annees">${SERIE_BUDGET.map((b) => `<span>${b.annee}</span>`).join('')}</div>
+  <div class="rep-lgd"><i class="c-bleu-bloc"></i>budget voté<i class="c-hachure"></i>plafond prévisionnel 2027<span class="unite">en milliards d’euros courants</span></div>
+  <p class="rep-serie-note">Crédits de paiement de la mission « Enseignement scolaire », hors pensions. <b>L’échelle part de zéro</b> : la hausse est réelle mais modeste — +25 % en huit ans d’euros courants, soit à peu près l’inflation. 2021 n’est pas représentée, le périmètre de la mission ayant changé cette année-là.</p>`;
   return g;
 }
 
-/* Niveaux : trois comparaisons France / référence, barres appariées. */
-function serieNiveaux() {
+/* Effectifs d'élèves : la courbe demandée. Bleu plein = constaté, violet
+   pointillé = projection DEPP. Axe gradué, donc échelle resserrée assumée. */
+function serieEleves() {
+  const S = SERIE_ELEVES;
+  const W = 640, H = 168, PL = 30, PB = 24, PT = 10;
+  const yMin = 9.5, yMax = 12;
+  /* L'abscisse suit l'ANNÉE et non le rang : 2031 et 2033 sont séparés de deux
+     ans, les afficher à égale distance de 2030 et 2035 mentirait sur la pente. */
+  const a0 = S[0].annee, a1 = S[S.length - 1].annee;
+  const x = (an) => PL + ((an - a0) / (a1 - a0)) * (W - PL - 22);
+  const y = (m) => PT + (1 - (m - yMin) / (yMax - yMin)) * (H - PT - PB);
+  const iSplit = S.findIndex((p) => !p.constate) - 1;      // dernier point constaté
+  const pts = (arr) => arr.map((p) => `${x(p.annee).toFixed(1)},${y(p.m).toFixed(1)}`).join(' ');
+  const grads = [9.5, 10, 10.5, 11, 11.5, 12];
   const g = el('div', '');
-  g.innerHTML = `<div class="rep-comp">${COMPARAISONS_NIVEAUX.map((c) => {
-    const mx = 600, pf = (c.fr / mx) * 100, pr = (c.ref / mx) * 100;
-    const ecart = c.fr - c.ref;
-    const ligne = (cls, qui, val, pct) =>
-      `<div class="comp-ligne"><span class="qui">${esc(qui)}</span>`
-      + `<span class="piste"><i class="${cls}" style="width:${pct.toFixed(1)}%"></i></span><b>${val}</b></div>`;
-    return `<div class="comp">
-      <div class="comp-titre">${esc(c.libelle)} <span class="comp-ecart ${ecart >= 0 ? 'pos' : 'neg'}">${ecart >= 0 ? '+' : '−'}${Math.abs(ecart)} pts</span></div>
-      ${ligne('fr', 'France', c.fr, pf)}
-      ${ligne('ref', c.refNom, c.ref, pr)}
-    </div>`;
-  }).join('')}</div>
-  <p class="rep-serie-note">Scores moyens, échelles graduées autour de 500, barres à base zéro. Les écarts sont réels sans être des gouffres — et ils suffisent à séparer la France de ses voisins européens.</p>`;
+  g.innerHTML = `
+  <svg class="rep-courbe" viewBox="0 0 ${W} ${H}" role="img"
+       aria-label="Nombre d’élèves : 11,88 millions en 2024, 11,61 millions en 2026, 9,93 millions projetés en 2035">
+    ${grads.map((v) => `<line class="grille" x1="${PL}" y1="${y(v).toFixed(1)}" x2="${W - 10}" y2="${y(v).toFixed(1)}"/>
+      <text class="tick" x="${PL - 6}" y="${(y(v) + 3.5).toFixed(1)}" text-anchor="end">${md1(v)}</text>`).join('')}
+    <polyline class="trait constate" points="${pts(S.slice(0, iSplit + 1))}"/>
+    <polyline class="trait projete" points="${pts(S.slice(iSplit))}"/>
+    ${S.map((p) => `<circle cx="${x(p.annee).toFixed(1)}" cy="${y(p.m).toFixed(1)}" r="3.4" class="pt ${p.constate ? 'constate' : 'projete'}"/>`).join('')}
+    ${S.map((p, i) => (i === 0 || i === S.length - 1 || p.annee === 2026)
+      ? `<text class="val ${p.constate ? 'constate' : 'projete'}" x="${x(p.annee).toFixed(1)}" y="${(y(p.m) - 10).toFixed(1)}" text-anchor="${i === 0 ? 'start' : i === S.length - 1 ? 'end' : 'middle'}">${md1(p.m)} M</text>` : '').join('')}
+    ${S.map((p, i) => (i % 2 === 0 || i === S.length - 1)
+      ? `<text class="an" x="${x(p.annee).toFixed(1)}" y="${H - 7}" text-anchor="middle">${p.annee}</text>` : '').join('')}
+  </svg>
+  <div class="rep-lgd"><i class="c-bleu"></i>effectifs constatés<i class="c-violet"></i>projection DEPP, scénario de référence<span class="unite">en millions d’élèves</span></div>
+  <p class="rep-serie-note">Premier et second degrés, public et privé sous contrat. L’axe vertical est gradué de 9,5 à 12 millions : il ne part pas de zéro, ce qui est l’usage pour une série temporelle et rend la pente lisible. La chute est continue, elle a déjà commencé, et elle touchera bientôt le collège puis le lycée.</p>`;
   return g;
 }
 
-/* --- juin 2027 : la note de cadrage, en trois pages courtes ------------------- */
+/* Niveaux : l'évolution, parce que l'information qui manquait était la période. */
+function serieNiveaux() {
+  const S = SERIE_PISA_MATHS;
+  const W = 640, H = 168, PL = 30, PB = 24, PT = 16;
+  const yMin = 465, yMax = 520;
+  const a0 = S[0].annee, a1 = S[S.length - 1].annee;
+  const x = (an) => PL + ((an - a0) / (a1 - a0)) * (W - PL - 18);
+  const y = (v) => PT + (1 - (v - yMin) / (yMax - yMin)) * (H - PT - PB);
+  const grads = [470, 480, 490, 500, 510];
+  const iC = S.length - 2;                                 // début du segment de chute
+  const g = el('div', '');
+  g.innerHTML = `
+  <svg class="rep-courbe" viewBox="0 0 ${W} ${H}" role="img"
+       aria-label="Score des élèves français de 15 ans en mathématiques à PISA : 511 en 2003, 495 en 2018, 474 en 2022">
+    ${grads.map((v) => `<line class="grille" x1="${PL}" y1="${y(v).toFixed(1)}" x2="${W - 18}" y2="${y(v).toFixed(1)}"/>
+      <text class="tick" x="${PL - 6}" y="${(y(v) + 3.5).toFixed(1)}" text-anchor="end">${v}</text>`).join('')}
+    <polyline class="trait constate" points="${S.slice(0, iC + 1).map((p) => `${x(p.annee).toFixed(1)},${y(p.score).toFixed(1)}`).join(' ')}"/>
+    <polyline class="trait chute" points="${S.slice(iC).map((p) => `${x(p.annee).toFixed(1)},${y(p.score).toFixed(1)}`).join(' ')}"/>
+    ${S.map((p) => `<circle cx="${x(p.annee).toFixed(1)}" cy="${y(p.score).toFixed(1)}" r="3.4" class="pt ${p.chute ? 'chute' : 'constate'}"/>`).join('')}
+    <text class="val constate" x="${x(S[0].annee).toFixed(1)}" y="${(y(S[0].score) - 10).toFixed(1)}" text-anchor="start">${S[0].score}</text>
+    <text class="val constate" x="${x(S[iC].annee).toFixed(1)}" y="${(y(S[iC].score) - 10).toFixed(1)}" text-anchor="middle">${S[iC].score}</text>
+    <text class="val chute" x="${x(S[S.length - 1].annee).toFixed(1)}" y="${(y(S[S.length - 1].score) + 17).toFixed(1)}" text-anchor="end">${S[S.length - 1].score}</text>
+    <text class="annot" x="${((x(S[iC].annee) + x(S[S.length - 1].annee)) / 2).toFixed(1)}" y="${PT - 4}" text-anchor="middle">−21 points en quatre ans</text>
+    ${S.map((p) => `<text class="an" x="${x(p.annee).toFixed(1)}" y="${H - 7}" text-anchor="middle">${p.annee}</text>`).join('')}
+  </svg>
+  <div class="rep-lgd"><i class="c-bleu"></i>score de la France<i class="c-rouge"></i>la chute de 2022<span class="unite">mathématiques, élèves de 15 ans</span></div>
+  <p class="rep-serie-note">Échelle PISA ancrée sur 2003, année où les mathématiques étaient le domaine majeur de l’enquête. Le score était stable de 2012 à 2018 ; la baisse de 2022 est commune à la plupart des pays de l’OCDE, et la France reste dans la moyenne. Pour la première fois depuis 2003, la part des élèves les plus performants recule aussi : de 13 % à 7 %.</p>`;
+  return g;
+}
+
+/* --- juin 2027 : la note de cadrage, trois pages courtes ---------------------- */
 function ecranReperes() {
   const d = el('article', 'doc large');
   d.appendChild(el('div', 'entete-doc', `<span class="type">Note de cadrage — direction générale de l’enseignement scolaire (DGESCO)</span><span class="date">${ETAT.dateLabel}</span>`));
   d.appendChild(el('h2', '', 'Trois choses à savoir avant votre première décision'));
-  d.appendChild(el('p', 'chapo', 'La note que la DGESCO remet à tout nouveau ministre le jour de sa prise de fonction. Aucune recommandation : trois constats, trois chiffres chacun, et leurs sources. Le détail complet est à tout moment dans « Comprendre le jeu », en bas à gauche de l’écran.'));
+  d.appendChild(el('p', 'chapo', 'La note que la DGESCO remet à tout nouveau ministre le jour de sa prise de fonction. Un chiffre par page, le graphique qui va avec, et deux précisions. Le détail complet est à tout moment dans « Comprendre le jeu », en bas à gauche de l’écran.'));
 
   const GRAPH = { budget: serieBudget, eleves: serieEleves, niveaux: serieNiveaux };
   for (const b of CADRAGE_INITIAL) {
     const bloc = el('section', 'cadrage-bloc');
     bloc.appendChild(el('h3', '', esc(b.titre)));
-    bloc.appendChild(el('p', 'cadrage-phrase', fr(b.phrase)));
+    const a = el('div', 'accroche');
+    a.innerHTML = `<b>${fr(b.accroche.v)}</b><p>${fr(b.accroche.l)}${citer(b.accroche.src)}</p>`;
+    bloc.appendChild(a);
     if (GRAPH[b.graphique]) bloc.appendChild(GRAPH[b.graphique]());
     bloc.appendChild(el('ul', 'rep-liste', b.chiffres.map((x) =>
       `<li><span class="v">${fr(x.v)}</span><span class="l">${fr(x.l)}.${citer(x.src)}</span></li>`).join('')));

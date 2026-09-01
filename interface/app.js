@@ -1028,86 +1028,111 @@ function citer(idSource) {
 }
 
 /* --- graphiques de la note de cadrage ---------------------------------------- */
-/* Règle : les barres partent TOUJOURS de zéro. Un axe tronqué transforme une
-   hausse de 1,2 % en mur, et ce jeu passe son temps à dire que les chiffres
-   affichés mentent — il ne va pas commencer par mentir lui-même. */
+/* Deux règles. Les BARRES partent toujours de zéro : un axe tronqué transforme
+   une hausse de 1,2 % en mur, et ce jeu passe son temps à dire que les chiffres
+   affichés mentent. Les COURBES, elles, ont le droit à une échelle resserrée —
+   c'est l'usage pour une série temporelle — à condition que l'axe soit gradué
+   et légendé, ce qu'il est ici. */
 const md1 = (x) => x.toLocaleString('fr-FR', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
 
 function serieBudget() {
-  const max = Math.max(...SERIE_BUDGET.map((b) => b.md));
-  const g = el('div', '');
-  g.innerHTML = `<div class="rep-serie" role="img" aria-label="Budget de la mission Enseignement scolaire, de 52,3 milliards d’euros en 2019 à 65,3 milliards en 2027">`
-    + SERIE_BUDGET.map((b) => {
-        const h = Math.round((b.md / max) * 118);      // proportionnel, base zéro
-        return `<div class="col${b.prevision ? ' prev' : ''}"><span class="md">${md1(b.md)}</span>`
-             + `<i class="bar" style="height:${h}px"></i><span class="an">${b.annee}</span></div>`;
-      }).join('')
-    + `</div>`
-    + `<p class="rep-serie-note">Mission « Enseignement scolaire », milliards d’euros courants, hors pensions. <b>Barres à base zéro</b> : la hausse est réelle mais modeste — +25 % en huit ans d’euros courants, à peu près l’inflation. La colonne hachurée est le plafond prévisionnel de 2027.</p>`;
-  return g;
-}
-
-/* Effectifs d'élèves. On ne représente PAS le niveau : à échelle honnête, une
-   courbe de 11,6 à 10,1 millions paraît plate et cache le phénomène. Le sujet
-   n'est pas le nombre d'élèves, c'est le nombre d'élèves PERDUS — donc des
-   barres cumulées qui descendent depuis zéro. Même honnêteté d'échelle, sujet
-   correctement cadré. */
-function serieEleves() {
-  const base = SERIE_ELEVES[0];
-  const pertes = SERIE_ELEVES.slice(1).map((p) => ({
-    annee: p.annee,
-    milliers: Math.round((base.m - p.m) * 1000),
-    arbitree: p.annee >= 2027 && p.annee <= 2031,     // les rentrées que le joueur décide
-  }));
-  const max = Math.max(...pertes.map((p) => p.milliers));
+  const max = 70, HP = 132;                        // graduation ronde, hauteur de tracé
+  const grads = [0, 20, 40, 60];
+  /* Valeurs et années sont dans leurs propres rangées, avec le même retrait à
+     gauche et la même gouttière que les barres : rien ne peut se chevaucher. */
   const g = el('div', '');
   g.innerHTML = `
-  <div class="rep-pertes" role="img" aria-label="Élèves perdus par rapport à la rentrée 2026 : 160 000 dès 2027, environ 1 680 000 en 2035">
-    ${pertes.map((p) => {
-      const h = Math.round((p.milliers / max) * 104) + 4;
-      return `<div class="col${p.arbitree ? ' vous' : ''}">`
-           + `<span class="an">${p.annee}</span>`
-           + `<i class="bar" style="height:${h}px"></i>`
-           + `<span class="nb">−${fmt0(p.milliers)}k</span></div>`;
-    }).join('')}
+  <div class="rep-valeurs">${SERIE_BUDGET.map((b) => `<span>${md1(b.md)}</span>`).join('')}</div>
+  <div class="rep-plot" role="img" aria-label="Budget de l’enseignement scolaire, de 52,3 milliards d’euros en 2019 à 65,3 milliards en 2027">
+    ${grads.map((v) => `<i class="grad" style="bottom:${((v / max) * HP).toFixed(1)}px"><b>${v}</b></i>`).join('')}
+    <div class="rep-cols">
+      ${SERIE_BUDGET.map((b) => `<div class="col${b.prevision ? ' prev' : ''}">`
+        + `<i class="bar" style="height:${((b.md / max) * HP).toFixed(1)}px"></i></div>`).join('')}
+    </div>
   </div>
-  <div class="rep-pertes-lgd"><i class="vous"></i>les cinq rentrées que vous arbitrez<i class="apres"></i>celles de vos successeurs</div>
-  <div class="rep-courbe-bornes"><b>11,6 M d’élèves</b> à la rentrée 2026 <span>→</span> <b>9,9 M</b> projetés en 2035, soit <b>−1,7 million</b></div>
-  <p class="rep-serie-note">Élèves perdus depuis la rentrée 2026, en milliers (DEPP, scénario de référence). À un poste pour vingt-quatre élèves, cela « libère » environ <b>70 000 postes</b> d’ici 2035 : la matière de tous vos arbitrages de janvier.</p>`;
+  <div class="rep-annees">${SERIE_BUDGET.map((b) => `<span>${b.annee}</span>`).join('')}</div>
+  <div class="rep-lgd"><i class="c-bleu-bloc"></i>budget voté<i class="c-hachure"></i>plafond prévisionnel 2027<span class="unite">en milliards d’euros courants</span></div>
+  <p class="rep-serie-note">Crédits de paiement de la mission « Enseignement scolaire », hors pensions. <b>L’échelle part de zéro</b> : la hausse est réelle mais modeste — +25 % en huit ans d’euros courants, soit à peu près l’inflation. 2021 n’est pas représentée, le périmètre de la mission ayant changé cette année-là.</p>`;
   return g;
 }
 
-/* Niveaux : trois comparaisons France / référence, barres appariées. */
-function serieNiveaux() {
+/* Effectifs d'élèves : la courbe demandée. Bleu plein = constaté, violet
+   pointillé = projection DEPP. Axe gradué, donc échelle resserrée assumée. */
+function serieEleves() {
+  const S = SERIE_ELEVES;
+  const W = 640, H = 168, PL = 30, PB = 24, PT = 10;
+  const yMin = 9.5, yMax = 12;
+  /* L'abscisse suit l'ANNÉE et non le rang : 2031 et 2033 sont séparés de deux
+     ans, les afficher à égale distance de 2030 et 2035 mentirait sur la pente. */
+  const a0 = S[0].annee, a1 = S[S.length - 1].annee;
+  const x = (an) => PL + ((an - a0) / (a1 - a0)) * (W - PL - 22);
+  const y = (m) => PT + (1 - (m - yMin) / (yMax - yMin)) * (H - PT - PB);
+  const iSplit = S.findIndex((p) => !p.constate) - 1;      // dernier point constaté
+  const pts = (arr) => arr.map((p) => `${x(p.annee).toFixed(1)},${y(p.m).toFixed(1)}`).join(' ');
+  const grads = [9.5, 10, 10.5, 11, 11.5, 12];
   const g = el('div', '');
-  g.innerHTML = `<div class="rep-comp">${COMPARAISONS_NIVEAUX.map((c) => {
-    const mx = 600, pf = (c.fr / mx) * 100, pr = (c.ref / mx) * 100;
-    const ecart = c.fr - c.ref;
-    const ligne = (cls, qui, val, pct) =>
-      `<div class="comp-ligne"><span class="qui">${esc(qui)}</span>`
-      + `<span class="piste"><i class="${cls}" style="width:${pct.toFixed(1)}%"></i></span><b>${val}</b></div>`;
-    return `<div class="comp">
-      <div class="comp-titre">${esc(c.libelle)} <span class="comp-ecart ${ecart >= 0 ? 'pos' : 'neg'}">${ecart >= 0 ? '+' : '−'}${Math.abs(ecart)} pts</span></div>
-      ${ligne('fr', 'France', c.fr, pf)}
-      ${ligne('ref', c.refNom, c.ref, pr)}
-    </div>`;
-  }).join('')}</div>
-  <p class="rep-serie-note">Scores moyens, échelles graduées autour de 500, barres à base zéro. Les écarts sont réels sans être des gouffres — et ils suffisent à séparer la France de ses voisins européens.</p>`;
+  g.innerHTML = `
+  <svg class="rep-courbe" viewBox="0 0 ${W} ${H}" role="img"
+       aria-label="Nombre d’élèves : 11,88 millions en 2024, 11,61 millions en 2026, 9,93 millions projetés en 2035">
+    ${grads.map((v) => `<line class="grille" x1="${PL}" y1="${y(v).toFixed(1)}" x2="${W - 10}" y2="${y(v).toFixed(1)}"/>
+      <text class="tick" x="${PL - 6}" y="${(y(v) + 3.5).toFixed(1)}" text-anchor="end">${md1(v)}</text>`).join('')}
+    <polyline class="trait constate" points="${pts(S.slice(0, iSplit + 1))}"/>
+    <polyline class="trait projete" points="${pts(S.slice(iSplit))}"/>
+    ${S.map((p) => `<circle cx="${x(p.annee).toFixed(1)}" cy="${y(p.m).toFixed(1)}" r="3.4" class="pt ${p.constate ? 'constate' : 'projete'}"/>`).join('')}
+    ${S.map((p, i) => (i === 0 || i === S.length - 1 || p.annee === 2026)
+      ? `<text class="val ${p.constate ? 'constate' : 'projete'}" x="${x(p.annee).toFixed(1)}" y="${(y(p.m) - 10).toFixed(1)}" text-anchor="${i === 0 ? 'start' : i === S.length - 1 ? 'end' : 'middle'}">${md1(p.m)} M</text>` : '').join('')}
+    ${S.map((p, i) => (i % 2 === 0 || i === S.length - 1)
+      ? `<text class="an" x="${x(p.annee).toFixed(1)}" y="${H - 7}" text-anchor="middle">${p.annee}</text>` : '').join('')}
+  </svg>
+  <div class="rep-lgd"><i class="c-bleu"></i>effectifs constatés<i class="c-violet"></i>projection DEPP, scénario de référence<span class="unite">en millions d’élèves</span></div>
+  <p class="rep-serie-note">Premier et second degrés, public et privé sous contrat. L’axe vertical est gradué de 9,5 à 12 millions : il ne part pas de zéro, ce qui est l’usage pour une série temporelle et rend la pente lisible. La chute est continue, elle a déjà commencé, et elle touchera bientôt le collège puis le lycée.</p>`;
   return g;
 }
 
-/* --- juin 2027 : la note de cadrage, en trois pages courtes ------------------- */
+/* Niveaux : l'évolution, parce que l'information qui manquait était la période. */
+function serieNiveaux() {
+  const S = SERIE_PISA_MATHS;
+  const W = 640, H = 168, PL = 30, PB = 24, PT = 16;
+  const yMin = 465, yMax = 520;
+  const a0 = S[0].annee, a1 = S[S.length - 1].annee;
+  const x = (an) => PL + ((an - a0) / (a1 - a0)) * (W - PL - 18);
+  const y = (v) => PT + (1 - (v - yMin) / (yMax - yMin)) * (H - PT - PB);
+  const grads = [470, 480, 490, 500, 510];
+  const iC = S.length - 2;                                 // début du segment de chute
+  const g = el('div', '');
+  g.innerHTML = `
+  <svg class="rep-courbe" viewBox="0 0 ${W} ${H}" role="img"
+       aria-label="Score des élèves français de 15 ans en mathématiques à PISA : 511 en 2003, 495 en 2018, 474 en 2022">
+    ${grads.map((v) => `<line class="grille" x1="${PL}" y1="${y(v).toFixed(1)}" x2="${W - 18}" y2="${y(v).toFixed(1)}"/>
+      <text class="tick" x="${PL - 6}" y="${(y(v) + 3.5).toFixed(1)}" text-anchor="end">${v}</text>`).join('')}
+    <polyline class="trait constate" points="${S.slice(0, iC + 1).map((p) => `${x(p.annee).toFixed(1)},${y(p.score).toFixed(1)}`).join(' ')}"/>
+    <polyline class="trait chute" points="${S.slice(iC).map((p) => `${x(p.annee).toFixed(1)},${y(p.score).toFixed(1)}`).join(' ')}"/>
+    ${S.map((p) => `<circle cx="${x(p.annee).toFixed(1)}" cy="${y(p.score).toFixed(1)}" r="3.4" class="pt ${p.chute ? 'chute' : 'constate'}"/>`).join('')}
+    <text class="val constate" x="${x(S[0].annee).toFixed(1)}" y="${(y(S[0].score) - 10).toFixed(1)}" text-anchor="start">${S[0].score}</text>
+    <text class="val constate" x="${x(S[iC].annee).toFixed(1)}" y="${(y(S[iC].score) - 10).toFixed(1)}" text-anchor="middle">${S[iC].score}</text>
+    <text class="val chute" x="${x(S[S.length - 1].annee).toFixed(1)}" y="${(y(S[S.length - 1].score) + 17).toFixed(1)}" text-anchor="end">${S[S.length - 1].score}</text>
+    <text class="annot" x="${((x(S[iC].annee) + x(S[S.length - 1].annee)) / 2).toFixed(1)}" y="${PT - 4}" text-anchor="middle">−21 points en quatre ans</text>
+    ${S.map((p) => `<text class="an" x="${x(p.annee).toFixed(1)}" y="${H - 7}" text-anchor="middle">${p.annee}</text>`).join('')}
+  </svg>
+  <div class="rep-lgd"><i class="c-bleu"></i>score de la France<i class="c-rouge"></i>la chute de 2022<span class="unite">mathématiques, élèves de 15 ans</span></div>
+  <p class="rep-serie-note">Échelle PISA ancrée sur 2003, année où les mathématiques étaient le domaine majeur de l’enquête. Le score était stable de 2012 à 2018 ; la baisse de 2022 est commune à la plupart des pays de l’OCDE, et la France reste dans la moyenne. Pour la première fois depuis 2003, la part des élèves les plus performants recule aussi : de 13 % à 7 %.</p>`;
+  return g;
+}
+
+/* --- juin 2027 : la note de cadrage, trois pages courtes ---------------------- */
 function ecranReperes() {
   const d = el('article', 'doc large');
   d.appendChild(el('div', 'entete-doc', `<span class="type">Note de cadrage — direction générale de l’enseignement scolaire (DGESCO)</span><span class="date">${ETAT.dateLabel}</span>`));
   d.appendChild(el('h2', '', 'Trois choses à savoir avant votre première décision'));
-  d.appendChild(el('p', 'chapo', 'La note que la DGESCO remet à tout nouveau ministre le jour de sa prise de fonction. Aucune recommandation : trois constats, trois chiffres chacun, et leurs sources. Le détail complet est à tout moment dans « Comprendre le jeu », en bas à gauche de l’écran.'));
+  d.appendChild(el('p', 'chapo', 'La note que la DGESCO remet à tout nouveau ministre le jour de sa prise de fonction. Un chiffre par page, le graphique qui va avec, et deux précisions. Le détail complet est à tout moment dans « Comprendre le jeu », en bas à gauche de l’écran.'));
 
   const GRAPH = { budget: serieBudget, eleves: serieEleves, niveaux: serieNiveaux };
   for (const b of CADRAGE_INITIAL) {
     const bloc = el('section', 'cadrage-bloc');
     bloc.appendChild(el('h3', '', esc(b.titre)));
-    bloc.appendChild(el('p', 'cadrage-phrase', fr(b.phrase)));
+    const a = el('div', 'accroche');
+    a.innerHTML = `<b>${fr(b.accroche.v)}</b><p>${fr(b.accroche.l)}${citer(b.accroche.src)}</p>`;
+    bloc.appendChild(a);
     if (GRAPH[b.graphique]) bloc.appendChild(GRAPH[b.graphique]());
     bloc.appendChild(el('ul', 'rep-liste', b.chiffres.map((x) =>
       `<li><span class="v">${fr(x.v)}</span><span class="l">${fr(x.l)}.${citer(x.src)}</span></li>`).join('')));

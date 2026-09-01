@@ -743,6 +743,60 @@ de retrait), le **dérapage verbal** comme registre de sortie médiatique, et la
 les **effets de bord** révélés à N+2. Chacune change le rythme du jeu, pas
 seulement ses données.
 
+## 3 undecies. La note de cadrage, deuxième passe
+
+Trois reproches de test, tous fondés, et une règle qui en sort.
+
+**La règle : un chiffre, un graphique, deux précisions.** Chaque page s'ouvre
+désormais sur une accroche unique — le nombre en grand, une phrase — puis le
+graphique, puis deux lignes de détail au maximum. La version précédente en
+alignait trois à sept, ce qui noyait ce qu'il fallait retenir.
+
+| Page | Le chiffre d'accroche |
+|---|---|
+| Un budget contraint | **65,3 Md€** — le budget de l'Éducation nationale en 2027 |
+| Une baisse démographique | **−1 676 800** — les élèves perdus d'ici 2035 |
+| Des résultats préoccupants | **−21 points** — ce que les élèves de 15 ans ont perdu en mathématiques entre 2018 et 2022 |
+
+**Le diagramme des pertes cumulées était illisible.** Il répondait bien à la
+question « combien d'élèves perdus », mal à la question « que se passe-t-il ».
+Remplacé par la courbe demandée : **bleu plein pour les effectifs constatés
+(2024-2026), violet pointillé pour la projection DEPP (2027-2035)**, axe
+vertical gradué de 9,5 à 12 millions. Une courbe temporelle a le droit à une
+échelle resserrée — c'est l'usage — à condition que l'axe soit gradué et que
+la note le dise, ce qu'elle fait.
+
+Trois points constatés ont dû être reconstitués pour que le trait bleu existe :
+la rentrée 2026 (11,61 M, constante du jeu), la rentrée 2025 (11,77 M, en
+ajoutant les 106 000 élèves perdus en 2026) et la rentrée 2024 (11,88 M, de
+même). Les deux variations sont celles que le jeu utilise déjà comme précédents
+de carte scolaire.
+
+**Les évaluations ne disaient pas sur quelle période.** C'était le défaut le
+plus sérieux : les barres France / moyenne européenne donnaient un écart sans
+jamais dire de quand il datait ni comment il avait évolué. Remplacées par la
+**série PISA mathématiques 2003-2022** : le plateau bleu de 2012 à 2018, puis
+le segment rouge de la chute, annoté « −21 points en quatre ans ».
+
+| Année | 2003 | 2006 | 2009 | 2012 | 2015 | 2018 | 2022 |
+|---|---|---|---|---|---|---|---|
+| France, mathématiques | 511 | 496 | 497 | 495 | 493 | 495 | **474** |
+
+L'échelle est ancrée sur 2003, année où les mathématiques étaient le domaine
+majeur de l'enquête : la série ne peut pas commencer avant.
+
+**Deux défauts de tracé corrigés au passage.** L'abscisse des courbes suivait
+le RANG des points et non l'ANNÉE : 2031, 2033 et 2035 apparaissaient à égale
+distance, ce qui aplatissait la fin de la projection. Elle suit désormais
+l'année. Et l'histogramme budgétaire avait son axe vertical dans une colonne
+séparée, calée à l'estime : valeurs, tracé et années sont maintenant trois
+rangées de même gabarit, la graduation partageant exactement la base des barres.
+
+**Règle d'échelle, énoncée une fois pour toutes.** Les *barres* partent
+toujours de zéro — un axe tronqué transforme une hausse de 1,2 % en mur. Les
+*courbes* ont droit à une échelle resserrée, à condition d'être graduées et
+légendées. Les deux notes de bas de graphique le disent au joueur.
+
 ## 4. Les constantes du moteur
 
 Inchangées depuis la phase 1 (voir `moteur/constantes.js`, tout est commenté
