@@ -78,7 +78,7 @@ A(
   new Paragraph({ children: [T('Devenir ministre de l’Éducation nationale', { size: 30, color: '565B6B' })], alignment: AlignmentType.CENTER, spacing: { after: 480 } }),
   new Paragraph({ children: [T('Déroulé du jeu et grandes étapes', { bold: true, size: 28 })], alignment: AlignmentType.CENTER, spacing: { after: 100 } }),
   new Paragraph({ children: [T('Document de travail destiné à la relecture et aux corrections', { size: 22, italics: true, color: '565B6B' })], alignment: AlignmentType.CENTER, spacing: { after: 1000 } }),
-  new Paragraph({ children: [T('Version du 31 août 2026 — intègre le rapport HCSP « Niveau scolaire »', { size: 20, color: '8A8FA3' })], alignment: AlignmentType.CENTER }),
+  new Paragraph({ children: [T('Version du 1er septembre 2026', { size: 20, color: '8A8FA3' })], alignment: AlignmentType.CENTER }),
   new Paragraph({ children: [T('Jeu en ligne : https://ronnaldooo.github.io/jeu/', { size: 20, color: '8A8FA3' })], alignment: AlignmentType.CENTER }),
   new Paragraph({ children: [T('Code et sources : https://github.com/ronnaldooo/jeu', { size: 20, color: '8A8FA3' })], alignment: AlignmentType.CENTER, spacing: { after: 600 } }),
   new Paragraph({ children: [new PageBreak()] }),
@@ -164,9 +164,9 @@ A(BODY('Premier acte du mandat : classer les cinq compteurs par ordre de priorit
 A(BODY([T('C’est le ressort principal du jeu : ', {}), T('le joueur est noté contre sa propre parole', { bold: true }), T('. Un ministre qui annonce la réduction des inégalités et qui passe cinq ans à tenir le budget aura un mauvais score, même si le budget est excellent. Les oppositions lui ressortent sa déclaration à chaque arbitrage contradictoire.')]));
 A(BODY('Chaque priorité est présentée avec les projets politiques réels qui la portent en 2027 — Attal, Philippe, Lisnard, le PS, Glucksmann, Mélenchon, le NFP, la FSU — de sorte que le joueur comprenne qu’aucune priorité n’est neutre. Le jeu cite, il ne juge pas.'));
 
-A(H3('Écran 3 · La note de cadrage (nouveau)'));
-A(BODY('Avant toute décision, la direction générale remet trois fiches : l’argent, les élèves qui manquent, ce que savent les élèves. Chaque chiffre porte sa source officielle, cliquable. Une série budgétaire 2019-2027 en graphique montre d’un coup d’œil que la progression du budget 2026 (+0,26 %) est la plus faible de la période, et que le PLF 2027 apporte +0,8 milliard.'));
-A(BODY('Aucune recommandation : l’état du système, et rien d’autre. Les six autres fiches sont accessibles à tout moment par l’onglet « Comprendre le jeu ».'));
+A(H3('Écran 3 · La note de cadrage'));
+A(BODY('La direction générale de l’enseignement scolaire remet trois pages courtes — un budget contraint, une baisse démographique, des résultats préoccupants — avec un graphique et trois chiffres chacune, pas davantage. Chaque chiffre porte sa source officielle, cliquable. Aucune recommandation : l’état du système, et rien d’autre. Les huit autres fiches sont accessibles à tout moment par l’onglet « Comprendre le jeu ».'));
+A(BODY([T('Deux règles de conception s’appliquent à ces graphiques. ', {}), T('Les barres partent toujours de zéro', { bold: true }), T(' : un axe tronqué transformait la hausse de 1,2 % du budget en mur, et un jeu bâti sur l’idée que les chiffres affichés mentent ne peut pas ouvrir sur un graphique trompeur. Et lorsque l’échelle honnête cache le phénomène — une courbe d’effectifs de 11,6 à 9,9 millions paraît plate — c’est le sujet du graphique qui change : la démographie est représentée non par le niveau mais par la perte cumulée, barres descendantes, avec les cinq rentrées que vous arbitrez distinguées de celles de vos successeurs.', {})]));
 
 A(H3('Écran 4 · Les premières annonces'));
 A(BODY('Un nouveau ministre n’attend pas le budget suivant : la loi de finances votée par son prédécesseur laisse une marge de redéploiement. Enveloppe : 550 millions d’euros, deux annonces au maximum, menu resserré à 5 ou 7 cartes.'));
@@ -180,7 +180,7 @@ A(PUCE('une page de manuel sortie de son contexte, polémique d’août ;'));
 A(PUCE('l’interview de rentrée, et le choix de sa petite phrase.'));
 A(BODY('Ces dossiers ne coûtent rien en budget et beaucoup en positionnement : ils fixent l’image du ministre avant qu’il ait rien fait.'));
 A(VIDE());
-A(ENCADRE('À relire', 'L’ouverture fait cinq écrans avant la première rentrée. Est-ce trop long ? La note de cadrage arrive-t-elle au bon moment — avant les premières annonces, ou faudrait-il la placer avant la feuille de route ?'));
+A(ENCADRE('À relire', 'L’ouverture fait six écrans avant la première rentrée. Est-ce encore le bon rythme ? Et l’avance de gestion : les trois options vous paraissent-elles bien dosées — 550, 950 ou 1 400 millions, contre 0, 45 ou 60 % de restitution promise ?'));
 
 A(H2('2.2 L’année type — cinq fois de suite'));
 A(BODY('À partir de septembre 2027, chaque année suit le même cycle. Les lignes marquées « DÉCISION » appellent un choix du joueur ; les autres sont des points d’étape où il lit ce qui s’est produit.'));
@@ -274,7 +274,7 @@ A(ENCADRE('À relire', 'Manque-t-il des mesures que vous attendriez dans un tel 
 A(H2('3.3 L’audience syndicale (octobre) — en deux temps'));
 A(BODY('Sept organisations, pondérées par les résultats réels des élections professionnelles de 2022, avec des profils de négociation distincts : rapport de force, réformiste, frontal, négociation, radical, corporatiste. Les noms sont des pseudonymes transparents ; les poids et les profils sont ceux des organisations réelles.'));
 A(BODY([T('Premier temps : la question.', { bold: true }), T(' Le ministre reçoit l’organisation majoritaire du moment sur un sujet — les postes, les salaires, le remplacement, les concours, une grève, sa doctrine. Trois réponses possibles : la fermeté, la méthode, la concession. Une matrice croise le type de réponse et le profil de l’organisation : la fermeté rassure l’opinion et coûte le corps ; la méthode paie en adhésion selon le profil ; la concession paie partout mais se paie à Bercy. Le verdict est affiché — bien accueillie, accueillie froidement, très mal reçue.')]));
-A(BODY([T('Second temps : la revendication.', { bold: true }), T(' L’organisation exige le retrait de la mesure qu’elle conteste le plus. Céder la retire vraiment du jeu : ses effets réels ne viendront jamais, et le compteur d’abandons monte — ce qui coûtera le bonus de constance au bilan. Maintenir face à un profil combatif, c’est provisionner une grève pour le printemps.')]));
+A(BODY([T('Second temps : la revendication.', { bold: true }), T(' L’organisation exige le retrait de la mesure qu’elle conteste le plus. Trois réponses sont possibles. ', {}), T('Céder', { bold: true }), T(' retire vraiment la mesure du jeu : ses effets réels ne viendront jamais, et le compteur d’abandons monte. ', {}), T('Maintenir', { bold: true }), T(' face à un profil combatif, c’est provisionner une grève pour le printemps. ', {}), T('Requalifier', { bold: true }), T(' — la renommer et la rendre facultative — ne coûte presque rien sur le moment : le conflit se dénoue, les crédits restent inscrits, l’annonce survit. C’est le geste politique le plus fréquent du système français, et le seul dont le prix n’apparaît qu’au bilan : la mesure requalifiée produit moins d’un cinquième de ce qu’elle promettait. Précédent : le « choc des savoirs » de décembre 2023, requalifié en « groupes de besoins », puis vidé de son obligation.', {})]));
 A(BODY('Les grèves sont chiffrées à partir d’un étalon historique — le 10 février 2011, 16,99 % d’enseignants grévistes — et affichées avec deux nombres : celui du ministère et celui de l’intersyndicale, environ 1,7 fois plus élevé.'));
 A(VIDE());
 A(ENCADRE('À relire', 'Les profils syndicaux et la matrice d’accueil des réponses sont des simplifications assumées. Sonnent-elles juste pour quelqu’un qui connaît ces organisations ? La satire des noms reste-t-elle acceptable et symétrique ?'));
@@ -315,7 +315,7 @@ A(new Paragraph({ children: [new PageBreak()] }));
 
 /* ============ 5. TRANSVERSAL ============ */
 A(H1('5. Ce qui tourne en arrière-plan'));
-A(BODY('Sept mécaniques fonctionnent en continu, sans écran dédié. Elles expliquent la plupart des surprises que rencontre un joueur.'));
+A(BODY('Huit mécaniques fonctionnent en continu, sans écran dédié. Elles expliquent la plupart des surprises que rencontre un joueur.'));
 A(tableau(
   ['Mécanique', 'Ce qu’elle fait'],
   [
@@ -325,6 +325,7 @@ A(tableau(
     ['La fatigue réformatrice', 'Sept ministres en trois ans avant vous. Elle monte à chaque réforme et à chaque abandon, redescend quand on n’annonce rien — mais un ministre qui n’annonce rien n’est pas un ministre qui dure.'],
     ['Le poids de l’héritage', 'Les deux premières années, 60 % du signal affiché vient de ce qu’on n’a pas fait. Le ministre est jugé sur le mandat de son prédécesseur.'],
     ['Le coût d’affichage du long terme', 'Une réforme dont l’effet arrive dans quatre ans ou plus consomme des moyens visibles pour un résultat invisible. C’est ce qui rend la politique de long terme électoralement irrationnelle.'],
+    ['La réversion', 'Une réforme non consolidée ne survit pas au ministre suivant : les effets encore en route à la fin du mandat n’arrivent qu’à 62 % dans la projection décennale. Une seule carte immunise — la loi de programmation — et elle ne produit rien de visible pendant le mandat. Précédent : la réforme du collège de 2015, abrogée par décret dès l’arrivée du successeur.'],
     ['La presse et le fil social', 'Unes de journal, comptes qui commentent selon l’état du système : un directeur d’école fatigué, un parent délégué sans remplaçant, un ancien ministre qui tweete avant le lever du soleil. C’est la respiration du jeu — et l’endroit où passe l’humour.'],
   ],
   [2600, 6760],
@@ -333,7 +334,7 @@ A(VIDE());
 A(ENCADRE('À relire', 'Ces mécaniques sont invisibles par construction. Le jeu les explique-t-il assez pour qu’on comprenne ce qui nous arrive, sans les expliciter au point de tuer l’effet de surprise ?'));
 
 A(H1('6. L’onglet « Comprendre le jeu »'));
-A(BODY('Un bouton fixe en bas à gauche de chaque écran ouvre dix fiches de référence, 74 chiffres, trente-deux sources officielles portant chacune l’organisme, la date et le lien du document.'));
+A(BODY('Un bouton fixe en bas à gauche de chaque écran ouvre onze fiches de référence, 80 chiffres, trente-quatre sources officielles portant chacune l’organisme, la date et le lien du document.'));
 A(tableau(
   ['Fiche', 'Ce qu’elle contient'],
   [
@@ -345,6 +346,7 @@ A(tableau(
     ['Les heures qui manquent', 'Remplacement, AESH, santé scolaire.'],
     ['Le temps et les classes', 'Heures d’enseignement, semaines, taille des classes, redoublement.'],
     ['Le climat scolaire', 'Harcèlement, pause numérique, temps d’écran.'],
+    ['Ce qui a marché ailleurs', 'Portugal, Pologne, Londres, Suède, Finlande : deux réussites, deux reculs, et aucun modèle transposable tel quel.'],
     ['Pourquoi le niveau baisse', 'Le diagnostic du Haut-commissariat à la Stratégie et au Plan (août 2026), y compris ce qu’il écarte : ni le volume horaire, sauf en sciences, ni les élèves allophones.'],
     ['Comment le jeu note les mesures', 'L’échelle des cadenas, l’écart vitrine/réel, le facteur d’implémentation.'],
   ],
@@ -374,7 +376,8 @@ A(tableau(
     ['La voie de l’égalité', 'C’est le compteur le plus difficile à faire monter, et c’est une thèse assumée du jeu. Si elle est vécue comme une impasse plutôt que comme une difficulté, il faut la rendre un peu plus accessible.'],
     ['La densité de texte', 'Chaque carte porte beaucoup d’information. Un joueur pressé lit la tête de carte et ignore le reste ; un joueur curieux lit tout. Le pli est fait pour ça, mais l’équilibre est fragile.'],
     ['L’humour', 'La satire est symétrique par construction — tout le monde y passe, personne n’est nommé. Reste à vérifier qu’elle est perçue comme telle par des personnels du système, qui sont le public visé.'],
-    ['Le catalogue à 65 cartes', 'Le catalogue a doublé depuis la première version. Chaque carte est proposée au moins une fois sur l’ensemble des stratégies testées, mais un joueur donné n’en verra qu’une partie. Est-ce une bonne chose — de la rejouabilité — ou de la frustration ?'],
+    ['Le catalogue à 67 cartes', 'Le catalogue a doublé depuis la première version. Chaque carte est proposée au moins une fois sur l’ensemble des stratégies testées, mais un joueur donné n’en verra qu’une partie. Est-ce une bonne chose — de la rejouabilité — ou de la frustration ?'],
+    ['Ce qui n’est pas encore intégré', 'Trois mécaniques restent en attente de votre arbitrage, parce qu’elles ajoutent un système d’événements et non seulement des données : les effets de bord d’une réforme, tirés au sort et révélés deux ans plus tard ; le choc exogène majeur (pandémie, cyberattaque) tiré une fois par partie ; et l’archétype de l’affaire, l’événement où aucune option n’est bonne.'],
     ['Les sources bloquées', 'Le réseau de mon environnement de travail bloque education.gouv.fr, senat.fr et oecd.org : les chiffres viennent des extraits indexés de ces documents, pas de leur lecture directe. Les liens du jeu pointent bien vers les originaux, mais une vérification humaine reste utile.'],
   ],
   [2600, 6760],
