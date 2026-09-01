@@ -11,7 +11,7 @@
    ========================================================================== */
 
 import * as K from './constantes.js';
-import { CATALOGUE, PAR_ID, REVALORISATION, chiffrerRevalorisation, FINANCEMENT_19, DOSSIERS_ETE, AUDIENCES, RECEPTION } from './catalogue.js';
+import { CATALOGUE, PAR_ID, AFFAIRES, AFFAIRE_PAR_ID, REVALORISATION, chiffrerRevalorisation, FINANCEMENT_19, DOSSIERS_ETE, AUDIENCES, RECEPTION } from './catalogue.js';
 
 /* ---------------------------------------------------------------- ALÉA --- */
 export function rngDepuis(graine) {
@@ -66,6 +66,14 @@ export function creerPartie({ graine = 1, politique }) {
     requalifiees: new Set(),         // réformes vidées sans être retirées
     decouvertes: new Set(),          // dossiers déjà remontés sur le bureau
     avance: null, engagementRestitution: 0, schemaAvance: 0,
+
+    /* Turbulences : ce qui vous arrive et que vous n'avez pas décidé. */
+    profil: null, perimetre: null,
+    credibilite: K.CREDIBILITE.initiale,
+    plafondAdhesion: 100,
+    affaires: [],                    // affaires sorties, avec la réponse donnée
+    fragilite: 0,                    // abaisse le seuil de toutes les autres crises
+    captationDue: 0,                 // annonces que l'Élysée s'appropriera
     abandons: 0,
     mesuresParAnnee: [],
 
@@ -88,6 +96,14 @@ const note = (s, texte, cat = 'info') => s.journal.push({ annee: s.annee, mois: 
 /* ============================================================================
    1. EFFETS RÉELS : tirage sous incertitude
    ========================================================================== */
+/* LE FACTEUR DE PAROLE. La crédibilité conditionne l'efficacité de tout ce que
+   le ministre annonce : à crédibilité effondrée, l'annonce ne porte plus, quelle
+   que soit la mesure. C'est la ressource que les six archétypes de chute
+   attaquent, et celle qui ne se reconstitue que très lentement. */
+export function facteurParole(s) {
+  return K.CREDIBILITE.base + K.CREDIBILITE.pente * ((s.credibilite ?? K.CREDIBILITE.initiale) / 100);
+}
+
 /* Le facteur d'implémentation est la leçon centrale : une réforme ne vaut que
    ce que les personnels en font (Slavin — un programme mal implanté ≈ 0). */
 export function facteurImplementation(s) {
@@ -221,8 +237,25 @@ export function rafraichir(s) { recalculerVrai(s); recalculerAffiche(s); }
    premier jour, c'est de dire devant la presse ce que vous allez chercher.
    Le score final pondérera les cinq compteurs selon VOTRE classement : vous
    serez noté contre votre propre parole, et rien d'autre. */
+/* Le profil et le périmètre sont tirés AVANT la nomination : le joueur découvre
+   qui il est en même temps qu'il découvre le poste, et il ne choisit ni l'un ni
+   l'autre. Aucun profil n'est meilleur qu'un autre au sens des compteurs
+   éducatifs — ils exposent différemment, c'est tout. */
+function tirerProfil(s) {
+  s.profil = K.PROFILS[Math.floor(s.rng() * K.PROFILS.length)];
+  const sac = K.PERIMETRES.flatMap((p) => Array(p.poids).fill(p));
+  s.perimetre = sac[Math.floor(s.rng() * sac.length)];
+  s.phys.adhesion = borne(s.phys.adhesion + s.profil.adhesion, 0, 100);
+  s.credibilite = borne(s.credibilite + s.profil.credibilite, 0, 100);
+  s.capital = borne(s.capital + s.profil.capital + s.perimetre.capital, 0, K.CAPITAL.plafond);
+  s.creditBercy = borne(s.creditBercy + s.perimetre.bercy, 0, 100);
+  s.plafondAdhesion = 100 + s.perimetre.plafondAdhesion;
+  s.phys.adhesion = Math.min(s.phys.adhesion, s.plafondAdhesion);
+}
+
 function* etapeDoctrine(s) {
-  yield { type: 'nomination' };
+  tirerProfil(s);
+  yield { type: 'nomination', profil: s.profil, perimetre: s.perimetre };
   const ordre = (yield { type: 'doctrine' }) || Object.keys(K.COMPTEURS_INITIAUX);
   s.doctrine = [...ordre];
   s.poids = {};
@@ -402,6 +435,7 @@ function requalifierMesure(s, m, org, poidsRel) {
   s.phys.adhesion = borne(s.phys.adhesion + 2.2 * poidsRel, 0, 100);
   s.capital -= 2;
   s.fatigue = Math.min(K.FATIGUE.max, s.fatigue + 5);
+  s.credibilite = borne(s.credibilite + K.CREDIBILITE.parRequalification, 0, 100);
   note(s, `« ${carte.label} » devient facultative et change de nom. ${org.nom} lève son préavis ; le ministère parle d’« ajustement de méthode ».`, 'retrait');
 }
 
@@ -434,8 +468,72 @@ function retirerMesure(s, m, org, poidsRel) {
   s.phys.parents = borne(s.phys.parents - 3, 0, 100);
   s.capital -= 4;
   s.fatigue = Math.min(K.FATIGUE.max, s.fatigue + K.FATIGUE.parAbandon);
+  s.credibilite = borne(s.credibilite + K.CREDIBILITE.parAbandon, 0, 100);
   s.abandons += 1;
   note(s, `Retrait de « ${carte.label} » obtenu par ${org.nom}. La mesure sort du droit ; ses effets ne viendront jamais.`, 'retrait');
+}
+
+/* --- L'AFFAIRE : tirage conditionnel, jamais aléatoire pur ----------------- */
+/* La règle maîtresse : l'affaire qui sort est celle qui RÉSONNE avec ce que le
+   ministre vient de faire. Une polémique personnelle n'est presque jamais
+   fatale en elle-même ; elle est fatale quand elle devient la preuve intuitive
+   d'un procès politique déjà instruit. */
+function* etapeAffaire(s) {
+  if ((s.affaires || []).length >= K.AFFAIRES_TIRAGE.maxParPartie) return;
+
+  const dejaSorties = new Set((s.affaires || []).map((a) => a.id));
+  const themesRecents = new Set((s.mesuresParAnnee[s.annee - 1] || []).map((m) => (PAR_ID[m.id] || {}).theme).filter(Boolean));
+  const exposees = new Set(s.profil ? s.profil.expose : []);
+
+  const candidates = AFFAIRES.filter((a) => !dejaSorties.has(a.id)).map((a) => {
+    const resonne = (a.themes || []).some((t) => themesRecents.has(t));
+    let poids = 1;
+    if (resonne) poids *= K.AFFAIRES_TIRAGE.resonance;
+    if (exposees.has(a.id)) poids *= K.AFFAIRES_TIRAGE.exposition;
+    return { a, poids, resonne };
+  });
+  if (!candidates.length) return;
+
+  /* Probabilité qu'une affaire sorte CETTE ANNÉE — pas la somme des six, ce qui
+     en ferait sortir une chaque année. Le multiplicateur est celui de la
+     candidate la plus exposée : c'est le fait d'avoir légiféré sur le sujet qui
+     fait remonter le dossier, pas le nombre de dossiers existants. */
+  const mult = Math.max(...candidates.map((c) => c.poids));
+  const pAn = Math.min(K.AFFAIRES_TIRAGE.plafondAnnuel, K.AFFAIRES_TIRAGE.base * mult);
+  if (s.rng() > pAn) return;                          // le plus souvent, rien ne sort
+
+  const total = candidates.reduce((x, c) => x + c.poids, 0);
+  let tirage = s.rng() * total, choisie = candidates[0];
+  for (const c of candidates) { tirage -= c.poids; if (tirage <= 0) { choisie = c; break; } }
+  const a = choisie.a;
+
+  const idx = yield { type: 'affaire', affaire: a, resonne: choisie.resonne, credibilite: s.credibilite };
+  const r = a.reponses[Math.max(0, Math.min(2, idx | 0))];
+
+  /* Une affaire médiatique n'est pas une culpabilité : une sur quatre se
+     dégonfle. Le coût politique, lui, reste à moitié encaissé — c'est vrai,
+     et c'est ce que le public retient le plus mal. */
+  const degonfle = s.rng() < K.AFFAIRES_TIRAGE.probaDegonflement;
+  const f = degonfle ? (1 - K.AFFAIRES_TIRAGE.remboursement) : 1;
+
+  s.phys.adhesion = borne(s.phys.adhesion + (r.adhesion || 0) * f, 0, s.plafondAdhesion);
+  s.phys.parents = borne(s.phys.parents + (r.parents || 0) * f, 0, 100);
+  s.credibilite = borne(s.credibilite + (r.credibilite || 0) * f, 0, 100);
+  s.capital = borne(s.capital + (r.capital || 0) * f, 0, K.CAPITAL.plafond);
+  s.fragilite = Math.min(6, (s.fragilite || 0) + (r.fragilise || 0) * f);
+  if (r.captation) s.captationDue = (s.captationDue || 0) + 1;
+  if (r.unite && !degonfle) s.pointsGreveCumules += 2.4;
+
+  s.affaires.push({ id: a.id, reponse: r.type, degonfle, resonne: choisie.resonne });
+  note(s, `Affaire « ${a.titre} » : ${r.type === 'assumer' ? 'vous assumez' : r.type === 'defendre' ? 'vous vous défendez sur les faits' : 'vous contre-attaquez'}.${degonfle ? ' Le dossier se dégonflera — à moitié seulement.' : ''}`, 'affaire');
+
+  /* Une seule réponse du répertoire est fatale à elle seule, et ce n'est pas
+     la plus grave sur le fond : c'est celle où le ministre transforme lui-même
+     un fait privé en jugement sur le service public. */
+  if (r.fatal && !degonfle && s.rng() < r.fatal) {
+    s.fini = true;
+    s.fin = { type: 'affaire', annee: s.annee, texte: `« ${a.manchette} ». Sept organisations, un communiqué commun, un préavis dans la journée. Matignon n'a pas démenti assez vite. Vous quittez la rue de Grenelle sur une phrase que vous avez prononcée vous-même.` };
+  }
 }
 
 /* --- DÉCEMBRE : vote du budget, publications DEPP, élections pro (an 1) ---- */
@@ -587,6 +685,11 @@ function etapeCloture(s) {
   for (const e of s.effetsEnAttente) {
     if (!e.applique && e.anneeArrivee <= s.annee) { s.acquis[e.compteur] += e.montant; e.applique = true; e.anneeOuverture = s.annee; }
   }
+
+  /* La parole se reconstitue, très lentement, et seulement si l'on n'a pas
+     passé l'année à se dédire. */
+  s.credibilite = borne(s.credibilite + K.CREDIBILITE.parAn, 0, 100);
+  s.fragilite = Math.max(0, (s.fragilite || 0) - 1);
 
   /* Tendanciels : ce qui se dégrade tout seul si l'on ne fait rien. */
   p.heuresNonAssurees += K.TENDANCIEL.heuresNonAssurees;
@@ -850,10 +953,12 @@ function appliquerMesures(s, choix, maxAnnonces = 3, depassementAutorise = true)
       s.reformesActives.push({ id: carte.id, anneeFin: s.annee + K.ABSORPTION.dureeActive - 1 });
     }
 
-    /* Vitrine : immédiate, visible, périssable. */
-    s.phys.parents += carte.vitrine.parents;
-    s.phys.adhesion += carte.vitrine.enseignants;
-    for (const [c, v] of Object.entries(carte.vitrine.compteurs || {})) s.vitrine[c] += v;
+    /* Vitrine : immédiate, visible, périssable — et proportionnelle à ce que
+       vaut votre parole au moment où vous l'employez. */
+    const parole = facteurParole(s);
+    s.phys.parents += carte.vitrine.parents * parole;
+    s.phys.adhesion += carte.vitrine.enseignants * parole;
+    for (const [c, v] of Object.entries(carte.vitrine.compteurs || {})) s.vitrine[c] += v * parole;
 
     /* Physique. */
     const ph = carte.physique || {};
@@ -954,7 +1059,10 @@ export function* derouler(s) {
     yield* etapeRentree(s);   s.mois = 8;
     yield* etapeCirculaireRentree(s);        yield { type: 'etape', etape: 'rentree' };
     yield* etapeAudience(s);  s.mois = 9;
-    etapeDecembre(s);         s.mois = 11; yield { type: 'etape', etape: 'decembre' };
+    etapeDecembre(s);         s.mois = 11;
+    yield* etapeAffaire(s);
+    if (s.fini) break;
+    yield { type: 'etape', etape: 'decembre' };
     yield* etapeJanvier(s);   s.mois = 0;
     etapeMars(s);             s.mois = 2;  yield { type: 'etape', etape: 'mars' };
     etapeCloture(s);          s.mois = 4;
@@ -977,6 +1085,7 @@ export function jouerMandat({ graine = 1, politique }) {
     if (q.type === 'nomination') rep = 'accepter';
     else if (q.type === 'reperes') rep = null;   // la note de cadrage se lit, elle ne se décide pas
     else if (q.type === 'avance') rep = politique.avance ? politique.avance(s, q) : 1;
+    else if (q.type === 'affaire') rep = politique.affaire ? politique.affaire(s, q) : 0;
     else if (q.type === 'doctrine') rep = politique.doctrine ? politique.doctrine(s) : Object.keys(K.COMPTEURS_INITIAUX);
     else if (q.type === 'lettrePlafond') rep = politique.lettrePlafond ? politique.lettrePlafond(s, q.palier) : 'accepter';
     else if (q.type === 'rentree') rep = politique.rentree ? politique.rentree(s, q) : 'assumer';

@@ -11,7 +11,7 @@ const el = (tag, cls, html) => { const n = document.createElement(tag); if (cls)
 const alea = (arr) => arr[Math.floor(Math.random() * arr.length)];
 const fmt1 = (x) => (Math.round(x * 10) / 10).toLocaleString('fr-FR');
 const fmt0 = (x) => Math.round(x).toLocaleString('fr-FR');
-const signe = (x) => (x > 0 ? '+' + fmt1(x) : fmt1(x));
+const signe = (x) => (x > 0 ? '+' + fmt1(x) : fmt1(x).replace(/^-/, '\u2212'));
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;');
 /* typographie française pour les textes du moteur : décimales à virgule */
 const fr = (s) => esc(s).replace(/(\d)\.(\d)/g, '$1,$2');
@@ -218,6 +218,7 @@ function majHud() {
   sous.hidden = !hudDeplie;
   sous.innerHTML = [
     `Capital politique <b>${fmt0(S.capital)}</b>`,
+    `Crédibilité <b class="${S.credibilite < 35 ? 'neg' : ''}">${fmt0(S.credibilite)}</b> (vos annonces valent ×${(Math.round(facteurParole(S) * 100) / 100).toLocaleString('fr-FR')})`,
     `Crédit Bercy <b>${fmt0(S.creditBercy)}</b>`,
     `Adhésion enseignante <b>${fmt0(S.phys.adhesion)}</b>`,
     `Parents <b>${fmt0(S.phys.parents)}</b>`,
@@ -273,13 +274,23 @@ function ecranAccueil(sauvegarde) {
 }
 
 /* --- la nomination : on vous propose Grenelle -------------------------------- */
-function ecranNomination() {
+function ecranNomination(q) {
   const d = docu('Appel de Matignon', 'On vous propose la rue de Grenelle', 'juin 2027');
   d.classList.add('papier');
   d.appendChild(el('p', 'chapo', 'Le gouvernement se forme. Votre téléphone sonne : le portefeuille proposé est l’Éducation nationale — le premier budget de l’État — 65,3 milliards d’euros au projet de loi de finances qui s’annonce, 1,2 million d’agents, 12 millions d’élèves. La durée moyenne dans le poste dépasse rarement deux ans.'));
   d.appendChild(el('div', 'note-passation',
     'Votre prédécesseur, huitième en quatre ans, laisse un mot : « Tout est dans les dossiers. Les dossiers sont dans les cartons. Les cartons sont au garde-meuble, la DGESCO sait lequel. Méfiez-vous de juillet, de septembre et de janvier — le reste de l’année est calme, sauf le reste de l’année. Bonne chance.'
     + '<span class="ps">P.-S. — La photocopieuse du deuxième est en panne depuis 2019. C’est le dossier le plus consensuel du ministère : ne le réglez pas, il fédère. »</span>'));
+  /* Le profil et le périmètre sont tirés, pas choisis. Ils ne changent aucun
+     compteur éducatif : ils changent ce qu'on vous reprochera. */
+  if (q && q.profil) {
+    const pr = el('div', 'profil-bloc');
+    pr.innerHTML = `<div class="titre-d">Ce que la presse écrira sur vous dès demain</div>
+      <div class="profil-ligne"><b>${esc(q.profil.nom)}</b><span>${fr(q.profil.detail)}</span></div>
+      <div class="profil-ligne"><b>${esc(q.perimetre.nom)}</b><span>${fr(q.perimetre.detail)}</span></div>
+      <p class="profil-note">Vous n’avez choisi ni l’un ni l’autre, et aucun des deux ne vous rend meilleur ou moins bon ministre : ils décident seulement de ce sur quoi vous serez attaquable. C’est ainsi que le poste fonctionne.</p>`;
+    d.appendChild(pr);
+  }
   d.appendChild(el('p', '', 'Vous acceptez. Dès demain, devant la presse, vous direz vous-même ce que vous allez chercher pendant cinq ans.'));
   const act = el('div', 'actions');
   const ok = el('button', 'btn tamponner', 'Accepter le ministère');
@@ -348,6 +359,56 @@ function ecranBercy(q) {
   const con = el('button', 'opt', `<b>Contester et porter l’arbitrage à Matignon</b><span class="det">Coût : 12 points de capital politique (il vous en reste ${fmt0(S.capital)}). Chances de gagner : moyennes, et décroissantes avec l’usage. Un ministre qui menace trop souvent finit par ne plus être craint, seulement remplacé.</span>`);
   con.onclick = () => suivant('contester');
   opts.append(acc, con); d.appendChild(opts);
+  scene(d);
+}
+
+/* --- l'affaire : la polémique qui ne concerne pas l'école --------------------- */
+function ecranAffaire(q) {
+  const a = q.affaire;
+  const d = docu('Revue de presse — affaire personnelle', esc(a.manchette));
+  d.classList.add('papier');
+  d.appendChild(el('p', 'chapo', fr(a.recit)));
+  if (q.resonne) {
+    d.appendChild(el('div', 'bandeau-neuf',
+      '<b>Le calendrier n’est pas un hasard.</b> Le dossier ressort au moment précis où vous légiférez sur le même sujet. Une polémique personnelle n’est presque jamais fatale en elle-même : elle le devient quand elle donne à un procès politique déjà instruit sa preuve intuitive.'));
+  }
+  d.appendChild(el('div', 'decryptage',
+    `<div class="titre-d">Ce que ce type d’affaire enseigne</div><p>${fr(a.lecon)}</p>`));
+
+  const opts = el('div', 'opts');
+  a.reponses.forEach((r, i) => {
+    const chiffres = [
+      r.adhesion ? `adhésion ${signe(r.adhesion)}` : '',
+      r.credibilite ? `crédibilité ${signe(r.credibilite)}` : '',
+      r.capital ? `capital ${signe(r.capital)}` : '',
+      r.parents ? `parents ${signe(r.parents)}` : '',
+      r.unite ? '<b class="neg">unité syndicale immédiate</b>' : '',
+      r.fatal ? '<b class="neg">peut mettre fin au mandat</b>' : '',
+      r.fragilise ? `<b class="neg">fragilise ${r.fragilise} an${r.fragilise > 1 ? 's' : ''}</b>` : '',
+      r.captation ? '<b class="neg">l’Élysée annoncera votre prochaine mesure</b>' : '',
+    ].filter(Boolean);
+    const b = el('button', 'opt',
+      `<b>${esc(r.label)}</b><span class="det">${fr(r.det)}</span>`
+      + `<span class="chiffres">${chiffres.map((c) => `<span>${c}</span>`).join('')}</span>`);
+    b.onclick = () => finAffaire(i, r);
+    opts.appendChild(b);
+  });
+  d.appendChild(opts);
+  d.appendChild(el('p', 'note-passation', `Votre crédibilité est aujourd’hui de <b>${fmt0(q.credibilite)}/100</b>. C’est elle qui décide de ce que valent vos annonces : à crédibilité effondrée, la meilleure mesure du catalogue ne porte plus. Aucune de ces réponses ne touche un compteur éducatif — et c’est bien le problème du métier.`));
+
+  function finAffaire(i, r) {
+    opts.querySelectorAll('.opt').forEach((n) => { n.disabled = true; });
+    const box = el('div', 'decryptage');
+    box.style.borderLeftColor = r.type === 'assumer' ? 'var(--c-sante)' : r.type === 'defendre' ? 'var(--c-budget)' : 'var(--rouge-rf)';
+    box.innerHTML = `<div class="titre-d" style="color:${r.type === 'assumer' ? 'var(--c-sante)' : r.type === 'defendre' ? 'var(--c-budget)' : 'var(--rouge-rf)'}">La suite</div><p>${fr(r.suite)}</p>`
+      + '<p style="font-size:.78rem;color:var(--encre-3);margin-top:8px">Une affaire médiatique n’est pas une culpabilité : une sur quatre se dégonfle — démentie, classée, ou close par un remboursement. Le coût politique, lui, reste à moitié encaissé. C’est vrai, et c’est ce que le public retient le plus mal.</p>';
+    d.appendChild(box);
+    const act = el('div', 'actions');
+    const ok = el('button', 'btn', 'Passer à autre chose');
+    ok.onclick = () => suivant(i);
+    act.appendChild(ok); d.appendChild(act);
+    box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
   scene(d);
 }
 
@@ -1112,6 +1173,7 @@ function dateDe(q) {
   if (q.type === 'doctrine') return 'juin 2027';
   if (q.type === 'reperes') return 'juin 2027';
   if (q.type === 'avance') return 'juin 2027';
+  if (q.type === 'affaire') return `décembre ${an}`;
   if (q.type === 'retrait') return `octobre ${ETAT.s.anneeCiv || 2027}`;
   if (q.type === 'dossier') return 'été 2027';
   if (q.type === 'audience') return `octobre ${ETAT.s.anneeCiv || 2027}`;
@@ -1130,10 +1192,11 @@ function rendre(q) {
   ETAT.dateLabel = dateDe(q);
   ETAT.rentreeRatee = ETAT.s.journal.some((e) => e.cat === 'rentree' && e.annee === ETAT.s.annee && e.texte.includes('dégradée'));
   majHud();
-  if (q.type === 'nomination') ecranNomination();
+  if (q.type === 'nomination') ecranNomination(q);
   else if (q.type === 'doctrine') ecranDoctrine();
   else if (q.type === 'reperes') ecranReperes();
   else if (q.type === 'avance') ecranAvance(q);
+  else if (q.type === 'affaire') ecranAffaire(q);
   else if (q.type === 'retrait') ecranRetrait(q);
   else if (q.type === 'dossier') ecranDossier(q);
   else if (q.type === 'audience') ecranAudience(q);

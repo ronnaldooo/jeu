@@ -31,6 +31,16 @@ avez semé. Au-delà de trois réformes simultanément actives, elles se dégrad
 toutes. Un programme mal implanté a un effet nul — c'est le résultat le mieux
 établi de la littérature, et c'est la règle centrale du jeu.
 
+**Ce qui vous déstabilise ne se décide pas.** Votre profil et le périmètre de
+votre nomination sont tirés au sort : ils ne vous rendent ni meilleur ni moins
+bon ministre, ils décident de ce sur quoi vous serez attaquable. Et une
+polémique personnelle peut sortir — dans 60 % des parties environ, jamais deux
+fois la même — d'autant plus probablement qu'elle résonne avec ce que vous
+venez de faire. Aucune ne touche un compteur éducatif : elles attaquent votre
+**crédibilité**, c'est-à-dire ce que valent vos annonces. Sur les six causes
+documentées de chute d'un ministre de l'Éducation, une seule relève de la
+politique éducative.
+
 **Le temps ne joue pas pour vous.** PISA tombe en septembre de votre première
 année et mesure des élèves scolarisés depuis dix ans : vous répondez de ce que
 vous n'avez pas fait. Vos propres décisions, elles, produiront leurs effets
@@ -57,8 +67,8 @@ rentrée en septembre, l'arbitrage de janvier), un été des cent jours à
 traverser avant la première rentrée, la carte scolaire de janvier et ses deux
 curseurs, la lettre plafond de Bercy, les face-à-face syndicaux où l'on peut
 céder ou tenir, une revalorisation entièrement paramétrable (montant,
-instrument, cible), et un menu progressif de mesures — 7 cartes en première
-année, 14 en fin de mandat, tirées d'un catalogue de **67**, dont vingt-sept qu'on
+instrument, cible), et un menu progressif de mesures — 8 cartes en première
+année, 16 en fin de mandat, tirées d'un catalogue de **67**, dont vingt-sept qu'on
 ne découvre qu'en jouant, quand un rapport tombe ou qu'un indicateur se
 dégrade. Chaque carte porte ses porteurs politiques réels, son niveau de
 preuve, un panneau « Comprendre l'effet » qui dit ce que montrent vraiment les
@@ -152,6 +162,16 @@ Les sept organisations syndicales sont pondérées par les résultats réels des
 élections professionnelles de 2022, avec des profils de négociation
 différenciés. Les positions attribuées aux acteurs restent des simplifications
 de jeu.
+
+Les six archétypes de polémique personnelle sont **intégralement
+pseudonymisés** : les situations sont inspirées de faits publics, les
+personnages sont fictifs, et aucune affaire n'est rejouée sous le nom de qui
+que ce soit. Une affaire médiatique n'est pas une culpabilité — le jeu le
+modélise : une sur quatre se dégonfle, et le coût politique reste à moitié
+encaissé. L'archétype de l'attaque en illégitimité existe comme **subi**, selon
+le profil tiré, jamais comme une carte que le joueur ou un adversaire pourrait
+« jouer » : on modélise la réalité d'une exposition, on ne fabrique pas un
+simulateur de dénigrement.
 
 **Jeu pédagogique indépendant, sans lien avec le ministère de l'Éducation
 nationale.**

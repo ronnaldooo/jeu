@@ -113,7 +113,12 @@ h1,h2,h3{text-wrap:balance; margin:0}
 .opt{cursor:pointer; text-align:left; background:var(--fiche); border:1px solid var(--filet); border-left:3px solid var(--filet-fort); padding:13px 16px}
 .opt:hover{border-color:var(--bleu-rf); border-left-color:var(--bleu-rf)}
 .opt b{display:block; margin-bottom:2px}
-.opt .det{font-size:.85rem; color:var(--encre-2); max-width:70ch}
+.opt .det{display:block; font-size:.85rem; color:var(--encre-2); max-width:70ch}
+.opt .det.mot{margin-top:5px; font-family:"Newsreader",georgia,serif; font-style:italic; color:var(--encre-3)}
+.opt .chiffres{display:flex; flex-wrap:wrap; gap:3px 14px; margin-top:7px; padding-top:6px; border-top:1px dotted var(--filet);
+  font-family:"IBM Plex Mono",monospace; font-size:.74rem; color:var(--encre-2); font-variant-numeric:tabular-nums}
+.opt .chiffres .neg{color:var(--alerte)} .opt .chiffres .pos{color:var(--ok)}
+.opt .chiffres b{display:inline; margin:0}
 
 /* ---------- doctrine ---------- */
 .classement{display:grid; gap:8px; margin:18px 0; counter-reset:rang}
@@ -401,6 +406,16 @@ table.bilan .num{text-align:right}
 #comprendre .chapo{margin:14px 0 18px}
 body:has(#comprendre:not([hidden])) #comprendre-btn{display:none}
 body:has(.suite:not([hidden])) #comprendre-btn{bottom:62px}
+/* ---------- profil du ministre et affaires ---------- */
+.profil-bloc{border:1px solid var(--filet); background:var(--fiche-2); padding:13px 16px; margin:14px 0}
+.profil-bloc .titre-d{font-size:.62rem; letter-spacing:.1em; text-transform:uppercase; font-weight:700; color:var(--bleu-rf); margin-bottom:8px}
+.profil-ligne{display:flex; gap:12px; align-items:baseline; padding:6px 0; border-bottom:1px dotted var(--filet); flex-wrap:wrap}
+.profil-ligne:last-of-type{border-bottom:0}
+.profil-ligne b{min-width:17ch; flex-shrink:0; font-size:.88rem}
+.profil-ligne span{font-size:.84rem; color:var(--encre-2); line-height:1.5; flex:1; min-width:16ch}
+.profil-note{font-size:.78rem; color:var(--encre-3); margin:9px 0 0; line-height:1.5; font-style:italic}
+#hud-sous b.neg{color:var(--alerte)}
+@media (max-width:640px){ .profil-ligne b{min-width:0} }
 .ligne-s .requal{display:inline-block; font-size:.6rem; font-weight:700; text-transform:uppercase; letter-spacing:.08em; background:var(--c-budget); color:#1a1a19; padding:1px 6px; margin-left:7px; vertical-align:middle}
 .nouveau-dossier{display:inline-block; font-size:.6rem; font-weight:700; text-transform:uppercase; letter-spacing:.09em; background:var(--bleu-rf); color:#fff; padding:2px 7px; margin-left:8px; vertical-align:middle}
 .bandeau-neuf{background:var(--fiche-2); border-left:3px solid var(--bleu-rf); padding:10px 14px; font-size:.82rem; margin:14px 0; line-height:1.5}
@@ -821,6 +836,104 @@ const RENVOI = {
   remaniementMin: 0.03, remaniementMax: 0.30,
 };
 
+/* ===========================================================================
+   11. LES TURBULENCES — profil, crédibilité, affaires        [source E, G]
+   ---------------------------------------------------------------------------
+   Sur les six causes documentées de chute d'un ministre de l'Éducation, UNE
+   SEULE relève de la politique éducative. Les cinq autres tiennent à la
+   posture, à la communication, au hasard biographique ou au périmètre de la
+   nomination. Un ministre tombe plus souvent sur une phrase que sur un bilan.
+
+   Trois règles ont guidé l'écriture de ce bloc :
+   · les situations sont inspirées de faits publics, les personnages sont
+     fictifs et aucune affaire n'est rejouée sous le nom de qui que ce soit ;
+   · une affaire médiatique n'est pas une culpabilité : une sur quatre se
+     dégonfle, et le coût politique reste largement encaissé ;
+   · le profil détermine des EXPOSITIONS, jamais des capacités. Aucun profil
+     n'est meilleur qu'un autre au sens des compteurs éducatifs.
+   ========================================================================= */
+
+/* Le profil du ministre, tiré à la nomination. Il ne change aucun compteur
+   éducatif : il change ce qu'on vous reprochera. */
+const PROFILS = [
+  {
+    id: 'serail', nom: 'Vous venez de la maison',
+    detail: 'Ancien recteur, passé par l’administration centrale. Les personnels savent que vous connaissez le terrain ; la presse écrira que vous êtes le candidat de la continuité.',
+    adhesion: +7, capital: -4, credibilite: +10,
+    expose: ['privilege'],
+  },
+  {
+    id: 'hautfonc', nom: 'Vous venez de la haute fonction publique',
+    detail: 'Inspection générale des finances, cabinets ministériels. Vous savez tenir un arbitrage à Bercy ; on vous soupçonnera de tenir des comptes plutôt que des classes.',
+    adhesion: -3, capital: +5, credibilite: +4,
+    expose: ['privilege', 'faux_nez'],
+  },
+  {
+    id: 'elu', nom: 'Vous venez d’un mandat local',
+    detail: 'Maire, puis parlementaire. Vous connaissez les cartes scolaires par les maires qui les subissent ; on vous rappellera vos anciennes déclarations.',
+    adhesion: +2, capital: +2, credibilite: -2,
+    expose: ['faux_nez', 'lieu'],
+  },
+  {
+    id: 'civile', nom: 'Vous venez de la société civile',
+    detail: 'Chercheur, chef d’entreprise ou dirigeant associatif. On vous a nommé pour votre regard neuf ; on vous le reprochera dès la première difficulté.',
+    adhesion: -8, capital: +7, credibilite: -4,
+    expose: ['illegitimite', 'ecole_enfants'],
+  },
+];
+
+/* Le périmètre de la nomination. Le joueur ne l'a pas choisi — comme dans la
+   réalité, où la fusion Éducation-Sports de janvier 2024 a été lue comme un
+   déclassement avant que la ministre n'ait rien décidé. */
+const PERIMETRES = [
+  {
+    id: 'plein', nom: 'Ministre de plein exercice',
+    detail: 'Le portefeuille seul, comme le réclament les organisations syndicales. Personne ne vous fera le reproche d’être ailleurs.',
+    capital: 0, plafondAdhesion: 0, bercy: 0, patience: 0, poids: 5,
+  },
+  {
+    id: 'elargi', nom: 'Périmètre élargi — Éducation, Jeunesse et Sports',
+    detail: 'Trois portefeuilles, un ministre. Vous pesez davantage dans les arbitrages budgétaires ; la salle des professeurs vous appellera « ministre à mi-temps » avant votre première circulaire.',
+    capital: +9, plafondAdhesion: -15, bercy: +4, patience: -1, poids: 3,
+  },
+  {
+    id: 'delegue', nom: 'Ministre délégué, rattaché à un ministre d’État',
+    detail: 'Vous n’arbitrez pas seul et vous ne signez pas tout. En contrepartie, on vous laissera plus longtemps : personne ne réclame la tête d’un ministre délégué.',
+    capital: -9, plafondAdhesion: -4, bercy: -7, patience: +1, poids: 2,
+  },
+];
+
+/* LA CRÉDIBILITÉ — la ressource de parole, distincte du capital politique.
+   Elle conditionne l'efficacité de tout ce que le ministre annonce : à
+   crédibilité effondrée, l'annonce ne porte plus, quelle que soit la mesure.
+   Elle se dégrade vite (affaire, revirement, requalification) et se reconstitue
+   très lentement. C'est la jauge qui manque à la plupart des jeux de gestion,
+   et celle sur laquelle les carrières se jouent réellement. */
+const CREDIBILITE = {
+  initiale: 62,
+  parAn: +4,                 // reconstitution lente
+  parRequalification: -9,    // un revirement se paie en parole
+  parAbandon: -5,
+  parRentreeRatee: -4,
+  /* Facteur appliqué à l'effet-vitrine : 0,55 + 0,90 × (crédibilité / 100).
+     À 62 → ×1,11. À 20 → ×0,73. À 95 → ×1,41. */
+  base: 0.55, pente: 0.90,
+};
+
+/* Probabilité qu'une affaire sorte, par an. Faible en soi ; multipliée quand
+   elle résonne avec ce que le ministre vient de faire — c'est la règle la plus
+   fidèle au réel de tout le dossier : on n'est pas puni pour ce qu'on fait, on
+   est puni pour l'ÉCART entre ce qu'on exige des autres et ce qu'on s'applique. */
+const AFFAIRES_TIRAGE = {
+  base: 0.095,               // probabilité par an qu'une affaire sorte, hors résonance
+  resonance: 2.6,            // ×2,6 si le ministre a joué une carte du même thème
+  exposition: 1.7,           // ×1,7 si son profil y est exposé
+  plafondAnnuel: 0.42,       // même très exposé, l'année peut être calme
+  maxParPartie: 2,
+  probaDegonflement: 0.25,   // une sur quatre se dégonfle — le coût reste à moitié
+  remboursement: 0.5,
+};
+
 /* ---------------------------------------------------------------------------
    9. PROJECTION À DIX ANS                                     [source B.5, B.8-8]
    ------------------------------------------------------------------------- */
@@ -903,7 +1016,7 @@ const TAILLES_MENU = [8, 11, 14, 16, 16];
 const MOIS = ['janvier','février','mars','avril','mai','juin',
                      'juillet','août','septembre','octobre','novembre','décembre'];
 
-const K = { CADRAGE, ENVELOPPE_BASE, ENVELOPPE_PRISE_FONCTION, ENVELOPPE_RENTREE, TAILLE_MENU_COURT, ANNONCES_MAX, AVANCE_GESTION, MANQUEMENT_ENGAGEMENT, PALIERS_BERCY, SURCOUT, POINTS_SALAIRE_PAR_MD, BAISSE_ELEVES, ELEVES_INITIAL, ELEVES_PAR_POSTE, RATIO_ED_INITIAL, SEUIL_COLERE_MAIRES, COMPTEURS_INITIAUX, COMPTEURS_META, POIDS_DOCTRINE, PHYSIQUE_INITIALE, INERTIE_OPINION, TENDANCIEL, INTERVALLE_CADENAS, ABSORPTION, REQUALIFICATION, FATIGUE, IMPLEMENTATION, POIDS_HERITAGE, REVERSION, BRUIT_AFFICHE, COUT_AFFICHAGE_LONG_TERME, DECROISSANCE_VITRINE, ATTRACTIVITE, GREVE, SYNDICATS, SENSIBILITES, CAPITAL, IMMOBILISME, CREDIT_BERCY_INITIAL, RENVOI, PROJECTION, PROJETS_2027, TAILLES_MENU, MOIS };   // espace de noms attendu par le moteur
+const K = { CADRAGE, ENVELOPPE_BASE, ENVELOPPE_PRISE_FONCTION, ENVELOPPE_RENTREE, TAILLE_MENU_COURT, ANNONCES_MAX, AVANCE_GESTION, MANQUEMENT_ENGAGEMENT, PALIERS_BERCY, SURCOUT, POINTS_SALAIRE_PAR_MD, BAISSE_ELEVES, ELEVES_INITIAL, ELEVES_PAR_POSTE, RATIO_ED_INITIAL, SEUIL_COLERE_MAIRES, COMPTEURS_INITIAUX, COMPTEURS_META, POIDS_DOCTRINE, PHYSIQUE_INITIALE, INERTIE_OPINION, TENDANCIEL, INTERVALLE_CADENAS, ABSORPTION, REQUALIFICATION, FATIGUE, IMPLEMENTATION, POIDS_HERITAGE, REVERSION, BRUIT_AFFICHE, COUT_AFFICHAGE_LONG_TERME, DECROISSANCE_VITRINE, ATTRACTIVITE, GREVE, SYNDICATS, SENSIBILITES, CAPITAL, IMMOBILISME, CREDIT_BERCY_INITIAL, RENVOI, PROFILS, PERIMETRES, CREDIBILITE, AFFAIRES_TIRAGE, PROJECTION, PROJETS_2027, TAILLES_MENU, MOIS };   // espace de noms attendu par le moteur
 /* ===== moteur/catalogue.js ===== */
 
 
@@ -2640,6 +2753,160 @@ const REPLIQUES = {
   ],
 };
 
+/* ============================================================================
+   LES AFFAIRES — six archétypes de polémique personnelle          [source G]
+   ----------------------------------------------------------------------------
+   Situations inspirées de faits publics ; les personnages sont fictifs et
+   aucune affaire n'est rejouée sous le nom de qui que ce soit. Ce qu'on garde,
+   c'est la FORME : le déclencheur, la cinétique, l'issue.
+
+   Aucune de ces affaires ne fait bouger un compteur éducatif. Elles agissent
+   toutes sur les trois jauges relationnelles — adhésion, crédibilité, capital.
+   Un jeu qui n'aurait que des compteurs de résultats scolaires ne pourrait pas
+   représenter ce qui met réellement fin aux carrières ministérielles.
+
+   `themes` : les thèmes de mesure avec lesquels l'affaire résonne. Une carte
+   jouée sur le même thème dans l'année triple la probabilité qu'elle sorte.
+   ========================================================================== */
+const AFFAIRES = [
+  {
+    id: 'lieu',
+    titre: 'Le lieu',
+    manchette: 'Le ministre était en vacances quand le protocole est tombé',
+    themes: ['remplacement', 'rythmes', 'ors', 'ete', 'accompagnement'],
+    recit: 'Un site d’information révèle — et le ministère confirme — que vous vous trouviez à l’étranger, en congé, le soir où votre cabinet transmettait à la presse la circulaire que les équipes ont découverte le lendemain matin. Le fait est exact, il est régulier, et il est indéfendable.',
+    lecon: 'On ne vous reproche pas un acte, on vous reproche un signe. La défense factuelle est solide et catégoriellement inadaptée : à un signe, on ne répond pas par un bilan.',
+    reponses: [
+      { type: 'assumer', label: 'Assumer sobrement : « j’ai pris trois jours, je le referais »',
+        det: 'Vous ne vous excusez pas et vous ne vous justifiez pas. La séquence dure quatre jours au lieu de trois semaines.',
+        adhesion: -8, credibilite: -6, capital: -3, parents: -2,
+        suite: 'La formule est jugée sèche, et refermer le dossier en quatre jours est ce que personne n’avait réussi avant vous.' },
+      { type: 'defendre', label: 'Se défendre sur les faits : « quelle réunion n’ai-je pas tenue ? »',
+        det: 'Vous démontrez, chiffres à l’appui, qu’aucun acte n’a manqué. C’est vrai, et cela ne répond pas à la question posée.',
+        adhesion: -13, credibilite: -4, capital: -2, parents: -4,
+        suite: 'Vous avez raison sur les faits et tort sur le terrain. Une organisation résume le grief en une phrase que la presse reprendra tout l’hiver : pendant ce temps, les personnels, eux, font tenir l’école.' },
+      { type: 'contre', label: 'Mettre en cause ceux qui ont sorti l’information',
+        det: 'Vous dénoncez une campagne et une fuite organisée. C’est la réponse la plus tentante du répertoire, et la plus chère.',
+        adhesion: -16, credibilite: -12, capital: -6, parents: -5,
+        suite: 'La question de la fuite a désormais son propre article. L’affaire dure trois semaines de plus, et personne ne parle plus de la circulaire.' },
+    ],
+  },
+  {
+    id: 'ecole_enfants',
+    titre: 'L’école de vos enfants',
+    manchette: 'Les enfants du ministre scolarisés dans le privé',
+    themes: ['prive', 'affectation', 'secteurs', 'carle', 'cheque', 'ghettos'],
+    recit: 'La presse révèle que vos enfants sont scolarisés dans un établissement privé sous contrat. Le fait est banal — de nombreux responsables publics font ce choix sans que cela fasse chuter personne. Ce qui suivra, en revanche, ne l’est pas.',
+    lecon: 'Le point de bascule n’est jamais la révélation. C’est la justification. Expliquer son choix par un défaut du service public dont on vient de prendre la tête transforme un fait privé en jugement professionnel — et cela, le corps ne le pardonne pas.',
+    reponses: [
+      { type: 'assumer', label: 'Assumer sobrement, sans commenter le service public',
+        det: '« C’est un choix de famille, il ne dit rien de l’école publique, dont je suis le ministre. » Le dossier se referme en une semaine.',
+        adhesion: -6, credibilite: -3, capital: -2, parents: 0,
+        suite: 'Une semaine de commentaires, puis plus rien. C’était la seule sortie possible, et elle était disponible dès la première question.' },
+      { type: 'defendre', label: 'Justifier par un manque du service public',
+        det: '« Il y a des heures qui ne sont pas sérieusement remplacées. » Vous dites tout haut ce que disent les familles — sauf que vous êtes le ministre.',
+        adhesion: -26, credibilite: -14, capital: -14, parents: +3, unite: true, fatal: 0.42,
+        suite: 'Les sept organisations publient un communiqué commun dans la journée — elles ne s’étaient pas accordées sur une virgule depuis février. L’intersyndicale dépose un préavis. Matignon ne dément pas assez vite les rumeurs de remplacement.' },
+      { type: 'contre', label: 'Ne pas répondre et refuser toute question sur le sujet',
+        det: 'Le silence est une position. Elle tient rarement plus de trois conférences de presse.',
+        adhesion: -12, credibilite: -10, capital: -6, parents: -4,
+        suite: 'La question revient à chaque point presse pendant trois mois. Elle a ouvert un dossier que le ministère ne contrôle pas : le financement du privé sous contrat, immédiatement saisi par toutes les oppositions.' },
+    ],
+  },
+  {
+    id: 'privilege',
+    titre: 'Le privilège',
+    manchette: 'Un traitement perçu sans service fait',
+    themes: ['ors', 'evaluation_etab', 'remplacement', 'autonomie', 'recrutement_local', 'pluriannuel'],
+    recit: 'Un hebdomadaire satirique révèle que vous percevez, depuis des années, le traitement attaché à un poste universitaire où vous n’assurez plus d’enseignement, au titre d’une décharge parfaitement régulière. Le montant est dérisoire à l’échelle d’un budget de 65 milliards. Ce n’est pas la question.',
+    lecon: 'L’affaire est dévastatrice parce qu’elle porte exactement sur ce que le ministère demande à ses agents : faire ses heures. On n’est pas puni pour ce qu’on fait, on est puni pour l’écart entre ce qu’on exige des autres et ce qu’on s’applique à soi-même.',
+    reponses: [
+      { type: 'assumer', label: 'Renoncer immédiatement au poste et rembourser',
+        det: 'Vous démissionnez du poste et remboursez les sommes perçues. Le geste coûte, il clôt.',
+        adhesion: -5, credibilite: -4, capital: -5, parents: -1,
+        suite: 'La droite parle de précipitation, la gauche de aveu. Le dossier est mort en dix jours, ce qui est le seul résultat qui compte.' },
+      { type: 'defendre', label: 'Rappeler que le régime de décharge est parfaitement légal',
+        det: 'Il l’est, et cela n’a jamais été démenti. Vous produisez les textes.',
+        adhesion: -15, credibilite: -11, capital: -4, parents: -3,
+        suite: 'Vous avez publié les textes. Une salle des professeurs a publié son emploi du temps. Les deux documents ont circulé côte à côte.' },
+      { type: 'contre', label: 'Rappeler que la question du service fait se pose partout ailleurs',
+        det: 'Vous élargissez le débat au service effectif dans la fonction publique. Techniquement pertinent, politiquement suicidaire.',
+        adhesion: -22, credibilite: -14, capital: -8, parents: 0, unite: true,
+        suite: 'Vous venez d’ouvrir, depuis la position la plus faible possible, le seul dossier sur lequel l’unité syndicale est immédiate.' },
+    ],
+  },
+  {
+    id: 'faux_nez',
+    titre: 'Le faux nez',
+    manchette: 'Une association d’élèves financée par le ministère, et créée par lui',
+    themes: ['manuels', 'numerique_tel', 'portable', 'ia', 'uniforme', 'eval_diag'],
+    recit: 'Deux rédactions révèlent qu’une association de lycéens très favorable à vos réformes, subventionnée par le ministère, aurait été suscitée par votre entourage — au moment où une organisation lycéenne historique voyait, elle, sa subvention divisée par quatre. Une enquête est ouverte, visant les dirigeants de l’association.',
+    lecon: 'Ce grief-là ne relève pas de la vie privée mais du mélange des genres : l’appareil d’État et des fonds publics au service d’une communication. C’est le reproche le plus lourd du répertoire, et paradoxalement celui qui emporte le moins de ministres. On n’en tombe pas ; on y perd sa voix.',
+    reponses: [
+      { type: 'assumer', label: 'Suspendre la subvention et saisir l’inspection générale',
+        det: 'Vous ouvrez vous-même le dossier plutôt que d’attendre qu’on vous l’ouvre.',
+        adhesion: -4, credibilite: -8, capital: -6, parents: -2,
+        suite: 'L’inspection travaillera huit mois. D’ici là, le sujet est administratif, ce qui est la meilleure chose qui puisse lui arriver.' },
+      { type: 'defendre', label: 'Défendre le pluralisme : « toutes les associations sont soutenues »',
+        det: 'Vous produisez le tableau des subventions. Il contient précisément le chiffre qui pose problème.',
+        adhesion: -9, credibilite: -16, capital: -5, parents: -3,
+        suite: 'Le tableau que vous avez publié est devenu l’illustration de l’article. Ce n’est pas ce que vous aviez prévu.' },
+      { type: 'contre', label: 'Dénoncer une manœuvre d’organisations politisées',
+        det: 'Vous mettez en cause, sur un plateau, ceux qui vous interrogent.',
+        adhesion: -13, credibilite: -24, capital: -7, parents: -4,
+        suite: 'Mettre en cause ceux qui posent la question a toujours le même effet : ils posent la question plus longtemps. Votre parole vaut désormais moins que le communiqué de n’importe qui.' },
+    ],
+  },
+  {
+    id: 'illegitimite',
+    titre: 'L’illégitimité',
+    manchette: 'Le procès en incompétence, et il n’est pas question d’école',
+    themes: [],                 // ne résonne avec aucune mesure : elle est subie
+    subie: true,
+    recit: 'Depuis votre nomination, une partie de la presse d’opinion et des responsables politiques contestent moins vos décisions que votre droit d’occuper le poste : votre parcours, vos travaux antérieurs, vos prises de position d’avant. Aucune de vos mesures n’est discutée. C’est vous qui l’êtes.',
+    lecon: 'Cette affaire-là ne récompense aucune bonne gestion et ne se réduit par aucune décision. Elle existe dans le jeu comme subie, jamais comme une carte que l’on pourrait jouer contre quelqu’un. On modélise la réalité d’une exposition ; on ne fabrique pas un simulateur de dénigrement.',
+    reponses: [
+      { type: 'assumer', label: 'Ne pas entrer dans le débat et rester sur les dossiers',
+        det: 'Vous répondez à chaque question par une mesure. C’est fatigant, et c’est ce qui use le moins vite.',
+        adhesion: -2, credibilite: -5, capital: -6, parents: -2,
+        suite: 'Le flux ne s’arrête pas ; il cesse simplement de progresser. Sur ce dossier-là, c’est une victoire.' },
+      { type: 'defendre', label: 'Répondre point par point, publiquement',
+        det: 'Vous consacrez une conférence de presse entière à votre propre parcours.',
+        adhesion: -4, credibilite: -9, capital: -10, parents: -4,
+        suite: 'Vous avez passé une heure à parler de vous. C’est une heure que vous n’avez pas passée à parler d’école, et c’était exactement le but de l’exercice.' },
+      { type: 'contre', label: 'Demander l’arbitrage de l’Élysée',
+        det: 'Vous montez au Château chercher un soutien public. Il vient — et il a un prix.',
+        adhesion: -3, credibilite: -3, capital: -12, parents: 0, captation: true,
+        suite: 'Le soutien est venu, chaleureux et bref. En échange, l’Élysée annoncera lui-même votre prochaine mesure : vous en gardez le coût, il en garde le bénéfice.' },
+    ],
+  },
+  {
+    id: 'passe',
+    titre: 'Votre passé',
+    manchette: 'Un dossier antérieur à votre nomination refait surface',
+    themes: [],
+    subie: true,
+    recit: 'Une commission d’enquête parlementaire s’intéresse à une fonction que vous occupiez bien avant d’être ministre, et à ce que vous saviez alors. Vous contestez. L’audition durera cinq heures et sera retransmise.',
+    lecon: 'Une affaire héritée n’éjecte pas : elle fragilise. Elle abaisse le seuil de déclenchement de toutes les autres crises et elle consume l’agenda. Un cabinet d’analyse du risque politique l’a formulé mieux que personne : elle enhardit les adversaires — et les alliés supposés — à agir pour d’autres motifs.',
+    reponses: [
+      { type: 'assumer', label: 'Publier l’intégralité des pièces, sans attendre',
+        det: 'Vous mettez tout en ligne le jour même de la convocation.',
+        adhesion: -3, credibilite: -6, capital: -7, parents: -3, fragilise: 2,
+        suite: 'La transparence immédiate n’a jamais éteint une commission d’enquête. Elle a souvent empêché la deuxième vague, celle des contradictions.' },
+      { type: 'defendre', label: 'Répondre à l’audition en contestant point par point',
+        det: 'Cinq heures d’affrontement retransmis. Vous êtes bon. Cela ne suffira pas.',
+        adhesion: -5, credibilite: -10, capital: -11, parents: -5, fragilise: 3,
+        suite: 'Les extraits qui circulent le lendemain ne sont pas ceux que vous auriez choisis. Ils ne le sont jamais.' },
+      { type: 'contre', label: 'Dénoncer une cabale et refuser de vous expliquer davantage',
+        det: 'Vous mettez en cause la commission elle-même.',
+        adhesion: -8, credibilite: -18, capital: -14, parents: -7, fragilise: 5,
+        suite: 'Le rapport, quand il sortira, retiendra un « défaut d’action ». D’ici là, chaque incident ordinaire de votre ministère se lira à travers ce dossier.' },
+    ],
+  },
+];
+
+const AFFAIRE_PAR_ID = Object.fromEntries(AFFAIRES.map((a) => [a.id, a]));
+
 const PAR_ID = Object.fromEntries(CATALOGUE.map((c) => [c.id, c]));
 
 /* ===== moteur/reperes.js ===== */
@@ -3199,6 +3466,14 @@ function creerPartie({ graine = 1, politique }) {
     requalifiees: new Set(),         // réformes vidées sans être retirées
     decouvertes: new Set(),          // dossiers déjà remontés sur le bureau
     avance: null, engagementRestitution: 0, schemaAvance: 0,
+
+    /* Turbulences : ce qui vous arrive et que vous n'avez pas décidé. */
+    profil: null, perimetre: null,
+    credibilite: K.CREDIBILITE.initiale,
+    plafondAdhesion: 100,
+    affaires: [],                    // affaires sorties, avec la réponse donnée
+    fragilite: 0,                    // abaisse le seuil de toutes les autres crises
+    captationDue: 0,                 // annonces que l'Élysée s'appropriera
     abandons: 0,
     mesuresParAnnee: [],
 
@@ -3221,6 +3496,14 @@ const note = (s, texte, cat = 'info') => s.journal.push({ annee: s.annee, mois: 
 /* ============================================================================
    1. EFFETS RÉELS : tirage sous incertitude
    ========================================================================== */
+/* LE FACTEUR DE PAROLE. La crédibilité conditionne l'efficacité de tout ce que
+   le ministre annonce : à crédibilité effondrée, l'annonce ne porte plus, quelle
+   que soit la mesure. C'est la ressource que les six archétypes de chute
+   attaquent, et celle qui ne se reconstitue que très lentement. */
+function facteurParole(s) {
+  return K.CREDIBILITE.base + K.CREDIBILITE.pente * ((s.credibilite ?? K.CREDIBILITE.initiale) / 100);
+}
+
 /* Le facteur d'implémentation est la leçon centrale : une réforme ne vaut que
    ce que les personnels en font (Slavin — un programme mal implanté ≈ 0). */
 function facteurImplementation(s) {
@@ -3354,8 +3637,25 @@ function rafraichir(s) { recalculerVrai(s); recalculerAffiche(s); }
    premier jour, c'est de dire devant la presse ce que vous allez chercher.
    Le score final pondérera les cinq compteurs selon VOTRE classement : vous
    serez noté contre votre propre parole, et rien d'autre. */
+/* Le profil et le périmètre sont tirés AVANT la nomination : le joueur découvre
+   qui il est en même temps qu'il découvre le poste, et il ne choisit ni l'un ni
+   l'autre. Aucun profil n'est meilleur qu'un autre au sens des compteurs
+   éducatifs — ils exposent différemment, c'est tout. */
+function tirerProfil(s) {
+  s.profil = K.PROFILS[Math.floor(s.rng() * K.PROFILS.length)];
+  const sac = K.PERIMETRES.flatMap((p) => Array(p.poids).fill(p));
+  s.perimetre = sac[Math.floor(s.rng() * sac.length)];
+  s.phys.adhesion = borne(s.phys.adhesion + s.profil.adhesion, 0, 100);
+  s.credibilite = borne(s.credibilite + s.profil.credibilite, 0, 100);
+  s.capital = borne(s.capital + s.profil.capital + s.perimetre.capital, 0, K.CAPITAL.plafond);
+  s.creditBercy = borne(s.creditBercy + s.perimetre.bercy, 0, 100);
+  s.plafondAdhesion = 100 + s.perimetre.plafondAdhesion;
+  s.phys.adhesion = Math.min(s.phys.adhesion, s.plafondAdhesion);
+}
+
 function* etapeDoctrine(s) {
-  yield { type: 'nomination' };
+  tirerProfil(s);
+  yield { type: 'nomination', profil: s.profil, perimetre: s.perimetre };
   const ordre = (yield { type: 'doctrine' }) || Object.keys(K.COMPTEURS_INITIAUX);
   s.doctrine = [...ordre];
   s.poids = {};
@@ -3535,6 +3835,7 @@ function requalifierMesure(s, m, org, poidsRel) {
   s.phys.adhesion = borne(s.phys.adhesion + 2.2 * poidsRel, 0, 100);
   s.capital -= 2;
   s.fatigue = Math.min(K.FATIGUE.max, s.fatigue + 5);
+  s.credibilite = borne(s.credibilite + K.CREDIBILITE.parRequalification, 0, 100);
   note(s, `« ${carte.label} » devient facultative et change de nom. ${org.nom} lève son préavis ; le ministère parle d’« ajustement de méthode ».`, 'retrait');
 }
 
@@ -3567,8 +3868,72 @@ function retirerMesure(s, m, org, poidsRel) {
   s.phys.parents = borne(s.phys.parents - 3, 0, 100);
   s.capital -= 4;
   s.fatigue = Math.min(K.FATIGUE.max, s.fatigue + K.FATIGUE.parAbandon);
+  s.credibilite = borne(s.credibilite + K.CREDIBILITE.parAbandon, 0, 100);
   s.abandons += 1;
   note(s, `Retrait de « ${carte.label} » obtenu par ${org.nom}. La mesure sort du droit ; ses effets ne viendront jamais.`, 'retrait');
+}
+
+/* --- L'AFFAIRE : tirage conditionnel, jamais aléatoire pur ----------------- */
+/* La règle maîtresse : l'affaire qui sort est celle qui RÉSONNE avec ce que le
+   ministre vient de faire. Une polémique personnelle n'est presque jamais
+   fatale en elle-même ; elle est fatale quand elle devient la preuve intuitive
+   d'un procès politique déjà instruit. */
+function* etapeAffaire(s) {
+  if ((s.affaires || []).length >= K.AFFAIRES_TIRAGE.maxParPartie) return;
+
+  const dejaSorties = new Set((s.affaires || []).map((a) => a.id));
+  const themesRecents = new Set((s.mesuresParAnnee[s.annee - 1] || []).map((m) => (PAR_ID[m.id] || {}).theme).filter(Boolean));
+  const exposees = new Set(s.profil ? s.profil.expose : []);
+
+  const candidates = AFFAIRES.filter((a) => !dejaSorties.has(a.id)).map((a) => {
+    const resonne = (a.themes || []).some((t) => themesRecents.has(t));
+    let poids = 1;
+    if (resonne) poids *= K.AFFAIRES_TIRAGE.resonance;
+    if (exposees.has(a.id)) poids *= K.AFFAIRES_TIRAGE.exposition;
+    return { a, poids, resonne };
+  });
+  if (!candidates.length) return;
+
+  /* Probabilité qu'une affaire sorte CETTE ANNÉE — pas la somme des six, ce qui
+     en ferait sortir une chaque année. Le multiplicateur est celui de la
+     candidate la plus exposée : c'est le fait d'avoir légiféré sur le sujet qui
+     fait remonter le dossier, pas le nombre de dossiers existants. */
+  const mult = Math.max(...candidates.map((c) => c.poids));
+  const pAn = Math.min(K.AFFAIRES_TIRAGE.plafondAnnuel, K.AFFAIRES_TIRAGE.base * mult);
+  if (s.rng() > pAn) return;                          // le plus souvent, rien ne sort
+
+  const total = candidates.reduce((x, c) => x + c.poids, 0);
+  let tirage = s.rng() * total, choisie = candidates[0];
+  for (const c of candidates) { tirage -= c.poids; if (tirage <= 0) { choisie = c; break; } }
+  const a = choisie.a;
+
+  const idx = yield { type: 'affaire', affaire: a, resonne: choisie.resonne, credibilite: s.credibilite };
+  const r = a.reponses[Math.max(0, Math.min(2, idx | 0))];
+
+  /* Une affaire médiatique n'est pas une culpabilité : une sur quatre se
+     dégonfle. Le coût politique, lui, reste à moitié encaissé — c'est vrai,
+     et c'est ce que le public retient le plus mal. */
+  const degonfle = s.rng() < K.AFFAIRES_TIRAGE.probaDegonflement;
+  const f = degonfle ? (1 - K.AFFAIRES_TIRAGE.remboursement) : 1;
+
+  s.phys.adhesion = borne(s.phys.adhesion + (r.adhesion || 0) * f, 0, s.plafondAdhesion);
+  s.phys.parents = borne(s.phys.parents + (r.parents || 0) * f, 0, 100);
+  s.credibilite = borne(s.credibilite + (r.credibilite || 0) * f, 0, 100);
+  s.capital = borne(s.capital + (r.capital || 0) * f, 0, K.CAPITAL.plafond);
+  s.fragilite = Math.min(6, (s.fragilite || 0) + (r.fragilise || 0) * f);
+  if (r.captation) s.captationDue = (s.captationDue || 0) + 1;
+  if (r.unite && !degonfle) s.pointsGreveCumules += 2.4;
+
+  s.affaires.push({ id: a.id, reponse: r.type, degonfle, resonne: choisie.resonne });
+  note(s, `Affaire « ${a.titre} » : ${r.type === 'assumer' ? 'vous assumez' : r.type === 'defendre' ? 'vous vous défendez sur les faits' : 'vous contre-attaquez'}.${degonfle ? ' Le dossier se dégonflera — à moitié seulement.' : ''}`, 'affaire');
+
+  /* Une seule réponse du répertoire est fatale à elle seule, et ce n'est pas
+     la plus grave sur le fond : c'est celle où le ministre transforme lui-même
+     un fait privé en jugement sur le service public. */
+  if (r.fatal && !degonfle && s.rng() < r.fatal) {
+    s.fini = true;
+    s.fin = { type: 'affaire', annee: s.annee, texte: `« ${a.manchette} ». Sept organisations, un communiqué commun, un préavis dans la journée. Matignon n'a pas démenti assez vite. Vous quittez la rue de Grenelle sur une phrase que vous avez prononcée vous-même.` };
+  }
 }
 
 /* --- DÉCEMBRE : vote du budget, publications DEPP, élections pro (an 1) ---- */
@@ -3720,6 +4085,11 @@ function etapeCloture(s) {
   for (const e of s.effetsEnAttente) {
     if (!e.applique && e.anneeArrivee <= s.annee) { s.acquis[e.compteur] += e.montant; e.applique = true; e.anneeOuverture = s.annee; }
   }
+
+  /* La parole se reconstitue, très lentement, et seulement si l'on n'a pas
+     passé l'année à se dédire. */
+  s.credibilite = borne(s.credibilite + K.CREDIBILITE.parAn, 0, 100);
+  s.fragilite = Math.max(0, (s.fragilite || 0) - 1);
 
   /* Tendanciels : ce qui se dégrade tout seul si l'on ne fait rien. */
   p.heuresNonAssurees += K.TENDANCIEL.heuresNonAssurees;
@@ -3983,10 +4353,12 @@ function appliquerMesures(s, choix, maxAnnonces = 3, depassementAutorise = true)
       s.reformesActives.push({ id: carte.id, anneeFin: s.annee + K.ABSORPTION.dureeActive - 1 });
     }
 
-    /* Vitrine : immédiate, visible, périssable. */
-    s.phys.parents += carte.vitrine.parents;
-    s.phys.adhesion += carte.vitrine.enseignants;
-    for (const [c, v] of Object.entries(carte.vitrine.compteurs || {})) s.vitrine[c] += v;
+    /* Vitrine : immédiate, visible, périssable — et proportionnelle à ce que
+       vaut votre parole au moment où vous l'employez. */
+    const parole = facteurParole(s);
+    s.phys.parents += carte.vitrine.parents * parole;
+    s.phys.adhesion += carte.vitrine.enseignants * parole;
+    for (const [c, v] of Object.entries(carte.vitrine.compteurs || {})) s.vitrine[c] += v * parole;
 
     /* Physique. */
     const ph = carte.physique || {};
@@ -4087,7 +4459,10 @@ function* derouler(s) {
     yield* etapeRentree(s);   s.mois = 8;
     yield* etapeCirculaireRentree(s);        yield { type: 'etape', etape: 'rentree' };
     yield* etapeAudience(s);  s.mois = 9;
-    etapeDecembre(s);         s.mois = 11; yield { type: 'etape', etape: 'decembre' };
+    etapeDecembre(s);         s.mois = 11;
+    yield* etapeAffaire(s);
+    if (s.fini) break;
+    yield { type: 'etape', etape: 'decembre' };
     yield* etapeJanvier(s);   s.mois = 0;
     etapeMars(s);             s.mois = 2;  yield { type: 'etape', etape: 'mars' };
     etapeCloture(s);          s.mois = 4;
@@ -4110,6 +4485,7 @@ function jouerMandat({ graine = 1, politique }) {
     if (q.type === 'nomination') rep = 'accepter';
     else if (q.type === 'reperes') rep = null;   // la note de cadrage se lit, elle ne se décide pas
     else if (q.type === 'avance') rep = politique.avance ? politique.avance(s, q) : 1;
+    else if (q.type === 'affaire') rep = politique.affaire ? politique.affaire(s, q) : 0;
     else if (q.type === 'doctrine') rep = politique.doctrine ? politique.doctrine(s) : Object.keys(K.COMPTEURS_INITIAUX);
     else if (q.type === 'lettrePlafond') rep = politique.lettrePlafond ? politique.lettrePlafond(s, q.palier) : 'accepter';
     else if (q.type === 'rentree') rep = politique.rentree ? politique.rentree(s, q) : 'assumer';
@@ -4272,7 +4648,7 @@ const el = (tag, cls, html) => { const n = document.createElement(tag); if (cls)
 const alea = (arr) => arr[Math.floor(Math.random() * arr.length)];
 const fmt1 = (x) => (Math.round(x * 10) / 10).toLocaleString('fr-FR');
 const fmt0 = (x) => Math.round(x).toLocaleString('fr-FR');
-const signe = (x) => (x > 0 ? '+' + fmt1(x) : fmt1(x));
+const signe = (x) => (x > 0 ? '+' + fmt1(x) : fmt1(x).replace(/^-/, '\u2212'));
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;');
 /* typographie française pour les textes du moteur : décimales à virgule */
 const fr = (s) => esc(s).replace(/(\d)\.(\d)/g, '$1,$2');
@@ -4479,6 +4855,7 @@ function majHud() {
   sous.hidden = !hudDeplie;
   sous.innerHTML = [
     `Capital politique <b>${fmt0(S.capital)}</b>`,
+    `Crédibilité <b class="${S.credibilite < 35 ? 'neg' : ''}">${fmt0(S.credibilite)}</b> (vos annonces valent ×${(Math.round(facteurParole(S) * 100) / 100).toLocaleString('fr-FR')})`,
     `Crédit Bercy <b>${fmt0(S.creditBercy)}</b>`,
     `Adhésion enseignante <b>${fmt0(S.phys.adhesion)}</b>`,
     `Parents <b>${fmt0(S.phys.parents)}</b>`,
@@ -4534,13 +4911,23 @@ function ecranAccueil(sauvegarde) {
 }
 
 /* --- la nomination : on vous propose Grenelle -------------------------------- */
-function ecranNomination() {
+function ecranNomination(q) {
   const d = docu('Appel de Matignon', 'On vous propose la rue de Grenelle', 'juin 2027');
   d.classList.add('papier');
   d.appendChild(el('p', 'chapo', 'Le gouvernement se forme. Votre téléphone sonne : le portefeuille proposé est l’Éducation nationale — le premier budget de l’État — 65,3 milliards d’euros au projet de loi de finances qui s’annonce, 1,2 million d’agents, 12 millions d’élèves. La durée moyenne dans le poste dépasse rarement deux ans.'));
   d.appendChild(el('div', 'note-passation',
     'Votre prédécesseur, huitième en quatre ans, laisse un mot : « Tout est dans les dossiers. Les dossiers sont dans les cartons. Les cartons sont au garde-meuble, la DGESCO sait lequel. Méfiez-vous de juillet, de septembre et de janvier — le reste de l’année est calme, sauf le reste de l’année. Bonne chance.'
     + '<span class="ps">P.-S. — La photocopieuse du deuxième est en panne depuis 2019. C’est le dossier le plus consensuel du ministère : ne le réglez pas, il fédère. »</span>'));
+  /* Le profil et le périmètre sont tirés, pas choisis. Ils ne changent aucun
+     compteur éducatif : ils changent ce qu'on vous reprochera. */
+  if (q && q.profil) {
+    const pr = el('div', 'profil-bloc');
+    pr.innerHTML = `<div class="titre-d">Ce que la presse écrira sur vous dès demain</div>
+      <div class="profil-ligne"><b>${esc(q.profil.nom)}</b><span>${fr(q.profil.detail)}</span></div>
+      <div class="profil-ligne"><b>${esc(q.perimetre.nom)}</b><span>${fr(q.perimetre.detail)}</span></div>
+      <p class="profil-note">Vous n’avez choisi ni l’un ni l’autre, et aucun des deux ne vous rend meilleur ou moins bon ministre : ils décident seulement de ce sur quoi vous serez attaquable. C’est ainsi que le poste fonctionne.</p>`;
+    d.appendChild(pr);
+  }
   d.appendChild(el('p', '', 'Vous acceptez. Dès demain, devant la presse, vous direz vous-même ce que vous allez chercher pendant cinq ans.'));
   const act = el('div', 'actions');
   const ok = el('button', 'btn tamponner', 'Accepter le ministère');
@@ -4609,6 +4996,56 @@ function ecranBercy(q) {
   const con = el('button', 'opt', `<b>Contester et porter l’arbitrage à Matignon</b><span class="det">Coût : 12 points de capital politique (il vous en reste ${fmt0(S.capital)}). Chances de gagner : moyennes, et décroissantes avec l’usage. Un ministre qui menace trop souvent finit par ne plus être craint, seulement remplacé.</span>`);
   con.onclick = () => suivant('contester');
   opts.append(acc, con); d.appendChild(opts);
+  scene(d);
+}
+
+/* --- l'affaire : la polémique qui ne concerne pas l'école --------------------- */
+function ecranAffaire(q) {
+  const a = q.affaire;
+  const d = docu('Revue de presse — affaire personnelle', esc(a.manchette));
+  d.classList.add('papier');
+  d.appendChild(el('p', 'chapo', fr(a.recit)));
+  if (q.resonne) {
+    d.appendChild(el('div', 'bandeau-neuf',
+      '<b>Le calendrier n’est pas un hasard.</b> Le dossier ressort au moment précis où vous légiférez sur le même sujet. Une polémique personnelle n’est presque jamais fatale en elle-même : elle le devient quand elle donne à un procès politique déjà instruit sa preuve intuitive.'));
+  }
+  d.appendChild(el('div', 'decryptage',
+    `<div class="titre-d">Ce que ce type d’affaire enseigne</div><p>${fr(a.lecon)}</p>`));
+
+  const opts = el('div', 'opts');
+  a.reponses.forEach((r, i) => {
+    const chiffres = [
+      r.adhesion ? `adhésion ${signe(r.adhesion)}` : '',
+      r.credibilite ? `crédibilité ${signe(r.credibilite)}` : '',
+      r.capital ? `capital ${signe(r.capital)}` : '',
+      r.parents ? `parents ${signe(r.parents)}` : '',
+      r.unite ? '<b class="neg">unité syndicale immédiate</b>' : '',
+      r.fatal ? '<b class="neg">peut mettre fin au mandat</b>' : '',
+      r.fragilise ? `<b class="neg">fragilise ${r.fragilise} an${r.fragilise > 1 ? 's' : ''}</b>` : '',
+      r.captation ? '<b class="neg">l’Élysée annoncera votre prochaine mesure</b>' : '',
+    ].filter(Boolean);
+    const b = el('button', 'opt',
+      `<b>${esc(r.label)}</b><span class="det">${fr(r.det)}</span>`
+      + `<span class="chiffres">${chiffres.map((c) => `<span>${c}</span>`).join('')}</span>`);
+    b.onclick = () => finAffaire(i, r);
+    opts.appendChild(b);
+  });
+  d.appendChild(opts);
+  d.appendChild(el('p', 'note-passation', `Votre crédibilité est aujourd’hui de <b>${fmt0(q.credibilite)}/100</b>. C’est elle qui décide de ce que valent vos annonces : à crédibilité effondrée, la meilleure mesure du catalogue ne porte plus. Aucune de ces réponses ne touche un compteur éducatif — et c’est bien le problème du métier.`));
+
+  function finAffaire(i, r) {
+    opts.querySelectorAll('.opt').forEach((n) => { n.disabled = true; });
+    const box = el('div', 'decryptage');
+    box.style.borderLeftColor = r.type === 'assumer' ? 'var(--c-sante)' : r.type === 'defendre' ? 'var(--c-budget)' : 'var(--rouge-rf)';
+    box.innerHTML = `<div class="titre-d" style="color:${r.type === 'assumer' ? 'var(--c-sante)' : r.type === 'defendre' ? 'var(--c-budget)' : 'var(--rouge-rf)'}">La suite</div><p>${fr(r.suite)}</p>`
+      + '<p style="font-size:.78rem;color:var(--encre-3);margin-top:8px">Une affaire médiatique n’est pas une culpabilité : une sur quatre se dégonfle — démentie, classée, ou close par un remboursement. Le coût politique, lui, reste à moitié encaissé. C’est vrai, et c’est ce que le public retient le plus mal.</p>';
+    d.appendChild(box);
+    const act = el('div', 'actions');
+    const ok = el('button', 'btn', 'Passer à autre chose');
+    ok.onclick = () => suivant(i);
+    act.appendChild(ok); d.appendChild(act);
+    box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
   scene(d);
 }
 
@@ -5373,6 +5810,7 @@ function dateDe(q) {
   if (q.type === 'doctrine') return 'juin 2027';
   if (q.type === 'reperes') return 'juin 2027';
   if (q.type === 'avance') return 'juin 2027';
+  if (q.type === 'affaire') return `décembre ${an}`;
   if (q.type === 'retrait') return `octobre ${ETAT.s.anneeCiv || 2027}`;
   if (q.type === 'dossier') return 'été 2027';
   if (q.type === 'audience') return `octobre ${ETAT.s.anneeCiv || 2027}`;
@@ -5391,10 +5829,11 @@ function rendre(q) {
   ETAT.dateLabel = dateDe(q);
   ETAT.rentreeRatee = ETAT.s.journal.some((e) => e.cat === 'rentree' && e.annee === ETAT.s.annee && e.texte.includes('dégradée'));
   majHud();
-  if (q.type === 'nomination') ecranNomination();
+  if (q.type === 'nomination') ecranNomination(q);
   else if (q.type === 'doctrine') ecranDoctrine();
   else if (q.type === 'reperes') ecranReperes();
   else if (q.type === 'avance') ecranAvance(q);
+  else if (q.type === 'affaire') ecranAffaire(q);
   else if (q.type === 'retrait') ecranRetrait(q);
   else if (q.type === 'dossier') ecranDossier(q);
   else if (q.type === 'audience') ecranAudience(q);

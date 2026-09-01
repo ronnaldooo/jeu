@@ -78,7 +78,7 @@ A(
   new Paragraph({ children: [T('Devenir ministre de l’Éducation nationale', { size: 30, color: '565B6B' })], alignment: AlignmentType.CENTER, spacing: { after: 480 } }),
   new Paragraph({ children: [T('Déroulé du jeu et grandes étapes', { bold: true, size: 28 })], alignment: AlignmentType.CENTER, spacing: { after: 100 } }),
   new Paragraph({ children: [T('Document de travail destiné à la relecture et aux corrections', { size: 22, italics: true, color: '565B6B' })], alignment: AlignmentType.CENTER, spacing: { after: 1000 } }),
-  new Paragraph({ children: [T('Version du 31 août 2026 — intègre le rapport HCSP « Niveau scolaire »', { size: 20, color: '8A8FA3' })], alignment: AlignmentType.CENTER }),
+  new Paragraph({ children: [T('Version du 1er septembre 2026 — ajoute les turbulences', { size: 20, color: '8A8FA3' })], alignment: AlignmentType.CENTER }),
   new Paragraph({ children: [T('Jeu en ligne : https://ronnaldooo.github.io/jeu/', { size: 20, color: '8A8FA3' })], alignment: AlignmentType.CENTER }),
   new Paragraph({ children: [T('Code et sources : https://github.com/ronnaldooo/jeu', { size: 20, color: '8A8FA3' })], alignment: AlignmentType.CENTER, spacing: { after: 600 } }),
   new Paragraph({ children: [new PageBreak()] }),
@@ -157,6 +157,7 @@ A(H2('2.1 L’ouverture — juin 2027'));
 A(H3('Écran 1 · L’appel de Matignon'));
 A(BODY('Le gouvernement se forme, le téléphone sonne. Le portefeuille proposé est l’Éducation nationale : premier budget de l’État — 65,3 milliards d’euros au projet de loi de finances qui s’annonce, 1,2 million d’agents, 12 millions d’élèves. La durée moyenne dans le poste dépasse rarement deux ans.'));
 A(BODY('Le prédécesseur, huitième en quatre ans, laisse un mot de passation. Le joueur peut refuser la nomination — le jeu s’arrête alors, ce qui est une fin comme une autre.'));
+A(BODY([T('Deux choses sont tirées au sort et affichées sur cet écran : ', {}), T('votre profil', { bold: true }), T(' (vous venez de la maison, de la haute fonction publique, d’un mandat local ou de la société civile) et ', {}), T('le périmètre de votre nomination', { bold: true }), T(' (plein exercice, périmètre élargi, ministre délégué). Vous n’avez choisi ni l’un ni l’autre. La règle absolue est qu’aucun profil n’est meilleur qu’un autre au sens des compteurs éducatifs : ils décident seulement de ce sur quoi vous serez attaquable, et de la patience de Matignon. Le périmètre élargi, par exemple, donne du poids dans les arbitrages budgétaires et abaisse de quinze points le plafond d’adhésion enseignante pour toute la partie.', {})]));
 A(BODY([T('Point de règle : ', { bold: true }), T('on ne dit jamais qui a été élu président. Le joueur choisit lui-même ses priorités ; aucune n’est imposée par l’Élysée.')]));
 
 A(H3('Écran 2 · La conférence de presse — votre feuille de route'));
@@ -164,9 +165,9 @@ A(BODY('Premier acte du mandat : classer les cinq compteurs par ordre de priorit
 A(BODY([T('C’est le ressort principal du jeu : ', {}), T('le joueur est noté contre sa propre parole', { bold: true }), T('. Un ministre qui annonce la réduction des inégalités et qui passe cinq ans à tenir le budget aura un mauvais score, même si le budget est excellent. Les oppositions lui ressortent sa déclaration à chaque arbitrage contradictoire.')]));
 A(BODY('Chaque priorité est présentée avec les projets politiques réels qui la portent en 2027 — Attal, Philippe, Lisnard, le PS, Glucksmann, Mélenchon, le NFP, la FSU — de sorte que le joueur comprenne qu’aucune priorité n’est neutre. Le jeu cite, il ne juge pas.'));
 
-A(H3('Écran 3 · La note de cadrage (nouveau)'));
-A(BODY('Avant toute décision, la direction générale remet trois fiches : l’argent, les élèves qui manquent, ce que savent les élèves. Chaque chiffre porte sa source officielle, cliquable. Une série budgétaire 2019-2027 en graphique montre d’un coup d’œil que la progression du budget 2026 (+0,26 %) est la plus faible de la période, et que le PLF 2027 apporte +0,8 milliard.'));
-A(BODY('Aucune recommandation : l’état du système, et rien d’autre. Les six autres fiches sont accessibles à tout moment par l’onglet « Comprendre le jeu ».'));
+A(H3('Écran 3 · La note de cadrage'));
+A(BODY('La direction générale de l’enseignement scolaire remet trois pages courtes — un budget contraint, une baisse démographique, des résultats préoccupants — avec un graphique et trois chiffres chacune, pas davantage. Chaque chiffre porte sa source officielle, cliquable. Aucune recommandation : l’état du système, et rien d’autre. Les huit autres fiches sont accessibles à tout moment par l’onglet « Comprendre le jeu ».'));
+A(BODY([T('Deux règles de conception s’appliquent à ces graphiques. ', {}), T('Les barres partent toujours de zéro', { bold: true }), T(' : un axe tronqué transformait la hausse de 1,2 % du budget en mur, et un jeu bâti sur l’idée que les chiffres affichés mentent ne peut pas ouvrir sur un graphique trompeur. Et lorsque l’échelle honnête cache le phénomène — une courbe d’effectifs de 11,6 à 9,9 millions paraît plate — c’est le sujet du graphique qui change : la démographie est représentée non par le niveau mais par la perte cumulée, barres descendantes, avec les cinq rentrées que vous arbitrez distinguées de celles de vos successeurs.', {})]));
 
 A(H3('Écran 4 · Les premières annonces'));
 A(BODY('Un nouveau ministre n’attend pas le budget suivant : la loi de finances votée par son prédécesseur laisse une marge de redéploiement. Enveloppe : 550 millions d’euros, deux annonces au maximum, menu resserré à 5 ou 7 cartes.'));
@@ -180,7 +181,7 @@ A(PUCE('une page de manuel sortie de son contexte, polémique d’août ;'));
 A(PUCE('l’interview de rentrée, et le choix de sa petite phrase.'));
 A(BODY('Ces dossiers ne coûtent rien en budget et beaucoup en positionnement : ils fixent l’image du ministre avant qu’il ait rien fait.'));
 A(VIDE());
-A(ENCADRE('À relire', 'L’ouverture fait cinq écrans avant la première rentrée. Est-ce trop long ? La note de cadrage arrive-t-elle au bon moment — avant les premières annonces, ou faudrait-il la placer avant la feuille de route ?'));
+A(ENCADRE('À relire', 'L’ouverture fait six écrans avant la première rentrée. Est-ce encore le bon rythme ? Et l’avance de gestion : les trois options vous paraissent-elles bien dosées — 550, 950 ou 1 400 millions, contre 0, 45 ou 60 % de restitution promise ?'));
 
 A(H2('2.2 L’année type — cinq fois de suite'));
 A(BODY('À partir de septembre 2027, chaque année suit le même cycle. Les lignes marquées « DÉCISION » appellent un choix du joueur ; les autres sont des points d’étape où il lit ce qui s’est produit.'));
@@ -204,13 +205,14 @@ A(VIDE());
 A(ENCADRE('À relire', 'Le calendrier vous paraît-il fidèle ? Manque-t-il un rendez-vous que vit réellement un ministre (le comité social d’administration ? les résultats du baccalauréat en juillet ? la conférence de presse de rentrée ?).'));
 
 A(H2('2.3 La fin de partie'));
-A(BODY('Quatre façons de terminer — et une seule qui consiste à aller au bout.'));
+A(BODY('Cinq façons de terminer — et une seule qui consiste à aller au bout.'));
 A(tableau(
   ['Fin', 'Déclenchement'],
   [
     ['Mandat complet (5 ans)', 'Survivre aux cinq années. « Vous partez debout — ce qui, rue de Grenelle, est déjà un résultat. »'],
     ['Renvoi', 'Trois convocations à Matignon. Une convocation s’obtient par une rentrée ratée, un capital politique épuisé, des familles qui décrochent, ou Bercy qui fait remonter le dossier.'],
     ['Remaniement', 'Un tirage annuel, modulé par le capital politique et l’opinion des familles. C’est la première cause de fin de mandat dans la vraie vie : plus de trente ministres depuis 1958.'],
+    ['Affaire', 'La seule réponse fatale du répertoire des polémiques personnelles : justifier la scolarisation privée de ses enfants par un défaut du service public. Les sept organisations publient un communiqué commun dans la journée.'],
     ['Guerre scolaire', 'Deux provocations sur le privé sous contrat, puis un capital politique bas. « Un million de personnes dans la rue, comme en 1984. Le gouvernement retire le texte, et vous avec. »'],
   ],
   [2600, 6760],
@@ -274,7 +276,7 @@ A(ENCADRE('À relire', 'Manque-t-il des mesures que vous attendriez dans un tel 
 A(H2('3.3 L’audience syndicale (octobre) — en deux temps'));
 A(BODY('Sept organisations, pondérées par les résultats réels des élections professionnelles de 2022, avec des profils de négociation distincts : rapport de force, réformiste, frontal, négociation, radical, corporatiste. Les noms sont des pseudonymes transparents ; les poids et les profils sont ceux des organisations réelles.'));
 A(BODY([T('Premier temps : la question.', { bold: true }), T(' Le ministre reçoit l’organisation majoritaire du moment sur un sujet — les postes, les salaires, le remplacement, les concours, une grève, sa doctrine. Trois réponses possibles : la fermeté, la méthode, la concession. Une matrice croise le type de réponse et le profil de l’organisation : la fermeté rassure l’opinion et coûte le corps ; la méthode paie en adhésion selon le profil ; la concession paie partout mais se paie à Bercy. Le verdict est affiché — bien accueillie, accueillie froidement, très mal reçue.')]));
-A(BODY([T('Second temps : la revendication.', { bold: true }), T(' L’organisation exige le retrait de la mesure qu’elle conteste le plus. Céder la retire vraiment du jeu : ses effets réels ne viendront jamais, et le compteur d’abandons monte — ce qui coûtera le bonus de constance au bilan. Maintenir face à un profil combatif, c’est provisionner une grève pour le printemps.')]));
+A(BODY([T('Second temps : la revendication.', { bold: true }), T(' L’organisation exige le retrait de la mesure qu’elle conteste le plus. Trois réponses sont possibles. ', {}), T('Céder', { bold: true }), T(' retire vraiment la mesure du jeu : ses effets réels ne viendront jamais, et le compteur d’abandons monte. ', {}), T('Maintenir', { bold: true }), T(' face à un profil combatif, c’est provisionner une grève pour le printemps. ', {}), T('Requalifier', { bold: true }), T(' — la renommer et la rendre facultative — ne coûte presque rien sur le moment : le conflit se dénoue, les crédits restent inscrits, l’annonce survit. C’est le geste politique le plus fréquent du système français, et le seul dont le prix n’apparaît qu’au bilan : la mesure requalifiée produit moins d’un cinquième de ce qu’elle promettait. Précédent : le « choc des savoirs » de décembre 2023, requalifié en « groupes de besoins », puis vidé de son obligation.', {})]));
 A(BODY('Les grèves sont chiffrées à partir d’un étalon historique — le 10 février 2011, 16,99 % d’enseignants grévistes — et affichées avec deux nombres : celui du ministère et celui de l’intersyndicale, environ 1,7 fois plus élevé.'));
 A(VIDE());
 A(ENCADRE('À relire', 'Les profils syndicaux et la matrice d’accueil des réponses sont des simplifications assumées. Sonnent-elles juste pour quelqu’un qui connaît ces organisations ? La satire des noms reste-t-elle acceptable et symétrique ?'));
@@ -293,6 +295,29 @@ A(tableau(
 ));
 A(BODY('Le ministre commence à 48 — donc au palier « ferme ». Le crédit monte quand il tient ses engagements en janvier, descend quand il dépasse son enveloppe. C’est le seul indicateur du jeu que le joueur peut vraiment reconstruire en tête.'));
 A(new Paragraph({ children: [new PageBreak()] }));
+
+A(H2('3.5 Les turbulences — ce qui vous arrive et que vous n’avez pas décidé'));
+A(BODY('Sur les six causes documentées de chute d’un ministre de l’Éducation, une seule relève de la politique éducative. Les cinq autres tiennent à la posture, à la communication, au hasard biographique ou au périmètre de la nomination. Un ministre tombe plus souvent sur une phrase que sur un bilan — et un jeu qui n’aurait que des compteurs de résultats scolaires ne pourrait pas représenter ce qui met réellement fin aux carrières.'));
+A(H3('La crédibilité, la ressource de parole'));
+A(BODY('Une jauge distincte du capital politique, initialisée à 62. Elle multiplie tout l’effet d’annonce : à 62, les mesures valent ×1,11 ; à 20, ×0,73 ; à 95, ×1,41. À crédibilité effondrée, la meilleure mesure du catalogue ne porte plus. Elle se reconstitue de quatre points par an et se perd beaucoup plus vite : neuf points pour une mesure requalifiée, cinq pour un abandon, jusqu’à vingt-quatre pour une affaire mal gérée. C’est ce qui donne enfin un prix à la requalification : se dédire ne coûtait qu’un peu de fatigue, cela coûte désormais la parole.'));
+A(H3('Les affaires personnelles'));
+A(BODY('Six archétypes, intégralement pseudonymisés : les situations sont inspirées de faits publics, les personnages sont fictifs, et aucune affaire n’est rejouée sous le nom de qui que ce soit. Ce qu’on garde, c’est la forme — le déclencheur, la cinétique, l’issue.'));
+A(tableau(
+  ['Archétype', 'Ce qui est reproché', 'Se déclenche quand'],
+  [
+    ['Le lieu', 'La distance avec le terrain', 'Vous avez légiféré sur le remplacement, les rythmes ou les obligations de service.'],
+    ['L’école de vos enfants', 'La défiance envers le service public', 'Vous avez touché au privé, à l’affectation ou à la sectorisation.'],
+    ['Le privilège', 'L’écart entre ce que vous exigez et ce que vous vous appliquez', 'Vous avez exigé de la présence, de l’évaluation ou du contrôle.'],
+    ['Le faux nez', 'L’instrumentalisation de l’État', 'Vous avez joué une carte de communication : manuels, numérique, uniforme, évaluations.'],
+    ['L’illégitimité', 'Votre droit même d’occuper le poste', 'Rien. Elle est subie, selon votre profil.'],
+    ['Votre passé', 'Une défaillance antérieure à votre nomination', 'Rien. Elle est subie.'],
+  ],
+  [2100, 3100, 4160],
+));
+A(BODY('Le tirage n’est jamais purement aléatoire : 9,5 % par an de base, multiplié par 2,6 si vous avez joué une carte du même thème dans l’année, par 1,7 si votre profil y expose, plafonné à 42 %, deux affaires par partie au maximum. C’est la règle la plus fidèle au réel de tout le dossier : on n’est pas puni pour ce qu’on fait, on est puni pour l’écart. Mesuré sur 500 parties : 40 % des parties ne voient aucune affaire, 41 % en voient une, 19 % en voient deux, et un quart des affaires qui sortent sont déclenchées par ce que le ministre venait de faire — l’écran le signale quand c’est le cas.'));
+A(BODY('Trois réponses toujours : assumer sobrement, se défendre sur les faits, contre-attaquer. La troisième est la plus tentante et la plus coûteuse. Aucune ne touche un compteur éducatif. Une affaire sur quatre se dégonfle — démentie, classée, close par un remboursement — et le joueur ne récupère alors que la moitié du coût : c’est vrai, et c’est ce que le public retient le plus mal. Une seule réponse du répertoire est fatale à elle seule, et ce n’est pas la plus grave sur le fond : c’est celle où le ministre justifie la scolarisation privée de ses enfants par un défaut du service public dont il vient de prendre la tête.'));
+A(VIDE());
+A(ENCADRE('À relire', 'La fréquence vous paraît-elle juste — quatre parties sur dix sans aucune affaire ? Et le garde-fou principal : l’archétype de l’attaque en illégitimité existe uniquement comme subi, jamais comme une carte jouable par qui que ce soit. On modélise la réalité d’une exposition, on ne fabrique pas un simulateur de dénigrement. Cette ligne vous semble-t-elle au bon endroit ?'));
 
 /* ============ 4. LE BILAN ============ */
 A(H1('4. Le bilan — le moment où le jeu dit ce qu’il avait à dire'));
@@ -315,7 +340,7 @@ A(new Paragraph({ children: [new PageBreak()] }));
 
 /* ============ 5. TRANSVERSAL ============ */
 A(H1('5. Ce qui tourne en arrière-plan'));
-A(BODY('Sept mécaniques fonctionnent en continu, sans écran dédié. Elles expliquent la plupart des surprises que rencontre un joueur.'));
+A(BODY('Huit mécaniques fonctionnent en continu, sans écran dédié. Elles expliquent la plupart des surprises que rencontre un joueur.'));
 A(tableau(
   ['Mécanique', 'Ce qu’elle fait'],
   [
@@ -325,6 +350,7 @@ A(tableau(
     ['La fatigue réformatrice', 'Sept ministres en trois ans avant vous. Elle monte à chaque réforme et à chaque abandon, redescend quand on n’annonce rien — mais un ministre qui n’annonce rien n’est pas un ministre qui dure.'],
     ['Le poids de l’héritage', 'Les deux premières années, 60 % du signal affiché vient de ce qu’on n’a pas fait. Le ministre est jugé sur le mandat de son prédécesseur.'],
     ['Le coût d’affichage du long terme', 'Une réforme dont l’effet arrive dans quatre ans ou plus consomme des moyens visibles pour un résultat invisible. C’est ce qui rend la politique de long terme électoralement irrationnelle.'],
+    ['La réversion', 'Une réforme non consolidée ne survit pas au ministre suivant : les effets encore en route à la fin du mandat n’arrivent qu’à 62 % dans la projection décennale. Une seule carte immunise — la loi de programmation — et elle ne produit rien de visible pendant le mandat. Précédent : la réforme du collège de 2015, abrogée par décret dès l’arrivée du successeur.'],
     ['La presse et le fil social', 'Unes de journal, comptes qui commentent selon l’état du système : un directeur d’école fatigué, un parent délégué sans remplaçant, un ancien ministre qui tweete avant le lever du soleil. C’est la respiration du jeu — et l’endroit où passe l’humour.'],
   ],
   [2600, 6760],
@@ -333,7 +359,7 @@ A(VIDE());
 A(ENCADRE('À relire', 'Ces mécaniques sont invisibles par construction. Le jeu les explique-t-il assez pour qu’on comprenne ce qui nous arrive, sans les expliciter au point de tuer l’effet de surprise ?'));
 
 A(H1('6. L’onglet « Comprendre le jeu »'));
-A(BODY('Un bouton fixe en bas à gauche de chaque écran ouvre dix fiches de référence, 74 chiffres, trente-deux sources officielles portant chacune l’organisme, la date et le lien du document.'));
+A(BODY('Un bouton fixe en bas à gauche de chaque écran ouvre onze fiches de référence, 80 chiffres, trente-quatre sources officielles portant chacune l’organisme, la date et le lien du document.'));
 A(tableau(
   ['Fiche', 'Ce qu’elle contient'],
   [
@@ -345,6 +371,7 @@ A(tableau(
     ['Les heures qui manquent', 'Remplacement, AESH, santé scolaire.'],
     ['Le temps et les classes', 'Heures d’enseignement, semaines, taille des classes, redoublement.'],
     ['Le climat scolaire', 'Harcèlement, pause numérique, temps d’écran.'],
+    ['Ce qui a marché ailleurs', 'Portugal, Pologne, Londres, Suède, Finlande : deux réussites, deux reculs, et aucun modèle transposable tel quel.'],
     ['Pourquoi le niveau baisse', 'Le diagnostic du Haut-commissariat à la Stratégie et au Plan (août 2026), y compris ce qu’il écarte : ni le volume horaire, sauf en sciences, ni les élèves allophones.'],
     ['Comment le jeu note les mesures', 'L’échelle des cadenas, l’écart vitrine/réel, le facteur d’implémentation.'],
   ],
@@ -374,7 +401,8 @@ A(tableau(
     ['La voie de l’égalité', 'C’est le compteur le plus difficile à faire monter, et c’est une thèse assumée du jeu. Si elle est vécue comme une impasse plutôt que comme une difficulté, il faut la rendre un peu plus accessible.'],
     ['La densité de texte', 'Chaque carte porte beaucoup d’information. Un joueur pressé lit la tête de carte et ignore le reste ; un joueur curieux lit tout. Le pli est fait pour ça, mais l’équilibre est fragile.'],
     ['L’humour', 'La satire est symétrique par construction — tout le monde y passe, personne n’est nommé. Reste à vérifier qu’elle est perçue comme telle par des personnels du système, qui sont le public visé.'],
-    ['Le catalogue à 65 cartes', 'Le catalogue a doublé depuis la première version. Chaque carte est proposée au moins une fois sur l’ensemble des stratégies testées, mais un joueur donné n’en verra qu’une partie. Est-ce une bonne chose — de la rejouabilité — ou de la frustration ?'],
+    ['Le catalogue à 67 cartes', 'Le catalogue a doublé depuis la première version. Chaque carte est proposée au moins une fois sur l’ensemble des stratégies testées, mais un joueur donné n’en verra qu’une partie. Est-ce une bonne chose — de la rejouabilité — ou de la frustration ?'],
+    ['Ce qui n’est pas encore intégré', 'Trois mécaniques restent en attente de votre arbitrage, parce qu’elles ajoutent un système d’événements et non seulement des données : les effets de bord d’une réforme, tirés au sort et révélés deux ans plus tard ; le choc exogène majeur (pandémie, cyberattaque) tiré une fois par partie ; et l’archétype de l’affaire, l’événement où aucune option n’est bonne.'],
     ['Les sources bloquées', 'Le réseau de mon environnement de travail bloque education.gouv.fr, senat.fr et oecd.org : les chiffres viennent des extraits indexés de ces documents, pas de leur lecture directe. Les liens du jeu pointent bien vers les originaux, mais une vérification humaine reste utile.'],
   ],
   [2600, 6760],
