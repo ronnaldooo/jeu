@@ -499,6 +499,9 @@ table.bilan tr.cache td{background:var(--fiche-2)}
 .soutien-synd span{display:block; font-size:.86rem; line-height:1.6}
 .soutien-synd .quoi{font-weight:600; font-size:.9rem; margin-bottom:3px}
 .soutien-synd .src{font-size:.75rem; color:var(--encre-2); margin-top:7px; padding-top:7px; border-top:1px dotted var(--filet)}
+.cadrage-menu{border:1px solid var(--filet); border-left:3px solid var(--bleu-rf); background:var(--fiche-2); padding:9px 14px 11px; margin:14px 0}
+.cadrage-menu b{display:block; font-size:.72rem; font-weight:700; text-transform:uppercase; letter-spacing:.07em; color:var(--bleu-rf); margin-bottom:4px}
+.cadrage-menu span{display:block; font-size:.83rem; line-height:1.55; color:var(--encre-2)}
 @media (max-width:640px){ .profil-ligne b{min-width:0} }
 .ligne-s .requal{display:inline-block; font-size:.6rem; font-weight:700; text-transform:uppercase; letter-spacing:.08em; background:var(--c-budget); color:#1a1a19; padding:1px 6px; margin-left:7px; vertical-align:middle}
 .nouveau-dossier{display:inline-block; font-size:.6rem; font-weight:700; text-transform:uppercase; letter-spacing:.09em; background:var(--bleu-rf); color:#fff; padding:2px 7px; margin-left:8px; vertical-align:middle}
@@ -2678,6 +2681,71 @@ const CATALOGUE = [
     ideeRecue: '« C’est la pédagogie moderne contre la pédagogie du siècle dernier. » Le jeu ne tranche pas ce débat-là, et personne ne devrait le trancher en meeting : cette carte a un effet positif documenté sur l’engagement et un effet négatif documenté sur les acquis, tous deux à deux cadenas. Vous n’achetez pas une doctrine, vous achetez un arbitrage, et vous le découvrirez au bilan comme tout le reste.',
     mot: "La mesure la plus aimée des salles des professeurs, et la seule du catalogue qui porte un effet négatif assumé sur la réussite. Les deux sont vrais en même temps.",
   },
+
+  /* ------- 71 à 73 · les mesures qui ne coûtent presque rien ------------
+     Un catalogue où tout se chiffre en centaines de millions ne dit pas la
+     vérité du métier : une part de ce qu'un ministre décide tient dans une
+     circulaire, un guide et une journée banalisée. Ces cartes-là coûtent
+     quelques dizaines de millions, et leur effet dépend entièrement de ce que
+     les personnels en font. C'est la leçon du jeu prise au pied de la lettre. */
+  {
+    id: 'guides_dgesco',
+    label: 'Une collection de guides fondamentaux, écrits par la DGESCO',
+    famille: 'autonomie',
+    porteurs: ['DGESCO (service de l’instruction publique et de l’action pédagogique)', 'Conseil scientifique de l’éducation nationale (relecture)', 'HCSP 2026'],
+    contre: ['personne, et c’est bien le problème'],
+    perimetre: 'ministeriel',
+    cout: 0.015, coutETP: 0, pol: 2,
+    theme: 'ressources', once: true, reforme: false,
+    decouverte: { annee: 2, note: 'La direction générale vous rappelle qu’elle édite des guides fondamentaux depuis 2018, et qu’elle peut en écrire d’autres.' },
+    vitrine: { parents: +2, enseignants: +1, presse: +1, compteurs: { reussite: +1 } },
+    reel: [
+      { compteur: 'reussite', central: 4, delai: 4, cadenas: 3, source: 'HCSP 2026 : les guides fondamentaux s’appuient sur l’état de la recherche et permettent la diffusion des connaissances validées ; le guide CP a été relu par le Conseil scientifique' },
+    ],
+    physique: { adhesion: +1 },
+    preuve: 'Depuis 2018, le ministère édite des guides « pour enseigner les fondamentaux à l’école primaire et au collège », coordonnés par la DGESCO et appuyés sur l’état de la recherche ; celui sur les nombres et la résolution de problèmes au CP a été relu par des membres du Conseil scientifique. Une dizaine ont été publiés, de 100 à 200 pages chacun. Le HCSP les tient pour des outils précieux, pour les professeurs comme pour leurs formateurs. Leur limite est entière et connue : un guide ne s’applique pas tout seul. Le même rapport cite des inspecteurs comparant les injonctions successives à une partie de Tetris, où les briques descendent plus vite qu’on ne les range.',
+    ideeRecue: '« Publier une ressource, ce n’est pas agir. » C’est agir à un coût dérisoire, et c’est l’une des rares choses qu’un ministre puisse faire sans arbitrage budgétaire. Simplement, l’effet est intégralement suspendu à l’adhésion des personnels : c’est la carte du catalogue où votre facteur d’implémentation compte le plus, et où il est le plus visible.',
+    mot: "Quinze millions, deux points de capital, et un vrai contenu. La direction générale vous l'écrit en quelques mois, ce sera hébergé sur Éduscol — et quelques professeurs iront vraiment le consulter. Quelques-uns.",
+  },
+  {
+    id: 'kit_empathie',
+    label: 'Un « kit empathie » en ligne et une journée banalisée',
+    famille: 'autorite',
+    porteurs: ['prolongement de l’expérimentation de 2024', 'fédérations de parents'],
+    contre: ['les organisations syndicales, sur la méthode', 'une partie des personnels, qui y voient une injonction de plus'],
+    perimetre: 'ministeriel',
+    cout: 0.018, coutETP: 0, pol: 3,
+    theme: 'empathie', once: true, reforme: false,
+    decouverte: { annee: 2 },
+    vitrine: { parents: +6, enseignants: -2, presse: +4, compteurs: { sante: +2 } },
+    reel: [
+      { compteur: 'sante', central: 1, delai: 3, cadenas: 1, source: 'un kit et une journée ne sont pas un programme : les dispositifs de compétences psychosociales qui produisent des effets sont longs, formés et suivis' },
+    ],
+    physique: { adhesion: -2 },
+    preuve: 'Les programmes de compétences psychosociales qui obtiennent des résultats documentés sur le climat scolaire ont trois caractéristiques : ils durent plusieurs années, ils sont portés par des personnels formés, et ils sont évalués. Un kit mis en ligne et une journée banalisée n’ont aucune des trois. La carte figure au catalogue parce qu’elle est réelle, fréquente, peu coûteuse et politiquement rentable à court terme, et parce que le jeu doit permettre de la jouer pour en montrer le rendement.',
+    ideeRecue: '« Au moins, ça ne peut pas faire de mal. » Cela consomme la seule chose qui ne se reconstitue pas : la patience des équipes. Un cadenas de preuve, deux points d’adhésion en moins, six points chez les parents — c’est le profil exact d’une mesure de vitrine, et le jeu vous laisse la prendre en connaissance de cause.',
+    mot: "Un kit, une journée banalisée, une infographie. Le harcèlement, lui, prend rendez-vous à la rentrée suivante.",
+  },
+  {
+    id: 'insertion_publiee',
+    label: 'Publier, formation par formation, l’insertion et la poursuite d’études',
+    famille: 'parcours',
+    porteurs: ['DEPP et système InserJeunes', 'Cour des comptes', 'fédérations de parents'],
+    contre: ['des chefs d’établissement, qui redoutent le classement de leurs formations'],
+    perimetre: 'ministeriel',
+    cout: 0.03, coutETP: 0, pol: 4,
+    theme: 'insertion', once: true, reforme: false,
+    decouverte: { si: 'apres_un_an' },
+    vitrine: { parents: +5, enseignants: 0, presse: +3, compteurs: {} },
+    reel: [
+      { compteur: 'reussite', central: 2, delai: 4, cadenas: 2, source: 'l’information sur les débouchés déplace les vœux à la marge, surtout chez les familles qui n’ont pas l’information par ailleurs' },
+      { compteur: 'egalite',  central: 3, delai: 4, cadenas: 2, source: 'l’écart d’information sur les débouchés est l’un des mieux documentés entre milieux sociaux' },
+    ],
+    physique: {},
+    preuve: 'Les taux d’insertion et de poursuite d’études par formation existent déjà, produits par le dispositif InserJeunes : les publier lisiblement, formation par formation et établissement par établissement, ne coûte que la mise en forme. L’effet attendu passe par l’information des familles, et il est modeste : l’information déplace des vœux à la marge. Sa vertu est ailleurs, dans la répartition de cet effet : les familles qui disposent déjà de l’information par leur entourage n’y gagnent rien, les autres si.',
+    ideeRecue: '« Publier des chiffres, c’est mettre les établissements en concurrence. » C’est l’argument, et il n’est pas nul. Le contre-argument l’est encore moins : ces chiffres existent, ils circulent déjà, et ils circulent d’abord dans les familles qui savent où les chercher. Ne pas publier, ce n’est pas empêcher l’information, c’est la réserver.',
+    mot: "Trente millions pour mettre en ligne des chiffres que l'État produit déjà. Le plus dur sera d'expliquer pourquoi ce n'était pas fait.",
+  },
 ];
 
 /* --------------------------------------------------------------------------
@@ -3428,6 +3496,12 @@ const POLEMIQUES_RENTREE = [
   {
     id: 'vetement',
     titre: 'Un vêtement, et six semaines d’agenda',
+    /* Ce que la polémique confisque, elle le confisque aussi au menu suivant :
+       la circulaire de rentrée ne pourra porter que sur le cadre et les
+       familles. C'est exactement ce que vit un ministre. */
+    cadrage: { familles: ['autorite'],
+      titre: 'La circulaire de rentrée ne pourra parler que de ça',
+      cause: 'Six semaines d’agenda sont parties dans cette polémique. Vous pouvez le regretter, vous ne pouvez pas publier une circulaire sur autre chose : le menu ne contient plus que des mesures d’autorité et de relation aux familles.' },
     recit: 'Des chefs d’établissement signalent des tenues qu’ils ne savent pas qualifier. La question arrive au journal de 20 heures avant d’arriver sur votre bureau. En quarante-huit heures, elle est devenue le sujet de la rentrée, devant les 2 800 postes non pourvus dont personne ne parlera.',
     reponses: [
       { label: 'Publier une circulaire d’interdiction claire', type: 'ferme',
@@ -3447,6 +3521,9 @@ const POLEMIQUES_RENTREE = [
   {
     id: 'harcelement',
     titre: 'Un drame, et la chaîne des signalements',
+    cadrage: { familles: ['autorite', 'moyens'],
+      titre: 'La circulaire de rentrée est attendue sur ce point-là',
+      cause: 'Après un drame et une chaîne de signalements défaillante, une circulaire sur l’orientation ou l’évaluation serait lue comme une fuite. Le menu ne contient plus que le cadre scolaire et les moyens humains qui le font tenir.' },
     recit: 'Un élève de troisième s’est donné la mort. Le collège avait été alerté. La famille a saisi la justice et les médias le même jour, et le mot « défaillance » est prononcé dès le premier journal.',
     reponses: [
       { label: 'Vous rendre sur place et diligenter une inspection', type: 'ferme',
@@ -4107,6 +4184,7 @@ function creerPartie({ graine = 1, politique }) {
     entretien: {}, mensonges: new Set(), mensongesAffaire: new Set(),
     expositions: new Set(), protections: new Set(),
     soutiensDits: new Set(),      // ce qu'une organisation a déjà salué en audience
+    cadrage: null,                // le sujet qui restreint le prochain menu de mesures
     credibilite: K.CREDIBILITE.initiale,
     plafondAdhesion: 100,
     affaires: [],                    // affaires sorties, avec la réponse donnée
@@ -4571,6 +4649,9 @@ function* etapePolemique(s) {
   s.vitrine.paix += r.presse * 0.25;
   /* L'agenda confisqué : ce que la polémique occupe, elle ne le rend pas. */
   s.agendaConfisque = (s.agendaConfisque || 0) + r.agenda;
+  /* Une polémique confisque l'agenda : la circulaire de rentrée qui suit ne
+     peut plus porter sur autre chose, c'est le sujet que le pays a en tête. */
+  if (p.cadrage) s.cadrage = p.cadrage;
   note(s, `Polémique de rentrée « ${p.titre} » : réponse ${r.type === 'ferme' ? 'de fermeté' : r.type === 'methode' ? 'de méthode' : 'd’esquive'}. ${r.agenda} semaines d’agenda consommées.`, 'polemique');
 }
 
@@ -4580,7 +4661,11 @@ function* etapePolemique(s) {
 function* etapeLivraison(s) {
   yield { type: 'livraison', livraison: LIVRAISON_PISA };
   const avant = s.joue.size;
-  yield* etapeMesures(s, { moment: 'livraison', taille: K.TAILLE_MENU_COURT });
+  /* On n'attend pas de vous ce soir une réforme de la carte scolaire. */
+  yield* etapeMesures(s, { moment: 'livraison', taille: K.TAILLE_MENU_COURT,
+    cadrage: { compteur: 'reussite',
+      titre: 'Ce soir, on ne vous demandera que le niveau des élèves',
+      cause: 'La publication de l’enquête internationale ferme provisoirement tous les autres sujets. Le menu ne contient que des mesures dont un effet documenté porte sur la réussite des élèves — y compris celles qui la font baisser : le tri, c’est votre travail.' } });
   const prises = [...s.joue].slice(avant).map((id) => PAR_ID[id]).filter(Boolean);
   const enflamme = prises.filter((c) => LIVRAISON_PISA.enflamme.includes(c.famille)).length;
   const apaise = prises.filter((c) => LIVRAISON_PISA.apaise.includes(c.famille)).length;
@@ -4837,7 +4922,12 @@ function crediter(s, montant) {
    (l'arbitrage principal, adossé à la carte scolaire). */
 function* etapeMesures(s, opts) {
   const neufs = ouvrirNouveauxDossiers(s);
-  const dispo = mesuresDisponibles(s, opts.taille);
+  /* Un cadrage posé par l'événement précédent vaut pour ce menu-ci, et pour
+     lui seul : on le consomme. */
+  const cadrage = opts.cadrage || s.cadrage || null;
+  s.cadrage = null;
+  const dispo = mesuresDisponibles(s, opts.taille, cadrage);
+  const cadre = cadrage && dispo.every((c) => passeLeCadrage(c, cadrage));
   const maxAnnonces = K.ANNONCES_MAX[opts.moment] || 3;
   /* On n'arrache un arbitrage interministériel qu'au moment du budget. Une
      circulaire de rentrée se finance par redéploiement, ou ne se finance pas. */
@@ -4846,6 +4936,7 @@ function* etapeMesures(s, opts) {
     type: 'mesures', moment: opts.moment, dispo, maxAnnonces, depassementAutorise,
     tresor: s.tresor, capital: s.capital, nouveaux: neufs.map((c) => c.id),
     mesureFlechee: s.mesureFlechee || null,
+    cadrage: cadre ? cadrage : null,
   }) || [];
   appliquerMesures(s, choix, maxAnnonces, depassementAutorise, opts.moment);
 }
@@ -5095,9 +5186,36 @@ function affiniteDoctrine(s, c) {
   return a;
 }
 
-function mesuresDisponibles(s, tailleVoulue) {
+/* Le menu peut être CADRÉ par ce qui vient de se passer. Après la publication
+   d'une enquête internationale, personne n'attend du ministre une réforme de la
+   carte scolaire : on attend des mesures sur le niveau des élèves. Après une
+   polémique de rentrée sur la discipline, on attend un texte sur le cadre.
+   Sans cela, le joueur passe d'un sujet à l'autre sans qu'aucun enchaînement ne
+   lui soit lisible, et le jeu devient une liste de courses.
+
+   Deux formes de cadrage, toutes deux lues dans les données des cartes :
+   - `compteur` : ne restent que les mesures dont un effet réel documenté touche
+     ce compteur, dans un sens ou dans l'autre. « Des mesures pour le niveau »
+     inclut donc aussi celles qui le font baisser : c'est le piège, et il doit
+     rester ouvert ;
+   - `familles` : ne restent que ces familles de mesures.
+
+   Garde-fou : si le cadrage laisse moins de cinq cartes jouables, on l'abandonne
+   plutôt que de servir un menu famélique. */
+function passeLeCadrage(c, cadrage) {
+  if (!cadrage) return true;
+  if (cadrage.compteur && !(c.reel || []).some((e) => e.compteur === cadrage.compteur)) return false;
+  if (cadrage.familles && !cadrage.familles.includes(c.famille)) return false;
+  return true;
+}
+
+function mesuresDisponibles(s, tailleVoulue, cadrage) {
   const TAILLE_MENU = tailleVoulue || K.TAILLES_MENU[Math.min(4, s.annee - 1)];
-  const pool = CATALOGUE.filter((c) => estJouable(s, c));
+  let pool = CATALOGUE.filter((c) => estJouable(s, c));
+  if (cadrage) {
+    const cadre = pool.filter((c) => passeLeCadrage(c, cadrage));
+    if (cadre.length >= 5) pool = cadre;
+  }
   const menu = [];
   const pousse = (c) => { if (c && !menu.includes(c)) menu.push(c); };
 
@@ -6311,6 +6429,14 @@ function ecranAtelier(q) {
   d.appendChild(el('p', 'chapo', (MOM.chapo || MOM.titreSuite) + (premierAtelier
     ? ' L’effet d’annonce est chiffré : vous le verrez. L’effet réel ne l’est pas — vous n’avez que le niveau de preuve (🔒) et le délai, et vous découvrirez au bilan ce que vous avez produit. Rien ne s’applique sans les personnels.'
     : ' Effet d’annonce chiffré, effet réel caché.')));
+  /* Le menu cadré : on dit pourquoi il l'est, sinon le joueur croit à un bug.
+     C'est tout l'intérêt du dispositif — que l'enchaînement des écrans se lise
+     comme une suite de conséquences et non comme une liste de courses. */
+  if (q.cadrage) {
+    d.appendChild(el('div', 'cadrage-menu',
+      `<b>${esc(q.cadrage.titre)}</b><span>${fr(q.cadrage.cause)}</span>`));
+  }
+
   /* Le budget, en vrai : tout le mandat se joue dans un liseré. */
   const M = K.CADRAGE.missionHorsCAS;                       // 65,30 Md€ (plafond PLF 2027)
   const salaires = M * K.CADRAGE.partMasseSalariale;

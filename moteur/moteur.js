@@ -72,6 +72,7 @@ export function creerPartie({ graine = 1, politique }) {
     entretien: {}, mensonges: new Set(), mensongesAffaire: new Set(),
     expositions: new Set(), protections: new Set(),
     soutiensDits: new Set(),      // ce qu'une organisation a déjà salué en audience
+    cadrage: null,                // le sujet qui restreint le prochain menu de mesures
     credibilite: K.CREDIBILITE.initiale,
     plafondAdhesion: 100,
     affaires: [],                    // affaires sorties, avec la réponse donnée
@@ -536,6 +537,9 @@ function* etapePolemique(s) {
   s.vitrine.paix += r.presse * 0.25;
   /* L'agenda confisqué : ce que la polémique occupe, elle ne le rend pas. */
   s.agendaConfisque = (s.agendaConfisque || 0) + r.agenda;
+  /* Une polémique confisque l'agenda : la circulaire de rentrée qui suit ne
+     peut plus porter sur autre chose, c'est le sujet que le pays a en tête. */
+  if (p.cadrage) s.cadrage = p.cadrage;
   note(s, `Polémique de rentrée « ${p.titre} » : réponse ${r.type === 'ferme' ? 'de fermeté' : r.type === 'methode' ? 'de méthode' : 'd’esquive'}. ${r.agenda} semaines d’agenda consommées.`, 'polemique');
 }
 
@@ -545,7 +549,11 @@ function* etapePolemique(s) {
 function* etapeLivraison(s) {
   yield { type: 'livraison', livraison: LIVRAISON_PISA };
   const avant = s.joue.size;
-  yield* etapeMesures(s, { moment: 'livraison', taille: K.TAILLE_MENU_COURT });
+  /* On n'attend pas de vous ce soir une réforme de la carte scolaire. */
+  yield* etapeMesures(s, { moment: 'livraison', taille: K.TAILLE_MENU_COURT,
+    cadrage: { compteur: 'reussite',
+      titre: 'Ce soir, on ne vous demandera que le niveau des élèves',
+      cause: 'La publication de l’enquête internationale ferme provisoirement tous les autres sujets. Le menu ne contient que des mesures dont un effet documenté porte sur la réussite des élèves — y compris celles qui la font baisser : le tri, c’est votre travail.' } });
   const prises = [...s.joue].slice(avant).map((id) => PAR_ID[id]).filter(Boolean);
   const enflamme = prises.filter((c) => LIVRAISON_PISA.enflamme.includes(c.famille)).length;
   const apaise = prises.filter((c) => LIVRAISON_PISA.apaise.includes(c.famille)).length;
@@ -802,7 +810,12 @@ function crediter(s, montant) {
    (l'arbitrage principal, adossé à la carte scolaire). */
 function* etapeMesures(s, opts) {
   const neufs = ouvrirNouveauxDossiers(s);
-  const dispo = mesuresDisponibles(s, opts.taille);
+  /* Un cadrage posé par l'événement précédent vaut pour ce menu-ci, et pour
+     lui seul : on le consomme. */
+  const cadrage = opts.cadrage || s.cadrage || null;
+  s.cadrage = null;
+  const dispo = mesuresDisponibles(s, opts.taille, cadrage);
+  const cadre = cadrage && dispo.every((c) => passeLeCadrage(c, cadrage));
   const maxAnnonces = K.ANNONCES_MAX[opts.moment] || 3;
   /* On n'arrache un arbitrage interministériel qu'au moment du budget. Une
      circulaire de rentrée se finance par redéploiement, ou ne se finance pas. */
@@ -811,6 +824,7 @@ function* etapeMesures(s, opts) {
     type: 'mesures', moment: opts.moment, dispo, maxAnnonces, depassementAutorise,
     tresor: s.tresor, capital: s.capital, nouveaux: neufs.map((c) => c.id),
     mesureFlechee: s.mesureFlechee || null,
+    cadrage: cadre ? cadrage : null,
   }) || [];
   appliquerMesures(s, choix, maxAnnonces, depassementAutorise, opts.moment);
 }
@@ -1060,9 +1074,36 @@ export function affiniteDoctrine(s, c) {
   return a;
 }
 
-export function mesuresDisponibles(s, tailleVoulue) {
+/* Le menu peut être CADRÉ par ce qui vient de se passer. Après la publication
+   d'une enquête internationale, personne n'attend du ministre une réforme de la
+   carte scolaire : on attend des mesures sur le niveau des élèves. Après une
+   polémique de rentrée sur la discipline, on attend un texte sur le cadre.
+   Sans cela, le joueur passe d'un sujet à l'autre sans qu'aucun enchaînement ne
+   lui soit lisible, et le jeu devient une liste de courses.
+
+   Deux formes de cadrage, toutes deux lues dans les données des cartes :
+   - `compteur` : ne restent que les mesures dont un effet réel documenté touche
+     ce compteur, dans un sens ou dans l'autre. « Des mesures pour le niveau »
+     inclut donc aussi celles qui le font baisser : c'est le piège, et il doit
+     rester ouvert ;
+   - `familles` : ne restent que ces familles de mesures.
+
+   Garde-fou : si le cadrage laisse moins de cinq cartes jouables, on l'abandonne
+   plutôt que de servir un menu famélique. */
+function passeLeCadrage(c, cadrage) {
+  if (!cadrage) return true;
+  if (cadrage.compteur && !(c.reel || []).some((e) => e.compteur === cadrage.compteur)) return false;
+  if (cadrage.familles && !cadrage.familles.includes(c.famille)) return false;
+  return true;
+}
+
+export function mesuresDisponibles(s, tailleVoulue, cadrage) {
   const TAILLE_MENU = tailleVoulue || K.TAILLES_MENU[Math.min(4, s.annee - 1)];
-  const pool = CATALOGUE.filter((c) => estJouable(s, c));
+  let pool = CATALOGUE.filter((c) => estJouable(s, c));
+  if (cadrage) {
+    const cadre = pool.filter((c) => passeLeCadrage(c, cadrage));
+    if (cadre.length >= 5) pool = cadre;
+  }
   const menu = [];
   const pousse = (c) => { if (c && !menu.includes(c)) menu.push(c); };
 

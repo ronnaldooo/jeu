@@ -284,7 +284,7 @@ A(VIDE());
 A(ENCADRE('À relire', 'Le seuil de colère des maires (55 %) et celui de la provocation sur le privé (78 %) sont des jugements de ma part. Vous paraissent-ils placés au bon endroit ?', '3.1 · La carte scolaire'));
 
 A(H2('3.2 L’atelier de mesures, le catalogue'));
-A(BODY('Le catalogue compte 70 cartes réparties en cinq familles : moyens et encadrement, autonomie et évaluation, parcours et orientation, autorité et familles, mixité et carte scolaire.'));
+A(BODY('Le catalogue compte 73 cartes réparties en cinq familles : moyens et encadrement, autonomie et évaluation, parcours et orientation, autorité et familles, mixité et carte scolaire.'));
 A(H3('Ce que porte chaque carte'));
 A(tableau(
   ['Élément', 'Exemple, sur la carte « Redoublement facilité »'],
@@ -299,6 +299,13 @@ A(tableau(
   ],
   [2900, 6460],
 ));
+A(H3('Le menu cadré par ce qui vient d’arriver'));
+A(BODY('Le menu ne propose pas les mêmes mesures selon ce qui précède. Après la publication d’une enquête internationale sur le niveau, il ne contient que des mesures dont un effet documenté porte sur la réussite des élèves. Après une polémique de rentrée sur la discipline, il ne contient que des mesures d’autorité et de relation aux familles. Un bandeau dit pourquoi.'));
+A(BODY([T('Deux points de méthode. ', {}), T('Les mesures qui font baisser le compteur restent au menu', { bold: true }), T(' : le redoublement figure dans le menu de l’après-PISA, parce que c’est exactement ce qu’on propose dans ces moments-là, et que le tri est le travail du joueur. Et ', {}), T('les deux moments d’arbitrage libre, juin et janvier, ne sont jamais cadrés', { bold: true }), T(' : c’est là que le ministre décide de son propre agenda, tout le reste du temps l’actualité décide à sa place. Si le cadrage laisse moins de cinq cartes jouables, il est abandonné plutôt que de servir un menu famélique.', {})]));
+A(BODY('Mesuré sur 120 parties complètes : 1,7 menu cadré par partie, pour une taille moyenne de 6,6 cartes contre 8 sans cadrage.'));
+A(VIDE());
+A(ENCADRE('À relire', 'Le cadrage du menu doit rendre l’enchaînement des écrans lisible : après tel événement, on attend telles annonces. Est-ce le bon découpage ? Faut-il cadrer d’autres moments (après une grève, après une affaire, après une rentrée ratée), ou au contraire est-ce déjà trop contraignant pour un jeu où l’on veut pouvoir décider ?', '3.2 · Le menu cadré'));
+
 A(H3('La découverte progressive'));
 A(BODY('Vingt-cinq cartes ne sont pas sur le bureau le premier jour. Elles remontent quand la situation les appelle : au bout d’un an ou deux, quand un rapport tombe (les heures perdues dépassent 10,6 %), quand un indicateur se dégrade (la ségrégation, la réussite), quand les maires ont compté les fermetures de classes, ou quand une mesure en appelle une autre (la pause numérique au collège fait demander la même chose au lycée).'));
 A(BODY('Le joueur est prévenu par un bandeau et par un badge « nouveau dossier ». Mesuré sur 400 parties : 9,3 ouvertures de dossier par partie, et 89 % des parties en voient au moins une. Sur l’ensemble des stratégies testées, toutes les cartes sont proposées au menu au moins une fois.'));
@@ -322,6 +329,22 @@ A(tableau(
      'C’est la seule carte du catalogue à porter un effet négatif assumé sur la réussite en même temps qu’un effet positif documenté sur l’engagement des équipes. Le jeu ne tranche pas ce débat-là, et il écrit noir sur blanc que personne ne devrait le trancher en meeting.'],
   ],
   [2400, 3900, 3060],
+));
+A(VIDE());
+
+A(H3('Les mesures qui ne coûtent presque rien'));
+A(BODY('Le catalogue chiffrait presque tout en centaines de millions, ce qui ne dit pas la vérité du métier : une part de ce qu’un ministre décide tient dans une circulaire, un guide et une journée banalisée. Trois cartes ont été ajoutées sur ce registre, à la demande de la relecture.'));
+A(tableau(
+  ['Carte', 'Coût', 'Ce qu’elle enseigne'],
+  [
+    ['Une collection de guides fondamentaux, écrits par la DGESCO', '15 M€/an',
+     'Depuis 2018 le ministère édite des guides « pour enseigner les fondamentaux », coordonnés par la direction générale, appuyés sur l’état de la recherche, celui du CP relu par des membres du Conseil scientifique ; une dizaine publiés, de 100 à 200 pages. C’est la carte du catalogue où le facteur d’implémentation compte le plus : un guide ne s’applique pas tout seul, et le Haut-commissariat cite des inspecteurs comparant les injonctions successives à une partie de Tetris.'],
+    ['Un « kit empathie » en ligne et une journée banalisée', '18 M€/an',
+     'Un cadenas de preuve, deux points d’adhésion en moins, six points chez les parents : le profil exact d’une mesure de vitrine. Elle partage son thème avec le programme complet à 190 M€, les deux se voient dans le même menu et s’excluent l’une l’autre. Le contraste est le propos.'],
+    ['Publier, formation par formation, l’insertion et la poursuite d’études', '30 M€/an',
+     'Les chiffres existent déjà, produits par InserJeunes ; les publier ne coûte que la mise en forme. L’effet est modeste et surtout inégalement réparti : les familles qui ont déjà l’information n’y gagnent rien, les autres si. Elle comble un trou réel, la famille « parcours » ne comptant aucune mesure sous 120 M€.'],
+  ],
+  [2600, 1000, 5760],
 ));
 A(VIDE());
 
@@ -503,7 +526,7 @@ A(tableau(
     ['La voie de l’égalité', 'C’est le compteur le plus difficile à faire monter, et c’est une thèse assumée du jeu. Si elle est vécue comme une impasse plutôt que comme une difficulté, il faut la rendre un peu plus accessible.'],
     ['La densité de texte', 'Chaque carte porte beaucoup d’information. Un joueur pressé lit la tête de carte et ignore le reste ; un joueur curieux lit tout. Le pli est fait pour ça, mais l’équilibre est fragile.'],
     ['L’humour', 'La satire est symétrique par construction, tout le monde y passe, personne n’est nommé. Reste à vérifier qu’elle est perçue comme telle par des personnels du système, qui sont le public visé.'],
-    ['Le catalogue à 70 cartes', 'Le catalogue a doublé depuis la première version. Chaque carte est proposée au moins une fois sur l’ensemble des stratégies testées, mais un joueur donné n’en verra qu’une partie. Est-ce une bonne chose (de la rejouabilité) ou de la frustration ?'],
+    ['Le catalogue à 73 cartes', 'Le catalogue a doublé depuis la première version. Chaque carte est proposée au moins une fois sur l’ensemble des stratégies testées, mais un joueur donné n’en verra qu’une partie. Est-ce une bonne chose (de la rejouabilité) ou de la frustration ?'],
     ['Ce qui n’est pas encore intégré', 'Deux mécaniques restent en attente de votre arbitrage, parce qu’elles ajoutent un système d’événements et non seulement des données : les effets de bord d’une réforme, tirés au sort et révélés deux ans plus tard ; et le choc exogène majeur (pandémie, cyberattaque) tiré une fois par partie. La troisième (l’événement où aucune option n’est bonne) est intégrée depuis votre relecture : c’est l’affaire de l’internat.'],
     ['Les sources bloquées', 'Le réseau de mon environnement de travail bloque education.gouv.fr, senat.fr et oecd.org : les chiffres viennent des extraits indexés de ces documents, pas de leur lecture directe. Les liens du jeu pointent bien vers les originaux, mais une vérification humaine reste utile.'],
   ],

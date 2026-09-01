@@ -1494,6 +1494,71 @@ export const CATALOGUE = [
     ideeRecue: '« C’est la pédagogie moderne contre la pédagogie du siècle dernier. » Le jeu ne tranche pas ce débat-là, et personne ne devrait le trancher en meeting : cette carte a un effet positif documenté sur l’engagement et un effet négatif documenté sur les acquis, tous deux à deux cadenas. Vous n’achetez pas une doctrine, vous achetez un arbitrage, et vous le découvrirez au bilan comme tout le reste.',
     mot: "La mesure la plus aimée des salles des professeurs, et la seule du catalogue qui porte un effet négatif assumé sur la réussite. Les deux sont vrais en même temps.",
   },
+
+  /* ------- 71 à 73 · les mesures qui ne coûtent presque rien ------------
+     Un catalogue où tout se chiffre en centaines de millions ne dit pas la
+     vérité du métier : une part de ce qu'un ministre décide tient dans une
+     circulaire, un guide et une journée banalisée. Ces cartes-là coûtent
+     quelques dizaines de millions, et leur effet dépend entièrement de ce que
+     les personnels en font. C'est la leçon du jeu prise au pied de la lettre. */
+  {
+    id: 'guides_dgesco',
+    label: 'Une collection de guides fondamentaux, écrits par la DGESCO',
+    famille: 'autonomie',
+    porteurs: ['DGESCO (service de l’instruction publique et de l’action pédagogique)', 'Conseil scientifique de l’éducation nationale (relecture)', 'HCSP 2026'],
+    contre: ['personne, et c’est bien le problème'],
+    perimetre: 'ministeriel',
+    cout: 0.015, coutETP: 0, pol: 2,
+    theme: 'ressources', once: true, reforme: false,
+    decouverte: { annee: 2, note: 'La direction générale vous rappelle qu’elle édite des guides fondamentaux depuis 2018, et qu’elle peut en écrire d’autres.' },
+    vitrine: { parents: +2, enseignants: +1, presse: +1, compteurs: { reussite: +1 } },
+    reel: [
+      { compteur: 'reussite', central: 4, delai: 4, cadenas: 3, source: 'HCSP 2026 : les guides fondamentaux s’appuient sur l’état de la recherche et permettent la diffusion des connaissances validées ; le guide CP a été relu par le Conseil scientifique' },
+    ],
+    physique: { adhesion: +1 },
+    preuve: 'Depuis 2018, le ministère édite des guides « pour enseigner les fondamentaux à l’école primaire et au collège », coordonnés par la DGESCO et appuyés sur l’état de la recherche ; celui sur les nombres et la résolution de problèmes au CP a été relu par des membres du Conseil scientifique. Une dizaine ont été publiés, de 100 à 200 pages chacun. Le HCSP les tient pour des outils précieux, pour les professeurs comme pour leurs formateurs. Leur limite est entière et connue : un guide ne s’applique pas tout seul. Le même rapport cite des inspecteurs comparant les injonctions successives à une partie de Tetris, où les briques descendent plus vite qu’on ne les range.',
+    ideeRecue: '« Publier une ressource, ce n’est pas agir. » C’est agir à un coût dérisoire, et c’est l’une des rares choses qu’un ministre puisse faire sans arbitrage budgétaire. Simplement, l’effet est intégralement suspendu à l’adhésion des personnels : c’est la carte du catalogue où votre facteur d’implémentation compte le plus, et où il est le plus visible.',
+    mot: "Quinze millions, deux points de capital, et un vrai contenu. La direction générale vous l'écrit en quelques mois, ce sera hébergé sur Éduscol — et quelques professeurs iront vraiment le consulter. Quelques-uns.",
+  },
+  {
+    id: 'kit_empathie',
+    label: 'Un « kit empathie » en ligne et une journée banalisée',
+    famille: 'autorite',
+    porteurs: ['prolongement de l’expérimentation de 2024', 'fédérations de parents'],
+    contre: ['les organisations syndicales, sur la méthode', 'une partie des personnels, qui y voient une injonction de plus'],
+    perimetre: 'ministeriel',
+    cout: 0.018, coutETP: 0, pol: 3,
+    theme: 'empathie', once: true, reforme: false,
+    decouverte: { annee: 2 },
+    vitrine: { parents: +6, enseignants: -2, presse: +4, compteurs: { sante: +2 } },
+    reel: [
+      { compteur: 'sante', central: 1, delai: 3, cadenas: 1, source: 'un kit et une journée ne sont pas un programme : les dispositifs de compétences psychosociales qui produisent des effets sont longs, formés et suivis' },
+    ],
+    physique: { adhesion: -2 },
+    preuve: 'Les programmes de compétences psychosociales qui obtiennent des résultats documentés sur le climat scolaire ont trois caractéristiques : ils durent plusieurs années, ils sont portés par des personnels formés, et ils sont évalués. Un kit mis en ligne et une journée banalisée n’ont aucune des trois. La carte figure au catalogue parce qu’elle est réelle, fréquente, peu coûteuse et politiquement rentable à court terme, et parce que le jeu doit permettre de la jouer pour en montrer le rendement.',
+    ideeRecue: '« Au moins, ça ne peut pas faire de mal. » Cela consomme la seule chose qui ne se reconstitue pas : la patience des équipes. Un cadenas de preuve, deux points d’adhésion en moins, six points chez les parents — c’est le profil exact d’une mesure de vitrine, et le jeu vous laisse la prendre en connaissance de cause.',
+    mot: "Un kit, une journée banalisée, une infographie. Le harcèlement, lui, prend rendez-vous à la rentrée suivante.",
+  },
+  {
+    id: 'insertion_publiee',
+    label: 'Publier, formation par formation, l’insertion et la poursuite d’études',
+    famille: 'parcours',
+    porteurs: ['DEPP et système InserJeunes', 'Cour des comptes', 'fédérations de parents'],
+    contre: ['des chefs d’établissement, qui redoutent le classement de leurs formations'],
+    perimetre: 'ministeriel',
+    cout: 0.03, coutETP: 0, pol: 4,
+    theme: 'insertion', once: true, reforme: false,
+    decouverte: { si: 'apres_un_an' },
+    vitrine: { parents: +5, enseignants: 0, presse: +3, compteurs: {} },
+    reel: [
+      { compteur: 'reussite', central: 2, delai: 4, cadenas: 2, source: 'l’information sur les débouchés déplace les vœux à la marge, surtout chez les familles qui n’ont pas l’information par ailleurs' },
+      { compteur: 'egalite',  central: 3, delai: 4, cadenas: 2, source: 'l’écart d’information sur les débouchés est l’un des mieux documentés entre milieux sociaux' },
+    ],
+    physique: {},
+    preuve: 'Les taux d’insertion et de poursuite d’études par formation existent déjà, produits par le dispositif InserJeunes : les publier lisiblement, formation par formation et établissement par établissement, ne coûte que la mise en forme. L’effet attendu passe par l’information des familles, et il est modeste : l’information déplace des vœux à la marge. Sa vertu est ailleurs, dans la répartition de cet effet : les familles qui disposent déjà de l’information par leur entourage n’y gagnent rien, les autres si.',
+    ideeRecue: '« Publier des chiffres, c’est mettre les établissements en concurrence. » C’est l’argument, et il n’est pas nul. Le contre-argument l’est encore moins : ces chiffres existent, ils circulent déjà, et ils circulent d’abord dans les familles qui savent où les chercher. Ne pas publier, ce n’est pas empêcher l’information, c’est la réserver.',
+    mot: "Trente millions pour mettre en ligne des chiffres que l'État produit déjà. Le plus dur sera d'expliquer pourquoi ce n'était pas fait.",
+  },
 ];
 
 /* --------------------------------------------------------------------------
@@ -2244,6 +2309,12 @@ export const POLEMIQUES_RENTREE = [
   {
     id: 'vetement',
     titre: 'Un vêtement, et six semaines d’agenda',
+    /* Ce que la polémique confisque, elle le confisque aussi au menu suivant :
+       la circulaire de rentrée ne pourra porter que sur le cadre et les
+       familles. C'est exactement ce que vit un ministre. */
+    cadrage: { familles: ['autorite'],
+      titre: 'La circulaire de rentrée ne pourra parler que de ça',
+      cause: 'Six semaines d’agenda sont parties dans cette polémique. Vous pouvez le regretter, vous ne pouvez pas publier une circulaire sur autre chose : le menu ne contient plus que des mesures d’autorité et de relation aux familles.' },
     recit: 'Des chefs d’établissement signalent des tenues qu’ils ne savent pas qualifier. La question arrive au journal de 20 heures avant d’arriver sur votre bureau. En quarante-huit heures, elle est devenue le sujet de la rentrée, devant les 2 800 postes non pourvus dont personne ne parlera.',
     reponses: [
       { label: 'Publier une circulaire d’interdiction claire', type: 'ferme',
@@ -2263,6 +2334,9 @@ export const POLEMIQUES_RENTREE = [
   {
     id: 'harcelement',
     titre: 'Un drame, et la chaîne des signalements',
+    cadrage: { familles: ['autorite', 'moyens'],
+      titre: 'La circulaire de rentrée est attendue sur ce point-là',
+      cause: 'Après un drame et une chaîne de signalements défaillante, une circulaire sur l’orientation ou l’évaluation serait lue comme une fuite. Le menu ne contient plus que le cadre scolaire et les moyens humains qui le font tenir.' },
     recit: 'Un élève de troisième s’est donné la mort. Le collège avait été alerté. La famille a saisi la justice et les médias le même jour, et le mot « défaillance » est prononcé dès le premier journal.',
     reponses: [
       { label: 'Vous rendre sur place et diligenter une inspection', type: 'ferme',

@@ -836,6 +836,14 @@ function ecranAtelier(q) {
   d.appendChild(el('p', 'chapo', (MOM.chapo || MOM.titreSuite) + (premierAtelier
     ? ' L’effet d’annonce est chiffré : vous le verrez. L’effet réel ne l’est pas — vous n’avez que le niveau de preuve (🔒) et le délai, et vous découvrirez au bilan ce que vous avez produit. Rien ne s’applique sans les personnels.'
     : ' Effet d’annonce chiffré, effet réel caché.')));
+  /* Le menu cadré : on dit pourquoi il l'est, sinon le joueur croit à un bug.
+     C'est tout l'intérêt du dispositif — que l'enchaînement des écrans se lise
+     comme une suite de conséquences et non comme une liste de courses. */
+  if (q.cadrage) {
+    d.appendChild(el('div', 'cadrage-menu',
+      `<b>${esc(q.cadrage.titre)}</b><span>${fr(q.cadrage.cause)}</span>`));
+  }
+
   /* Le budget, en vrai : tout le mandat se joue dans un liseré. */
   const M = K.CADRAGE.missionHorsCAS;                       // 65,30 Md€ (plafond PLF 2027)
   const salaires = M * K.CADRAGE.partMasseSalariale;

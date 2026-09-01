@@ -1123,6 +1123,75 @@ correction.
 
 Équilibrage revérifié : **4/4 sur trois jeux de graines**, survie 48-52 %.
 
+## 3 sexdecies. Le menu cadré par ce qui vient d'arriver
+
+Trois demandes de relecture, liées : que les catégories de mesures apparaissent
+en fonction du sujet du moment, qu'il existe des mesures peu coûteuses, et qu'on
+puisse créer des ressources pédagogiques.
+
+### a) Le défaut : une liste de courses
+
+Le menu de mesures était le même quel que soit ce qui venait de se passer. Après
+la publication d'une enquête internationale sur le niveau des élèves, le joueur
+se voyait proposer la sectorisation des collèges et la restauration scolaire ;
+après une polémique de rentrée sur la discipline, il pouvait publier une
+circulaire sur l'orientation. Rien ne reliait un écran au suivant, et le jeu se
+lisait comme une liste de courses plutôt que comme un enchaînement de
+conséquences.
+
+### b) Le cadrage
+
+Un événement peut désormais **cadrer le menu suivant**, et un seul. Deux formes,
+toutes deux lues dans les données des cartes, donc vérifiables :
+
+- `compteur` : ne restent que les mesures dont un effet réel documenté touche ce
+  compteur. « Des mesures pour le niveau » inclut donc aussi celles qui le font
+  **baisser** — le redoublement reste au menu de l'après-PISA. Le piège doit
+  rester ouvert, c'est tout l'objet ;
+- `familles` : ne restent que ces familles de mesures.
+
+Les deux moments d'arbitrage libre (juin et janvier) ne sont jamais cadrés :
+c'est là que le ministre décide de son propre agenda. Sont cadrés les moments
+où l'actualité décide à sa place :
+
+| Ce qui précède | Ce que le menu propose |
+|---|---|
+| La livraison PISA (an 2) | les mesures à effet documenté sur la réussite |
+| Polémique « un vêtement » | autorité et familles |
+| Polémique « un drame, la chaîne des signalements » | autorité et familles, moyens humains |
+
+Un bandeau bleu dit **pourquoi** le menu est réduit, sinon le joueur croit à un
+défaut. Garde-fou : si le cadrage laisse moins de cinq cartes jouables, il est
+abandonné et rien n'est annoncé, plutôt que de servir un menu famélique.
+
+Mesuré sur 120 parties complètes : **208 menus cadrés**, soit 1,7 par partie,
+pour une taille moyenne de 6,6 cartes contre 8 sans cadrage.
+
+### c) Trois mesures qui ne coûtent presque rien
+
+Le catalogue chiffrait presque tout en centaines de millions, ce qui ne dit pas
+la vérité du métier : une part de ce qu'un ministre décide tient dans une
+circulaire, un guide et une journée banalisée.
+
+- **`guides_dgesco`** (15 M€) : une collection de guides fondamentaux écrits par
+  la DGESCO. Sourcé : depuis 2018 le ministère édite des guides « pour enseigner
+  les fondamentaux », coordonnés par la direction générale, appuyés sur l'état de
+  la recherche, celui du CP relu par des membres du Conseil scientifique ; une
+  dizaine publiés, de 100 à 200 pages. Le HCSP les tient pour des outils
+  précieux. C'est la carte du catalogue où le facteur d'implémentation compte le
+  plus : un guide ne s'applique pas tout seul, et le même rapport cite des
+  inspecteurs comparant les injonctions successives à une partie de Tetris.
+- **`kit_empathie`** (18 M€) : un kit en ligne et une journée banalisée. Un
+  cadenas de preuve, −2 d'adhésion, +6 chez les parents. Elle partage le thème
+  `empathie` avec le programme complet à 190 M€ : les deux se voient dans le même
+  menu et s'excluent l'une l'autre. Le contraste est le propos.
+- **`insertion_publiee`** (30 M€) : publier formation par formation les taux
+  d'insertion et de poursuite d'études, qu'InserJeunes produit déjà. Elle comble
+  un trou réel : la famille « parcours » ne comptait aucune mesure sous 120 M€.
+
+Le catalogue passe à 73 cartes. Équilibrage revérifié : **4/4 sur trois jeux de
+graines**, survie 48-49 %.
+
 ## 5. Paramètres à réexaminer après tests humains
 
 | Paramètre | Valeur | Ce qu'il faut regarder |
