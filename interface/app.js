@@ -33,11 +33,38 @@ const MOIS_L = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet'
 
 /* ------------------------------------------------------- distribution ------ */
 /* Satire symétrique : personnages transparents, tout le monde y passe. */
+/* Le paysage médiatique. Pseudonymes transparents, satire symétrique : le
+   quotidien national de droite, celui de gauche, la presse régionale, la presse
+   spécialisée que lisent réellement les personnels, les chaînes d'info, les
+   hebdos et la presse syndicale — chacun avec sa manière de dire la même
+   chose. Le titre du quotidien de référence est tiré au sort par partie : on
+   ne suit pas le même journal deux mandats de suite. */
+const JOURNAUX = [
+  'La Gazette de Grenelle', 'Le Quotidien de l’École', 'L’Estrade',
+  'Le Courrier des Écoles', 'La Craie du Matin', 'Le Journal du Soir',
+];
+const BREVES_SIGNATURES = [
+  /* quotidiens nationaux */
+  'Le Figareau', 'Libécole', 'Le Monde de l’Estrade', 'La Croix du Tableau',
+  'L’Ardoise', 'Les Écho-liers', 'Le Périscolaire', 'Médiacraie',
+  /* hebdomadaires et magazines */
+  'Le Cancre Enchaîné', 'Le Point Médian', 'L’Exposé', 'Marianne du Soir',
+  'Valeurs Scolaires', 'Téléramage',
+  /* presse régionale */
+  'Ouest-Trance', 'La Voix du Fond de la Classe', 'Sud-Devoirs',
+  'Le Dauphin Libéré', 'La Dépêche de Midi-Journée',
+  /* presse spécialisée éducation — celle que lisent les personnels */
+  'Le Percolateur pédagogique', 'ToutÉduque', 'Dépêches Éducation',
+  'VousNousEux', 'Les Cahiers à Spirale',
+  /* radio, télévision, syndicats */
+  'BFM Récré', 'France Interro', 'Être et Savoir-Faire',
+  'Fenêtres sur Cour de Récré', 'Le Bulletin Intersyndical',
+];
 const CAST = {
   pm: 'Barthélemy Roulette, Premier ministre',
   bercy: 'Aymeric Sécateur, ministre des Comptes publics',
-  journal: 'La Gazette de Grenelle',
-  breves: ['Le Figareau', 'Libécole', 'Ouest-Trance', 'BFM Récré', 'La Craie du Matin'],
+  journal: 'La Gazette de Grenelle',      // remplacé au démarrage par tirage
+  breves: BREVES_SIGNATURES,
 };
 const COMPTES = [
   { a: 'Craie Voyante', p: '@CraieVoyante · prof de lettres, voit tout venir', quand: (s) => s.phys.adhesion < 30, posts: [
@@ -79,7 +106,15 @@ const COMPTES = [
 function unesPossibles(etape) {
   const S = ETAT.s, dern = S.greves[S.greves.length - 1];
   const u = [];
-  const pousser = (cond, titre, sous) => { if (cond) u.push({ titre, sous }); };
+  /* Chaque situation a plusieurs unes possibles : sans cela, un joueur qui
+     enchaîne deux mandats lit deux fois le même journal. Le choix est
+     déterministe (graine + année + mois) pour que la sauvegarde le rejoue. */
+  const tour = (S.graine + S.annee * 7 + (S.mois || 0) * 3);
+  const pousser = (cond, titre, sous) => {
+    if (!cond) return;
+    if (Array.isArray(titre)) { const v = titre[tour % titre.length]; u.push({ titre: v[0], sous: v[1] }); }
+    else u.push({ titre, sous });
+  };
   const j = nouvellesEntrees();
   const a = (cat) => j.some((e) => e.cat === cat);
 
@@ -91,10 +126,22 @@ function unesPossibles(etape) {
     '« Conforté » est, dans la presse gouvernementale, le stade qui précède immédiatement « remplacé ».');
   pousser(a('prive'), 'École privée : la tension monte, le mot « Savary » est lâché',
     'Au ministère, on assure « assumer le dialogue ». Le dialogue a prévu de défiler un dimanche.');
-  pousser(a('rentree') && ETAT.rentreeRatee, 'Rentrée : le compteur des classes sans professeur tourne déjà',
-    'Le ministère parle de « tensions localisées ». La localisation : un peu partout.');
-  pousser(a('rentree') && !ETAT.rentreeRatee, 'Rentrée sans accroc rue de Grenelle',
-    'Un professeur devant chaque classe ou presque. L’information, jugée peu spectaculaire, est en page 12.');
+  pousser(a('rentree') && ETAT.rentreeRatee, [
+    ['Rentrée : le compteur des classes sans professeur tourne déjà',
+     'Le ministère parle de « tensions localisées ». La localisation : un peu partout.'],
+    ['« Ma fille a eu quatre professeurs en trois semaines » : la rentrée vue d’en bas',
+     'Le rectorat évoque « une situation en voie de résolution ». La classe, elle, évoque le couloir.'],
+    ['Rentrée sous tension : les remplaçants manquent là où ils manquaient déjà',
+     'Le ministère rappelle que la carte des difficultés est stable. C’est exact, et c’est le problème.'],
+  ]);
+  pousser(a('rentree') && !ETAT.rentreeRatee, [
+    ['Rentrée sans accroc rue de Grenelle',
+     'Un professeur devant chaque classe ou presque. L’information, jugée peu spectaculaire, est en page 12.'],
+    ['Rentrée : « rien à signaler », et personne pour le signaler',
+     'Douze millions d’élèves sont entrés en classe sans incident. Aucune chaîne d’information n’a ouvert dessus.'],
+    ['Le ministre visite une école, la rentrée se passe bien',
+     'Les deux faits sont indépendants, ce que la photographie ne dit pas.'],
+  ]);
   pousser(a('bercy'), 'Budget de l’éducation : bras de fer avec Bercy',
     'Les deux ministères partagent le même gouvernement, ce qui ne les a jamais rapprochés.');
   pousser(a('concours'), `Concours : ${fmt1(S.phys.couvertureConcours)} % des postes pourvus`,
@@ -105,8 +152,34 @@ function unesPossibles(etape) {
     'Le Château rappelle qu’il existe, exercice dans lequel il excelle.');
   pousser(etape === 'cloture', `An ${S.annee} du mandat : ce qui a changé, ce qui attend`,
     'Le système scolaire bouge à la vitesse d’un paquebot. Le ministre rame, la presse chronomètre.');
-  pousser(true, 'Rue de Grenelle : le ministre poursuit sa route',
-    'Selon son entourage, « le cap est clair ». Le cap n’a pas souhaité répondre à nos questions.');
+  pousser(a('dossier'), [
+    ['Un rapport de plus sur le bureau du ministre',
+     'Il rejoint les précédents. Le ministère indique qu’il sera « étudié avec la plus grande attention », formule dont la durée de vie moyenne est de six mois.'],
+    ['Éducation : les experts recommandent, le ministère prend acte',
+     '« Prendre acte » est le seul verbe de l’administration qui ne suppose aucune action.'],
+  ]);
+  pousser(a('salaires'), [
+    ['Salaires : le ministre annonce, les syndicats calculent',
+     'Le calcul dépend de l’unité choisie : le brut mensuel, le net, ou le pouvoir d’achat depuis 2010. Les trois ont été retenus, par trois personnes différentes.'],
+    ['Revalorisation : « historique », selon le ministère',
+     'Le mot a été employé pour la sixième fois en dix ans, ce qui pose une question de vocabulaire.'],
+  ]);
+  pousser(a('audience'), [
+    ['Le ministre reçoit les organisations syndicales',
+     'La rencontre a duré deux heures. Les communiqués publiés à l’issue permettent de douter qu’il s’agissait de la même.'],
+    ['Après l’audience : « climat constructif », « aucune avancée »',
+     'Les deux formules figurent dans le même compte rendu, à quatre lignes d’intervalle.'],
+  ]);
+  pousser(true, [
+    ['Rue de Grenelle : le ministre poursuit sa route',
+     'Selon son entourage, « le cap est clair ». Le cap n’a pas souhaité répondre à nos questions.'],
+    ['Éducation : la réforme suit son cours, disent ceux qui la suivent',
+     'Ceux qui l’appliquent n’ont pas été joints : ils étaient en cours.'],
+    ['Le ministère communique sur sa méthode',
+     'La méthode consiste à communiquer sur la méthode. Notre rédaction poursuit ses investigations.'],
+    ['Une semaine ordinaire rue de Grenelle',
+     'Quatre notes de service, une visite d’établissement, un tweet. Le système scolaire, lui, a fonctionné sans en être informé.'],
+  ]);
   return u;
 }
 
@@ -275,6 +348,36 @@ function ecranBercy(q) {
   const con = el('button', 'opt', `<b>Contester et porter l’arbitrage à Matignon</b><span class="det">Coût : 12 points de capital politique (il vous en reste ${fmt0(S.capital)}). Chances de gagner : moyennes, et décroissantes avec l’usage. Un ministre qui menace trop souvent finit par ne plus être craint, seulement remplacé.</span>`);
   con.onclick = () => suivant('contester');
   opts.append(acc, con); d.appendChild(opts);
+  scene(d);
+}
+
+/* --- juin 2027 : l'avance de gestion, premier arbitrage du mandat ------------ */
+function ecranAvance(q) {
+  const S = ETAT.s;
+  const d = docu('Note du secrétariat général — négociation de gestion', 'Votre premier arbitrage : la réserve de précaution');
+  d.appendChild(el('p', 'chapo', 'Vous arrivez en juin sur un budget déjà voté. Un seul levier existe pour agir tout de suite : la <b>réserve de précaution</b>, cette part des crédits que Bercy gèle en début d’exercice sur chaque programme et ne dégèle qu’en gestion. Elle immobilise plusieurs centaines de millions d’euros sur votre mission.'));
+  d.appendChild(el('div', 'depeche',
+    `OBJET : dégel de la mise en réserve — exercice en cours<br>
+     ENVELOPPE ACQUISE SANS DEMANDE : <b>${fmt0(K.ENVELOPPE_PRISE_FONCTION * 1000)} M€</b><br>
+     CONTREPARTIE DE TOUT DÉGEL : engagement écrit sur la restitution de postes en janvier<br>
+     RAPPEL : Bercy compare toujours l’engagement de juin au schéma d’emplois de janvier.`));
+  const opts = el('div', 'opts');
+  q.options.forEach((o, i) => {
+    const gains = [];
+    if (o.bonus) gains.push(`<b class="pos">+${fmt0(o.bonus * 1000)} M€</b> dès juin`);
+    if (o.restitution) gains.push(`<b class="neg">${Math.round(o.restitution * 100)} % de restitution</b> promis en janvier`);
+    if (o.schema) gains.push(`<b class="neg">${fmt0(o.schema)} ETP</b> de schéma d’emplois en plus`);
+    if (o.capital) gains.push(`capital ${signe(o.capital)}`);
+    if (o.bercy) gains.push(`crédit Bercy ${signe(o.bercy)}`);
+    const b = el('button', 'opt',
+      `<b>${esc(o.titre)}</b><span class="det">${fr(o.detail)}</span>`
+      + `<span class="chiffres">${gains.map((g) => `<span>${g}</span>`).join('')}</span>`
+      + `<span class="det mot">« ${fr(o.mot)} »</span>`);
+    b.onclick = () => suivant(i);
+    opts.appendChild(b);
+  });
+  d.appendChild(opts);
+  d.appendChild(el('p', 'note-passation', 'Un engagement non tenu en janvier coûte 16 points de crédit Bercy et 6 de capital politique — davantage que ce que l’avance vous aura rapporté. Un engagement tenu vous en rend 6. La signature de juin est le premier des cinq arbitrages de carte scolaire, pris avant même de savoir ce que la démographie vous donnera.'));
   scene(d);
 }
 
@@ -682,15 +785,21 @@ function ecranRetrait(q) {
     <span class="det">Adhésion en hausse, ${fmt0(mesure.cout * 1000)} M€/an récupérés · capital −4, fatigue +15, parents déçus — et les effets attendus de la mesure ne viendront jamais.</span>
     <span class="risque-ligne">Risque de grève : <b style="color:var(--ok)">désamorcé</b></span>`);
   bCeder.onclick = () => finRetrait('ceder');
-  opts.append(bMaintenir, bCeder);
+  const bRequal = el('button', 'opt', `<b>Requalifier — la renommer et la rendre facultative</b>
+    <span class="det">Ni retrait ni maintien : la mesure change de nom, cesse d’être obligatoire, et ses crédits restent inscrits. L’annonce est sauvée, le dispositif se vide. Capital −2, fatigue +5, adhésion en légère hausse — et les ${fmt0(mesure.cout * 1000)} M€/an continuent d’être dépensés.</span>
+    <span class="risque-ligne">Risque de grève : <b style="color:var(--ok)">désamorcé</b> · effet réel : <b style="color:var(--rouge-rf)">vous le découvrirez au bilan</b></span>`);
+  bRequal.onclick = () => finRetrait('requalifier');
+  opts.append(bMaintenir, bRequal, bCeder);
   d.appendChild(opts);
 
   function finRetrait(dec) {
     opts.querySelectorAll('.opt').forEach((n) => { n.disabled = true; });
     const box = el('div', 'decryptage');
-    box.style.borderLeftColor = dec === 'ceder' ? 'var(--c-sante)' : 'var(--rouge-rf)';
+    box.style.borderLeftColor = dec === 'ceder' ? 'var(--c-sante)' : dec === 'requalifier' ? 'var(--c-budget)' : 'var(--rouge-rf)';
     box.innerHTML = dec === 'ceder'
       ? `<div class="titre-d" style="color:var(--c-sante)">Vous cédez</div><p><i>« Nous saluons un ministre qui sait entendre. »</i> — La mesure sort du droit. La presse titrera sur le recul ; les salles des professeurs, sur l’écoute. Les deux auront raison.</p>`
+      : dec === 'requalifier'
+      ? `<div class="titre-d" style="color:var(--c-budget)">Vous requalifiez</div><p><i>« Nous prenons acte de cet ajustement de méthode. »</i> — Personne ne parlera de recul : le dispositif existe toujours, il porte simplement un autre nom et ne s’impose plus à personne. C’est le geste le moins coûteux de tout le jeu, et le seul dont vous ne mesurerez le prix qu’à la dernière page.</p>`
       : `<div class="titre-d" style="color:var(--rouge-rf)">Vous maintenez</div><p><i>« Nous en tirerons les conséquences. »</i> — ${combatif ? 'La délégation quitte l’audience. Le préavis sera déposé avant la fin de semaine.' : 'La délégation transmettra à ses instances. Le rapport de force est noté, de part et d’autre.'}</p>`;
     d.appendChild(box);
     const act = el('div', 'actions');
@@ -724,11 +833,13 @@ function ecranEtape(etape) {
       sc.appendChild(el('div', 'titre-d', 'Scellés ouverts cette année — les effets réels arrivent'));
       for (const e of ouverts) {
         const c = PAR_ID[e.carte];
-        sc.appendChild(el('div', 'ligne-s', `<span>${esc(c ? c.label : e.carte)}</span><span>→ ${NOMS_C[e.compteur]}</span>
+        sc.appendChild(el('div', 'ligne-s', `<span>${esc(c ? c.label : e.carte)}${e.requalifie ? '<span class="requal">requalifiée</span>' : ''}</span><span>→ ${NOMS_C[e.compteur]}</span>
           <span class="val" style="color:${e.montant > 1 ? 'var(--ok)' : e.montant < -1 ? 'var(--alerte)' : 'var(--encre-2)'}">${signe(e.montant)}</span>
-          <span style="color:var(--encre-3);font-size:.76rem">preuve ${'🔒'.repeat(e.cadenas)} · documenté ~${signe(e.central)}</span>`));
+          <span style="color:var(--encre-3);font-size:.76rem">preuve ${'🔒'.repeat(e.cadenas)} · documenté ~${signe(e.central)}${e.requalifie ? ' · rendue facultative' : ''}</span>`));
       }
-      sc.appendChild(el('p', '', '<span style="font-size:.76rem;color:var(--encre-3)">Ce que vous aviez signé sous incertitude entre aujourd’hui dans les compteurs — implémentation comprise. Les scellés restants s’ouvriront plus tard, certains après vous.</span>'));
+      sc.appendChild(el('p', '', '<span style="font-size:.76rem;color:var(--encre-3)">Ce que vous aviez signé sous incertitude entre aujourd’hui dans les compteurs — implémentation comprise. Les scellés restants s’ouvriront plus tard, certains après vous.'
+        + (ouverts.some((e) => e.requalifie) ? ' Les lignes marquées « requalifiée » sont les mesures que vous avez rendues facultatives sous pression : elles ont continué d’être financées et ont produit moins d’un cinquième de ce qu’elles promettaient.' : '')
+        + '</span>'));
       blocs.push(sc);
     }
   }
@@ -855,20 +966,98 @@ function citer(idSource) {
   return `<cite>${S.url ? `<a href="${S.url}" target="_blank" rel="noopener">${lib}</a>` : lib}</cite>`;
 }
 
+/* --- graphiques de la note de cadrage ---------------------------------------- */
+/* Règle : les barres partent TOUJOURS de zéro. Un axe tronqué transforme une
+   hausse de 1,2 % en mur, et ce jeu passe son temps à dire que les chiffres
+   affichés mentent — il ne va pas commencer par mentir lui-même. */
+const md1 = (x) => x.toLocaleString('fr-FR', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+
 function serieBudget() {
-  /* Une décimale toujours affichée : « 56 » à côté de « 52,3 » se lit mal. */
-  const md1 = (x) => x.toLocaleString('fr-FR', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
   const max = Math.max(...SERIE_BUDGET.map((b) => b.md));
-  const min = Math.min(...SERIE_BUDGET.map((b) => b.md)) - 3;
   const g = el('div', '');
-  g.innerHTML = `<div class="rep-serie">${SERIE_BUDGET.map((b) => {
-    const h = Math.round(18 + ((b.md - min) / (max - min)) * 74);
-    return `<div class="col${b.prevision ? ' prev' : ''}"><span class="md">${md1(b.md)}</span>`
-         + `<i class="bar" style="height:${h}px"></i><span class="an">${b.annee}</span></div>`;
-  }).join('')}</div>`
-  + `<p class="rep-serie-note">Crédits de paiement de la mission « Enseignement scolaire », en milliards d’euros courants, hors contribution au compte d’affectation spéciale Pensions. 2021 n’est pas représentée : le périmètre de la mission a changé cette année-là. La dernière colonne, hachurée, est le plafond prévisionnel du PLF 2027 — celui sur lequel s’ouvre votre mandat.</p>`
-  + `<ul class="rep-liste">${SERIE_BUDGET.filter((b) => b.note).map((b) => `<li><span class="v">${b.annee}</span><span class="l">${fr(b.note)}${citer(b.src)}</span></li>`).join('')}</ul>`;
+  g.innerHTML = `<div class="rep-serie" role="img" aria-label="Budget de la mission Enseignement scolaire, de 52,3 milliards d’euros en 2019 à 65,3 milliards en 2027">`
+    + SERIE_BUDGET.map((b) => {
+        const h = Math.round((b.md / max) * 118);      // proportionnel, base zéro
+        return `<div class="col${b.prevision ? ' prev' : ''}"><span class="md">${md1(b.md)}</span>`
+             + `<i class="bar" style="height:${h}px"></i><span class="an">${b.annee}</span></div>`;
+      }).join('')
+    + `</div>`
+    + `<p class="rep-serie-note">Mission « Enseignement scolaire », milliards d’euros courants, hors pensions. <b>Barres à base zéro</b> : la hausse est réelle mais modeste — +25 % en huit ans d’euros courants, à peu près l’inflation. La colonne hachurée est le plafond prévisionnel de 2027.</p>`;
   return g;
+}
+
+/* Effectifs d'élèves. On ne représente PAS le niveau : à échelle honnête, une
+   courbe de 11,6 à 10,1 millions paraît plate et cache le phénomène. Le sujet
+   n'est pas le nombre d'élèves, c'est le nombre d'élèves PERDUS — donc des
+   barres cumulées qui descendent depuis zéro. Même honnêteté d'échelle, sujet
+   correctement cadré. */
+function serieEleves() {
+  const base = SERIE_ELEVES[0];
+  const pertes = SERIE_ELEVES.slice(1).map((p) => ({
+    annee: p.annee,
+    milliers: Math.round((base.m - p.m) * 1000),
+    arbitree: p.annee >= 2027 && p.annee <= 2031,     // les rentrées que le joueur décide
+  }));
+  const max = Math.max(...pertes.map((p) => p.milliers));
+  const g = el('div', '');
+  g.innerHTML = `
+  <div class="rep-pertes" role="img" aria-label="Élèves perdus par rapport à la rentrée 2026 : 160 000 dès 2027, environ 1 680 000 en 2035">
+    ${pertes.map((p) => {
+      const h = Math.round((p.milliers / max) * 104) + 4;
+      return `<div class="col${p.arbitree ? ' vous' : ''}">`
+           + `<span class="an">${p.annee}</span>`
+           + `<i class="bar" style="height:${h}px"></i>`
+           + `<span class="nb">−${fmt0(p.milliers)}k</span></div>`;
+    }).join('')}
+  </div>
+  <div class="rep-pertes-lgd"><i class="vous"></i>les cinq rentrées que vous arbitrez<i class="apres"></i>celles de vos successeurs</div>
+  <div class="rep-courbe-bornes"><b>11,6 M d’élèves</b> à la rentrée 2026 <span>→</span> <b>9,9 M</b> projetés en 2035, soit <b>−1,7 million</b></div>
+  <p class="rep-serie-note">Élèves perdus depuis la rentrée 2026, en milliers (DEPP, scénario de référence). À un poste pour vingt-quatre élèves, cela « libère » environ <b>70 000 postes</b> d’ici 2035 : la matière de tous vos arbitrages de janvier.</p>`;
+  return g;
+}
+
+/* Niveaux : trois comparaisons France / référence, barres appariées. */
+function serieNiveaux() {
+  const g = el('div', '');
+  g.innerHTML = `<div class="rep-comp">${COMPARAISONS_NIVEAUX.map((c) => {
+    const mx = 600, pf = (c.fr / mx) * 100, pr = (c.ref / mx) * 100;
+    const ecart = c.fr - c.ref;
+    const ligne = (cls, qui, val, pct) =>
+      `<div class="comp-ligne"><span class="qui">${esc(qui)}</span>`
+      + `<span class="piste"><i class="${cls}" style="width:${pct.toFixed(1)}%"></i></span><b>${val}</b></div>`;
+    return `<div class="comp">
+      <div class="comp-titre">${esc(c.libelle)} <span class="comp-ecart ${ecart >= 0 ? 'pos' : 'neg'}">${ecart >= 0 ? '+' : '−'}${Math.abs(ecart)} pts</span></div>
+      ${ligne('fr', 'France', c.fr, pf)}
+      ${ligne('ref', c.refNom, c.ref, pr)}
+    </div>`;
+  }).join('')}</div>
+  <p class="rep-serie-note">Scores moyens, échelles graduées autour de 500, barres à base zéro. Les écarts sont réels sans être des gouffres — et ils suffisent à séparer la France de ses voisins européens.</p>`;
+  return g;
+}
+
+/* --- juin 2027 : la note de cadrage, en trois pages courtes ------------------- */
+function ecranReperes() {
+  const d = el('article', 'doc large');
+  d.appendChild(el('div', 'entete-doc', `<span class="type">Note de cadrage — direction générale de l’enseignement scolaire (DGESCO)</span><span class="date">${ETAT.dateLabel}</span>`));
+  d.appendChild(el('h2', '', 'Trois choses à savoir avant votre première décision'));
+  d.appendChild(el('p', 'chapo', 'La note que la DGESCO remet à tout nouveau ministre le jour de sa prise de fonction. Aucune recommandation : trois constats, trois chiffres chacun, et leurs sources. Le détail complet est à tout moment dans « Comprendre le jeu », en bas à gauche de l’écran.'));
+
+  const GRAPH = { budget: serieBudget, eleves: serieEleves, niveaux: serieNiveaux };
+  for (const b of CADRAGE_INITIAL) {
+    const bloc = el('section', 'cadrage-bloc');
+    bloc.appendChild(el('h3', '', esc(b.titre)));
+    bloc.appendChild(el('p', 'cadrage-phrase', fr(b.phrase)));
+    if (GRAPH[b.graphique]) bloc.appendChild(GRAPH[b.graphique]());
+    bloc.appendChild(el('ul', 'rep-liste', b.chiffres.map((x) =>
+      `<li><span class="v">${fr(x.v)}</span><span class="l">${fr(x.l)}.${citer(x.src)}</span></li>`).join('')));
+    bloc.appendChild(el('p', 'cadrage-retenir', fr(b.aRetenir)));
+    d.appendChild(bloc);
+  }
+
+  const ok = el('button', 'btn tamponner', 'J’ai lu — passer aux premières annonces');
+  ok.onclick = () => suivant(null);
+  d.appendChild(el('div', 'actions')).appendChild(ok);
+  scene(d);
 }
 
 function blocReperes(cles, ouvert) {
@@ -887,20 +1076,6 @@ function blocReperes(cles, ouvert) {
     z.appendChild(dt);
   }
   return z;
-}
-
-/* --- juin 2027 : la note de cadrage remise au ministre ----------------------- */
-function ecranReperes() {
-  const d = el('article', 'doc large');
-  d.appendChild(el('div', 'entete-doc', `<span class="type">Note de cadrage — direction générale</span><span class="date">${ETAT.dateLabel}</span>`));
-  d.appendChild(el('h2', '', 'Ce que vous devez savoir avant votre première décision'));
-  d.appendChild(el('p', 'chapo', 'Trois pages, remises à tout nouveau ministre le jour de sa prise de fonction. Elles ne contiennent aucune recommandation : seulement l’état du système, avec ses sources. Vous pourrez les rouvrir à tout moment par le bouton « Comprendre le jeu », en bas à gauche de l’écran.'));
-  d.appendChild(blocReperes(['budget', 'demographie', 'niveaux'], ['budget']));
-  d.appendChild(el('p', 'note-passation', 'Trois chiffres à garder en tête pendant tout le mandat : votre marge nouvelle se compte en centaines de millions quand la mission pèse 65 milliards ; la démographie vous rendra des milliers de postes chaque année, et c’est vous qui déciderez à qui ; et aucune enquête internationale publiée pendant votre mandat ne mesurera quoi que ce soit de ce que vous aurez fait.<span class="ps">Les six autres fiches — inégalités, métier, remplacement, organisation, climat scolaire, niveaux de preuve — sont dans l’onglet « Comprendre le jeu ».</span>'));
-  const ok = el('button', 'btn tamponner', 'J’ai lu — passer aux premières annonces');
-  ok.onclick = () => suivant(null);
-  d.appendChild(el('div', 'actions')).appendChild(ok);
-  scene(d);
 }
 
 /* --- l'onglet permanent ------------------------------------------------------ */
@@ -936,6 +1111,7 @@ function dateDe(q) {
   if (q.type === 'nomination') return 'juin 2027';
   if (q.type === 'doctrine') return 'juin 2027';
   if (q.type === 'reperes') return 'juin 2027';
+  if (q.type === 'avance') return 'juin 2027';
   if (q.type === 'retrait') return `octobre ${ETAT.s.anneeCiv || 2027}`;
   if (q.type === 'dossier') return 'été 2027';
   if (q.type === 'audience') return `octobre ${ETAT.s.anneeCiv || 2027}`;
@@ -957,6 +1133,7 @@ function rendre(q) {
   if (q.type === 'nomination') ecranNomination();
   else if (q.type === 'doctrine') ecranDoctrine();
   else if (q.type === 'reperes') ecranReperes();
+  else if (q.type === 'avance') ecranAvance(q);
   else if (q.type === 'retrait') ecranRetrait(q);
   else if (q.type === 'dossier') ecranDossier(q);
   else if (q.type === 'audience') ecranAudience(q);
@@ -981,6 +1158,7 @@ function sauvegarder() {
 
 function demarrer(sauve) {
   ETAT.graine = sauve ? sauve.graine : (Math.floor(Math.random() * 2 ** 31) || 1);
+  CAST.journal = JOURNAUX[ETAT.graine % JOURNAUX.length];
   ETAT.s = creerPartie({ graine: ETAT.graine, politique: null });
   ETAT.gen = derouler(ETAT.s);
   ETAT.pas = [];

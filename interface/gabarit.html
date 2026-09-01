@@ -344,6 +344,48 @@ table.bilan .num{text-align:right}
 .rep-sources li{margin-bottom:7px}
 .rep-sources .org{font-weight:600}
 
+/* ---------- note de cadrage : pages courtes, graphiques honnêtes ---------- */
+.cadrage-bloc{border:1px solid var(--filet); background:var(--fiche); padding:16px 18px 14px; margin:16px 0}
+.cadrage-bloc h3{font-size:1.05rem; font-weight:700; margin:0 0 4px}
+.cadrage-phrase{font-family:"Newsreader",georgia,serif; font-size:1.02rem; line-height:1.5; color:var(--encre-2); margin:0 0 10px; max-width:66ch}
+.cadrage-retenir{margin:12px 0 0; padding-top:10px; border-top:1px solid var(--filet); font-size:.86rem; font-weight:600; color:var(--bleu-rf)}
+.cadrage-bloc .rep-liste{margin-top:10px}
+
+.rep-courbe{width:100%; height:150px; display:block; margin-top:6px; overflow:visible}
+.rep-courbe .axe{stroke:var(--filet-fort); stroke-width:1}
+.rep-courbe .aire{fill:var(--bleu-rf); opacity:.10}
+.rep-courbe .trait{fill:none; stroke:var(--bleu-rf); stroke-width:2.5; vector-effect:non-scaling-stroke}
+.rep-courbe .trait.projete{stroke-dasharray:5 4; opacity:.75}
+.rep-courbe .pt{fill:var(--bleu-rf)}
+.rep-courbe .pt.projete{fill:var(--fiche); stroke:var(--bleu-rf); stroke-width:1.5}
+.rep-courbe-lab{display:flex; justify-content:space-between; font-size:.62rem; color:var(--encre-3); font-variant-numeric:tabular-nums; margin-top:-14px}
+.rep-courbe-lab .constate{color:var(--encre-2); font-weight:600}
+.rep-courbe-bornes{margin:8px 0 2px; font-size:.86rem}
+.rep-courbe-bornes b{font-family:"IBM Plex Mono",monospace; color:var(--bleu-rf)}
+.rep-courbe-bornes span{color:var(--encre-3); margin:0 4px}
+
+.rep-pertes{display:flex; align-items:flex-start; gap:6px; margin:14px 0 4px; border-top:2px solid var(--filet-fort); padding-top:2px}
+.rep-pertes .col{flex:1; display:flex; flex-direction:column; align-items:center; gap:3px; min-width:0}
+.rep-pertes .an{font-size:.62rem; color:var(--encre-3); font-variant-numeric:tabular-nums}
+.rep-pertes .bar{width:100%; background:var(--filet-fort)}
+.rep-pertes .col.vous .bar{background:var(--bleu-rf)}
+.rep-pertes .nb{font-family:"IBM Plex Mono",monospace; font-size:.66rem; font-variant-numeric:tabular-nums; color:var(--encre-2)}
+.rep-pertes .col.vous .nb{color:var(--bleu-rf); font-weight:600}
+.rep-pertes-lgd{display:flex; align-items:center; gap:6px; font-size:.7rem; color:var(--encre-3); margin-top:8px; flex-wrap:wrap}
+.rep-pertes-lgd i{width:11px; height:11px; display:inline-block; flex-shrink:0}
+.rep-pertes-lgd i.vous{background:var(--bleu-rf)} .rep-pertes-lgd i.apres{background:var(--filet-fort); margin-left:10px}
+.rep-comp{display:flex; flex-direction:column; gap:12px; margin:12px 0 4px}
+.comp-titre{font-size:.72rem; text-transform:uppercase; letter-spacing:.07em; color:var(--encre-2); font-weight:700; margin-bottom:5px; display:flex; gap:10px; align-items:baseline; flex-wrap:wrap}
+.comp-ligne{display:flex; align-items:center; gap:9px; margin-bottom:3px}
+.comp-ligne .qui{font-size:.72rem; color:var(--encre-3); width:11ch; flex-shrink:0; text-align:right}
+.comp-ligne .piste{flex:1; min-width:0}
+.comp-ligne i{height:13px; display:block}
+.comp-ligne i.fr{background:var(--bleu-rf)}
+.comp-ligne i.ref{background:var(--filet-fort)}
+.comp-ligne b{font-family:"IBM Plex Mono",monospace; font-size:.8rem; font-variant-numeric:tabular-nums; width:4ch; flex-shrink:0}
+.comp-ecart{font-size:.7rem; font-weight:700; letter-spacing:0; text-transform:none}
+.comp-ecart.neg{color:var(--alerte)} .comp-ecart.pos{color:var(--ok)}
+@media (max-width:640px){ .comp-ligne .qui{width:8ch} }
 #comprendre-btn{position:fixed; left:12px; bottom:12px; z-index:30; font-size:.74rem; padding:7px 13px; border:1px solid var(--filet); background:var(--fiche); color:var(--encre-2); cursor:pointer; box-shadow:0 2px 8px rgba(0,0,0,.08); border-radius:2px}
 #comprendre-btn:hover{color:var(--bleu-rf); border-color:var(--bleu-rf)}
 #comprendre{position:fixed; inset:0; z-index:60; background:var(--papier); overflow-y:auto; overscroll-behavior:contain; padding:0 16px 60px}
@@ -354,6 +396,7 @@ table.bilan .num{text-align:right}
 #comprendre .chapo{margin:14px 0 18px}
 body:has(#comprendre:not([hidden])) #comprendre-btn{display:none}
 body:has(.suite:not([hidden])) #comprendre-btn{bottom:62px}
+.ligne-s .requal{display:inline-block; font-size:.6rem; font-weight:700; text-transform:uppercase; letter-spacing:.08em; background:var(--c-budget); color:#1a1a19; padding:1px 6px; margin-left:7px; vertical-align:middle}
 .nouveau-dossier{display:inline-block; font-size:.6rem; font-weight:700; text-transform:uppercase; letter-spacing:.09em; background:var(--bleu-rf); color:#fff; padding:2px 7px; margin-left:8px; vertical-align:middle}
 .bandeau-neuf{background:var(--fiche-2); border-left:3px solid var(--bleu-rf); padding:10px 14px; font-size:.82rem; margin:14px 0; line-height:1.5}
 @media (max-width:640px){
