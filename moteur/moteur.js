@@ -11,7 +11,7 @@
    ========================================================================== */
 
 import * as K from './constantes.js';
-import { CATALOGUE, PAR_ID, AFFAIRES, AFFAIRE_PAR_ID, POLEMIQUES_RENTREE, LIVRAISON_PISA, PLATEAU, REVALORISATION, chiffrerRevalorisation, FINANCEMENT_19, DOSSIERS_ETE, AUDIENCES, RECEPTION } from './catalogue.js';
+import { CATALOGUE, PAR_ID, AFFAIRES, AFFAIRE_PAR_ID, POLEMIQUES_RENTREE, LIVRAISON_PISA, PLATEAU, REVALORISATION, chiffrerRevalorisation, FINANCEMENT_19, DOSSIERS_ETE, AUDIENCES, RECEPTION, argumentaireSyndical } from './catalogue.js';
 
 /* ---------------------------------------------------------------- ALÉA --- */
 export function rngDepuis(graine) {
@@ -407,7 +407,8 @@ function* etapeAudience(s) {
       segment: (carte.greve && carte.greve.segment) || 'tous',
       cause: `maintien de « ${carte.label} »`,
     });
-    const dec = yield { type: 'retrait', org, carte, mesure: conteste, risque, combatif };
+    const dec = yield { type: 'retrait', org, carte, mesure: conteste, risque, combatif,
+      argumentaire: argumentaireSyndical(carte, org, s) };
     if (dec === 'ceder') {
       retirerMesure(s, conteste, org, poidsRel);
     } else if (dec === 'requalifier') {

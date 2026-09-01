@@ -471,6 +471,26 @@ table.bilan tr.cache td{background:var(--fiche-2)}
 .bilan-detail{margin-top:18px; border-top:1px solid var(--filet); padding-top:10px}
 .bilan-detail>summary{cursor:pointer; font-size:.8rem; font-weight:600; letter-spacing:.03em; color:var(--bleu-rf)}
 .bilan-final{font-size:.84rem; line-height:1.6; margin-top:20px; padding-top:12px; border-top:1px solid var(--filet)}
+.argumentaire{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:16px 0}
+.argumentaire .arg{border:1px solid var(--filet); border-top-width:3px; padding:10px 13px 12px; background:var(--fiche-2)}
+.argumentaire .arg-d{border-top-color:var(--c-sante)}
+.argumentaire .arg-p{border-top-color:var(--c-budget)}
+.argumentaire .etiq{display:block; font-size:.62rem; font-weight:700; text-transform:uppercase; letter-spacing:.09em; color:var(--encre-2); margin-bottom:6px}
+.argumentaire .arg-d .etiq{color:var(--c-sante)}
+.argumentaire .arg-p .etiq{color:var(--c-budget)}
+.argumentaire .dit{font-size:.85rem; line-height:1.6; margin:0 0 8px; font-style:italic !important}
+.argumentaire .verdict{font:400 .76rem/1.55 "Public Sans",system-ui,-apple-system,"Segoe UI",sans-serif; font-style:normal !important; color:var(--encre-2); margin:0; padding-top:7px; border-top:1px dotted var(--filet)}
+@media (max-width:720px){ .argumentaire{grid-template-columns:1fr} }
+.boussole{border:1px solid var(--filet); border-left:3px solid var(--bleu-rf); background:var(--fiche); padding:13px 16px 15px; margin-bottom:16px}
+.bous-chapo{font-size:.82rem; line-height:1.55; color:var(--encre-2); margin:6px 0 11px}
+.bous-l{display:flex; align-items:center; gap:11px; margin-bottom:7px}
+.bous-l .lib{flex:0 0 clamp(140px, 30%, 250px); border-left:3px solid; padding-left:9px; font-size:.82rem; font-weight:600; line-height:1.3}
+.bous-l .lib small{display:block; font-weight:400; font-size:.7rem; color:var(--encre-3); line-height:1.35; margin-top:1px}
+.bous-l .rail{flex:1; height:8px; background:var(--fiche-2); border:1px solid var(--filet); min-width:40px}
+.bous-l .rail i{display:block; height:100%}
+.bous-l .v{flex:0 0 auto; font-size:.78rem; font-variant-numeric:tabular-nums; color:var(--encre-2); min-width:5ch; text-align:right}
+.bous-note{font-size:.78rem; line-height:1.55; color:var(--encre-2); margin:11px 0 0; padding-top:9px; border-top:1px dotted var(--filet)}
+@media (max-width:560px){ .bous-l{flex-wrap:wrap} .bous-l .lib{flex-basis:100%} }
 @media (max-width:640px){ .profil-ligne b{min-width:0} }
 .ligne-s .requal{display:inline-block; font-size:.6rem; font-weight:700; text-transform:uppercase; letter-spacing:.08em; background:var(--c-budget); color:#1a1a19; padding:1px 6px; margin-left:7px; vertical-align:middle}
 .nouveau-dossier{display:inline-block; font-size:.6rem; font-weight:700; text-transform:uppercase; letter-spacing:.09em; background:var(--bleu-rf); color:#fff; padding:2px 7px; margin-left:8px; vertical-align:middle}

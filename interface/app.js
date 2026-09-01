@@ -1,5 +1,5 @@
 /* ============================================================================
-   RUE DE GRENELLE — application (interface)
+   RUE DE GRENELLE, application (interface)
    Pilote le générateur `derouler` du moteur : chaque yield est un écran.
    La sauvegarde rejoue le journal des décisions sur la même graine.
    ========================================================================== */
@@ -36,7 +36,7 @@ const MOIS_L = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet'
 /* Le paysage médiatique. Pseudonymes transparents, satire symétrique : le
    quotidien national de droite, celui de gauche, la presse régionale, la presse
    spécialisée que lisent réellement les personnels, les chaînes d'info, les
-   hebdos et la presse syndicale — chacun avec sa manière de dire la même
+   hebdos et la presse syndicale, chacun avec sa manière de dire la même
    chose. Le titre du quotidien de référence est tiré au sort par partie : on
    ne suit pas le même journal deux mandats de suite. */
 const JOURNAUX = [
@@ -53,7 +53,7 @@ const BREVES_SIGNATURES = [
   /* presse régionale */
   'Ouest-Trance', 'La Voix du Fond de la Classe', 'Sud-Devoirs',
   'Le Dauphin Libéré', 'La Dépêche de Midi-Journée',
-  /* presse spécialisée éducation — celle que lisent les personnels */
+  /* presse spécialisée éducation, celle que lisent les personnels */
   'Le Percolateur pédagogique', 'ToutÉduque', 'Dépêches Éducation',
   'VousNousEux', 'Les Cahiers à Spirale',
   /* radio, télévision, syndicats */
@@ -98,7 +98,7 @@ const COMPTES = [
   ] },
   { a: 'Marine de Montretout', p: '@MdeMontretout · l’école du bon sens', quand: () => true, posts: [
     'Les Français veulent une école qui instruit. Le ministre propose un comité. Chacun jugera.',
-    'Uniforme, autorité, fondamentaux. Trois mots que la rue de Grenelle a rayés du dictionnaire — probablement lors d’un allègement des programmes.',
+    'Uniforme, autorité, fondamentaux. Trois mots que la rue de Grenelle a rayés du dictionnaire, probablement lors d’un allègement des programmes.',
   ] },
 ];
 
@@ -190,8 +190,8 @@ function nouvellesEntrees() {
 /* ---------------------------------------------------------------- HUD ----- */
 /* Trois compteurs affichés, pas cinq. Ce sont les trois que le joueur a lui-même
    placés en tête de sa doctrine en juin 2027 : ils pèsent 80 % de son bilan
-   (35 + 25 + 20). Les deux autres continuent d'être tenus — ils comptent dans le
-   score et réapparaissent au bilan — mais ne sont pas sous les yeux. Un ministre
+   (35 + 25 + 20). Les deux autres continuent d'être tenus (ils comptent dans le
+   score et réapparaissent au bilan) mais ne sont pas sous les yeux. Un ministre
    ne regarde que le tableau de bord qu'il s'est donné ; c'est précisément là que
    les surprises se logent. Les alertes ci-dessous servent à cela : quand une
    mécanique invisible se met à mordre, elle vient le dire. */
@@ -225,7 +225,7 @@ function majHud() {
    personnels, fatigue réformatrice, capacité d'absorption, couverture des
    concours, heures non assurées, ségrégation public/privé. Elles décident du
    résultat réel sans jamais s'afficher. Plutôt que de les remettre toutes à
-   l'écran — c'était le reproche : trop de compteurs —, elles se signalent
+   l'écran (c'était le reproche : trop de compteurs), elles se signalent
    d'elles-mêmes quand elles se mettent à mordre. Une alerte ne se déclenche
    qu'une fois par mandat et ne reste affichée que l'année en cours. */
 const alertesVues = new Set();
@@ -262,7 +262,7 @@ function majAlertes(S) {
   /* Rationnement volontaire : une alerte par année au plus, trois par mandat.
      Une alerte qui revient tous les écrans n'alerte plus personne, elle décore.
      Les règles sont classées par ordre de priorité : la première qui mord passe,
-     les autres attendront l'année suivante — ou ne viendront jamais. */
+     les autres attendront l'année suivante, ou ne viendront jamais. */
   if (alertesVues.size < 3 && S.annee !== anneeDerniereAlerte) {
     const r = reglesAlertes(S).find((x) => x.si && !alertesVues.has(x.cle));
     if (r) {
@@ -303,7 +303,7 @@ function ecranAccueil(sauvegarde) {
   a.innerHTML = `
     <div class="tampon"><div class="rf">RÉPUBLIQUE FRANÇAISE</div><div style="font-size:.62rem;letter-spacing:.18em">MINISTÈRE DE L'ÉDUCATION NATIONALE</div></div>
     <h1>Rue de Grenelle</h1>
-    <p class="devise">Vous êtes ministre de l'Éducation nationale. Cinq rentrées, cinq budgets, 1,2 million d'agents, 12 millions d'élèves — et une durée moyenne dans le poste de deux ans. Finir sera déjà une performance.</p>`;
+    <p class="devise">Vous êtes ministre de l'Éducation nationale. Cinq rentrées, cinq budgets, 1,2 million d'agents, 12 millions d'élèves, et une durée moyenne dans le poste de deux ans. Finir sera déjà une performance.</p>`;
   const actions = el('div', 'actions'); actions.style.justifyContent = 'center';
   if (sauvegarde) {
     const rep = el('button', 'btn', 'Reprendre la partie en cours');
@@ -313,12 +313,12 @@ function ecranAccueil(sauvegarde) {
     neuf.onclick = () => { localStorage.removeItem(CLE_SAUVE); demarrer(null); };
     actions.appendChild(neuf);
   } else {
-    const go = el('button', 'btn', 'Prendre vos fonctions — juin 2027');
+    const go = el('button', 'btn', 'Prendre vos fonctions, juin 2027');
     go.onclick = () => demarrer(null);
     actions.appendChild(go);
   }
   a.appendChild(actions);
-  a.appendChild(el('p', 'avertissement', 'Jeu pédagogique indépendant, sans lien avec le ministère de l’Éducation nationale. Les ordres de grandeur viennent de sources publiques (DEPP, PLF, OCDE, CSEN, EEF) ; chaque mesure cite ses porteurs réels et le niveau de preuve de son effet. Le jeu ne dit jamais qu’une doctrine est la bonne — il vous laisse en répondre.'));
+  a.appendChild(el('p', 'avertissement', 'Jeu pédagogique indépendant, sans lien avec le ministère de l’Éducation nationale. Les ordres de grandeur viennent de sources publiques (DEPP, PLF, OCDE, CSEN, EEF) ; chaque mesure cite ses porteurs réels et le niveau de preuve de son effet. Le jeu ne dit jamais qu’une doctrine est la bonne, il vous laisse en répondre.'));
   scene(a);
 }
 
@@ -326,11 +326,11 @@ function ecranAccueil(sauvegarde) {
 function ecranNomination() {
   const d = docu('Appel de Matignon', 'On vous propose la rue de Grenelle', 'juin 2027');
   d.classList.add('papier');
-  d.appendChild(el('p', 'chapo', 'Le gouvernement se forme. Votre téléphone sonne : le portefeuille proposé est l’Éducation nationale — le premier budget de l’État — 65,3 milliards d’euros au projet de loi de finances qui s’annonce, 1,2 million d’agents, 12 millions d’élèves. La durée moyenne dans le poste dépasse rarement deux ans.'));
+  d.appendChild(el('p', 'chapo', 'Le gouvernement se forme. Votre téléphone sonne : le portefeuille proposé est l’Éducation nationale (le premier budget de l’État) 65,3 milliards d’euros au projet de loi de finances qui s’annonce, 1,2 million d’agents, 12 millions d’élèves. La durée moyenne dans le poste dépasse rarement deux ans.'));
   d.appendChild(el('div', 'note-passation',
-    'Votre prédécesseur, huitième en quatre ans, laisse un mot : « Tout est dans les dossiers. Les dossiers sont dans les cartons. Les cartons sont au garde-meuble, la DGESCO sait lequel. Méfiez-vous de juillet, de septembre et de janvier — le reste de l’année est calme, sauf le reste de l’année. Bonne chance.'
+    'Votre prédécesseur, huitième en quatre ans, laisse un mot : « Tout est dans les dossiers. Les dossiers sont dans les cartons. Les cartons sont au garde-meuble, la DGESCO sait lequel. Méfiez-vous de juillet, de septembre et de janvier, le reste de l’année est calme, sauf le reste de l’année. Bonne chance.'
     + '<span class="ps">P.-S. — La photocopieuse du deuxième est en panne depuis 2019. C’est le dossier le plus consensuel du ministère : ne le réglez pas, il fédère. »</span>'));
-  d.appendChild(el('p', '', 'Vous acceptez. L’Élysée vous recevra dans l’heure — trois questions, pour vérifier que votre nomination ne coûtera rien au Président.'));
+  d.appendChild(el('p', '', 'Vous acceptez. L’Élysée vous recevra dans l’heure, trois questions, pour vérifier que votre nomination ne coûtera rien au Président.'));
   const act = el('div', 'actions');
   const ok = el('button', 'btn tamponner', 'Accepter le ministère');
   ok.onclick = () => suivant('accepter');
@@ -342,8 +342,8 @@ function ecranNomination() {
 /* --- votre feuille de route : le classement que VOUS déclarez ---------------- */
 function ecranDoctrine() {
   const ordre = Object.keys(NOMS_C);
-  const d = docu('Conférence de presse — prise de fonction', 'Votre feuille de route, devant témoins', 'juin 2027');
-  d.appendChild(el('p', 'chapo', 'Premier acte du mandat : classer les cinq compteurs du quinquennat par ordre de priorité. Aucune priorité n’est neutre — chacune est au cœur de projets politiques réellement débattus, et la presse le relèvera dès demain. Surtout : <b>c’est sur VOTRE ordre que votre bilan sera noté</b> (35 / 25 / 20 / 12 / 8). Vous serez jugé contre votre propre parole, et rien d’autre.'));
+  const d = docu('Conférence de presse, prise de fonction', 'Votre feuille de route, devant témoins', 'juin 2027');
+  d.appendChild(el('p', 'chapo', 'Premier acte du mandat : classer les cinq compteurs du quinquennat par ordre de priorité. Aucune priorité n’est neutre, chacune est au cœur de projets politiques réellement débattus, et la presse le relèvera dès demain. Surtout : <b>c’est sur VOTRE ordre que votre bilan sera noté</b> (35 / 25 / 20 / 12 / 8). Vous serez jugé contre votre propre parole, et rien d’autre.'));
 
   const liste = el('div', 'classement');
   const rendreListe = () => {
@@ -387,7 +387,7 @@ function ecranBercy(q) {
     ferme: 'Le ton est celui d’un huissier poli.',
     comminatoire: 'Le ton est celui d’un huissier qui a cessé d’être poli.',
   };
-  const d = docu('Lettre plafond — Matignon / Bercy', 'Le cadrage de votre prochain budget');
+  const d = docu('Lettre plafond. Matignon / Bercy', 'Le cadrage de votre prochain budget');
   d.appendChild(el('p', 'chapo', `${CAST.bercy} vous adresse la lettre plafond. ${tons[p.ton]}`));
   d.appendChild(el('div', 'depeche',
     `OBJET : plafonds 2e circulaire budgétaire<br>
@@ -406,7 +406,7 @@ function ecranBercy(q) {
 /* --- septembre (an 2) : la polémique qui s'installe -------------------------- */
 function ecranPolemique(q) {
   const p = q.polemique;
-  const d = docu('Rentrée — la question qui occupe l’antenne', esc(p.titre));
+  const d = docu('Rentrée, la question qui occupe l’antenne', esc(p.titre));
   d.classList.add('papier');
   d.appendChild(el('p', 'chapo', fr(p.recit)));
   const opts = el('div', 'opts');
@@ -426,7 +426,7 @@ function ecranPolemique(q) {
     opts.appendChild(b);
   });
   d.appendChild(opts);
-  d.appendChild(el('p', 'note-passation', 'Aucune de ces réponses ne fait bouger un compteur d’acquis. Elles décident seulement de combien de semaines vous parlerez d’autre chose que d’école — et devant qui vous aurez raison.'));
+  d.appendChild(el('p', 'note-passation', 'Aucune de ces réponses ne fait bouger un compteur d’acquis. Elles décident seulement de combien de semaines vous parlerez d’autre chose que d’école, et devant qui vous aurez raison.'));
   function fin(i, r) {
     opts.querySelectorAll('.opt').forEach((n) => { n.disabled = true; });
     const box = el('div', 'decryptage');
@@ -444,7 +444,7 @@ function ecranPolemique(q) {
 /* --- octobre (an 2) : la livraison internationale ---------------------------- */
 function ecranLivraison(q) {
   const L = q.livraison;
-  const d = docu('Livraison internationale — 11 heures', esc(L.titre));
+  const d = docu('Livraison internationale, 11 heures', esc(L.titre));
   d.appendChild(el('p', 'chapo', fr(L.recit)));
   d.appendChild(serieNiveaux());
   d.appendChild(el('div', 'decryptage',
@@ -459,7 +459,7 @@ function ecranLivraison(q) {
 function ecranPlateau(q) {
   const P = q.plateau;
   const rep = new Array(P.questions.length).fill(null);
-  const d = docu('Journal de 20 heures — plateau', esc(P.titre));
+  const d = docu('Journal de 20 heures, plateau', esc(P.titre));
   d.classList.add('papier');
   d.appendChild(el('p', 'chapo', fr(P.recit)));
 
@@ -495,7 +495,7 @@ function ecranPlateau(q) {
     zone.appendChild(bloc);
   }
   function conclure() {
-    zone.appendChild(el('p', 'note-passation', 'Onze minutes. Sur les six causes documentées de chute d’un ministre de l’Éducation, une seule relève de la politique éducative — les cinq autres ressemblent à ce que vous venez de vivre.'));
+    zone.appendChild(el('p', 'note-passation', 'Onze minutes. Sur les six causes documentées de chute d’un ministre de l’Éducation, une seule relève de la politique éducative, les cinq autres ressemblent à ce que vous venez de vivre.'));
     const ok = el('button', 'btn tamponner', 'Quitter le plateau');
     ok.onclick = () => suivant(rep);
     zone.appendChild(el('div', 'actions')).appendChild(ok);
@@ -508,7 +508,7 @@ function ecranPlateau(q) {
 /* --- l'affaire : la polémique qui ne concerne pas l'école --------------------- */
 function ecranAffaire(q) {
   const a = q.affaire;
-  const d = docu('Revue de presse — affaire personnelle', esc(a.manchette));
+  const d = docu('Revue de presse, affaire personnelle', esc(a.manchette));
   d.classList.add('papier');
   d.appendChild(el('p', 'chapo', fr(a.recit)));
   if (q.resonne) {
@@ -537,14 +537,14 @@ function ecranAffaire(q) {
     opts.appendChild(b);
   });
   d.appendChild(opts);
-  d.appendChild(el('p', 'note-passation', `Votre crédibilité est aujourd’hui de <b>${fmt0(q.credibilite)}/100</b>. C’est elle qui décide de ce que valent vos annonces : à crédibilité effondrée, la meilleure mesure du catalogue ne porte plus. Aucune de ces réponses ne touche un compteur éducatif — et c’est bien le problème du métier.`));
+  d.appendChild(el('p', 'note-passation', `Votre crédibilité est aujourd’hui de <b>${fmt0(q.credibilite)}/100</b>. C’est elle qui décide de ce que valent vos annonces : à crédibilité effondrée, la meilleure mesure du catalogue ne porte plus. Aucune de ces réponses ne touche un compteur éducatif, et c’est bien le problème du métier.`));
 
   function finAffaire(i, r) {
     opts.querySelectorAll('.opt').forEach((n) => { n.disabled = true; });
     const box = el('div', 'decryptage');
     box.style.borderLeftColor = r.type === 'assumer' ? 'var(--c-sante)' : r.type === 'defendre' ? 'var(--c-budget)' : 'var(--rouge-rf)';
     box.innerHTML = `<div class="titre-d" style="color:${r.type === 'assumer' ? 'var(--c-sante)' : r.type === 'defendre' ? 'var(--c-budget)' : 'var(--rouge-rf)'}">La suite</div><p>${fr(r.suite)}</p>`
-      + '<p style="font-size:.78rem;color:var(--encre-3);margin-top:8px">Une affaire médiatique n’est pas une culpabilité : une sur quatre se dégonfle — démentie, classée, ou close par un remboursement. Le coût politique, lui, reste à moitié encaissé. C’est vrai, et c’est ce que le public retient le plus mal.</p>';
+      + '<p style="font-size:.78rem;color:var(--encre-3);margin-top:8px">Une affaire médiatique n’est pas une culpabilité : une sur quatre se dégonfle, démentie, classée, ou close par un remboursement. Le coût politique, lui, reste à moitié encaissé. C’est vrai, et c’est ce que le public retient le plus mal.</p>';
     d.appendChild(box);
     const act = el('div', 'actions');
     const ok = el('button', 'btn', 'Passer à autre chose');
@@ -558,7 +558,7 @@ function ecranAffaire(q) {
 /* --- l'entretien de l'Élysée, avant la nomination ---------------------------- */
 function ecranEntretien(q) {
   const rep = new Array(q.questions.length).fill(null);
-  const d = docu('Élysée — entretien préalable', 'Trois questions avant votre nomination');
+  const d = docu('Élysée, entretien préalable', 'Trois questions avant votre nomination');
   d.classList.add('papier');
   d.appendChild(el('p', 'chapo', 'Un conseiller vous reçoit vingt minutes. Il ne s’intéresse ni à votre projet ni à l’école : il vérifie que votre nomination ne coûtera rien au Président. Personne ne contrôlera vos réponses aujourd’hui.'));
 
@@ -599,8 +599,8 @@ function ecranEntretien(q) {
 
 /* --- le profil déclaré ------------------------------------------------------- */
 function ecranProfil(q) {
-  const d = docu('Notice biographique — service de presse', 'D’où venez-vous ?');
-  d.appendChild(el('p', 'chapo', 'Le service de presse a besoin de deux lignes pour les dépêches de demain. Ce que vous déclarez ne vous rend ni meilleur ni moins bon ministre — <b>aucun profil ne donne d’avantage sur les compteurs</b> — mais décide de ce que le corps enseignant attendra de vous, et de ce qu’on vous reprochera.'));
+  const d = docu('Notice biographique, service de presse', 'D’où venez-vous ?');
+  d.appendChild(el('p', 'chapo', 'Le service de presse a besoin de deux lignes pour les dépêches de demain. Ce que vous déclarez ne vous rend ni meilleur ni moins bon ministre (<b>aucun profil ne donne d’avantage sur les compteurs</b>) mais décide de ce que le corps enseignant attendra de vous, et de ce qu’on vous reprochera.'));
   const opts = el('div', 'opts');
   q.profils.forEach((p, i) => {
     const eff = [
@@ -621,7 +621,7 @@ function ecranProfil(q) {
 /* --- la demande de rallonge, dont Bercy décide ------------------------------- */
 function ecranAvance(q) {
   const S = ETAT.s;
-  const d = docu('Note du secrétariat général — négociation de gestion', 'Demander une rallonge à Bercy');
+  const d = docu('Note du secrétariat général, négociation de gestion', 'Demander une rallonge à Bercy');
   d.appendChild(el('p', 'chapo', 'Vous arrivez en juin sur un budget déjà voté. Un seul levier existe pour agir tout de suite : la <b>réserve de précaution</b>, cette part des crédits que Bercy gèle en début d’exercice sur chaque programme et ne dégèle qu’en gestion. Elle immobilise plusieurs centaines de millions d’euros sur votre mission. <b>Bercy n’est pas obligé de dire oui.</b>'));
 
   const opts = el('div', 'opts');
@@ -688,13 +688,13 @@ function ecranAvance(q) {
       : manque ? 'Désignez la mesure à financer'
       : o.bonus ? 'Transmettre la demande à Bercy' : 'Ne rien demander';
   }
-  d.appendChild(el('p', 'note-passation', 'Un refus ne vous coûte pas grand-chose sur le papier — 4 points de crédit et 3 de capital — mais il se sait, et le cabinet de Bercy a une bonne mémoire. Demander beaucoup rapporte beaucoup et échoue plus d’une fois sur deux.'));
+  d.appendChild(el('p', 'note-passation', 'Un refus ne vous coûte pas grand-chose sur le papier (4 points de crédit et 3 de capital) mais il se sait, et le cabinet de Bercy a une bonne mémoire. Demander beaucoup rapporte beaucoup et échoue plus d’une fois sur deux.'));
   scene(d);
 }
 
 /* --- l'intention de restitution des postes ----------------------------------- */
 function ecranIntention(q) {
-  const d = docu('Conférence de presse — préparation de la rentrée', 'Que ferez-vous des postes que la démographie libère ?');
+  const d = docu('Conférence de presse, préparation de la rentrée', 'Que ferez-vous des postes que la démographie libère ?');
   d.appendChild(el('p', 'chapo', 'La question tombera dès votre premier point presse : chaque rentrée « libère » environ 6 600 postes, et tout le monde veut savoir où ils iront. Ce que vous répondez aujourd’hui n’engage rien juridiquement et tout politiquement : <b>Bercy comparera votre phrase à votre carte scolaire de janvier</b>.'));
   const opts = el('div', 'opts');
   q.options.forEach((o, i) => {
@@ -718,7 +718,7 @@ function ecranIntention(q) {
 /* --- rentrée ratée : la communication --------------------------------------- */
 function ecranRentree() {
   const S = ETAT.s;
-  const d = docu('Cellule de crise — rentrée', 'Des classes sans professeur, et un micro devant vous');
+  const d = docu('Cellule de crise, rentrée', 'Des classes sans professeur, et un micro devant vous');
   d.appendChild(el('p', 'chapo', `Couverture des concours : ${fmt1(S.phys.couvertureConcours)} %. Heures non assurées : ${fmt1(S.phys.heuresNonAssurees)} %. Le comptage syndical des classes sans enseignant a commencé à 8 h 07. Il est 8 h 12.`));
   const opts = el('div', 'opts');
   const b1 = el('button', 'opt', `<b>Assumer les chiffres</b><span class="det">« La situation est difficile, voici ce que nous faisons. » Les personnels entendent qu’on ne leur ment pas ; l’opposition entend un aveu. Les deux ont raison.</span>`);
@@ -732,7 +732,7 @@ function ecranRentree() {
 /* --- carte scolaire ---------------------------------------------------------- */
 function ecranCarteScolaire(q) {
   const S = ETAT.s;
-  const d = docu('Bordereau — carte scolaire & DHG', `Rentrée ${S.anneeCiv + 1} : le moment le plus conflictuel de l’année`);
+  const d = docu('Bordereau, carte scolaire & DHG', `Rentrée ${S.anneeCiv + 1} : le moment le plus conflictuel de l’année`);
   d.classList.add('large', 'papier');
   d.appendChild(el('p', 'chapo',
     `La démographie fait son œuvre : <b>${fmt0(Math.abs(q.baisse) * 1000)} élèves de moins</b> à la prochaine rentrée, soit ${fmt0(q.postesLiberables)} postes « libérables ». Bercy en exige ${fmt0(Math.abs(q.schemaDemande))}. Les maires, eux, exigent l’inverse. Les deux vous regardent.`));
@@ -772,9 +772,9 @@ function ecranCarteScolaire(q) {
     $('#lec-prive').innerHTML = prive < 0.35 ? 'Le privé est épargné : la ségrégation dérive en silence.'
       : prive <= 0.65 ? 'Effort proportionnel aux effectifs : personne n’est content, personne ne défile.'
       : prive <= 0.78 ? 'Le privé contribue davantage : protestations d’usage, encore contenues.'
-      : '<span style="color:var(--rouge-rf)">Le privé est mis à contribution frontale : provocation comptabilisée — à deux, la guerre scolaire s’arme.</span>';
+      : '<span style="color:var(--rouge-rf)">Le privé est mis à contribution frontale : provocation comptabilisée, à deux, la guerre scolaire s’arme.</span>';
 
-    /* Les acteurs réagissent AVANT que vous ne signiez — mêmes formules que le moteur. */
+    /* Les acteurs réagissent AVANT que vous ne signiez, mêmes formules que le moteur. */
     const ecart2 = postes + q.schemaDemande;
     const dSynd = -(postes / 1000) * 1.05;
     const dBercy = ecart2 >= 0 ? Math.min(13, 4 + ecart2 / 700) : Math.max(-18, ecart2 / 260);
@@ -801,22 +801,22 @@ function ecranAtelier(q) {
 
   const MOMENTS = {
     prise_fonction: {
-      type: 'Prise de fonction — vos premières annonces',
+      type: 'Prise de fonction, vos premières annonces',
       titre: 'Vos premières annonces',
-      chapo: 'Vous n’attendez pas le prochain budget : la loi de finances votée par votre prédécesseur laisse une marge de redéploiement, et le pays regarde ce qu’un nouveau ministre fait de ses premiers jours. Deux annonces au maximum — au-delà, plus personne ne retient rien.',
+      chapo: 'Vous n’attendez pas le prochain budget : la loi de finances votée par votre prédécesseur laisse une marge de redéploiement, et le pays regarde ce qu’un nouveau ministre fait de ses premiers jours. Deux annonces au maximum, au-delà, plus personne ne retient rien.',
     },
     rentree: {
       type: 'Circulaire de rentrée',
       titre: 'Que met-on dans la circulaire de rentrée ?',
-      titreSuite: 'Une mesure, pas davantage : la circulaire de rentrée porte un message, pas un programme. Elle se finance par redéploiement — pas d’arbitrage interministériel en septembre.',
+      titreSuite: 'Une mesure, pas davantage : la circulaire de rentrée porte un message, pas un programme. Elle se finance par redéploiement, pas d’arbitrage interministériel en septembre.',
     },
     livraison: {
-      type: 'Après la livraison — vos annonces de ce soir',
+      type: 'Après la livraison, vos annonces de ce soir',
       titre: 'Trois mesures pour le niveau des élèves',
       chapo: 'Vous n’avez pas le choix d’annoncer : à 20 heures, on attend des mesures. Vous avez le choix de celles-ci. Selon les familles de mesures retenues, la salle des professeurs applaudira, haussera les épaules, ou déposera un préavis pour le printemps.',
     },
     janvier: {
-      type: 'L’atelier — l’arbitrage de janvier',
+      type: 'L’atelier, l’arbitrage de janvier',
       titre: 'Que portez-vous cette année ?',
       chapo: 'Le moment où le budget de l’année se transforme en décisions. Jusqu’à trois annonces, et le seul moment où vous pouvez arracher un arbitrage interministériel pour dépasser votre enveloppe.',
     },
@@ -826,7 +826,7 @@ function ecranAtelier(q) {
   const d = el('article', 'doc large');
   d.appendChild(el('div', 'entete-doc', `<span class="type">${MOM.type}</span><span class="date">${ETAT.dateLabel}</span>`));
   d.appendChild(el('h2', '', MOM.titre));
-  d.appendChild(el('p', 'chapo', (MOM.chapo || MOM.titreSuite) + ' L’effet vitrine est chiffré : vous le verrez. L’effet réel ne l’est pas — seuls le niveau de preuve (🔒) et le délai sont connus, et vous découvrirez au bilan ce que vous avez produit. Rien ne s’applique sans les personnels.'));
+  d.appendChild(el('p', 'chapo', (MOM.chapo || MOM.titreSuite) + ' L’effet vitrine est chiffré : vous le verrez. L’effet réel ne l’est pas, seuls le niveau de preuve (🔒) et le délai sont connus, et vous découvrirez au bilan ce que vous avez produit. Rien ne s’applique sans les personnels.'));
   /* Le budget, en vrai : tout le mandat se joue dans un liseré. */
   const M = K.CADRAGE.missionHorsCAS;                       // 65,30 Md€ (plafond PLF 2027)
   const salaires = M * K.CADRAGE.partMasseSalariale;
@@ -836,17 +836,17 @@ function ecranAtelier(q) {
   const pc = (x) => Math.max(0.35, (x / M) * 100).toFixed(2) + '%';
   const bb = el('div', 'budget-bloc');
   bb.innerHTML = `
-    <div class="titre-b"><span>Le budget du ministère — premier budget de l'État</span><b>${fmt1(M)} Md€/an</b></div>
+    <div class="titre-b"><span>Le budget du ministère, premier budget de l'État</span><b>${fmt1(M)} Md€/an</b></div>
     <div class="budget-barre" aria-hidden="true">
       <i class="salaires" style="width:${pc(salaires)}"></i><i class="autres" style="width:${pc(autres)}"></i><i class="engage" style="width:${pc(engages)}"></i><i class="libre" style="width:${pc(libre)}"></i>
     </div>
     <div class="budget-legende">
       <span><i class="puce salaires" style="background:var(--filet)"></i>masse salariale <b>${fmt1(salaires)} Md€</b> (intouchable : ce sont 1,2 M d'agents)</span>
       <span><i class="puce" style="background:var(--filet-fort)"></i>dépenses déjà engagées</span>
-      <span><i class="puce" style="background:var(--c-paix)"></i>vos mesures passées <b>${fmt0(engages * 1000)} M€/an</b> (à vie — l'effet cliquet)</span>
+      <span><i class="puce" style="background:var(--c-paix)"></i>vos mesures passées <b>${fmt0(engages * 1000)} M€/an</b> (à vie, l'effet cliquet)</span>
       <span><i class="puce" style="background:var(--c-sante)"></i>votre marge cette année <b>${fmt0(libre * 1000)} M€</b></span>
     </div>
-    <div class="budget-legende" style="margin-top:6px"><span>Le liseré vert est tout ce que vous pouvez décider cette année : <b>${fmt1((libre / M) * 100)} %</b> du budget. Chaque mesure pérenne le réduit pour toujours — pour vous et vos successeurs.</span></div>`;
+    <div class="budget-legende" style="margin-top:6px"><span>Le liseré vert est tout ce que vous pouvez décider cette année : <b>${fmt1((libre / M) * 100)} %</b> du budget. Chaque mesure pérenne le réduit pour toujours, pour vous et vos successeurs.</span></div>`;
   d.appendChild(bb);
 
   if ((q.nouveaux || []).length) {
@@ -883,15 +883,15 @@ function ecranAtelier(q) {
       `Implémentation ×<b>${(Math.round(facteurImplementation(S) * 100) / 100).toLocaleString('fr-FR')}</b> (adhésion ${fmt0(S.phys.adhesion)})`,
       cout > enveloppe ? (q.depassementAutorise
         ? `<span class="neg">dépassement : −${fmt0(K.SURCOUT.creditBercyParMd * (cout - enveloppe))} crédit Bercy, −${fmt0(K.SURCOUT.capitalParMd * (cout - enveloppe))} capital</span>`
-        : '<span class="neg">hors enveloppe — impossible sans arbitrage budgétaire (janvier)</span>') : '',
+        : '<span class="neg">hors enveloppe, impossible sans arbitrage budgétaire (janvier)</span>') : '',
     ].filter(Boolean).map((x) => `<span>${x}</span>`).join('');
     const tropCher = !q.depassementAutorise && cout > enveloppe;
     const tropDeCapital = pol > capital;
     valider.disabled = tropCher || tropDeCapital || selection.size > q.maxAnnonces;
-    valider.textContent = tropCher ? `Dépasse l’enveloppe de ${fmt0((cout - enveloppe) * 1000)} M€ — retirez une mesure`
-      : tropDeCapital ? 'Capital politique insuffisant — retirez une mesure'
+    valider.textContent = tropCher ? `Dépasse l’enveloppe de ${fmt0((cout - enveloppe) * 1000)} M€, retirez une mesure`
+      : tropDeCapital ? 'Capital politique insuffisant, retirez une mesure'
       : selection.size ? `Annoncer ${selection.size} mesure${selection.size > 1 ? 's' : ''}`
-      : (q.moment === 'janvier' ? 'Ne rien annoncer cette année' : 'Passer — ne rien annoncer');
+      : (q.moment === 'janvier' ? 'Ne rien annoncer cette année' : 'Passer, ne rien annoncer');
   };
 
   const valider = el('button', 'btn', '');
@@ -924,9 +924,9 @@ function ecranAtelier(q) {
         <span class="${vit.presse >= 0 ? 'pos' : 'neg'}">presse ${signe(vit.presse)}</span>
         ${vc.map(([cc, v]) => `<span class="image">image ${NOMS_C[cc]} ${signe(v)}</span>`).join('')}
       </div>
-      ${vc.length ? '<div class="note-image">« Image » : l’indicateur affiché bouge tout de suite — puis l’effet s’estompe d’un quart par an et ne compte pas au bilan. Seuls les effets réels (🔒, différés) comptent.</div>' : ''}
+      ${vc.length ? '<div class="note-image">« Image » : l’indicateur affiché bouge tout de suite, puis l’effet s’estompe d’un quart par an et ne compte pas au bilan. Seuls les effets réels (🔒, différés) comptent.</div>' : ''}
       <div class="reels">${(c.reel || []).map((e) => `<div class="ligne"><span class="verrous">${'🔒'.repeat(e.cadenas)}${'·'.repeat(5 - e.cadenas)}</span><span>Effet réel sur <b>${NOMS_C[e.compteur]}</b>, vers l’an +${e.delai}</span></div><div class="src">${esc(e.source)}</div>`).join('')}
-      ${c.parametrique === 'revalorisation' ? '<div class="ligne"><span class="verrous">🔒🔒🔒··</span><span>Montant, instrument et cible se règlent après sélection — tout est chiffré en direct</span></div>' : ''}</div>
+      ${c.parametrique === 'revalorisation' ? '<div class="ligne"><span class="verrous">🔒🔒🔒··</span><span>Montant, instrument et cible se règlent après sélection, tout est chiffré en direct</span></div>' : ''}</div>
       ${c.greve ? `<div class="alerte-greve">⚠ Risque de mobilisation (intensité ${c.greve.intensite}/5, ${c.greve.theme})</div>` : ''}
       ${c.provocations ? `<div class="alerte-greve">⚠ Provocation « guerre scolaire » (+${c.provocations})</div>` : ''}
       <div class="mot">${esc(c.mot)}</div>`;
@@ -957,7 +957,7 @@ function ecranAtelier(q) {
         w.appendChild(s); return w; };
       if (c.parametrique === 'revalorisation') {
         zone.classList.add('salaire');
-        /* 1. Le montant, au curseur — tout le reste en découle. */
+        /* 1. Le montant, au curseur, tout le reste en découle. */
         const R = REVALORISATION.montant;
         const cur = el('div', 'curseur-md');
         cur.innerHTML = `<label for="md-${c.id}"><span>Montant engagé, par an</span><b></b></label>
@@ -1040,7 +1040,7 @@ function ecranAtelier(q) {
 /* --- dossier de crise (l'été des cent jours) -------------------------------- */
 function ecranDossier(q) {
   const dos = q.dossier;
-  const d = docu('L’été des cent jours — dossier de crise', dos.titre, 'été 2027');
+  const d = docu('L’été des cent jours, dossier de crise', dos.titre, 'été 2027');
   d.classList.add('papier');
   d.appendChild(el('p', 'chapo', dos.contexte));
   const opts = el('div', 'opts');
@@ -1076,10 +1076,10 @@ const PROFILS_L = {
 };
 function ecranAudience(q) {
   const { org, audience } = q;
-  const d = docu('Audience — rentrée sociale', `Face à face : ${org.nom}`);
+  const d = docu('Audience, rentrée sociale', `Face à face : ${org.nom}`);
   d.appendChild(el('p', 'chapo', `L’organisation majoritaire du moment (${fmt1(org.poids)} % aux dernières élections professionnelles, profil : ${PROFILS_L[org.profil]}) est reçue rue de Grenelle. Sa délégation s’assoit, ouvre un parapheur, et pose UNE question :`));
   d.appendChild(el('div', 'note-passation', fr(audience.question(ETAT.s))));
-  d.appendChild(el('p', '', '<span style="font-size:.82rem;color:var(--encre-2)">Il n’y a pas de bonne réponse dans l’absolu — il y a une bonne réponse à <b>ce</b> profil-là. La fermeté rassure l’opinion, la méthode paie selon l’interlocuteur, la concession paie partout… et se paie à Bercy.</span>'));
+  d.appendChild(el('p', '', '<span style="font-size:.82rem;color:var(--encre-2)">Il n’y a pas de bonne réponse dans l’absolu, il y a une bonne réponse à <b>ce</b> profil-là. La fermeté rassure l’opinion, la méthode paie selon l’interlocuteur, la concession paie partout… et se paie à Bercy.</span>'));
   const opts = el('div', 'opts');
   audience.reponses.forEach((r, i) => {
     const badge = { ferme: 'Fermeté', methode: 'Méthode', concession: 'Concession' }[r.type];
@@ -1110,22 +1110,37 @@ function ecranAudience(q) {
 /* --- la revendication : céder ou maintenir ----------------------------------- */
 function ecranRetrait(q) {
   const { org, carte, mesure, risque, combatif } = q;
-  const d = docu('Audience — la revendication', `${org.nom} exige un retrait`);
+  const arg = q.argumentaire || {};
+  const d = docu('Audience, la revendication', `${org.nom} exige un retrait`);
   d.classList.add('papier');
   d.appendChild(el('div', 'note-passation', `« Venons-en au fond. Nous demandons le retrait de <b>« ${esc(carte.label)} »</b>. Nos instances sont mandatées. Votre réponse, monsieur le ministre ? »`));
-  d.appendChild(el('p', '', `<span style="font-size:.85rem;color:var(--encre-2)">Céder retire réellement la mesure du jeu : ses ${fmt0(mesure.cout * 1000)} M€/an reviennent à votre marge, mais ses effets encore à venir sont annulés — et si c'était une priorité présidentielle, l'Élysée l'apprendra par communiqué syndical.</span>`));
+  /* Deux arguments, de deux natures différentes, explicitement étiquetées.
+     C'est le cœur pédagogique de la scène : apprendre à trier ce qui se vérifie
+     de ce qui relève d'une conception de l'école, sans dire que le second
+     serait illégitime. Une part de la politique scolaire est un choix de
+     valeurs, et le jeu ne prétend pas trancher à la place du joueur. */
+  const box = el('div', 'argumentaire');
+  box.innerHTML = `
+    <div class="arg arg-d"><span class="etiq">Argument étayé, vérifiable</span>
+      <p class="dit">${fr(arg.etaye || '')}</p>
+      <p class="verdict">${fr(arg.verifiable || '')}</p></div>
+    <div class="arg arg-p"><span class="etiq">Argument de principe, non vérifiable</span>
+      <p class="dit">${fr(arg.principe || '')}</p>
+      <p class="verdict">Ce n’est pas une donnée, c’est une conception de l’école, et elle est parfaitement légitime comme telle. On peut la partager ou la combattre ; on ne peut pas la mesurer. La confusion des deux registres est ce qui rend illisibles la plupart des débats sur l’école, y compris ceux que vous lirez dans les programmes des candidats.</p></div>`;
+  d.appendChild(box);
+  d.appendChild(el('p', '', `<span style="font-size:.85rem;color:var(--encre-2)">Céder retire réellement la mesure du jeu : ses ${fmt0(mesure.cout * 1000)} M€/an reviennent à votre marge, mais ses effets encore à venir sont annulés, et si c'était une priorité présidentielle, l'Élysée l'apprendra par communiqué syndical.</span>`));
   const opts = el('div', 'opts');
 
   const bMaintenir = el('button', 'opt', `<b>Maintenir la mesure</b>
     <span class="det">« Cette mesure a été décidée, elle sera appliquée. » Capital +2, adhésion en baisse.</span>
-    <span class="risque-ligne">Risque de grève : <b style="color:${combatif && risque ? 'var(--rouge-rf)' : 'var(--ok)'}">${combatif && risque ? '~' + fmt1(risque.tauxMinistere) + ' % de grévistes (préavis probable)' : 'contenu — le profil de l’organisation ne s’y prête pas'}</b></span>`);
+    <span class="risque-ligne">Risque de grève : <b style="color:${combatif && risque ? 'var(--rouge-rf)' : 'var(--ok)'}">${combatif && risque ? '~' + fmt1(risque.tauxMinistere) + ' % de grévistes (préavis probable)' : 'contenu, le profil de l’organisation ne s’y prête pas'}</b></span>`);
   bMaintenir.onclick = () => finRetrait('maintenir');
-  const bCeder = el('button', 'opt', `<b>Céder — retirer la mesure</b>
-    <span class="det">Adhésion en hausse, ${fmt0(mesure.cout * 1000)} M€/an récupérés · capital −4, fatigue +15, parents déçus — et les effets attendus de la mesure ne viendront jamais.</span>
+  const bCeder = el('button', 'opt', `<b>Céder, retirer la mesure</b>
+    <span class="det">Adhésion en hausse, ${fmt0(mesure.cout * 1000)} M€/an récupérés · capital −4, fatigue +15, parents déçus, et les effets attendus de la mesure ne viendront jamais.</span>
     <span class="risque-ligne">Risque de grève : <b style="color:var(--ok)">désamorcé</b></span>`);
   bCeder.onclick = () => finRetrait('ceder');
-  const bRequal = el('button', 'opt', `<b>Requalifier — la renommer et la rendre facultative</b>
-    <span class="det">Ni retrait ni maintien : la mesure change de nom, cesse d’être obligatoire, et ses crédits restent inscrits. L’annonce est sauvée, le dispositif se vide. Capital −2, fatigue +5, adhésion en légère hausse — et les ${fmt0(mesure.cout * 1000)} M€/an continuent d’être dépensés.</span>
+  const bRequal = el('button', 'opt', `<b>Requalifier, la renommer et la rendre facultative</b>
+    <span class="det">Ni retrait ni maintien : la mesure change de nom, cesse d’être obligatoire, et ses crédits restent inscrits. L’annonce est sauvée, le dispositif se vide. Capital −2, fatigue +5, adhésion en légère hausse, et les ${fmt0(mesure.cout * 1000)} M€/an continuent d’être dépensés.</span>
     <span class="risque-ligne">Risque de grève : <b style="color:var(--ok)">désamorcé</b> · effet réel : <b style="color:var(--rouge-rf)">vous le découvrirez au bilan</b></span>`);
   bRequal.onclick = () => finRetrait('requalifier');
   opts.append(bMaintenir, bRequal, bCeder);
@@ -1151,6 +1166,39 @@ function ecranRetrait(q) {
 }
 
 /* --- écrans narratifs (étapes) ---------------------------------------------- */
+/* --- la boussole politique --------------------------------------------------
+   Construite à partir des `porteurs` de chaque carte, c'est-à-dire de ceux qui
+   défendent réellement la mesure dans le débat français. Deux chiffres comptent
+   plus que les autres : la part des mesures portées par plusieurs bords à la
+   fois (le débat scolaire est moins clivé qu'il ne se raconte), et la part de
+   celles qu'aucun parti ne porte, elles viennent de la Cour des comptes, de la
+   DEPP, du CSEN ou de la recherche, et ce sont souvent les mieux étayées. */
+function blocBoussole(S, final) {
+  const ids = S.mesuresParAnnee.flat().map((m) => m.id);
+  const b = boussole(ids);
+  const d = el('div', 'boussole');
+  d.appendChild(el('div', 'titre-d', final ? 'D’où venaient vos mesures' : 'Ce que la presse politique lit dans vos annonces'));
+  if (!b.total) {
+    d.appendChild(el('p', 'bous-note', 'Vous n’avez rien annoncé. Aucun programme ne peut donc revendiquer quoi que ce soit, ce qui est une position, mais pas une politique.'));
+    return d;
+  }
+  const lignes = Object.entries(BLOCS_2027).map(([cle, meta]) => {
+    const n = b.parBord[cle].length;
+    const pct = Math.round((n / b.total) * 100);
+    return `<div class="bous-l"><span class="lib" style="border-left-color:${meta.coul}">${meta.label}<small>${meta.long}</small></span>
+      <span class="rail"><i style="width:${Math.max(1, pct)}%;background:${meta.coul}"></i></span>
+      <span class="v">${n}/${b.total}</span></div>`;
+  }).join('');
+  const sansPartiPct = Math.round((b.horsPartis.length / b.total) * 100);
+  d.innerHTML += `<p class="bous-chapo">Sur vos <b>${b.total}</b> mesure${b.total > 1 ? 's' : ''} annoncée${b.total > 1 ? 's' : ''}, voici combien figurent aussi au programme de chaque camp en 2027. Une mesure peut compter dans plusieurs colonnes : c’est fréquent, et ce n’est pas une erreur de comptage.</p>${lignes}
+    <p class="bous-note"><b>${b.horsPartis.length} de vos ${b.total} mesures (${sansPartiPct} %) ne sont portées par aucun parti.</b> Elles viennent de la Cour des comptes, de la DEPP, du Conseil scientifique, de l’inspection générale ou de la recherche. Ce sont, en moyenne, celles dont le niveau de preuve est le plus élevé, et celles dont personne ne fait campagne.</p>`;
+  if (final) {
+    d.appendChild(el('p', 'bous-note',
+      'Le jeu ne vous dit pas de quel bord vous êtes, et il ne le sait pas : il vous dit qui défend, dans la vraie vie, ce que vous avez signé. Le rattachement se lit sur chaque carte, à la ligne « portée par ». Si le résultat vous surprend, c’est le moment le plus utile de la partie.'));
+  }
+  return d;
+}
+
 function ecranEtape(etape) {
   const S = ETAT.s;
   const entrees = nouvellesEntrees();
@@ -1169,19 +1217,27 @@ function ecranEtape(etape) {
     const ouverts = S.effetsEnAttente.filter((e) => e.anneeOuverture === S.annee && !e.retire);
     if (ouverts.length) {
       const sc = el('div', 'scelles');
-      sc.appendChild(el('div', 'titre-d', 'Scellés ouverts cette année — les effets réels arrivent'));
+      sc.appendChild(el('div', 'titre-d', 'Scellés ouverts cette année, les effets réels arrivent'));
       for (const e of ouverts) {
         const c = PAR_ID[e.carte];
         sc.appendChild(el('div', 'ligne-s', `<span>${esc(c ? c.label : e.carte)}${e.requalifie ? '<span class="requal">requalifiée</span>' : ''}</span><span>→ ${NOMS_C[e.compteur]}</span>
           <span class="val" style="color:${e.montant > 1 ? 'var(--ok)' : e.montant < -1 ? 'var(--alerte)' : 'var(--encre-2)'}">${signe(e.montant)}</span>
           <span style="color:var(--encre-3);font-size:.76rem">preuve ${'🔒'.repeat(e.cadenas)} · documenté ~${signe(e.central)}${e.requalifie ? ' · rendue facultative' : ''}</span>`));
       }
-      sc.appendChild(el('p', '', '<span style="font-size:.76rem;color:var(--encre-3)">Ce que vous aviez signé sous incertitude entre aujourd’hui dans les compteurs — implémentation comprise. Les scellés restants s’ouvriront plus tard, certains après vous.'
+      sc.appendChild(el('p', '', '<span style="font-size:.76rem;color:var(--encre-3)">Ce que vous aviez signé sous incertitude entre aujourd’hui dans les compteurs, implémentation comprise. Les scellés restants s’ouvriront plus tard, certains après vous.'
         + (ouverts.some((e) => e.requalifie) ? ' Les lignes marquées « requalifiée » sont les mesures que vous avez rendues facultatives sous pression : elles ont continué d’être financées et ont produit moins d’un cinquième de ce qu’elles promettaient.' : '')
         + '</span>'));
       blocs.push(sc);
     }
   }
+
+  /* --- la boussole, à partir de la deuxième clôture ------------------------
+     Elle arrive tard exprès : la première année, le joueur découvre le métier ;
+     à partir de la deuxième, il a un bilan d'annonces assez fourni pour que la
+     lecture politique soit autre chose qu'une étiquette collée sur trois
+     cartes. Elle ne dit jamais « vous êtes de tel bord » : elle dit quels
+     programmes portent, eux aussi, les mesures que le joueur a signées. */
+  if (etape === 'cloture' && S.annee >= 2) blocs.push(blocBoussole(S));
 
   const j = el('article', 'journal');
   j.innerHTML = `<div class="manchette"><span class="titre-j">${CAST.journal}</span><span class="ours">${ETAT.dateLabel} · n° ${1200 + S.annee * 37 + (S.mois || 0)} · 2,40 €</span></div>
@@ -1205,7 +1261,7 @@ function ecranEtape(etape) {
     rentree: 'La rentrée est passée. Ou l’inverse.',
     decembre: 'Budget voté, publications de décembre.',
     mars: 'Les mobilisations de printemps.',
-    cloture: `Fin de l’année scolaire — an ${S.annee} sur 5.`,
+    cloture: `Fin de l’année scolaire, an ${S.annee} sur 5.`,
   }[etape] || '';
   scene(...blocs, j, fil);
   boutonSuite('Continuer', ctx, () => suivant(undefined));
@@ -1227,7 +1283,7 @@ function ecranBilan(B) {
     <h2 class="une">${fins[0]}</h2><p class="sous-une">${fins[1] || esc(B.fin.texte)}</p>`;
 
   const d = el('article', 'doc large');
-  d.appendChild(el('div', 'entete-doc', `<span class="type">Le bilan — la vérité, enfin</span><span class="date">${B.anneesJouees} an${B.anneesJouees > 1 ? 's' : ''} de mandat</span>`));
+  d.appendChild(el('div', 'entete-doc', `<span class="type">Le bilan, la vérité, enfin</span><span class="date">${B.anneesJouees} an${B.anneesJouees > 1 ? 's' : ''} de mandat</span>`));
 
   const sc = el('div', 'score-final');
   const bloc = (val, lib, note) => { const b = el('div', 'score-bloc', `<div class="val">${fmt0(val)}<span style="font-size:.9rem;color:var(--encre-2)">/100</span></div><div class="lib">${lib}</div>${note ? `<div style="font-size:.72rem;color:var(--encre-2);margin-top:4px">${note}</div>` : ''}`); return b; };
@@ -1235,7 +1291,7 @@ function ecranBilan(B) {
     bloc(B.scoreAffiche, 'Ce que le pays a vu', 'les indicateurs à votre départ'),
     bloc(B.scoreBilan, 'Ce que vous avez fait', 'les effets réels, pondérés par VOTRE doctrine'),
     bloc(B.scoreProjection, 'Dans dix ans',
-      B.constance ? 'si votre successeur tient votre cap — et il le peut'
+      B.constance ? 'si votre successeur tient votre cap, et il le peut'
       : B.fin.type !== 'mandat_complet' ? 'mandat interrompu : le cap ne vous a pas survécu'
       : 'cap incohérent avec votre doctrine : le successeur détricote'));
   d.appendChild(sc);
@@ -1274,13 +1330,16 @@ function ecranBilan(B) {
         : '',
       apres.length
         ? `<li><b>${apres.length} effet${apres.length > 1 ? 's' : ''} arrive${apres.length > 1 ? 'nt' : ''} après votre départ</b>, pour ${signe(somme)} au total. Votre successeur les inaugurera. C’est la règle du métier : on récolte ce qu’un autre a semé, et on sème ce qu’un autre récoltera.</li>`
-        : '<li>Aucun de vos effets n’arrive après vous : tout ce que vous avez engagé a produit — ou non — pendant votre mandat.</li>',
+        : '<li>Aucun de vos effets n’arrive après vous : tout ce que vous avez engagé a produit (ou non) pendant votre mandat.</li>',
       `<li>Les effets « d’image » vus en cours de mandat n’apparaissent nulle part ici : ils se sont évaporés, comme prévu. Seuls comptent les effets réels, tirés sous incertitude et multipliés par l’implémentation.</li>`,
     ].filter(Boolean).join('');
     d.appendChild(syn);
   } else {
     d.appendChild(el('p', 'chapo', 'Aucune mesure engagée. Le système vous remercie du repos ; l’Histoire, moins.'));
   }
+
+  /* --- d'où venaient vos mesures --- */
+  d.appendChild(blocBoussole(S, true));
 
   const det = el('details', 'bilan-detail');
   det.innerHTML = '<summary>Le détail, mesure par mesure</summary>';
@@ -1291,11 +1350,11 @@ function ecranBilan(B) {
       <td>${NOMS_C[e.compteur]}</td>
       <td class="num">${signe(e.central)} <span title="niveau de preuve">${'🔒'.repeat(e.cadenas)}</span></td>
       <td class="num"><span class="revele ${e.montant > 1 ? 'bon' : e.montant < -1 ? 'mauvais' : ''}">${signe(e.montant)}</span></td>
-      <td>${e.retire ? '<span style="color:var(--rouge-rf)">retirée — effet annulé</span>' : e.applique ? 'effet arrivé' : `arrive an ${e.anneeArrivee}${e.anneeArrivee > B.anneesJouees ? ' — après vous' : ''}`}</td></tr>`).join('');
+      <td>${e.retire ? '<span style="color:var(--rouge-rf)">retirée, effet annulé</span>' : e.applique ? 'effet arrivé' : `arrive an ${e.anneeArrivee}${e.anneeArrivee > B.anneesJouees ? ', après vous' : ''}`}</td></tr>`).join('');
   }
   t2.innerHTML = `<table class="bilan"><tr><th>Mesure</th><th>Compteur</th><th class="num">Effet documenté</th><th class="num">Effet obtenu</th><th>Horizon</th></tr>${lignes || '<tr><td colspan="5">Aucune mesure engagée.</td></tr>'}</table>`;
   det.appendChild(t2);
-  det.appendChild(el('p', 'bilan-note', 'Effet documenté : la valeur centrale trouvée dans la littérature, que vous ne voyiez pas au moment de signer — vous n’aviez que les cadenas, le niveau de preuve. Effet obtenu : ce tirage-là, multiplié par votre facteur d’implémentation et par la capacité d’absorption du système.'));
+  det.appendChild(el('p', 'bilan-note', 'Effet documenté : la valeur centrale trouvée dans la littérature, que vous ne voyiez pas au moment de signer, vous n’aviez que les cadenas, le niveau de preuve. Effet obtenu : ce tirage-là, multiplié par votre facteur d’implémentation et par la capacité d’absorption du système.'));
   d.appendChild(det);
 
   /* --- doctrine déclarée vs menée --- */
@@ -1315,7 +1374,7 @@ function verdictProse(B) {
   if (B.fin.type === 'guerre_scolaire') return '« Il avait raison sur le fond », dira-t-on dans dix ans. C’est exactement ce qu’on a dit d’Alain Savary.';
   if (B.scoreBilan >= 55 && B.constance) return 'Vous laissez un système en meilleur état que vous ne l’avez trouvé, un cap lisible, et des effets qui composeront après vous. Dans ce ministère, cela porte un nom : une exception.';
   if (ecartPerception > 5) return 'Beau mandat, disent les sondages. Le bilan, lui, est plus discret : vous avez surtout gouverné le tableau de bord. Vos successeurs gouverneront le reste.';
-  if (B.scoreBilan - B.scoreAffiche > 3) return 'Le pays ne vous a pas vu travailler — les indicateurs regardaient ailleurs, comme toujours, avec dix ans de retard. Vos successeurs inaugureront vos résultats. Ils y penseront très fort.';
+  if (B.scoreBilan - B.scoreAffiche > 3) return 'Le pays ne vous a pas vu travailler, les indicateurs regardaient ailleurs, comme toujours, avec dix ans de retard. Vos successeurs inaugureront vos résultats. Ils y penseront très fort.';
   if (B.anneesJouees < 3) return 'Deux ans, comme la moyenne. Le système vous a survécu sans effort particulier : il a l’habitude.';
   return 'Un mandat dans la moyenne haute de ce que la Ve République fait de ses ministres de l’Éducation : des choix, des renoncements, et un tableau de bord qui ne dit pas encore la vérité.';
 }
@@ -1333,8 +1392,8 @@ function citer(idSource) {
 /* --- graphiques de la note de cadrage ---------------------------------------- */
 /* Deux règles. Les BARRES partent toujours de zéro : un axe tronqué transforme
    une hausse de 1,2 % en mur, et ce jeu passe son temps à dire que les chiffres
-   affichés mentent. Les COURBES, elles, ont le droit à une échelle resserrée —
-   c'est l'usage pour une série temporelle — à condition que l'axe soit gradué
+   affichés mentent. Les COURBES, elles, ont le droit à une échelle resserrée
+   (c'est l'usage pour une série temporelle), à condition que l'axe soit gradué
    et légendé, ce qu'il est ici. */
 const md1 = (x) => x.toLocaleString('fr-FR', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
 
@@ -1438,7 +1497,7 @@ function ecranReperes(q) {
 
   const d = el('article', 'doc large');
   d.appendChild(el('div', 'entete-doc',
-    `<span class="type">Note ${rang}/3 — direction générale de l’enseignement scolaire (DGESCO)</span><span class="date">${ETAT.dateLabel}</span>`));
+    `<span class="type">Note ${rang}/3, direction générale de l’enseignement scolaire (DGESCO)</span><span class="date">${ETAT.dateLabel}</span>`));
   d.appendChild(el('h2', '', esc(b.titre)));
 
   const a = el('div', 'accroche');

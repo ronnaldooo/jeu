@@ -1,5 +1,5 @@
 /* ============================================================================
-   RUE DE GRENELLE — CONSTANTES DU MOTEUR
+   RUE DE GRENELLE. CONSTANTES DU MOTEUR
    ----------------------------------------------------------------------------
    Toutes les constantes paramétrables du jeu sont ici, chacune commentée avec
    sa source (partie B du brief). Même convention que `jeu-budget-source.jsx` :
@@ -14,7 +14,7 @@
 export const CADRAGE = {
   /* Le mandat s'ouvre sur le PLF 2027. Les lettres plafonds du 16 juillet 2026
      fixent la mission interministérielle « Enseignement scolaire » à 65,3 Md€,
-     soit +0,8 Md€ (+1,2 %) sur les 64,49 Md€ du budget 2026 — la première
+     soit +0,8 Md€ (+1,2 %) sur les 64,49 Md€ du budget 2026, la première
      hausse supérieure à l'inflation depuis 2024. C'est la marge que vous
      héritez, et elle n'est pas nulle : le jeu la fait sentir. */
   missionHorsCAS: 65.30,      // Md€, plafond prévisionnel PLF 2027
@@ -37,12 +37,12 @@ export const CADRAGE = {
    prédécesseur : réforme du recrutement et de la formation initiale, protection
    sociale complémentaire, allocations de stage en voie professionnelle. Reste
    ce que le nouveau ministre peut réellement affecter.
-   C'est la contrainte structurante du jeu — l'équivalent du « mur des 3 % ». */
+   C'est la contrainte structurante du jeu, l'équivalent du « mur des 3 % ». */
 export const ENVELOPPE_BASE = 0.42;   // Md€ de mesures nouvelles « gratuites »
 
 /* Un ministre n'attend pas le budget suivant pour agir : il arrive dans une loi
    de finances déjà votée par son prédécesseur, et il y redéploie. Deux fenêtres
-   plus précoces que l'arbitrage de janvier, volontairement étroites — on ne
+   plus précoces que l'arbitrage de janvier, volontairement étroites, on ne
    refait pas un budget, on déplace des crédits et on signe des circulaires. */
 export const ENVELOPPE_PRISE_FONCTION = 0.55;  // Md€, juin 2027, une seule fois
 export const ENVELOPPE_RENTREE = 0.22;         // Md€, chaque septembre (circulaire de rentrée)
@@ -56,14 +56,14 @@ export const TAILLE_MENU_COURT = 5;            // menus resserrés hors janvier
 export const ANNONCES_MAX = { prise_fonction: 3, rentree: 3, livraison: 3, janvier: 3 };
 
 /* ---------------------------------------------------------------------------
-   L'AVANCE DE GESTION — le premier arbitrage, juin 2027
+   L'AVANCE DE GESTION, le premier arbitrage, juin 2027
    ---------------------------------------------------------------------------
    Un ministre qui arrive en juin n'a pas de budget à lui : la loi de finances
-   est votée. Mais il a un levier réel, et un seul — la RÉSERVE DE PRÉCAUTION.
+   est votée. Mais il a un levier réel, et un seul, la RÉSERVE DE PRÉCAUTION.
    Chaque programme est gelé dès le début de l'exercice (taux de mise en réserve
    de 0,5 % sur les crédits de personnel et de 5 % hors personnel, reconduits
    d'une loi de finances à l'autre). Sur une mission de 65 Md€, cela immobilise
-   plusieurs centaines de millions d'euros que Bercy peut dégeler — ou pas.
+   plusieurs centaines de millions d'euros que Bercy peut dégeler, ou pas.
 
    Le dégel n'est jamais gratuit : il se paie en engagement sur le schéma
    d'emplois de l'exercice suivant. C'est exactement l'échange que le jeu
@@ -101,7 +101,7 @@ export const AVANCE_GESTION = [
 ];
 
 /* Refus de Bercy : ce qu'il en coûte d'avoir demandé et de ne pas avoir obtenu.
-   Le crédit ne s'effondre pas — demander est légitime — mais cela se sait. */
+   Le crédit ne s'effondre pas (demander est légitime) mais cela se sait. */
 export const REFUS_BERCY = { creditBercy: -4, capital: -3 };
 
 /* L'intention de restitution, déclarée en juin devant la note démographique.
@@ -145,13 +145,13 @@ export const PALIERS_BERCY = [
   { seuil: 0,  schemaEmplois: -6200, marge: 0.18, ton: 'comminatoire' },
 ];
 
-/* Dépasser l'enveloppe est possible — et cher. C'est le seul moyen de financer
+/* Dépasser l'enveloppe est possible, et cher. C'est le seul moyen de financer
    les grosses cartes (statut AESH 4,3 Md€, 19/classe, revalorisation 2,5 Md€). */
 export const SURCOUT = {
   creditBercyParMd: 13,   // points de crédit Bercy perdus par Md€ de dépassement
   capitalParMd: 7,        // points de capital gouvernemental consommés
   /* Sur-engagement structurel : quand les charges déjà engagées dépassent la
-     marge de l'année, Bercy le rappelle chaque année — mais on ne re-facture
+     marge de l'année, Bercy le rappelle chaque année, mais on ne re-facture
      pas l'intégralité du dépassement initial (les charges sont dans la base). */
   penaliteStructurelleMax: 8,
   penaliteStructurelleParMd: 4,
@@ -163,7 +163,7 @@ export const SURCOUT = {
 export const POINTS_SALAIRE_PAR_MD = 2.0;
 
 /* ---------------------------------------------------------------------------
-   2. LE TENDANCIEL DÉMOGRAPHIQUE — le moteur du jeu           [source B.2]
+   2. LE TENDANCIEL DÉMOGRAPHIQUE, le moteur du jeu           [source B.2]
    ------------------------------------------------------------------------- */
 /* Projections DEPP avril 2026 : −1 676 800 élèves d'ici 2035 (−14,2 %).
    Baisse par rentrée, en milliers d'élèves. La rentrée 2026 (−161 000) est
@@ -241,7 +241,7 @@ export const INERTIE_OPINION = {
   cibleAdhesion: 18, vitesse: 0.16, cibleParents: 45, vitesseParents: 0.16,
   /* La cible d'adhésion n'est pas fixe : c'est la boucle d'attractivité (B.8-1).
      Payer mieux et faire baisser les heures non assurées relève durablement le
-     niveau d'adhésion vers lequel le corps revient — et donc la capacité du
+     niveau d'adhésion vers lequel le corps revient, et donc la capacité du
      système à appliquer les réformes suivantes. C'est le cercle vertueux. */
   gainParPointSalaire: 1.30,      // par point de rattrapage salarial vs supérieur
   perteParPointHNA: 1.20,         // par point d'heures non assurées au-dessus de 9,8
@@ -306,7 +306,7 @@ export const IMPLEMENTATION = {
    Les deux premières années, le joueur est jugé sur ce qu'il n'a pas fait. */
 export const POIDS_HERITAGE = [0.60, 0.60, 0.42, 0.26, 0.12];
 
-/* LA RÉVERSION — ce qui reste d'une réforme après le départ de son ministre.
+/* LA RÉVERSION, ce qui reste d'une réforme après le départ de son ministre.
    Précédent : réforme du collège 2015, deux ans de préparation, une année
    d'application, abrogation partielle par décret dès mai 2017. Une réforme non
    consolidée (ni inscrite dans la loi, ni budgétée pluriannuellement, ni
@@ -335,7 +335,7 @@ export const DECROISSANCE_VITRINE = 0.74; // il reste 74 % l'année suivante
 export const ATTRACTIVITE = {
   /* Calibré pour que l'état initial soit un ÉQUILIBRE : sans geste, la
      couverture ne s'effondre pas toute seule, elle stagne. C'est l'action du
-     ministre — dans un sens ou dans l'autre — qui la déplace. */
+     ministre (dans un sens ou dans l'autre) qui la déplace. */
   base: 68, pente: 0.65,
   poidsSalaire: 0.40,
   poidsAdhesion: 0.35,
@@ -424,7 +424,7 @@ export const RENVOI = {
 };
 
 /* ===========================================================================
-   11. LES TURBULENCES — profil, crédibilité, affaires        [source E, G]
+   11. LES TURBULENCES, profil, crédibilité, affaires        [source E, G]
    ---------------------------------------------------------------------------
    Sur les six causes documentées de chute d'un ministre de l'Éducation, UNE
    SEULE relève de la politique éducative. Les cinq autres tiennent à la
@@ -442,7 +442,7 @@ export const RENVOI = {
 
 /* Le profil du ministre : c'est LE JOUEUR qui le déclare, comme on remplit une
    notice biographique le jour de sa nomination. Il ne change aucun compteur
-   éducatif — aucun profil n'est meilleur qu'un autre — mais il décide de ce
+   éducatif (aucun profil n'est meilleur qu'un autre) mais il décide de ce
    qu'on vous reprochera, et de ce que le corps enseignant attend de vous. */
 export const PROFILS = [
   {
@@ -471,7 +471,7 @@ export const PROFILS = [
   },
 ];
 
-/* L'ENTRETIEN DE L'ÉLYSÉE — avant de vous nommer, on vérifie que vous ne
+/* L'ENTRETIEN DE L'ÉLYSÉE, avant de vous nommer, on vérifie que vous ne
    salirez pas l'image du Président. Les questions sont courtes, les réponses
    sont fermées, et personne ne vérifie. C'est là que le joueur décide, sans le
    savoir, de ce qui pourra lui exploser à la figure : chaque réponse ouvre ou
@@ -486,7 +486,7 @@ export const ENTRETIEN = [
       { label: 'Oui, dans le public', valeur: 'public',
         det: 'C’est vrai, et cela vous met à l’abri de la polémique la plus fréquente du poste.',
         credibilite: 0, ferme: ['ecole_enfants'] },
-      { label: 'Non, dans le privé sous contrat — et je l’assume', valeur: 'prive_assume',
+      { label: 'Non, dans le privé sous contrat, et je l’assume', valeur: 'prive_assume',
         det: 'Beaucoup de responsables publics font ce choix. L’assumer d’emblée désamorce à moitié ce qui viendra.',
         credibilite: +3, expose: ['ecole_enfants'] },
       { label: '« Dans le public, bien sûr. »', valeur: 'mensonge',
@@ -532,7 +532,7 @@ export const ENTRETIEN = [
    que l'affaire correspondante sorte, et alourdit son coût quand elle sort. */
 export const MENSONGE = { multiplicateurTirage: 2.2, aggravation: 1.45 };
 
-/* LA CRÉDIBILITÉ — la ressource de parole, distincte du capital politique.
+/* LA CRÉDIBILITÉ, la ressource de parole, distincte du capital politique.
    Elle conditionne l'efficacité de tout ce que le ministre annonce : à
    crédibilité effondrée, l'annonce ne porte plus, quelle que soit la mesure.
    Elle se dégrade vite (affaire, revirement, requalification) et se reconstitue
@@ -550,7 +550,7 @@ export const CREDIBILITE = {
 };
 
 /* Probabilité qu'une affaire sorte, par an. Faible en soi ; multipliée quand
-   elle résonne avec ce que le ministre vient de faire — c'est la règle la plus
+   elle résonne avec ce que le ministre vient de faire, c'est la règle la plus
    fidèle au réel de tout le dossier : on n'est pas puni pour ce qu'on fait, on
    est puni pour l'ÉCART entre ce qu'on exige des autres et ce qu'on s'applique. */
 export const AFFAIRES_TIRAGE = {
@@ -559,7 +559,7 @@ export const AFFAIRES_TIRAGE = {
   exposition: 1.7,           // ×1,7 si son profil y est exposé
   plafondAnnuel: 0.42,       // même très exposé, l'année peut être calme
   maxParPartie: 2,
-  probaDegonflement: 0.25,   // une sur quatre se dégonfle — le coût reste à moitié
+  probaDegonflement: 0.25,   // une sur quatre se dégonfle, le coût reste à moitié
   remboursement: 0.5,
 };
 
@@ -576,7 +576,7 @@ export const PROJECTION = {
   /* « Tenir le cap » ne veut pas dire « ne rien faire » : le Portugal a beaucoup
      réformé. Cela veut dire faire, pendant quinze ans, des choses qui vont dans
      le MÊME sens. On mesure donc la cohérence entre les effets réellement
-     produits et les deux priorités que le joueur a déclarées en juin 2027 —
+     produits et les deux priorités que le joueur a déclarées en juin 2027 :
      il est, là aussi, noté contre sa propre parole. */
   seuilCoherence: 0.45,       // part des effets dirigés vers les priorités déclarées
   maxAnneesSurcharge: 2,      // années passées au-delà de la capacité d'absorption
@@ -588,7 +588,7 @@ export const PROJECTION = {
 /* Chaque compteur du score est au cœur de projets politiques réels débattus en
    2027 (propositions publiques, août 2026). La feuille de route que déclare le
    joueur le situe donc, qu'il le veuille ou non, sur une carte politique
-   existante — c'est le premier enseignement du jeu : il n'y a pas de priorité
+   existante, c'est le premier enseignement du jeu : il n'y a pas de priorité
    neutre. Le `decode` sert à la revue de presse du premier jour.
    Neutralité par attribution : on cite, on ne juge pas. */
 export const PROJETS_2027 = {
@@ -599,16 +599,16 @@ export const PROJETS_2027 = {
       { qui: 'Édouard Philippe', quoi: 'l’autonomie des établissements jugée sur les résultats, publiés' },
       { qui: 'David Lisnard', quoi: 'évaluation systématique et rémunération conditionnée' },
     ],
-    decode: 'Vous entrez sur le terrain du « niveau », celui où campent Attal, Philippe et Lisnard — avec chacun un chemin incompatible avec les deux autres.',
+    decode: 'Vous entrez sur le terrain du « niveau », celui où campent Attal, Philippe et Lisnard, avec chacun un chemin incompatible avec les deux autres.',
   },
   egalite: {
-    sousTitre: 'Le poids de l’origine sociale sur les résultats — le point le plus faible de la France dans les comparaisons.',
+    sousTitre: 'Le poids de l’origine sociale sur les résultats, le point le plus faible de la France dans les comparaisons.',
     porteurs: [
       { qui: 'Jean-Luc Mélenchon', quoi: '19 élèves par classe maximum, abrogation de la loi Carle' },
       { qui: 'Raphaël Glucksmann', quoi: 'le privé sous contrat intégré à la carte scolaire' },
       { qui: 'le NFP', quoi: 'financement du privé conditionné à la mixité sociale' },
     ],
-    decode: 'Priorité revendiquée par toute la gauche — Mélenchon, Glucksmann, le NFP — avec le privé sous contrat en ligne de mire. Le mot « Savary » n’est jamais loin.',
+    decode: 'Priorité revendiquée par toute la gauche (Mélenchon, Glucksmann, le NFP) avec le privé sous contrat en ligne de mire. Le mot « Savary » n’est jamais loin.',
   },
   sante: {
     sousTitre: 'Attractivité du métier, remplacement, moral : la capacité du système à fonctionner.',
@@ -617,15 +617,15 @@ export const PROJETS_2027 = {
       { qui: 'Raphaël Glucksmann', quoi: 'une loi de programmation de revalorisation pluriannuelle' },
       { qui: 'Gabriel Attal', quoi: '+200 à +500 € par mois (chiffré à 2,5 Md€)' },
     ],
-    decode: 'La revalorisation traverse tout le spectre — du PS à Attal — mais chacun paie différemment : sans condition, contre missions, ou contre évaluation. Le diable est dans la contrepartie.',
+    decode: 'La revalorisation traverse tout le spectre (du PS à Attal) mais chacun paie différemment : sans condition, contre missions, ou contre évaluation. Le diable est dans la contrepartie.',
   },
   paix: {
     sousTitre: 'Grèves, mobilisations, climat social : l’histoire du mandat, qui ne s’efface pas.',
     porteurs: [
       { qui: 'Michel Barnier', quoi: 'le pacte pluriannuel : de la visibilité contre du calme' },
-      { qui: 'aucun programme', quoi: 'ne la revendique — mais tous la supposent acquise' },
+      { qui: 'aucun programme', quoi: 'ne la revendique, mais tous la supposent acquise' },
     ],
-    decode: 'Aucun candidat ne fait campagne sur la paix scolaire : elle ne rapporte des voix que quand elle manque. Vous venez d’en faire une priorité — c’est original, et invérifiable en meeting.',
+    decode: 'Aucun candidat ne fait campagne sur la paix scolaire : elle ne rapporte des voix que quand elle manque. Vous venez d’en faire une priorité, c’est original, et invérifiable en meeting.',
   },
   budget: {
     sousTitre: 'Tenir la lettre plafond ET rattraper les salaires : la quadrature du premier budget de l’État.',

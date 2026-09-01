@@ -887,12 +887,120 @@ attentif 47-49 % (le 40 % relevé sur 250 parties de la graine 777 remonte à
 moteur n'a bougé). Parties complètes rejouées au navigateur en clair, en sombre
 et en 390 px : aucune erreur JavaScript, aucun débordement horizontal.
 
+## 3 terdecies. Affaires réelles, arguments syndicaux, boussole politique
+
+Troisième lot de corrections issues de la relecture. Il porte sur ce que le jeu
+fait comprendre, plus que sur ce qu'il calcule.
+
+### a) Trois affaires de plus, transposées de faits publics
+
+Le répertoire passe de six à neuf archétypes, sur demande explicite de la
+relecture, qui citait quatre situations. L'une (« mentir pour justifier ses
+enfants dans le privé ») existait déjà : elle a été précisée, parce que le
+reproche n'était pas assez clairement la contradiction plutôt que le choix
+d'école. Les trois autres sont nouvelles :
+
+- **L'image** : des photographies de soirée circulent la semaine où le ministre
+  demande aux adolescents de poser leur téléphone. Une image ne se réfute pas,
+  elle circule ; le grief est la simultanéité, et la réponse factuelle est
+  catégoriellement inadaptée.
+- **Le rapport corrigé** : un rapport d'inspection publié sans les pages où les
+  inspecteurs relevaient des situations homophobes signalées par des élèves. Le
+  ministre peut légalement ne pas publier un rapport ; publier une version
+  amputée le fait changer de terrain, de l'établissement vers la parole de
+  l'État.
+- **L'internat** : des violences connues de l'administration et jamais
+  transmises au procureur. L'article 40 du code de procédure pénale oblige tout
+  fonctionnaire qui a connaissance d'un crime ou d'un délit à en aviser sans
+  délai le procureur : c'est le seul point du jeu où le ministre n'a aucune
+  marge d'appréciation. Il n'y a donc pas de réponse peu coûteuse, il y a une
+  réponse due et deux façons d'aggraver. La contre-attaque y est la deuxième
+  réponse fatale du jeu (0,45), après celle de l'école des enfants.
+
+Les archétypes restent pseudonymisés, sans nom ni établissement identifiable, et
+la satire reste symétrique. Fréquence mesurée sur 900 mandats : **66 % des
+parties voient au moins une affaire**, ce qui satisfait la contrainte posée dès
+l'origine (pas à toutes les parties). Un ministre qui répond franchement aux
+trois questions de l'Élysée en ferme trois de façon définitive.
+
+### b) Les syndicats argumentent, et le jeu étiquette la nature de l'argument
+
+C'était la demande la plus intéressante de la relecture : « les syndicats
+avancent des arguments, certains appuyés par des données, d'autres des principes
+et des idéologies ». L'écran de revendication affiche désormais les deux, côte à
+côte et nommés :
+
+- l'**argument étayé** est fabriqué à partir des données de la carte elle-même
+  (niveau de preuve, effet documenté, postes rendus, adhésion du moment). Il ne
+  peut donc pas mentir, et le jeu écrit sous chaque argument ce qu'il vaut ;
+- l'**argument de principe** dépend de la famille de la mesure et du profil de
+  l'organisation. Le jeu dit explicitement qu'il n'est ni faux ni illégitime,
+  simplement non mesurable, et que la confusion des deux registres est ce qui
+  rend illisibles la plupart des débats sur l'école.
+
+### c) La boussole : de quels programmes vos mesures se rapprochent
+
+Chaque carte porte depuis l'origine la liste de ceux qui la défendent réellement.
+On s'en sert pour une lecture politique **progressive** : à partir de la
+deuxième clôture annuelle, puis au bilan, le joueur voit combien de ses mesures
+figurent aussi au programme de la gauche, du centre, de la droite et de
+l'extrême droite. Trois précautions, qui sont l'essentiel de l'exercice :
+
+1. le rattachement se lit dans la carte, il n'est pas décidé ailleurs ;
+2. une même mesure est souvent portée par plusieurs bords, et c'est un fait du
+   débat français, pas une imprécision ;
+3. **46 des 70 cartes ne sont portées par aucun parti** : elles viennent de la
+   Cour des comptes, de la DEPP, du CSEN, de l'IGÉSR ou de la recherche. C'est
+   probablement le chiffre le plus instructif du jeu.
+
+Le jeu ne dit jamais « vous êtes de tel bord ». Il dit « ces mesures figurent
+aussi dans tel programme ».
+
+### d) Trois mesures de plus, dont celle qui était demandée
+
+Le catalogue passe de 67 à 70 cartes.
+
+- **`trace_ecrite`** : la leçon se copie à la main, fin de la photocopie comme
+  trace écrite. C'est la mesure demandée en relecture (« interdire les textes à
+  trous »). Source : la mission d'inspection sur l'enseignement en cours moyen,
+  citée par le HCSP, relève un recours massif et excessif aux photocopies, qui
+  font parfois office de leçon et court-circuitent l'institutionnalisation des
+  savoirs ; le rapport Villani-Torossian recommandait déjà de redonner sa place
+  au cours structuré. Deux cadenas seulement : ce sont des observations de
+  classe, pas un essai contrôlé. Le mot de la carte dit l'essentiel du jeu :
+  un ministre peut imprimer une circulaire, il ne peut pas inspecter une
+  photocopieuse.
+- **`explicite_partout`** : généraliser l'enseignement explicite, du CP à la
+  troisième. Quatre cadenas (le HCSP note que son efficacité est prouvée par la
+  recherche, et les nouveaux programmes de cycle 2 le retiennent déjà).
+- **`taches_complexes`** : investir dans les démarches d'investigation et les
+  tâches complexes. Exclusive de la précédente. C'est la seule carte du
+  catalogue à porter un effet **négatif assumé** sur la réussite (−2, deux
+  cadenas, d'après le point de vigilance du HCSP) en même temps qu'un effet
+  positif sur la santé du système. Les deux sont documentés, et le jeu se garde
+  de trancher un débat que personne ne devrait trancher en meeting.
+
+### e) Typographie : les tirets cadratins
+
+Demande générale de la relecture : remplacer les « — » par des parenthèses ou
+des virgules. 332 occurrences traitées automatiquement selon trois règles
+(tirets appariés vers des parenthèses, tiret simple suivi d'une minuscule vers
+une virgule, suivi d'une majuscule vers un point), puis relecture. Les titres
+des 34 sources ont été **restaurés à l'identique** : ce sont des titres de
+documents réels, ils ne se réécrivent pas. Restent une douzaine de tirets qui
+servent de séparateurs dans des libellés (« organisation — titre (date) ») et
+non de parenthèses de prose.
+
+Équilibrage revérifié après l'ensemble : **4/4 sur trois jeux de graines**,
+survie du joueur attentif 48-50 %. Parties complètes rejouées en clair, en
+sombre et en 390 px : aucune erreur JavaScript, aucun débordement horizontal.
+
 ## 5. Paramètres à réexaminer après tests humains
 
 | Paramètre | Valeur | Ce qu'il faut regarder |
 |---|---|---|
 | `RENVOI.remaniementBase` | 0,205 | Une fin subie par tirage peut frustrer. Si les testeurs la trouvent arbitraire, 0,15 et compenser par les convocations (qui, elles, se méritent). |
-| Rotation du menu | 16/67 | Vérifier qu'un joueur qui vise une doctrine trouve ses cartes assez souvent ; sinon, garantir 1 carte de chaque famille par menu. |
+| Rotation du menu | 16/70 | Vérifier qu'un joueur qui vise une doctrine trouve ses cartes assez souvent ; sinon, garantir 1 carte de chaque famille par menu. |
 | `PALIERS_BERCY[0].marge` | 1,80 Md€ | Contrôle l'ambition possible sur cinq ans. Desserré en phase « sources » ; à resserrer si les testeurs trouvent le mandat trop confortable en fin de course. |
 | Seuils de `DECLENCHEURS` | HNA 10,6 · IPS 18,6 · réussite 46 | Vérifier que les dossiers remontent au moment où le joueur ressent le problème, pas avant ni longtemps après. |
 | `GREVE.conflictualiteLatente` | 0,42 | La paix sociale baisse sans grève visible ; l'interface l'explique-t-elle assez ? |
