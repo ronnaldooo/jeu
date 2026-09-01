@@ -422,7 +422,9 @@ export const REPERES = [
    points publiés : la rentrée 2026 et l'horizon 2035 (−1 676 800 élèves).
    ------------------------------------------------------------------------- */
 export const SERIE_ELEVES = [
-  { annee: 2026, m: 11.61, constate: true },
+  { annee: 2024, m: 11.88, constate: true },
+  { annee: 2025, m: 11.77, constate: true },   /* rentrée 2025 : −106 000 élèves */
+  { annee: 2026, m: 11.61, constate: true },   /* rentrée 2026 : −161 000 élèves */
   { annee: 2027, m: 11.45 },
   { annee: 2028, m: 11.28 },
   { annee: 2029, m: 11.10 },
@@ -430,6 +432,23 @@ export const SERIE_ELEVES = [
   { annee: 2031, m: 10.75 },
   { annee: 2033, m: 10.34 },
   { annee: 2035, m: 9.93 },   /* 11,61 − 1,6768 : cale la courbe sur le chiffre publié */
+];
+
+/* ---------------------------------------------------------------------------
+   PISA — MATHÉMATIQUES, ÉLÈVES DE 15 ANS, FRANCE
+   ---------------------------------------------------------------------------
+   L'échelle de mathématiques est ancrée sur 2003, année où la discipline était
+   le domaine majeur de l'enquête : la série commence donc là. La chute de 2022
+   est la plus forte mesurée en France depuis la création de PISA.
+   ------------------------------------------------------------------------- */
+export const SERIE_PISA_MATHS = [
+  { annee: 2003, score: 511 },
+  { annee: 2006, score: 496 },
+  { annee: 2009, score: 497 },
+  { annee: 2012, score: 495 },
+  { annee: 2015, score: 493 },
+  { annee: 2018, score: 495 },
+  { annee: 2022, score: 474, chute: true },
 ];
 
 /* ---------------------------------------------------------------------------
@@ -441,35 +460,32 @@ export const CADRAGE_INITIAL = [
   {
     cle: 'budget',
     titre: 'Un budget contraint',
-    phrase: 'Vous héritez du premier budget de l’État en effectifs. Il augmente — un peu — et il est presque entièrement pré-engagé.',
+    accroche: { v: '65,3 Md€', l: 'C’est le budget de l’Éducation nationale en 2027, hors pensions — le premier budget de l’État. Il augmente, un peu, et il est presque entièrement pré-engagé.', src: 'plafonds27' },
     graphique: 'budget',
     chiffres: [
-      { v: '65,3 Md€', l: 'le budget de la mission « Enseignement scolaire » en 2027, hors pensions', src: 'plafonds27' },
-      { v: '+0,8 Md€', l: 'ce qui est nouveau cette année, soit +1,2 % — et une bonne moitié est déjà engagée par votre prédécesseur', src: 'plafonds27' },
+      { v: '+0,8 Md€', l: 'ce qui est nouveau cette année, soit +1,2 %. Une bonne moitié est déjà engagée par votre prédécesseur', src: 'plafonds27' },
       { v: '93 %', l: 'de ce budget est de la masse salariale : ce que vous ne pouvez pas arbitrer dans l’année', src: 'cc_neb24' },
     ],
-    aRetenir: 'Tout votre mandat se joue dans le liseré qui reste.',
+    aRetenir: 'Tout votre mandat se joue dans le liséré qui reste.',
   },
   {
     cle: 'demographie',
     titre: 'Une baisse démographique',
-    phrase: 'Il y aura chaque année moins d’élèves. C’est la seule bonne nouvelle budgétaire de votre mandat, et le sujet le plus explosif de votre calendrier.',
+    accroche: { v: '−1 676 800', l: 'C’est le nombre d’élèves que le système éducatif aura perdus d’ici 2035, soit 14,2 % de sa population scolaire.', src: 'depp_proj35' },
     graphique: 'eleves',
     chiffres: [
-      { v: '−1 676 800', l: 'élèves de moins en 2035 qu’aujourd’hui, soit −14,2 % de la population scolaire', src: 'depp_proj35' },
-      { v: '≈ 6 600', l: 'postes que la démographie « libère » chaque rentrée. C’est vous qui décidez à qui ils vont', src: 'depp_proj35' },
-      { v: '4 % ou 60 %', l: 'les deux précédents récents de restitution à Bercy : rentrée 2025 puis rentrée 2026. Le même chiffre démographique, deux pays différents', src: 'senat_plf26' },
+      { v: '≈ 6 600', l: 'postes que la démographie « libère » chaque rentrée, à raison d’un poste pour vingt-quatre élèves. C’est vous qui décidez à qui ils vont', src: 'depp_proj35' },
+      { v: '4 % ou 60 %', l: 'les deux précédents récents de restitution à Bercy — rentrée 2025, puis rentrée 2026. Le même chiffre démographique, deux pays différents', src: 'senat_plf26' },
     ],
     aRetenir: 'Rendre ces postes ou les réinvestir : c’est l’arbitrage de janvier, chaque année.',
   },
   {
     cle: 'niveaux',
     titre: 'Des résultats préoccupants',
-    phrase: 'Trois évaluations, trois âges. Elles ne disent pas la même chose, et aucune ne mesurera ce que vous ferez.',
+    accroche: { v: '−21 points', l: 'C’est ce que les élèves français de 15 ans ont perdu en mathématiques entre 2018 et 2022. La plus forte baisse mesurée en France depuis la création de l’enquête PISA.', src: 'pisa22' },
     graphique: 'niveaux',
     chiffres: [
-      { v: '484 contre 524', l: 'score des CM1 français en mathématiques (TIMSS 2023) face à la moyenne de l’Union européenne. Stable depuis 2019, mais loin', src: 'timss23' },
-      { v: 'baisse « sans précédent »', l: 'le mot de l’OCDE pour la chute en mathématiques à 15 ans entre 2018 et 2022. La France reste dans la moyenne : tout le monde a baissé', src: 'pisa22' },
+      { v: '484 contre 524', l: 'le score des CM1 français en mathématiques face à la moyenne de l’Union européenne (TIMSS 2023). Stable depuis 2019, mais loin', src: 'timss23' },
       { v: '1 jeune sur 4', l: 'a des difficultés prononcées en lecture à 17-18 ans, aux tests de la Journée défense et citoyenneté', src: 'hcsp26' },
     ],
     aRetenir: 'Un élève de PISA 2027 est entré au CP en 2018 : vous répondrez de ce que vous n’avez pas fait.',

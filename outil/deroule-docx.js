@@ -78,7 +78,7 @@ A(
   new Paragraph({ children: [T('Devenir ministre de l’Éducation nationale', { size: 30, color: '565B6B' })], alignment: AlignmentType.CENTER, spacing: { after: 480 } }),
   new Paragraph({ children: [T('Déroulé du jeu et grandes étapes', { bold: true, size: 28 })], alignment: AlignmentType.CENTER, spacing: { after: 100 } }),
   new Paragraph({ children: [T('Document de travail destiné à la relecture et aux corrections', { size: 22, italics: true, color: '565B6B' })], alignment: AlignmentType.CENTER, spacing: { after: 1000 } }),
-  new Paragraph({ children: [T('Version du 1er septembre 2026 — ajoute les turbulences', { size: 20, color: '8A8FA3' })], alignment: AlignmentType.CENTER }),
+  new Paragraph({ children: [T('Version du 1er septembre 2026', { size: 20, color: '8A8FA3' })], alignment: AlignmentType.CENTER }),
   new Paragraph({ children: [T('Jeu en ligne : https://ronnaldooo.github.io/jeu/', { size: 20, color: '8A8FA3' })], alignment: AlignmentType.CENTER }),
   new Paragraph({ children: [T('Code et sources : https://github.com/ronnaldooo/jeu', { size: 20, color: '8A8FA3' })], alignment: AlignmentType.CENTER, spacing: { after: 600 } }),
   new Paragraph({ children: [new PageBreak()] }),
@@ -167,7 +167,17 @@ A(BODY('Chaque priorité est présentée avec les projets politiques réels qui 
 
 A(H3('Écran 3 · La note de cadrage'));
 A(BODY('La direction générale de l’enseignement scolaire remet trois pages courtes — un budget contraint, une baisse démographique, des résultats préoccupants — avec un graphique et trois chiffres chacune, pas davantage. Chaque chiffre porte sa source officielle, cliquable. Aucune recommandation : l’état du système, et rien d’autre. Les huit autres fiches sont accessibles à tout moment par l’onglet « Comprendre le jeu ».'));
-A(BODY([T('Deux règles de conception s’appliquent à ces graphiques. ', {}), T('Les barres partent toujours de zéro', { bold: true }), T(' : un axe tronqué transformait la hausse de 1,2 % du budget en mur, et un jeu bâti sur l’idée que les chiffres affichés mentent ne peut pas ouvrir sur un graphique trompeur. Et lorsque l’échelle honnête cache le phénomène — une courbe d’effectifs de 11,6 à 9,9 millions paraît plate — c’est le sujet du graphique qui change : la démographie est représentée non par le niveau mais par la perte cumulée, barres descendantes, avec les cinq rentrées que vous arbitrez distinguées de celles de vos successeurs.', {})]));
+A(BODY('Chaque page suit le même gabarit : un chiffre d’accroche en grand avec une phrase, le graphique qui va avec, puis deux précisions au maximum.'));
+A(tableau(
+  ['Page', 'Le chiffre d’accroche', 'Le graphique'],
+  [
+    ['Un budget contraint', '65,3 Md€ — le budget de l’Éducation nationale en 2027', 'Histogramme 2019-2027, échelle graduée partant de zéro.'],
+    ['Une baisse démographique', '−1 676 800 — les élèves perdus d’ici 2035', 'Courbe des effectifs : bleu plein pour le constaté, violet pointillé pour la projection DEPP, axe gradué de 9,5 à 12 millions.'],
+    ['Des résultats préoccupants', '−21 points — ce que les élèves de 15 ans ont perdu en mathématiques entre 2018 et 2022', 'Série PISA mathématiques 2003-2022 : le plateau bleu, puis le segment rouge de la chute.'],
+  ],
+  [2400, 3400, 3560],
+));
+A(BODY([T('Une règle d’échelle s’applique, énoncée dans les notes de bas de graphique. ', {}), T('Les barres partent toujours de zéro', { bold: true }), T(' — un axe tronqué transformait la hausse de 1,2 % du budget en mur, et un jeu bâti sur l’idée que les chiffres affichés mentent ne peut pas ouvrir sur un graphique trompeur. ', {}), T('Les courbes ont droit à une échelle resserrée', { bold: true }), T(', ce qui est l’usage pour une série temporelle, à condition que l’axe soit gradué et que la note le dise. L’abscisse suit l’année et non le rang des points : afficher 2031, 2033 et 2035 à égale distance aplatirait la fin de la projection.', {})]));
 
 A(H3('Écran 4 · Les premières annonces'));
 A(BODY('Un nouveau ministre n’attend pas le budget suivant : la loi de finances votée par son prédécesseur laisse une marge de redéploiement. Enveloppe : 550 millions d’euros, deux annonces au maximum, menu resserré à 5 ou 7 cartes.'));
