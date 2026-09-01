@@ -463,6 +463,19 @@ body:has(.suite:not([hidden])) #comprendre-btn{bottom:62px}
 .profil-ligne span{font-size:.84rem; color:var(--encre-2); line-height:1.5; flex:1; min-width:16ch}
 .profil-note{font-size:.78rem; color:var(--encre-3); margin:9px 0 0; line-height:1.5; font-style:italic}
 #hud-sous b.neg{color:var(--alerte)}
+#hud-sous small{color:var(--encre-3); font-weight:400}
+#hud-alertes{max-width:1100px; margin:0 auto; padding:0 16px 8px}
+.alerte-hud{border-left:3px solid var(--alerte); background:var(--fiche-2); padding:7px 12px; margin-top:6px; font-size:.78rem; line-height:1.5; color:var(--encre-2)}
+.alerte-hud b.t{display:block; color:var(--encre); font-size:.72rem; text-transform:uppercase; letter-spacing:.07em; margin-bottom:2px}
+.alerte-hud b{color:var(--encre)}
+table.bilan tr.cache td{background:var(--fiche-2)}
+.bilan-note{font-size:.76rem; color:var(--encre-3); line-height:1.55; margin:8px 0 0}
+.bilan-syn{list-style:none; padding:0; margin:12px 0 0}
+.bilan-syn li{border-left:3px solid var(--filet-fort); padding:7px 0 7px 13px; margin-bottom:8px; font-size:.87rem; line-height:1.6}
+.bilan-syn li b{color:var(--encre)}
+.bilan-detail{margin-top:18px; border-top:1px solid var(--filet); padding-top:10px}
+.bilan-detail>summary{cursor:pointer; font-size:.8rem; font-weight:600; letter-spacing:.03em; color:var(--bleu-rf)}
+.bilan-final{font-size:.84rem; line-height:1.6; margin-top:20px; padding-top:12px; border-top:1px solid var(--filet)}
 @media (max-width:640px){ .profil-ligne b{min-width:0} }
 .ligne-s .requal{display:inline-block; font-size:.6rem; font-weight:700; text-transform:uppercase; letter-spacing:.08em; background:var(--c-budget); color:#1a1a19; padding:1px 6px; margin-left:7px; vertical-align:middle}
 .nouveau-dossier{display:inline-block; font-size:.6rem; font-weight:700; text-transform:uppercase; letter-spacing:.09em; background:var(--bleu-rf); color:#fff; padding:2px 7px; margin-left:8px; vertical-align:middle}
@@ -488,6 +501,7 @@ body:has(.suite:not([hidden])) #comprendre-btn{bottom:62px}
     <div class="jauges" id="hud-compteurs"></div>
   </div>
   <div class="sous" id="hud-sous"></div>
+  <div id="hud-alertes" hidden></div>
 </div>
 <div id="scene"></div>
 <button id="comprendre-btn" hidden>Comprendre le jeu</button>
@@ -710,7 +724,7 @@ const COMPTEURS_META = {
   egalite:  { nom: 'Réduction des inégalités', court: 'Inégalités' },
   sante:    { nom: 'Santé du système', court: 'Santé' },
   paix:     { nom: 'Paix sociale', court: 'Paix sociale' },
-  budget:   { nom: 'Budget et salaires', court: 'Budget' },
+  budget:   { nom: 'Salaires', court: 'Salaires' },
 };
 
 /* Poids du score final selon le rang que le joueur a lui-même donné au compteur
@@ -5085,10 +5099,10 @@ const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;');
 /* typographie française pour les textes du moteur : décimales à virgule */
 const fr = (s) => esc(s).replace(/(\d)\.(\d)/g, '$1,$2');
 
-const NOMS_C = { reussite: 'Réussite', egalite: 'Inégalités', sante: 'Santé du système', paix: 'Paix sociale', budget: 'Budget & salaires' };
+const NOMS_C = { reussite: 'Réussite', egalite: 'Inégalités', sante: 'Santé du système', paix: 'Paix sociale', budget: 'Salaires' };
 const NOMS_C_LONGS = {
   reussite: 'Réussite des élèves', egalite: 'Réduction des inégalités',
-  sante: 'Santé du système', paix: 'Paix sociale', budget: 'Budget et salaires',
+  sante: 'Santé du système', paix: 'Paix sociale', budget: 'Salaires',
 };
 const COULEURS_C = { reussite: 'var(--c-reussite)', egalite: 'var(--c-egalite)', sante: 'var(--c-sante)', paix: 'var(--c-paix)', budget: 'var(--c-budget)' };
 const FAMILLES = {
@@ -5257,44 +5271,93 @@ function nouvellesEntrees() {
 }
 
 /* ---------------------------------------------------------------- HUD ----- */
-let instantane = null;
-let hudDeplie = false;
+/* Trois compteurs affichés, pas cinq. Ce sont les trois que le joueur a lui-même
+   placés en tête de sa doctrine en juin 2027 : ils pèsent 80 % de son bilan
+   (35 + 25 + 20). Les deux autres continuent d'être tenus — ils comptent dans le
+   score et réapparaissent au bilan — mais ne sont pas sous les yeux. Un ministre
+   ne regarde que le tableau de bord qu'il s'est donné ; c'est précisément là que
+   les surprises se logent. Les alertes ci-dessous servent à cela : quand une
+   mécanique invisible se met à mordre, elle vient le dire. */
+let repereAnnee = null;   // valeurs des compteurs à l'ouverture de l'année en cours
 function majHud() {
   const S = ETAT.s;
   $('#hud').hidden = false;
   $('#hud-date').textContent = ETAT.dateLabel || 'juin 2027';
+  if (!repereAnnee || repereAnnee.annee !== S.annee) repereAnnee = { annee: S.annee, v: { ...S.affiche } };
   const zone = $('#hud-compteurs'); zone.innerHTML = '';
   const ordre = S.doctrine || Object.keys(NOMS_C);
-  const grands = ordre.slice(0, 3);
-  const petits = ordre.slice(3);
-  const jauge = (c, grande) => {
+  for (const c of ordre.slice(0, 3)) {
     const v = S.affiche[c];
-    const d = instantane ? v - instantane[c] : 0;
-    const j = el('div', 'jauge' + (grande ? ' grande' : ''));
+    const d = v - repereAnnee.v[c];
+    const j = el('div', 'jauge grande');
     j.innerHTML = `<div class="nom"><span>${NOMS_C[c]}</span><b>${fmt0(v)}</b></div>
       <div class="rail"><i style="width:${Math.max(2, Math.min(100, v))}%;background:${COULEURS_C[c]}"></i></div>
-      <div class="delta ${d > 0.6 ? 'up' : d < -0.6 ? 'down' : ''}">${Math.abs(d) > 0.6 ? (d > 0 ? '▲ +' : '▼ −') + fmt1(Math.abs(d)) : '&nbsp;'}</div>`;
-    if (S.doctrine && S.doctrine[0] === c) j.querySelector('.nom span').style.color = 'var(--bleu-rf)';
-    return j;
-  };
-  for (const c of grands) zone.appendChild(jauge(c, true));
-  const btn = el('button', 'repli-btn', hudDeplie ? '▾ replier' : '▸ tout le tableau de bord');
-  btn.onclick = () => { hudDeplie = !hudDeplie; majHud(); };
-  zone.appendChild(btn);
-  if (hudDeplie) for (const c of petits) zone.appendChild(jauge(c, false));
-  instantane = { ...S.affiche };
-  const sous = $('#hud-sous');
-  sous.hidden = !hudDeplie;
-  sous.innerHTML = [
+      <div class="delta ${d > 0.5 ? 'up' : d < -0.5 ? 'down' : ''}">${Math.abs(d) > 0.5 ? (d > 0 ? '▲ +' : '▼ −') + fmt1(Math.abs(d)) + ' cette année' : 'stable cette année'}</div>`;
+    zone.appendChild(j);
+  }
+  $('#hud-sous').innerHTML = [
     `Capital politique <b>${fmt0(S.capital)}</b>`,
-    `Crédibilité <b class="${S.credibilite < 35 ? 'neg' : ''}">${fmt0(S.credibilite)}</b> (vos annonces valent ×${(Math.round(facteurParole(S) * 100) / 100).toLocaleString('fr-FR')})`,
-    `Crédit Bercy <b>${fmt0(S.creditBercy)}</b>`,
-    `Adhésion enseignante <b>${fmt0(S.phys.adhesion)}</b>`,
-    `Parents <b>${fmt0(S.phys.parents)}</b>`,
-    `Fatigue réformatrice <b>${fmt0(S.fatigue)}</b>`,
-    `Concours pourvus <b>${fmt1(S.phys.couvertureConcours)} %</b>`,
-    `Heures non assurées <b>${fmt1(S.phys.heuresNonAssurees)} %</b>`,
+    `Crédibilité <b class="${S.credibilite < 35 ? 'neg' : ''}">${fmt0(S.credibilite)}</b> <small>(vos annonces valent ×${(Math.round(facteurParole(S) * 100) / 100).toLocaleString('fr-FR')})</small>`,
+    `Crédit Bercy <b class="${S.creditBercy < 20 ? 'neg' : ''}">${fmt0(S.creditBercy)}</b>`,
   ].map((x) => `<span>${x}</span>`).join('');
+  majAlertes(S);
+}
+
+/* --- alertes ---------------------------------------------------------------
+   Le jeu tient une dizaine de variables que le joueur ne voit pas : adhésion des
+   personnels, fatigue réformatrice, capacité d'absorption, couverture des
+   concours, heures non assurées, ségrégation public/privé. Elles décident du
+   résultat réel sans jamais s'afficher. Plutôt que de les remettre toutes à
+   l'écran — c'était le reproche : trop de compteurs —, elles se signalent
+   d'elles-mêmes quand elles se mettent à mordre. Une alerte ne se déclenche
+   qu'une fois par mandat et ne reste affichée que l'année en cours. */
+const alertesVues = new Set();
+let alertesActives = [];
+let anneeDerniereAlerte = -1;
+function reglesAlertes(S) {
+  const abs = absorption(S);
+  const cachees = S.doctrine ? S.doctrine.slice(3) : [];
+  const R = [
+    { cle: 'adhesion', si: S.phys.adhesion <= 14, t: 'Les personnels ne suivent plus',
+      p: `Adhésion enseignante à ${fmt0(S.phys.adhesion)} sur 100. Vos annonces ne s’appliquent qu’à ${Math.round(facteurImplementation(S) * 100)} % de leur effet documenté : une réforme ne vaut que ce que les personnels en font. C’est invisible à l’écran et décisif au bilan.` },
+    { cle: 'absorption', si: abs.nActives > K.ABSORPTION.seuil, t: 'Le système est saturé',
+      p: `${abs.nActives} réformes tournent en même temps, pour une capacité d’absorption de ${K.ABSORPTION.seuil}. Chacune rabote l’effet de <b>toutes les autres</b> (elles ne valent plus que ${Math.round(abs.penalite * 100)} % de leur portée). Empiler n’est pas réformer.` },
+    { cle: 'concours', si: S.phys.couvertureConcours < 88, t: 'Les postes ne se pourvoient plus',
+      p: `${fmt1(S.phys.couvertureConcours)} % des postes offerts aux concours sont pourvus. Un poste créé au budget mais non pourvu ne met personne devant les élèves : la boucle salaires → candidats → remplacement se referme lentement, et elle est longue à rouvrir.` },
+    { cle: 'heures', si: S.phys.heuresNonAssurees > 11.5, t: 'Les heures perdues se voient dans les familles',
+      p: `${fmt1(S.phys.heuresNonAssurees)} % des heures dues ne sont pas assurées. C’est le seul indicateur que les parents mesurent eux-mêmes, chaque semaine, sans attendre une évaluation internationale.` },
+    { cle: 'segregation', si: S.phys.segregation > K.PHYSIQUE_INITIALE.segregation + 1.5, t: 'L’écart public / privé se creuse',
+      p: `L’écart d’indice de position sociale entre collèges privés et publics atteint ${fmt1(S.phys.segregation)} points (${fmt1(K.PHYSIQUE_INITIALE.segregation)} à votre arrivée). Épargner le privé sous contrat n’est pas neutre : la ségrégation monte, et elle pèse directement sur votre compteur <b>Réduction des inégalités</b>.` },
+    { cle: 'credibilite', si: S.credibilite < 35, t: 'Votre parole ne porte plus',
+      p: `Crédibilité à ${fmt0(S.credibilite)}. Vos annonces ne produisent plus que ×${(Math.round(facteurParole(S) * 100) / 100).toLocaleString('fr-FR')} de leur effet d’image. Annoncer davantage n’y changera rien : c’est le crédit accumulé qui manque, pas le volume.` },
+    { cle: 'fatigue', si: S.fatigue >= 80, t: 'Fatigue réformatrice',
+      p: `Indice de fatigue à ${fmt0(S.fatigue)} sur 100. Sept ministres en trois ans avant vous, et vous ajoutez des chantiers : à ce niveau, la maison encaisse les circulaires sans plus les appliquer.` },
+  ];
+  for (const c of cachees) {
+    const v = S.affiche[c], d0 = K.COMPTEURS_INITIAUX[c], rang = S.doctrine.indexOf(c);
+    R.push({ cle: 'cache-' + c, si: v <= d0 - 7, t: `Le compteur « ${NOMS_C_LONGS[c]} » décroche`,
+      p: `Ce compteur n’est pas affiché sur votre tableau de bord : vous l’avez classé n° ${rang + 1} de votre doctrine. Il est tenu quand même (${fmt0(d0)} en juin 2027, ${fmt0(v)} aujourd’hui) et il vaut ${K.POIDS_DOCTRINE[rang]} % de votre bilan final.` });
+  }
+  return R;
+}
+function majAlertes(S) {
+  alertesActives = alertesActives.filter((a) => a.annee === S.annee);
+  /* Rationnement volontaire : une alerte par année au plus, trois par mandat.
+     Une alerte qui revient tous les écrans n'alerte plus personne, elle décore.
+     Les règles sont classées par ordre de priorité : la première qui mord passe,
+     les autres attendront l'année suivante — ou ne viendront jamais. */
+  if (alertesVues.size < 3 && S.annee !== anneeDerniereAlerte) {
+    const r = reglesAlertes(S).find((x) => x.si && !alertesVues.has(x.cle));
+    if (r) {
+      alertesVues.add(r.cle);
+      anneeDerniereAlerte = S.annee;
+      alertesActives.push({ cle: r.cle, titre: r.t, texte: r.p, annee: S.annee });
+    }
+  }
+  const z = $('#hud-alertes');
+  z.hidden = alertesActives.length === 0;
+  z.innerHTML = alertesActives.map((a) =>
+    `<div class="alerte-hud"><b class="t">${esc(a.titre)}</b><span>${a.texte}</span></div>`).join('');
 }
 
 /* ------------------------------------------------------------ écrans ------- */
@@ -5392,11 +5455,13 @@ function ecranDoctrine() {
   ok.onclick = () => suivant([...ordre]);
   act.appendChild(ok);
   d.appendChild(act);
+  d.appendChild(el('p', 'note-passation',
+    'Un dernier point, technique et lourd de conséquences : <b>votre tableau de bord n’affichera que vos trois premiers compteurs</b>, ceux qui pèsent 80 % de votre note. Les deux derniers seront tenus sans être montrés. Vous les retrouverez au bilan, et le cabinet vous alertera s’ils décrochent vraiment. C’est ainsi que fonctionne un ministère : on suit ce qu’on a dit qu’on suivrait, et on découvre le reste dans la presse.'));
   d.appendChild(el('p', '', '<span style="font-size:.82rem;color:var(--encre-2)">Votre directeur de cabinet, à voix basse : « Ce que vous mettez en premier, on vous le ressortira à chaque arbitrage contradictoire. Ce que vous mettez en dernier aussi. »</span>'));
   scene(d);
 }
 
-/* --- lettre plafond ---/* --- lettre plafond ---/* --- lettre plafond --------------------------------------------------------- */
+/* --- lettre plafond --------------------------------------------------------- */
 function ecranBercy(q) {
   const S = ETAT.s, p = q.palier;
   const tons = {
@@ -6260,40 +6325,65 @@ function ecranBilan(B) {
 
   d.appendChild(el('p', 'verdict', verdictProse(B)));
 
-  /* --- les cinq compteurs --- */
+  /* --- les cinq compteurs, y compris les deux qui n'étaient pas affichés --- */
+  const caches = (B.doctrine || []).slice(3);
   const t1 = el('div', 'defile');
-  t1.innerHTML = `<table class="bilan"><tr><th>Compteur (votre rang)</th><th class="num">Départ 2027</th><th class="num">Affiché</th><th class="num">Réel</th><th class="num">+10 ans</th></tr>
-    ${B.doctrine.map((c, i) => `<tr><td><span style="color:${COULEURS_C[c]}">●</span> ${NOMS_C_LONGS[c]} <span style="color:var(--encre-3)">(n° ${i + 1}, ${K.POIDS_DOCTRINE[i]} %)</span></td>
+  t1.innerHTML = `<table class="bilan"><tr><th>Compteur (votre rang)</th><th class="num">Juin 2027</th><th class="num">Affiché</th><th class="num">Réel</th><th class="num">+10 ans</th></tr>
+    ${B.doctrine.map((c, i) => `<tr${caches.includes(c) ? ' class="cache"' : ''}><td><span style="color:${COULEURS_C[c]}">●</span> ${NOMS_C_LONGS[c]} <span style="color:var(--encre-3)">(n° ${i + 1}, ${K.POIDS_DOCTRINE[i]} %${caches.includes(c) ? ', jamais affiché' : ''})</span></td>
       <td class="num">${fmt0(K.COMPTEURS_INITIAUX[c])}</td><td class="num">${fmt0(B.affiche[c])}</td>
       <td class="num"><b>${fmt0(B.vrai[c])}</b></td><td class="num">${fmt0(B.projection[c])}</td></tr>`).join('')}</table>`;
   d.appendChild(t1);
+  d.appendChild(el('p', 'bilan-note', `Les deux derniers compteurs de votre doctrine (${caches.map((c) => NOMS_C_LONGS[c].toLowerCase()).join(' et ')}) n’ont jamais été affichés sur votre tableau de bord : vous les aviez classés quatrième et cinquième. Ils étaient tenus quand même, et ils valent ${K.POIDS_DOCTRINE[3] + K.POIDS_DOCTRINE[4]} % de votre note.`));
 
-  /* --- révélation des effets réels --- */
-  d.appendChild(el('h2', '', 'Ce que vos mesures ont réellement produit')).style.marginTop = '26px';
-  d.appendChild(el('p', 'chapo', 'À la signature, vous ne connaissiez que le niveau de preuve. Voici tout : l’effet documenté par les études (la valeur centrale, cachée en cours de jeu), et l’effet que VOUS avez obtenu — tirage sous incertitude, multiplié par l’implémentation (adhésion à ' + fmt0(S.phys.adhesion) + ') et la capacité d’absorption. Les effets « d’image » vus en cours de mandat n’apparaissent pas ici : ils se sont évaporés, comme prévu.'));
+  /* --- révélation des effets réels ---
+     Trois phrases d'abord, le tableau complet ensuite, replié : le reproche fait
+     à l'ancien bilan était sa longueur, pas ses données. */
+  const effets = S.effetsEnAttente.filter((e) => !e.retire);
   const parCarte = new Map();
   for (const e of S.effetsEnAttente) { if (!parCarte.has(e.carte)) parCarte.set(e.carte, []); parCarte.get(e.carte).push(e); }
+  const nom = (id) => (PAR_ID[id] ? PAR_ID[id].label : id);
+
+  d.appendChild(el('h2', '', 'Ce que vos mesures ont réellement produit')).style.marginTop = '26px';
+  if (effets.length) {
+    const meilleur = effets.reduce((a, b) => (b.montant > a.montant ? b : a));
+    const decu = effets.reduce((a, b) => ((b.central - b.montant) > (a.central - a.montant) ? b : a));
+    const apres = effets.filter((e) => e.anneeArrivee > B.anneesJouees);
+    const somme = apres.reduce((t, e) => t + e.montant, 0);
+    const syn = el('ul', 'bilan-syn');
+    syn.innerHTML = [
+      `<li><b>Votre meilleure décision :</b> ${esc(nom(meilleur.carte))}, ${signe(meilleur.montant)} sur ${NOMS_C[meilleur.compteur]}, pour un effet documenté de ${signe(meilleur.central)}.</li>`,
+      (decu.central - decu.montant) > 0.8
+        ? `<li><b>Votre plus grosse déception :</b> ${esc(nom(decu.carte))}. Les études promettaient ${signe(decu.central)} sur ${NOMS_C[decu.compteur]}, vous avez obtenu ${signe(decu.montant)}. ${decu.cadenas <= 2 ? 'Le niveau de preuve était mince : c’était un pari.' : 'La mesure était solide, c’est sa mise en œuvre qui l’a rabotée (adhésion à ' + fmt0(S.phys.adhesion) + ').'}</li>`
+        : '',
+      apres.length
+        ? `<li><b>${apres.length} effet${apres.length > 1 ? 's' : ''} arrive${apres.length > 1 ? 'nt' : ''} après votre départ</b>, pour ${signe(somme)} au total. Votre successeur les inaugurera. C’est la règle du métier : on récolte ce qu’un autre a semé, et on sème ce qu’un autre récoltera.</li>`
+        : '<li>Aucun de vos effets n’arrive après vous : tout ce que vous avez engagé a produit — ou non — pendant votre mandat.</li>',
+      `<li>Les effets « d’image » vus en cours de mandat n’apparaissent nulle part ici : ils se sont évaporés, comme prévu. Seuls comptent les effets réels, tirés sous incertitude et multipliés par l’implémentation.</li>`,
+    ].filter(Boolean).join('');
+    d.appendChild(syn);
+  } else {
+    d.appendChild(el('p', 'chapo', 'Aucune mesure engagée. Le système vous remercie du repos ; l’Histoire, moins.'));
+  }
+
+  const det = el('details', 'bilan-detail');
+  det.innerHTML = '<summary>Le détail, mesure par mesure</summary>';
   const t2 = el('div', 'defile');
   let lignes = '';
   for (const [id, effs] of parCarte) {
-    const c = PAR_ID[id];
-    lignes += effs.map((e, i) => {
-      const verdictTirage = e.cadenas <= 2 && e.montant >= e.central + 1.5 ? '<br><span style="font-size:.72rem;color:var(--encre-3)">tirage favorable — la preuve était mince, vous avez eu de la chance</span>'
-        : e.cadenas <= 2 && e.montant <= e.central - 1.5 ? '<br><span style="font-size:.72rem;color:var(--encre-3)">tirage défavorable — c’est le prix d’un pari à preuve faible</span>'
-        : e.central >= 3 && e.montant < e.central * 0.55 ? '<br><span style="font-size:.72rem;color:var(--encre-3)">effet amputé : implémentation dégradée (adhésion basse ou système saturé)</span>' : '';
-      return `<tr>${i === 0 ? `<td rowspan="${effs.length}">${esc(c ? c.label : id)}</td>` : ''}
-      <td>${NOMS_C[e.compteur]}</td><td>${'🔒'.repeat(e.cadenas)}</td>
-      <td class="num">${signe(e.central)}</td>
-      <td class="num"><span class="revele ${e.montant > 1 ? 'bon' : e.montant < -1 ? 'mauvais' : ''}">${signe(e.montant)}</span>${verdictTirage}</td>
-      <td>${e.retire ? '<span style="color:var(--rouge-rf)">retirée sous la pression syndicale — effet annulé</span>' : e.applique ? 'effet arrivé' : `arrive an ${e.anneeArrivee}${e.anneeArrivee > 5 ? ' — après vous' : ''}`}</td></tr>`;
-    }).join('');
+    lignes += effs.map((e, i) => `<tr>${i === 0 ? `<td rowspan="${effs.length}">${esc(nom(id))}</td>` : ''}
+      <td>${NOMS_C[e.compteur]}</td>
+      <td class="num">${signe(e.central)} <span title="niveau de preuve">${'🔒'.repeat(e.cadenas)}</span></td>
+      <td class="num"><span class="revele ${e.montant > 1 ? 'bon' : e.montant < -1 ? 'mauvais' : ''}">${signe(e.montant)}</span></td>
+      <td>${e.retire ? '<span style="color:var(--rouge-rf)">retirée — effet annulé</span>' : e.applique ? 'effet arrivé' : `arrive an ${e.anneeArrivee}${e.anneeArrivee > B.anneesJouees ? ' — après vous' : ''}`}</td></tr>`).join('');
   }
-  t2.innerHTML = `<table class="bilan"><tr><th>Mesure</th><th>Compteur</th><th>Preuve</th><th class="num">Effet documenté</th><th class="num">Effet réel tiré</th><th>Horizon</th></tr>${lignes || '<tr><td colspan="6">Aucune mesure engagée. Le système vous remercie du repos ; l’Histoire, moins.</td></tr>'}</table>`;
-  d.appendChild(t2);
+  t2.innerHTML = `<table class="bilan"><tr><th>Mesure</th><th>Compteur</th><th class="num">Effet documenté</th><th class="num">Effet obtenu</th><th>Horizon</th></tr>${lignes || '<tr><td colspan="5">Aucune mesure engagée.</td></tr>'}</table>`;
+  det.appendChild(t2);
+  det.appendChild(el('p', 'bilan-note', 'Effet documenté : la valeur centrale trouvée dans la littérature, que vous ne voyiez pas au moment de signer — vous n’aviez que les cadenas, le niveau de preuve. Effet obtenu : ce tirage-là, multiplié par votre facteur d’implémentation et par la capacité d’absorption du système.'));
+  d.appendChild(det);
 
   /* --- doctrine déclarée vs menée --- */
-  d.appendChild(el('p', '', `<b>Doctrine déclarée contre doctrine menée :</b> ${fmt0((B.coherence || 0) * 100)} % de vos effets réels servent vos deux priorités déclarées${B.constance ? ' — cap tenu : vos gains composeront (référence Portugal, quinze ans de constance)' : ' — cap non tenu : sans constance, un successeur détricote et les dérives reprennent'}.
-    Grèves : <b>${B.greves}</b> journée${B.greves > 1 ? 's' : ''} · fatigue réformatrice finale : <b>${fmt0(B.fatigue)}</b>/100 · mesures retirées sous la pression : <b>${B.abandons}</b>.`));
+  d.appendChild(el('p', 'bilan-final', `<b>Doctrine déclarée contre doctrine menée :</b> ${fmt0((B.coherence || 0) * 100)} % de vos effets réels servent vos deux priorités annoncées${B.constance ? ', cap tenu : vos gains composeront.' : ', cap non tenu : un successeur détricote, et les dérives reprennent.'}
+    <br>${B.greves} journée${B.greves > 1 ? 's' : ''} de grève · fatigue réformatrice ${fmt0(B.fatigue)}/100 · ${B.abandons} mesure${B.abandons > 1 ? 's' : ''} retirée${B.abandons > 1 ? 's' : ''} sous la pression.`));
 
   const act = el('div', 'actions');
   const rejouer = el('button', 'btn', 'Nouveau mandat (autres tirages, autres crises)');

@@ -149,7 +149,7 @@ A(tableau(
     ['Réduction des inégalités', '34', 'Poids de l’origine sociale sur les résultats. Écart d’indice de position sociale public/privé : 99,9 contre 117,4.'],
     ['Santé du système', '29', 'Attractivité, remplacement, moral. 9,8 % d’heures non assurées ; formation continue au dernier rang des 48 pays de TALIS.'],
     ['Paix sociale', '78', 'Le mandat ne s’ouvre pas sur une page blanche : front intersyndical unitaire, grève de septembre 2026, boycott des instances.'],
-    ['Budget et salaires', '30', 'Salaires inférieurs de 26 % (élémentaire) et 18 % (collège) aux autres diplômés du supérieur ; point d’indice gelé depuis 2023.'],
+    ['Salaires', '30', 'Salaires inférieurs de 26 % (élémentaire) et 18 % (collège) aux autres diplômés du supérieur ; point d’indice gelé depuis 2023.'],
   ],
   [2600, 900, 5860],
 ));

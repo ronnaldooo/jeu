@@ -210,7 +210,7 @@ export const COMPTEURS_META = {
   egalite:  { nom: 'Réduction des inégalités', court: 'Inégalités' },
   sante:    { nom: 'Santé du système', court: 'Santé' },
   paix:     { nom: 'Paix sociale', court: 'Paix sociale' },
-  budget:   { nom: 'Budget et salaires', court: 'Budget' },
+  budget:   { nom: 'Salaires', court: 'Salaires' },
 };
 
 /* Poids du score final selon le rang que le joueur a lui-même donné au compteur

@@ -433,7 +433,6 @@ remplacées sont d'origine institutionnelle), OCDE (36 semaines contre 38,
 (allocation de stage : 50/75/100 € par semaine), rapport Villani-Torossian,
 Conseil d'évaluation de l'école.
 
-<<<<<<< HEAD
 ## 3 octies. Le rapport HCSP d'août 2026 — la source qui corrige le jeu
 
 Le Haut-commissariat à la Stratégie et au Plan a publié en août 2026
@@ -518,8 +517,6 @@ enseignants).
 Équilibrage revérifié après tous ces changements : **4/4 sur quatre jeux de
 graines**, survie du joueur attentif 45-50 %.
 
-=======
->>>>>>> origin/main
 ## 3 nonies. Retours de test et Partie D
 
 ### a) La note de cadrage : un graphique qui mentait
@@ -814,16 +811,88 @@ d'implémentation indexé sur l'adhésion (Slavin), capacité d'absorption de
 3 réformes, héritage à 60 % du signal affiché les deux premières années,
 « tenir le cap » mesuré par la cohérence avec la doctrine déclarée.
 
+## 3 duodecies. Moins de compteurs, un bilan lisible, des alertes
+
+Deuxième lot de corrections issues de la relecture du document Word. Le
+reproche tenait en trois points : trop de compteurs à l'écran, un bilan trop
+long, et des mécaniques décisives que rien ne signale pendant la partie.
+
+### a) Trois compteurs affichés au lieu de cinq
+
+Le bandeau montrait cinq jauges (trois grandes, deux repliées) plus huit
+indicateurs secondaires : quatorze nombres en permanence sous les yeux. Il en
+montre désormais **trois**, et trois seulement : les trois premiers compteurs
+de la doctrine que le joueur a lui-même déclarée en juin 2027, ceux qui pèsent
+80 % de sa note (35 + 25 + 20). Les deux derniers (12 % et 8 %) continuent
+d'être calculés, comptent dans le score, et réapparaissent au bilan avec la
+mention « jamais affiché ».
+
+Ce n'est pas un simple allègement graphique. Un ministre ne regarde que le
+tableau de bord qu'il s'est donné, et c'est exactement là que les surprises se
+logent : le joueur qui classe la paix sociale en cinquième position ne verra
+pas l'incendie monter. L'écran de doctrine le prévient explicitement avant le
+classement, donc l'information est loyale, et le cabinet alerte si le compteur
+caché décroche vraiment.
+
+Les huit indicateurs secondaires tombent à **trois**, toujours visibles au lieu
+d'être repliés : capital politique, crédibilité (avec le multiplicateur qu'elle
+applique aux annonces) et crédit Bercy. Ce sont les trois monnaies que le
+joueur dépense ; les cinq autres relevaient de la physique du système, qui n'a
+pas à s'afficher en continu.
+
+Enfin la variation : elle se lisait par rapport à l'écran précédent, donc elle
+était presque toujours vide ou minuscule. Elle se lit maintenant **depuis
+l'ouverture de l'année en cours**, ce qui donne un nombre stable et lisible
+(« ▼ −3,5 cette année ») au lieu d'un clignotement.
+
+### b) Des alertes plutôt que des compteurs
+
+Le jeu tient une dizaine de variables invisibles qui décident du résultat réel :
+adhésion des personnels, fatigue réformatrice, capacité d'absorption, couverture
+des concours, heures non assurées, écart d'IPS public/privé. Les remettre à
+l'écran aurait rétabli l'encombrement qu'on venait de supprimer. Elles se
+signalent donc **d'elles-mêmes, quand elles se mettent à mordre** : un encadré
+sous le bandeau, qui nomme le seuil franchi, donne le chiffre et explique la
+conséquence.
+
+Rationnement volontaire : **une alerte par année au plus, trois par mandat**,
+prises dans l'ordre de priorité des règles. Une alerte qui revient à chaque
+écran n'alerte plus personne, elle décore. Mesuré sur des parties complètes :
+une à trois alertes par partie.
+
+Une de ces alertes répond à une demande explicite de la relecture : épargner le
+privé sous contrat fait monter la ségrégation, **et pèse donc sur le compteur
+Inégalités**. Le lien était dans le moteur, il n'était dit nulle part.
+
+### c) Un bilan de moitié plus court
+
+L'ancien bilan alignait, après les trois scores et le tableau des compteurs, un
+tableau de six colonnes listant chaque effet de chaque mesure, avec un verdict
+en petites capitales sous chaque ligne : vingt à trente lignes à lire d'un
+trait. Il est remplacé par **trois à quatre phrases** — votre meilleure
+décision, votre plus grosse déception (avec la raison : pari à preuve faible,
+ou mise en œuvre dégradée), les effets qui arrivent après votre départ — suivies
+du tableau complet, **replié** derrière « Le détail, mesure par mesure », et
+ramené de six à cinq colonnes. Rien n'est perdu, tout est hiérarchisé. Hauteur
+mesurée : environ 1 550 px contre 2 400 auparavant.
+
+### d) « Budget et salaires » devient « Salaires »
+
+Correction directe de la relecture. Le compteur ne mesurait pas le budget (qui
+est une contrainte, pas un objectif) mais la position salariale des personnels.
+
+Équilibrage revérifié : **4/4 sur trois jeux de graines**, survie du joueur
+attentif 47-49 % (le 40 % relevé sur 250 parties de la graine 777 remonte à
+47 % sur 900 parties : c'était du bruit d'échantillonnage, aucune constante du
+moteur n'a bougé). Parties complètes rejouées au navigateur en clair, en sombre
+et en 390 px : aucune erreur JavaScript, aucun débordement horizontal.
+
 ## 5. Paramètres à réexaminer après tests humains
 
 | Paramètre | Valeur | Ce qu'il faut regarder |
 |---|---|---|
 | `RENVOI.remaniementBase` | 0,205 | Une fin subie par tirage peut frustrer. Si les testeurs la trouvent arbitraire, 0,15 et compenser par les convocations (qui, elles, se méritent). |
-<<<<<<< HEAD
 | Rotation du menu | 16/67 | Vérifier qu'un joueur qui vise une doctrine trouve ses cartes assez souvent ; sinon, garantir 1 carte de chaque famille par menu. |
-=======
-| Rotation du menu | 14/55 | Vérifier qu'un joueur qui vise une doctrine trouve ses cartes assez souvent ; sinon, garantir 1 carte de chaque famille par menu. |
->>>>>>> origin/main
 | `PALIERS_BERCY[0].marge` | 1,80 Md€ | Contrôle l'ambition possible sur cinq ans. Desserré en phase « sources » ; à resserrer si les testeurs trouvent le mandat trop confortable en fin de course. |
 | Seuils de `DECLENCHEURS` | HNA 10,6 · IPS 18,6 · réussite 46 | Vérifier que les dossiers remontent au moment où le joueur ressent le problème, pas avant ni longtemps après. |
 | `GREVE.conflictualiteLatente` | 0,42 | La paix sociale baisse sans grève visible ; l'interface l'explique-t-elle assez ? |

@@ -458,6 +458,19 @@ body:has(.suite:not([hidden])) #comprendre-btn{bottom:62px}
 .profil-ligne span{font-size:.84rem; color:var(--encre-2); line-height:1.5; flex:1; min-width:16ch}
 .profil-note{font-size:.78rem; color:var(--encre-3); margin:9px 0 0; line-height:1.5; font-style:italic}
 #hud-sous b.neg{color:var(--alerte)}
+#hud-sous small{color:var(--encre-3); font-weight:400}
+#hud-alertes{max-width:1100px; margin:0 auto; padding:0 16px 8px}
+.alerte-hud{border-left:3px solid var(--alerte); background:var(--fiche-2); padding:7px 12px; margin-top:6px; font-size:.78rem; line-height:1.5; color:var(--encre-2)}
+.alerte-hud b.t{display:block; color:var(--encre); font-size:.72rem; text-transform:uppercase; letter-spacing:.07em; margin-bottom:2px}
+.alerte-hud b{color:var(--encre)}
+table.bilan tr.cache td{background:var(--fiche-2)}
+.bilan-note{font-size:.76rem; color:var(--encre-3); line-height:1.55; margin:8px 0 0}
+.bilan-syn{list-style:none; padding:0; margin:12px 0 0}
+.bilan-syn li{border-left:3px solid var(--filet-fort); padding:7px 0 7px 13px; margin-bottom:8px; font-size:.87rem; line-height:1.6}
+.bilan-syn li b{color:var(--encre)}
+.bilan-detail{margin-top:18px; border-top:1px solid var(--filet); padding-top:10px}
+.bilan-detail>summary{cursor:pointer; font-size:.8rem; font-weight:600; letter-spacing:.03em; color:var(--bleu-rf)}
+.bilan-final{font-size:.84rem; line-height:1.6; margin-top:20px; padding-top:12px; border-top:1px solid var(--filet)}
 @media (max-width:640px){ .profil-ligne b{min-width:0} }
 .ligne-s .requal{display:inline-block; font-size:.6rem; font-weight:700; text-transform:uppercase; letter-spacing:.08em; background:var(--c-budget); color:#1a1a19; padding:1px 6px; margin-left:7px; vertical-align:middle}
 .nouveau-dossier{display:inline-block; font-size:.6rem; font-weight:700; text-transform:uppercase; letter-spacing:.09em; background:var(--bleu-rf); color:#fff; padding:2px 7px; margin-left:8px; vertical-align:middle}
@@ -481,6 +494,7 @@ body:has(.suite:not([hidden])) #comprendre-btn{bottom:62px}
     <div class="jauges" id="hud-compteurs"></div>
   </div>
   <div class="sous" id="hud-sous"></div>
+  <div id="hud-alertes" hidden></div>
 </div>
 <div id="scene"></div>
 <button id="comprendre-btn" hidden>Comprendre le jeu</button>
