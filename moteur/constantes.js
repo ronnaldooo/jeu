@@ -53,7 +53,7 @@ export const TAILLE_MENU_COURT = 5;            // menus resserrés hors janvier
    supérieur de l'éducation, les textes à écrire, et la capacité du ministère
    à accompagner ce qu'il annonce. Un ministre qui annonce six réformes dans
    l'année n'en applique aucune. */
-export const ANNONCES_MAX = { prise_fonction: 2, rentree: 1, janvier: 3 };
+export const ANNONCES_MAX = { prise_fonction: 3, rentree: 3, janvier: 3 };
 
 /* ---------------------------------------------------------------------------
    L'AVANCE DE GESTION — le premier arbitrage, juin 2027
@@ -74,28 +74,62 @@ export const AVANCE_GESTION = [
     id: 'rien',
     titre: 'Ne rien demander',
     detail: 'Vous vous en tenez aux crédits que votre prédécesseur a laissés disponibles. Bercy apprécie les ministres qui ne commencent pas par tendre la main.',
-    bonus: 0, restitution: 0, schema: 0, capital: 0, bercy: +4,
+    bonus: 0, proba: 1, capital: 0, bercy: +4,
     mot: 'Sobre. Vous aurez de quoi faire une chose, et une seule.',
   },
   {
     id: 'reserve',
     titre: 'Demander le dégel de la réserve de précaution',
-    detail: 'Le dégel partiel de la mise en réserve, contre un engagement écrit à restituer au moins 45 % des postes que la démographie libérera en janvier.',
-    bonus: 0.40, restitution: 0.45, schema: 0, capital: -2, bercy: 0,
-    mot: 'La demande normale d’un ministre normal. Elle s’obtient, et elle se paie en janvier.',
+    detail: 'La demande normale d’un ministre normal, sur le dégel partiel de la mise en réserve. Elle passe le plus souvent.',
+    bonus: 0.40, proba: 0.80, capital: -2, bercy: 0,
+    mot: 'Elle s’obtient presque toujours. Presque.',
   },
   {
-    id: 'avance',
-    titre: 'Arracher une avance large à l’arbitrage',
-    detail: 'Vous montez au Premier ministre pour obtenir le dégel intégral et une avance sur l’exercice suivant. En échange : 60 % de restitution en janvier et un schéma d’emplois durci de 1 500 équivalents temps plein.',
-    bonus: 0.85, restitution: 0.60, schema: -1500, capital: -7, bercy: -5,
-    mot: 'Trois mesures dès juin. Et un mois de janvier dont vous vous souviendrez.',
+    id: 'motivee',
+    titre: 'Demander davantage, en nommant la mesure que cela financera',
+    detail: 'Bercy accepte plus volontiers ce qu’il peut inscrire en face d’une ligne. En contrepartie, la mesure choisie est engagée : vous la porterez, qu’elle vous plaise encore ou non.',
+    bonus: 0.65, proba: 0.72, capital: -4, bercy: -2, exigeMesure: true,
+    mot: 'On finance un objet, jamais une intention. C’est la première leçon de la rue de Rivoli.',
   },
+  {
+    id: 'arbitrage',
+    titre: 'Monter l’arbitrage au Premier ministre',
+    detail: 'Vous demandez le dégel intégral et une avance sur l’exercice suivant. Le taux de réussite est faible, le coût politique est immédiat, et un refus se sait.',
+    bonus: 0.85, proba: 0.45, capital: -7, bercy: -6,
+    mot: 'Trois mesures dès juin, ou une humiliation dès juin. Il n’y a pas de troisième issue.',
+  },
+];
+
+/* Refus de Bercy : ce qu'il en coûte d'avoir demandé et de ne pas avoir obtenu.
+   Le crédit ne s'effondre pas — demander est légitime — mais cela se sait. */
+export const REFUS_BERCY = { creditBercy: -4, capital: -3 };
+
+/* L'intention de restitution, déclarée en juin devant la note démographique.
+   Elle n'engage à rien juridiquement et engage à tout politiquement : Bercy la
+   compare à ce que le ministre fait réellement au mois de janvier. */
+export const INTENTIONS_POSTES = [
+  { id: 'rendre', titre: 'Rendre à Bercy l’essentiel des postes libérés',
+    detail: 'La ligne de la rentrée 2026 : 60 % des postes que la démographie libère repartent au budget de l’État.',
+    restitution: 0.60, bercy: +10, adhesion: -6,
+    mot: 'Bercy vous inscrit dans la colonne des sérieux. La salle des professeurs vous inscrit ailleurs.' },
+  { id: 'partager', titre: 'Partager entre restitution et encadrement',
+    detail: 'La moitié rendue, la moitié réinvestie. Personne n’est satisfait, ce qui est parfois le signe d’un arbitrage.',
+    restitution: 0.45, bercy: +4, adhesion: -2,
+    mot: 'La position médiane a ceci de commode qu’on peut la défendre devant les deux publics. Et ceci d’inconfortable qu’on la défend deux fois.' },
+  { id: 'investir', titre: 'Réinvestir la quasi-totalité dans l’encadrement',
+    detail: 'La ligne de la rentrée 2025 : les postes restent dans les classes. Bercy le tiendra pour un engagement non tenu par avance.',
+    restitution: 0.10, bercy: -9, adhesion: +7,
+    mot: 'Vous venez de dépenser, en une phrase, la moitié de ce que Bercy vous aurait concédé en janvier.' },
 ];
 
 /* Le prix du manquement : Bercy compare l'engagement de juin à la restitution
    de janvier. Un ministre qui ne tient pas sa signature ne la redonne pas. */
 export const MANQUEMENT_ENGAGEMENT = { creditBercy: 16, capital: 6 };
+
+/* Le calendrier réglementaire ne suit pas les annonces : trois mesures en juin
+   sont possibles, mais la troisième restera dans les tuyaux. C'est la DGESCO
+   qui le dit, et elle a rarement tort sur ce point. */
+export const TROISIEME_ANNONCE = { probaRetard: 0.62, effetSiRetard: 0.25 };
 
 /* Paliers de la lettre plafond de juillet, selon le crédit Bercy.  [B.6, C.4]
    schemaEmplois = ETP que Bercy EXIGE de rendre ; marge = Md€ concédés. */
@@ -401,8 +435,10 @@ export const RENVOI = {
      n'est meilleur qu'un autre au sens des compteurs éducatifs.
    ========================================================================= */
 
-/* Le profil du ministre, tiré à la nomination. Il ne change aucun compteur
-   éducatif : il change ce qu'on vous reprochera. */
+/* Le profil du ministre : c'est LE JOUEUR qui le déclare, comme on remplit une
+   notice biographique le jour de sa nomination. Il ne change aucun compteur
+   éducatif — aucun profil n'est meilleur qu'un autre — mais il décide de ce
+   qu'on vous reprochera, et de ce que le corps enseignant attend de vous. */
 export const PROFILS = [
   {
     id: 'serail', nom: 'Vous venez de la maison',
@@ -417,7 +453,7 @@ export const PROFILS = [
     expose: ['privilege', 'faux_nez'],
   },
   {
-    id: 'elu', nom: 'Vous venez d’un mandat local',
+    id: 'elu', nom: 'Vous venez d’un mandat d’élu local',
     detail: 'Maire, puis parlementaire. Vous connaissez les cartes scolaires par les maires qui les subissent ; on vous rappellera vos anciennes déclarations.',
     adhesion: +2, capital: +2, credibilite: -2,
     expose: ['faux_nez', 'lieu'],
@@ -430,26 +466,66 @@ export const PROFILS = [
   },
 ];
 
-/* Le périmètre de la nomination. Le joueur ne l'a pas choisi — comme dans la
-   réalité, où la fusion Éducation-Sports de janvier 2024 a été lue comme un
-   déclassement avant que la ministre n'ait rien décidé. */
-export const PERIMETRES = [
+/* L'ENTRETIEN DE L'ÉLYSÉE — avant de vous nommer, on vérifie que vous ne
+   salirez pas l'image du Président. Les questions sont courtes, les réponses
+   sont fermées, et personne ne vérifie. C'est là que le joueur décide, sans le
+   savoir, de ce qui pourra lui exploser à la figure : chaque réponse ouvre ou
+   ferme une exposition, et MENTIR ferme la porte aujourd'hui pour la rouvrir
+   en grand plus tard. */
+export const ENTRETIEN = [
   {
-    id: 'plein', nom: 'Ministre de plein exercice',
-    detail: 'Le portefeuille seul, comme le réclament les organisations syndicales. Personne ne vous fera le reproche d’être ailleurs.',
-    capital: 0, plafondAdhesion: 0, bercy: 0, patience: 0, poids: 5,
+    id: 'prive',
+    question: 'Vos enfants sont-ils scolarisés dans le public ?',
+    aparte: 'Le conseiller ne lève pas les yeux de sa fiche. La question n’est pas morale, elle est médiatique.',
+    reponses: [
+      { label: 'Oui, dans le public', valeur: 'public',
+        det: 'C’est vrai, et cela vous met à l’abri de la polémique la plus fréquente du poste.',
+        credibilite: 0, ferme: ['ecole_enfants'] },
+      { label: 'Non, dans le privé sous contrat — et je l’assume', valeur: 'prive_assume',
+        det: 'Beaucoup de responsables publics font ce choix. L’assumer d’emblée désamorce à moitié ce qui viendra.',
+        credibilite: +3, expose: ['ecole_enfants'] },
+      { label: '« Dans le public, bien sûr. »', valeur: 'mensonge',
+        det: 'Ce n’est pas vrai. Personne ne vérifiera aujourd’hui. C’est exactement ainsi que se fabriquent les affaires.',
+        credibilite: +6, expose: ['ecole_enfants'], mensonge: true },
+    ],
   },
   {
-    id: 'elargi', nom: 'Périmètre élargi — Éducation, Jeunesse et Sports',
-    detail: 'Trois portefeuilles, un ministre. Vous pesez davantage dans les arbitrages budgétaires ; la salle des professeurs vous appellera « ministre à mi-temps » avant votre première circulaire.',
-    capital: +9, plafondAdhesion: -15, bercy: +4, patience: -1, poids: 3,
+    id: 'patrimoine',
+    question: 'Rien à déclarer côté patrimoine ? Aucun mandat rémunéré qui traîne ?',
+    aparte: 'Votre déclaration d’intérêts sera publiée par la Haute Autorité pour la transparence de la vie publique. Tout le monde pourra la lire.',
+    reponses: [
+      { label: 'Rien à signaler, ma déclaration est à jour', valeur: 'net',
+        det: 'La déclaration part demain à la Haute Autorité. Vous dormirez mieux.',
+        credibilite: 0, ferme: ['privilege'] },
+      { label: 'Un poste universitaire en sommeil, avec décharge', valeur: 'decharge',
+        det: 'Parfaitement régulier, et parfaitement inexplicable à des enseignants à qui vous demanderez de faire leurs heures.',
+        credibilite: +2, expose: ['privilege'] },
+      { label: '« Absolument rien. »', valeur: 'mensonge',
+        det: 'Le poste universitaire existe toujours. Un hebdomadaire satirique met en moyenne dix-huit mois à trouver ce genre de chose.',
+        credibilite: +5, expose: ['privilege'], mensonge: true },
+    ],
   },
   {
-    id: 'delegue', nom: 'Ministre délégué, rattaché à un ministre d’État',
-    detail: 'Vous n’arbitrez pas seul et vous ne signez pas tout. En contrepartie, on vous laissera plus longtemps : personne ne réclame la tête d’un ministre délégué.',
-    capital: -9, plafondAdhesion: -4, bercy: -7, patience: +1, poids: 2,
+    id: 'passe',
+    question: 'Rien dans vos fonctions précédentes qui puisse nous revenir dessus ?',
+    aparte: 'Traduction : y a-t-il un dossier que vous avez laissé passer il y a dix ans, et dont personne ne parlait alors ?',
+    reponses: [
+      { label: 'Rien à ma connaissance', valeur: 'rien',
+        det: 'La formule est prudente. C’est aussi celle qu’on repasse au journal de 20 heures le jour où il s’avère qu’il y avait quelque chose.',
+        credibilite: 0 },
+      { label: 'Un signalement que je n’ai pas transmis, dans un internat', valeur: 'signale',
+        det: 'Vous le dites avant qu’on ne le trouve. Le cabinet préparera une réponse ; elle existera le jour où il faudra.',
+        credibilite: -4, ferme: ['passe'] },
+      { label: '« Rien, absolument rien. »', valeur: 'mensonge',
+        det: 'Il y a quelque chose. Une commission d’enquête met en moyenne trois ans à s’en saisir. Vous en avez cinq.',
+        credibilite: +4, expose: ['passe'], mensonge: true },
+    ],
   },
 ];
+
+/* Mentir à l'Élysée ne coûte rien sur le moment. Cela multiplie la probabilité
+   que l'affaire correspondante sorte, et alourdit son coût quand elle sort. */
+export const MENSONGE = { multiplicateurTirage: 2.2, aggravation: 1.45 };
 
 /* LA CRÉDIBILITÉ — la ressource de parole, distincte du capital politique.
    Elle conditionne l'efficacité de tout ce que le ministre annonce : à

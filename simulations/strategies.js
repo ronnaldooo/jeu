@@ -82,6 +82,9 @@ function selectionner(s, dispo, ctx, scorer, { toleranceDepassement = 0.15, opti
 
 /* -------------------------------------------------------------------------- */
 export const PASSIF = {
+  entretien: () => [0, 0, 0],   // il répond franchement : il n'a rien à cacher, faute d'avoir rien fait
+  profil: () => 0,
+  intention: () => 1,
   retrait: () => 'maintenir',
   nom: 'Passif (ne rien faire)',
   audience: () => 0,               // le ministre immobile défend la ligne, faute d'en avoir une
@@ -106,6 +109,9 @@ function dossierVers(cle) {
 }
 
 export const TOUT_VITRINE = {
+  entretien: () => [2, 2, 2],   // il ment sur les trois : rien ne doit ternir l'annonce
+  profil: () => 3,
+  intention: () => 0,
   nom: 'Tout vitrine',
   doctrine: () => ['reussite', 'budget', 'egalite', 'sante', 'paix'],
   dossier: dossierVers('parents'),
@@ -131,6 +137,9 @@ export const TOUT_VITRINE = {
    désintéresse ouvertement de ce que montre le tableau de bord. Ce n'est pas
    un joueur suicidaire — c'est un joueur qui ne regarde pas les sondages. */
 export const TOUT_REEL = {
+  entretien: () => [1, 1, 1],   // il déclare tout, y compris ce qui le dessert
+  profil: () => 0,
+  intention: () => 2,
   retrait: () => 'maintenir',
   nom: 'Tout réel',
   doctrine: () => ['reussite', 'egalite', 'sante', 'budget', 'paix'],
@@ -153,6 +162,9 @@ export const TOUT_REEL = {
 
 /* -------------------------------------------------------------------------- */
 export const SYNDICAL = {
+  entretien: () => [0, 0, 1],
+  profil: () => 0,
+  intention: () => 2,
   retrait: () => 'ceder',
   nom: 'Paix sociale d’abord',
   dossier: dossierVers('adhesion'),
@@ -171,6 +183,9 @@ export const SYNDICAL = {
 /* Le « joueur attentif » : il équilibre vitrine et réel, surveille l'adhésion
    (dont dépend l'implémentation), tient le crédit Bercy et évite les grèves. */
 export const MIXTE = {
+  entretien: () => [0, 0, 1],   // franc là où c'est gratuit, prudent là où ça coûte
+  profil: () => 2,
+  intention: () => 1,
   retrait: (s, q) => (q.combatif && s.phys.adhesion < 18 ? 'ceder' : 'maintenir'),
   nom: 'Mixte (joueur attentif)',
   dossier: (s, d) => { let best = 0, bv = -1e9;
@@ -228,8 +243,9 @@ export function politiqueAleatoire(rng, poids) {
   };
   /* Cohérence minimale : qui signe un engagement le tient plus souvent qu'il
      ne le trahit — sinon la carte scolaire de janvier n'est plus qu'un tirage. */
-  const avanceTiree = Math.floor(rng() * 3);
-  const engage = [0, 0.45, 0.60][avanceTiree];
+  const avanceTiree = Math.floor(rng() * 4);
+  const intentionTiree = Math.floor(rng() * 3);
+  const engage = [0.60, 0.45, 0.10][intentionTiree];
   if (engage > 0 && rng() < 0.7) restBase = Math.max(restBase, engage);
   const bruitCarte = {};
   return {
@@ -238,6 +254,9 @@ export function politiqueAleatoire(rng, poids) {
     retrait: () => { const r = rng(); return r < 0.25 ? 'ceder' : r < 0.5 ? 'requalifier' : 'maintenir'; },
     doctrine: () => ordre,
     lettrePlafond: () => (contester ? 'contester' : 'accepter'),
+    entretien: () => [Math.floor(rng() * 3), Math.floor(rng() * 3), Math.floor(rng() * 3)],
+    profil: () => Math.floor(rng() * 4),
+    intention: () => intentionTiree,
     avance: () => avanceTiree,
     carteScolaire: () => ({ restitution: restBase, prive: privBase }),
     rentree: () => (rng() < 0.5 ? 'assumer' : 'contester'),

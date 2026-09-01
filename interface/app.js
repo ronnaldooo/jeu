@@ -274,24 +274,14 @@ function ecranAccueil(sauvegarde) {
 }
 
 /* --- la nomination : on vous propose Grenelle -------------------------------- */
-function ecranNomination(q) {
+function ecranNomination() {
   const d = docu('Appel de Matignon', 'On vous propose la rue de Grenelle', 'juin 2027');
   d.classList.add('papier');
   d.appendChild(el('p', 'chapo', 'Le gouvernement se forme. Votre téléphone sonne : le portefeuille proposé est l’Éducation nationale — le premier budget de l’État — 65,3 milliards d’euros au projet de loi de finances qui s’annonce, 1,2 million d’agents, 12 millions d’élèves. La durée moyenne dans le poste dépasse rarement deux ans.'));
   d.appendChild(el('div', 'note-passation',
     'Votre prédécesseur, huitième en quatre ans, laisse un mot : « Tout est dans les dossiers. Les dossiers sont dans les cartons. Les cartons sont au garde-meuble, la DGESCO sait lequel. Méfiez-vous de juillet, de septembre et de janvier — le reste de l’année est calme, sauf le reste de l’année. Bonne chance.'
     + '<span class="ps">P.-S. — La photocopieuse du deuxième est en panne depuis 2019. C’est le dossier le plus consensuel du ministère : ne le réglez pas, il fédère. »</span>'));
-  /* Le profil et le périmètre sont tirés, pas choisis. Ils ne changent aucun
-     compteur éducatif : ils changent ce qu'on vous reprochera. */
-  if (q && q.profil) {
-    const pr = el('div', 'profil-bloc');
-    pr.innerHTML = `<div class="titre-d">Ce que la presse écrira sur vous dès demain</div>
-      <div class="profil-ligne"><b>${esc(q.profil.nom)}</b><span>${fr(q.profil.detail)}</span></div>
-      <div class="profil-ligne"><b>${esc(q.perimetre.nom)}</b><span>${fr(q.perimetre.detail)}</span></div>
-      <p class="profil-note">Vous n’avez choisi ni l’un ni l’autre, et aucun des deux ne vous rend meilleur ou moins bon ministre : ils décident seulement de ce sur quoi vous serez attaquable. C’est ainsi que le poste fonctionne.</p>`;
-    d.appendChild(pr);
-  }
-  d.appendChild(el('p', '', 'Vous acceptez. Dès demain, devant la presse, vous direz vous-même ce que vous allez chercher pendant cinq ans.'));
+  d.appendChild(el('p', '', 'Vous acceptez. L’Élysée vous recevra dans l’heure — trois questions, pour vérifier que votre nomination ne coûtera rien au Président.'));
   const act = el('div', 'actions');
   const ok = el('button', 'btn tamponner', 'Accepter le ministère');
   ok.onclick = () => suivant('accepter');
@@ -412,33 +402,163 @@ function ecranAffaire(q) {
   scene(d);
 }
 
-/* --- juin 2027 : l'avance de gestion, premier arbitrage du mandat ------------ */
+/* --- l'entretien de l'Élysée, avant la nomination ---------------------------- */
+function ecranEntretien(q) {
+  const rep = new Array(q.questions.length).fill(null);
+  const d = docu('Élysée — entretien préalable', 'Trois questions avant votre nomination');
+  d.classList.add('papier');
+  d.appendChild(el('p', 'chapo', 'Un conseiller vous reçoit vingt minutes. Il ne s’intéresse ni à votre projet ni à l’école : il vérifie que votre nomination ne coûtera rien au Président. Personne ne contrôlera vos réponses aujourd’hui.'));
+
+  const zone = el('div', '');
+  q.questions.forEach((quest, i) => {
+    const bloc = el('section', 'entretien-q');
+    bloc.appendChild(el('h3', '', esc(quest.question)));
+    bloc.appendChild(el('p', 'aparte', fr(quest.aparte)));
+    const opts = el('div', 'opts');
+    quest.reponses.forEach((r, k) => {
+      const b = el('button', 'opt', `<b>${esc(r.label)}</b><span class="det">${fr(r.det)}</span>`);
+      b.onclick = () => {
+        rep[i] = k;
+        opts.querySelectorAll('.opt').forEach((n) => n.classList.remove('choisi'));
+        b.classList.add('choisi');
+        maj();
+      };
+      opts.appendChild(b);
+    });
+    bloc.appendChild(opts);
+    zone.appendChild(bloc);
+  });
+  d.appendChild(zone);
+
+  const act = el('div', 'actions');
+  const ok = el('button', 'btn tamponner', 'Signer la notice');
+  ok.disabled = true;
+  ok.onclick = () => suivant(rep);
+  act.appendChild(ok); d.appendChild(act);
+  function maj() {
+    const complet = rep.every((x) => x !== null);
+    ok.disabled = !complet;
+    ok.textContent = complet ? 'Signer la notice' : `Répondre aux ${rep.filter((x) => x === null).length} question(s) restantes`;
+  }
+  maj();
+  scene(d);
+}
+
+/* --- le profil déclaré ------------------------------------------------------- */
+function ecranProfil(q) {
+  const d = docu('Notice biographique — service de presse', 'D’où venez-vous ?');
+  d.appendChild(el('p', 'chapo', 'Le service de presse a besoin de deux lignes pour les dépêches de demain. Ce que vous déclarez ne vous rend ni meilleur ni moins bon ministre — <b>aucun profil ne donne d’avantage sur les compteurs</b> — mais décide de ce que le corps enseignant attendra de vous, et de ce qu’on vous reprochera.'));
+  const opts = el('div', 'opts');
+  q.profils.forEach((p, i) => {
+    const eff = [
+      p.adhesion ? `adhésion enseignante ${signe(p.adhesion)}` : '',
+      p.capital ? `capital ${signe(p.capital)}` : '',
+      p.credibilite ? `crédibilité ${signe(p.credibilite)}` : '',
+    ].filter(Boolean);
+    const b = el('button', 'opt',
+      `<b>${esc(p.nom)}</b><span class="det">${fr(p.detail)}</span>`
+      + `<span class="chiffres">${eff.map((x) => `<span>${x}</span>`).join('')}</span>`);
+    b.onclick = () => suivant(i);
+    opts.appendChild(b);
+  });
+  d.appendChild(opts);
+  scene(d);
+}
+
+/* --- la demande de rallonge, dont Bercy décide ------------------------------- */
 function ecranAvance(q) {
   const S = ETAT.s;
-  const d = docu('Note du secrétariat général — négociation de gestion', 'Votre premier arbitrage : la réserve de précaution');
-  d.appendChild(el('p', 'chapo', 'Vous arrivez en juin sur un budget déjà voté. Un seul levier existe pour agir tout de suite : la <b>réserve de précaution</b>, cette part des crédits que Bercy gèle en début d’exercice sur chaque programme et ne dégèle qu’en gestion. Elle immobilise plusieurs centaines de millions d’euros sur votre mission.'));
-  d.appendChild(el('div', 'depeche',
-    `OBJET : dégel de la mise en réserve — exercice en cours<br>
-     ENVELOPPE ACQUISE SANS DEMANDE : <b>${fmt0(K.ENVELOPPE_PRISE_FONCTION * 1000)} M€</b><br>
-     CONTREPARTIE DE TOUT DÉGEL : engagement écrit sur la restitution de postes en janvier<br>
-     RAPPEL : Bercy compare toujours l’engagement de juin au schéma d’emplois de janvier.`));
+  const d = docu('Note du secrétariat général — négociation de gestion', 'Demander une rallonge à Bercy');
+  d.appendChild(el('p', 'chapo', 'Vous arrivez en juin sur un budget déjà voté. Un seul levier existe pour agir tout de suite : la <b>réserve de précaution</b>, cette part des crédits que Bercy gèle en début d’exercice sur chaque programme et ne dégèle qu’en gestion. Elle immobilise plusieurs centaines de millions d’euros sur votre mission. <b>Bercy n’est pas obligé de dire oui.</b>'));
+
   const opts = el('div', 'opts');
+  let choix = null, mesureChoisie = null;
+  const zoneMesure = el('div', '');
+
   q.options.forEach((o, i) => {
-    const gains = [];
-    if (o.bonus) gains.push(`<b class="pos">+${fmt0(o.bonus * 1000)} M€</b> dès juin`);
-    if (o.restitution) gains.push(`<b class="neg">${Math.round(o.restitution * 100)} % de restitution</b> promis en janvier`);
-    if (o.schema) gains.push(`<b class="neg">${fmt0(o.schema)} ETP</b> de schéma d’emplois en plus`);
-    if (o.capital) gains.push(`capital ${signe(o.capital)}`);
-    if (o.bercy) gains.push(`crédit Bercy ${signe(o.bercy)}`);
+    const gains = [
+      o.bonus ? `<b class="pos">+${fmt0(o.bonus * 1000)} M€</b> si Bercy accepte` : 'enveloppe inchangée',
+      o.bonus ? `<b class="${o.proba >= 0.75 ? 'pos' : o.proba >= 0.6 ? '' : 'neg'}">${Math.round(o.proba * 100)} % de chances d’aboutir</b>` : '',
+      o.capital ? `capital ${signe(o.capital)}` : '',
+      o.bercy ? `crédit Bercy ${signe(o.bercy)}` : '',
+      o.exigeMesure ? '<b class="neg">la mesure choisie sera engagée</b>' : '',
+    ].filter(Boolean);
     const b = el('button', 'opt',
       `<b>${esc(o.titre)}</b><span class="det">${fr(o.detail)}</span>`
       + `<span class="chiffres">${gains.map((g) => `<span>${g}</span>`).join('')}</span>`
+      + `<span class="det mot">« ${fr(o.mot)} »</span>`);
+    b.onclick = () => {
+      choix = i; mesureChoisie = null;
+      opts.querySelectorAll('.opt').forEach((n) => n.classList.remove('choisi'));
+      b.classList.add('choisi');
+      construireMesure(o);
+      maj();
+    };
+    opts.appendChild(b);
+  });
+  d.appendChild(opts);
+  d.appendChild(zoneMesure);
+
+  function construireMesure(o) {
+    zoneMesure.innerHTML = '';
+    if (!o.exigeMesure) return;
+    const liste = mesuresDisponibles(ETAT.s, 6);
+    const z = el('div', 'flechage');
+    z.innerHTML = '<div class="titre-d">Sur quelle mesure fléchez-vous cette rallonge ?</div>'
+      + '<p class="det">Bercy finance un objet, jamais une intention. La mesure retenue sera engagée : vous la porterez en juin, qu’elle vous plaise encore ou non.</p>';
+    const ul = el('div', 'flechage-liste');
+    liste.forEach((c) => {
+      const k = coutDe(c, {});
+      const b = el('button', 'opt', `<b>${esc(c.label)}</b><span class="chiffres"><span>${fmt0(k.cout * 1000)} M€/an</span><span>${k.pol} capital</span></span>`);
+      b.onclick = () => {
+        mesureChoisie = c.id;
+        ul.querySelectorAll('.opt').forEach((n) => n.classList.remove('choisi'));
+        b.classList.add('choisi');
+        maj();
+      };
+      ul.appendChild(b);
+    });
+    z.appendChild(ul);
+    zoneMesure.appendChild(z);
+  }
+
+  const act = el('div', 'actions');
+  const ok = el('button', 'btn tamponner', 'Choisir une option');
+  ok.disabled = true;
+  ok.onclick = () => suivant({ option: choix, mesure: mesureChoisie });
+  act.appendChild(ok); d.appendChild(act);
+  function maj() {
+    const o = q.options[choix];
+    const manque = o && o.exigeMesure && !mesureChoisie;
+    ok.disabled = choix === null || manque;
+    ok.textContent = choix === null ? 'Choisir une option'
+      : manque ? 'Désignez la mesure à financer'
+      : o.bonus ? 'Transmettre la demande à Bercy' : 'Ne rien demander';
+  }
+  d.appendChild(el('p', 'note-passation', 'Un refus ne vous coûte pas grand-chose sur le papier — 4 points de crédit et 3 de capital — mais il se sait, et le cabinet de Bercy a une bonne mémoire. Demander beaucoup rapporte beaucoup et échoue plus d’une fois sur deux.'));
+  scene(d);
+}
+
+/* --- l'intention de restitution des postes ----------------------------------- */
+function ecranIntention(q) {
+  const d = docu('Conférence de presse — préparation de la rentrée', 'Que ferez-vous des postes que la démographie libère ?');
+  d.appendChild(el('p', 'chapo', 'La question tombera dès votre premier point presse : chaque rentrée « libère » environ 6 600 postes, et tout le monde veut savoir où ils iront. Ce que vous répondez aujourd’hui n’engage rien juridiquement et tout politiquement : <b>Bercy comparera votre phrase à votre carte scolaire de janvier</b>.'));
+  const opts = el('div', 'opts');
+  q.options.forEach((o, i) => {
+    const eff = [
+      `<b>${Math.round(o.restitution * 100)} %</b> rendus`,
+      o.bercy ? `crédit Bercy ${signe(o.bercy)}` : '',
+      o.adhesion ? `adhésion ${signe(o.adhesion)}` : '',
+    ].filter(Boolean);
+    const b = el('button', 'opt',
+      `<b>${esc(o.titre)}</b><span class="det">${fr(o.detail)}</span>`
+      + `<span class="chiffres">${eff.map((x) => `<span>${x}</span>`).join('')}</span>`
       + `<span class="det mot">« ${fr(o.mot)} »</span>`);
     b.onclick = () => suivant(i);
     opts.appendChild(b);
   });
   d.appendChild(opts);
-  d.appendChild(el('p', 'note-passation', 'Un engagement non tenu en janvier coûte 16 points de crédit Bercy et 6 de capital politique — davantage que ce que l’avance vous aura rapporté. Un engagement tenu vous en rend 6. La signature de juin est le premier des cinq arbitrages de carte scolaire, pris avant même de savoir ce que la démographie vous donnera.'));
+  d.appendChild(el('p', 'note-passation', 'Ne pas tenir cette parole en janvier coûte 16 points de crédit Bercy et 6 de capital politique. La tenir en rend 6. C’est le premier des cinq arbitrages de carte scolaire, et vous le prenez avant de savoir ce que la démographie vous donnera vraiment.'));
   scene(d);
 }
 
@@ -1119,28 +1239,36 @@ function serieNiveaux() {
   return g;
 }
 
-/* --- juin 2027 : la note de cadrage, trois pages courtes ---------------------- */
-function ecranReperes() {
-  const d = el('article', 'doc large');
-  d.appendChild(el('div', 'entete-doc', `<span class="type">Note de cadrage — direction générale de l’enseignement scolaire (DGESCO)</span><span class="date">${ETAT.dateLabel}</span>`));
-  d.appendChild(el('h2', '', 'Trois choses à savoir avant votre première décision'));
-  d.appendChild(el('p', 'chapo', 'La note que la DGESCO remet à tout nouveau ministre le jour de sa prise de fonction. Un chiffre par page, le graphique qui va avec, et deux précisions. Le détail complet est à tout moment dans « Comprendre le jeu », en bas à gauche de l’écran.'));
-
+/* --- juin 2027 : les trois notes de la DGESCO, une par écran ------------------ */
+/* Chacune débouche sur une décision : on ne lit pas un dossier pour le plaisir
+   de le lire. La note arrive, on la lit, on décide. */
+const NOTES_SUITE = {
+  budget: 'Lire la note, puis décider de la rallonge',
+  demographie: 'Lire la note, puis annoncer votre intention',
+  niveaux: 'Lire la note, puis passer aux annonces',
+};
+function ecranReperes(q) {
+  const cle = (q && q.note) || 'budget';
+  const b = CADRAGE_INITIAL.find((x) => x.cle === cle) || CADRAGE_INITIAL[0];
+  const rang = CADRAGE_INITIAL.findIndex((x) => x.cle === cle) + 1;
   const GRAPH = { budget: serieBudget, eleves: serieEleves, niveaux: serieNiveaux };
-  for (const b of CADRAGE_INITIAL) {
-    const bloc = el('section', 'cadrage-bloc');
-    bloc.appendChild(el('h3', '', esc(b.titre)));
-    const a = el('div', 'accroche');
-    a.innerHTML = `<b>${fr(b.accroche.v)}</b><p>${fr(b.accroche.l)}${citer(b.accroche.src)}</p>`;
-    bloc.appendChild(a);
-    if (GRAPH[b.graphique]) bloc.appendChild(GRAPH[b.graphique]());
-    bloc.appendChild(el('ul', 'rep-liste', b.chiffres.map((x) =>
-      `<li><span class="v">${fr(x.v)}</span><span class="l">${fr(x.l)}.${citer(x.src)}</span></li>`).join('')));
-    bloc.appendChild(el('p', 'cadrage-retenir', fr(b.aRetenir)));
-    d.appendChild(bloc);
-  }
 
-  const ok = el('button', 'btn tamponner', 'J’ai lu — passer aux premières annonces');
+  const d = el('article', 'doc large');
+  d.appendChild(el('div', 'entete-doc',
+    `<span class="type">Note ${rang}/3 — direction générale de l’enseignement scolaire (DGESCO)</span><span class="date">${ETAT.dateLabel}</span>`));
+  d.appendChild(el('h2', '', esc(b.titre)));
+
+  const a = el('div', 'accroche');
+  a.innerHTML = `<b>${fr(b.accroche.v)}</b><p>${fr(b.accroche.l)}${citer(b.accroche.src)}</p>`;
+  d.appendChild(a);
+  if (GRAPH[b.graphique]) d.appendChild(GRAPH[b.graphique]());
+  d.appendChild(el('ul', 'rep-liste', b.chiffres.map((x) =>
+    `<li><span class="v">${fr(x.v)}</span><span class="l">${fr(x.l)}.${citer(x.src)}</span></li>`).join('')));
+  d.appendChild(el('p', 'cadrage-retenir', fr(b.aRetenir)));
+  d.appendChild(el('p', 'note-passation',
+    'Les huit autres fiches de référence sont à tout moment dans « Comprendre le jeu », en bas à gauche de l’écran. Cette note-ci appelle une décision : elle vous attend à l’écran suivant.'));
+
+  const ok = el('button', 'btn tamponner', NOTES_SUITE[cle] || 'Continuer');
   ok.onclick = () => suivant(null);
   d.appendChild(el('div', 'actions')).appendChild(ok);
   scene(d);
@@ -1198,6 +1326,9 @@ function dateDe(q) {
   if (q.type === 'doctrine') return 'juin 2027';
   if (q.type === 'reperes') return 'juin 2027';
   if (q.type === 'avance') return 'juin 2027';
+  if (q.type === 'entretien') return 'juin 2027';
+  if (q.type === 'profil') return 'juin 2027';
+  if (q.type === 'intention') return 'juin 2027';
   if (q.type === 'affaire') return `décembre ${an}`;
   if (q.type === 'retrait') return `octobre ${ETAT.s.anneeCiv || 2027}`;
   if (q.type === 'dossier') return 'été 2027';
@@ -1217,10 +1348,13 @@ function rendre(q) {
   ETAT.dateLabel = dateDe(q);
   ETAT.rentreeRatee = ETAT.s.journal.some((e) => e.cat === 'rentree' && e.annee === ETAT.s.annee && e.texte.includes('dégradée'));
   majHud();
-  if (q.type === 'nomination') ecranNomination(q);
+  if (q.type === 'nomination') ecranNomination();
   else if (q.type === 'doctrine') ecranDoctrine();
-  else if (q.type === 'reperes') ecranReperes();
+  else if (q.type === 'reperes') ecranReperes(q);
   else if (q.type === 'avance') ecranAvance(q);
+  else if (q.type === 'entretien') ecranEntretien(q);
+  else if (q.type === 'profil') ecranProfil(q);
+  else if (q.type === 'intention') ecranIntention(q);
   else if (q.type === 'affaire') ecranAffaire(q);
   else if (q.type === 'retrait') ecranRetrait(q);
   else if (q.type === 'dossier') ecranDossier(q);

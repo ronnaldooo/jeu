@@ -436,6 +436,18 @@ table.bilan .num{text-align:right}
 #comprendre .chapo{margin:14px 0 18px}
 body:has(#comprendre:not([hidden])) #comprendre-btn{display:none}
 body:has(.suite:not([hidden])) #comprendre-btn{bottom:62px}
+/* entretien de l'Élysée, profil déclaré, fléchage de la rallonge */
+.entretien-q{border-top:1px solid var(--filet); padding-top:14px; margin-top:16px}
+.entretien-q:first-child{border-top:0; margin-top:8px}
+.entretien-q h3{font-size:1rem; font-weight:700; margin:0 0 3px}
+.entretien-q .aparte{font-family:"Newsreader",georgia,serif; font-style:italic; color:var(--encre-3); font-size:.9rem; margin:0 0 10px; max-width:64ch}
+.opt.choisi{border-color:var(--bleu-rf); border-left-color:var(--bleu-rf); background:var(--fiche-2); box-shadow:inset 3px 0 0 var(--bleu-rf)}
+.opt.choisi b{color:var(--bleu-rf)}
+.flechage{border:1px solid var(--filet); border-left:3px solid var(--c-budget); background:var(--fiche-2); padding:13px 16px; margin:14px 0}
+.flechage .titre-d{font-size:.62rem; letter-spacing:.1em; text-transform:uppercase; font-weight:700; color:var(--c-budget); margin-bottom:5px}
+.flechage .det{font-size:.85rem; color:var(--encre-2); margin:0 0 10px; max-width:70ch}
+.flechage-liste{display:flex; flex-direction:column; gap:6px}
+.flechage-liste .opt{padding:9px 12px}
 /* ---------- profil du ministre et affaires ---------- */
 .profil-bloc{border:1px solid var(--filet); background:var(--fiche-2); padding:13px 16px; margin:14px 0}
 .profil-bloc .titre-d{font-size:.62rem; letter-spacing:.1em; text-transform:uppercase; font-weight:700; color:var(--bleu-rf); margin-bottom:8px}

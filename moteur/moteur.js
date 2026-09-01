@@ -68,7 +68,9 @@ export function creerPartie({ graine = 1, politique }) {
     avance: null, engagementRestitution: 0, schemaAvance: 0,
 
     /* Turbulences : ce qui vous arrive et que vous n'avez pas décidé. */
-    profil: null, perimetre: null,
+    profil: null,
+    entretien: {}, mensonges: new Set(), mensongesAffaire: new Set(),
+    expositions: new Set(), protections: new Set(),
     credibilite: K.CREDIBILITE.initiale,
     plafondAdhesion: 100,
     affaires: [],                    // affaires sorties, avec la réponse donnée
@@ -237,25 +239,37 @@ export function rafraichir(s) { recalculerVrai(s); recalculerAffiche(s); }
    premier jour, c'est de dire devant la presse ce que vous allez chercher.
    Le score final pondérera les cinq compteurs selon VOTRE classement : vous
    serez noté contre votre propre parole, et rien d'autre. */
-/* Le profil et le périmètre sont tirés AVANT la nomination : le joueur découvre
-   qui il est en même temps qu'il découvre le poste, et il ne choisit ni l'un ni
-   l'autre. Aucun profil n'est meilleur qu'un autre au sens des compteurs
-   éducatifs — ils exposent différemment, c'est tout. */
-function tirerProfil(s) {
-  s.profil = K.PROFILS[Math.floor(s.rng() * K.PROFILS.length)];
-  const sac = K.PERIMETRES.flatMap((p) => Array(p.poids).fill(p));
-  s.perimetre = sac[Math.floor(s.rng() * sac.length)];
+/* L'entretien de l'Élysée, puis la déclaration de profil. Le joueur choisit les
+   deux : ce ne sont pas des handicaps tirés au sort mais des déclarations, et
+   ce sont elles qui décident de ce qu'on pourra lui reprocher. Aucun profil
+   n'est meilleur qu'un autre au sens des compteurs éducatifs. */
+function appliquerProfil(s, idx) {
+  s.profil = K.PROFILS[Math.max(0, Math.min(K.PROFILS.length - 1, idx | 0))];
   s.phys.adhesion = borne(s.phys.adhesion + s.profil.adhesion, 0, 100);
   s.credibilite = borne(s.credibilite + s.profil.credibilite, 0, 100);
-  s.capital = borne(s.capital + s.profil.capital + s.perimetre.capital, 0, K.CAPITAL.plafond);
-  s.creditBercy = borne(s.creditBercy + s.perimetre.bercy, 0, 100);
-  s.plafondAdhesion = 100 + s.perimetre.plafondAdhesion;
-  s.phys.adhesion = Math.min(s.phys.adhesion, s.plafondAdhesion);
+  s.capital = borne(s.capital + s.profil.capital, 0, K.CAPITAL.plafond);
+  for (const id of s.profil.expose || []) s.expositions.add(id);
+}
+
+function* etapeEntretien(s) {
+  const reps = (yield { type: 'entretien', questions: K.ENTRETIEN }) || [];
+  K.ENTRETIEN.forEach((q, i) => {
+    const r = q.reponses[Math.max(0, Math.min(q.reponses.length - 1, (reps[i] | 0)))];
+    s.entretien[q.id] = r.valeur;
+    s.credibilite = borne(s.credibilite + (r.credibilite || 0), 0, 100);
+    for (const id of r.expose || []) s.expositions.add(id);
+    for (const id of r.ferme || []) s.protections.add(id);
+    if (r.mensonge) { s.mensonges.add(q.id); for (const id of r.expose || []) s.mensongesAffaire.add(id); }
+  });
+  if (s.mensonges.size) {
+    note(s, `Entretien de l’Élysée : ${s.mensonges.size} réponse${s.mensonges.size > 1 ? 's' : ''} inexacte${s.mensonges.size > 1 ? 's' : ''}. Personne ne vérifie aujourd’hui.`, 'elysee');
+  }
 }
 
 function* etapeDoctrine(s) {
-  tirerProfil(s);
-  yield { type: 'nomination', profil: s.profil, perimetre: s.perimetre };
+  yield { type: 'nomination' };
+  yield* etapeEntretien(s);
+  appliquerProfil(s, yield { type: 'profil', profils: K.PROFILS });
   const ordre = (yield { type: 'doctrine' }) || Object.keys(K.COMPTEURS_INITIAUX);
   s.doctrine = [...ordre];
   s.poids = {};
@@ -483,14 +497,16 @@ function* etapeAffaire(s) {
 
   const dejaSorties = new Set((s.affaires || []).map((a) => a.id));
   const themesRecents = new Set((s.mesuresParAnnee[s.annee - 1] || []).map((m) => (PAR_ID[m.id] || {}).theme).filter(Boolean));
-  const exposees = new Set(s.profil ? s.profil.expose : []);
-
-  const candidates = AFFAIRES.filter((a) => !dejaSorties.has(a.id)).map((a) => {
+  /* Ce que vous avez répondu à l'Élysée décide de ce qui peut vous atteindre :
+     une réponse franche ferme la porte, un aveu l'entrouvre, un mensonge la
+     laisse grande ouverte — et rend l'affaire plus chère quand elle sort. */
+  const candidates = AFFAIRES.filter((a) => !dejaSorties.has(a.id) && !s.protections.has(a.id)).map((a) => {
     const resonne = (a.themes || []).some((t) => themesRecents.has(t));
     let poids = 1;
     if (resonne) poids *= K.AFFAIRES_TIRAGE.resonance;
-    if (exposees.has(a.id)) poids *= K.AFFAIRES_TIRAGE.exposition;
-    return { a, poids, resonne };
+    if (s.expositions.has(a.id)) poids *= K.AFFAIRES_TIRAGE.exposition;
+    if (s.mensongesAffaire.has(a.id)) poids *= K.MENSONGE.multiplicateurTirage;
+    return { a, poids, resonne, menti: s.mensongesAffaire.has(a.id) };
   });
   if (!candidates.length) return;
 
@@ -507,14 +523,16 @@ function* etapeAffaire(s) {
   for (const c of candidates) { tirage -= c.poids; if (tirage <= 0) { choisie = c; break; } }
   const a = choisie.a;
 
-  const idx = yield { type: 'affaire', affaire: a, resonne: choisie.resonne, credibilite: s.credibilite };
+  const idx = yield { type: 'affaire', affaire: a, resonne: choisie.resonne, menti: choisie.menti, credibilite: s.credibilite };
   const r = a.reponses[Math.max(0, Math.min(2, idx | 0))];
 
   /* Une affaire médiatique n'est pas une culpabilité : une sur quatre se
      dégonfle. Le coût politique, lui, reste à moitié encaissé — c'est vrai,
      et c'est ce que le public retient le plus mal. */
   const degonfle = s.rng() < K.AFFAIRES_TIRAGE.probaDegonflement;
-  const f = degonfle ? (1 - K.AFFAIRES_TIRAGE.remboursement) : 1;
+  let f = degonfle ? (1 - K.AFFAIRES_TIRAGE.remboursement) : 1;
+  /* Ce n'est jamais l'affaire qui tue : c'est d'avoir dit le contraire. */
+  if (choisie.menti) f *= K.MENSONGE.aggravation;
 
   s.phys.adhesion = borne(s.phys.adhesion + (r.adhesion || 0) * f, 0, s.plafondAdhesion);
   s.phys.parents = borne(s.phys.parents + (r.parents || 0) * f, 0, 100);
@@ -629,19 +647,52 @@ function* etapeJanvier(s) {
 
 /* Crédite la trésorerie d'argent frais. `margeCumulee` mémorise tout ce que
    le mandat a reçu : c'est elle qui mesure le sur-engagement. */
-/* --- JUIN : l'avance de gestion, premier arbitrage du mandat -------------- */
+/* --- NOTE 1 · UN BUDGET CONTRAINT → la demande de rallonge ----------------- */
+/* Bercy décide, et il ne dit pas toujours oui. Demander est légitime ; ne pas
+   obtenir se sait. C'est la première fois que le joueur découvre que sa marge
+   ne dépend pas seulement de ce qu'il veut. */
 function* etapeAvance(s) {
-  const idx = yield { type: 'avance', options: K.AVANCE_GESTION };
-  const o = K.AVANCE_GESTION[Math.max(0, Math.min(K.AVANCE_GESTION.length - 1, idx | 0))];
+  const rep = (yield { type: 'avance', options: K.AVANCE_GESTION }) || {};
+  const idx = typeof rep === 'object' ? (rep.option | 0) : (rep | 0);
+  const o = K.AVANCE_GESTION[Math.max(0, Math.min(K.AVANCE_GESTION.length - 1, idx))];
   s.avance = o.id;
-  s.engagementRestitution = o.restitution;
-  s.schemaAvance = o.schema;              // durcissement du schéma d'emplois de l'an 1
   s.capital = borne(s.capital + o.capital, 0, K.CAPITAL.plafond);
+
+  if (o.bonus <= 0) {
+    s.creditBercy = borne(s.creditBercy + o.bercy, 0, 100);
+    note(s, 'Aucune demande à Bercy. Vous partez avec ce que votre prédécesseur a laissé.', 'bercy');
+    return;
+  }
+  const accorde = s.rng() < o.proba;
+  s.avanceAccordee = accorde;
+  if (accorde) {
+    crediter(s, o.bonus);
+    s.creditBercy = borne(s.creditBercy + o.bercy, 0, 100);
+    /* Une rallonge fléchée engage la mesure : le joueur la portera. */
+    if (o.exigeMesure && rep && rep.mesure) {
+      s.mesureFlechee = rep.mesure;
+      note(s, `Rallonge accordée : ${fmtMd(o.bonus)} Md€, fléchés sur « ${(PAR_ID[rep.mesure] || {}).label || rep.mesure} ».`, 'bercy');
+    } else {
+      note(s, `Rallonge accordée : ${fmtMd(o.bonus)} Md€ dégelés sur la réserve de précaution.`, 'bercy');
+    }
+  } else {
+    s.creditBercy = borne(s.creditBercy + K.REFUS_BERCY.creditBercy, 0, 100);
+    s.capital = borne(s.capital + K.REFUS_BERCY.capital, 0, K.CAPITAL.plafond);
+    note(s, 'Demande refusée par Bercy. « Le cadrage est le cadrage. » Un refus, ça se sait.', 'bercy');
+  }
+}
+
+/* --- NOTE 2 · UNE BAISSE DÉMOGRAPHIQUE → l'intention sur les postes -------- */
+/* Elle n'engage à rien juridiquement et à tout politiquement : Bercy la compare
+   à ce que le ministre fait réellement au mois de janvier. */
+function* etapeIntention(s) {
+  const idx = yield { type: 'intention', options: K.INTENTIONS_POSTES };
+  const o = K.INTENTIONS_POSTES[Math.max(0, Math.min(K.INTENTIONS_POSTES.length - 1, idx | 0))];
+  s.intentionPostes = o.id;
+  s.engagementRestitution = o.restitution;
   s.creditBercy = borne(s.creditBercy + o.bercy, 0, 100);
-  if (o.bonus > 0) crediter(s, o.bonus);
-  note(s, o.bonus > 0
-    ? `Avance de gestion obtenue : ${fmtMd(o.bonus)} Md€ dégelés contre un engagement de ${Math.round(o.restitution * 100)} % de restitution en janvier.`
-    : 'Aucune demande à Bercy. Vous partez avec ce que votre prédécesseur a laissé.', 'bercy');
+  s.phys.adhesion = borne(s.phys.adhesion + o.adhesion, 0, s.plafondAdhesion);
+  note(s, `Intention annoncée pour la rentrée : ${Math.round(o.restitution * 100)} % des postes libérés rendus à Bercy. Elle sera comparée à janvier.`, 'bercy');
 }
 
 function crediter(s, montant) {
@@ -662,8 +713,9 @@ function* etapeMesures(s, opts) {
   const choix = (yield {
     type: 'mesures', moment: opts.moment, dispo, maxAnnonces, depassementAutorise,
     tresor: s.tresor, capital: s.capital, nouveaux: neufs.map((c) => c.id),
+    mesureFlechee: s.mesureFlechee || null,
   }) || [];
-  appliquerMesures(s, choix, maxAnnonces, depassementAutorise);
+  appliquerMesures(s, choix, maxAnnonces, depassementAutorise, opts.moment);
 }
 
 /* --- MARS : mobilisations de printemps ------------------------------------ */
@@ -928,7 +980,7 @@ export function coutDe(carte, options = {}) {
   return { cout: carte.cout, coutETP: carte.coutETP, pol: carte.pol };
 }
 
-function appliquerMesures(s, choix, maxAnnonces = 3, depassementAutorise = true) {
+function appliquerMesures(s, choix, maxAnnonces = 3, depassementAutorise = true, moment = 'janvier') {
   const retenues = [];
   for (const ch of choix) {
     if (retenues.length >= maxAnnonces) break;   // le calendrier réglementaire ne suit pas
@@ -945,6 +997,14 @@ function appliquerMesures(s, choix, maxAnnonces = 3, depassementAutorise = true)
     s.tresor -= cout;
     s.chargesRecurrentes += cout;
 
+    /* Le calendrier réglementaire ne suit pas : la troisième annonce d'une même
+       fenêtre part souvent en retard, et ce qui part en retard produit peu. */
+    const troisieme = retenues.length === 2 && choix.length >= 3;
+    if (troisieme && s.rng() < K.TROISIEME_ANNONCE.probaRetard) {
+      s.retardees = s.retardees || [];
+      s.retardees.push(carte.id);
+      note(s, `« ${carte.label} » est annoncée mais ne sortira pas dans les délais : la direction générale n’a ni les textes ni les équipes pour trois chantiers à la fois.`, 'dgesco');
+    }
     s.joue.add(carte.id);
     if (carte.theme) s.themes.add(carte.theme);
     if (carte.excl) s.excl.add(carte.excl);
@@ -971,9 +1031,10 @@ function appliquerMesures(s, choix, maxAnnonces = 3, depassementAutorise = true)
     if (carte.bercy) s.creditBercy = borne(s.creditBercy + carte.bercy, 0, 100);
     if (carte.coutETP) s.ratioED -= carte.coutETP / 35000;   // les ETP créés desserrent l'encadrement
 
-    /* Effets réels, curseurs compris. */
+    /* Effets réels, curseurs compris. Une mesure partie en retard produit peu :
+       le texte sort en cours d'année, le terrain la reçoit sans y être préparé. */
     let effets = carte.reel;
-    let mult = 1;
+    let mult = (s.retardees || []).includes(carte.id) ? K.TROISIEME_ANNONCE.effetSiRetard : 1;
     if (carte.parametrique === 'revalorisation') {
       const r = chiffrerRevalorisation(ch.options?.montant ?? REVALORISATION.montant.defaut,
                                        ch.options?.instrument || 'indiciaire', ch.options?.cible || 'tous');
@@ -1041,12 +1102,14 @@ export function* derouler(s) {
   /* La note de cadrage que la direction générale remet à tout nouveau ministre
      avant son premier arbitrage : budget, démographie, niveaux. Tous les
      chiffres viennent de `moteur/reperes.js` et sont sourcés. */
-  yield { type: 'reperes' };
-  /* Juin : on n'attend pas le prochain budget pour agir. La loi de finances
-     votée par le prédécesseur laisse une marge de redéploiement — et la
-     réserve de précaution, elle, se négocie. */
-  yield* etapeAvance(s);
+  /* Les trois notes de la DGESCO arrivent successivement, et chacune débouche
+     sur une décision. On ne lit pas un dossier pour le plaisir de le lire. */
   crediter(s, K.ENVELOPPE_PRISE_FONCTION);
+  yield { type: 'reperes', note: 'budget' };
+  yield* etapeAvance(s);
+  yield { type: 'reperes', note: 'demographie' };
+  yield* etapeIntention(s);
+  yield { type: 'reperes', note: 'niveaux' };
   yield* etapeMesures(s, { moment: 'prise_fonction', taille: K.TAILLE_MENU_COURT });
   rafraichir(s);
   yield { type: 'etape', etape: 'ouverture' };
@@ -1084,7 +1147,10 @@ export function jouerMandat({ graine = 1, politique }) {
     let rep;
     if (q.type === 'nomination') rep = 'accepter';
     else if (q.type === 'reperes') rep = null;   // la note de cadrage se lit, elle ne se décide pas
+    else if (q.type === 'entretien') rep = politique.entretien ? politique.entretien(s, q) : [0, 0, 0];
+    else if (q.type === 'profil') rep = politique.profil ? politique.profil(s, q) : 0;
     else if (q.type === 'avance') rep = politique.avance ? politique.avance(s, q) : 1;
+    else if (q.type === 'intention') rep = politique.intention ? politique.intention(s, q) : 1;
     else if (q.type === 'affaire') rep = politique.affaire ? politique.affaire(s, q) : 0;
     else if (q.type === 'doctrine') rep = politique.doctrine ? politique.doctrine(s) : Object.keys(K.COMPTEURS_INITIAUX);
     else if (q.type === 'lettrePlafond') rep = politique.lettrePlafond ? politique.lettrePlafond(s, q.palier) : 'accepter';
