@@ -1052,6 +1052,77 @@ Le répéter à chaque fois en aurait fait une tapisserie.
 
 Équilibrage revérifié : **4/4 sur trois jeux de graines**, survie 49-51 %.
 
+## 3 quindecies. Moins à lire, autant à comprendre
+
+Demande de relecture : « certaines simplifications peuvent être apportées pour
+réduire la lecture, sans perdre le sens ni la compréhension du sujet ».
+
+### a) Où était la charge, en réalité
+
+Mesurée dans le navigateur, sur dix parties complètes, en comptant le texte
+réellement visible à l'écran (les blocs repliés ne comptent que pour leur
+résumé) : **1 314 signes par écran** en moyenne. L'atelier de janvier en
+concentrait 3 837 à lui seul, la circulaire de rentrée 2 313.
+
+L'analyse a montré que le gras n'était pas dans les textes eux-mêmes mais dans
+leur **répétition** : les mêmes explications réimprimées à chaque passage. Trois
+exemples, du plus coûteux au moins coûteux :
+
+- la note « Image » (« l'indicateur affiché bouge tout de suite, puis l'effet
+  s'estompe d'un quart par an et ne compte pas au bilan ») s'affichait sur
+  **chaque carte portant un effet d'annonce**, soit une cinquantaine de fois par
+  partie ;
+- l'échelle de preuve (371 signes) et le chapô de l'atelier (223 signes) se
+  réimprimaient aux cinq ouvertures de l'atelier ;
+- le mode d'emploi de la carte scolaire (493 signes) se réimprimait aux cinq
+  arbitrages de janvier.
+
+### b) La règle appliquée
+
+**Une explication paraît une fois, au moment où elle sert, puis se replie ou se
+résume.** Concrètement :
+
+| Ce qui change | Avant | Après |
+|---|---|---|
+| Note « Image » sur chaque carte | ~50 fois par partie | une ligne dans la légende, une fois |
+| Échelle de preuve | en entier, 5 fois | en entier au premier atelier, une ligne ensuite |
+| Chapô de l'atelier | en entier, 5 fois | en entier au premier atelier, six mots ensuite |
+| Mode d'emploi de la carte scolaire | en entier, 5 fois | déplié en an 1, replié ensuite (toujours accessible) |
+| Porteurs sur la carte fermée | liste complète | les deux premiers, « + n », liste complète à l'ouverture |
+| Gloses du bandeau budgétaire | à chaque fois | au premier atelier |
+| Mode d'emploi de l'audience | à chaque fois | à la première audience |
+| Boussole : ses précautions de lecture | à chaque clôture | aux deux premières, puis au bilan |
+
+Aucune donnée n'a été supprimée : les fiches `preuve` et `ideeRecue` des 70
+cartes, qui portent le fond sourcé, sont **intactes**. Elles sont d'ailleurs
+derrière un second pli (« Comprendre l'effet ») : leur lecture est choisie, pas
+subie, et c'est là que le joueur qui veut comprendre doit trouver tout.
+
+### c) Le résultat, mesuré
+
+Même protocole, dix parties, même robot :
+
+| Écran | Avant | Après |
+|---|---|---|
+| Atelier de janvier | 3 837 | 2 783 (−27 %) |
+| Circulaire de rentrée | 2 313 | 1 673 (−28 %) |
+| Premières annonces de juin | 2 718 | 2 219 (−18 %) |
+| Carte scolaire | 1 219 | 948 (−22 %) |
+| Audience syndicale | 1 044 | 898 (−14 %) |
+| **Moyenne, tous écrans** | **1 314** | **1 176 (−11 %)** |
+
+La moyenne générale bouge moins que les écrans visés, ce qui est normal : la
+moitié des écrans du jeu étaient déjà courts et n'ont pas été touchés.
+
+Un levier n'a **pas** été actionné, et il est laissé au jugement : la taille du
+menu de mesures (`TAILLES_MENU`, aujourd'hui 8 / 11 / 14 / 16 / 16). La ramener
+à 12 en fin de mandat retirerait encore un quart de l'atelier, mais elle
+réduirait l'exposition au catalogue, qu'une demande antérieure avait justement
+voulu enrichir. Les deux demandes se contredisent ; c'est un arbitrage, pas une
+correction.
+
+Équilibrage revérifié : **4/4 sur trois jeux de graines**, survie 48-52 %.
+
 ## 5. Paramètres à réexaminer après tests humains
 
 | Paramètre | Valeur | Ce qu'il faut regarder |
