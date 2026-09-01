@@ -401,6 +401,7 @@ table.bilan .num{text-align:right}
 #comprendre .chapo{margin:14px 0 18px}
 body:has(#comprendre:not([hidden])) #comprendre-btn{display:none}
 body:has(.suite:not([hidden])) #comprendre-btn{bottom:62px}
+.ligne-s .requal{display:inline-block; font-size:.6rem; font-weight:700; text-transform:uppercase; letter-spacing:.08em; background:var(--c-budget); color:#1a1a19; padding:1px 6px; margin-left:7px; vertical-align:middle}
 .nouveau-dossier{display:inline-block; font-size:.6rem; font-weight:700; text-transform:uppercase; letter-spacing:.09em; background:var(--bleu-rf); color:#fff; padding:2px 7px; margin-left:8px; vertical-align:middle}
 .bandeau-neuf{background:var(--fiche-2); border-left:3px solid var(--bleu-rf); padding:10px 14px; font-size:.82rem; margin:14px 0; line-height:1.5}
 @media (max-width:640px){
@@ -676,6 +677,11 @@ const ABSORPTION = {
   dureeActive: 3,             // une réforme « occupe » le système 3 ans
 };
 
+/* La requalification : ce qui reste d'une réforme rendue facultative. Le
+   « choc des savoirs » a été mis en œuvre à moins de 20 % de conformité avant
+   d'être requalifié puis vidé ; on retient un ordre de grandeur voisin. */
+const REQUALIFICATION = { effetRestant: 0.18 };
+
 /* Fatigue réformatrice : 7 ministres en 3 ans avant vous.                [B.8-7] */
 const FATIGUE = {
   initiale: 40,
@@ -697,6 +703,13 @@ const IMPLEMENTATION = {
 /* Poids de l'héritage dans le signal AFFICHÉ, par année de mandat.        [C.3]
    Les deux premières années, le joueur est jugé sur ce qu'il n'a pas fait. */
 const POIDS_HERITAGE = [0.60, 0.60, 0.42, 0.26, 0.12];
+
+/* LA RÉVERSION — ce qui reste d'une réforme après le départ de son ministre.
+   Précédent : réforme du collège 2015, deux ans de préparation, une année
+   d'application, abrogation partielle par décret dès mai 2017. Une réforme non
+   consolidée (ni inscrite dans la loi, ni budgétée pluriannuellement, ni
+   appropriée par le terrain) ne survit pas au changement de gouvernement. */
+const REVERSION = { effetSurvivant: 0.62 };
 
 /* Bruit annuel des indicateurs affichés (évaluations nationales bruitées). */
 const BRUIT_AFFICHE = 2.6;         // écart-type, en points de compteur
@@ -885,12 +898,12 @@ const PROJETS_2027 = {
 
 /* Taille du menu de mesures par année de mandat : on commence resserré pour
    que chaque carte soit vraiment lue, on élargit avec l'expérience du joueur. */
-const TAILLES_MENU = [8, 11, 13, 15, 15];
+const TAILLES_MENU = [8, 11, 14, 16, 16];
 
 const MOIS = ['janvier','février','mars','avril','mai','juin',
                      'juillet','août','septembre','octobre','novembre','décembre'];
 
-const K = { CADRAGE, ENVELOPPE_BASE, ENVELOPPE_PRISE_FONCTION, ENVELOPPE_RENTREE, TAILLE_MENU_COURT, ANNONCES_MAX, AVANCE_GESTION, MANQUEMENT_ENGAGEMENT, PALIERS_BERCY, SURCOUT, POINTS_SALAIRE_PAR_MD, BAISSE_ELEVES, ELEVES_INITIAL, ELEVES_PAR_POSTE, RATIO_ED_INITIAL, SEUIL_COLERE_MAIRES, COMPTEURS_INITIAUX, COMPTEURS_META, POIDS_DOCTRINE, PHYSIQUE_INITIALE, INERTIE_OPINION, TENDANCIEL, INTERVALLE_CADENAS, ABSORPTION, FATIGUE, IMPLEMENTATION, POIDS_HERITAGE, BRUIT_AFFICHE, COUT_AFFICHAGE_LONG_TERME, DECROISSANCE_VITRINE, ATTRACTIVITE, GREVE, SYNDICATS, SENSIBILITES, CAPITAL, IMMOBILISME, CREDIT_BERCY_INITIAL, RENVOI, PROJECTION, PROJETS_2027, TAILLES_MENU, MOIS };   // espace de noms attendu par le moteur
+const K = { CADRAGE, ENVELOPPE_BASE, ENVELOPPE_PRISE_FONCTION, ENVELOPPE_RENTREE, TAILLE_MENU_COURT, ANNONCES_MAX, AVANCE_GESTION, MANQUEMENT_ENGAGEMENT, PALIERS_BERCY, SURCOUT, POINTS_SALAIRE_PAR_MD, BAISSE_ELEVES, ELEVES_INITIAL, ELEVES_PAR_POSTE, RATIO_ED_INITIAL, SEUIL_COLERE_MAIRES, COMPTEURS_INITIAUX, COMPTEURS_META, POIDS_DOCTRINE, PHYSIQUE_INITIALE, INERTIE_OPINION, TENDANCIEL, INTERVALLE_CADENAS, ABSORPTION, REQUALIFICATION, FATIGUE, IMPLEMENTATION, POIDS_HERITAGE, REVERSION, BRUIT_AFFICHE, COUT_AFFICHAGE_LONG_TERME, DECROISSANCE_VITRINE, ATTRACTIVITE, GREVE, SYNDICATS, SENSIBILITES, CAPITAL, IMMOBILISME, CREDIT_BERCY_INITIAL, RENVOI, PROJECTION, PROJETS_2027, TAILLES_MENU, MOIS };   // espace de noms attendu par le moteur
 /* ===== moteur/catalogue.js ===== */
 
 
@@ -960,7 +973,7 @@ const CATALOGUE = [
     id: 'revalorisation',
     label: 'Revalorisation des enseignants',
     famille: 'moyens',
-    porteurs: ['FSU (+20 % du point ≈ 10 Md€)', 'PS (moyenne OCDE)', 'Attal (+200 à +500 €/mois)', 'Lisnard (+20 %/5 ans conditionnés)'],
+    porteurs: ['FSU (+20 % du point ≈ 10 Md€)', 'Parti socialiste (moyenne OCDE)', 'Gabriel Attal (+200 à +500 €/mois)', 'la droite parlementaire (+20 %/5 ans conditionnés)', 'HCSP (ciblage des pénuries)'],
     perimetre: 'ministeriel',
     cout: 1.3, coutETP: 0, pol: 7,        // montant par défaut ; le curseur décide
     once: false, reforme: false,          // répétable : une mesure salariale par budget
@@ -978,7 +991,7 @@ const CATALOGUE = [
     id: 'dedoublement',
     label: 'Extension du dédoublement aux GS/CP/CE1 hors éducation prioritaire',
     famille: 'moyens',
-    porteurs: ['prolongement de la politique engagée en 2017', 'PS', 'Mélenchon (≤19/classe)'],
+    porteurs: ['prolongement de la politique engagée en 2017', 'Institut des politiques publiques', 'la gauche parlementaire', 'HCSP (recommandation 3, ciblée)'],
     perimetre: 'ministeriel',
     cout: 0.42, coutETP: 5200, pol: 5,
     theme: 'taille_classe', once: true, excl: 'encadrement', reforme: true,
@@ -998,7 +1011,7 @@ const CATALOGUE = [
     id: 'classe19',
     label: 'Plafond général de 19 élèves par classe',
     famille: 'moyens',
-    porteurs: ['Mélenchon', 'PS'],
+    porteurs: ['La France insoumise (≤ 19 par classe)', 'Parti socialiste', 'Institut des politiques publiques (version ciblée)'],
     perimetre: 'ministeriel',
     cout: 0, coutETP: 0, pol: 11,          // dépend du financement choisi
     theme: 'taille_classe', once: true, excl: 'encadrement', reforme: true,
@@ -1019,7 +1032,7 @@ const CATALOGUE = [
     id: 'aesh',
     label: 'Création d’un corps de fonctionnaires AESH',
     famille: 'moyens',
-    porteurs: ['PS', 'Mélenchon', 'SNALC', 'collectif AESH'],
+    porteurs: ['collectifs d’AESH', 'Défenseur des droits', 'associations de familles (Unapei, APF France handicap)', 'la gauche parlementaire'],
     contre: ['rapport IGÉSR-IGAS : rejette la fonctionnarisation, propose +10 % via une grille type catégorie B'],
     perimetre: 'matignon',                  // législatif — rejeté au Sénat le 07/01/2026
     cout: 4.3, coutETP: 0, pol: 16,
@@ -1071,7 +1084,7 @@ const CATALOGUE = [
     ],
     physique: {},
     greve: { intensite: 2, theme: 'pedagogie', segment: 'lp' },
-    preuve: 'Pologne, 1999 : le report d’un an du palier d’orientation, dans une réforme d’ensemble, est identifié par la recherche comme un facteur décisif de la progression spectaculaire du pays dans PISA — portée par les élèves les plus faibles. L’orientation précoce est, dans les comparaisons internationales, l’un des principaux canaux de la reproduction sociale.',
+    preuve: 'C’est la mesure dont la comparaison internationale documente le mieux l’effet. La Pologne a reporté d’un an son premier palier d’orientation en 1999 ; sa progression à PISA a été portée surtout par les élèves les plus faibles, et le report du palier est identifié comme le facteur crucial. En 2000, 23 % des élèves polonais étaient sous le niveau 2 en compréhension de l’écrit. Le mécanisme est simple : plus l’orientation est précoce, plus elle enregistre l’origine sociale au lieu des aptitudes.',
     mot: "Six ans de délai, aucune photo à la clé, et la voie professionnelle qui se sent visée. Un pari de ministre qui a lu les études plutôt que les sondages.",
   },
 
@@ -1080,7 +1093,7 @@ const CATALOGUE = [
     id: 'differenciation',
     label: 'Différenciation précoce : groupes de niveau, certificat d’entrée en 6e, parcours dès la 4e',
     famille: 'parcours',
-    porteurs: ['Attal', 'Lisnard', 'Zemmour (fin du collège unique)', 'Le Pen (collège modulaire)'],
+    porteurs: ['Gabriel Attal (« choc des savoirs »)', 'la droite parlementaire', 'Reconquête (fin du collège unique)', 'Rassemblement national (collège modulaire)'],
     contre: ['IGÉSR juin 2025 : « dérive des continents »', 'Conseil d’État : censure partielle du dispositif'],
     perimetre: 'ministeriel',
     cout: 0.5, coutETP: 1800, pol: 10,
@@ -1102,7 +1115,7 @@ const CATALOGUE = [
     id: 'autonomie',
     label: 'Autonomie des établissements et publication des résultats',
     famille: 'autonomie',
-    porteurs: ['Philippe', 'Barnier (pacte pluriannuel)', 'Lisnard (recrutement par les directions)'],
+    porteurs: ['Édouard Philippe', 'Institut Montaigne', 'iFRAP', 'précédent anglais des academies'],
     perimetre: 'ministeriel',
     cout: 0.12, coutETP: 0, pol: 9,
     theme: 'autonomie', once: true, excl: 'evaluation', reforme: true,
@@ -1114,7 +1127,7 @@ const CATALOGUE = [
     physique: { segregation: +0.8 },
     greve: { intensite: 4, theme: 'statut', segment: 'tous' },
     preuve: 'Les comparaisons internationales sont contradictoires : l’autonomie améliore les résultats dans les systèmes dotés d’un encadrement fort, les dégrade ailleurs. Sur la publication des résultats par établissement, le constat est plus net : elle alimente l’évitement scolaire et la ségrégation sans gain d’apprentissage démontré. C’est la carte à la variance maximale du jeu : preuve faible, deux cadenas.',
-    ideeRecue: '« La transparence ne peut pas faire de mal. » Publier des résultats bruts revient surtout à classer les publics : un palmarès d’établissements est d’abord un palmarès de quartiers.',
+    ideeRecue: '« Publier les résultats, c’est de la transparence. » C’est aussi mettre les établissements en concurrence sur leurs notes. En Suède, où le diplôme de fin de lycée repose sur le contrôle continu, la concurrence a produit une inflation documentée — les « notes du bonheur » : les indicateurs s’améliorent sans que rien ne s’améliore. La France a déjà 40 % de contrôle continu au baccalauréat depuis 2019 : le mécanisme n’est pas hypothétique, il est en place.',
     mot: "Deux cadenas : l'effet réel peut aussi bien doubler que se retourner. C'est la carte la plus incertaine du jeu, et celle qui fait les meilleures unes.",
   },
 
@@ -1123,7 +1136,7 @@ const CATALOGUE = [
     id: 'prive_mixite',
     label: 'Financement du privé sous contrat conditionné à des objectifs de mixité',
     famille: 'mixite',
-    porteurs: ['NFP', 'Glucksmann (privé intégré à la carte scolaire)', 'Mélenchon (abrogation de la loi Carle)'],
+    porteurs: ['Nouveau Front populaire', 'Place publique (privé intégré à la carte scolaire)', 'Cour des comptes (contrôle des fonds publics)', 'FCPE'],
     perimetre: 'matignon',
     cout: -0.15, coutETP: 0, pol: 15,       // rapporte de l'argent, coûte tout le reste
     theme: 'prive', once: true, reforme: true,
@@ -1169,7 +1182,7 @@ const CATALOGUE = [
     id: 'maternelle',
     label: 'Plan langage en maternelle, priorité aux réseaux d’éducation prioritaire',
     famille: 'moyens',
-    porteurs: ['CSEN', 'économie de l’éducation (rendement des investissements précoces)', 'PS'],
+    porteurs: ['CSEN', 'économie de l’éducation (rendement des investissements précoces)', 'Parti socialiste', 'Terra Nova'],
     perimetre: 'ministeriel',
     cout: 0.28, coutETP: 1500, pol: 4,
     theme: 'maternelle', once: true, reforme: true,
@@ -1209,7 +1222,7 @@ const CATALOGUE = [
     id: 'titularisation',
     label: 'Plan de titularisation des contractuels enseignants',
     famille: 'moyens',
-    porteurs: ['intersyndicale', 'PS'],
+    porteurs: ['intersyndicale', 'Parti socialiste', 'Défenseur des droits (précarité des contractuels)'],
     perimetre: 'ministeriel',
     cout: 0.30, coutETP: 0, pol: 5,
     theme: 'contractuels', once: true, reforme: false,
@@ -1361,7 +1374,7 @@ const CATALOGUE = [
     id: 'cheque_education',
     label: 'Chèque-éducation : financement attaché à l’élève, libre choix de l’établissement',
     famille: 'autonomie',
-    porteurs: ['Lisnard'],
+    porteurs: ['David Lisnard', 'iFRAP', 'précédent suédois du chèque scolaire'],
     contre: ['la quasi-totalité de la recherche comparative', 'les fédérations du public'],
     perimetre: 'matignon',
     cout: 0.40, coutETP: 0, pol: 14,
@@ -1374,8 +1387,8 @@ const CATALOGUE = [
     ],
     physique: { segregation: +1.0 },
     greve: { intensite: 3, theme: 'prive', segment: 'tous' },
-    preuve: 'Aucun grand pays comparable n’a généralisé le chèque-éducation. Les expériences les plus proches (Chili des années 1980-2010, libre choix suédois) ont accru le tri social sans améliorer les résultats moyens — le Chili a fini par re-réguler. C’est la carte à la preuve la plus faible du jeu : un cadenas, variance maximale.',
-    ideeRecue: '« La concurrence tirera tout le monde vers le haut. » C’est la prédiction ; les données disponibles montrent surtout un tri : les établissements choisissent autant que les familles.',
+    preuve: 'La Suède est l’expérience naturelle la mieux documentée du monde : chèque scolaire, écoles indépendantes à but lucratif et libre choix au début des années 1990. Bilan à vingt ans, partagé par la quasi-totalité des chercheurs et par les agences gouvernementales suédoises : l’OCDE constatait en 2015 qu’aucun autre pays participant à PISA n’enregistrait un tel recul. Démonstration décisive (Östh, 2013) : en comparant la variance réelle entre écoles à celle qu’on observerait si chaque élève allait à l’école de son quartier, c’est <b>le libre choix, et non la ségrégation résidentielle</b>, qui explique le mieux les écarts entre établissements. S’y ajoutent une inflation des notes née de la concurrence, et des coûts plus élevés pour des résultats qui ne le sont pas.',
+    ideeRecue: '« La concurrence tire tout le monde vers le haut. » C’est l’hypothèse qui a été testée grandeur nature, sur vingt ans, par un pays entier — et invalidée par ses propres agences publiques. Cette carte est le miroir exact du redoublement : une vitrine excellente, un bilan qui arrive après vous, et une littérature qui dit déjà ce qu’il contiendra.',
     mot: "Aucun pays comparable ne l'a fait à l'échelle. Vous serez le pionnier, ou le cas d'école — au sens propre.",
   },
 
@@ -1384,7 +1397,7 @@ const CATALOGUE = [
     id: 'recrutement_direction',
     label: 'Recrutement des enseignants par les chefs d’établissement',
     famille: 'autonomie',
-    porteurs: ['Lisnard', 'Philippe (version expérimentale)'],
+    porteurs: ['Horizons (version expérimentale)', 'SNPDEN', 'précédent anglais des academies'],
     perimetre: 'ministeriel',
     cout: 0.05, coutETP: 0, pol: 9,
     theme: 'recrutement_local', once: true, reforme: true,
@@ -1404,7 +1417,7 @@ const CATALOGUE = [
     id: 'pacte_pluriannuel',
     label: 'Pacte pluriannuel : moyens garantis trois ans contre contractualisation d’objectifs',
     famille: 'autonomie',
-    porteurs: ['Barnier', 'recteurs', 'associations d’élus'],
+    porteurs: ['Michel Barnier (pacte pluriannuel)', 'recteurs', 'associations d’élus', 'Cour des comptes (contractualisation)'],
     perimetre: 'ministeriel',
     cout: 0.10, coutETP: 0, pol: 5,
     theme: 'pluriannuel', once: true, reforme: false,
@@ -1442,7 +1455,7 @@ const CATALOGUE = [
     id: 'brevet_barrage',
     label: 'Brevet obligatoire pour l’entrée en seconde, avec classes « prépa-seconde »',
     famille: 'parcours',
-    porteurs: ['Attal'],
+    porteurs: ['Gabriel Attal', 'Fondation Jean-Jaurès (version mixité)'],
     contre: ['CSEN : les effets de barrage nourrissent le décrochage'],
     perimetre: 'ministeriel',
     cout: 0.30, coutETP: 0, pol: 7,
@@ -1502,7 +1515,7 @@ const CATALOGUE = [
     id: 'allocations',
     label: 'Suspension des allocations familiales en cas d’absentéisme persistant',
     famille: 'autorite',
-    porteurs: ['Zemmour', 'une partie de la droite', '60 % de l’opinion'],
+    porteurs: ['Reconquête', 'Rassemblement national', 'une partie de la droite parlementaire', 'une majorité de l’opinion dans les sondages'],
     contre: ['deux évaluations publiques : aucun effet durable'],
     perimetre: 'matignon',
     cout: 0.02, coutETP: 0, pol: 9,
@@ -1523,7 +1536,7 @@ const CATALOGUE = [
     id: 'internats',
     label: 'Internats de rescolarisation pour élèves hautement perturbateurs',
     famille: 'autorite',
-    porteurs: ['Lisnard', 'Zemmour', 'des chefs d’établissement épuisés'],
+    porteurs: ['la droite parlementaire', 'des chefs d’établissement épuisés', 'associations de victimes de violences scolaires'],
     perimetre: 'ministeriel',
     cout: 0.21, coutETP: 0, pol: 5,
     theme: 'internats', once: true, reforme: false,
@@ -1581,7 +1594,7 @@ const CATALOGUE = [
     id: 'surges',
     label: 'Rétablir les surveillants généraux',
     famille: 'autorite',
-    porteurs: ['Zemmour', 'la nostalgie'],
+    porteurs: ['Rassemblement national', 'Reconquête', 'la nostalgie, qui vote beaucoup'],
     perimetre: 'ministeriel',
     cout: 0.14, coutETP: 1500, pol: 3,
     theme: 'surges', once: true, reforme: false,
@@ -1619,7 +1632,7 @@ const CATALOGUE = [
     id: 'ghettos',
     label: 'Fermer une centaine de « ghettos scolaires » et redéployer les élèves',
     famille: 'mixite',
-    porteurs: ['Attal'],
+    porteurs: ['Gabriel Attal', 'Fondation Jean-Jaurès (version mixité sociale)', 'chercheurs en sociologie de l’éducation'],
     perimetre: 'ministeriel',
     cout: 0.35, coutETP: 0, pol: 11,
     theme: 'ghettos', once: true, reforme: true,
@@ -1637,7 +1650,7 @@ const CATALOGUE = [
     id: 'loi_carle',
     label: 'Abroger la loi Carle et intégrer le privé sous contrat à la carte scolaire',
     famille: 'mixite',
-    porteurs: ['Mélenchon', 'Glucksmann (version carte scolaire)', 'NFP'],
+    porteurs: ['La France insoumise', 'Place publique (version carte scolaire)', 'Nouveau Front populaire', 'Comité national d’action laïque'],
     perimetre: 'matignon',
     cout: -0.10, coutETP: 0, pol: 13,
     theme: 'carle', once: true, reforme: true,
@@ -2271,6 +2284,57 @@ const CATALOGUE = [
     ideeRecue: '« Interdire, ou généraliser. » Le rapport ne tranche ni dans un sens ni dans l’autre, et c’est un choix argumenté : les évolutions sont trop rapides pour qu’une preuve solide existe, et un cadre qui se contenterait d’interdire serait contourné dans l’heure. Un cadenas sur les acquis : le jeu vous laisse la prendre, il ne vous promet rien.',
     mot: "Vous légiférez sur une technologie qui aura changé deux fois avant la publication du décret. C'est aussi ce que fera votre successeur.",
   },
+
+  /* ======================================================================
+     EXTENSION DU CATALOGUE — cartes 66 et 67 (leçons internationales)
+     Deux enseignements que la comparaison internationale documente mieux que
+     l'expérience française : ce qu'un plan territorial intensif peut produire
+     (Londres, 2003-2011), et ce que coûte de ne pas consolider (France, 2015).
+     ====================================================================== */
+
+  /* ----------------------------- 66 · moyens -------------------------- */
+  {
+    id: 'plan_territorial',
+    label: 'Plan territorial intensif sur trois académies en difficulté',
+    famille: 'moyens',
+    porteurs: ['précédent du London Challenge (2003-2011)', 'recteurs', 'Ofsted (évaluation)'],
+    contre: ['les académies non retenues, qui compteront les moyens qu’elles n’ont pas eus'],
+    perimetre: 'ministeriel',
+    cout: 0.47, coutETP: 1400, pol: 5,
+    theme: 'territorial', once: true, reforme: true,
+    decouverte: { si: 'apres_un_an', note: 'Le rapport d’évaluation du London Challenge circule au cabinet. Il pose une question simple : et si l’on concentrait ?' },
+    vitrine: { parents: +2, enseignants: +3, presse: +2, compteurs: { egalite: +3 } },
+    reel: [
+      { compteur: 'egalite',  central: 9, delai: 5, cadenas: 4, source: 'London Challenge : les autorités du centre de Londres passent des pires aux meilleures performances nationales, y compris pour les élèves très défavorisés' },
+      { compteur: 'reussite', central: 4, delai: 6, cadenas: 3, source: 'Ofsted attribue le succès à la clarté du but, à la constance du suivi et à des conseillers chevronnés affectés aux établissements en difficulté' },
+    ],
+    physique: { adhesion: +3 },
+    preuve: 'Lancé en 2003, le London Challenge a fait passer les autorités locales du centre de Londres des pires aux meilleures performances nationales, avec des progrès substantiels pour les élèves très défavorisés et dans tous les groupes ethniques. Quatre ingrédients identifiés : le programme lui-même, l’appui renforcé de certaines autorités locales, de nouvelles formes de gouvernance, et surtout des conseillers expérimentés et crédibles affectés aux établissements en difficulté, financés directement par le ministère. Nuance honnête : plusieurs stratégies nationales étaient déployées en même temps, et la contribution propre du programme reste difficile à isoler.',
+    ideeRecue: '« Ce qui marche à Londres marchera partout. » L’exportation du modèle hors de Londres s’est révélée bien plus complexe que sa réussite. Et pour vous, le piège est ailleurs : un effet fort mais local ne déplace presque pas les compteurs nationaux. Vous ferez très bien, et vos indicateurs ne le diront pas.',
+    mot: "Le cas de réussite le mieux documenté du monde, et le plus frustrant à jouer : ça marche, et personne ne le voit à l'échelle du pays.",
+  },
+
+  /* ----------------------------- 67 · autonomie ----------------------- */
+  {
+    id: 'loi_programmation',
+    label: 'Inscrire votre réforme dans une loi de programmation pluriannuelle',
+    famille: 'autonomie',
+    porteurs: ['précédent des lois de programmation militaire et de la recherche', 'Michel Barnier (pacte pluriannuel)', 'organisations syndicales, pour la visibilité'],
+    contre: ['Bercy, qui déteste engager les budgets de ses successeurs', 'Matignon, qui déteste occuper le calendrier parlementaire'],
+    perimetre: 'matignon',
+    cout: 0.18, coutETP: 0, pol: 12,
+    theme: 'programmation', once: true, reforme: false,
+    decouverte: { annee: 2, note: 'Le cabinet vous rappelle qu’un décret se défait par décret. Une loi, non.' },
+    vitrine: { parents: +2, enseignants: +5, presse: +3, compteurs: { paix: +3 } },
+    reel: [
+      { compteur: 'paix',     central: 5, delai: 2, cadenas: 3, source: 'la visibilité pluriannuelle est la contrepartie que les organisations demandent le plus constamment' },
+      { compteur: 'sante',    central: 4, delai: 4, cadenas: 3, source: 'l’instabilité des dispositifs est citée par les enseignants de collège avant la discipline en classe comme source de stress' },
+    ],
+    physique: { adhesion: +5 },
+    preuve: 'La réforme du collège de 2015 a été préparée deux ans, appliquée une année, puis partiellement abrogée par décret dès l’arrivée du ministre suivant : les enseignements pratiques interdisciplinaires, cœur du dispositif, sont devenus facultatifs — ce qui les a tués sans les supprimer. Sept ministres se sont succédé depuis 2022. Une loi de programmation ne se défait pas d’un trait de plume : elle coûte du capital politique et du temps parlementaire, et c’est exactement ce qu’elle achète.',
+    ideeRecue: '« L’essentiel est de faire la réforme ; on verra bien ensuite. » C’est le raisonnement de tous vos prédécesseurs, et il explique pourquoi trois réformes majeures sur quatre ont été abrogées ou vidées en dix ans. Sans consolidation, une part importante de ce que vous aurez semé sera arrachée par le suivant — et le jeu vous le montrera à la projection de fin.',
+    mot: "Douze points de capital pour que votre successeur ne puisse pas vous effacer d'un décret. C'est cher. C'est le seul achat du catalogue qui porte sur l'après.",
+  },
 ];
 
 /* --------------------------------------------------------------------------
@@ -2319,7 +2383,7 @@ const REVALORISATION = {
     },
     pacte: {
       label: 'Rémunération contre missions supplémentaires (« pacte »)',
-      porteurs: ['Attal'],
+      porteurs: ['Gabriel Attal (« choc des savoirs », décembre 2023)', 'la droite parlementaire'],
       facteurPosition: 0.45, adhesion: -2, bercy: +4, hna: -0.6, cas: false,
       note: 'Vous budgétez la totalité, un tiers seulement la touche : 800 M€ au PLF 2025 pour ~34 % d’adhésion. Ceux qui sont épuisés ne prennent pas de mission de plus.',
       mot: 'Payer du travail supplémentaire plutôt que le travail existant. Comptablement élégant, humainement discuté.',
@@ -2759,6 +2823,18 @@ const SOURCES = {
     date: '2021',
     url: 'https://archives-statistiques-depp.education.gouv.fr/Default/doc/SYRACUSE/50756/',
   },
+  hcsp_partieD: {
+    org: 'Ofsted / ministère britannique de l’éducation',
+    titre: 'Évaluations du London Challenge (2003-2011) : des autorités locales passées des pires aux meilleures performances nationales',
+    date: '2010-2014',
+    url: 'https://www.gov.uk/government/organisations/ofsted',
+  },
+  suede: {
+    org: 'OCDE et agences gouvernementales suédoises (travaux d’Östh, Wiborg)',
+    titre: 'Improving Schools in Sweden — bilan des réformes de marché scolaire des années 1990',
+    date: '2015',
+    url: 'https://www.oecd.org/en/publications/improving-schools-in-sweden_9789264247437-en.html',
+  },
   eef: {
     org: 'Education Endowment Foundation (Royaume-Uni)',
     titre: 'Teaching and Learning Toolkit — méta-analyses classées par niveau de preuve',
@@ -2938,6 +3014,20 @@ const REPERES = [
     aRetenir: 'Le climat scolaire est le domaine où l’écart entre l’annonce et la preuve est le plus grand : les dispositifs sont généralisés vite, évalués tard, et rarement de manière indépendante. Le jeu le traduit par un faible nombre de cadenas — pas par un effet nul.',
   },
   {
+    cle: 'international',
+    titre: 'Ce qui a marché ailleurs',
+    resume: 'Quatre pays, deux réussites, deux reculs — et aucun modèle transposable tel quel.',
+    chiffres: [
+      { v: 'Portugal', l: 'quinze ans de réformes menées par des ministres d’orientations différentes, avec un seul fil commun : l’attention constante aux résultats. Seul pays de l’OCDE en progression dans les trois domaines de PISA entre 2000 et 2018', src: 'pisa22' },
+      { v: 'Pologne', l: 'le report d’un an du premier palier d’orientation (1999) est identifié comme le facteur crucial d’une progression portée surtout par les élèves les plus faibles', src: 'pisa22' },
+      { v: 'Londres', l: 'le London Challenge (2003-2011) fait passer les autorités du centre de Londres des pires aux meilleures performances nationales, grâce à des conseillers chevronnés affectés aux établissements en difficulté — mais l’exportation du modèle hors de Londres a échoué', src: 'hcsp_partieD' },
+      { v: 'Suède', l: 'chèque scolaire et libre choix depuis les années 1990 : recul à PISA sans équivalent parmi les pays participants, ségrégation accrue, inflation des notes. C’est le libre choix, et non la ségrégation résidentielle, qui explique le mieux les écarts entre écoles', src: 'suede' },
+      { v: 'Finlande', l: 'première à PISA en 2000, 2003 et 2006 ; déclin continu depuis, avec un renforcement du lien entre origine familiale et apprentissage. En mathématiques : 554 points en 2003, 484 en 2022', src: 'pisa22' },
+      { v: '10 à 15 ans', l: 'le délai des deux réussites. Sous des majorités différentes, sans réforme spectaculaire, en tirant les élèves les plus faibles', src: 'pisa22' },
+    ],
+    aRetenir: 'Les deux systèmes qui ont réellement progressé l’ont fait sur dix à quinze ans, sous des majorités successives, sans réforme spectaculaire. Les deux qui ont reculé l’ont fait en libérant le choix et en abandonnant la mesure. La France, elle, a changé sept fois de ministre en trois ans et abrogé ou vidé trois réformes majeures sur quatre. Le jeu ne conclut pas : il rend ces faits jouables.',
+  },
+  {
     cle: 'diagnostic',
     titre: 'Pourquoi le niveau baisse',
     resume: 'Le diagnostic officiel d’août 2026, et ce qu’il écarte autant que ce qu’il retient.',
@@ -3106,6 +3196,7 @@ function creerPartie({ graine = 1, politique }) {
     effetsEnAttente: [],                       // { compteur, montant, anneeArrivee, source, carte }
     reformesActives: [],                       // { id, anneeFin }
     joue: new Set(), themes: new Set(), excl: new Set(),
+    requalifiees: new Set(),         // réformes vidées sans être retirées
     decouvertes: new Set(),          // dossiers déjà remontés sur le bureau
     avance: null, engagementRestitution: 0, schemaAvance: 0,
     abandons: 0,
@@ -3403,6 +3494,8 @@ function* etapeAudience(s) {
     const dec = yield { type: 'retrait', org, carte, mesure: conteste, risque, combatif };
     if (dec === 'ceder') {
       retirerMesure(s, conteste, org, poidsRel);
+    } else if (dec === 'requalifier') {
+      requalifierMesure(s, conteste, org, poidsRel);
     } else {
       s.capital += 2;
       s.phys.adhesion = borne(s.phys.adhesion - 1.8 * poidsRel, 0, 100);
@@ -3419,6 +3512,30 @@ function* etapeAudience(s) {
       }
     }
   }
+}
+
+/* LA REQUALIFICATION — le geste politique le plus fréquent du système, et le
+   moins coûteux à court terme. Sous pression, on ne retire pas la réforme : on
+   la renomme et on la rend facultative. L'annonce survit, le dispositif se vide.
+   Précédent : le « choc des savoirs » de décembre 2023, requalifié en « groupes
+   de besoins » en 2024, puis vidé de son obligation à la rentrée 2026.
+   Effet-vitrine préservé, effet réel ramené à presque rien. Le joueur ne le
+   découvrira qu'au bilan, comme tout le reste. */
+function requalifierMesure(s, m, org, poidsRel) {
+  const carte = PAR_ID[m.id];
+  s.requalifiees = s.requalifiees || new Set();
+  s.requalifiees.add(m.id);
+  /* Les crédits restent inscrits — c'est ce qui distingue la requalification du
+     retrait : on paie toujours, on ne produit plus. */
+  for (const e of s.effetsEnAttente) {
+    if (e.carte === m.id && !e.applique) { e.montant *= K.REQUALIFICATION.effetRestant; e.requalifie = true; }
+  }
+  /* Elle cesse d'occuper la capacité d'absorption : plus personne ne l'applique. */
+  s.reformesActives = s.reformesActives.filter((r) => r.id !== m.id);
+  s.phys.adhesion = borne(s.phys.adhesion + 2.2 * poidsRel, 0, 100);
+  s.capital -= 2;
+  s.fatigue = Math.min(K.FATIGUE.max, s.fatigue + 5);
+  note(s, `« ${carte.label} » devient facultative et change de nom. ${org.nom} lève son préavis ; le ministère parle d’« ajustement de méthode ».`, 'retrait');
 }
 
 /* La mesure que l'intersyndicale conteste le plus parmi celles en vigueur. */
@@ -4025,6 +4142,14 @@ function projeterDixAns(s, constance) {
      n'arrivent qu'à 60 %, et les dérives spontanées reprennent en entier. */
   const complet = s.fin.type === 'mandat_complet';
   const tenu = complet ? 1 : 0.70;
+  /* LA RÉVERSION. Une réforme non consolidée ne survit pas au ministre suivant :
+     la réforme du collège de 2015 a été partiellement abrogée par décret dès
+     l'arrivée de son successeur, deux ans de préparation et une année
+     d'application plus tard. Une loi de programmation, elle, ne se défait pas
+     d'un trait de plume — c'est ce que la carte du même nom achète, et c'est
+     tout ce qu'elle achète. */
+  const consolide = s.joue.has('loi_programmation');
+  const survie = consolide ? 1 : K.REVERSION.effetSurvivant;
   /* Rythme imprimé par le mandat, par an : c'est lui que le successeur prolonge. */
   const ans = Math.max(1, s.histoire.length);
   const rythme = {
@@ -4036,7 +4161,7 @@ function projeterDixAns(s, constance) {
 
   for (let an = s.annee + 1; an <= s.annee + 5; an++) {
     for (const e of enRoute) {
-      if (!e.applique && e.anneeArrivee <= an) { acquis[e.compteur] += e.montant * tenu; e.applique = true; }
+      if (!e.applique && e.anneeArrivee <= an) { acquis[e.compteur] += e.montant * tenu * survie; e.applique = true; }
     }
     /* Le cap tenu gèle les dérives que le mandat a corrigées ; sinon elles reprennent. */
     /* Si le cap tient, la dérive spontanée est neutralisée et la trajectoire du
@@ -4169,11 +4294,38 @@ const MOIS_L = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet'
 
 /* ------------------------------------------------------- distribution ------ */
 /* Satire symétrique : personnages transparents, tout le monde y passe. */
+/* Le paysage médiatique. Pseudonymes transparents, satire symétrique : le
+   quotidien national de droite, celui de gauche, la presse régionale, la presse
+   spécialisée que lisent réellement les personnels, les chaînes d'info, les
+   hebdos et la presse syndicale — chacun avec sa manière de dire la même
+   chose. Le titre du quotidien de référence est tiré au sort par partie : on
+   ne suit pas le même journal deux mandats de suite. */
+const JOURNAUX = [
+  'La Gazette de Grenelle', 'Le Quotidien de l’École', 'L’Estrade',
+  'Le Courrier des Écoles', 'La Craie du Matin', 'Le Journal du Soir',
+];
+const BREVES_SIGNATURES = [
+  /* quotidiens nationaux */
+  'Le Figareau', 'Libécole', 'Le Monde de l’Estrade', 'La Croix du Tableau',
+  'L’Ardoise', 'Les Écho-liers', 'Le Périscolaire', 'Médiacraie',
+  /* hebdomadaires et magazines */
+  'Le Cancre Enchaîné', 'Le Point Médian', 'L’Exposé', 'Marianne du Soir',
+  'Valeurs Scolaires', 'Téléramage',
+  /* presse régionale */
+  'Ouest-Trance', 'La Voix du Fond de la Classe', 'Sud-Devoirs',
+  'Le Dauphin Libéré', 'La Dépêche de Midi-Journée',
+  /* presse spécialisée éducation — celle que lisent les personnels */
+  'Le Percolateur pédagogique', 'ToutÉduque', 'Dépêches Éducation',
+  'VousNousEux', 'Les Cahiers à Spirale',
+  /* radio, télévision, syndicats */
+  'BFM Récré', 'France Interro', 'Être et Savoir-Faire',
+  'Fenêtres sur Cour de Récré', 'Le Bulletin Intersyndical',
+];
 const CAST = {
   pm: 'Barthélemy Roulette, Premier ministre',
   bercy: 'Aymeric Sécateur, ministre des Comptes publics',
-  journal: 'La Gazette de Grenelle',
-  breves: ['Le Figareau', 'Libécole', 'Ouest-Trance', 'BFM Récré', 'La Craie du Matin'],
+  journal: 'La Gazette de Grenelle',      // remplacé au démarrage par tirage
+  breves: BREVES_SIGNATURES,
 };
 const COMPTES = [
   { a: 'Craie Voyante', p: '@CraieVoyante · prof de lettres, voit tout venir', quand: (s) => s.phys.adhesion < 30, posts: [
@@ -4215,7 +4367,15 @@ const COMPTES = [
 function unesPossibles(etape) {
   const S = ETAT.s, dern = S.greves[S.greves.length - 1];
   const u = [];
-  const pousser = (cond, titre, sous) => { if (cond) u.push({ titre, sous }); };
+  /* Chaque situation a plusieurs unes possibles : sans cela, un joueur qui
+     enchaîne deux mandats lit deux fois le même journal. Le choix est
+     déterministe (graine + année + mois) pour que la sauvegarde le rejoue. */
+  const tour = (S.graine + S.annee * 7 + (S.mois || 0) * 3);
+  const pousser = (cond, titre, sous) => {
+    if (!cond) return;
+    if (Array.isArray(titre)) { const v = titre[tour % titre.length]; u.push({ titre: v[0], sous: v[1] }); }
+    else u.push({ titre, sous });
+  };
   const j = nouvellesEntrees();
   const a = (cat) => j.some((e) => e.cat === cat);
 
@@ -4227,10 +4387,22 @@ function unesPossibles(etape) {
     '« Conforté » est, dans la presse gouvernementale, le stade qui précède immédiatement « remplacé ».');
   pousser(a('prive'), 'École privée : la tension monte, le mot « Savary » est lâché',
     'Au ministère, on assure « assumer le dialogue ». Le dialogue a prévu de défiler un dimanche.');
-  pousser(a('rentree') && ETAT.rentreeRatee, 'Rentrée : le compteur des classes sans professeur tourne déjà',
-    'Le ministère parle de « tensions localisées ». La localisation : un peu partout.');
-  pousser(a('rentree') && !ETAT.rentreeRatee, 'Rentrée sans accroc rue de Grenelle',
-    'Un professeur devant chaque classe ou presque. L’information, jugée peu spectaculaire, est en page 12.');
+  pousser(a('rentree') && ETAT.rentreeRatee, [
+    ['Rentrée : le compteur des classes sans professeur tourne déjà',
+     'Le ministère parle de « tensions localisées ». La localisation : un peu partout.'],
+    ['« Ma fille a eu quatre professeurs en trois semaines » : la rentrée vue d’en bas',
+     'Le rectorat évoque « une situation en voie de résolution ». La classe, elle, évoque le couloir.'],
+    ['Rentrée sous tension : les remplaçants manquent là où ils manquaient déjà',
+     'Le ministère rappelle que la carte des difficultés est stable. C’est exact, et c’est le problème.'],
+  ]);
+  pousser(a('rentree') && !ETAT.rentreeRatee, [
+    ['Rentrée sans accroc rue de Grenelle',
+     'Un professeur devant chaque classe ou presque. L’information, jugée peu spectaculaire, est en page 12.'],
+    ['Rentrée : « rien à signaler », et personne pour le signaler',
+     'Douze millions d’élèves sont entrés en classe sans incident. Aucune chaîne d’information n’a ouvert dessus.'],
+    ['Le ministre visite une école, la rentrée se passe bien',
+     'Les deux faits sont indépendants, ce que la photographie ne dit pas.'],
+  ]);
   pousser(a('bercy'), 'Budget de l’éducation : bras de fer avec Bercy',
     'Les deux ministères partagent le même gouvernement, ce qui ne les a jamais rapprochés.');
   pousser(a('concours'), `Concours : ${fmt1(S.phys.couvertureConcours)} % des postes pourvus`,
@@ -4241,8 +4413,34 @@ function unesPossibles(etape) {
     'Le Château rappelle qu’il existe, exercice dans lequel il excelle.');
   pousser(etape === 'cloture', `An ${S.annee} du mandat : ce qui a changé, ce qui attend`,
     'Le système scolaire bouge à la vitesse d’un paquebot. Le ministre rame, la presse chronomètre.');
-  pousser(true, 'Rue de Grenelle : le ministre poursuit sa route',
-    'Selon son entourage, « le cap est clair ». Le cap n’a pas souhaité répondre à nos questions.');
+  pousser(a('dossier'), [
+    ['Un rapport de plus sur le bureau du ministre',
+     'Il rejoint les précédents. Le ministère indique qu’il sera « étudié avec la plus grande attention », formule dont la durée de vie moyenne est de six mois.'],
+    ['Éducation : les experts recommandent, le ministère prend acte',
+     '« Prendre acte » est le seul verbe de l’administration qui ne suppose aucune action.'],
+  ]);
+  pousser(a('salaires'), [
+    ['Salaires : le ministre annonce, les syndicats calculent',
+     'Le calcul dépend de l’unité choisie : le brut mensuel, le net, ou le pouvoir d’achat depuis 2010. Les trois ont été retenus, par trois personnes différentes.'],
+    ['Revalorisation : « historique », selon le ministère',
+     'Le mot a été employé pour la sixième fois en dix ans, ce qui pose une question de vocabulaire.'],
+  ]);
+  pousser(a('audience'), [
+    ['Le ministre reçoit les organisations syndicales',
+     'La rencontre a duré deux heures. Les communiqués publiés à l’issue permettent de douter qu’il s’agissait de la même.'],
+    ['Après l’audience : « climat constructif », « aucune avancée »',
+     'Les deux formules figurent dans le même compte rendu, à quatre lignes d’intervalle.'],
+  ]);
+  pousser(true, [
+    ['Rue de Grenelle : le ministre poursuit sa route',
+     'Selon son entourage, « le cap est clair ». Le cap n’a pas souhaité répondre à nos questions.'],
+    ['Éducation : la réforme suit son cours, disent ceux qui la suivent',
+     'Ceux qui l’appliquent n’ont pas été joints : ils étaient en cours.'],
+    ['Le ministère communique sur sa méthode',
+     'La méthode consiste à communiquer sur la méthode. Notre rédaction poursuit ses investigations.'],
+    ['Une semaine ordinaire rue de Grenelle',
+     'Quatre notes de service, une visite d’établissement, un tweet. Le système scolaire, lui, a fonctionné sans en être informé.'],
+  ]);
   return u;
 }
 
@@ -4848,15 +5046,21 @@ function ecranRetrait(q) {
     <span class="det">Adhésion en hausse, ${fmt0(mesure.cout * 1000)} M€/an récupérés · capital −4, fatigue +15, parents déçus — et les effets attendus de la mesure ne viendront jamais.</span>
     <span class="risque-ligne">Risque de grève : <b style="color:var(--ok)">désamorcé</b></span>`);
   bCeder.onclick = () => finRetrait('ceder');
-  opts.append(bMaintenir, bCeder);
+  const bRequal = el('button', 'opt', `<b>Requalifier — la renommer et la rendre facultative</b>
+    <span class="det">Ni retrait ni maintien : la mesure change de nom, cesse d’être obligatoire, et ses crédits restent inscrits. L’annonce est sauvée, le dispositif se vide. Capital −2, fatigue +5, adhésion en légère hausse — et les ${fmt0(mesure.cout * 1000)} M€/an continuent d’être dépensés.</span>
+    <span class="risque-ligne">Risque de grève : <b style="color:var(--ok)">désamorcé</b> · effet réel : <b style="color:var(--rouge-rf)">vous le découvrirez au bilan</b></span>`);
+  bRequal.onclick = () => finRetrait('requalifier');
+  opts.append(bMaintenir, bRequal, bCeder);
   d.appendChild(opts);
 
   function finRetrait(dec) {
     opts.querySelectorAll('.opt').forEach((n) => { n.disabled = true; });
     const box = el('div', 'decryptage');
-    box.style.borderLeftColor = dec === 'ceder' ? 'var(--c-sante)' : 'var(--rouge-rf)';
+    box.style.borderLeftColor = dec === 'ceder' ? 'var(--c-sante)' : dec === 'requalifier' ? 'var(--c-budget)' : 'var(--rouge-rf)';
     box.innerHTML = dec === 'ceder'
       ? `<div class="titre-d" style="color:var(--c-sante)">Vous cédez</div><p><i>« Nous saluons un ministre qui sait entendre. »</i> — La mesure sort du droit. La presse titrera sur le recul ; les salles des professeurs, sur l’écoute. Les deux auront raison.</p>`
+      : dec === 'requalifier'
+      ? `<div class="titre-d" style="color:var(--c-budget)">Vous requalifiez</div><p><i>« Nous prenons acte de cet ajustement de méthode. »</i> — Personne ne parlera de recul : le dispositif existe toujours, il porte simplement un autre nom et ne s’impose plus à personne. C’est le geste le moins coûteux de tout le jeu, et le seul dont vous ne mesurerez le prix qu’à la dernière page.</p>`
       : `<div class="titre-d" style="color:var(--rouge-rf)">Vous maintenez</div><p><i>« Nous en tirerons les conséquences. »</i> — ${combatif ? 'La délégation quitte l’audience. Le préavis sera déposé avant la fin de semaine.' : 'La délégation transmettra à ses instances. Le rapport de force est noté, de part et d’autre.'}</p>`;
     d.appendChild(box);
     const act = el('div', 'actions');
@@ -4890,11 +5094,13 @@ function ecranEtape(etape) {
       sc.appendChild(el('div', 'titre-d', 'Scellés ouverts cette année — les effets réels arrivent'));
       for (const e of ouverts) {
         const c = PAR_ID[e.carte];
-        sc.appendChild(el('div', 'ligne-s', `<span>${esc(c ? c.label : e.carte)}</span><span>→ ${NOMS_C[e.compteur]}</span>
+        sc.appendChild(el('div', 'ligne-s', `<span>${esc(c ? c.label : e.carte)}${e.requalifie ? '<span class="requal">requalifiée</span>' : ''}</span><span>→ ${NOMS_C[e.compteur]}</span>
           <span class="val" style="color:${e.montant > 1 ? 'var(--ok)' : e.montant < -1 ? 'var(--alerte)' : 'var(--encre-2)'}">${signe(e.montant)}</span>
-          <span style="color:var(--encre-3);font-size:.76rem">preuve ${'🔒'.repeat(e.cadenas)} · documenté ~${signe(e.central)}</span>`));
+          <span style="color:var(--encre-3);font-size:.76rem">preuve ${'🔒'.repeat(e.cadenas)} · documenté ~${signe(e.central)}${e.requalifie ? ' · rendue facultative' : ''}</span>`));
       }
-      sc.appendChild(el('p', '', '<span style="font-size:.76rem;color:var(--encre-3)">Ce que vous aviez signé sous incertitude entre aujourd’hui dans les compteurs — implémentation comprise. Les scellés restants s’ouvriront plus tard, certains après vous.</span>'));
+      sc.appendChild(el('p', '', '<span style="font-size:.76rem;color:var(--encre-3)">Ce que vous aviez signé sous incertitude entre aujourd’hui dans les compteurs — implémentation comprise. Les scellés restants s’ouvriront plus tard, certains après vous.'
+        + (ouverts.some((e) => e.requalifie) ? ' Les lignes marquées « requalifiée » sont les mesures que vous avez rendues facultatives sous pression : elles ont continué d’être financées et ont produit moins d’un cinquième de ce qu’elles promettaient.' : '')
+        + '</span>'));
       blocs.push(sc);
     }
   }
@@ -5213,6 +5419,7 @@ function sauvegarder() {
 
 function demarrer(sauve) {
   ETAT.graine = sauve ? sauve.graine : (Math.floor(Math.random() * 2 ** 31) || 1);
+  CAST.journal = JOURNAUX[ETAT.graine % JOURNAUX.length];
   ETAT.s = creerPartie({ graine: ETAT.graine, politique: null });
   ETAT.gen = derouler(ETAT.s);
   ETAT.pas = [];

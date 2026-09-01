@@ -240,6 +240,11 @@ export const ABSORPTION = {
   dureeActive: 3,             // une réforme « occupe » le système 3 ans
 };
 
+/* La requalification : ce qui reste d'une réforme rendue facultative. Le
+   « choc des savoirs » a été mis en œuvre à moins de 20 % de conformité avant
+   d'être requalifié puis vidé ; on retient un ordre de grandeur voisin. */
+export const REQUALIFICATION = { effetRestant: 0.18 };
+
 /* Fatigue réformatrice : 7 ministres en 3 ans avant vous.                [B.8-7] */
 export const FATIGUE = {
   initiale: 40,
@@ -261,6 +266,13 @@ export const IMPLEMENTATION = {
 /* Poids de l'héritage dans le signal AFFICHÉ, par année de mandat.        [C.3]
    Les deux premières années, le joueur est jugé sur ce qu'il n'a pas fait. */
 export const POIDS_HERITAGE = [0.60, 0.60, 0.42, 0.26, 0.12];
+
+/* LA RÉVERSION — ce qui reste d'une réforme après le départ de son ministre.
+   Précédent : réforme du collège 2015, deux ans de préparation, une année
+   d'application, abrogation partielle par décret dès mai 2017. Une réforme non
+   consolidée (ni inscrite dans la loi, ni budgétée pluriannuellement, ni
+   appropriée par le terrain) ne survit pas au changement de gouvernement. */
+export const REVERSION = { effetSurvivant: 0.62 };
 
 /* Bruit annuel des indicateurs affichés (évaluations nationales bruitées). */
 export const BRUIT_AFFICHE = 2.6;         // écart-type, en points de compteur
@@ -449,7 +461,7 @@ export const PROJETS_2027 = {
 
 /* Taille du menu de mesures par année de mandat : on commence resserré pour
    que chaque carte soit vraiment lue, on élargit avec l'expérience du joueur. */
-export const TAILLES_MENU = [8, 11, 13, 15, 15];
+export const TAILLES_MENU = [8, 11, 14, 16, 16];
 
 export const MOIS = ['janvier','février','mars','avril','mai','juin',
                      'juillet','août','septembre','octobre','novembre','décembre'];

@@ -58,7 +58,7 @@ traverser avant la première rentrée, la carte scolaire de janvier et ses deux
 curseurs, la lettre plafond de Bercy, les face-à-face syndicaux où l'on peut
 céder ou tenir, une revalorisation entièrement paramétrable (montant,
 instrument, cible), et un menu progressif de mesures — 7 cartes en première
-année, 14 en fin de mandat, tirées d'un catalogue de **65**, dont vingt-cinq qu'on
+année, 14 en fin de mandat, tirées d'un catalogue de **67**, dont vingt-sept qu'on
 ne découvre qu'en jouant, quand un rapport tombe ou qu'un indicateur se
 dégrade. Chaque carte porte ses porteurs politiques réels, son niveau de
 preuve, un panneau « Comprendre l'effet » qui dit ce que montrent vraiment les
@@ -67,10 +67,10 @@ petit mot. Plus des unes de journal, un fil social de circonstance, et un bilan
 qui révèle, enfin, ce que vous avez vraiment produit.
 
 **Un bouton « Comprendre le jeu » est disponible en bas à gauche de chaque
-écran.** Il ouvre dix fiches de référence — budget, démographie, niveaux,
-inégalités, métier enseignant, remplacement, organisation du temps, climat
-scolaire, pourquoi le niveau baisse, et la mécanique du jeu elle-même — soit
-74 chiffres, chacun suivi de sa source officielle, cliquable.
+écran.** Il ouvre onze fiches de référence — budget, démographie, niveaux, inégalités,
+métier enseignant, remplacement, organisation du temps, climat scolaire, ce qui
+a marché ailleurs, pourquoi le niveau baisse, et la mécanique du jeu elle-même —
+soit 80 chiffres, chacun suivi de sa source officielle, cliquable.
 
 ## L'équilibrage
 
@@ -112,8 +112,8 @@ jouer.
 
 ```
 index.html                   LE JEU — fichier unique autonome
-moteur/                      constantes sourcées, catalogue de 65 cartes, repères sourcés, moteur en générateur
-moteur/reperes.js            les 10 fiches de référence et leurs 32 sources officielles
+moteur/                      constantes sourcées, catalogue de 67 cartes, repères sourcés, moteur en générateur
+moteur/reperes.js            les 11 fiches de référence et leurs 34 sources officielles
 simulations/                 stratégies-types et bancs d'essai
 interface/                   gabarit (styles) + application (écrans, presse, bilan)
 outil/construire.js          assemblage

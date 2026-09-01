@@ -63,6 +63,7 @@ export function creerPartie({ graine = 1, politique }) {
     effetsEnAttente: [],                       // { compteur, montant, anneeArrivee, source, carte }
     reformesActives: [],                       // { id, anneeFin }
     joue: new Set(), themes: new Set(), excl: new Set(),
+    requalifiees: new Set(),         // réformes vidées sans être retirées
     decouvertes: new Set(),          // dossiers déjà remontés sur le bureau
     avance: null, engagementRestitution: 0, schemaAvance: 0,
     abandons: 0,
@@ -360,6 +361,8 @@ function* etapeAudience(s) {
     const dec = yield { type: 'retrait', org, carte, mesure: conteste, risque, combatif };
     if (dec === 'ceder') {
       retirerMesure(s, conteste, org, poidsRel);
+    } else if (dec === 'requalifier') {
+      requalifierMesure(s, conteste, org, poidsRel);
     } else {
       s.capital += 2;
       s.phys.adhesion = borne(s.phys.adhesion - 1.8 * poidsRel, 0, 100);
@@ -376,6 +379,30 @@ function* etapeAudience(s) {
       }
     }
   }
+}
+
+/* LA REQUALIFICATION — le geste politique le plus fréquent du système, et le
+   moins coûteux à court terme. Sous pression, on ne retire pas la réforme : on
+   la renomme et on la rend facultative. L'annonce survit, le dispositif se vide.
+   Précédent : le « choc des savoirs » de décembre 2023, requalifié en « groupes
+   de besoins » en 2024, puis vidé de son obligation à la rentrée 2026.
+   Effet-vitrine préservé, effet réel ramené à presque rien. Le joueur ne le
+   découvrira qu'au bilan, comme tout le reste. */
+function requalifierMesure(s, m, org, poidsRel) {
+  const carte = PAR_ID[m.id];
+  s.requalifiees = s.requalifiees || new Set();
+  s.requalifiees.add(m.id);
+  /* Les crédits restent inscrits — c'est ce qui distingue la requalification du
+     retrait : on paie toujours, on ne produit plus. */
+  for (const e of s.effetsEnAttente) {
+    if (e.carte === m.id && !e.applique) { e.montant *= K.REQUALIFICATION.effetRestant; e.requalifie = true; }
+  }
+  /* Elle cesse d'occuper la capacité d'absorption : plus personne ne l'applique. */
+  s.reformesActives = s.reformesActives.filter((r) => r.id !== m.id);
+  s.phys.adhesion = borne(s.phys.adhesion + 2.2 * poidsRel, 0, 100);
+  s.capital -= 2;
+  s.fatigue = Math.min(K.FATIGUE.max, s.fatigue + 5);
+  note(s, `« ${carte.label} » devient facultative et change de nom. ${org.nom} lève son préavis ; le ministère parle d’« ajustement de méthode ».`, 'retrait');
 }
 
 /* La mesure que l'intersyndicale conteste le plus parmi celles en vigueur. */
@@ -982,6 +1009,14 @@ export function projeterDixAns(s, constance) {
      n'arrivent qu'à 60 %, et les dérives spontanées reprennent en entier. */
   const complet = s.fin.type === 'mandat_complet';
   const tenu = complet ? 1 : 0.70;
+  /* LA RÉVERSION. Une réforme non consolidée ne survit pas au ministre suivant :
+     la réforme du collège de 2015 a été partiellement abrogée par décret dès
+     l'arrivée de son successeur, deux ans de préparation et une année
+     d'application plus tard. Une loi de programmation, elle, ne se défait pas
+     d'un trait de plume — c'est ce que la carte du même nom achète, et c'est
+     tout ce qu'elle achète. */
+  const consolide = s.joue.has('loi_programmation');
+  const survie = consolide ? 1 : K.REVERSION.effetSurvivant;
   /* Rythme imprimé par le mandat, par an : c'est lui que le successeur prolonge. */
   const ans = Math.max(1, s.histoire.length);
   const rythme = {
@@ -993,7 +1028,7 @@ export function projeterDixAns(s, constance) {
 
   for (let an = s.annee + 1; an <= s.annee + 5; an++) {
     for (const e of enRoute) {
-      if (!e.applique && e.anneeArrivee <= an) { acquis[e.compteur] += e.montant * tenu; e.applique = true; }
+      if (!e.applique && e.anneeArrivee <= an) { acquis[e.compteur] += e.montant * tenu * survie; e.applique = true; }
     }
     /* Le cap tenu gèle les dérives que le mandat a corrigées ; sinon elles reprennent. */
     /* Si le cap tient, la dérive spontanée est neutralisée et la trajectoire du

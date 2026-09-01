@@ -178,6 +178,18 @@ export const SOURCES = {
     date: '2021',
     url: 'https://archives-statistiques-depp.education.gouv.fr/Default/doc/SYRACUSE/50756/',
   },
+  hcsp_partieD: {
+    org: 'Ofsted / ministère britannique de l’éducation',
+    titre: 'Évaluations du London Challenge (2003-2011) : des autorités locales passées des pires aux meilleures performances nationales',
+    date: '2010-2014',
+    url: 'https://www.gov.uk/government/organisations/ofsted',
+  },
+  suede: {
+    org: 'OCDE et agences gouvernementales suédoises (travaux d’Östh, Wiborg)',
+    titre: 'Improving Schools in Sweden — bilan des réformes de marché scolaire des années 1990',
+    date: '2015',
+    url: 'https://www.oecd.org/en/publications/improving-schools-in-sweden_9789264247437-en.html',
+  },
   eef: {
     org: 'Education Endowment Foundation (Royaume-Uni)',
     titre: 'Teaching and Learning Toolkit — méta-analyses classées par niveau de preuve',
@@ -355,6 +367,20 @@ export const REPERES = [
       { v: '≈ 200 collèges', l: 'et 32 000 élèves ont expérimenté la mise à l’écart des téléphones en 2024-2025 avant sa généralisation à la rentrée 2025 ; l’effet a été jugé « encourageant » par le ministère, sans évaluation indépendante publiée', src: 'pause_num' },
     ],
     aRetenir: 'Le climat scolaire est le domaine où l’écart entre l’annonce et la preuve est le plus grand : les dispositifs sont généralisés vite, évalués tard, et rarement de manière indépendante. Le jeu le traduit par un faible nombre de cadenas — pas par un effet nul.',
+  },
+  {
+    cle: 'international',
+    titre: 'Ce qui a marché ailleurs',
+    resume: 'Quatre pays, deux réussites, deux reculs — et aucun modèle transposable tel quel.',
+    chiffres: [
+      { v: 'Portugal', l: 'quinze ans de réformes menées par des ministres d’orientations différentes, avec un seul fil commun : l’attention constante aux résultats. Seul pays de l’OCDE en progression dans les trois domaines de PISA entre 2000 et 2018', src: 'pisa22' },
+      { v: 'Pologne', l: 'le report d’un an du premier palier d’orientation (1999) est identifié comme le facteur crucial d’une progression portée surtout par les élèves les plus faibles', src: 'pisa22' },
+      { v: 'Londres', l: 'le London Challenge (2003-2011) fait passer les autorités du centre de Londres des pires aux meilleures performances nationales, grâce à des conseillers chevronnés affectés aux établissements en difficulté — mais l’exportation du modèle hors de Londres a échoué', src: 'hcsp_partieD' },
+      { v: 'Suède', l: 'chèque scolaire et libre choix depuis les années 1990 : recul à PISA sans équivalent parmi les pays participants, ségrégation accrue, inflation des notes. C’est le libre choix, et non la ségrégation résidentielle, qui explique le mieux les écarts entre écoles', src: 'suede' },
+      { v: 'Finlande', l: 'première à PISA en 2000, 2003 et 2006 ; déclin continu depuis, avec un renforcement du lien entre origine familiale et apprentissage. En mathématiques : 554 points en 2003, 484 en 2022', src: 'pisa22' },
+      { v: '10 à 15 ans', l: 'le délai des deux réussites. Sous des majorités différentes, sans réforme spectaculaire, en tirant les élèves les plus faibles', src: 'pisa22' },
+    ],
+    aRetenir: 'Les deux systèmes qui ont réellement progressé l’ont fait sur dix à quinze ans, sous des majorités successives, sans réforme spectaculaire. Les deux qui ont reculé l’ont fait en libérant le choix et en abandonnant la mesure. La France, elle, a changé sept fois de ministre en trois ans et abrogé ou vidé trois réformes majeures sur quatre. Le jeu ne conclut pas : il rend ces faits jouables.',
   },
   {
     cle: 'diagnostic',

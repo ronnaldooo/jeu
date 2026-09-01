@@ -82,7 +82,6 @@ function selectionner(s, dispo, ctx, scorer, { toleranceDepassement = 0.15, opti
 
 /* -------------------------------------------------------------------------- */
 export const PASSIF = {
-  doctrine: () => ['reussite', 'egalite', 'sante', 'budget', 'paix'],
   retrait: () => 'maintenir',
   nom: 'Passif (ne rien faire)',
   audience: () => 0,               // le ministre immobile défend la ligne, faute d'en avoir une
@@ -107,12 +106,13 @@ function dossierVers(cle) {
 }
 
 export const TOUT_VITRINE = {
-  doctrine: () => ['reussite', 'budget', 'egalite', 'sante', 'paix'],
-  retrait: () => 'maintenir',
   nom: 'Tout vitrine',
+  doctrine: () => ['reussite', 'budget', 'egalite', 'sante', 'paix'],
   dossier: dossierVers('parents'),
   audience: () => 0,               // la fermeté fait de meilleures images
-  doctrine: () => ['reussite', 'budget', 'egalite', 'sante', 'paix'],
+  /* Requalifier plutôt que retirer : l'annonce est sauvée, le dispositif se
+     vide. C'est le geste qui définit cet archétype. */
+  retrait: () => 'requalifier',
   lettrePlafond: () => 'accepter',
   /* Rendre les postes fait plaisir à Bercy et paie les annonces. */
   avance: () => 2,   // tout de suite, tout l'argent : c'est la définition de la vitrine
@@ -131,7 +131,6 @@ export const TOUT_VITRINE = {
    désintéresse ouvertement de ce que montre le tableau de bord. Ce n'est pas
    un joueur suicidaire — c'est un joueur qui ne regarde pas les sondages. */
 export const TOUT_REEL = {
-  doctrine: () => ['reussite', 'egalite', 'sante', 'budget', 'paix'],
   retrait: () => 'maintenir',
   nom: 'Tout réel',
   doctrine: () => ['reussite', 'egalite', 'sante', 'budget', 'paix'],
@@ -154,7 +153,6 @@ export const TOUT_REEL = {
 
 /* -------------------------------------------------------------------------- */
 export const SYNDICAL = {
-  doctrine: () => ['sante', 'paix', 'budget', 'egalite', 'reussite'],
   retrait: () => 'ceder',
   nom: 'Paix sociale d’abord',
   dossier: dossierVers('adhesion'),
@@ -173,7 +171,6 @@ export const SYNDICAL = {
 /* Le « joueur attentif » : il équilibre vitrine et réel, surveille l'adhésion
    (dont dépend l'implémentation), tient le crédit Bercy et évite les grèves. */
 export const MIXTE = {
-  doctrine: () => ['sante', 'reussite', 'egalite', 'budget', 'paix'],
   retrait: (s, q) => (q.combatif && s.phys.adhesion < 18 ? 'ceder' : 'maintenir'),
   nom: 'Mixte (joueur attentif)',
   dossier: (s, d) => { let best = 0, bv = -1e9;
@@ -238,7 +235,7 @@ export function politiqueAleatoire(rng, poids) {
   return {
     nom: 'aléatoire',
     doctrine: () => ordre,
-    retrait: () => (rng() < 0.3 ? 'ceder' : 'maintenir'),
+    retrait: () => { const r = rng(); return r < 0.25 ? 'ceder' : r < 0.5 ? 'requalifier' : 'maintenir'; },
     doctrine: () => ordre,
     lettrePlafond: () => (contester ? 'contester' : 'accepter'),
     avance: () => avanceTiree,

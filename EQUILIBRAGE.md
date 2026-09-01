@@ -520,6 +520,114 @@ graines**, survie du joueur attentif 45-50 %.
 
 =======
 >>>>>>> origin/main
+## 3 nonies. Retours de test et Partie D
+
+### a) La note de cadrage : un graphique qui mentait
+
+Le reproche le plus grave portait sur l'échelle. Les histogrammes budgétaires
+partaient d'un axe tronqué : la barre 2019 paraissait deux fois plus courte que
+celle de 2027 alors que l'écart réel est de 25 %. Un jeu bâti sur l'idée que
+les chiffres affichés mentent ne peut pas ouvrir sur un graphique trompeur.
+**Toutes les barres partent désormais de zéro.**
+
+La correction en a appelé une seconde. À échelle honnête, une courbe d'effectifs
+de 11,6 à 9,9 millions paraît plate : l'axe est juste, mais le sujet est raté.
+Le graphique démographique ne représente donc plus le niveau mais **la perte
+cumulée depuis 2026**, barres descendantes, avec les cinq rentrées que le joueur
+arbitre distinguées de celles de ses successeurs. Même honnêteté d'échelle,
+sujet correctement cadré — et le chiffre publié par la DEPP (−1 676 800) est
+exactement l'extrémité de la dernière barre.
+
+La note passe de trois fiches dépliables à **trois pages courtes : un graphique
+et trois chiffres chacune**, émetteur nommé (direction générale de
+l'enseignement scolaire), intitulés corrigés — « un budget contraint », « une
+baisse démographique », « des résultats préoccupants ». Le détail complet reste
+dans l'onglet « Comprendre le jeu », où sa place est.
+
+### b) L'avance de gestion : le budget de juin cesse d'être une impasse
+
+Le testeur ne pouvait presque rien faire en juin. La correction ne consiste pas
+à donner de l'argent mais à **rendre son obtention jouable**, par le seul levier
+réel dont dispose un ministre arrivant sur un budget voté : la **réserve de
+précaution** — la part des crédits gelée en début d'exercice (0,5 % du titre 2,
+5 % hors titre 2) que Bercy dégèle, ou pas.
+
+| Option | Juin | Contrepartie en janvier |
+|---|---|---|
+| Ne rien demander | 550 M€ | — (crédit Bercy +4) |
+| Dégel de la réserve | **950 M€** | 45 % de restitution promis (capital −2) |
+| Avance large | **1 400 M€** | 60 % de restitution **et** −1 500 ETP de schéma (capital −7, Bercy −5) |
+
+L'engagement non tenu coûte 16 points de crédit Bercy et 6 de capital — plus
+que l'avance n'a rapporté. Tenu, il en rend 6. Le premier arbitrage de carte
+scolaire est donc pris **en juin, avant de savoir ce que la démographie
+donnera**, ce qui est exactement la situation réelle.
+
+### c) Presse et porteurs : la diversité manquait
+
+Le quotidien de référence était toujours le même et cinq titres signaient les
+brèves. Désormais : **6 quotidiens** tirés par partie (on ne suit pas le même
+journal deux mandats de suite) et **29 signatures** couvrant le paysage réel —
+quotidiens nationaux, hebdomadaires, presse régionale, presse spécialisée
+éducation (celle que lisent les personnels), radio, télévision, presse
+syndicale. Les unes les plus fréquentes ont trois à quatre variantes, choisies
+de façon déterministe pour que la sauvegarde les rejoue.
+
+Côté porteurs politiques, trois noms revenaient. Le catalogue compte maintenant
+**114 porteurs distincts**, aucun politique au-delà de quatre occurrences, avec
+un spectre élargi (Rassemblement national, Reconquête, La France insoumise,
+Place publique, Horizons, la droite et la gauche parlementaires) et davantage
+d'acteurs institutionnels et associatifs — Institut Montaigne, iFRAP, Terra
+Nova, Fondation Jean-Jaurès, IPP, Défenseur des droits, SNPDEN, FCPE,
+collectifs d'AESH. Les attributions collectives ont été préférées à
+l'invention d'attributions individuelles.
+
+### d) La Partie D : trois mécaniques, deux cartes, une fiche
+
+Le document fourni proposait davantage. On a retenu ce qui **prolonge la
+colonne vertébrale du jeu** plutôt que ce qui ajoute des systèmes parallèles.
+
+**La requalification** (précédent : « choc des savoirs », requalifié en
+« groupes de besoins » puis vidé de son obligation). Troisième option du
+face-à-face syndical, entre céder et maintenir : la mesure change de nom et
+devient facultative. Les crédits restent inscrits — on paie toujours — mais
+l'effet réel tombe à **18 %**, et elle cesse d'occuper la capacité
+d'absorption. Coût immédiat dérisoire : capital −2, fatigue +5, adhésion en
+légère hausse. C'est le geste le moins cher du jeu, et le seul dont le prix
+n'apparaît qu'au bilan, où les lignes concernées portent la mention
+« requalifiée ».
+
+**La réversion** (précédent : réforme du collège 2015, abrogée par décret dès
+l'arrivée du successeur). Les effets encore en route à la fin du mandat
+n'arrivent qu'à **62 %** dans la projection décennale — sauf si le joueur a
+consolidé par une loi de programmation. C'est ce que la carte
+`loi_programmation` achète, et c'est tout ce qu'elle achète : 12 points de
+capital, périmètre Matignon, aucun effet visible pendant le mandat.
+
+**Le plan territorial intensif** (London Challenge, 2003-2011) : effet réel
+fort à 4 cadenas, mais **local** — il ne déplace presque pas les compteurs
+nationaux. Frustrant, et vrai.
+
+Trois cartes existantes ont été enrichies de la preuve internationale :
+`palier` (Pologne, report du palier d'orientation), `cheque_education` (Suède,
+démonstration d'Östh 2013 : c'est le libre choix, non la ségrégation
+résidentielle, qui explique les écarts entre écoles) et `autonomie` (Suède,
+inflation des notes — la France a déjà 40 % de contrôle continu au bac).
+Onzième fiche de référence : **« Ce qui a marché ailleurs »**.
+
+Catalogue : 65 → **67 cartes** ; menus élargis à 8/11/14/16/16, les 67 restent
+proposées au moins une fois. Fiches : 10 → **11**, 74 → **80 chiffres**,
+32 → **34 sources**. Équilibrage **4/4 sur quatre jeux de graines**, survie
+43-51 %.
+
+### e) Non retenu pour l'instant
+
+Trois mécaniques de la Partie D attendent : les **effets de bord** tirés au sort
+et révélés à N+2, le **choc exogène** majeur (pandémie, cyberattaque) tiré une
+fois par partie, et l'archétype de **l'affaire** — l'événement où aucune option
+n'est bonne. Chacune ajoute un système d'événements, pas seulement des données ;
+elles méritent d'être décidées, pas glissées.
+
 ## 4. Les constantes du moteur
 
 Inchangées depuis la phase 1 (voir `moteur/constantes.js`, tout est commenté
@@ -543,7 +651,7 @@ d'implémentation indexé sur l'adhésion (Slavin), capacité d'absorption de
 |---|---|---|
 | `RENVOI.remaniementBase` | 0,205 | Une fin subie par tirage peut frustrer. Si les testeurs la trouvent arbitraire, 0,15 et compenser par les convocations (qui, elles, se méritent). |
 <<<<<<< HEAD
-| Rotation du menu | 15/65 | Vérifier qu'un joueur qui vise une doctrine trouve ses cartes assez souvent ; sinon, garantir 1 carte de chaque famille par menu. |
+| Rotation du menu | 16/67 | Vérifier qu'un joueur qui vise une doctrine trouve ses cartes assez souvent ; sinon, garantir 1 carte de chaque famille par menu. |
 =======
 | Rotation du menu | 14/55 | Vérifier qu'un joueur qui vise une doctrine trouve ses cartes assez souvent ; sinon, garantir 1 carte de chaque famille par menu. |
 >>>>>>> origin/main
