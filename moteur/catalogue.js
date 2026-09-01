@@ -2020,6 +2020,70 @@ export const AFFAIRES = [
 export const AFFAIRE_PAR_ID = Object.fromEntries(AFFAIRES.map((a) => [a.id, a]));
 
 /* ============================================================================
+   QUI, PARMI LES ORGANISATIONS, PORTE CETTE MESURE
+   ----------------------------------------------------------------------------
+   Une organisation syndicale ne demande pas le retrait d'une mesure qu'elle
+   défend. C'est évident, et le jeu ne le savait pas : il choisissait la mesure
+   contestée sur son seul potentiel de conflit (intensité de grève, effet
+   d'annonce négatif pour les personnels), sans regarder qui la portait.
+
+   On lit donc ici, dans les `porteurs` de la carte, lesquelles des sept
+   organisations la défendent. Le rattachement est explicite et vérifiable, comme
+   pour la boussole politique. Deux points d'attention :
+
+   - « l'intersyndicale » et « les organisations syndicales » engagent les sept ;
+   - le SNPDEN n'est PAS l'une des sept. C'est le syndicat des personnels de
+     direction : qu'il porte une mesure ne protège en rien celle-ci de la
+     contestation des syndicats d'enseignants — c'est même souvent l'inverse,
+     et le statut des directeurs d'école en est l'exemple historique.
+   ========================================================================== */
+
+const TOUTES = ['fsu', 'unsa', 'fo', 'cfdt', 'cgt', 'snalc', 'sud'];
+
+const PORTEURS_SYNDICAUX = [
+  ['intersyndicale', TOUTES],
+  ['organisations syndicales', TOUTES],
+  ['organisation syndicale', TOUTES],
+  ['collectifs d’AESH', TOUTES],
+  ['FSU', ['fsu']],
+  ['SNES', ['fsu']],
+  ['SNUipp', ['fsu']],
+  ['Sgen-CFDT', ['cfdt']],
+  ['SE-Unsa', ['unsa']],
+  ['UNSA', ['unsa']],
+  ['SNALC', ['snalc']],
+  ['CGT', ['cgt']],
+  ['SUD', ['sud']],
+  ['FNEC', ['fo']],
+  ['Force ouvrière', ['fo']],
+];
+
+/* Les organisations, parmi les sept, qui défendent cette mesure. */
+export function porteursSyndicaux(carte) {
+  const out = new Set();
+  for (const p of carte.porteurs || []) {
+    for (const [frag, ids] of PORTEURS_SYNDICAUX) if (p.includes(frag)) for (const id of ids) out.add(id);
+  }
+  return out;
+}
+
+/* Une mesure est contestable par une organisation si, et seulement si :
+   1. cette organisation ne la porte pas ;
+   2. elle ne fait pas monter l'adhésion des personnels — on ne demande pas le
+      retrait de ce qui améliore le métier, quel que soit le rapport de force ;
+   3. elle est effectivement conflictuelle, ce que le catalogue dit déjà par
+      l'intensité de grève qu'elle porte et par ce qu'elle coûte aux personnels
+      dans l'effet d'annonce. */
+export function estContestable(carte, org) {
+  if (org && porteursSyndicaux(carte).has(org.id)) return 0;
+  if ((carte.physique && carte.physique.adhesion || 0) > 0) return 0;
+  if ((carte.vitrine && carte.vitrine.enseignants || 0) > 0) return 0;
+  const score = (carte.greve ? carte.greve.intensite * 2 : 0)
+              + Math.max(0, -(carte.vitrine && carte.vitrine.enseignants || 0));
+  return score >= 4 ? score : 0;
+}
+
+/* ============================================================================
    LA BOUSSOLE : D'OÙ VIENNENT LES MESURES QU'ON PREND
    ----------------------------------------------------------------------------
    Chaque carte porte déjà, depuis le premier jour, la liste de ceux qui la

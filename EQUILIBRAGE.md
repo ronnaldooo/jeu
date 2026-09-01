@@ -995,6 +995,63 @@ non de parenthèses de prose.
 survie du joueur attentif 48-50 %. Parties complètes rejouées en clair, en
 sombre et en 390 px : aucune erreur JavaScript, aucun débordement horizontal.
 
+## 3 quaterdecies. On ne demande pas le retrait de ce qu'on défend
+
+Défaut de logique relevé en relecture : « certaines mesures sont portées par les
+syndicats, il ne peut pas y avoir de contestation sur ces sujets ». C'était vrai,
+et le jeu ne le savait pas.
+
+### a) Le défaut
+
+`mesureContestee` choisissait la mesure dont l'organisation exigerait le retrait
+sur son seul potentiel de conflit : l'intensité de grève inscrite sur la carte,
+plus ce que la mesure coûtait aux personnels dans l'effet d'annonce. Il ne
+regardait pas qui la portait. Sur les 18 mesures que ce calcul rendait
+contestables, une était franchement absurde : « Décharge complète et statut pour
+les directeurs d'école », effet d'annonce enseignants +4, adhésion +4, pouvait
+être réclamée en retrait par une organisation. On ne demande pas le retrait de ce
+qui fait monter l'adhésion.
+
+Et surtout, rien n'empêchait le cas général. Neuf cartes du catalogue sont
+portées par des organisations syndicales — la revalorisation par la FSU, les
+groupes de besoins par le Sgen-CFDT, le corps de fonctionnaires AESH, la santé
+scolaire, la titularisation des contractuels, la vie scolaire, le lycée
+professionnel, le statut des AED et la loi de programmation par l'intersyndicale
+entière. Aucune n'était contestée en pratique, faute de bloc `greve` : c'était un
+accident, pas une règle.
+
+### b) La règle
+
+`porteursSyndicaux(carte)` lit, dans la ligne `porteurs` de la carte, lesquelles
+des sept organisations la défendent. Le rattachement est explicite et vérifiable,
+comme celui de la boussole politique. Deux points d'attention documentés dans le
+code : « l'intersyndicale » et « les organisations syndicales » engagent les
+sept ; le **SNPDEN n'est pas l'une des sept** — c'est le syndicat des personnels
+de direction, et qu'il porte une mesure ne la protège en rien de la contestation
+des syndicats d'enseignants. Le statut des directeurs d'école en est l'exemple
+historique, et le jeu doit pouvoir le représenter.
+
+`estContestable(carte, org)` ne retient donc une mesure que si l'organisation ne
+la porte pas, si elle ne fait pas monter l'adhésion des personnels, et si elle
+est effectivement conflictuelle. Les deux fenêtres de retrait (octobre et mars)
+passent maintenant l'organisation demandeuse à `mesureContestee`.
+
+Conséquence mesurée sur 300 mandats par stratégie : le ministre « syndical »
+**ne se voit plus jamais réclamer de retrait** (0/300, contre 1/300 par accident
+avant), le ministre mixte 79/300, le ministre de vitrine 201/300. La règle
+produit exactement ce qu'elle devait produire.
+
+### c) Le pendant qui manquait
+
+Une organisation ne fait pas que réclamer des retraits. Quand le ministre a pris
+une mesure qu'elle porte, la délégation le dit avant d'en venir au conflit, dans
+un encadré vert au-dessus des trois réponses, et le jeu explique pourquoi il ne
+lui proposera jamais d'en demander le retrait. Une fois par mesure et par
+organisation : **2,1 soutiens exprimés par partie**, soit une audience sur deux.
+Le répéter à chaque fois en aurait fait une tapisserie.
+
+Équilibrage revérifié : **4/4 sur trois jeux de graines**, survie 49-51 %.
+
 ## 5. Paramètres à réexaminer après tests humains
 
 | Paramètre | Valeur | Ce qu'il faut regarder |

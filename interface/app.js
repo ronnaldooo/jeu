@@ -1075,10 +1075,21 @@ const PROFILS_L = {
   radical: 'radical', corporatiste: 'corporatiste',
 };
 function ecranAudience(q) {
-  const { org, audience } = q;
+  const { org, audience, soutien } = q;
   const d = docu('Audience, rentrée sociale', `Face à face : ${org.nom}`);
   d.appendChild(el('p', 'chapo', `L’organisation majoritaire du moment (${fmt1(org.poids)} % aux dernières élections professionnelles, profil : ${PROFILS_L[org.profil]}) est reçue rue de Grenelle. Sa délégation s’assoit, ouvre un parapheur, et pose UNE question :`));
   d.appendChild(el('div', 'note-passation', fr(audience.question(ETAT.s))));
+  /* Une organisation ne fait pas que réclamer. Quand le ministre a pris une
+     mesure qu'elle porte, elle le dit — et c'est la seule chose de la séance
+     qui ne lui coûte rien. Le jeu le montre parce que l'inverse était faux :
+     on ne demande pas le retrait de ce qu'on défend. */
+  if (soutien) {
+    d.appendChild(el('div', 'soutien-synd',
+      `<b>Avant d’en venir au conflit, la délégation tient à le dire</b>
+       <span class="quoi">${esc(soutien.label)}</span>
+       <span>« Sur ce point, nous sommes avec vous. C’est une revendication que nous portons, vous l’avez prise, et nous le disons publiquement. Ne la laissez pas se défaire : votre successeur, lui, n’aura rien signé. »</span>
+       <span class="src">Cette mesure figure parmi celles que cette organisation défend (fiche de la carte, ligne « portée par »). Elle ne peut donc pas vous en demander le retrait : le jeu ne la proposera jamais à la revendication de cette organisation-là.</span>`));
+  }
   d.appendChild(el('p', '', '<span style="font-size:.82rem;color:var(--encre-2)">Il n’y a pas de bonne réponse dans l’absolu, il y a une bonne réponse à <b>ce</b> profil-là. La fermeté rassure l’opinion, la méthode paie selon l’interlocuteur, la concession paie partout… et se paie à Bercy.</span>'));
   const opts = el('div', 'opts');
   audience.reponses.forEach((r, i) => {

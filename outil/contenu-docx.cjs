@@ -283,6 +283,18 @@ const ECRANS = {
   A(tableau(['Pseudonyme', 'Organisation réelle', 'Poids 2022', 'Profil'],
     (K.SYNDICATS || []).map((s) => [s.nom, s.id.toUpperCase(), String(s.poids).replace('.', ',') + ' %', s.profil]), [2200, 2200, 1400, 3560]));
   A(VIDE());
+  A(H2('Qui porte quoi : les mesures rattachées à chaque organisation'));
+  A(REF('catalogue.js › PORTEURS_SYNDICAUX'));
+  A(BODY('Lu dans la ligne « portée par » de chaque carte. Une organisation ne peut pas exiger le retrait d’une mesure qui figure dans cette liste pour elle : c’est la règle qui manquait au jeu. « L’intersyndicale » et « les organisations syndicales » engagent les sept. Le SNPDEN, syndicat des personnels de direction, n’est pas l’une des sept : qu’il porte une mesure ne la protège pas de la contestation des syndicats d’enseignants.'));
+  {
+    const parOrg = new Map((K.SYNDICATS || []).map((o) => [o.id, []]));
+    for (const c of C.CATALOGUE) for (const id of C.porteursSyndicaux(c)) if (parOrg.has(id)) parOrg.get(id).push(c.label);
+    A(tableau(['Organisation', 'Les mesures qu’elle défend'],
+      (K.SYNDICATS || []).map((o) => [o.nom + ' (' + o.id.toUpperCase() + ')',
+        (parOrg.get(o.id) || []).join(' · ') || 'aucune']), [2400, 6960], { taille: 17 }));
+    A(VIDE());
+  }
+
   for (const a of C.AUDIENCES) {
     A(H2('La question « ' + a.id + ' »'));
     A(REF('catalogue.js › AUDIENCES › ' + a.id));

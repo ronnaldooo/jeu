@@ -11,7 +11,7 @@
    ========================================================================== */
 
 import * as K from './constantes.js';
-import { CATALOGUE, PAR_ID, AFFAIRES, AFFAIRE_PAR_ID, POLEMIQUES_RENTREE, LIVRAISON_PISA, PLATEAU, REVALORISATION, chiffrerRevalorisation, FINANCEMENT_19, DOSSIERS_ETE, AUDIENCES, RECEPTION, argumentaireSyndical } from './catalogue.js';
+import { CATALOGUE, PAR_ID, AFFAIRES, AFFAIRE_PAR_ID, POLEMIQUES_RENTREE, LIVRAISON_PISA, PLATEAU, REVALORISATION, chiffrerRevalorisation, FINANCEMENT_19, DOSSIERS_ETE, AUDIENCES, RECEPTION, argumentaireSyndical, porteursSyndicaux, estContestable } from './catalogue.js';
 
 /* ---------------------------------------------------------------- ALÉA --- */
 export function rngDepuis(graine) {
@@ -71,6 +71,7 @@ export function creerPartie({ graine = 1, politique }) {
     profil: null,
     entretien: {}, mensonges: new Set(), mensongesAffaire: new Set(),
     expositions: new Set(), protections: new Set(),
+    soutiensDits: new Set(),      // ce qu'une organisation a déjà salué en audience
     credibilite: K.CREDIBILITE.initiale,
     plafondAdhesion: 100,
     affaires: [],                    // affaires sorties, avec la réponse donnée
@@ -375,7 +376,8 @@ function* etapeAudience(s) {
   const dispo = AUDIENCES.filter((a) => a.quand(s));
   const audience = dispo[(s.annee * 3 + (s.graine % 7)) % dispo.length];
 
-  const idx = yield { type: 'audience', org, audience };
+  const soutien = mesureSoutenue(s, org);
+  const idx = yield { type: 'audience', org, audience, soutien };
   const rep = audience.reponses[Math.max(0, Math.min(2, idx | 0))];
   const mult = (RECEPTION[org.profil] || {})[rep.type] || 0;
   const poidsRel = org.poids / 34;                    // rapporté au poids FSU 2022
@@ -396,7 +398,7 @@ function* etapeAudience(s) {
   /* Second temps : la revendication. L'organisation exige le retrait de la
      mesure qu'elle conteste le plus. Céder la retire vraiment du jeu ;
      maintenir face à un profil combatif, c'est provisionner une grève. */
-  const conteste = mesureContestee(s);
+  const conteste = mesureContestee(s, org);
   if (conteste) {
     s.retraitsDemandes[conteste.id] = (s.retraitsDemandes[conteste.id] || 0) + 1;
     const carte = PAR_ID[conteste.id];
@@ -462,18 +464,42 @@ function requalifierMesure(s, m, org, poidsRel) {
 }
 
 /* La mesure que l'intersyndicale conteste le plus parmi celles en vigueur. */
-function mesureContestee(s) {
+/* La mesure dont CETTE organisation-là demande le retrait. Le filtre est dans
+   `estContestable` : une organisation ne peut pas exiger le retrait d'une mesure
+   qu'elle porte, ni d'une mesure qui fait monter l'adhésion des personnels.
+   N'avoir rien à contester est un résultat possible, et c'est même le bon
+   résultat quand le ministre n'a rien fait qui heurte le corps. */
+function mesureContestee(s, org) {
   s.retirees = s.retirees || new Set();
   s.retraitsDemandes = s.retraitsDemandes || {};
   let best = null, bv = 0;
   for (const m of s.mesuresParAnnee.flat()) {
     if (s.retirees.has(m.id)) continue;
     if ((s.retraitsDemandes[m.id] || 0) >= 2) continue;   // ils n'insistent que deux fois
-    const c = PAR_ID[m.id];
-    const score = (c.greve ? c.greve.intensite * 2 : 0) + Math.max(0, -(c.vitrine?.enseignants || 0));
-    if (score >= 4 && score > bv) { bv = score; best = m; }
+    const score = estContestable(PAR_ID[m.id], org);
+    if (score > bv) { bv = score; best = m; }
   }
   return best;
+}
+
+/* Le pendant, qui manquait : la mesure du ministre que cette organisation
+   DÉFEND. Une organisation ne fait pas que réclamer des retraits ; quand elle a
+   obtenu quelque chose, elle le dit, et d'autant plus fort qu'elle sait qu'un
+   successeur pourrait le défaire. */
+function mesureSoutenue(s, org) {
+  s.soutiensDits = s.soutiensDits || new Set();
+  for (const m of s.mesuresParAnnee.flat()) {
+    if ((s.retirees || new Set()).has(m.id)) continue;
+    const c = PAR_ID[m.id];
+    if (!c || !porteursSyndicaux(c).has(org.id)) continue;
+    /* Une délégation le dit une fois. Le répéter à chaque audience en ferait
+       une tapisserie, et le jeu tient à ce que ses encadrés soient rares. */
+    const cle = org.id + ':' + c.id;
+    if (s.soutiensDits.has(cle)) continue;
+    s.soutiensDits.add(cle);
+    return c;
+  }
+  return null;
 }
 
 /* Retirer une mesure sous la pression : elle sort réellement du jeu — les
@@ -796,10 +822,12 @@ function* etapeMars(s) {
 
   /* Le printemps rouvre le dossier : ce qui n'a pas été retiré à l'automne
      revient sur la table, et l'intersyndicale a eu six mois pour s'organiser. */
-  const conteste = mesureContestee(s);
+  /* Au printemps, c'est l'organisation la plus lourde qui mène — mais elle ne
+     peut pas davantage qu'en octobre réclamer le retrait de ce qu'elle porte. */
+  const orgMars = [...s.syndicats].sort((a, b) => b.poids - a.poids)[0];
+  const conteste = mesureContestee(s, orgMars);
   if (conteste && s.rng() < K.RETRAIT_MARS.proba) {
-    const tri = [...s.syndicats].sort((a, b) => b.poids - a.poids);
-    const org = tri[0];
+    const org = orgMars;
     const carte = PAR_ID[conteste.id];
     const poidsRel = org.poids / 34;
     const risque = evaluerMobilisation(s, {
