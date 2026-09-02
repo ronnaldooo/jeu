@@ -290,9 +290,36 @@ function boutonSuite(label, ctx, action) {
   const b = $('#suite-btn'); b.textContent = label;
   b.onclick = action;
 }
+/* Pictogrammes d'en-tête : un trait, une couleur, vingt-quatre pixels. Ils
+   servent à reconnaître l'écran avant de le lire, pas à décorer. */
+const PICTO = {
+  telephone: '<path d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 5a2 2 0 0 1 2-2"/>',
+  colonnes: '<path d="M3 21h18M4 9h16M6 9v10M10 9v10M14 9v10M18 9v10M12 3 3 8h18z"/>',
+  carte: '<rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2.2"/><path d="M6 17c.6-2 1.9-3 3-3s2.4 1 3 3M14 9h4M14 13h4"/>',
+  pupitre: '<path d="M8 21h8M12 15v6M6 3h12l-1.5 12h-9zM12 3v12"/>',
+  dossier: '<path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M3 11h18"/>',
+  pieces: '<circle cx="9" cy="12" r="6"/><path d="M15 6.5a6 6 0 1 1 0 11M7 12h4M9 10v4"/>',
+  courbe: '<path d="M3 20h18M4 16l5-6 4 3 7-8"/><path d="M16 5h4v4"/>',
+  ecole: '<path d="M3 21h18M5 21V10l7-5 7 5v11M10 21v-5h4v5M12 5V3"/>',
+  megaphone: '<path d="M3 10v4a1 1 0 0 0 1 1h3l8 4V5L7 9H4a1 1 0 0 0-1 1zM18 9a4 4 0 0 1 0 6M7 15l1 5h3"/>',
+  journal: '<rect x="3" y="4" width="18" height="16" rx="1"/><path d="M7 8h6M7 12h10M7 16h10M15 8h2"/>',
+  globe: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/>',
+  tele: '<rect x="3" y="6" width="18" height="12" rx="2"/><path d="M8 21h8M9 3l3 3 3-3"/>',
+  alerte: '<path d="M12 3 2 20h20zM12 10v4M12 17v.5"/>',
+  plan: '<path d="M3 6l6-2 6 2 6-2v14l-6 2-6-2-6 2zM9 4v14M15 6v14"/>',
+  liste: '<path d="M8 6h13M8 12h13M8 18h13M3 6h.5M3 12h.5M3 18h.5"/>',
+  soleil: '<circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1"/>',
+  lettre: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/>',
+  boussole: '<circle cx="12" cy="12" r="9"/><path d="m15.5 8.5-2 5-5 2 2-5z"/>',
+  drapeau: '<path d="M5 21V4M5 4h11l-2 4 2 4H5"/>',
+};
+const picto = (nom) => PICTO[nom]
+  ? `<svg class="picto" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${PICTO[nom]}</svg>`
+  : '';
+
 function docu(type, titre, dateLabel) {
   const d = el('article', 'doc');
-  d.appendChild(el('div', 'entete-doc', `<span class="type">${type}</span><span class="date">${dateLabel || ETAT.dateLabel || ''}</span>`));
+  d.appendChild(el('div', 'entete-doc', `<span class="type">${picto(ETAT.picto)}${type}</span><span class="date">${dateLabel || ETAT.dateLabel || ''}</span>`));
   if (titre) d.appendChild(el('h2', '', titre));
   return d;
 }
@@ -302,6 +329,15 @@ function ecranAccueil(sauvegarde) {
   const a = el('div', 'accueil');
   a.innerHTML = `
     <div class="tampon"><div class="rf">RÉPUBLIQUE FRANÇAISE</div><div style="font-size:.62rem;letter-spacing:.18em">MINISTÈRE DE L'ÉDUCATION NATIONALE</div></div>
+    <svg class="illustration" viewBox="0 0 280 120" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M12 110h256M22 110V46h236v64"/>
+      <path d="M22 46 140 14l118 32"/>
+      <path d="M40 110V64h20v46M76 110V64h20v46M112 110V64h20v46M184 110V64h20v46M220 110V64h20v46"/>
+      <path d="M148 110V72h28v38M148 72a14 14 0 0 1 28 0"/>
+      <path d="M40 60h20M76 60h20M112 60h20M184 60h20M220 60h20"/>
+      <path d="M128 30h24M134 24v12M146 24v12" stroke-width="1.2"/>
+      <path d="M2 110c8-6 14-6 22 0M256 110c8-6 14-6 22 0" stroke-width="1"/>
+    </svg>
     <h1>Rue de Grenelle</h1>
     <p class="devise">Vous êtes ministre de l'Éducation nationale.<br>1,2 million d'agents, 12 millions d'élèves. Un quinquennat, c'est cinq rentrées et cinq budgets.<br>Une durée moyenne dans le poste de deux ans, mais sept ministres sur les cinq dernières années…</p>`;
   const actions = el('div', 'actions'); actions.style.justifyContent = 'center';
@@ -446,7 +482,17 @@ function ecranLivraison(q) {
   const L = q.livraison;
   const d = docu('Livraison internationale, 11 heures', esc(L.titre));
   d.appendChild(el('p', 'chapo', fr(L.recit)));
+  /* La note « niveaux » de la DGESCO n'existe plus en juin : c'est ici, quand
+     la presse en parle, que le chiffre arrive, avec sa source. */
+  const b = CADRAGE_INITIAL.find((x) => x.cle === 'niveaux');
+  if (b) {
+    const a = el('div', 'accroche');
+    a.innerHTML = `<b>${fr(b.accroche.v)}</b><p>${fr(b.accroche.l)}${citer(b.accroche.src)}</p>`;
+    d.appendChild(a);
+  }
   d.appendChild(serieNiveaux());
+  if (b) d.appendChild(el('ul', 'rep-liste', b.chiffres.map((x) =>
+    `<li><span class="v">${fr(x.v)}</span><span class="l">${fr(x.l)}.${citer(x.src)}</span></li>`).join('')));
   d.appendChild(el('div', 'decryptage',
     `<div class="titre-d">Ce que le poste exige</div><p>${fr(L.contrainte)}</p>`));
   const ok = el('button', 'btn tamponner', 'Préparer les annonces de ce soir');
@@ -1524,17 +1570,15 @@ function serieNiveaux() {
 const NOTES_SUITE = {
   budget: 'Lire la note, puis décider de la rallonge',
   demographie: 'Lire la note, puis annoncer votre intention',
-  niveaux: 'Lire la note, puis passer aux annonces',
 };
 function ecranReperes(q) {
   const cle = (q && q.note) || 'budget';
   const b = CADRAGE_INITIAL.find((x) => x.cle === cle) || CADRAGE_INITIAL[0];
-  const rang = CADRAGE_INITIAL.findIndex((x) => x.cle === cle) + 1;
   const GRAPH = { budget: serieBudget, eleves: serieEleves, niveaux: serieNiveaux };
 
   const d = el('article', 'doc large');
   d.appendChild(el('div', 'entete-doc',
-    `<span class="type">Note ${rang}/3, direction générale de l’enseignement scolaire (DGESCO)</span><span class="date">${ETAT.dateLabel}</span>`));
+    `<span class="type">Note de la direction générale de l’enseignement scolaire (DGESCO)</span><span class="date">${ETAT.dateLabel}</span>`));
   d.appendChild(el('h2', '', esc(b.titre)));
 
   const a = el('div', 'accroche');
@@ -1601,11 +1645,11 @@ function dateDe(q) {
   const S = ETAT.s, an = S.anneeCiv || 2027;
   if (q.type === 'nomination') return 'juin 2027';
   if (q.type === 'doctrine') return 'juin 2027';
-  if (q.type === 'reperes') return 'juin 2027';
+  if (q.type === 'reperes') return q.note === 'budget' ? 'juin 2027' : `juillet ${an}`;
   if (q.type === 'avance') return 'juin 2027';
   if (q.type === 'entretien') return 'juin 2027';
   if (q.type === 'profil') return 'juin 2027';
-  if (q.type === 'intention') return 'juin 2027';
+  if (q.type === 'intention') return `juillet ${an}`;
   if (q.type === 'affaire') return `décembre ${an}`;
   if (q.type === 'polemique') return `septembre ${an}`;
   if (q.type === 'livraison') return `octobre ${an}`;
@@ -1624,8 +1668,67 @@ function dateDe(q) {
   return m[q.etape] || `${MOIS_L[S.mois] || ''} ${an}`;
 }
 
+/* Le pictogramme et le pas de temps de chaque écran, lus depuis la question
+   posée par le moteur. La frise de gauche et l'en-tête des documents s'en
+   servent tous les deux. */
+const PAS = [
+  ['juin', 'Juin', 'Prise de fonction'], ['ete', 'Été', 'Les cent jours'],
+  ['juillet', 'Juillet', 'Lettre plafond, concours'], ['septembre', 'Septembre', 'Rentrée, circulaire'],
+  ['octobre', 'Octobre', 'Audience syndicale'], ['decembre', 'Décembre', 'Budget, presse'],
+  ['janvier', 'Janvier', 'Carte scolaire, atelier'], ['mars', 'Mars', 'Mobilisations'], ['mai', 'Mai', 'Clôture'],
+];
+function situer(q) {
+  const t = q.type, e = q.etape, m = q.moment;
+  if (t === 'nomination') return ['juin', 'telephone'];
+  if (t === 'entretien') return ['juin', 'colonnes'];
+  if (t === 'profil') return ['juin', 'carte'];
+  if (t === 'doctrine') return ['juin', 'pupitre'];
+  if (t === 'reperes') return [q.note === 'budget' ? 'juin' : 'juillet', q.note === 'budget' ? 'pieces' : 'courbe'];
+  if (t === 'avance') return ['juin', 'pieces'];
+  if (t === 'intention') return ['juillet', 'courbe'];
+  if (t === 'dossier') return ['ete', 'soleil'];
+  if (t === 'lettrePlafond') return ['juillet', 'lettre'];
+  if (t === 'rentree') return ['septembre', 'ecole'];
+  if (t === 'polemique') return ['septembre', 'journal'];
+  if (t === 'audience') return ['octobre', 'megaphone'];
+  if (t === 'retrait') return [q.printemps ? 'mars' : 'octobre', 'megaphone'];
+  if (t === 'livraison') return ['decembre', 'globe'];
+  if (t === 'plateau') return ['decembre', 'tele'];
+  if (t === 'affaire') return ['decembre', 'alerte'];
+  if (t === 'carteScolaire') return ['janvier', 'plan'];
+  if (t === 'mesures') return [m === 'prise_fonction' ? 'juin' : m === 'rentree' ? 'septembre' : m === 'livraison' ? 'decembre' : 'janvier', 'liste'];
+  if (t === 'etape') return [{ ouverture: 'ete', juillet: 'juillet', rentree: 'septembre', decembre: 'decembre', mars: 'mars', cloture: 'mai' }[e] || 'mai', 'journal'];
+  return ['mai', 'drapeau'];
+}
+function majFrise(pasCourant) {
+  const S = ETAT.s, f = $('#frise');
+  if (!f) return;
+  f.hidden = false;
+  const annee = Math.max(1, Math.min(5, S.annee || 1));
+  const iCourant = PAS.findIndex((x) => x[0] === pasCourant);
+  const anLabel = (a) => `${2026 + a}-${(2027 + a) % 100 < 10 ? '0' : ''}${(2027 + a) % 100}`;
+  let html = '<div class="frise-titre">Où en êtes-vous</div>';
+  for (let a = 1; a <= 5; a++) {
+    const etat = a < annee ? 'passe' : a === annee ? 'courant' : 'avenir';
+    html += `<div class="frise-an ${etat}"><span class="num">An ${a}</span><span class="civ">${anLabel(a)}</span></div>`;
+    if (a !== annee) continue;
+    html += '<ol class="frise-pas">';
+    PAS.forEach(([cle, mois, quoi], i) => {
+      if (cle === 'juin' && annee > 1) return;
+      if (cle === 'ete' && annee > 1) return;
+      const st = i < iCourant ? 'fait' : i === iCourant ? 'ici' : 'apres';
+      html += `<li class="${st}"><span class="mois">${mois}</span><span class="quoi">${quoi}</span></li>`;
+    });
+    html += '</ol>';
+  }
+  f.innerHTML = html;
+}
+
 function rendre(q) {
   ETAT.dateLabel = dateDe(q);
+  const [pas, ic] = situer(q);
+  ETAT.picto = ic;
+  majFrise(pas);
   ETAT.rentreeRatee = ETAT.s.journal.some((e) => e.cat === 'rentree' && e.annee === ETAT.s.annee && e.texte.includes('dégradée'));
   majHud();
   if (q.type === 'nomination') ecranNomination();
@@ -1653,7 +1756,7 @@ function suivant(rep) {
   ETAT.pas.push(rep === undefined ? null : rep);
   sauvegarder();
   const res = ETAT.gen.next(rep);
-  if (res.done) { const B = bilan(ETAT.s); majHud(); ecranBilan(B); return; }
+  if (res.done) { const B = bilan(ETAT.s); majHud(); ETAT.picto = 'drapeau'; majFrise('fin'); ecranBilan(B); return; }
   rendre(res.value);
 }
 

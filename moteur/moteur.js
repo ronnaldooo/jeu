@@ -1266,14 +1266,15 @@ export function* derouler(s) {
   /* La note de cadrage que la direction générale remet à tout nouveau ministre
      avant son premier arbitrage : budget, démographie, niveaux. Tous les
      chiffres viennent de `moteur/reperes.js` et sont sourcés. */
-  /* Les trois notes de la DGESCO arrivent successivement, et chacune débouche
-     sur une décision. On ne lit pas un dossier pour le plaisir de le lire. */
+  /* Les notes de la DGESCO n'arrivent pas en pile : chacune vient au moment où
+     la décision qu'elle éclaire se présente. En juin, le budget, parce que la
+     première chose qu'un ministre demande est une rallonge. La démographie
+     attend juillet et la lettre plafond, qui la rend concrète. Les niveaux
+     n'ont pas de note du tout : ils arrivent avec PISA, quand la presse en
+     parle, et pas avant. */
   crediter(s, K.ENVELOPPE_PRISE_FONCTION);
   yield { type: 'reperes', note: 'budget' };
   yield* etapeAvance(s);
-  yield { type: 'reperes', note: 'demographie' };
-  yield* etapeIntention(s);
-  yield { type: 'reperes', note: 'niveaux' };
   yield* etapeMesures(s, { moment: 'prise_fonction', taille: K.TAILLE_MENU_COURT });
   rafraichir(s);
   yield { type: 'etape', etape: 'ouverture' };
@@ -1282,7 +1283,11 @@ export function* derouler(s) {
 
   for (s.annee = 1; s.annee <= 5 && !s.fini; s.annee++) {
     s.anneeCiv = 2026 + s.annee;                 // année civile de la carte scolaire
-    yield* etapeJuillet(s);   s.mois = 6;  yield { type: 'etape', etape: 'juillet' };
+    yield* etapeJuillet(s);   s.mois = 6;
+    /* Bercy vient d'exiger un schéma d'emplois : c'est le moment où la note
+       démographique devient une question, et où l'on attend une réponse. */
+    if (s.annee === 1) { yield { type: 'reperes', note: 'demographie' }; yield* etapeIntention(s); }
+    yield { type: 'etape', etape: 'juillet' };
     yield* etapeRentree(s);   s.mois = 8;
     if (s.annee >= 2 && !s.polemiqueFaite) { s.polemiqueFaite = true; yield* etapePolemique(s); }
     yield* etapeCirculaireRentree(s);        yield { type: 'etape', etape: 'rentree' };

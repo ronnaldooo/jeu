@@ -191,9 +191,9 @@ A(BODY('Premier acte du mandat : classer les cinq compteurs par ordre de priorit
 A(BODY([T('C’est le ressort principal du jeu : ', {}), T('le joueur est noté contre sa propre parole', { bold: true }), T('. Un ministre qui annonce la réduction des inégalités et qui passe cinq ans à tenir le budget aura un mauvais score, même si le budget est excellent. Les oppositions lui ressortent sa déclaration à chaque arbitrage contradictoire.')]));
 A(BODY('Chaque priorité est présentée avec les projets politiques réels qui la portent en 2027 (Attal, Philippe, Lisnard, le PS, Glucksmann, Mélenchon, le NFP, la FSU) de sorte que le joueur comprenne qu’aucune priorité n’est neutre. Le jeu cite, il ne juge pas.'));
 
-A(H3('Écrans 5, 7 et 9 · Les trois notes de la DGESCO'));
+A(H3('Écran 5 · La note budgétaire de la DGESCO'));
 A(BODY('La direction générale de l’enseignement scolaire remet trois pages courtes (un budget contraint, une baisse démographique, des résultats préoccupants) avec un graphique et deux précisions chacune, pas davantage. Chaque chiffre porte sa source officielle, cliquable. Aucune recommandation : l’état du système, et rien d’autre. Les huit autres fiches sont accessibles à tout moment par l’onglet « Comprendre le jeu ».'));
-A(BODY([T('Ces trois notes ne se lisent plus d’affilée : ', {}), T('chacune débouche immédiatement sur la décision qu’elle éclaire', { bold: true }), T('. La note budgétaire précède l’arbitrage sur l’avance de gestion ; la note démographique précède la déclaration d’intention sur les postes que la baisse va libérer ; la note sur les niveaux précède les premières annonces. On ne lit pas un dossier pour le plaisir de le lire.', {})]));
+A(BODY([T('Les notes n’arrivent plus en pile. ', {}), T('Chacune vient au moment où la décision qu’elle éclaire se présente', { bold: true }), T(' : la note budgétaire en juin, avant l’avance de gestion ; la note démographique en juillet, juste après la lettre plafond où Bercy exige un schéma d’emplois, et avant que le ministre annonce ce qu’il fera des postes ; et les niveaux n’ont plus de note du tout. Le chiffre PISA arrive en décembre de l’an 2, avec la livraison de l’enquête, quand la presse en parle, et pas avant.', {})]));
 A(BODY('Chaque page suit le même gabarit : un chiffre d’accroche en grand avec une phrase, le graphique qui va avec, puis deux précisions au maximum.'));
 A(tableau(
   ['Page', 'Le chiffre d’accroche', 'Le graphique'],
@@ -210,14 +210,11 @@ A(H3('Écran 6 · L’avance de gestion, le premier arbitrage'));
 A(BODY('La loi de finances votée par le prédécesseur laisse une marge : la réserve de précaution, gelée en début d’exercice sur chaque programme. Le ministre demande à Bercy d’en dégeler une part, contre un engagement chiffré de restitution de postes en janvier. Trois options : 550, 950 ou 1 400 millions d’euros, contre 0, 45 ou 60 % de restitution promise. Plus on demande, plus la demande peut être refusée, et plus l’engagement pris sera rappelé.'));
 A(BODY('Ne pas tenir l’engagement de janvier coûte seize points de crédit Bercy et six de capital politique. C’est la première dette du mandat, et elle est contractée avant la première rentrée.'));
 
-A(H3('Écran 8 · Votre intention sur les postes'));
-A(BODY('Après la note démographique, le ministre annonce publiquement ce qu’il compte faire des postes que la baisse des effectifs va libérer : les réinvestir dans l’encadrement, les partager, ou les rendre. L’annonce est gratuite et engageante : elle sera confrontée à l’arbitrage réel de janvier, et l’écart sera relevé.'));
-
-A(H3('Écran 10 · Les premières annonces'));
+A(H3('Écran 7 · Les premières annonces'));
 A(BODY('Enveloppe issue de l’avance obtenue, trois annonces au maximum, menu resserré à huit cartes.'));
 A(BODY('La limite à deux annonces n’est pas budgétaire mais humaine et réglementaire : calendrier du Conseil supérieur de l’éducation, textes à écrire, capacité du ministère à accompagner ce qu’il annonce.'));
 
-A(H3('Écran 11 · L’été des cent jours'));
+A(H3('Écran 8 · L’été des cent jours'));
 A(BODY('Avant la première rentrée, un dossier de crise tombe au hasard parmi quatre, chacun avec trois réponses possibles :'));
 A(PUCE('la canicule de juillet et des écoles à 40 °C ;'));
 A(PUCE('un professeur agressé fin août, la vidéo circule ;'));
@@ -225,7 +222,7 @@ A(PUCE('une page de manuel sortie de son contexte, polémique d’août ;'));
 A(PUCE('l’interview de rentrée, et le choix de sa petite phrase.'));
 A(BODY('Ces dossiers ne coûtent rien en budget et beaucoup en positionnement : ils fixent l’image du ministre avant qu’il ait rien fait.'));
 A(VIDE());
-A(ENCADRE('À relire', 'L’ouverture fait maintenant onze écrans avant la première rentrée, mais aucun n’est une page de lecture pure : chaque note débouche sur une décision. Est-ce le bon rythme, ou reste-t-il trop long avant la première rentrée ?', '2.1 · L’ouverture'));
+A(ENCADRE('À relire', 'L’ouverture fait huit écrans avant l’été, et une seule note de la DGESCO au lieu de trois. La note démographique est passée en juillet, avec l’intention sur les postes. Est-ce le bon rythme ?', '2.1 · L’ouverture'));
 
 A(H2('2.2 L’année type, cinq fois de suite'));
 A(BODY('À partir de septembre 2027, chaque année suit le même cycle. Les lignes marquées « DÉCISION » appellent un choix du joueur ; les autres sont des points d’étape où il lit ce qui s’est produit.'));
@@ -234,6 +231,7 @@ A(tableau(
   [
     ['Juillet', 'La lettre plafond de Bercy. DÉCISION', 'Bercy fixe le schéma d’emplois exigé (de −800 à −6 200 ETP) et la marge concédée (de 1,80 à 0,18 milliard), selon le crédit dont le ministre dispose. Il peut accepter ou contester : contester coûte 12 points de capital politique et réussit environ une fois sur trois.'],
     ['Juillet', 'Les résultats des concours', 'Le thermomètre de l’attractivité, avec un an de retard sur les décisions. C’est ici que la boucle salaires → candidats → remplacement → conditions devient visible.'],
+    ['Juillet (an 1)', 'La note démographique et votre intention, DÉCISION', 'Bercy vient d’exiger un schéma d’emplois : la DGESCO remet sa note sur la baisse des effectifs, et le ministre annonce ce qu’il fera des postes libérés. L’annonce est gratuite et engageante : elle sera comparée à la carte scolaire de janvier.'],
     ['Septembre', 'La rentrée. DÉCISION si elle est ratée', 'Si les heures non assurées dépassent 12,5 % ou la couverture des concours descend sous 88 %, la rentrée est « dégradée » : le comptage syndical commence dès le jour 1. Le ministre choisit d’assumer ou de contester les chiffres, les deux existent dans la réalité, et les deux coûtent quelque chose.'],
     ['Septembre', 'La circulaire de rentrée. DÉCISION', 'Une mesure, pas davantage : la circulaire porte un message, pas un programme. Elle se finance par redéploiement (220 millions), sans arbitrage interministériel possible.'],
     ['Septembre', 'La polémique de rentrée. DÉCISION (à partir de l’an 2)', 'Une controverse qui n’a rien à voir avec le budget occupe la semaine de rentrée. Elle se règle en trois jours ou en trois mois, selon la réponse.'],
@@ -482,6 +480,12 @@ A(VIDE());
 A(BODY([T('Depuis votre relecture, ces mécaniques ne sont plus totalement muettes : ', {}), T('elles se signalent d’elles-mêmes quand elles se mettent à mordre', { bold: true }), T('. Un encadré apparaît sous le bandeau, nomme le seuil franchi, donne le chiffre et explique la conséquence, « adhésion enseignante à 14 sur 100, vos annonces ne s’appliquent qu’à 50 % de leur effet documenté ». Sept règles existent, dont celle que vous aviez demandée explicitement : épargner le privé sous contrat fait monter la ségrégation, et pèse donc sur le compteur Réduction des inégalités. Le rationnement est volontaire (une alerte par année au plus, trois par mandat) parce qu’une alerte qui revient à chaque écran n’alerte plus personne, elle décore.', {})]));
 A(VIDE());
 A(ENCADRE('À relire', 'Ces mécaniques sont invisibles par construction, et les alertes en lèvent une partie. Le dosage vous paraît-il juste : assez pour comprendre ce qui vous arrive, pas au point de tuer la surprise du bilan ?', '5 · L’arrière-plan'));
+
+A(H2('Se repérer : la frise et les pictogrammes'));
+A(BODY('Une frise fixe, à gauche de l’écran, dit où l’on est dans le mandat : les cinq années, l’année en cours dépliée avec ses rendez-vous (juillet, septembre, octobre, décembre, janvier, mars, mai), ce qui est fait coché, ce qui vient grisé, l’étape courante marquée d’un point. Sur un écran étroit, elle se replie en une ligne sous le tableau de bord : l’année, et les étapes passées et présente.'));
+A(BODY('Chaque document porte en outre un pictogramme d’en-tête, un trait, une couleur, vingt-quatre pixels : un téléphone pour l’appel de Matignon, des colonnes pour l’Élysée, un dossier pour la note, une lettre pour Bercy, une école pour la rentrée, un mégaphone pour l’audience, un globe pour PISA, un téléviseur pour le plateau, un plan pour la carte scolaire. Ils servent à reconnaître l’écran avant de le lire, pas à décorer. L’accueil a gagné une façade au trait.'));
+A(VIDE());
+A(ENCADRE('À relire', 'La frise et les pictogrammes sont volontairement sobres, dans le registre « papier administratif » du jeu. En faut-il davantage, des illustrations plus franches, ou est-ce déjà le bon dosage ?', '5 · Se repérer'));
 
 A(H1('6. L’onglet « Comprendre le jeu »'));
 A(BODY('Un bouton fixe en bas à gauche de chaque écran ouvre onze fiches de référence, 80 chiffres, trente-quatre sources officielles portant chacune l’organisme, la date et le lien du document.'));

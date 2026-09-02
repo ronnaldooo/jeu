@@ -1273,6 +1273,40 @@ signalée.
 Catalogue à 64 cartes. Équilibrage revérifié : **4/4 sur trois jeux de graines**,
 survie 46-48 %.
 
+## 3 octodecies. Se repérer dans le mandat
+
+Trois demandes de relecture : des repères temporels à gauche de l'écran, des
+illustrations, et des notes de la DGESCO qui n'arrivent plus en pile.
+
+### a) Les notes, espacées
+
+Les trois notes de juin étaient lues d'affilée, et le relecteur avait raison :
+ce n'était pas utile. Désormais chacune vient quand la décision qu'elle éclaire
+se présente. La note budgétaire reste en juin, avant l'avance de gestion. La
+note démographique passe en **juillet de l'an 1**, juste après la lettre plafond
+où Bercy exige un schéma d'emplois : c'est là qu'elle devient une question, et
+l'intention sur les postes la suit. La note sur les niveaux **disparaît** : son
+chiffre d'accroche (−21 points PISA) et ses deux précisions arrivent en décembre
+de l'an 2, sur l'écran de livraison de l'enquête, quand la presse en parle. On
+ne prévient plus le joueur d'une chose dont personne ne parle encore.
+
+### b) La frise
+
+Une colonne fixe à gauche (188 px, au-delà de 1 180 px de large) : les cinq
+années, l'année courante dépliée avec ses rendez-vous, le fait coché, le courant
+marqué d'un point, l'à-venir grisé. En dessous de 1 180 px, une ligne sous le
+tableau de bord : l'année, les étapes passées et l'étape présente. Elle est
+alimentée par `situer(q)`, qui lit le pas de temps dans la question posée par le
+moteur, donc elle ne peut pas se désynchroniser du jeu.
+
+### c) Les pictogrammes
+
+Dix-neuf pictogrammes au trait, monochromes, 24 px, dans l'en-tête de chaque
+document, et une façade au trait sur l'accueil. Registre « papier
+administratif » assumé : ils servent à reconnaître l'écran avant de le lire.
+
+Équilibrage revérifié : **4/4 sur trois jeux de graines**, survie 47-48 %.
+
 ## 5. Paramètres à réexaminer après tests humains
 
 | Paramètre | Valeur | Ce qu'il faut regarder |
