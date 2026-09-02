@@ -178,12 +178,12 @@ A(BODY('Le gouvernement se forme, le téléphone sonne. Le portefeuille proposé
 A(BODY('Le prédécesseur, huitième en quatre ans, laisse un mot de passation. Le joueur peut refuser la nomination, le jeu s’arrête alors, ce qui est une fin comme une autre.'));
 A(BODY([T('Point de règle : ', { bold: true }), T('on ne dit jamais qui a été élu président. Le joueur choisit lui-même ses priorités ; aucune n’est imposée par l’Élysée.')]));
 
-A(H3('Écran 2 · Trois questions à l’Élysée'));
-A(BODY('Avant la passation, le Château reçoit le ministre pressenti une heure. Trois questions, qui n’ont rien à voir avec l’école : où sont scolarisés vos enfants, avez-vous perçu quelque chose sans service fait, que trouvera-t-on dans vos fonctions antérieures. Trois réponses possibles à chaque fois, répondre franchement, éluder, ou mentir.'));
+A(H3('Écran 2 · Deux questions à l’Élysée'));
+A(BODY('Avant la passation, le Château reçoit le ministre pressenti une heure. Deux questions, qui n’ont rien à voir avec l’école : où sont scolarisés vos enfants, et que trouvera-t-on dans vos fonctions antérieures. Trois réponses possibles à chaque fois, répondre franchement, éluder, ou mentir.'));
 A(BODY([T('C’est la scène la plus rentable du jeu, et le joueur ne le sait pas encore. ', {}), T('Répondre franchement ferme définitivement l’affaire correspondante', { bold: true }), T(' : elle ne pourra plus sortir de la partie, au prix de quelques points de crédibilité immédiats. Éluder l’entrouvre. ', {}), T('Mentir la referme aujourd’hui et la rouvre en grand', { bold: true }), T(' : la probabilité qu’elle sorte est multipliée par 2,2, et son coût par 1,45 quand elle sort. Ce n’est jamais l’affaire qui tue, c’est d’avoir dit le contraire.', {})]));
 
 A(H3('Écran 3 · D’où venez-vous, le profil, cette fois choisi'));
-A(BODY('Le service de presse a besoin de deux lignes pour les dépêches du lendemain. Le joueur déclare son profil : la maison (recteur, administration centrale), la haute fonction publique, un mandat d’élu local, ou la société civile.'));
+A(BODY('Le service de presse a besoin de deux lignes pour les dépêches du lendemain. Le joueur déclare son profil : la maison (recteur, administration centrale), la haute fonction publique, ou la politique (parlementaire).'));
 A(BODY([T('La règle absolue est inchangée : ', {}), T('aucun profil ne donne d’avantage sur les compteurs éducatifs', { bold: true }), T('. Un profil décide de trois choses seulement (l’adhésion de départ des personnels, le capital politique initial, la crédibilité initiale) et de ce sur quoi on sera attaquable. Le profil était tiré au sort dans la version précédente ; il est désormais déclaré par le joueur, comme le reste. Le périmètre de nomination, en revanche, a disparu : il ajoutait une contrainte subie de plus sur un écran qui en comptait déjà assez.', {})]));
 
 A(H3('Écran 4 · La conférence de presse, votre feuille de route'));
@@ -284,7 +284,7 @@ A(VIDE());
 A(ENCADRE('À relire', 'Le seuil de colère des maires (55 %) et celui de la provocation sur le privé (78 %) sont des jugements de ma part. Vous paraissent-ils placés au bon endroit ?', '3.1 · La carte scolaire'));
 
 A(H2('3.2 L’atelier de mesures, le catalogue'));
-A(BODY('Le catalogue compte 73 cartes réparties en cinq familles : moyens et encadrement, autonomie et évaluation, parcours et orientation, autorité et familles, mixité et carte scolaire.'));
+A(BODY('Le catalogue compte 64 cartes réparties en cinq familles : moyens et encadrement, autonomie et évaluation, parcours et orientation, autorité et familles, mixité et carte scolaire.'));
 A(H3('Ce que porte chaque carte'));
 A(tableau(
   ['Élément', 'Exemple, sur la carte « Redoublement facilité »'],
@@ -408,7 +408,7 @@ A(BODY('Sur les six causes documentées de chute d’un ministre de l’Éducati
 A(H3('La crédibilité, la ressource de parole'));
 A(BODY('Une jauge distincte du capital politique, initialisée à 62. Elle multiplie tout l’effet d’annonce : à 62, les mesures valent ×1,11 ; à 20, ×0,73 ; à 95, ×1,41. À crédibilité effondrée, la meilleure mesure du catalogue ne porte plus. Elle se reconstitue de quatre points par an et se perd beaucoup plus vite : neuf points pour une mesure requalifiée, cinq pour un abandon, jusqu’à vingt-quatre pour une affaire mal gérée. C’est ce qui donne enfin un prix à la requalification : se dédire ne coûtait qu’un peu de fatigue, cela coûte désormais la parole.'));
 A(H3('Les affaires personnelles'));
-A(BODY('Neuf archétypes, intégralement pseudonymisés : les situations sont inspirées de faits publics, les personnages sont fictifs, et aucune affaire n’est rejouée sous le nom de qui que ce soit. Ce qu’on garde, c’est la forme, le déclencheur, la cinétique, l’issue. Les trois derniers ont été ajoutés sur votre liste de relecture.'));
+A(BODY('Sept archétypes, intégralement pseudonymisés : les situations sont inspirées de faits publics, les personnages sont fictifs, et aucune affaire n’est rejouée sous le nom de qui que ce soit. Ce qu’on garde, c’est la forme, le déclencheur, la cinétique, l’issue. Les trois derniers ont été ajoutés sur votre liste de relecture.'));
 A(tableau(
   ['Archétype', 'Ce qui est reproché', 'Se déclenche quand'],
   [
@@ -526,7 +526,7 @@ A(tableau(
     ['La voie de l’égalité', 'C’est le compteur le plus difficile à faire monter, et c’est une thèse assumée du jeu. Si elle est vécue comme une impasse plutôt que comme une difficulté, il faut la rendre un peu plus accessible.'],
     ['La densité de texte', 'Chaque carte porte beaucoup d’information. Un joueur pressé lit la tête de carte et ignore le reste ; un joueur curieux lit tout. Le pli est fait pour ça, mais l’équilibre est fragile.'],
     ['L’humour', 'La satire est symétrique par construction, tout le monde y passe, personne n’est nommé. Reste à vérifier qu’elle est perçue comme telle par des personnels du système, qui sont le public visé.'],
-    ['Le catalogue à 73 cartes', 'Le catalogue a doublé depuis la première version. Chaque carte est proposée au moins une fois sur l’ensemble des stratégies testées, mais un joueur donné n’en verra qu’une partie. Est-ce une bonne chose (de la rejouabilité) ou de la frustration ?'],
+    ['Le catalogue à 64 cartes', 'Le catalogue a doublé depuis la première version. Chaque carte est proposée au moins une fois sur l’ensemble des stratégies testées, mais un joueur donné n’en verra qu’une partie. Est-ce une bonne chose (de la rejouabilité) ou de la frustration ?'],
     ['Ce qui n’est pas encore intégré', 'Deux mécaniques restent en attente de votre arbitrage, parce qu’elles ajoutent un système d’événements et non seulement des données : les effets de bord d’une réforme, tirés au sort et révélés deux ans plus tard ; et le choc exogène majeur (pandémie, cyberattaque) tiré une fois par partie. La troisième (l’événement où aucune option n’est bonne) est intégrée depuis votre relecture : c’est l’affaire de l’internat.'],
     ['Les sources bloquées', 'Le réseau de mon environnement de travail bloque education.gouv.fr, senat.fr et oecd.org : les chiffres viennent des extraits indexés de ces documents, pas de leur lecture directe. Les liens du jeu pointent bien vers les originaux, mais une vérification humaine reste utile.'],
   ],

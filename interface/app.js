@@ -303,7 +303,7 @@ function ecranAccueil(sauvegarde) {
   a.innerHTML = `
     <div class="tampon"><div class="rf">RÉPUBLIQUE FRANÇAISE</div><div style="font-size:.62rem;letter-spacing:.18em">MINISTÈRE DE L'ÉDUCATION NATIONALE</div></div>
     <h1>Rue de Grenelle</h1>
-    <p class="devise">Vous êtes ministre de l'Éducation nationale. Cinq rentrées, cinq budgets, 1,2 million d'agents, 12 millions d'élèves, et une durée moyenne dans le poste de deux ans. Finir sera déjà une performance.</p>`;
+    <p class="devise">Vous êtes ministre de l'Éducation nationale.<br>1,2 million d'agents, 12 millions d'élèves. Un quinquennat, c'est cinq rentrées et cinq budgets.<br>Une durée moyenne dans le poste de deux ans, mais sept ministres sur les cinq dernières années…</p>`;
   const actions = el('div', 'actions'); actions.style.justifyContent = 'center';
   if (sauvegarde) {
     const rep = el('button', 'btn', 'Reprendre la partie en cours');
@@ -318,7 +318,7 @@ function ecranAccueil(sauvegarde) {
     actions.appendChild(go);
   }
   a.appendChild(actions);
-  a.appendChild(el('p', 'avertissement', 'Jeu pédagogique indépendant, sans lien avec le ministère de l’Éducation nationale. Les ordres de grandeur viennent de sources publiques (DEPP, PLF, OCDE, CSEN, EEF) ; chaque mesure cite ses porteurs réels et le niveau de preuve de son effet. Le jeu ne dit jamais qu’une doctrine est la bonne, il vous laisse en répondre.'));
+  a.appendChild(el('p', 'avertissement', 'Jeu pédagogique indépendant, sans lien avec le ministère de l’Éducation nationale. Les ordres de grandeur viennent de sources publiques (DEPP, PLF, OCDE, CSEN, EEF) ; chaque mesure cite ses porteurs réels et le niveau de preuve de son effet. Un lien est fait avec les propositions des candidats à l’élection présidentielle.<br>Le jeu ne dit jamais qu’une doctrine est la bonne, il vous laisse en répondre.'));
   scene(a);
 }
 
@@ -326,11 +326,11 @@ function ecranAccueil(sauvegarde) {
 function ecranNomination() {
   const d = docu('Appel de Matignon', 'On vous propose la rue de Grenelle', 'juin 2027');
   d.classList.add('papier');
-  d.appendChild(el('p', 'chapo', 'Le gouvernement se forme. Votre téléphone sonne : le portefeuille proposé est l’Éducation nationale (le premier budget de l’État) 65,3 milliards d’euros au projet de loi de finances qui s’annonce, 1,2 million d’agents, 12 millions d’élèves. La durée moyenne dans le poste dépasse rarement deux ans.'));
+  d.appendChild(el('p', 'chapo', 'Le gouvernement se forme. Votre téléphone sonne : le portefeuille proposé est l’Éducation nationale (le premier budget de l’État) 65,3 milliards d’euros au projet de loi de finances qui s’annonce.<br>1,2 million d’agents, 12 millions d’élèves.<br>La durée moyenne dans le poste dépasse rarement deux ans…'));
   d.appendChild(el('div', 'note-passation',
-    'Votre prédécesseur, huitième en quatre ans, laisse un mot : « Tout est dans les dossiers. Les dossiers sont dans les cartons. Les cartons sont au garde-meuble, la DGESCO sait lequel. Méfiez-vous de juillet, de septembre et de janvier, le reste de l’année est calme, sauf le reste de l’année. Bonne chance.'
+    'Votre prédécesseur, huitième en quatre ans, laisse un mot : « Tout est dans les dossiers. Les dossiers sont dans les cartons. Les cartons traînent à la DGESCO.<br>Méfiez-vous de juillet, de septembre et de janvier, le reste de l’année est calme, sauf le reste de l’année. Bonne chance.'
     + '<span class="ps">P.-S. — La photocopieuse du deuxième est en panne depuis 2019. C’est le dossier le plus consensuel du ministère : ne le réglez pas, il fédère. »</span>'));
-  d.appendChild(el('p', '', 'Vous acceptez. L’Élysée vous recevra dans l’heure, trois questions, pour vérifier que votre nomination ne coûtera rien au Président.'));
+  d.appendChild(el('p', '', 'Vous acceptez. L’Élysée vous recevra dans l’heure. Deux petites questions, pour vérifier que votre nomination ne coûtera rien au Président.'));
   const act = el('div', 'actions');
   const ok = el('button', 'btn tamponner', 'Accepter le ministère');
   ok.onclick = () => suivant('accepter');
@@ -343,7 +343,7 @@ function ecranNomination() {
 function ecranDoctrine() {
   const ordre = Object.keys(NOMS_C);
   const d = docu('Conférence de presse, prise de fonction', 'Votre feuille de route, devant témoins', 'juin 2027');
-  d.appendChild(el('p', 'chapo', 'Premier acte du mandat : classer les cinq compteurs du quinquennat par ordre de priorité. Aucune priorité n’est neutre, chacune est au cœur de projets politiques réellement débattus, et la presse le relèvera dès demain. Surtout : <b>c’est sur VOTRE ordre que votre bilan sera noté</b> (35 / 25 / 20 / 12 / 8). Vous serez jugé contre votre propre parole, et rien d’autre.'));
+  d.appendChild(el('p', 'chapo', 'Premier acte du mandat : classer les cinq compteurs du quinquennat par ordre de priorité. Aucune priorité n’est neutre, chacune est au cœur de projets politiques réellement débattus, et la presse le relèvera dès demain. Surtout : <b>c’est sur VOTRE ordre que votre bilan sera noté</b> (35 / 25 / 20 / 12 / 8).<br>Vous serez jugé contre votre propre parole, et rien d’autre.'));
 
   const liste = el('div', 'classement');
   const rendreListe = () => {
@@ -373,7 +373,7 @@ function ecranDoctrine() {
   act.appendChild(ok);
   d.appendChild(act);
   d.appendChild(el('p', 'note-passation',
-    'Un dernier point, technique et lourd de conséquences : <b>votre tableau de bord n’affichera que vos trois premiers compteurs</b>, ceux qui pèsent 80 % de votre note. Les deux derniers seront tenus sans être montrés. Vous les retrouverez au bilan, et le cabinet vous alertera s’ils décrochent vraiment. C’est ainsi que fonctionne un ministère : on suit ce qu’on a dit qu’on suivrait, et on découvre le reste dans la presse.'));
+    '<b>Votre tableau de bord n’affichera que vos trois premiers compteurs</b>, ceux qui pèsent 80 % de votre note. Les deux derniers seront tenus sans être montrés. Vous les retrouverez au bilan, et le cabinet vous alertera s’ils décrochent vraiment.'));
   d.appendChild(el('p', '', '<span style="font-size:.82rem;color:var(--encre-2)">Votre directeur de cabinet, à voix basse : « Ce que vous mettez en premier, on vous le ressortira à chaque arbitrage contradictoire. Ce que vous mettez en dernier aussi. »</span>'));
   scene(d);
 }
@@ -513,7 +513,7 @@ function ecranAffaire(q) {
   d.appendChild(el('p', 'chapo', fr(a.recit)));
   if (q.resonne) {
     d.appendChild(el('div', 'bandeau-neuf',
-      '<b>Le calendrier n’est pas un hasard.</b> Le dossier ressort au moment précis où vous légiférez sur le même sujet. Une polémique personnelle n’est presque jamais fatale en elle-même : elle le devient quand elle donne à un procès politique déjà instruit sa preuve intuitive.'));
+      '<b>Le calendrier n’est pas un hasard.</b> Le dossier ressort au moment précis où vous légiférez sur le même sujet.'));
   }
   d.appendChild(el('div', 'decryptage',
     `<div class="titre-d">Ce que ce type d’affaire enseigne</div><p>${fr(a.lecon)}</p>`));
@@ -544,7 +544,7 @@ function ecranAffaire(q) {
     const box = el('div', 'decryptage');
     box.style.borderLeftColor = r.type === 'assumer' ? 'var(--c-sante)' : r.type === 'defendre' ? 'var(--c-budget)' : 'var(--rouge-rf)';
     box.innerHTML = `<div class="titre-d" style="color:${r.type === 'assumer' ? 'var(--c-sante)' : r.type === 'defendre' ? 'var(--c-budget)' : 'var(--rouge-rf)'}">La suite</div><p>${fr(r.suite)}</p>`
-      + '<p style="font-size:.78rem;color:var(--encre-3);margin-top:8px">Une affaire médiatique n’est pas une culpabilité : une sur quatre se dégonfle, démentie, classée, ou close par un remboursement. Le coût politique, lui, reste à moitié encaissé. C’est vrai, et c’est ce que le public retient le plus mal.</p>';
+      + '<p style="font-size:.78rem;color:var(--encre-3);margin-top:8px">Une affaire médiatique n’est pas une culpabilité : une sur quatre se dégonfle, démentie ou classée. Mais un démenti ne rend pas ce qu’une accusation a coûté : vous ne récupérez que la moitié des points perdus.</p>';
     d.appendChild(box);
     const act = el('div', 'actions');
     const ok = el('button', 'btn', 'Passer à autre chose');
@@ -558,7 +558,7 @@ function ecranAffaire(q) {
 /* --- l'entretien de l'Élysée, avant la nomination ---------------------------- */
 function ecranEntretien(q) {
   const rep = new Array(q.questions.length).fill(null);
-  const d = docu('Élysée, entretien préalable', 'Trois questions avant votre nomination');
+  const d = docu('Élysée, entretien préalable', 'Deux questions avant votre nomination');
   d.classList.add('papier');
   d.appendChild(el('p', 'chapo', 'Un conseiller vous reçoit vingt minutes. Il ne s’intéresse ni à votre projet ni à l’école : il vérifie que votre nomination ne coûtera rien au Président. Personne ne contrôlera vos réponses aujourd’hui.'));
 
@@ -711,7 +711,6 @@ function ecranIntention(q) {
     opts.appendChild(b);
   });
   d.appendChild(opts);
-  d.appendChild(el('p', 'note-passation', 'Ne pas tenir cette parole en janvier coûte 16 points de crédit Bercy et 6 de capital politique. La tenir en rend 6. C’est le premier des cinq arbitrages de carte scolaire, et vous le prenez avant de savoir ce que la démographie vous donnera vraiment.'));
   scene(d);
 }
 
@@ -811,7 +810,7 @@ function ecranAtelier(q) {
     rentree: {
       type: 'Circulaire de rentrée',
       titre: 'Que met-on dans la circulaire de rentrée ?',
-      titreSuite: 'Une mesure, pas davantage : la circulaire de rentrée porte un message, pas un programme. Elle se finance par redéploiement, pas d’arbitrage interministériel en septembre.',
+      titreSuite: 'Une mesure, pas davantage : la circulaire de rentrée porte un message, pas un programme.',
     },
     livraison: {
       type: 'Après la livraison, vos annonces de ce soir',
@@ -834,7 +833,7 @@ function ecranAtelier(q) {
      ne l'apprend à personne, elle fait seulement de la page à sauter. */
   const premierAtelier = S.annee === 1 && q.moment === 'prise_fonction';
   d.appendChild(el('p', 'chapo', (MOM.chapo || MOM.titreSuite) + (premierAtelier
-    ? ' L’effet d’annonce est chiffré : vous le verrez. L’effet réel ne l’est pas — vous n’avez que le niveau de preuve (🔒) et le délai, et vous découvrirez au bilan ce que vous avez produit. Rien ne s’applique sans les personnels.'
+    ? ' L’effet d’annonce est chiffré : vous le verrez. L’effet réel ne l’est pas, vous n’avez que le niveau de preuve (🔒) et le délai, et vous découvrirez au bilan ce que vous avez produit. Rien ne s’applique sans les personnels.'
     : ' Effet d’annonce chiffré, effet réel caché.')));
   /* Le menu cadré : on dit pourquoi il l'est, sinon le joueur croit à un bug.
      C'est tout l'intérêt du dispositif — que l'enchaînement des écrans se lise
@@ -1108,11 +1107,11 @@ function ecranAudience(q) {
     d.appendChild(el('div', 'soutien-synd',
       `<b>Avant d’en venir au conflit, la délégation tient à le dire</b>
        <span class="quoi">${esc(soutien.label)}</span>
-       <span>« Sur ce point, nous sommes avec vous. C’est une revendication que nous portons, vous l’avez prise, et nous le disons publiquement. Ne la laissez pas se défaire : votre successeur, lui, n’aura rien signé. »</span>
-       <span class="src">Une organisation ne peut pas demander le retrait d’une mesure qu’elle porte : celle-ci ne vous sera jamais réclamée par elle.</span>`));
+       <span>« Sur ce point, nous sommes avec vous. C’est une revendication que nous portons, vous l’avez prise. Mais nous ne le dirons pas publiquement. »</span>
+       <span class="src">Une organisation ne peut pas demander le retrait d’une mesure qu’elle porte.</span>`));
   }
   if (premiereAudience) {
-    d.appendChild(el('p', '', '<span style="font-size:.82rem;color:var(--encre-2)">Il n’y a pas de bonne réponse dans l’absolu, il y a une bonne réponse à <b>ce</b> profil-là. La fermeté rassure l’opinion, la méthode paie selon l’interlocuteur, la concession paie partout… et se paie à Bercy.</span>'));
+    d.appendChild(el('p', '', '<span style="font-size:.82rem;color:var(--encre-2)">Il n’y a pas de bonne réponse dans l’absolu, il y a une bonne réponse à <b>ce</b> profil-là. La fermeté rassure l’opinion, la méthode paie selon l’interlocuteur, la concession paie partout… et surtout à Bercy.</span>'));
   }
   const opts = el('div', 'opts');
   audience.reponses.forEach((r, i) => {
@@ -1147,7 +1146,7 @@ function ecranRetrait(q) {
   const arg = q.argumentaire || {};
   const d = docu('Audience, la revendication', `${org.nom} exige un retrait`);
   d.classList.add('papier');
-  d.appendChild(el('div', 'note-passation', `« Venons-en au fond. Nous demandons le retrait de <b>« ${esc(carte.label)} »</b>. Nos instances sont mandatées. Votre réponse, monsieur le ministre ? »`));
+  d.appendChild(el('div', 'note-passation', `« Venons-en au fond. Nous demandons le retrait de <b>« ${esc(carte.label)} »</b>. Nous voterons contre au Conseil supérieur de l’éducation et nous appellerons à la grève. Votre réponse, monsieur le ministre ? »`));
   /* Deux arguments, de deux natures différentes, explicitement étiquetées.
      C'est le cœur pédagogique de la scène : apprendre à trier ce qui se vérifie
      de ce qui relève d'une conception de l'école, sans dire que le second
@@ -1187,10 +1186,10 @@ function ecranRetrait(q) {
     const box = el('div', 'decryptage');
     box.style.borderLeftColor = dec === 'ceder' ? 'var(--c-sante)' : dec === 'requalifier' ? 'var(--c-budget)' : 'var(--rouge-rf)';
     box.innerHTML = dec === 'ceder'
-      ? `<div class="titre-d" style="color:var(--c-sante)">Vous cédez</div><p><i>« Nous saluons un ministre qui sait entendre. »</i> — La mesure sort du droit. La presse titrera sur le recul ; les salles des professeurs, sur l’écoute. Les deux auront raison.</p>`
+      ? `<div class="titre-d" style="color:var(--c-sante)">Vous cédez</div><p><i>« Nous avons gagné ce combat, mais la mobilisation se poursuit, pour les salaires ! »</i> — La mesure sort du droit. La presse titrera sur le recul ; les salles des professeurs, sur l’écoute. Les deux auront raison.</p>`
       : dec === 'requalifier'
       ? `<div class="titre-d" style="color:var(--c-budget)">Vous requalifiez</div><p><i>« Nous prenons acte de cet ajustement de méthode. »</i> Personne ne parlera de recul : le dispositif existe encore, sous un autre nom, et ne s’impose plus à personne. Le geste le moins coûteux du jeu, et le seul dont le prix n’apparaît qu’à la dernière page.</p>`
-      : `<div class="titre-d" style="color:var(--rouge-rf)">Vous maintenez</div><p><i>« Nous en tirerons les conséquences. »</i> — ${combatif ? 'La délégation quitte l’audience. Le préavis sera déposé avant la fin de semaine.' : 'La délégation transmettra à ses instances. Le rapport de force est noté, de part et d’autre.'}</p>`;
+      : `<div class="titre-d" style="color:var(--rouge-rf)">Vous maintenez</div><p><i>« Nous allons appeler à une grève générale. Vous devrez en tirer les conséquences. »</i> — ${combatif ? 'La délégation quitte l’audience. Le préavis sera déposé avant la fin de semaine.' : 'La délégation transmettra à ses instances. Le rapport de force est noté, de part et d’autre.'}</p>`;
     d.appendChild(box);
     const act = el('div', 'actions');
     const ok = el('button', 'btn', 'Clore l’audience');
@@ -1262,7 +1261,7 @@ function ecranEtape(etape) {
           <span class="val" style="color:${e.montant > 1 ? 'var(--ok)' : e.montant < -1 ? 'var(--alerte)' : 'var(--encre-2)'}">${signe(e.montant)}</span>
           <span style="color:var(--encre-3);font-size:.76rem">preuve ${'🔒'.repeat(e.cadenas)} · documenté ~${signe(e.central)}${e.requalifie ? ' · rendue facultative' : ''}</span>`));
       }
-      sc.appendChild(el('p', '', '<span style="font-size:.76rem;color:var(--encre-3)">Ce que vous aviez signé sous incertitude entre aujourd’hui dans les compteurs, implémentation comprise. Les scellés restants s’ouvriront plus tard, certains après vous.'
+      sc.appendChild(el('p', '', '<span style="font-size:.76rem;color:var(--encre-3)">Ce que vous aviez signé sous incertitude entre aujourd’hui dans les compteurs. Le reste s’ouvrira plus tard, parfois après vous.'
         + (ouverts.some((e) => e.requalifie) ? ' Les lignes marquées « requalifiée » sont les mesures que vous avez rendues facultatives sous pression : elles ont continué d’être financées et ont produit moins d’un cinquième de ce qu’elles promettaient.' : '')
         + '</span>'));
       blocs.push(sc);
@@ -1296,7 +1295,7 @@ function ecranEtape(etape) {
   const ctx = {
     ouverture: 'Votre doctrine est déclarée. L’été, lui, a ses propres plans.',
     juillet: 'La double sanction de juillet est tombée : lettre plafond et concours.',
-    rentree: 'La rentrée est passée. Ou l’inverse.',
+    rentree: '',
     decembre: 'Budget voté, publications de décembre.',
     mars: 'Les mobilisations de printemps.',
     cloture: `Fin de l’année scolaire, an ${S.annee} sur 5.`,
@@ -1310,9 +1309,9 @@ function ecranBilan(B) {
   const S = ETAT.s;
   localStorage.removeItem(CLE_SAUVE);
   const fins = {
-    mandat_complet: ['CINQ ANS RUE DE GRENELLE : IL PART DEBOUT', 'Aucun ministre de l’Éducation n’avait tenu un quinquennat entier depuis fort longtemps. Le déménageur est déçu.'],
+    mandat_complet: ['CINQ ANS RUE DE GRENELLE : IL PART DEBOUT', 'Bravo ! Aucun ministre de l’Éducation n’avait tenu un quinquennat entier depuis fort longtemps. Le déménageur est déçu.'],
     renvoi: ['REMANIÉ', 'Trois convocations à Matignon font une porte. Vos cartons connaissaient le chemin.'],
-    remaniement: ['REMANIEMENT SURPRISE : LA COLONNE D’À CÔTÉ', 'Rien de personnel. Votre nom équilibrait un tableau qui ne vous concernait pas.'],
+    remaniement: ['REMANIEMENT SURPRISE !', 'Rien de personnel. Votre nom équilibrait un tableau qui ne vous concernait pas.'],
     guerre_scolaire: ['GUERRE SCOLAIRE : LE TEXTE RETIRÉ, LE MINISTRE AUSSI', 'Un million de personnes dans la rue. Comme en 1984, à la mode près.'],
   }[B.fin.type] || ['FIN DE MANDAT', ''];
 
@@ -1410,7 +1409,7 @@ function ecranBilan(B) {
 function verdictProse(B) {
   const v = B.vrai, ecartPerception = B.scoreAffiche - B.scoreBilan;
   if (B.fin.type === 'guerre_scolaire') return '« Il avait raison sur le fond », dira-t-on dans dix ans. C’est exactement ce qu’on a dit d’Alain Savary.';
-  if (B.scoreBilan >= 55 && B.constance) return 'Vous laissez un système en meilleur état que vous ne l’avez trouvé, un cap lisible, et des effets qui composeront après vous. Dans ce ministère, cela porte un nom : une exception.';
+  if (B.scoreBilan >= 55 && B.constance) return 'Vous laissez un système en meilleur état que vous ne l’avez trouvé, un cap lisible, et des effets qui composeront après vous. Dans ce ministère, cela porte un nom : une exception. Vous aurez droit à une salle de réunion à votre nom à la DGESCO, celle qui fait face à la machine à café.';
   if (ecartPerception > 5) return 'Beau mandat, disent les sondages. Le bilan, lui, est plus discret : vous avez surtout gouverné le tableau de bord. Vos successeurs gouverneront le reste.';
   if (B.scoreBilan - B.scoreAffiche > 3) return 'Le pays ne vous a pas vu travailler, les indicateurs regardaient ailleurs, comme toujours, avec dix ans de retard. Vos successeurs inaugureront vos résultats. Ils y penseront très fort.';
   if (B.anneesJouees < 3) return 'Deux ans, comme la moyenne. Le système vous a survécu sans effort particulier : il a l’habitude.';
@@ -1545,8 +1544,6 @@ function ecranReperes(q) {
   d.appendChild(el('ul', 'rep-liste', b.chiffres.map((x) =>
     `<li><span class="v">${fr(x.v)}</span><span class="l">${fr(x.l)}.${citer(x.src)}</span></li>`).join('')));
   d.appendChild(el('p', 'cadrage-retenir', fr(b.aRetenir)));
-  d.appendChild(el('p', 'note-passation',
-    'Les huit autres fiches de référence sont à tout moment dans « Comprendre le jeu », en bas à gauche de l’écran. Cette note-ci appelle une décision : elle vous attend à l’écran suivant.'));
 
   const ok = el('button', 'btn tamponner', NOTES_SUITE[cle] || 'Continuer');
   ok.onclick = () => suivant(null);
@@ -1585,7 +1582,7 @@ function ouvrirComprendre() {
     Object.values(SOURCES).sort((a, b) => a.org.localeCompare(b.org, 'fr')).map((S) =>
       `<li><span class="org">${esc(S.org)}</span> — ${S.url ? `<a href="${S.url}" target="_blank" rel="noopener">${esc(S.titre)}</a>` : esc(S.titre)} <span style="color:var(--encre-3)">(${esc(S.date)})</span></li>`).join('')
   }</ul>
-  <p class="rep-serie-note">Les personnages, les organisations syndicales et les titres de presse du jeu sont des pseudonymes transparents : la satire est symétrique, personne n’est épargné. En revanche, les propositions politiques citées sur les cartes sont réelles et attribuées à leurs auteurs, et tous les chiffres ci-dessus sont vérifiables aux adresses indiquées.</p>`;
+  <p class="rep-serie-note">Les personnages, les organisations syndicales et les titres de presse du jeu sont des pseudonymes transparents : la satire est symétrique, personne n’est épargné. En revanche, les propositions politiques citées sur les cartes sont réelles et attribuées à leurs auteurs, et tous les chiffres ci-dessus sont vérifiables aux sources indiquées.</p>`;
   c.appendChild(src);
   $('#comprendre').hidden = false;
   $('#comprendre').scrollTop = 0;

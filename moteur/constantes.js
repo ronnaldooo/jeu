@@ -367,13 +367,13 @@ export const GREVE = {
    organisations sont altérées du même degré). Les identifiants, pondérations
    (élections CSA 2022) et profils correspondent aux organisations réelles. */
 export const SYNDICATS = [
-  { id: 'fsu',   nom: 'FUSE',             poids: 34.05, seuil: 2.4, profil: 'rapport_de_force' },
-  { id: 'unsa',  nom: 'UNISA Éducation',  poids: 19.37, seuil: 3.4, profil: 'reformiste' },
-  { id: 'fo',    nom: 'FNEC-OF',          poids: 14.05, seuil: 1.8, profil: 'frontal' },
-  { id: 'cfdt',  nom: 'Sgen-CFTD',        poids: 7.80,  seuil: 3.7, profil: 'negociation' },
-  { id: 'cgt',   nom: "CGT Éduc'axion",   poids: 6.64,  seuil: 1.7, profil: 'radical' },
+  { id: 'fsu',   nom: 'FSTU',            poids: 34.05, seuil: 2.4, profil: 'rapport_de_force' },
+  { id: 'unsa',  nom: 'UNISon Éducation', poids: 19.37, seuil: 3.4, profil: 'reformiste' },
+  { id: 'fo',    nom: 'OF',               poids: 14.05, seuil: 1.8, profil: 'frontal' },
+  { id: 'cfdt',  nom: 'CFTD',             poids: 7.80,  seuil: 3.7, profil: 'negociation' },
+  { id: 'cgt',   nom: 'CGèt’',            poids: 6.64,  seuil: 1.7, profil: 'radical' },
   { id: 'snalc', nom: 'SNACL',            poids: 6.21,  seuil: 3.0, profil: 'corporatiste' },
-  { id: 'sud',   nom: 'SÜD Éducation',    poids: 5.09,  seuil: 1.5, profil: 'radical' },
+  { id: 'sud',   nom: 'NORD Éducation',   poids: 5.09,  seuil: 1.5, profil: 'radical' },
 ];
 
 /* Sensibilité de chaque profil aux thèmes de conflit (multiplie l'intensité). */
@@ -449,25 +449,19 @@ export const PROFILS = [
     id: 'serail', nom: 'Vous venez de la maison',
     detail: 'Ancien recteur, passé par l’administration centrale. Les personnels savent que vous connaissez le terrain ; la presse écrira que vous êtes le candidat de la continuité.',
     adhesion: +7, capital: -4, credibilite: +10,
-    expose: ['privilege'],
+    expose: ['lieu'],
   },
   {
     id: 'hautfonc', nom: 'Vous venez de la haute fonction publique',
     detail: 'Inspection générale des finances, cabinets ministériels. Vous savez tenir un arbitrage à Bercy ; on vous soupçonnera de tenir des comptes plutôt que des classes.',
     adhesion: -3, capital: +5, credibilite: +4,
-    expose: ['privilege', 'faux_nez'],
+    expose: ['illegitimite'],
   },
   {
-    id: 'elu', nom: 'Vous venez d’un mandat d’élu local',
-    detail: 'Maire, puis parlementaire. Vous connaissez les cartes scolaires par les maires qui les subissent ; on vous rappellera vos anciennes déclarations.',
+    id: 'elu', nom: 'Vous êtes un politique',
+    detail: 'Parlementaire, vous n’attendiez que ça d’être nommé. On vous rappellera vos anciennes déclarations.',
     adhesion: +2, capital: +2, credibilite: -2,
-    expose: ['faux_nez', 'lieu'],
-  },
-  {
-    id: 'civile', nom: 'Vous venez de la société civile',
-    detail: 'Chercheur, chef d’entreprise ou dirigeant associatif. On vous a nommé pour votre regard neuf ; on vous le reprochera dès la première difficulté.',
-    adhesion: -8, capital: +7, credibilite: -4,
-    expose: ['illegitimite', 'ecole_enfants'],
+    expose: ['lieu'],
   },
 ];
 
@@ -495,22 +489,6 @@ export const ENTRETIEN = [
     ],
   },
   {
-    id: 'patrimoine',
-    question: 'Rien à déclarer côté patrimoine ? Aucun mandat rémunéré qui traîne ?',
-    aparte: 'Votre déclaration d’intérêts sera publiée par la Haute Autorité pour la transparence de la vie publique. Tout le monde pourra la lire.',
-    reponses: [
-      { label: 'Rien à signaler, ma déclaration est à jour', valeur: 'net',
-        det: 'La déclaration part demain à la Haute Autorité. Vous dormirez mieux.',
-        credibilite: 0, ferme: ['privilege'] },
-      { label: 'Un poste universitaire en sommeil, avec décharge', valeur: 'decharge',
-        det: 'Parfaitement régulier, et parfaitement inexplicable à des enseignants à qui vous demanderez de faire leurs heures.',
-        credibilite: +2, expose: ['privilege'] },
-      { label: '« Absolument rien. »', valeur: 'mensonge',
-        det: 'Le poste universitaire existe toujours. Un hebdomadaire satirique met en moyenne dix-huit mois à trouver ce genre de chose.',
-        credibilite: +5, expose: ['privilege'], mensonge: true },
-    ],
-  },
-  {
     id: 'passe',
     question: 'Rien dans vos fonctions précédentes qui puisse nous revenir dessus ?',
     aparte: 'Traduction : y a-t-il un dossier que vous avez laissé passer il y a dix ans, et dont personne ne parlait alors ?',
@@ -518,7 +496,7 @@ export const ENTRETIEN = [
       { label: 'Rien à ma connaissance', valeur: 'rien',
         det: 'La formule est prudente. C’est aussi celle qu’on repasse au journal de 20 heures le jour où il s’avère qu’il y avait quelque chose.',
         credibilite: 0 },
-      { label: 'Un signalement que je n’ai pas transmis, dans un internat', valeur: 'signale',
+      { label: 'Un signalement pour violences dans un internat, que je n’ai pas transmis', valeur: 'signale',
         det: 'Vous le dites avant qu’on ne le trouve. Le cabinet préparera une réponse ; elle existera le jour où il faudra.',
         credibilite: -4, ferme: ['passe'] },
       { label: '« Rien, absolument rien. »', valeur: 'mensonge',

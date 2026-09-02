@@ -912,13 +912,13 @@ const GREVE = {
    organisations sont altérées du même degré). Les identifiants, pondérations
    (élections CSA 2022) et profils correspondent aux organisations réelles. */
 const SYNDICATS = [
-  { id: 'fsu',   nom: 'FUSE',             poids: 34.05, seuil: 2.4, profil: 'rapport_de_force' },
-  { id: 'unsa',  nom: 'UNISA Éducation',  poids: 19.37, seuil: 3.4, profil: 'reformiste' },
-  { id: 'fo',    nom: 'FNEC-OF',          poids: 14.05, seuil: 1.8, profil: 'frontal' },
-  { id: 'cfdt',  nom: 'Sgen-CFTD',        poids: 7.80,  seuil: 3.7, profil: 'negociation' },
-  { id: 'cgt',   nom: "CGT Éduc'axion",   poids: 6.64,  seuil: 1.7, profil: 'radical' },
+  { id: 'fsu',   nom: 'FSTU',            poids: 34.05, seuil: 2.4, profil: 'rapport_de_force' },
+  { id: 'unsa',  nom: 'UNISon Éducation', poids: 19.37, seuil: 3.4, profil: 'reformiste' },
+  { id: 'fo',    nom: 'OF',               poids: 14.05, seuil: 1.8, profil: 'frontal' },
+  { id: 'cfdt',  nom: 'CFTD',             poids: 7.80,  seuil: 3.7, profil: 'negociation' },
+  { id: 'cgt',   nom: 'CGèt’',            poids: 6.64,  seuil: 1.7, profil: 'radical' },
   { id: 'snalc', nom: 'SNACL',            poids: 6.21,  seuil: 3.0, profil: 'corporatiste' },
-  { id: 'sud',   nom: 'SÜD Éducation',    poids: 5.09,  seuil: 1.5, profil: 'radical' },
+  { id: 'sud',   nom: 'NORD Éducation',   poids: 5.09,  seuil: 1.5, profil: 'radical' },
 ];
 
 /* Sensibilité de chaque profil aux thèmes de conflit (multiplie l'intensité). */
@@ -994,25 +994,19 @@ const PROFILS = [
     id: 'serail', nom: 'Vous venez de la maison',
     detail: 'Ancien recteur, passé par l’administration centrale. Les personnels savent que vous connaissez le terrain ; la presse écrira que vous êtes le candidat de la continuité.',
     adhesion: +7, capital: -4, credibilite: +10,
-    expose: ['privilege'],
+    expose: ['lieu'],
   },
   {
     id: 'hautfonc', nom: 'Vous venez de la haute fonction publique',
     detail: 'Inspection générale des finances, cabinets ministériels. Vous savez tenir un arbitrage à Bercy ; on vous soupçonnera de tenir des comptes plutôt que des classes.',
     adhesion: -3, capital: +5, credibilite: +4,
-    expose: ['privilege', 'faux_nez'],
+    expose: ['illegitimite'],
   },
   {
-    id: 'elu', nom: 'Vous venez d’un mandat d’élu local',
-    detail: 'Maire, puis parlementaire. Vous connaissez les cartes scolaires par les maires qui les subissent ; on vous rappellera vos anciennes déclarations.',
+    id: 'elu', nom: 'Vous êtes un politique',
+    detail: 'Parlementaire, vous n’attendiez que ça d’être nommé. On vous rappellera vos anciennes déclarations.',
     adhesion: +2, capital: +2, credibilite: -2,
-    expose: ['faux_nez', 'lieu'],
-  },
-  {
-    id: 'civile', nom: 'Vous venez de la société civile',
-    detail: 'Chercheur, chef d’entreprise ou dirigeant associatif. On vous a nommé pour votre regard neuf ; on vous le reprochera dès la première difficulté.',
-    adhesion: -8, capital: +7, credibilite: -4,
-    expose: ['illegitimite', 'ecole_enfants'],
+    expose: ['lieu'],
   },
 ];
 
@@ -1040,22 +1034,6 @@ const ENTRETIEN = [
     ],
   },
   {
-    id: 'patrimoine',
-    question: 'Rien à déclarer côté patrimoine ? Aucun mandat rémunéré qui traîne ?',
-    aparte: 'Votre déclaration d’intérêts sera publiée par la Haute Autorité pour la transparence de la vie publique. Tout le monde pourra la lire.',
-    reponses: [
-      { label: 'Rien à signaler, ma déclaration est à jour', valeur: 'net',
-        det: 'La déclaration part demain à la Haute Autorité. Vous dormirez mieux.',
-        credibilite: 0, ferme: ['privilege'] },
-      { label: 'Un poste universitaire en sommeil, avec décharge', valeur: 'decharge',
-        det: 'Parfaitement régulier, et parfaitement inexplicable à des enseignants à qui vous demanderez de faire leurs heures.',
-        credibilite: +2, expose: ['privilege'] },
-      { label: '« Absolument rien. »', valeur: 'mensonge',
-        det: 'Le poste universitaire existe toujours. Un hebdomadaire satirique met en moyenne dix-huit mois à trouver ce genre de chose.',
-        credibilite: +5, expose: ['privilege'], mensonge: true },
-    ],
-  },
-  {
     id: 'passe',
     question: 'Rien dans vos fonctions précédentes qui puisse nous revenir dessus ?',
     aparte: 'Traduction : y a-t-il un dossier que vous avez laissé passer il y a dix ans, et dont personne ne parlait alors ?',
@@ -1063,7 +1041,7 @@ const ENTRETIEN = [
       { label: 'Rien à ma connaissance', valeur: 'rien',
         det: 'La formule est prudente. C’est aussi celle qu’on repasse au journal de 20 heures le jour où il s’avère qu’il y avait quelque chose.',
         credibilite: 0 },
-      { label: 'Un signalement que je n’ai pas transmis, dans un internat', valeur: 'signale',
+      { label: 'Un signalement pour violences dans un internat, que je n’ai pas transmis', valeur: 'signale',
         det: 'Vous le dites avant qu’on ne le trouve. Le cabinet préparera une réponse ; elle existera le jour où il faudra.',
         credibilite: -4, ferme: ['passe'] },
       { label: '« Rien, absolument rien. »', valeur: 'mensonge',
@@ -1322,7 +1300,7 @@ const CATALOGUE = [
     porteurs: ['collectifs d’AESH', 'Défenseur des droits', 'associations de familles (Unapei, APF France handicap)', 'la gauche parlementaire'],
     contre: ['rapport IGÉSR-IGAS : rejette la fonctionnarisation, propose +10 % via une grille type catégorie B'],
     perimetre: 'matignon',                  // législatif, rejeté au Sénat le 07/01/2026
-    cout: 4.3, coutETP: 0, pol: 16,
+    cout: 0.043, coutETP: 0, pol: 16,
     theme: 'aesh', once: true, reforme: false,
     vitrine: { parents: +7, enseignants: +8, presse: +5, compteurs: { sante: +6 } },
     reel: [
@@ -1362,7 +1340,7 @@ const CATALOGUE = [
     famille: 'parcours',
     porteurs: ['réforme polonaise de 1999', 'CSEN', 'chercheurs en économie de l’éducation'],
     perimetre: 'ministeriel',
-    cout: 0.35, coutETP: 900, pol: 12,
+    cout: 0.03, coutETP: 900, pol: 12,
     theme: 'palier', once: true, excl: 'orientation', reforme: true,
     vitrine: { parents: -3, enseignants: -2, presse: -2, compteurs: { reussite: -4 } },
     reel: [
@@ -1377,14 +1355,14 @@ const CATALOGUE = [
 
   /* ------------------------------------------------------------------ 9 --- */
   {
-    id: 'differenciation',
-    label: 'Différenciation précoce : groupes de niveau, certificat d’entrée en 6e, parcours dès la 4e',
+    id: 'groupes_niveau',
+    label: 'Groupes de niveau permanents en français et en mathématiques au collège',
     famille: 'parcours',
-    porteurs: ['Gabriel Attal (« choc des savoirs »)', 'la droite parlementaire', 'Reconquête (fin du collège unique)', 'Rassemblement national (collège modulaire)'],
-    contre: ['IGÉSR juin 2025 : « dérive des continents »', 'Conseil d’État : censure partielle du dispositif'],
+    porteurs: ['Gabriel Attal (« choc des savoirs »)', 'la droite parlementaire'],
+    contre: ['IGÉSR juin 2025 : « dérive des continents » entre le texte et le terrain', 'l’ensemble des organisations syndicales'],
     perimetre: 'ministeriel',
-    cout: 0.5, coutETP: 1800, pol: 10,
-    theme: 'differenciation', once: true, excl: 'orientation', reforme: true,
+    cout: 0.3, coutETP: 1800, pol: 10,
+    theme: 'groupes_niveau', once: true, excl: 'orientation', reforme: true,
     vitrine: { parents: +8, enseignants: -9, presse: +7, compteurs: { reussite: +8 } },
     reel: [
       { compteur: 'reussite', central: 1, delai: 4, cadenas: 2, source: 'littérature internationale : effet moyen proche de zéro sur la moyenne' },
@@ -1392,9 +1370,51 @@ const CATALOGUE = [
     ],
     physique: {},
     greve: { intensite: 4, theme: 'pedagogie', segment: 'college' },
-    preuve: 'La littérature internationale sur les regroupements durables par niveau est convergente : effet moyen proche de zéro sur l’ensemble, effet négatif sur les élèves faibles regroupés entre eux (perte de l’entraînement par les pairs, baisse des attentes des adultes). Le précédent français est éloquent : l’obligation des groupes de niveau a été appliquée dans moins de 20 % des établissements, censurée partiellement par le Conseil d’État, puis abandonnée en 2026, l’IGÉSR a parlé de « dérive des continents » entre le texte et le terrain.',
-    ideeRecue: '« Regrouper les faibles ensemble permet de mieux s’occuper d’eux. » C’est l’intuition la plus répandue et la mieux réfutée : l’effet de composition joue contre eux, sauf regroupements courts, ciblés et réversibles.',
-    mot: "Première tentative : appliqué dans moins de 20 % des établissements, puis censuré au Conseil d'État et abandonné en 2026. Vous voulez vraiment recommencer ?",
+    preuve: 'La littérature internationale sur les regroupements durables par niveau est convergente : effet moyen proche de zéro sur l’ensemble, effet négatif sur les élèves faibles regroupés entre eux, par perte de l’entraînement par les pairs et baisse des attentes des adultes. Le précédent français est éloquent : l’obligation a été appliquée dans moins de 20 % des établissements, censurée partiellement par le Conseil d’État, puis abandonnée en 2026. L’IGÉSR a parlé de « dérive des continents » entre le texte et le terrain.',
+    ideeRecue: '« Regrouper les faibles ensemble permet de mieux s’occuper d’eux. » C’est l’intuition la plus répandue et la mieux réfutée : l’effet de composition joue contre eux. Les regroupements qui marchent sont courts, ciblés et réversibles, ce qui est exactement le contraire d’un groupe permanent.',
+    mot: "Première tentative : appliqué dans moins de 20 % des établissements, censuré au Conseil d'État, abandonné en 2026. Vous voulez vraiment recommencer ?",
+  },
+  {
+    id: 'certificat_6e',
+    label: 'Un certificat de fin de CM2 pour entrer en sixième',
+    famille: 'parcours',
+    porteurs: ['Gabriel Attal (classes « prépa-6e »)', 'la droite parlementaire', 'une majorité de l’opinion'],
+    contre: ['les fédérations de parents', 'les organisations syndicales du premier degré'],
+    perimetre: 'ministeriel',
+    cout: 0.06, coutETP: 400, pol: 8,
+    theme: 'certificat_6e', once: true, excl: 'orientation', reforme: true,
+    decouverte: { annee: 2 },
+    vitrine: { parents: +7, enseignants: -6, presse: +6, compteurs: { reussite: +6 } },
+    reel: [
+      { compteur: 'reussite', central: 0, delai: 3, cadenas: 2, source: 'aucune preuve qu’un examen de passage élève le niveau ; il trie sans enseigner' },
+      { compteur: 'egalite',  central: -6, delai: 3, cadenas: 3, source: 'un barrage à l’entrée en sixième frappe les élèves socialement les plus fragiles, comme le redoublement dont il est la variante' },
+    ],
+    physique: {},
+    greve: { intensite: 3, theme: 'pedagogie', segment: '1erdegre' },
+    preuve: 'Le dispositif « prépa-6e » consiste à retenir hors de la sixième ordinaire les élèves qui n’atteignent pas un seuil aux évaluations de fin de CM2. C’est, dans sa mécanique, un redoublement déguisé : mêmes élèves visés, même effet de retard, même profil social. Or la note n° 15 du Conseil scientifique de l’éducation nationale établit que le redoublement a un effet moyen négatif sur les acquis et accroît le décrochage. L’« effet de menace », qui voudrait que la perspective du barrage fasse travailler davantage, n’a jamais été démontré nulle part.',
+    ideeRecue: '« On ne peut pas envoyer en sixième un élève qui ne sait pas lire. » On ne le peut pas, en effet. La question est de savoir si le retenir une année de plus le lui apprend : la réponse documentée est non. Ce qui l’apprend coûte plus cher et se voit moins.',
+    mot: "Un examen d'entrée en sixième, c'est un redoublement avec un beau nom. Le CSEN a écrit ce qu'il fallait en penser ; il n'a pas été invité au lancement.",
+  },
+  {
+    id: 'parcours_4e',
+    label: 'Des parcours différenciés dès la quatrième, vers la voie professionnelle',
+    famille: 'parcours',
+    porteurs: ['Reconquête (fin du collège unique)', 'Rassemblement national (collège modulaire)', 'une partie de la droite parlementaire'],
+    contre: ['les organisations syndicales', 'les fédérations de parents', 'la gauche parlementaire, au nom du collège unique'],
+    perimetre: 'ministeriel',
+    cout: 0.12, coutETP: 600, pol: 12,
+    theme: 'parcours_4e', once: true, excl: 'orientation', reforme: true,
+    decouverte: { annee: 2 },
+    vitrine: { parents: +5, enseignants: -7, presse: +6, compteurs: { reussite: +5 } },
+    reel: [
+      { compteur: 'egalite',  central: -8, delai: 5, cadenas: 3, source: 'l’orientation précoce est le canal de reproduction sociale le mieux documenté des comparaisons internationales' },
+      { compteur: 'reussite', central: -3, delai: 5, cadenas: 3, source: 'Pologne 1999 : reculer l’orientation d’un an a produit un gain majeur ; l’avancer produit le mouvement inverse' },
+    ],
+    physique: {},
+    greve: { intensite: 4, theme: 'pedagogie', segment: 'college' },
+    preuve: 'C’est la mesure dont la comparaison internationale documente le mieux l’effet, et il est négatif. Les systèmes qui orientent tôt sont ceux où l’origine sociale pèse le plus sur les résultats. La réforme polonaise de 1999, qui a repoussé l’orientation d’un an, est citée comme le facteur crucial de la progression du pays dans PISA, portée par les élèves les plus faibles. Avancer l’orientation en quatrième revient à faire le trajet en sens inverse, sur une population dont on sait déjà qu’elle est socialement typée.',
+    ideeRecue: '« Certains élèves n’ont rien à faire au collège général. » Ils y sont mal, c’est vrai. La question est de savoir ce qu’on leur propose : les pays qui les orientent à quatorze ans obtiennent de moins bons résultats pour eux, pas seulement pour les autres.',
+    mot: "Six ans de délai, aucune photo à la clé, et la voie professionnelle qui se sent visée. Un ministre courageux la prend ; un ministre pressé prend l'inverse.",
   },
 
   /* ----------------------------------------------------------------- 10 --- */
@@ -1404,7 +1424,7 @@ const CATALOGUE = [
     famille: 'autonomie',
     porteurs: ['Édouard Philippe', 'Institut Montaigne', 'iFRAP', 'précédent anglais des academies'],
     perimetre: 'ministeriel',
-    cout: 0.12, coutETP: 0, pol: 9,
+    cout: 0.005, coutETP: 0, pol: 9,
     theme: 'autonomie', once: true, excl: 'evaluation', reforme: true,
     vitrine: { parents: +4, enseignants: -11, presse: +8, compteurs: { reussite: +7 } },
     reel: [
@@ -1439,24 +1459,44 @@ const CATALOGUE = [
 
   /* ----------------------------------------------------------------- 12 --- */
   {
-    id: 'remplacement',
-    label: 'Plan remplacement : brigades académiques et annualisation des obligations de service',
+    id: 'brigades',
+    label: 'Des brigades académiques de remplacement, recrutées et affectées',
     famille: 'moyens',
-    porteurs: ['fédérations de parents (FCPE, PEEP)', 'Cour des comptes'],
+    porteurs: ['fédérations de parents (FCPE, PEEP)', 'Cour des comptes', 'recteurs'],
+    contre: ['Bercy, qui compte les postes'],
+    perimetre: 'ministeriel',
+    cout: 0.04, coutETP: 4000, pol: 3,
+    theme: 'remplacement', once: true, reforme: false,
+    vitrine: { parents: +7, enseignants: +3, presse: +4, compteurs: { sante: +5 } },
+    reel: [
+      { compteur: 'sante',    central: 4, delai: 2, cadenas: 3, source: 'DEPP 26-14 : 9,8 % d’heures non assurées, dont 7,5 points de non-remplacement' },
+      { compteur: 'reussite', central: 2, delai: 3, cadenas: 3, source: 'le temps d’enseignement effectivement reçu est un déterminant direct des acquis' },
+    ],
+    physique: { hna: { delta: -1.2, duree: 99 } },
+    preuve: '9,8 % des heures d’enseignement du second degré n’ont pas été assurées en 2024-2025, dont 7,5 points de non-remplacement, soit environ deux heures perdues par élève et par semaine, en hausse de 0,7 point par an. Des brigades académiques traitent la part la plus visible du problème, celle des absences longues, sans toucher au statut. Leur limite est connue : elles ne couvrent pas les absences de courte durée, qui sont la majorité des heures perdues, et elles supposent que les postes soient pourvus.',
+    ideeRecue: '« Il manque des remplaçants, donc il faut en recruter. » C’est vrai et insuffisant : un remplaçant recruté ne remplace pas une absence d’une demi-journée, qui se règle dans l’établissement ou ne se règle pas.',
+    mot: "La moitié du problème, sans conflit. C'est rare, alors ne boudez pas : l'autre moitié est dans la carte d'à côté, et elle coûte votre paix sociale.",
+  },
+  {
+    id: 'ors_remplacement',
+    label: 'Inscrire le remplacement de courte durée dans les obligations de service',
+    famille: 'moyens',
+    porteurs: ['Cour des comptes', 'fédérations de parents', 'la droite parlementaire'],
     contre: ['l’annualisation touche au statut : l’intersyndicale la refuse en bloc'],
     perimetre: 'ministeriel',
-    cout: 0.48, coutETP: 4000, pol: 7,
-    theme: 'remplacement', once: true, reforme: false,
-    vitrine: { parents: +8, enseignants: -6, presse: +5, compteurs: { sante: +6 } },
+    cout: 0.01, coutETP: 0, pol: 9,
+    theme: 'ors_service', once: true, reforme: true,
+    decouverte: { si: 'heures_perdues', note: 'La direction générale vous rappelle que les deux tiers des heures perdues sont des absences courtes, et qu’aucune brigade ne les couvre.' },
+    vitrine: { parents: +6, enseignants: -11, presse: +4, compteurs: { sante: +4 } },
     reel: [
-      { compteur: 'sante',    central: 6, delai: 2, cadenas: 3, source: 'DEPP 26-14 : 9,8 % d’heures non assurées, ~2 h/semaine perdues par élève' },
-      { compteur: 'reussite', central: 3, delai: 3, cadenas: 3, source: 'le temps d’enseignement effectivement reçu est un déterminant direct des acquis' },
+      { compteur: 'sante',    central: 5, delai: 2, cadenas: 3, source: 'Cour des comptes : les deux tiers des absences non remplacées sont d’origine institutionnelle et relèvent de l’organisation, non du recrutement' },
+      { compteur: 'reussite', central: 2, delai: 3, cadenas: 3, source: 'le temps d’enseignement effectivement reçu est un déterminant direct des acquis' },
     ],
-    physique: { hna: { delta: -2.2, duree: 99 } },
-    greve: { intensite: 3, theme: 'statut', segment: 'tous' },
-    preuve: '9,8 % des heures d’enseignement du second degré n’ont pas été assurées en 2024-2025 (DEPP), dont 7,5 points de non-remplacement, environ deux heures perdues par élève et par semaine, en hausse de 0,7 point par an. Ramener ce taux à 5 % rendrait aux élèves plus d’heures que 4 000 postes n’en apportent. Le verrou n’est pas budgétaire : il est statutaire (l’organisation du remplacement de courte durée).',
-    ideeRecue: '« Il manque des profs, donc il faut recruter. » Le gisement le plus rapide n’est pas le recrutement : c’est l’organisation du remplacement, à condition d’accepter d’ouvrir le dossier du statut, ce qu’aucune intersyndicale n’accueille avec des fleurs.',
-    mot: "Ramener les heures non assurées de 9,8 % à 5 % rendrait aux élèves plus d'heures que 4 000 postes n'en coûtent. Encore faut-il toucher au statut pour y arriver.",
+    physique: { hna: { delta: -1.4, duree: 99 }, adhesion: -5 },
+    greve: { intensite: 4, theme: 'statut', segment: 'tous' },
+    preuve: 'Ramener le taux d’heures non assurées de 9,8 % à 5 % rendrait aux élèves plus d’heures que n’en apportent 4 000 postes. Le verrou n’est pas budgétaire, il est statutaire : le remplacement de courte durée relève des obligations de service, mais son organisation effective n’a jamais été imposée. C’est la mesure du catalogue au meilleur rendement par euro dépensé, et celle qui coûte le plus cher dans la seule monnaie qui ne se reconstitue pas vite.',
+    ideeRecue: '« C’est déjà dans les textes, il suffit de les appliquer. » Les textes existent depuis 2005. Trois des cinq derniers conflits sociaux du ministère ont commencé par cette phrase, prononcée exactement sur ce ton.',
+    mot: "Presque gratuite, et la plus chère du catalogue. Neuf points de capital, quatre d'intensité de grève, et deux heures par semaine rendues aux élèves.",
   },
 
   /* ======================================================================
@@ -1471,7 +1511,7 @@ const CATALOGUE = [
     famille: 'moyens',
     porteurs: ['CSEN', 'économie de l’éducation (rendement des investissements précoces)', 'Parti socialiste', 'Terra Nova'],
     perimetre: 'ministeriel',
-    cout: 0.28, coutETP: 1500, pol: 4,
+    cout: 0.08, coutETP: 1500, pol: 4,
     theme: 'maternelle', once: true, reforme: true,
     vitrine: { parents: +1, enseignants: +2, presse: 0, compteurs: {} },
     reel: [
@@ -1491,7 +1531,7 @@ const CATALOGUE = [
     porteurs: ['Cour des comptes', 'DEPP', 'une partie de l’encadrement'],
     contre: ['les réseaux sortants du label, leurs maires et leurs équipes'],
     perimetre: 'ministeriel',
-    cout: 0.15, coutETP: 0, pol: 10,
+    cout: 0, coutETP: 0, pol: 10,
     theme: 'ep', once: true, reforme: true,
     vitrine: { parents: -2, enseignants: -4, presse: +2, compteurs: { egalite: +2 } },
     reel: [
@@ -1525,11 +1565,11 @@ const CATALOGUE = [
   /* ----------------------------- 16 · moyens / climat ----------------- */
   {
     id: 'vie_scolaire',
-    label: 'Renforcer la vie scolaire : CPE et assistants d’éducation, contrats stabilisés',
+    label: 'Renforcer la vie scolaire : recruter plus de CPE et d’assistants d’éducation',
     famille: 'moyens',
     porteurs: ['intersyndicale', 'recherche sur le climat scolaire', 'chefs d’établissement'],
     perimetre: 'ministeriel',
-    cout: 0.33, coutETP: 4000, pol: 4,
+    cout: 0.03, coutETP: 4000, pol: 4,
     theme: 'vie_scolaire', once: true, reforme: false,
     vitrine: { parents: +3, enseignants: +5, presse: +1, compteurs: { sante: +3 } },
     reel: [
@@ -1548,7 +1588,7 @@ const CATALOGUE = [
     famille: 'moyens',
     porteurs: ['Bercy', 'tous les gouvernements depuis vingt ans'],
     perimetre: 'ministeriel',
-    cout: 0.18, coutETP: 0, pol: 2,
+    cout: -0.18, coutETP: 0, pol: 2,
     once: false, reforme: false,          // le rabot est éternel : répétable chaque année
     vitrine: { parents: +4, enseignants: -3, presse: +1, compteurs: { sante: +2 } },
     reel: [
@@ -1567,7 +1607,7 @@ const CATALOGUE = [
     famille: 'moyens',
     porteurs: ['tous vos prédécesseurs, sans exception'],
     perimetre: 'ministeriel',
-    cout: 0.22, coutETP: 0, pol: 8,
+    cout: 0.005, coutETP: 0, pol: 8,
     theme: 'formation_initiale', once: true, reforme: true,
     vitrine: { parents: 0, enseignants: -5, presse: +3, compteurs: {} },
     reel: [
@@ -1586,9 +1626,9 @@ const CATALOGUE = [
     famille: 'moyens',
     porteurs: ['consensus de la recherche', 'missions locales', 'régions'],
     perimetre: 'ministeriel',
-    cout: 0.26, coutETP: 0, pol: 3,
+    cout: 0, coutETP: 0, pol: 3,
     theme: 'decrochage', once: true, reforme: false,
-    vitrine: { parents: +2, enseignants: +1, presse: 0, compteurs: { egalite: +1 } },
+    vitrine: { parents: +3, enseignants: 0, presse: +2, compteurs: { egalite: +1 } },
     reel: [
       { compteur: 'egalite', central: 5, delai: 4, cadenas: 4, source: 'le repérage précoce est la mesure la mieux évaluée contre le décrochage' },
       { compteur: 'sante',   central: 2, delai: 4, cadenas: 3, source: 'moins de sortants sans qualification, moins de classes ingérables' },
@@ -1623,7 +1663,7 @@ const CATALOGUE = [
     famille: 'moyens',
     porteurs: ['associations d’élus', 'parents d’élèves en juin'],
     perimetre: 'matignon',                // l'État n'est pas propriétaire des murs
-    cout: 0.25, coutETP: 0, pol: 8,
+    cout: 0, coutETP: 0, pol: 8,
     theme: 'bati', once: true, reforme: false,
     vitrine: { parents: +6, enseignants: +2, presse: +4, compteurs: {} },
     reel: [
@@ -1643,7 +1683,7 @@ const CATALOGUE = [
     famille: 'autonomie',
     porteurs: ['DEPP', 'encadrement', 'chercheurs en évaluation'],
     perimetre: 'ministeriel',
-    cout: 0.07, coutETP: 0, pol: 3,
+    cout: -0.01, coutETP: 0, pol: 3,
     theme: 'eval_diag', once: true, excl: 'evaluation', reforme: false,
     vitrine: { parents: -1, enseignants: +4, presse: -2, compteurs: {} },
     reel: [
@@ -1684,9 +1724,9 @@ const CATALOGUE = [
     id: 'recrutement_direction',
     label: 'Recrutement des enseignants par les chefs d’établissement',
     famille: 'autonomie',
-    porteurs: ['Horizons (version expérimentale)', 'SNPDEN', 'précédent anglais des academies'],
+    porteurs: ['Horizons (version expérimentale)', 'SNPDEN'],
     perimetre: 'ministeriel',
-    cout: 0.05, coutETP: 0, pol: 9,
+    cout: -0.01, coutETP: 0, pol: 9,
     theme: 'recrutement_local', once: true, reforme: true,
     vitrine: { parents: +2, enseignants: -9, presse: +5, compteurs: {} },
     reel: [
@@ -1706,7 +1746,7 @@ const CATALOGUE = [
     famille: 'autonomie',
     porteurs: ['Michel Barnier (pacte pluriannuel)', 'recteurs', 'associations d’élus', 'Cour des comptes (contractualisation)'],
     perimetre: 'ministeriel',
-    cout: 0.10, coutETP: 0, pol: 5,
+    cout: 0.08, coutETP: 0, pol: 5,
     theme: 'pluriannuel', once: true, reforme: false,
     bercy: -3,                            // Bercy déteste s'engager au-delà de l'annualité
     vitrine: { parents: +1, enseignants: +3, presse: +1, compteurs: {} },
@@ -1725,7 +1765,7 @@ const CATALOGUE = [
     famille: 'parcours',
     porteurs: ['Sgen-CFDT (l’a arrachée puis défendue)', 'IGÉSR (version souple)'],
     perimetre: 'ministeriel',
-    cout: 0.24, coutETP: 0, pol: 4,
+    cout: 0.2, coutETP: 0, pol: 4,
     theme: 'groupes_besoins', once: true, excl: 'orientation', reforme: true,
     vitrine: { parents: +2, enseignants: +1, presse: 0, compteurs: {} },
     reel: [
@@ -1740,12 +1780,12 @@ const CATALOGUE = [
   /* ----------------------------- 27 · parcours ------------------------ */
   {
     id: 'brevet_barrage',
-    label: 'Brevet obligatoire pour l’entrée en seconde, avec classes « prépa-seconde »',
+    label: 'Brevet obligatoire pour l’entrée en seconde',
     famille: 'parcours',
     porteurs: ['Gabriel Attal', 'Fondation Jean-Jaurès (version mixité)'],
     contre: ['CSEN : les effets de barrage nourrissent le décrochage'],
     perimetre: 'ministeriel',
-    cout: 0.30, coutETP: 0, pol: 7,
+    cout: 0.005, coutETP: 0, pol: 7,
     theme: 'brevet', once: true, excl: 'orientation', reforme: true,
     vitrine: { parents: +5, enseignants: +1, presse: +6, compteurs: { reussite: +4 } },
     reel: [
@@ -1785,7 +1825,7 @@ const CATALOGUE = [
     famille: 'parcours',
     porteurs: ['intersyndicale', 'chercheurs sur la poursuite d’études'],
     perimetre: 'ministeriel',
-    cout: 0.28, coutETP: 0, pol: 4,
+    cout: 0.01, coutETP: 0, pol: 4,
     theme: 'voie_pro', once: true, reforme: true,
     vitrine: { parents: 0, enseignants: +2, presse: -1, compteurs: {} },
     reel: [
@@ -1805,7 +1845,7 @@ const CATALOGUE = [
     porteurs: ['Reconquête', 'Rassemblement national', 'une partie de la droite parlementaire', 'une majorité de l’opinion dans les sondages'],
     contre: ['deux évaluations publiques : aucun effet durable'],
     perimetre: 'matignon',
-    cout: 0.02, coutETP: 0, pol: 9,
+    cout: 0, coutETP: 0, pol: 9,
     theme: 'allocations', once: true, reforme: false,
     vitrine: { parents: +4, enseignants: -2, presse: +7, compteurs: {} },
     reel: [
@@ -1834,7 +1874,7 @@ const CATALOGUE = [
     ],
     physique: {},
     preuve: 'Le déplacement d’élèves très perturbateurs soulage la classe d’origine, c’est réel et immédiat. Sur les élèves déplacés, les données manquent, et ce qu’on sait des regroupements d’élèves en rupture joue contre : concentrer les difficultés dégrade les trajectoires (effet de composition, encore lui).',
-    mot: "Sortir l'élève règle le problème de la classe et déplace celui de l'élève. Le transfert n'est pas une politique, mais il photographie très bien.",
+    mot: "Sortir l'élève règle le problème de la classe et déplace celui de l'élève.",
   },
 
   /* ----------------------------- 32 · autorité ------------------------ */
@@ -1844,7 +1884,7 @@ const CATALOGUE = [
     famille: 'autorite',
     porteurs: ['acquis de 2025, à généraliser', 'fédérations de parents'],
     perimetre: 'ministeriel',
-    cout: 0.11, coutETP: 0, pol: 2,
+    cout: 0, coutETP: 0, pol: 2,
     theme: 'portable', once: true, reforme: false,
     vitrine: { parents: +6, enseignants: +2, presse: +4, compteurs: { sante: +2 } },
     reel: [
@@ -1863,7 +1903,7 @@ const CATALOGUE = [
     famille: 'autorite',
     porteurs: ['programmes finlandais et danois évalués', 'mission harcèlement'],
     perimetre: 'ministeriel',
-    cout: 0.19, coutETP: 0, pol: 3,
+    cout: 0.001, coutETP: 0, pol: 3,
     theme: 'empathie', once: true, reforme: true,
     vitrine: { parents: +2, enseignants: +1, presse: -3, compteurs: {} },
     reel: [
@@ -1883,7 +1923,7 @@ const CATALOGUE = [
     famille: 'autorite',
     porteurs: ['Rassemblement national', 'Reconquête', 'la nostalgie, qui vote beaucoup'],
     perimetre: 'ministeriel',
-    cout: 0.14, coutETP: 1500, pol: 3,
+    cout: 0, coutETP: 1500, pol: 3,
     theme: 'surges', once: true, reforme: false,
     vitrine: { parents: +4, enseignants: 0, presse: +4, compteurs: {} },
     reel: [
@@ -1902,7 +1942,7 @@ const CATALOGUE = [
     famille: 'mixite',
     porteurs: ['expérimentations parisiennes évaluées', 'départements volontaires', 'CSEN'],
     perimetre: 'ministeriel',
-    cout: 0.08, coutETP: 0, pol: 8,
+    cout: 0, coutETP: 0, pol: 8,
     theme: 'secteurs', once: true, reforme: true,
     vitrine: { parents: -4, enseignants: +2, presse: -1, compteurs: { egalite: +2 } },
     reel: [
@@ -1958,7 +1998,7 @@ const CATALOGUE = [
     famille: 'moyens',
     porteurs: ['chronobiologistes', 'la recherche sur la perte estivale', 'personne d’autre'],
     perimetre: 'ministeriel',
-    cout: 0.12, coutETP: 0, pol: 12,
+    cout: 0, coutETP: 0, pol: 12,
     theme: 'ete', once: true, reforme: true,
     vitrine: { parents: -6, enseignants: -7, presse: +2, compteurs: {} },
     reel: [
@@ -1979,7 +2019,7 @@ const CATALOGUE = [
     famille: 'parcours',
     porteurs: ['à peu près tout le monde, sans les heures'],
     perimetre: 'ministeriel',
-    cout: 0.13, coutETP: 0, pol: 2,
+    cout: 0.001, coutETP: 0, pol: 2,
     theme: 'ia', once: true, reforme: false,
     vitrine: { parents: +2, enseignants: 0, presse: +3, compteurs: {} },
     reel: [
@@ -1998,7 +2038,7 @@ const CATALOGUE = [
     famille: 'moyens',
     porteurs: ['dispositif existant depuis 2017, à rendre effectif', 'EEF (tutorat)'],
     perimetre: 'ministeriel',
-    cout: 0.24, coutETP: 0, pol: 3,
+    cout: 0.14, coutETP: 0, pol: 3,
     theme: 'devoirs', once: true, reforme: false,
     vitrine: { parents: +5, enseignants: -1, presse: +2, compteurs: { egalite: +1 } },
     reel: [
@@ -2026,7 +2066,7 @@ const CATALOGUE = [
     famille: 'moyens',
     porteurs: ['Education Endowment Foundation', 'programmes de rattrapage post-Covid britanniques et néerlandais'],
     perimetre: 'ministeriel',
-    cout: 0.58, coutETP: 0, pol: 4,
+    cout: 0.28, coutETP: 0, pol: 4,
     theme: 'tutorat', once: true, reforme: true,
     decouverte: { annee: 2, note: 'Les évaluations nationales de septembre remontent : la DEPP vous propose un dispositif de rattrapage ciblé.' },
     vitrine: { parents: +4, enseignants: +2, presse: +2, compteurs: { reussite: +3, egalite: +2 } },
@@ -2041,25 +2081,6 @@ const CATALOGUE = [
   },
 
   /* ----------------------------- 42 · moyens -------------------------- */
-  {
-    id: 'lecture_explicite',
-    label: 'Enseignement explicite du code et de la fluence, CP-CE1',
-    famille: 'moyens',
-    porteurs: ['Conseil scientifique de l’éducation nationale', 'Education Endowment Foundation'],
-    perimetre: 'ministeriel',
-    cout: 0.19, coutETP: 0, pol: 4,
-    theme: 'lecture', once: true, reforme: true,
-    decouverte: { si: 'apres_un_an' },
-    vitrine: { parents: +3, enseignants: -3, presse: +2, compteurs: { reussite: +3 } },
-    reel: [
-      { compteur: 'reussite', central: 9, delai: 4, cadenas: 5, source: 'EEF : enseignement systématique du code +5 mois de progrès, niveau de preuve maximal' },
-      { compteur: 'egalite',  central: 5, delai: 4, cadenas: 4, source: 'EEF : effet renforcé pour les élèves les plus éloignés de la lecture à l’entrée au CP' },
-    ],
-    physique: { adhesion: -3 },
-    preuve: 'L’enseignement systématique et explicite du code est classé à +5 mois de progrès au plus haut niveau de preuve par l’Education Endowment Foundation. Le rapport du HCSP d’août 2026 précise le tableau français : plus personne n’emploie la « méthode globale », mais la méthode phonique synthétique stricte (la plus efficace, singulièrement pour les élèves de condition modeste) reste minoritaire, la majorité des enseignants recourant à des méthodes mixtes. Enjeu de fond : près d’un jeune sur quatre a des difficultés prononcées en lecture à 17-18 ans, aux tests de la Journée défense et citoyenneté.',
-    ideeRecue: '« Il suffit de prescrire la bonne méthode. » Le fait le plus instructif du dossier est ailleurs : la moitié des enseignants qui emploient la méthode la plus efficace exercent dans une quinzaine de circonscriptions où l’inspection et les conseillers pédagogiques avaient organisé un accompagnement spécifique. Ce n’est pas la circulaire qui diffuse une méthode, c’est l’accompagnement de proximité, et il ne s’achète pas en une rentrée.',
-    mot: "Preuve maximale, coût minimal, et une salle des professeurs qui vous demandera de quel droit un ministre décide comment on apprend à lire.",
-  },
 
   /* ----------------------------- 43 · moyens -------------------------- */
   {
@@ -2085,25 +2106,6 @@ const CATALOGUE = [
   },
 
   /* ----------------------------- 44 · parcours ------------------------ */
-  {
-    id: 'pfmp',
-    label: 'Doubler l’allocation de stage et le suivi en lycée professionnel',
-    famille: 'parcours',
-    porteurs: ['prolongement du décret du 11 août 2023', 'régions', 'branches professionnelles'],
-    perimetre: 'ministeriel',
-    cout: 0.35, coutETP: 900, pol: 3,
-    theme: 'voie_pro', once: true, reforme: false,
-    decouverte: { annee: 2 },
-    vitrine: { parents: +4, enseignants: +3, presse: +2, compteurs: { egalite: +3 } },
-    reel: [
-      { compteur: 'egalite',  central: 6, delai: 3, cadenas: 3, source: 'la voie professionnelle scolarise un tiers des lycéens et concentre les élèves d’origine populaire' },
-      { compteur: 'reussite', central: 3, delai: 4, cadenas: 2, source: 'l’effet sur les acquis passe par la persévérance : la gratification réduit l’abandon en cours de cursus' },
-    ],
-    physique: {},
-    preuve: 'Depuis le décret du 11 août 2023, les périodes de formation en milieu professionnel sont gratifiées par l’État : 50 € par semaine en seconde ou première année de CAP, 75 € puis 100 € ensuite, soit jusqu’à 2 100 € sur un cursus de baccalauréat professionnel. Le levier est social avant d’être pédagogique : la voie professionnelle accueille les élèves les plus fragiles (40 % en difficulté en français et 70 % en mathématiques, contre 6 % et 20 % dans les voies générale et technologique) et le taux d’insertion six mois après le diplôme ne dépasse pas 40 %.',
-    ideeRecue: '« Le lycée professionnel, c’est l’apprentissage en moins bien. » Il scolarise un tiers des lycéens, dans des territoires et des familles où l’apprentissage n’offre pas d’alternative : c’est le seul lycée de beaucoup de communes.',
-    mot: "Un tiers des lycéens, et la moitié de l'attention médiatique d'une réforme du bac général.",
-  },
 
   /* ----------------------------- 45 · moyens -------------------------- */
   {
@@ -2113,7 +2115,7 @@ const CATALOGUE = [
     porteurs: ['OCDE', 'chronobiologistes', 'une partie des fédérations de parents'],
     contre: ['le tourisme, les collectivités, les familles, et à peu près tout le monde en juillet'],
     perimetre: 'matignon',
-    cout: 0.30, coutETP: 0, pol: 9,
+    cout: 0, coutETP: 0, pol: 9,
     theme: 'rythmes', once: true, excl: 'calendrier', reforme: true,
     decouverte: { annee: 3, note: 'Le rapport annuel de l’OCDE relance le sujet des rythmes. Matignon demande une note.' },
     vitrine: { parents: -6, enseignants: -4, presse: +5, compteurs: { reussite: +2 } },
@@ -2136,7 +2138,7 @@ const CATALOGUE = [
     porteurs: ['SNPDEN', 'associations de directeurs', 'plusieurs rapports parlementaires'],
     contre: ['la FSU refuse un supérieur hiérarchique dans l’école'],
     perimetre: 'ministeriel',
-    cout: 0.44, coutETP: 3800, pol: 6,
+    cout: 0.34, coutETP: 3800, pol: 6,
     theme: 'direction', once: true, excl: 'gouvernance', reforme: true,
     decouverte: { si: 'apres_un_an' },
     vitrine: { parents: +2, enseignants: +4, presse: +1, compteurs: { sante: +4 } },
@@ -2158,7 +2160,7 @@ const CATALOGUE = [
     famille: 'moyens',
     porteurs: ['rapport Villani-Torossian', 'DEPP (TIMSS)', 'sociétés savantes'],
     perimetre: 'ministeriel',
-    cout: 0.28, coutETP: 700, pol: 3,
+    cout: 0.002, coutETP: 700, pol: 3,
     theme: 'formation_maths', once: true, reforme: true,
     decouverte: { si: 'reussite_basse', note: 'TIMSS retombe dans l’actualité : 484 en CM1 contre 524 dans l’Union européenne. La question vous sera posée.' },
     vitrine: { parents: +3, enseignants: +2, presse: +3, compteurs: { reussite: +2 } },
@@ -2180,7 +2182,7 @@ const CATALOGUE = [
     porteurs: ['expérience parisienne depuis 2021', 'chercheurs en économie de l’éducation'],
     contre: ['les fédérations de parents des secteurs favorisés', 'une partie des élus locaux'],
     perimetre: 'ministeriel',
-    cout: 0.05, coutETP: 0, pol: 7,
+    cout: 0, coutETP: 0, pol: 7,
     theme: 'affectation', once: true, excl: 'sectorisation', reforme: true,
     decouverte: { si: 'segregation_haute' },
     vitrine: { parents: -5, enseignants: +2, presse: +3, compteurs: { egalite: +4 } },
@@ -2222,7 +2224,7 @@ const CATALOGUE = [
     famille: 'autorite',
     porteurs: ['prolongement de la mesure de 2025', 'plusieurs candidats', 'une majorité de proviseurs'],
     perimetre: 'ministeriel',
-    cout: 0.16, coutETP: 0, pol: 3,
+    cout: 0, coutETP: 0, pol: 3,
     theme: 'numerique_tel', once: true, reforme: false,
     decouverte: { si: 'apres_pause_numerique', note: 'La pause numérique tourne au collège. Les proviseurs de lycée demandent la même chose.' },
     vitrine: { parents: +7, enseignants: +4, presse: +5, compteurs: { reussite: +3, sante: +2 } },
@@ -2237,36 +2239,16 @@ const CATALOGUE = [
   },
 
   /* ----------------------------- 51 · moyens -------------------------- */
-  {
-    id: 'ruralite',
-    label: 'Contrats territoriaux et moratoire sur les fermetures en zone rurale',
-    famille: 'moyens',
-    porteurs: ['Association des maires ruraux', 'sénateurs de tous bords', 'préfets'],
-    contre: ['Bercy, qui y voit le renoncement à la dividende démographique'],
-    perimetre: 'ministeriel',
-    cout: 0.38, coutETP: 1800, pol: 5,
-    theme: 'ruralite', once: true, reforme: false,
-    decouverte: { si: 'maires_en_colere', note: 'L’Association des maires ruraux demande une audience. Elle a compté vos fermetures de classes.' },
-    vitrine: { parents: +6, enseignants: +3, presse: +3, compteurs: { paix: +3, egalite: +2 } },
-    reel: [
-      { compteur: 'egalite',  central: 4, delai: 4, cadenas: 2, source: 'les élèves ruraux réussissent bien au collège mais s’auto-censurent à l’orientation : l’effet passe par l’offre de proximité' },
-      { compteur: 'paix',     central: 5, delai: 1, cadenas: 3, source: 'le conflit sur la carte scolaire est d’abord un conflit avec les maires, pas avec les syndicats' },
-    ],
-    physique: {},
-    preuve: 'La baisse démographique frappe d’abord les écoles rurales, où une classe fermée est souvent la dernière. Le verrou politique reconduit depuis plusieurs années (aucune fermeture d’école sans l’accord du maire) a un coût budgétaire direct : il empêche de convertir la démographie en postes rendus. Les élèves ruraux réussissent plutôt bien au collège mais s’orientent moins vers les filières longues : l’enjeu est l’offre de proximité, pas le niveau.',
-    ideeRecue: '« Une école à huit élèves, ce n’est pas raisonnable. » Ce n’est pas raisonnable comptablement. C’est la seule chose qui reste dans certaines communes, et c’est de cette phrase-là que sont faites les crises de carte scolaire.',
-    mot: "Vous n'achetez pas des résultats, vous achetez la paix avec six cents maires. C'est parfois exactement ce qu'il faut acheter.",
-  },
 
   /* ----------------------------- 52 · autonomie ----------------------- */
   {
     id: 'evaluation_ecoles',
-    label: 'Généraliser l’évaluation des établissements, avec suites données',
+    label: 'Généraliser l’évaluation des établissements',
     famille: 'autonomie',
     porteurs: ['Conseil d’évaluation de l’école', 'Cour des comptes', 'Édouard Philippe'],
     contre: ['la crainte d’un classement déguisé'],
     perimetre: 'ministeriel',
-    cout: 0.17, coutETP: 600, pol: 4,
+    cout: 0, coutETP: 600, pol: 4,
     theme: 'evaluation_etab', once: true, excl: 'evaluation', reforme: true,
     decouverte: { annee: 3 },
     vitrine: { parents: +3, enseignants: -3, presse: +3, compteurs: { reussite: +2 } },
@@ -2288,7 +2270,7 @@ const CATALOGUE = [
     famille: 'moyens',
     porteurs: ['prolongement de la loi de 2022', 'l’ensemble des organisations syndicales'],
     perimetre: 'ministeriel',
-    cout: 0.29, coutETP: 0, pol: 3,
+    cout: 0.2, coutETP: 0, pol: 3,
     theme: 'vie_scolaire', once: true, reforme: false,
     decouverte: { si: 'apres_un_an' },
     vitrine: { parents: +2, enseignants: +5, presse: +1, compteurs: { sante: +3, paix: +2 } },
@@ -2309,7 +2291,7 @@ const CATALOGUE = [
     famille: 'parcours',
     porteurs: ['régions (compétentes depuis 2018)', 'fédérations de parents', 'Cour des comptes'],
     perimetre: 'ministeriel',
-    cout: 0.31, coutETP: 1500, pol: 3,
+    cout: 0.11, coutETP: 1500, pol: 3,
     theme: 'orientation', once: true, reforme: false,
     decouverte: { annee: 2 },
     vitrine: { parents: +5, enseignants: +2, presse: +2, compteurs: { egalite: +3 } },
@@ -2360,7 +2342,7 @@ const CATALOGUE = [
     porteurs: ['Haut-commissariat à la Stratégie et au Plan (recommandations 1 et 2)', 'Conseil d’analyse économique'],
     contre: ['tous ceux qui préfèrent annoncer avant de savoir, c’est-à-dire tout le monde, un jour ou l’autre'],
     perimetre: 'ministeriel',
-    cout: 0.09, coutETP: 250, pol: 5,
+    cout: 0.03, coutETP: 250, pol: 5,
     theme: 'evaluabilite', once: true, reforme: false,
     decouverte: { si: 'apres_un_an', note: 'Le Haut-commissariat à la Stratégie et au Plan publie son rapport sur le niveau scolaire. Sa première recommandation vous concerne directement.' },
     vitrine: { parents: +1, enseignants: 0, presse: -2, compteurs: {} },
@@ -2381,7 +2363,7 @@ const CATALOGUE = [
     famille: 'moyens',
     porteurs: ['HCSP (recommandation 6)', 'Cnesco', 'associations de corps d’inspection'],
     perimetre: 'ministeriel',
-    cout: 0.41, coutETP: 3200, pol: 5,
+    cout: 0.31, coutETP: 3200, pol: 5,
     theme: 'accompagnement', once: true, reforme: true,
     decouverte: { si: 'apres_un_an' },
     vitrine: { parents: 0, enseignants: +6, presse: 0, compteurs: { sante: +3 } },
@@ -2396,48 +2378,8 @@ const CATALOGUE = [
   },
 
   /* ----------------------------- 58 · autonomie ----------------------- */
-  {
-    id: 'coordination_pedago',
-    label: 'Reconnaître la coordination pédagogique : décharges, certification, adjoint pédagogique au collège',
-    famille: 'autonomie',
-    porteurs: ['HCSP (recommandation 7)', 'chefs d’établissement', 'une partie des équipes'],
-    perimetre: 'ministeriel',
-    cout: 0.36, coutETP: 2400, pol: 4,
-    theme: 'coordination', once: true, excl: 'gouvernance', reforme: true,
-    decouverte: { si: 'apres_un_an' },
-    vitrine: { parents: 0, enseignants: +4, presse: +1, compteurs: { sante: +3 } },
-    reel: [
-      { compteur: 'reussite', central: 6, delai: 5, cadenas: 3, source: 'HCSP 2026 : le pilotage pédagogique de proximité, appuyé sur les évaluations nationales, est jugé indispensable' },
-      { compteur: 'sante',    central: 4, delai: 3, cadenas: 3, source: 'HCSP 2026 : l’autonomie pédagogique est vécue en France comme individuelle, jamais comme collective' },
-    ],
-    physique: { adhesion: +4 },
-    preuve: 'Le HCSP formule le diagnostic en une phrase : « dans un système où les difficultés sont perçues comme individuelles, les réponses le sont aussi. » Il propose de reconnaître les fonctions de coordination, organiser les temps entre collègues d’une discipline ou d’un cycle, faire vivre les résultats des évaluations nationales, monter des formations, par des certifications, des indemnités plus substantielles et des décharges. Au collège, la fonction pourrait revenir à un adjoint du principal dont ce serait la mission principale.',
-    ideeRecue: '« Il y a déjà des coordonnateurs de discipline. » Il y a des indemnités et des bonnes volontés. Il n’y a ni temps garanti, ni formation, ni légitimité, c’est-à-dire aucune des trois conditions pour que la fonction existe autrement que sur le papier.',
-    mot: "Créer un chef pédagogique dans un établissement français : ce qui, vu de l'étranger, s'appelle simplement « un établissement ».",
-  },
 
   /* ----------------------------- 59 · moyens -------------------------- */
-  {
-    id: 'ors_college',
-    label: 'Inscrire formation et animation pédagogique dans les obligations de service au collège',
-    famille: 'moyens',
-    porteurs: ['HCSP (recommandation 8)', 'commission Thélot (2004)', 'rapport Joxe (1972)'],
-    contre: ['toucher aux obligations de service, c’est toucher au statut : l’intersyndicale s’y oppose en bloc'],
-    perimetre: 'ministeriel',
-    cout: 0.52, coutETP: 0, pol: 8,
-    theme: 'ors', once: true, reforme: true,
-    decouverte: { si: 'apres_un_an' },
-    vitrine: { parents: +2, enseignants: -4, presse: +3, compteurs: { sante: +2 } },
-    reel: [
-      { compteur: 'sante',    central: 7, delai: 4, cadenas: 3, source: 'HCSP 2026 : le premier degré sanctuarise 18 h de formation et d’animation pédagogique ; le second degré n’identifie aucun temps dédié' },
-      { compteur: 'reussite', central: 5, delai: 6, cadenas: 3, source: 'HCSP 2026 : 56 % des modules de formation suivis dans le premier degré en 2023-2024 l’ont été dans le cadre de l’animation pédagogique' },
-    ],
-    physique: { adhesion: -2 },
-    greve: { intensite: 4, theme: 'statut', segment: 'college' },
-    preuve: 'Le professeur des écoles a 24 heures d’enseignement plus 108 heures annualisées, dont 18 pour la formation et l’animation pédagogique : un temps sanctuarisé, et 56 % des formations suivies dans le premier degré passent par là. Le certifié a 18 heures devant élèves et rien d’autre de compté, la formation continue y est obligatoire sans temps identifié. Il ne s’agit pas d’allonger le temps de travail, qui ne se résume pas aux heures de cours, mais de rendre le travail collectif possible, visible et valorisable.',
-    ideeRecue: '« Les profs du secondaire refusent depuis toujours d’être présents davantage. » La commission Thélot proposait en 2004 d’allonger la présence de 4 à 8 heures contre rémunération, sans obligation pour les enseignants en poste. La proposition est restée lettre morte, mais elle n’a jamais été mise aux voix.',
-    mot: "Le premier degré a un temps de formation dans son statut. Le second n'en a pas. Cinquante ans que c'est ainsi, et cinquante ans que chaque ministre découvre pourquoi.",
-  },
 
   /* ----------------------------- 60 · parcours ------------------------ */
   {
@@ -2447,7 +2389,7 @@ const CATALOGUE = [
     porteurs: ['HCSP (recommandation 11)', 'chronobiologistes', 'Académie de médecine'],
     contre: ['les communes, qui financent le périscolaire', 'une majorité de familles et d’enseignants attachés au mercredi'],
     perimetre: 'matignon',
-    cout: 0.42, coutETP: 0, pol: 10,
+    cout: 0.1, coutETP: 0, pol: 10,
     theme: 'rythmes', once: true, excl: 'calendrier', reforme: true,
     decouverte: { si: 'apres_un_an', note: 'La question des rythmes scolaires remonte : la France est le seul pays de l’OCDE où la semaine de quatre jours est majoritaire.' },
     vitrine: { parents: -9, enseignants: -7, presse: +6, compteurs: { reussite: +2 } },
@@ -2463,37 +2405,16 @@ const CATALOGUE = [
   },
 
   /* ----------------------------- 61 · moyens -------------------------- */
-  {
-    id: 'specialisation_pe',
-    label: 'Expérimenter la spécialisation certifiée des professeurs des écoles',
-    famille: 'moyens',
-    porteurs: ['HCSP (recommandation 9)'],
-    contre: ['la polyvalence est un principe fondateur du métier : y toucher inquiète bien au-delà des syndicats'],
-    perimetre: 'ministeriel',
-    cout: 0.24, coutETP: 600, pol: 6,
-    theme: 'polyvalence', once: true, reforme: true,
-    decouverte: { si: 'reussite_basse' },
-    vitrine: { parents: +1, enseignants: -3, presse: +2, compteurs: { reussite: +2 } },
-    reel: [
-      { compteur: 'reussite', central: 7, delai: 5, cadenas: 2, source: 'HCSP 2026 : les enseignants du premier degré se disent souvent peu à l’aise en sciences, et moins qu’en mathématiques' },
-      { compteur: 'sante',    central: 3, delai: 4, cadenas: 2, source: 'HCSP 2026 : la spécialisation ouvre des trajectoires professionnelles dans un métier à progression uniforme' },
-    ],
-    physique: { adhesion: -2, affection: +2 },
-    greve: { intensite: 2, theme: 'statut', segment: '1erdegre' },
-    preuve: 'Le professeur des écoles est réputé parfaitement polyvalent ; au collège, on n’enseigne qu’une discipline. Le HCSP note que cette frontière n’a rien d’évident, et propose (sans remettre en cause le principe général) d’expérimenter des spécialisations reconnues par une certification, par cycle d’apprentissage ou par discipline, susceptibles d’évoluer en cours de carrière. Le déficit est documenté : en CM1, 47 heures de sciences déclarées pour 72 recommandées.',
-    ideeRecue: '« La polyvalence, c’est ce qui fait la force de l’école primaire française. » C’est surtout une organisation, née d’une histoire, et que presque aucun de nos voisins ne pousse aussi loin. Elle suppose qu’un même adulte soit également compétent en lecture, en géométrie, en sciences expérimentales et en éducation musicale, pour vingt-quatre heures par semaine devant vingt et un élèves.',
-    mot: "Toucher à la polyvalence du professeur des écoles, c'est toucher à 1882. Le rapport le propose « à titre expérimental », ce qui est la formule administrative pour « nous savons ce que nous demandons ».",
-  },
 
   /* ----------------------------- 62 · autonomie ----------------------- */
   {
     id: 'manuels',
-    label: 'Évaluation publique de la qualité des manuels du primaire',
+    label: 'Créer une labellisation des manuels scolaires',
     famille: 'autonomie',
     porteurs: ['HCSP (recommandation 10)', 'précédents portugais et japonais'],
     contre: ['les éditeurs scolaires', 'les organisations syndicales, qui y voient une atteinte à la liberté pédagogique'],
     perimetre: 'ministeriel',
-    cout: 0.07, coutETP: 150, pol: 6,
+    cout: 0, coutETP: 150, pol: 6,
     theme: 'manuels', once: true, reforme: false,
     decouverte: { si: 'apres_un_an' },
     vitrine: { parents: +4, enseignants: -5, presse: +4, compteurs: { reussite: +2 } },
@@ -2515,7 +2436,7 @@ const CATALOGUE = [
     famille: 'moyens',
     porteurs: ['HCSP', 'Académie des sciences', 'La main à la pâte'],
     perimetre: 'ministeriel',
-    cout: 0.26, coutETP: 800, pol: 3,
+    cout: 0.03, coutETP: 800, pol: 3,
     theme: 'sciences', once: true, reforme: true,
     decouverte: { si: 'reussite_basse' },
     vitrine: { parents: +3, enseignants: +1, presse: +3, compteurs: { reussite: +2 } },
@@ -2530,47 +2451,8 @@ const CATALOGUE = [
   },
 
   /* ----------------------------- 64 · moyens -------------------------- */
-  {
-    id: 'calcul_automatismes',
-    label: 'Techniques opératoires et automatismes : rétablir l’entraînement en calcul',
-    famille: 'moyens',
-    porteurs: ['HCSP', 'Conseil scientifique de l’éducation nationale', 'programmes 2025'],
-    perimetre: 'ministeriel',
-    cout: 0.14, coutETP: 0, pol: 3,
-    theme: 'calcul', once: true, reforme: true,
-    decouverte: { si: 'reussite_basse' },
-    vitrine: { parents: +6, enseignants: -2, presse: +4, compteurs: { reussite: +3 } },
-    reel: [
-      { compteur: 'reussite', central: 7, delai: 4, cadenas: 3, source: 'HCSP 2026 : la moindre importance accordée aux techniques opératoires explique une part de la baisse des résultats en calcul en fin d’élémentaire' },
-      { compteur: 'egalite',  central: 4, delai: 5, cadenas: 2, source: 'l’automatisation libère la mémoire de travail pour le raisonnement, bénéfice plus net pour les élèves les plus fragiles' },
-    ],
-    physique: {},
-    preuve: 'Le volume horaire de mathématiques n’est pas en cause : les élèves français reçoivent près de 1 450 heures entre 6 et 14 ans, pour une moyenne internationale de 1 100. Le HCSP désigne trois autres causes : la moindre place accordée aux techniques opératoires, qui explique une partie de la baisse en calcul ; l’introduction longtemps trop tardive des décimaux et des fractions, avancée en CE1 dans les derniers programmes ; et la rareté de l’enseignement explicite de la résolution de problèmes ouverts, introduit au cycle 3 en 2025.',
-    ideeRecue: '« Poser une division, c’est du par-cœur, l’essentiel est de comprendre. » Les deux ne s’opposent pas : l’automatisation libère la mémoire de travail, sans quoi l’élève dépense en calcul l’attention qu’il devrait consacrer au raisonnement. C’est l’un des rares points où les neurosciences cognitives et les enseignants les plus traditionnels tombent d’accord.',
-    mot: "La seule carte qui plaise à la fois au Conseil scientifique et à votre grand-oncle. Profitez-en, cela n'arrivera plus.",
-  },
 
   /* ----------------------------- 65 · autorite ------------------------ */
-  {
-    id: 'ia_cadre',
-    label: 'Cadre national d’usage de l’intelligence artificielle en classe',
-    famille: 'autorite',
-    porteurs: ['HCSP (point de vigilance)', 'filière EdTech française', 'inspection générale'],
-    contre: ['ceux qui trouvent qu’on va trop vite', 'ceux qui trouvent qu’on va trop lentement, souvent dans la même réunion'],
-    perimetre: 'ministeriel',
-    cout: 0.22, coutETP: 400, pol: 4,
-    theme: 'ia', once: true, excl: 'numerique_educ', reforme: true,
-    decouverte: { annee: 3, note: 'Les usages « sauvages » de l’intelligence artificielle explosent chez les élèves comme chez les enseignants. On vous demande un cadre.' },
-    vitrine: { parents: +5, enseignants: +3, presse: +6, compteurs: { reussite: +2 } },
-    reel: [
-      { compteur: 'reussite', central: 3, delai: 5, cadenas: 1, source: 'HCSP 2026 : outils expérimentés à grande échelle avec des résultats encourageants, mais évolutions trop rapides pour une preuve établie' },
-      { compteur: 'egalite',  central: -2, delai: 5, cadenas: 1, source: 'HCSP 2026 : le renforcement des inégalités figure parmi les risques identifiés, au même titre que la « spoliation cognitive »' },
-    ],
-    physique: { adhesion: +2 },
-    preuve: 'Le HCSP classe l’intelligence artificielle parmi ses points de vigilance, pas parmi ses recommandations, et la nuance est le message. Les usages se développent massivement et sans cadre, chez les élèves comme chez les enseignants ; des outils issus de la filière EdTech française sont expérimentés à grande échelle avec des résultats encourageants. Mais quatre risques sont explicitement nommés : la « spoliation cognitive » si l’IA prend en charge la réflexion à la place de l’élève, l’hyperpersonnalisation doublée d’un contrôle excessif, le renforcement des inégalités, et les questions éthiques, juridiques et environnementales.',
-    ideeRecue: '« Interdire, ou généraliser. » Le rapport ne tranche ni dans un sens ni dans l’autre, et c’est un choix argumenté : les évolutions sont trop rapides pour qu’une preuve solide existe, et un cadre qui se contenterait d’interdire serait contourné dans l’heure. Un cadenas sur les acquis : le jeu vous laisse la prendre, il ne vous promet rien.',
-    mot: "Vous légiférez sur une technologie qui aura changé deux fois avant la publication du décret. C'est aussi ce que fera votre successeur.",
-  },
 
   /* ======================================================================
      EXTENSION DU CATALOGUE, cartes 66 et 67 (leçons internationales)
@@ -2580,26 +2462,6 @@ const CATALOGUE = [
      ====================================================================== */
 
   /* ----------------------------- 66 · moyens -------------------------- */
-  {
-    id: 'plan_territorial',
-    label: 'Plan territorial intensif sur trois académies en difficulté',
-    famille: 'moyens',
-    porteurs: ['précédent du London Challenge (2003-2011)', 'recteurs', 'Ofsted (évaluation)'],
-    contre: ['les académies non retenues, qui compteront les moyens qu’elles n’ont pas eus'],
-    perimetre: 'ministeriel',
-    cout: 0.47, coutETP: 1400, pol: 5,
-    theme: 'territorial', once: true, reforme: true,
-    decouverte: { si: 'apres_un_an', note: 'Le rapport d’évaluation du London Challenge circule au cabinet. Il pose une question simple : et si l’on concentrait ?' },
-    vitrine: { parents: +2, enseignants: +3, presse: +2, compteurs: { egalite: +3 } },
-    reel: [
-      { compteur: 'egalite',  central: 9, delai: 5, cadenas: 4, source: 'London Challenge : les autorités du centre de Londres passent des pires aux meilleures performances nationales, y compris pour les élèves très défavorisés' },
-      { compteur: 'reussite', central: 4, delai: 6, cadenas: 3, source: 'Ofsted attribue le succès à la clarté du but, à la constance du suivi et à des conseillers chevronnés affectés aux établissements en difficulté' },
-    ],
-    physique: { adhesion: +3 },
-    preuve: 'Lancé en 2003, le London Challenge a fait passer les autorités locales du centre de Londres des pires aux meilleures performances nationales, avec des progrès substantiels pour les élèves très défavorisés et dans tous les groupes ethniques. Quatre ingrédients identifiés : le programme lui-même, l’appui renforcé de certaines autorités locales, de nouvelles formes de gouvernance, et surtout des conseillers expérimentés et crédibles affectés aux établissements en difficulté, financés directement par le ministère. Nuance honnête : plusieurs stratégies nationales étaient déployées en même temps, et la contribution propre du programme reste difficile à isoler.',
-    ideeRecue: '« Ce qui marche à Londres marchera partout. » L’exportation du modèle hors de Londres s’est révélée bien plus complexe que sa réussite. Et pour vous, le piège est ailleurs : un effet fort mais local ne déplace presque pas les compteurs nationaux. Vous ferez très bien, et vos indicateurs ne le diront pas.',
-    mot: "Le cas de réussite le mieux documenté du monde, et le plus frustrant à jouer : ça marche, et personne ne le voit à l'échelle du pays.",
-  },
 
   /* ----------------------------- 67 · autonomie ----------------------- */
   {
@@ -2609,7 +2471,7 @@ const CATALOGUE = [
     porteurs: ['précédent des lois de programmation militaire et de la recherche', 'Michel Barnier (pacte pluriannuel)', 'organisations syndicales, pour la visibilité'],
     contre: ['Bercy, qui déteste engager les budgets de ses successeurs', 'Matignon, qui déteste occuper le calendrier parlementaire'],
     perimetre: 'matignon',
-    cout: 0.18, coutETP: 0, pol: 12,
+    cout: 0.002, coutETP: 0, pol: 12,
     theme: 'programmation', once: true, reforme: false,
     decouverte: { annee: 2, note: 'Le cabinet vous rappelle qu’un décret se défait par décret. Une loi, non.' },
     vitrine: { parents: +2, enseignants: +5, presse: +3, compteurs: { paix: +3 } },
@@ -2631,7 +2493,7 @@ const CATALOGUE = [
     porteurs: ['IGÉSR (mission sur l’enseignement en cours moyen)', 'rapport Villani-Torossian', 'HCSP 2026'],
     contre: ['les organisations syndicales, au nom de la liberté pédagogique', 'une partie des équipes, qui y voit un retour en arrière'],
     perimetre: 'ministeriel',
-    cout: 0.04, coutETP: 0, pol: 5,
+    cout: 0, coutETP: 0, pol: 5,
     theme: 'pedagogie', once: true, reforme: false,
     decouverte: { si: 'apres_un_an', note: 'Une note d’inspection remonte : dans beaucoup de cahiers de cours moyen, la leçon est une photocopie collée.' },
     vitrine: { parents: +5, enseignants: -4, presse: +3, compteurs: { reussite: +2 } },
@@ -2646,48 +2508,8 @@ const CATALOGUE = [
   },
 
   /* ----------------------------- 69 · autonomie ----------------------- */
-  {
-    id: 'explicite_partout',
-    label: 'Généraliser l’enseignement explicite, du CP à la troisième',
-    famille: 'autonomie',
-    porteurs: ['Conseil scientifique de l’éducation nationale', 'HCSP 2026', 'nouveaux programmes de cycle 2'],
-    contre: ['une partie des formateurs, attachés aux démarches de découverte', 'les organisations syndicales, sur la prescription des méthodes'],
-    perimetre: 'ministeriel',
-    cout: 0.34, coutETP: 0, pol: 9,
-    theme: 'pedagogie', once: true, excl: 'doctrine_pedago', reforme: true,
-    decouverte: { annee: 2, note: 'Les nouveaux programmes de cycle 2 valorisent déjà l’enseignement explicite. Reste à l’étendre, et à former.' },
-    vitrine: { parents: +3, enseignants: -2, presse: +2, compteurs: { reussite: +2 } },
-    reel: [
-      { compteur: 'reussite', central: 7, delai: 4, cadenas: 4, source: 'HCSP 2026 : l’enseignement explicite est valorisé dans les nouveaux programmes conformément aux résultats de la recherche, qui ont prouvé son efficacité' },
-      { compteur: 'egalite',  central: 4, delai: 5, cadenas: 3, source: 'l’explicitation des attendus profite d’abord aux élèves qui ne trouvent pas le code scolaire à la maison' },
-    ],
-    physique: { adhesion: -2 },
-    preuve: 'Enseigner explicitement une procédure, énoncer ce qu’il faut mémoriser, lister les faits numériques attendus, faire de la résolution de problèmes un objet d’enseignement en soi et non seulement un moyen de donner du sens : c’est l’orientation retenue par les nouveaux programmes de mathématiques du cycle 2 et par ceux de français en grammaire, orthographe et vocabulaire. Le HCSP relève que cette efficacité est établie par la recherche. Signal convergent dans TIMSS : le décrochage des élèves français porte autant, et parfois plus, sur les domaines « connaître » et « appliquer » que sur « raisonner ».',
-    ideeRecue: '« L’enseignement explicite, c’est le retour du par cœur. » Non : c’est dire à voix haute ce que l’école attend, au lieu de laisser les élèves le deviner. Les enfants qui le devinent sans qu’on le dise sont ceux à qui on l’a dit ailleurs. Ce qui se joue là n’est pas un débat de méthode, c’est une question d’égalité.',
-    mot: "Sept points documentés, quatre cadenas de preuve, et un mandat entier de formation continue pour les obtenir. Le meilleur rapport qualité-prix du catalogue, si vous tenez trois ans.",
-  },
 
   /* ----------------------------- 70 · parcours ------------------------ */
-  {
-    id: 'taches_complexes',
-    label: 'Investir dans les démarches d’investigation et les tâches complexes',
-    famille: 'parcours',
-    porteurs: ['une part importante des formateurs et des inspections pédagogiques', 'la gauche parlementaire', 'les programmes de 2015'],
-    contre: ['le Conseil scientifique de l’éducation nationale', 'HCSP 2026 (point de vigilance)'],
-    perimetre: 'ministeriel',
-    cout: 0.30, coutETP: 0, pol: 7,
-    theme: 'pedagogie', once: true, excl: 'doctrine_pedago', reforme: true,
-    decouverte: { annee: 2 },
-    vitrine: { parents: +2, enseignants: +6, presse: +2, compteurs: { reussite: +2, sante: +1 } },
-    reel: [
-      { compteur: 'sante',    central: 3, delai: 2, cadenas: 2, source: 'les démarches d’investigation sont utiles pour susciter l’intérêt des élèves et sont plébiscitées par les équipes qui les pratiquent' },
-      { compteur: 'reussite', central: -2, delai: 4, cadenas: 2, source: 'HCSP 2026 : leur promotion a pu se faire au détriment de l’acquisition et de la mémorisation des concepts fondamentaux' },
-    ],
-    physique: { adhesion: +6 },
-    preuve: 'Les démarches d’investigation, les tâches complexes et les activités interdisciplinaires ont une vertu documentée : elles suscitent l’intérêt et l’engagement, et les équipes qui les pratiquent y tiennent. Le HCSP en fait aussi un point de vigilance : elles visent à « faire » et ne permettent pas forcément « d’apprendre » ; chez certains enseignants, le cours structuré a quasiment disparu, et leur promotion a pu se faire au détriment de l’acquisition et de la mémorisation des concepts fondamentaux. Elles exigent en outre une maîtrise technique élevée, donc de la formation : sans elle, on obtient l’inconvénient sans l’avantage.',
-    ideeRecue: '« C’est la pédagogie moderne contre la pédagogie du siècle dernier. » Le jeu ne tranche pas ce débat-là, et personne ne devrait le trancher en meeting : cette carte a un effet positif documenté sur l’engagement et un effet négatif documenté sur les acquis, tous deux à deux cadenas. Vous n’achetez pas une doctrine, vous achetez un arbitrage, et vous le découvrirez au bilan comme tout le reste.',
-    mot: "La mesure la plus aimée des salles des professeurs, et la seule du catalogue qui porte un effet négatif assumé sur la réussite. Les deux sont vrais en même temps.",
-  },
 
   /* ------- 71 à 73 · les mesures qui ne coûtent presque rien ------------
      Un catalogue où tout se chiffre en centaines de millions ne dit pas la
@@ -2702,7 +2524,7 @@ const CATALOGUE = [
     porteurs: ['DGESCO (service de l’instruction publique et de l’action pédagogique)', 'Conseil scientifique de l’éducation nationale (relecture)', 'HCSP 2026'],
     contre: ['personne, et c’est bien le problème'],
     perimetre: 'ministeriel',
-    cout: 0.015, coutETP: 0, pol: 2,
+    cout: 0, coutETP: 0, pol: 2,
     theme: 'ressources', once: true, reforme: false,
     decouverte: { annee: 2, note: 'La direction générale vous rappelle qu’elle édite des guides fondamentaux depuis 2018, et qu’elle peut en écrire d’autres.' },
     vitrine: { parents: +2, enseignants: +1, presse: +1, compteurs: { reussite: +1 } },
@@ -2721,7 +2543,7 @@ const CATALOGUE = [
     porteurs: ['prolongement de l’expérimentation de 2024', 'fédérations de parents'],
     contre: ['les organisations syndicales, sur la méthode', 'une partie des personnels, qui y voient une injonction de plus'],
     perimetre: 'ministeriel',
-    cout: 0.018, coutETP: 0, pol: 3,
+    cout: 0, coutETP: 0, pol: 3,
     theme: 'empathie', once: true, reforme: false,
     decouverte: { annee: 2 },
     vitrine: { parents: +6, enseignants: -2, presse: +4, compteurs: { sante: +2 } },
@@ -2730,28 +2552,8 @@ const CATALOGUE = [
     ],
     physique: { adhesion: -2 },
     preuve: 'Les programmes de compétences psychosociales qui obtiennent des résultats documentés sur le climat scolaire ont trois caractéristiques : ils durent plusieurs années, ils sont portés par des personnels formés, et ils sont évalués. Un kit mis en ligne et une journée banalisée n’ont aucune des trois. La carte figure au catalogue parce qu’elle est réelle, fréquente, peu coûteuse et politiquement rentable à court terme, et parce que le jeu doit permettre de la jouer pour en montrer le rendement.',
-    ideeRecue: '« Au moins, ça ne peut pas faire de mal. » Cela consomme la seule chose qui ne se reconstitue pas : la patience des équipes. Un cadenas de preuve, deux points d’adhésion en moins, six points chez les parents — c’est le profil exact d’une mesure de vitrine, et le jeu vous laisse la prendre en connaissance de cause.',
-    mot: "Un kit, une journée banalisée, une infographie. Le harcèlement, lui, prend rendez-vous à la rentrée suivante.",
-  },
-  {
-    id: 'insertion_publiee',
-    label: 'Publier, formation par formation, l’insertion et la poursuite d’études',
-    famille: 'parcours',
-    porteurs: ['DEPP et système InserJeunes', 'Cour des comptes', 'fédérations de parents'],
-    contre: ['des chefs d’établissement, qui redoutent le classement de leurs formations'],
-    perimetre: 'ministeriel',
-    cout: 0.03, coutETP: 0, pol: 4,
-    theme: 'insertion', once: true, reforme: false,
-    decouverte: { si: 'apres_un_an' },
-    vitrine: { parents: +5, enseignants: 0, presse: +3, compteurs: {} },
-    reel: [
-      { compteur: 'reussite', central: 2, delai: 4, cadenas: 2, source: 'l’information sur les débouchés déplace les vœux à la marge, surtout chez les familles qui n’ont pas l’information par ailleurs' },
-      { compteur: 'egalite',  central: 3, delai: 4, cadenas: 2, source: 'l’écart d’information sur les débouchés est l’un des mieux documentés entre milieux sociaux' },
-    ],
-    physique: {},
-    preuve: 'Les taux d’insertion et de poursuite d’études par formation existent déjà, produits par le dispositif InserJeunes : les publier lisiblement, formation par formation et établissement par établissement, ne coûte que la mise en forme. L’effet attendu passe par l’information des familles, et il est modeste : l’information déplace des vœux à la marge. Sa vertu est ailleurs, dans la répartition de cet effet : les familles qui disposent déjà de l’information par leur entourage n’y gagnent rien, les autres si.',
-    ideeRecue: '« Publier des chiffres, c’est mettre les établissements en concurrence. » C’est l’argument, et il n’est pas nul. Le contre-argument l’est encore moins : ces chiffres existent, ils circulent déjà, et ils circulent d’abord dans les familles qui savent où les chercher. Ne pas publier, ce n’est pas empêcher l’information, c’est la réserver.',
-    mot: "Trente millions pour mettre en ligne des chiffres que l'État produit déjà. Le plus dur sera d'expliquer pourquoi ce n'était pas fait.",
+    ideeRecue: '« Au moins, ça ne peut pas faire de mal. » Cela consomme la seule chose qui ne se reconstitue pas : la patience des équipes, et l’énergie du bureau de la santé de la DGESCO. Un cadenas de preuve, deux points d’adhésion en moins, six points chez les parents — c’est le profil exact d’une mesure de vitrine, et le jeu vous laisse la prendre en connaissance de cause.',
+    mot: "Un kit, une journée banalisée, une infographie, un beau document sur Éduscol. Le harcèlement, lui, prend rendez-vous à la rentrée suivante.",
   },
 ];
 
@@ -3077,16 +2879,16 @@ const AFFAIRES = [
   {
     id: 'lieu',
     titre: 'Le lieu',
-    manchette: 'Le ministre était en vacances quand le protocole est tombé',
-    themes: ['remplacement', 'rythmes', 'ors', 'ete', 'accompagnement'],
-    recit: 'Un site d’information révèle (et le ministère confirme) que vous vous trouviez à l’étranger, en congé, le soir où votre cabinet transmettait à la presse la circulaire que les équipes ont découverte le lendemain matin. Le fait est exact, il est régulier, et il est indéfendable.',
+    manchette: 'Le ministre était en vacances à Ibiza quand sa circulaire est partie',
+    themes: ['remplacement', 'rythmes', 'ete', 'accompagnement'],
+    recit: 'Un site d’information révèle (et le ministère confirme) que vous vous trouviez à Ibiza, le week-end où votre cabinet transmettait à la presse la circulaire que les équipes ont découverte le lundi matin. Le fait est exact, il est régulier, et il est indéfendable.',
     lecon: 'On ne vous reproche pas un acte, on vous reproche un signe. La défense factuelle est solide et catégoriellement inadaptée : à un signe, on ne répond pas par un bilan.',
     reponses: [
-      { type: 'assumer', label: 'Assumer sobrement : « j’ai pris trois jours, je le referais »',
+      { type: 'assumer', label: 'Assumer sobrement : « j’ai pris deux jours pour mon mariage, j’en ai le droit »',
         det: 'Vous ne vous excusez pas et vous ne vous justifiez pas. La séquence dure quatre jours au lieu de trois semaines.',
         adhesion: -8, credibilite: -6, capital: -3, parents: -2,
         suite: 'La formule est jugée sèche, et refermer le dossier en quatre jours est ce que personne n’avait réussi avant vous.' },
-      { type: 'defendre', label: 'Se défendre sur les faits : « quelle réunion n’ai-je pas tenue ? »',
+      { type: 'defendre', label: 'Se défendre sur les faits : « Ibiza en hiver, c’est très calme, vous savez »',
         det: 'Vous démontrez, chiffres à l’appui, qu’aucun acte n’a manqué. C’est vrai, et cela ne répond pas à la question posée.',
         adhesion: -13, credibilite: -4, capital: -2, parents: -4,
         suite: 'Vous avez raison sur les faits et tort sur le terrain. Une organisation résume le grief en une phrase que la presse reprendra tout l’hiver : pendant ce temps, les personnels, eux, font tenir l’école.' },
@@ -3111,55 +2913,11 @@ const AFFAIRES = [
       { type: 'defendre', label: 'Justifier par un manque du service public',
         det: '« Il y a des heures qui ne sont pas sérieusement remplacées. » Vous dites tout haut ce que disent les familles, sauf que vous êtes le ministre.',
         adhesion: -26, credibilite: -14, capital: -14, parents: +3, unite: true, fatal: 0.42,
-        suite: 'Les sept organisations publient un communiqué commun dans la journée : elles ne s’étaient pas accordées sur une virgule depuis février. Dans l’après-midi, l’établissement que vous mettiez en cause publie les états de service des remplacements, et votre propre direction de l’évaluation confirme les chiffres. Ce n’est plus le choix d’une école qu’on vous reproche, c’est d’avoir dit quelque chose de faux pour le justifier. L’intersyndicale dépose un préavis, et Matignon ne dément pas assez vite les rumeurs de remplacement.' },
+        suite: 'Les sept organisations publient un communiqué commun dans la journée : elles ne s’étaient pas accordées sur une virgule depuis février. Dans l’après-midi, l’établissement que vous mettiez en cause publie les états de service des remplacements, et votre propre direction de l’évaluation confirme les chiffres. Ce n’est plus le choix d’une école qu’on vous reproche, c’est d’avoir dit quelque chose de faux pour le justifier. L’intersyndicale dépose un préavis, et Matignon ne dément pas assez vite les rumeurs de remplacement. Vous sautez.' },
       { type: 'contre', label: 'Ne pas répondre et refuser toute question sur le sujet',
         det: 'Le silence est une position. Elle tient rarement plus de trois conférences de presse.',
         adhesion: -12, credibilite: -10, capital: -6, parents: -4,
         suite: 'La question revient à chaque point presse pendant trois mois. Elle a ouvert un dossier que le ministère ne contrôle pas : le financement du privé sous contrat, immédiatement saisi par toutes les oppositions.' },
-    ],
-  },
-  {
-    id: 'privilege',
-    titre: 'Le privilège',
-    manchette: 'Un traitement perçu sans service fait',
-    themes: ['ors', 'evaluation_etab', 'remplacement', 'autonomie', 'recrutement_local', 'pluriannuel'],
-    recit: 'Un hebdomadaire satirique révèle que vous percevez, depuis des années, le traitement attaché à un poste universitaire où vous n’assurez plus d’enseignement, au titre d’une décharge parfaitement régulière. Le montant est dérisoire à l’échelle d’un budget de 65 milliards. Ce n’est pas la question.',
-    lecon: 'L’affaire est dévastatrice parce qu’elle porte exactement sur ce que le ministère demande à ses agents : faire ses heures. On n’est pas puni pour ce qu’on fait, on est puni pour l’écart entre ce qu’on exige des autres et ce qu’on s’applique à soi-même.',
-    reponses: [
-      { type: 'assumer', label: 'Renoncer immédiatement au poste et rembourser',
-        det: 'Vous démissionnez du poste et remboursez les sommes perçues. Le geste coûte, il clôt.',
-        adhesion: -5, credibilite: -4, capital: -5, parents: -1,
-        suite: 'La droite parle de précipitation, la gauche de aveu. Le dossier est mort en dix jours, ce qui est le seul résultat qui compte.' },
-      { type: 'defendre', label: 'Rappeler que le régime de décharge est parfaitement légal',
-        det: 'Il l’est, et cela n’a jamais été démenti. Vous produisez les textes.',
-        adhesion: -15, credibilite: -11, capital: -4, parents: -3,
-        suite: 'Vous avez publié les textes. Une salle des professeurs a publié son emploi du temps. Les deux documents ont circulé côte à côte.' },
-      { type: 'contre', label: 'Rappeler que la question du service fait se pose partout ailleurs',
-        det: 'Vous élargissez le débat au service effectif dans la fonction publique. Techniquement pertinent, politiquement suicidaire.',
-        adhesion: -22, credibilite: -14, capital: -8, parents: 0, unite: true,
-        suite: 'Vous venez d’ouvrir, depuis la position la plus faible possible, le seul dossier sur lequel l’unité syndicale est immédiate.' },
-    ],
-  },
-  {
-    id: 'faux_nez',
-    titre: 'Le faux nez',
-    manchette: 'Une association d’élèves financée par le ministère, et créée par lui',
-    themes: ['manuels', 'numerique_tel', 'portable', 'ia', 'uniforme', 'eval_diag'],
-    recit: 'Deux rédactions révèlent qu’une association de lycéens très favorable à vos réformes, subventionnée par le ministère, aurait été suscitée par votre entourage, au moment où une organisation lycéenne historique voyait, elle, sa subvention divisée par quatre. Une enquête est ouverte, visant les dirigeants de l’association.',
-    lecon: 'Ce grief-là ne relève pas de la vie privée mais du mélange des genres : l’appareil d’État et des fonds publics au service d’une communication. C’est le reproche le plus lourd du répertoire, et paradoxalement celui qui emporte le moins de ministres. On n’en tombe pas ; on y perd sa voix.',
-    reponses: [
-      { type: 'assumer', label: 'Suspendre la subvention et saisir l’inspection générale',
-        det: 'Vous ouvrez vous-même le dossier plutôt que d’attendre qu’on vous l’ouvre.',
-        adhesion: -4, credibilite: -8, capital: -6, parents: -2,
-        suite: 'L’inspection travaillera huit mois. D’ici là, le sujet est administratif, ce qui est la meilleure chose qui puisse lui arriver.' },
-      { type: 'defendre', label: 'Défendre le pluralisme : « toutes les associations sont soutenues »',
-        det: 'Vous produisez le tableau des subventions. Il contient précisément le chiffre qui pose problème.',
-        adhesion: -9, credibilite: -16, capital: -5, parents: -3,
-        suite: 'Le tableau que vous avez publié est devenu l’illustration de l’article. Ce n’est pas ce que vous aviez prévu.' },
-      { type: 'contre', label: 'Dénoncer une manœuvre d’organisations politisées',
-        det: 'Vous mettez en cause, sur un plateau, ceux qui vous interrogent.',
-        adhesion: -13, credibilite: -24, capital: -7, parents: -4,
-        suite: 'Mettre en cause ceux qui posent la question a toujours le même effet : ils posent la question plus longtemps. Votre parole vaut désormais moins que le communiqué de n’importe qui.' },
     ],
   },
   {
@@ -3233,7 +2991,7 @@ const AFFAIRES = [
   {
     id: 'rapport_modifie',
     titre: 'Le rapport corrigé',
-    manchette: 'Un rapport d’inspection publié sans les passages qui dérangeaient',
+    manchette: 'Un rapport de l’inspection générale publié sans les passages qui dérangeaient',
     themes: ['prive', 'carle', 'cheque', 'evaluation_etab', 'empathie'],
     recit: 'L’inspection générale a remis un rapport sur un établissement privé sous contrat. La version rendue publique par le ministère ne contient pas les pages où les inspecteurs relevaient des propos et des situations homophobes signalés par des élèves. Les inspecteurs signataires font savoir qu’ils n’ont pas consenti à cette version. Le rapport intégral fuite en quarante-huit heures.',
     lecon: 'L’inspection générale rend ses rapports au ministre, qui décide de les publier ou non : ne rien publier était juridiquement possible. Publier une version amputée ne l’était pas, politiquement, une seule seconde. Le grief change de nature en chemin, il partait d’un établissement, il arrive sur la parole de l’État et sur des élèves qui avaient parlé.',
@@ -3242,10 +3000,10 @@ const AFFAIRES = [
         det: 'Vous mettez la version complète en ligne le jour même, vous demandez un rapport circonstancié au recteur et vous recevez les associations de familles. Vous ne cherchez pas qui a coupé : vous répondez de la coupe.',
         adhesion: -6, credibilite: -7, capital: -8, parents: -2,
         suite: 'Publier soi-même ce qui allait fuiter de toute façon coûte une journée. Ne pas le publier coûte le mandat. Les inspecteurs signataires ne diront plus rien publiquement, ce qui est tout ce que vous pouviez espérer.' },
-      { type: 'defendre', label: 'Invoquer la protection des personnes citées dans les passages retirés',
-        det: 'L’argument existe et il est parfois recevable. Il l’est nettement moins quand les personnes protégées se trouvent être les adultes, et les personnes citées les élèves.',
-        adhesion: -18, credibilite: -17, capital: -9, parents: -8, unite: true,
-        suite: 'La question posée dans tous les points presse est devenue : qui, au ministère, a décidé quelles pages protégeaient qui. Vous ne l’avez pas encore, la réponse, et on vous la redemandera demain.' },
+      { type: 'defendre', label: 'Démentir : « le rapport a été publié dans son intégralité »',
+        det: 'Le démenti tient tant que la version intégrale n’a pas fuité. Elle a fuité il y a quarante-huit heures, et les inspecteurs signataires savent lire une table des matières.',
+        adhesion: -20, credibilite: -22, capital: -10, parents: -8, unite: true,
+        suite: 'Les deux versions circulent côte à côte dans la journée, pages manquantes surlignées. Ce n’est plus la coupe qu’on vous reproche, c’est le démenti : le premier était une décision, le second est un mensonge, et il porte votre voix.' },
       { type: 'contre', label: 'Mettre en cause la fuite et demander une enquête interne sur son origine',
         det: 'Vous faites de l’affaire une question de loyauté administrative plutôt qu’une question de contenu.',
         adhesion: -24, credibilite: -22, capital: -12, parents: -9, unite: true, fragilise: 3,
@@ -5903,7 +5661,7 @@ function ecranAccueil(sauvegarde) {
   a.innerHTML = `
     <div class="tampon"><div class="rf">RÉPUBLIQUE FRANÇAISE</div><div style="font-size:.62rem;letter-spacing:.18em">MINISTÈRE DE L'ÉDUCATION NATIONALE</div></div>
     <h1>Rue de Grenelle</h1>
-    <p class="devise">Vous êtes ministre de l'Éducation nationale. Cinq rentrées, cinq budgets, 1,2 million d'agents, 12 millions d'élèves, et une durée moyenne dans le poste de deux ans. Finir sera déjà une performance.</p>`;
+    <p class="devise">Vous êtes ministre de l'Éducation nationale.<br>1,2 million d'agents, 12 millions d'élèves. Un quinquennat, c'est cinq rentrées et cinq budgets.<br>Une durée moyenne dans le poste de deux ans, mais sept ministres sur les cinq dernières années…</p>`;
   const actions = el('div', 'actions'); actions.style.justifyContent = 'center';
   if (sauvegarde) {
     const rep = el('button', 'btn', 'Reprendre la partie en cours');
@@ -5918,7 +5676,7 @@ function ecranAccueil(sauvegarde) {
     actions.appendChild(go);
   }
   a.appendChild(actions);
-  a.appendChild(el('p', 'avertissement', 'Jeu pédagogique indépendant, sans lien avec le ministère de l’Éducation nationale. Les ordres de grandeur viennent de sources publiques (DEPP, PLF, OCDE, CSEN, EEF) ; chaque mesure cite ses porteurs réels et le niveau de preuve de son effet. Le jeu ne dit jamais qu’une doctrine est la bonne, il vous laisse en répondre.'));
+  a.appendChild(el('p', 'avertissement', 'Jeu pédagogique indépendant, sans lien avec le ministère de l’Éducation nationale. Les ordres de grandeur viennent de sources publiques (DEPP, PLF, OCDE, CSEN, EEF) ; chaque mesure cite ses porteurs réels et le niveau de preuve de son effet. Un lien est fait avec les propositions des candidats à l’élection présidentielle.<br>Le jeu ne dit jamais qu’une doctrine est la bonne, il vous laisse en répondre.'));
   scene(a);
 }
 
@@ -5926,11 +5684,11 @@ function ecranAccueil(sauvegarde) {
 function ecranNomination() {
   const d = docu('Appel de Matignon', 'On vous propose la rue de Grenelle', 'juin 2027');
   d.classList.add('papier');
-  d.appendChild(el('p', 'chapo', 'Le gouvernement se forme. Votre téléphone sonne : le portefeuille proposé est l’Éducation nationale (le premier budget de l’État) 65,3 milliards d’euros au projet de loi de finances qui s’annonce, 1,2 million d’agents, 12 millions d’élèves. La durée moyenne dans le poste dépasse rarement deux ans.'));
+  d.appendChild(el('p', 'chapo', 'Le gouvernement se forme. Votre téléphone sonne : le portefeuille proposé est l’Éducation nationale (le premier budget de l’État) 65,3 milliards d’euros au projet de loi de finances qui s’annonce.<br>1,2 million d’agents, 12 millions d’élèves.<br>La durée moyenne dans le poste dépasse rarement deux ans…'));
   d.appendChild(el('div', 'note-passation',
-    'Votre prédécesseur, huitième en quatre ans, laisse un mot : « Tout est dans les dossiers. Les dossiers sont dans les cartons. Les cartons sont au garde-meuble, la DGESCO sait lequel. Méfiez-vous de juillet, de septembre et de janvier, le reste de l’année est calme, sauf le reste de l’année. Bonne chance.'
+    'Votre prédécesseur, huitième en quatre ans, laisse un mot : « Tout est dans les dossiers. Les dossiers sont dans les cartons. Les cartons traînent à la DGESCO.<br>Méfiez-vous de juillet, de septembre et de janvier, le reste de l’année est calme, sauf le reste de l’année. Bonne chance.'
     + '<span class="ps">P.-S. — La photocopieuse du deuxième est en panne depuis 2019. C’est le dossier le plus consensuel du ministère : ne le réglez pas, il fédère. »</span>'));
-  d.appendChild(el('p', '', 'Vous acceptez. L’Élysée vous recevra dans l’heure, trois questions, pour vérifier que votre nomination ne coûtera rien au Président.'));
+  d.appendChild(el('p', '', 'Vous acceptez. L’Élysée vous recevra dans l’heure. Deux petites questions, pour vérifier que votre nomination ne coûtera rien au Président.'));
   const act = el('div', 'actions');
   const ok = el('button', 'btn tamponner', 'Accepter le ministère');
   ok.onclick = () => suivant('accepter');
@@ -5943,7 +5701,7 @@ function ecranNomination() {
 function ecranDoctrine() {
   const ordre = Object.keys(NOMS_C);
   const d = docu('Conférence de presse, prise de fonction', 'Votre feuille de route, devant témoins', 'juin 2027');
-  d.appendChild(el('p', 'chapo', 'Premier acte du mandat : classer les cinq compteurs du quinquennat par ordre de priorité. Aucune priorité n’est neutre, chacune est au cœur de projets politiques réellement débattus, et la presse le relèvera dès demain. Surtout : <b>c’est sur VOTRE ordre que votre bilan sera noté</b> (35 / 25 / 20 / 12 / 8). Vous serez jugé contre votre propre parole, et rien d’autre.'));
+  d.appendChild(el('p', 'chapo', 'Premier acte du mandat : classer les cinq compteurs du quinquennat par ordre de priorité. Aucune priorité n’est neutre, chacune est au cœur de projets politiques réellement débattus, et la presse le relèvera dès demain. Surtout : <b>c’est sur VOTRE ordre que votre bilan sera noté</b> (35 / 25 / 20 / 12 / 8).<br>Vous serez jugé contre votre propre parole, et rien d’autre.'));
 
   const liste = el('div', 'classement');
   const rendreListe = () => {
@@ -5973,7 +5731,7 @@ function ecranDoctrine() {
   act.appendChild(ok);
   d.appendChild(act);
   d.appendChild(el('p', 'note-passation',
-    'Un dernier point, technique et lourd de conséquences : <b>votre tableau de bord n’affichera que vos trois premiers compteurs</b>, ceux qui pèsent 80 % de votre note. Les deux derniers seront tenus sans être montrés. Vous les retrouverez au bilan, et le cabinet vous alertera s’ils décrochent vraiment. C’est ainsi que fonctionne un ministère : on suit ce qu’on a dit qu’on suivrait, et on découvre le reste dans la presse.'));
+    '<b>Votre tableau de bord n’affichera que vos trois premiers compteurs</b>, ceux qui pèsent 80 % de votre note. Les deux derniers seront tenus sans être montrés. Vous les retrouverez au bilan, et le cabinet vous alertera s’ils décrochent vraiment.'));
   d.appendChild(el('p', '', '<span style="font-size:.82rem;color:var(--encre-2)">Votre directeur de cabinet, à voix basse : « Ce que vous mettez en premier, on vous le ressortira à chaque arbitrage contradictoire. Ce que vous mettez en dernier aussi. »</span>'));
   scene(d);
 }
@@ -6113,7 +5871,7 @@ function ecranAffaire(q) {
   d.appendChild(el('p', 'chapo', fr(a.recit)));
   if (q.resonne) {
     d.appendChild(el('div', 'bandeau-neuf',
-      '<b>Le calendrier n’est pas un hasard.</b> Le dossier ressort au moment précis où vous légiférez sur le même sujet. Une polémique personnelle n’est presque jamais fatale en elle-même : elle le devient quand elle donne à un procès politique déjà instruit sa preuve intuitive.'));
+      '<b>Le calendrier n’est pas un hasard.</b> Le dossier ressort au moment précis où vous légiférez sur le même sujet.'));
   }
   d.appendChild(el('div', 'decryptage',
     `<div class="titre-d">Ce que ce type d’affaire enseigne</div><p>${fr(a.lecon)}</p>`));
@@ -6144,7 +5902,7 @@ function ecranAffaire(q) {
     const box = el('div', 'decryptage');
     box.style.borderLeftColor = r.type === 'assumer' ? 'var(--c-sante)' : r.type === 'defendre' ? 'var(--c-budget)' : 'var(--rouge-rf)';
     box.innerHTML = `<div class="titre-d" style="color:${r.type === 'assumer' ? 'var(--c-sante)' : r.type === 'defendre' ? 'var(--c-budget)' : 'var(--rouge-rf)'}">La suite</div><p>${fr(r.suite)}</p>`
-      + '<p style="font-size:.78rem;color:var(--encre-3);margin-top:8px">Une affaire médiatique n’est pas une culpabilité : une sur quatre se dégonfle, démentie, classée, ou close par un remboursement. Le coût politique, lui, reste à moitié encaissé. C’est vrai, et c’est ce que le public retient le plus mal.</p>';
+      + '<p style="font-size:.78rem;color:var(--encre-3);margin-top:8px">Une affaire médiatique n’est pas une culpabilité : une sur quatre se dégonfle, démentie ou classée. Mais un démenti ne rend pas ce qu’une accusation a coûté : vous ne récupérez que la moitié des points perdus.</p>';
     d.appendChild(box);
     const act = el('div', 'actions');
     const ok = el('button', 'btn', 'Passer à autre chose');
@@ -6158,7 +5916,7 @@ function ecranAffaire(q) {
 /* --- l'entretien de l'Élysée, avant la nomination ---------------------------- */
 function ecranEntretien(q) {
   const rep = new Array(q.questions.length).fill(null);
-  const d = docu('Élysée, entretien préalable', 'Trois questions avant votre nomination');
+  const d = docu('Élysée, entretien préalable', 'Deux questions avant votre nomination');
   d.classList.add('papier');
   d.appendChild(el('p', 'chapo', 'Un conseiller vous reçoit vingt minutes. Il ne s’intéresse ni à votre projet ni à l’école : il vérifie que votre nomination ne coûtera rien au Président. Personne ne contrôlera vos réponses aujourd’hui.'));
 
@@ -6311,7 +6069,6 @@ function ecranIntention(q) {
     opts.appendChild(b);
   });
   d.appendChild(opts);
-  d.appendChild(el('p', 'note-passation', 'Ne pas tenir cette parole en janvier coûte 16 points de crédit Bercy et 6 de capital politique. La tenir en rend 6. C’est le premier des cinq arbitrages de carte scolaire, et vous le prenez avant de savoir ce que la démographie vous donnera vraiment.'));
   scene(d);
 }
 
@@ -6411,7 +6168,7 @@ function ecranAtelier(q) {
     rentree: {
       type: 'Circulaire de rentrée',
       titre: 'Que met-on dans la circulaire de rentrée ?',
-      titreSuite: 'Une mesure, pas davantage : la circulaire de rentrée porte un message, pas un programme. Elle se finance par redéploiement, pas d’arbitrage interministériel en septembre.',
+      titreSuite: 'Une mesure, pas davantage : la circulaire de rentrée porte un message, pas un programme.',
     },
     livraison: {
       type: 'Après la livraison, vos annonces de ce soir',
@@ -6434,7 +6191,7 @@ function ecranAtelier(q) {
      ne l'apprend à personne, elle fait seulement de la page à sauter. */
   const premierAtelier = S.annee === 1 && q.moment === 'prise_fonction';
   d.appendChild(el('p', 'chapo', (MOM.chapo || MOM.titreSuite) + (premierAtelier
-    ? ' L’effet d’annonce est chiffré : vous le verrez. L’effet réel ne l’est pas — vous n’avez que le niveau de preuve (🔒) et le délai, et vous découvrirez au bilan ce que vous avez produit. Rien ne s’applique sans les personnels.'
+    ? ' L’effet d’annonce est chiffré : vous le verrez. L’effet réel ne l’est pas, vous n’avez que le niveau de preuve (🔒) et le délai, et vous découvrirez au bilan ce que vous avez produit. Rien ne s’applique sans les personnels.'
     : ' Effet d’annonce chiffré, effet réel caché.')));
   /* Le menu cadré : on dit pourquoi il l'est, sinon le joueur croit à un bug.
      C'est tout l'intérêt du dispositif — que l'enchaînement des écrans se lise
@@ -6708,11 +6465,11 @@ function ecranAudience(q) {
     d.appendChild(el('div', 'soutien-synd',
       `<b>Avant d’en venir au conflit, la délégation tient à le dire</b>
        <span class="quoi">${esc(soutien.label)}</span>
-       <span>« Sur ce point, nous sommes avec vous. C’est une revendication que nous portons, vous l’avez prise, et nous le disons publiquement. Ne la laissez pas se défaire : votre successeur, lui, n’aura rien signé. »</span>
-       <span class="src">Une organisation ne peut pas demander le retrait d’une mesure qu’elle porte : celle-ci ne vous sera jamais réclamée par elle.</span>`));
+       <span>« Sur ce point, nous sommes avec vous. C’est une revendication que nous portons, vous l’avez prise. Mais nous ne le dirons pas publiquement. »</span>
+       <span class="src">Une organisation ne peut pas demander le retrait d’une mesure qu’elle porte.</span>`));
   }
   if (premiereAudience) {
-    d.appendChild(el('p', '', '<span style="font-size:.82rem;color:var(--encre-2)">Il n’y a pas de bonne réponse dans l’absolu, il y a une bonne réponse à <b>ce</b> profil-là. La fermeté rassure l’opinion, la méthode paie selon l’interlocuteur, la concession paie partout… et se paie à Bercy.</span>'));
+    d.appendChild(el('p', '', '<span style="font-size:.82rem;color:var(--encre-2)">Il n’y a pas de bonne réponse dans l’absolu, il y a une bonne réponse à <b>ce</b> profil-là. La fermeté rassure l’opinion, la méthode paie selon l’interlocuteur, la concession paie partout… et surtout à Bercy.</span>'));
   }
   const opts = el('div', 'opts');
   audience.reponses.forEach((r, i) => {
@@ -6747,7 +6504,7 @@ function ecranRetrait(q) {
   const arg = q.argumentaire || {};
   const d = docu('Audience, la revendication', `${org.nom} exige un retrait`);
   d.classList.add('papier');
-  d.appendChild(el('div', 'note-passation', `« Venons-en au fond. Nous demandons le retrait de <b>« ${esc(carte.label)} »</b>. Nos instances sont mandatées. Votre réponse, monsieur le ministre ? »`));
+  d.appendChild(el('div', 'note-passation', `« Venons-en au fond. Nous demandons le retrait de <b>« ${esc(carte.label)} »</b>. Nous voterons contre au Conseil supérieur de l’éducation et nous appellerons à la grève. Votre réponse, monsieur le ministre ? »`));
   /* Deux arguments, de deux natures différentes, explicitement étiquetées.
      C'est le cœur pédagogique de la scène : apprendre à trier ce qui se vérifie
      de ce qui relève d'une conception de l'école, sans dire que le second
@@ -6787,10 +6544,10 @@ function ecranRetrait(q) {
     const box = el('div', 'decryptage');
     box.style.borderLeftColor = dec === 'ceder' ? 'var(--c-sante)' : dec === 'requalifier' ? 'var(--c-budget)' : 'var(--rouge-rf)';
     box.innerHTML = dec === 'ceder'
-      ? `<div class="titre-d" style="color:var(--c-sante)">Vous cédez</div><p><i>« Nous saluons un ministre qui sait entendre. »</i> — La mesure sort du droit. La presse titrera sur le recul ; les salles des professeurs, sur l’écoute. Les deux auront raison.</p>`
+      ? `<div class="titre-d" style="color:var(--c-sante)">Vous cédez</div><p><i>« Nous avons gagné ce combat, mais la mobilisation se poursuit, pour les salaires ! »</i> — La mesure sort du droit. La presse titrera sur le recul ; les salles des professeurs, sur l’écoute. Les deux auront raison.</p>`
       : dec === 'requalifier'
       ? `<div class="titre-d" style="color:var(--c-budget)">Vous requalifiez</div><p><i>« Nous prenons acte de cet ajustement de méthode. »</i> Personne ne parlera de recul : le dispositif existe encore, sous un autre nom, et ne s’impose plus à personne. Le geste le moins coûteux du jeu, et le seul dont le prix n’apparaît qu’à la dernière page.</p>`
-      : `<div class="titre-d" style="color:var(--rouge-rf)">Vous maintenez</div><p><i>« Nous en tirerons les conséquences. »</i> — ${combatif ? 'La délégation quitte l’audience. Le préavis sera déposé avant la fin de semaine.' : 'La délégation transmettra à ses instances. Le rapport de force est noté, de part et d’autre.'}</p>`;
+      : `<div class="titre-d" style="color:var(--rouge-rf)">Vous maintenez</div><p><i>« Nous allons appeler à une grève générale. Vous devrez en tirer les conséquences. »</i> — ${combatif ? 'La délégation quitte l’audience. Le préavis sera déposé avant la fin de semaine.' : 'La délégation transmettra à ses instances. Le rapport de force est noté, de part et d’autre.'}</p>`;
     d.appendChild(box);
     const act = el('div', 'actions');
     const ok = el('button', 'btn', 'Clore l’audience');
@@ -6862,7 +6619,7 @@ function ecranEtape(etape) {
           <span class="val" style="color:${e.montant > 1 ? 'var(--ok)' : e.montant < -1 ? 'var(--alerte)' : 'var(--encre-2)'}">${signe(e.montant)}</span>
           <span style="color:var(--encre-3);font-size:.76rem">preuve ${'🔒'.repeat(e.cadenas)} · documenté ~${signe(e.central)}${e.requalifie ? ' · rendue facultative' : ''}</span>`));
       }
-      sc.appendChild(el('p', '', '<span style="font-size:.76rem;color:var(--encre-3)">Ce que vous aviez signé sous incertitude entre aujourd’hui dans les compteurs, implémentation comprise. Les scellés restants s’ouvriront plus tard, certains après vous.'
+      sc.appendChild(el('p', '', '<span style="font-size:.76rem;color:var(--encre-3)">Ce que vous aviez signé sous incertitude entre aujourd’hui dans les compteurs. Le reste s’ouvrira plus tard, parfois après vous.'
         + (ouverts.some((e) => e.requalifie) ? ' Les lignes marquées « requalifiée » sont les mesures que vous avez rendues facultatives sous pression : elles ont continué d’être financées et ont produit moins d’un cinquième de ce qu’elles promettaient.' : '')
         + '</span>'));
       blocs.push(sc);
@@ -6896,7 +6653,7 @@ function ecranEtape(etape) {
   const ctx = {
     ouverture: 'Votre doctrine est déclarée. L’été, lui, a ses propres plans.',
     juillet: 'La double sanction de juillet est tombée : lettre plafond et concours.',
-    rentree: 'La rentrée est passée. Ou l’inverse.',
+    rentree: '',
     decembre: 'Budget voté, publications de décembre.',
     mars: 'Les mobilisations de printemps.',
     cloture: `Fin de l’année scolaire, an ${S.annee} sur 5.`,
@@ -6910,9 +6667,9 @@ function ecranBilan(B) {
   const S = ETAT.s;
   localStorage.removeItem(CLE_SAUVE);
   const fins = {
-    mandat_complet: ['CINQ ANS RUE DE GRENELLE : IL PART DEBOUT', 'Aucun ministre de l’Éducation n’avait tenu un quinquennat entier depuis fort longtemps. Le déménageur est déçu.'],
+    mandat_complet: ['CINQ ANS RUE DE GRENELLE : IL PART DEBOUT', 'Bravo ! Aucun ministre de l’Éducation n’avait tenu un quinquennat entier depuis fort longtemps. Le déménageur est déçu.'],
     renvoi: ['REMANIÉ', 'Trois convocations à Matignon font une porte. Vos cartons connaissaient le chemin.'],
-    remaniement: ['REMANIEMENT SURPRISE : LA COLONNE D’À CÔTÉ', 'Rien de personnel. Votre nom équilibrait un tableau qui ne vous concernait pas.'],
+    remaniement: ['REMANIEMENT SURPRISE !', 'Rien de personnel. Votre nom équilibrait un tableau qui ne vous concernait pas.'],
     guerre_scolaire: ['GUERRE SCOLAIRE : LE TEXTE RETIRÉ, LE MINISTRE AUSSI', 'Un million de personnes dans la rue. Comme en 1984, à la mode près.'],
   }[B.fin.type] || ['FIN DE MANDAT', ''];
 
@@ -7010,7 +6767,7 @@ function ecranBilan(B) {
 function verdictProse(B) {
   const v = B.vrai, ecartPerception = B.scoreAffiche - B.scoreBilan;
   if (B.fin.type === 'guerre_scolaire') return '« Il avait raison sur le fond », dira-t-on dans dix ans. C’est exactement ce qu’on a dit d’Alain Savary.';
-  if (B.scoreBilan >= 55 && B.constance) return 'Vous laissez un système en meilleur état que vous ne l’avez trouvé, un cap lisible, et des effets qui composeront après vous. Dans ce ministère, cela porte un nom : une exception.';
+  if (B.scoreBilan >= 55 && B.constance) return 'Vous laissez un système en meilleur état que vous ne l’avez trouvé, un cap lisible, et des effets qui composeront après vous. Dans ce ministère, cela porte un nom : une exception. Vous aurez droit à une salle de réunion à votre nom à la DGESCO, celle qui fait face à la machine à café.';
   if (ecartPerception > 5) return 'Beau mandat, disent les sondages. Le bilan, lui, est plus discret : vous avez surtout gouverné le tableau de bord. Vos successeurs gouverneront le reste.';
   if (B.scoreBilan - B.scoreAffiche > 3) return 'Le pays ne vous a pas vu travailler, les indicateurs regardaient ailleurs, comme toujours, avec dix ans de retard. Vos successeurs inaugureront vos résultats. Ils y penseront très fort.';
   if (B.anneesJouees < 3) return 'Deux ans, comme la moyenne. Le système vous a survécu sans effort particulier : il a l’habitude.';
@@ -7145,8 +6902,6 @@ function ecranReperes(q) {
   d.appendChild(el('ul', 'rep-liste', b.chiffres.map((x) =>
     `<li><span class="v">${fr(x.v)}</span><span class="l">${fr(x.l)}.${citer(x.src)}</span></li>`).join('')));
   d.appendChild(el('p', 'cadrage-retenir', fr(b.aRetenir)));
-  d.appendChild(el('p', 'note-passation',
-    'Les huit autres fiches de référence sont à tout moment dans « Comprendre le jeu », en bas à gauche de l’écran. Cette note-ci appelle une décision : elle vous attend à l’écran suivant.'));
 
   const ok = el('button', 'btn tamponner', NOTES_SUITE[cle] || 'Continuer');
   ok.onclick = () => suivant(null);
@@ -7185,7 +6940,7 @@ function ouvrirComprendre() {
     Object.values(SOURCES).sort((a, b) => a.org.localeCompare(b.org, 'fr')).map((S) =>
       `<li><span class="org">${esc(S.org)}</span> — ${S.url ? `<a href="${S.url}" target="_blank" rel="noopener">${esc(S.titre)}</a>` : esc(S.titre)} <span style="color:var(--encre-3)">(${esc(S.date)})</span></li>`).join('')
   }</ul>
-  <p class="rep-serie-note">Les personnages, les organisations syndicales et les titres de presse du jeu sont des pseudonymes transparents : la satire est symétrique, personne n’est épargné. En revanche, les propositions politiques citées sur les cartes sont réelles et attribuées à leurs auteurs, et tous les chiffres ci-dessus sont vérifiables aux adresses indiquées.</p>`;
+  <p class="rep-serie-note">Les personnages, les organisations syndicales et les titres de presse du jeu sont des pseudonymes transparents : la satire est symétrique, personne n’est épargné. En revanche, les propositions politiques citées sur les cartes sont réelles et attribuées à leurs auteurs, et tous les chiffres ci-dessus sont vérifiables aux sources indiquées.</p>`;
   c.appendChild(src);
   $('#comprendre').hidden = false;
   $('#comprendre').scrollTop = 0;

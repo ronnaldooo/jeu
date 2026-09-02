@@ -1192,6 +1192,87 @@ circulaire, un guide et une journée banalisée.
 Le catalogue passe à 73 cartes. Équilibrage revérifié : **4/4 sur trois jeux de
 graines**, survie 48-49 %.
 
+## 3 septdecies. Le rechiffrage du catalogue
+
+Retour de relecture du document nº 2 : quatre commentaires Word, une centaine de
+réécritures directes, et surtout un **rechiffrage systématique de 43 mesures**.
+
+### a) Ce que la relecture corrige, et pourquoi elle a raison
+
+Je chiffrais l'ambition d'une politique ; la relecture chiffre la **ligne
+budgétaire marginale** qu'un ministre doit effectivement arracher. La différence
+est réelle, et c'est la seconde qui décrit le métier. Les annotations le disent
+en clair, dans la marge du document :
+
+- « 0 M€/an, on modifie les règles mais sans changer le budget » (éducation
+  prioritaire progressive) ;
+- « 0 M€/an, on crée un référent mais sans le rémunérer » (décrochage) ;
+- « 0 M€/an, ça existe déjà » (évaluation des établissements) ;
+- « 0 M€/an, vous changez les noms des CPE, mais sans recruter » (surveillants
+  généraux) ;
+- « 0 M€/an, ce n'est pas le budget de l'Éducation nationale » (allocations
+  familiales) ;
+- « −10 M€/an, vous économisez sur des postes à la DGRH » (recrutement par les
+  chefs d'établissement).
+
+Trois mesures deviennent des **économies** : les heures supplémentaires (−180),
+les évaluations diagnostiques (−10), le recrutement local (−10). Vingt-deux
+cartes sur soixante-quatre coûtent désormais zéro ou moins.
+
+### b) Ce que cela fait à l'équilibre
+
+Le risque était que la contrainte budgétaire disparaisse et que le jeu perde son
+arbitrage central. Vérification sur 150 mandats complets, 1 385 menus observés :
+**76 % des menus contiennent encore au moins une carte hors enveloppe**. Les
+mesures lourdes le restent (revalorisation, tutorat 280, statut des directeurs
+340, groupes de niveau 300), et ce sont elles qui portent les effets réels les
+plus élevés. La tension tient donc, et elle se déplace vers ce qu'elle aurait dû
+être depuis le début : ce n'est pas l'argent qui manque pour interdire les
+photocopies, c'est le capital politique.
+
+### c) Ce que la relecture supprime
+
+Douze cartes, deux affaires (« le privilège » et « le faux nez »), un profil
+(« la société civile ») et une question de l'entretien à l'Élysée. Les
+suppressions sont dispersées et entrelacées avec des cartes conservées : c'est
+une sélection éditoriale, pas un accident de manipulation. L'entretien passe donc
+de trois à deux questions, ce qui est cohérent : la question sur le patrimoine
+protégeait de l'affaire du privilège, qui n'existe plus.
+
+Effets de bord traités : le thème `ors` devenu orphelin a été retiré des affaires
+qui s'y adossaient, et les expositions des profils vers les affaires supprimées
+ont été repointées.
+
+### d) Ce que la relecture scinde
+
+Deux commentaires demandaient d'éclater des cartes qui en groupaient plusieurs.
+
+**« Différenciation précoce »** (groupes de niveau + certificat d'entrée en 6e +
+parcours dès la 4e) devient trois cartes exclusives l'une de l'autre. Elles ne
+disent pas la même chose : les groupes de niveau ont un effet moyen nul et un
+effet négatif sur les élèves faibles ; le certificat d'entrée en sixième est un
+redoublement déguisé, avec la note nº 15 du CSEN derrière ; les parcours dès la
+quatrième sont l'exact inverse de la réforme polonaise de 1999.
+
+**« Plan remplacement »** (brigades + annualisation) devient deux cartes, et
+c'est le meilleur couple pédagogique du catalogue : les brigades coûtent
+40 M€ et 4 000 ETP pour trois points de capital, sans conflit, et ne traitent que
+les absences longues ; l'inscription du remplacement de courte durée dans les
+obligations de service coûte 10 M€ et neuf points de capital, avec une intensité
+de grève de 4, et traite les deux tiers restants. Presque gratuite, et la plus
+chère du catalogue.
+
+### e) Un point à trancher
+
+Le corps de fonctionnaires AESH passe de 4 300 à 43 M€. La logique du
+rechiffrage est claire partout ailleurs ; ici elle rend le chiffre
+indéfendable : titulariser 146 000 agents aujourd'hui à temps incomplet subi ne
+peut pas coûter 43 millions. La valeur est appliquée telle que demandée, et
+signalée.
+
+Catalogue à 64 cartes. Équilibrage revérifié : **4/4 sur trois jeux de graines**,
+survie 46-48 %.
+
 ## 5. Paramètres à réexaminer après tests humains
 
 | Paramètre | Valeur | Ce qu'il faut regarder |

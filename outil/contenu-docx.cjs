@@ -242,7 +242,7 @@ const ECRANS = {
       ? (c.reel || []).map((e) => CPT[e.compteur] + ' ' + sg(e.central) + ' à ' + e.delai + ' an' + (e.delai > 1 ? 's' : '') + ', ' + e.cadenas + ' cadenas sur 5 · ' + e.source).join(' || ')
       : 'aucun']);
     if (c.decouverte) lignes.push(['Découverte', c.decouverte.annee ? 'à partir de l’an ' + c.decouverte.annee : 'déclencheur : ' + c.decouverte.si]);
-    A(tableau(null, lignes.map((l) => [l[0], String(l[1]).split(' || ').join('\n')]), [2200, 7160], { taille: 18 }));
+    A(tableau(null, lignes.map((l) => [l[0], String(l[1]).split(' || ')]), [2200, 7160], { taille: 18 }));
     if (c.preuve) { A(REF('› preuve'));  A(BODY([T('Ce que disent les études. ', { bold: true }), T(c.preuve)])); }
     if (c.ideeRecue) { A(REF('› ideeRecue')); A(BODY([T('L’idée reçue déconstruite. ', { bold: true }), T(c.ideeRecue)])); }
     if (c.mot) { A(REF('› mot')); A(BODY([T(c.mot, { italics: true })])); }
