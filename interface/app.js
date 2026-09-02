@@ -1761,7 +1761,7 @@ function majFrise(pasCourant) {
   const annee = fini ? 6 : Math.max(1, Math.min(5, S.annee || 1));
   const iCourant = PAS.findIndex((x) => x[0] === pasCourant);
   const anLabel = (a) => `${2026 + a}-${(2027 + a) % 100 < 10 ? '0' : ''}${(2027 + a) % 100}`;
-  let html = '<div class="frise-titre">Où en êtes-vous</div>';
+  let html = '<div class="frise-titre">Calendrier</div>';
   for (let a = 1; a <= 5; a++) {
     const etat = a < annee ? 'passe' : a === annee ? 'courant' : 'avenir';
     html += `<div class="frise-an ${etat}"><span class="num">An ${a}</span><span class="civ">${anLabel(a)}</span></div>`;
@@ -1771,7 +1771,9 @@ function majFrise(pasCourant) {
       if (cle === 'juin' && annee > 1) return;
       if (cle === 'ete' && annee > 1) return;
       const st = i < iCourant ? 'fait' : i === iCourant ? 'ici' : 'apres';
-      html += `<li class="${st}"><span class="mois">${mois}</span><span class="quoi">${quoi}</span></li>`;
+      /* Le mois seul, sauf pour l'étape courante : c'est la seule qui ait
+         besoin d'être expliquée, et c'est ce qui rend la colonne lisible. */
+      html += `<li class="${st}"><span class="mois">${mois}</span>${st === 'ici' ? `<span class="quoi">${quoi}</span>` : ''}</li>`;
     });
     html += '</ol>';
   }

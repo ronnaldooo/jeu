@@ -1335,6 +1335,17 @@ Au passage : la frise chevauchait les documents larges entre 1 181 et
 l'écran de bilan la montrait encore en juin de l'an 1 (elle affiche désormais
 les cinq années passées et une ligne « Bilan »).
 
+## 3 vicies. Calendrier, lisibilité, illustrations
+
+La frise s'appelle désormais « Calendrier » et n'affiche que les mois ; seule
+l'étape courante porte son libellé. Passe de lisibilité sur tout le jeu :
+interligne du corps 1,55 → 1,6, chapôs et paragraphes à 1,6-1,62, titres un
+cran plus grands, rythme vertical uniforme entre les blocs d'un document
+(`.doc > * + *`), hiérarchie des choix (titre 1,02 rem, détail 0,86 rem, filet
+gauche épaissi, état survol et focus visibles). Le brief d'illustrations pour
+Claude Design est dans `ILLUSTRATIONS.md` : quatorze scènes, une ligne
+graphique, ce qu'il ne faut pas faire.
+
 ## 5. Paramètres à réexaminer après tests humains
 
 | Paramètre | Valeur | Ce qu'il faut regarder |
