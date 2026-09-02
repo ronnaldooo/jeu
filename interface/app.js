@@ -377,8 +377,13 @@ function ecranNomination() {
 
 /* --- votre feuille de route : le classement que VOUS déclarez ---------------- */
 function ecranDoctrine() {
-  const ordre = Object.keys(NOMS_C);
+  const rev = ETAT.revanche;
+  const ordre = rev && rev.doctrineInverse ? [...rev.doctrineInverse] : Object.keys(NOMS_C);
   const d = docu('Conférence de presse, prise de fonction', 'Votre feuille de route, devant témoins', 'juin 2027');
+  if (rev) {
+    d.appendChild(el('div', 'bandeau-neuf',
+      `<b>La revanche.</b> Mêmes tirages, mêmes crises, mêmes affaires : tout ce qui relève du hasard sera identique à votre partie précédente. Le classement ci-dessous est l’inverse exact de celui que vous aviez déclaré. Vous pouvez le modifier ; le jeu comparera les deux bilans à la fin.`));
+  }
   d.appendChild(el('p', 'chapo', 'Premier acte du mandat : classer les cinq compteurs du quinquennat par ordre de priorité. Aucune priorité n’est neutre, chacune est au cœur de projets politiques réellement débattus, et la presse le relèvera dès demain. Surtout : <b>c’est sur VOTRE ordre que votre bilan sera noté</b> (35 / 25 / 20 / 12 / 8).<br>Vous serez jugé contre votre propre parole, et rien d’autre.'));
 
   const liste = el('div', 'classement');
@@ -560,6 +565,18 @@ function ecranAffaire(q) {
   if (q.resonne) {
     d.appendChild(el('div', 'bandeau-neuf',
       '<b>Le calendrier n’est pas un hasard.</b> Le dossier ressort au moment précis où vous légiférez sur le même sujet.'));
+  }
+  /* Le mensonge d'il y a deux ans. Sans ce rappel, le joueur voit une affaire
+     plus chère que les autres sans comprendre pourquoi ; avec, il relie la
+     phrase et son prix, et c'est tout l'intérêt de l'avoir laissé mentir. */
+  if (q.menti) {
+    const qE = ENTRETIEN.find((x) => x.reponses.some((r) => r.mensonge && (r.expose || []).includes(a.id)));
+    const rE = qE && qE.reponses.find((r) => r.mensonge && (r.expose || []).includes(a.id));
+    if (rE) {
+      d.appendChild(el('div', 'bandeau-mensonge',
+        `<b>Ce n’est pas l’affaire qui coûte, c’est votre réponse d’il y a ${ETAT.s.annee > 1 ? ETAT.s.annee + ' ans' : 'un an'}.</b>
+         À l’Élysée, à la question « ${esc(qE.question)} », vous aviez répondu : <i>${esc(rE.label)}</i>. Cette phrase ressort ce soir avec le dossier. L’affaire coûtera ×${(K.MENSONGE.aggravation).toLocaleString('fr-FR')} son prix normal, et elle avait ${K.MENSONGE.multiplicateurTirage.toLocaleString('fr-FR')} fois plus de chances de sortir.`));
+    }
   }
   d.appendChild(el('div', 'decryptage',
     `<div class="titre-d">Ce que ce type d’affaire enseigne</div><p>${fr(a.lecon)}</p>`));
@@ -1444,10 +1461,46 @@ function ecranBilan(B) {
   d.appendChild(el('p', 'bilan-final', `<b>Doctrine déclarée contre doctrine menée :</b> ${fmt0((B.coherence || 0) * 100)} % de vos effets réels servent vos deux priorités annoncées${B.constance ? ', cap tenu : vos gains composeront.' : ', cap non tenu : un successeur détricote, et les dérives reprennent.'}
     <br>${B.greves} journée${B.greves > 1 ? 's' : ''} de grève · fatigue réformatrice ${fmt0(B.fatigue)}/100 · ${B.abandons} mesure${B.abandons > 1 ? 's' : ''} retirée${B.abandons > 1 ? 's' : ''} sous la pression.`));
 
+  /* La comparaison, si cette partie était une revanche. */
+  const rev = ETAT.revanche;
+  if (rev && rev.precedent && rev.graine === ETAT.graine) {
+    const P = rev.precedent;
+    const cmp = el('div', 'revanche-cmp');
+    cmp.innerHTML = `<div class="titre-d">Même partie, deux doctrines</div>
+      <p class="bilan-note">Mêmes tirages, mêmes crises. Seul le classement de juin 2027 a changé. Voici ce que cela a fait.</p>
+      <div class="defile"><table class="bilan">
+        <tr><th></th><th class="num">Partie précédente</th><th class="num">Celle-ci</th></tr>
+        <tr><td>Priorité déclarée</td><td class="num">${NOMS_C_LONGS[P.doctrine[0]]}</td><td class="num">${NOMS_C_LONGS[B.doctrine[0]]}</td></tr>
+        <tr><td>Ce que le pays a vu</td><td class="num">${fmt0(P.scoreAffiche)}</td><td class="num">${fmt0(B.scoreAffiche)}</td></tr>
+        <tr><td>Ce que vous avez fait</td><td class="num">${fmt0(P.scoreBilan)}</td><td class="num"><b>${fmt0(B.scoreBilan)}</b></td></tr>
+        <tr><td>Dans dix ans</td><td class="num">${fmt0(P.scoreProjection)}</td><td class="num">${fmt0(B.scoreProjection)}</td></tr>
+        <tr><td>Durée du mandat</td><td class="num">${P.anneesJouees} an${P.anneesJouees > 1 ? 's' : ''}</td><td class="num">${B.anneesJouees} an${B.anneesJouees > 1 ? 's' : ''}</td></tr>
+        ${Object.keys(NOMS_C).map((c) => `<tr><td>${NOMS_C_LONGS[c]}, réel</td><td class="num">${fmt0(P.vrai[c])}</td><td class="num">${fmt0(B.vrai[c])}</td></tr>`).join('')}
+      </table></div>
+      <p class="bilan-note">Ce tableau est la thèse du jeu en une image : les faits sont les mêmes, les mesures disponibles aussi. Ce qui a changé, ce sont les priorités, et donc les choix, et donc le pays à l’arrivée. Le désaccord politique porte là-dessus, pas sur les chiffres.</p>`;
+    d.appendChild(cmp);
+    try { localStorage.removeItem(CLE_REVANCHE); } catch (e) { /* sans importance */ }
+  }
+
   const act = el('div', 'actions');
   const rejouer = el('button', 'btn', 'Nouveau mandat (autres tirages, autres crises)');
-  rejouer.onclick = () => { localStorage.removeItem(CLE_SAUVE); location.reload(); };
+  rejouer.onclick = () => { localStorage.removeItem(CLE_SAUVE); localStorage.removeItem(CLE_REVANCHE); location.reload(); };
   act.appendChild(rejouer);
+  if (!(rev && rev.precedent)) {
+    const revanche = el('button', 'btn secondaire', 'Rejouer la même partie, doctrine inversée');
+    revanche.title = 'Mêmes tirages, mêmes crises : seul votre classement de juin change.';
+    revanche.onclick = () => {
+      try {
+        localStorage.setItem(CLE_REVANCHE, JSON.stringify({
+          graine: ETAT.graine, doctrineInverse: [...B.doctrine].reverse(),
+          precedent: { doctrine: B.doctrine, scoreAffiche: B.scoreAffiche, scoreBilan: B.scoreBilan,
+            scoreProjection: B.scoreProjection, anneesJouees: B.anneesJouees, vrai: B.vrai },
+        }));
+      } catch (e) { /* stockage indisponible : on rejoue sans comparaison */ }
+      localStorage.removeItem(CLE_SAUVE); location.reload();
+    };
+    act.appendChild(revanche);
+  }
   d.appendChild(act);
   scene(j, d);
 }
@@ -1704,7 +1757,8 @@ function majFrise(pasCourant) {
   const S = ETAT.s, f = $('#frise');
   if (!f) return;
   f.hidden = false;
-  const annee = Math.max(1, Math.min(5, S.annee || 1));
+  const fini = pasCourant === 'fin';
+  const annee = fini ? 6 : Math.max(1, Math.min(5, S.annee || 1));
   const iCourant = PAS.findIndex((x) => x[0] === pasCourant);
   const anLabel = (a) => `${2026 + a}-${(2027 + a) % 100 < 10 ? '0' : ''}${(2027 + a) % 100}`;
   let html = '<div class="frise-titre">Où en êtes-vous</div>';
@@ -1721,6 +1775,7 @@ function majFrise(pasCourant) {
     });
     html += '</ol>';
   }
+  if (fini) html += `<div class="frise-an courant"><span class="num">Bilan</span><span class="civ">${S.fin && S.fin.type === 'mandat_complet' ? 'mai 2032' : 'fin de mandat'}</span></div>`;
   f.innerHTML = html;
 }
 
@@ -1764,8 +1819,18 @@ function sauvegarder() {
   try { localStorage.setItem(CLE_SAUVE, JSON.stringify({ graine: ETAT.graine, pas: ETAT.pas })); } catch (e) { /* stockage indisponible : on joue sans filet */ }
 }
 
+/* La revanche : rejouer la même partie, mêmes tirages, avec la doctrine
+   inversée. C'est la démonstration la plus forte du jeu : que le désaccord
+   politique porte sur les priorités, pas sur les faits. Le hasard est fixé
+   par la graine, seul le classement change. */
+const CLE_REVANCHE = 'rue-de-grenelle-revanche';
+function lireRevanche() {
+  try { const r = JSON.parse(localStorage.getItem(CLE_REVANCHE) || 'null'); return r && r.graine ? r : null; } catch (e) { return null; }
+}
 function demarrer(sauve) {
-  ETAT.graine = sauve ? sauve.graine : (Math.floor(Math.random() * 2 ** 31) || 1);
+  const rev = sauve ? null : lireRevanche();
+  ETAT.revanche = rev;
+  ETAT.graine = sauve ? sauve.graine : rev ? rev.graine : (Math.floor(Math.random() * 2 ** 31) || 1);
   CAST.journal = JOURNAUX[ETAT.graine % JOURNAUX.length];
   ETAT.s = creerPartie({ graine: ETAT.graine, politique: null });
   ETAT.gen = derouler(ETAT.s);

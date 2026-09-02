@@ -1307,6 +1307,34 @@ administratif » assumé : ils servent à reconnaître l'écran avant de le lire
 
 Équilibrage revérifié : **4/4 sur trois jeux de graines**, survie 47-48 %.
 
+## 3 novodecies. La revanche, et le mensonge rappelé
+
+Deux propositions acceptées en relecture.
+
+### a) La revanche
+
+Au bilan, rejouer la même partie avec la doctrine inversée. La graine est
+conservée dans le stockage local avec le bilan précédent ; au démarrage suivant,
+`demarrer` la reprend, l'écran de doctrine est pré-rempli à l'envers avec une
+bannière qui l'explique, et le bilan final affiche les deux parties côte à
+côte (priorité déclarée, trois scores, durée, cinq compteurs réels) puis efface
+la clé. Mêmes tirages, mêmes crises, mêmes affaires : ce qui change, ce sont les
+priorités, donc les choix, donc le pays à l'arrivée. C'est la thèse du jeu en un
+tableau.
+
+### b) Le mensonge rappelé
+
+Quand une affaire sort alors que le joueur avait menti à l'Élysée sur ce point,
+l'écran cite la question et la réponse mentie, et donne le prix : ×1,45 sur le
+coût, ×2,2 sur la probabilité de sortie. La phrase est retrouvée dans
+`ENTRETIEN` par l'affaire qu'elle expose, donc sans table supplémentaire à
+maintenir.
+
+Au passage : la frise chevauchait les documents larges entre 1 181 et
+1 300 px (la scène est maintenant décalée de la largeur de la frise), et
+l'écran de bilan la montrait encore en juin de l'an 1 (elle affiche désormais
+les cinq années passées et une ligne « Bilan »).
+
 ## 5. Paramètres à réexaminer après tests humains
 
 | Paramètre | Valeur | Ce qu'il faut regarder |
