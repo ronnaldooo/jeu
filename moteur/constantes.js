@@ -46,14 +46,19 @@ export const ENVELOPPE_BASE = 0.42;   // Md€ de mesures nouvelles « gratuites
    refait pas un budget, on déplace des crédits et on signe des circulaires. */
 export const ENVELOPPE_PRISE_FONCTION = 0.55;  // Md€, juin 2027, une seule fois
 export const ENVELOPPE_RENTREE = 0.22;         // Md€, chaque septembre (circulaire de rentrée)
-export const TAILLE_MENU_COURT = 5;            // menus resserrés hors janvier
+export const TAILLE_MENU_COURT = 4;            // menus cadrés : quatre réponses à UNE question
 
 /* Combien d'annonces une fenêtre peut porter. La contrainte n'est pas
    budgétaire mais réglementaire et humaine : le calendrier du Conseil
    supérieur de l'éducation, les textes à écrire, et la capacité du ministère
    à accompagner ce qu'il annonce. Un ministre qui annonce six réformes dans
    l'année n'en applique aucune. */
-export const ANNONCES_MAX = { prise_fonction: 3, rentree: 3, livraison: 3, janvier: 3 };
+/* Sur un menu cadré, on retient une ou deux réponses — ou aucune, ce qui est
+   aussi une décision. Chaque nombre suit ce que l'écran dit déjà : « deux
+   annonces au maximum » en juin, « deux mesures au maximum » à la rentrée,
+   « trois mesures pour le niveau des élèves » le soir de PISA. */
+export const ANNONCES_MAX = { prise_fonction: 2, rentree: 2, livraison: 3, janvier: 3 };
+export const TAILLE_MENU_LIVRAISON = 5;        // trois à retenir : il en faut cinq à voir
 
 /* ---------------------------------------------------------------------------
    L'AVANCE DE GESTION, le premier arbitrage, juin 2027
@@ -618,7 +623,10 @@ export const PROJETS_2027 = {
 
 /* Taille du menu de mesures par année de mandat : on commence resserré pour
    que chaque carte soit vraiment lue, on élargit avec l'expérience du joueur. */
-export const TAILLES_MENU = [8, 11, 14, 16, 16];
+/* Janvier est le seul moment où l'on arbitre large ; ailleurs le menu est
+   cadré par ce qui vient d'arriver. Même là, un menu de seize cartes n'était
+   pas un choix, c'était un catalogue : on choisit mieux dans six. */
+export const TAILLES_MENU = [6, 7, 8, 8, 8];
 
 export const MOIS = ['janvier','février','mars','avril','mai','juin',
                      'juillet','août','septembre','octobre','novembre','décembre'];

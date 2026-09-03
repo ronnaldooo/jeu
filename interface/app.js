@@ -1277,8 +1277,12 @@ function ecranAtelier(q) {
      C'est tout l'intérêt du dispositif — que l'enchaînement des écrans se lise
      comme une suite de conséquences et non comme une liste de courses. */
   if (q.cadrage) {
+    /* Le menu cadré propose la réponse de plusieurs camps au même problème.
+       On ne dit pas lequel est lequel — le rattachement se lit au bilan — mais
+       on dit qu'ils diffèrent, sinon le joueur croit à un tirage au hasard. */
     d.appendChild(el('div', 'cadrage-menu',
-      `<b>${esc(q.cadrage.titre)}</b><span>${fr(q.cadrage.cause)}</span>`));
+      `<b>${esc(q.cadrage.titre)}</b><span>${fr(q.cadrage.cause)}</span>`
+      + '<span class="camps">Ces réponses ne viennent pas du même endroit : regardez qui les porte. Au bilan, vous saurez à quels programmes vous aurez donné raison.</span>'));
   }
 
   /* Le budget, en vrai : tout le mandat se joue dans un liseré. */
@@ -1671,18 +1675,25 @@ function blocBoussole(S, final) {
     d.appendChild(el('p', 'bous-note', 'Vous n’avez rien annoncé. Aucun programme ne peut donc revendiquer quoi que ce soit, ce qui est une position, mais pas une politique.'));
     return d;
   }
+  /* Au bilan final, on ne se contente pas du décompte : on nomme les mesures.
+     C'est là que le rattachement politique devient lisible — « ce que vous avez
+     signé, voilà qui le portait aussi ». */
   const lignes = Object.entries(BLOCS_2027).map(([cle, meta]) => {
     const n = b.parBord[cle].length;
     const pct = Math.round((n / b.total) * 100);
+    const liste = final && n
+      ? `<ul class="bous-mesures">${b.parBord[cle].map((l) => `<li>${esc(l)}</li>`).join('')}</ul>`
+      : '';
     return `<div class="bous-l"><span class="lib" style="border-left-color:${meta.coul}">${meta.label}<small>${meta.long}</small></span>
       <span class="rail"><i style="width:${Math.max(1, pct)}%;background:${meta.coul}"></i></span>
-      <span class="v">${n}/${b.total}</span></div>`;
+      <span class="v">${n}/${b.total}</span></div>${liste}`;
   }).join('');
   const sansPartiPct = Math.round((b.horsPartis.length / b.total) * 100);
   /* Le mode d’emploi une fois, les chiffres à chaque fois. */
   const premiereFois = final || S.annee <= 2;
   d.innerHTML += `<p class="bous-chapo">Sur vos <b>${b.total}</b> mesure${b.total > 1 ? 's' : ''} annoncée${b.total > 1 ? 's' : ''}, combien figurent aussi au programme de chaque camp en 2027.${premiereFois ? ' Une mesure peut compter dans plusieurs colonnes : c’est fréquent, et ce n’est pas une erreur de comptage.' : ''}</p>${lignes}
-    <p class="bous-note"><b>${b.horsPartis.length} de vos ${b.total} mesures (${sansPartiPct} %) ne sont portées par aucun parti.</b>${premiereFois ? ' Elles viennent de la Cour des comptes, de la DEPP, du Conseil scientifique, de l’inspection générale ou de la recherche, et ce sont en moyenne celles dont le niveau de preuve est le plus élevé.' : ''}</p>`;
+    <p class="bous-note"><b>${b.horsPartis.length} de vos ${b.total} mesures (${sansPartiPct} %) ne sont portées par aucun parti.</b>${premiereFois ? ' Elles viennent de la Cour des comptes, de la DEPP, du Conseil scientifique, de l’inspection générale ou de la recherche, et ce sont en moyenne celles dont le niveau de preuve est le plus élevé.' : ''}</p>
+    ${final && b.horsPartis.length ? `<ul class="bous-mesures hors">${b.horsPartis.map((l) => `<li>${esc(l)}</li>`).join('')}</ul>` : ''}`;
   if (final) {
     d.appendChild(el('p', 'bous-note',
       'Le jeu ne dit pas de quel bord vous êtes : il dit qui défend, dans la vraie vie, ce que vous avez signé. Si le résultat vous surprend, c’est le moment le plus utile de la partie.'));

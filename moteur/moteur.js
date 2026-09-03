@@ -11,7 +11,7 @@
    ========================================================================== */
 
 import * as K from './constantes.js';
-import { CATALOGUE, PAR_ID, AFFAIRES, AFFAIRE_PAR_ID, POLEMIQUES_RENTREE, LIVRAISON_PISA, PLATEAU, REVALORISATION, chiffrerRevalorisation, FINANCEMENT_19, DOSSIERS_ETE, AUDIENCES, RECEPTION, argumentaireSyndical, porteursSyndicaux, estContestable } from './catalogue.js';
+import { CATALOGUE, PAR_ID, AFFAIRES, AFFAIRE_PAR_ID, POLEMIQUES_RENTREE, LIVRAISON_PISA, PLATEAU, REVALORISATION, chiffrerRevalorisation, FINANCEMENT_19, DOSSIERS_ETE, AUDIENCES, RECEPTION, argumentaireSyndical, porteursSyndicaux, estContestable, bordsDeCarte } from './catalogue.js';
 
 /* ---------------------------------------------------------------- ALÉA --- */
 export function rngDepuis(graine) {
@@ -550,7 +550,7 @@ function* etapeLivraison(s) {
   yield { type: 'livraison', livraison: LIVRAISON_PISA };
   const avant = s.joue.size;
   /* On n'attend pas de vous ce soir une réforme de la carte scolaire. */
-  yield* etapeMesures(s, { moment: 'livraison', taille: K.TAILLE_MENU_COURT,
+  yield* etapeMesures(s, { moment: 'livraison', taille: K.TAILLE_MENU_LIVRAISON,
     cadrage: { compteur: 'reussite',
       titre: 'Ce soir, on ne vous demandera que le niveau des élèves',
       cause: 'La publication de l’enquête internationale ferme provisoirement tous les autres sujets. Le menu ne contient que des mesures dont un effet documenté porte sur la réussite des élèves — y compris celles qui la font baisser : le tri, c’est votre travail.' } });
@@ -1106,24 +1106,60 @@ export function mesuresDisponibles(s, tailleVoulue, cadrage) {
   }
   const menu = [];
   const pousse = (c) => { if (c && !menu.includes(c)) menu.push(c); };
-
-  pousse(pool.find((c) => c.id === 'revalorisation'));
-
-  /* Votre doctrine ouvre d'abord les dossiers qui la servent : en début de
-     mandat, l'essentiel du menu est aligné sur vos priorités déclarées ;
-     le reste du catalogue arrive au fil des années. */
-  const reste = pool.filter((c) => !menu.includes(c));
-  const affins = reste.filter((c) => affiniteDoctrine(s, c) >= 2);
-  const autres = reste.filter((c) => !affins.includes(c));
-  const quotaAffins = [5, 4, 3, 2, 1][Math.min(4, s.annee - 1)];
   const tourner = (arr, mult) => {
     if (!arr.length) return [];
     const dec = (s.annee * mult + (s.graine % 13)) % arr.length;
     return arr.map((_, i) => arr[(dec + i) % arr.length]);
   };
-  for (const c of tourner(affins, 7)) { if (menu.length >= 1 + quotaAffins + 2) break; pousse(c); }
-  for (const c of tourner(autres, 5)) { if (menu.length >= TAILLE_MENU) break; pousse(c); }
-  for (const c of tourner(affins, 7)) { if (menu.length >= TAILLE_MENU) break; pousse(c); }
+  const reste = () => pool.filter((c) => !menu.includes(c));
+
+  pousse(pool.find((c) => c.id === 'revalorisation'));
+
+  /* 1. Votre doctrine ouvre d'abord un dossier qui la sert : sur un menu court,
+     une carte alignée sur vos priorités déclarées, pas davantage. */
+  const quotaAffins = Math.max(1, Math.min(3, Math.round(TAILLE_MENU / 3)));
+  const affins = tourner(reste().filter((c) => affiniteDoctrine(s, c) >= 2), 7);
+  for (const c of affins) { if (menu.length >= 1 + quotaAffins) break; pousse(c); }
+
+  /* 2. La rotation des bords. Sur un même sujet, le menu propose la réponse
+     de chaque camp plutôt que quatre variantes du même programme : c'est ce
+     qui fait du choix un choix politique, et ce qui rend lisible, au bilan,
+     d'où venait ce qu'on a signé. L'ordre des bords tourne avec l'année et la
+     graine, pour qu'aucun camp ne soit systématiquement servi le premier. */
+  const PARTIS = ['gauche', 'droite', 'centre', 'extreme'];
+  const BORDS = [...PARTIS, 'aucun'];
+  const dec = (s.annee + (s.graine % 7)) % PARTIS.length;
+  /* « aucun » d'abord, toujours : ce sont les mesures que ne porte aucun
+     parti — Cour des comptes, DEPP, inspection générale, recherche — et ce
+     sont en moyenne celles dont le niveau de preuve est le plus élevé. La
+     réponse des experts doit rester sur la table à chaque fois, sinon un menu
+     politiquement varié devient un menu sans preuve. */
+  const p = PARTIS.map((_, i) => PARTIS[(dec + i) % PARTIS.length]);
+  const ordre = ['aucun', p[0], p[1], 'aucun', p[2], p[3]];
+  const parBord = Object.fromEntries(BORDS.map((b) => [b, []]));
+  for (const c of tourner(reste(), 5)) {
+    const bs = bordsDeCarte(c);
+    if (!bs.length) parBord.aucun.push(c);
+    else for (const b of bs) parBord[b].push(c);
+  }
+  /* Dans chaque colonne, la mesure la mieux étayée passe devant. Un menu court
+     doit rester un menu où la preuve existe : sinon on n'a plus le choix entre
+     bien faire et bien paraître, on n'a plus que des façons de paraître. */
+  const preuve = (c) => Math.max(0, ...(c.reel || []).map((e) => e.cadenas));
+  for (const b of BORDS) parBord[b].sort((x, y) => preuve(y) - preuve(x));
+  for (let tour = 0; tour < 12 && menu.length < TAILLE_MENU; tour++) {
+    let ajoute = false;
+    for (const b of ordre) {
+      if (menu.length >= TAILLE_MENU) break;
+      const c = parBord[b].find((x) => !menu.includes(x));
+      if (c) { pousse(c); ajoute = true; }
+    }
+    if (!ajoute) break;
+  }
+
+  /* 3. Filet : si le vivier cadré est trop maigre pour remplir le menu, on
+     complète librement plutôt que de rendre un menu à deux cartes. */
+  for (const c of tourner(reste(), 3)) { if (menu.length >= TAILLE_MENU) break; pousse(c); }
   return menu;
 }
 

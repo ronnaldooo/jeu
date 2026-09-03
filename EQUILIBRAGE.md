@@ -1577,6 +1577,48 @@ gris tertiaire passait sous 4,5:1 : relevé. Plus aucun texte sous 11 px.
 Vérifications : 1280 px, 390 px, thème sombre, équilibre 4/4 (le moteur n'est
 pas touché).
 
+## 3 septvicies. Des menus courts, et politiquement contrastés
+
+Idée de conception, formulée en test : « qu'en fonction du sujet on propose
+quatre mesures, et que ces mesures soient sur le même thème mais représentent
+des partis politiques différents ».
+
+**Menus courts.** Le menu cadré passe de cinq à **quatre** cartes, celui de
+janvier de 8–16 à **6–8**. Un menu de seize cartes n'était pas un choix,
+c'était un catalogue. Le nombre d'annonces suit ce que l'écran dit déjà :
+deux au maximum en juin, deux à la rentrée, trois le soir de PISA, trois en
+janvier — trois de ces quatre nombres étaient contredits par le texte affiché.
+
+**Rotation des bords.** Le menu ne se remplit plus par affinité doctrinale
+seule. Après une carte alignée sur les priorités déclarées, il tourne sur les
+colonnes politiques : la réponse de chaque camp au même problème. L'ordre des
+camps tourne avec l'année et la graine, pour qu'aucun ne soit servi le premier
+à chaque fois.
+
+**Deux règles qui font tenir l'équilibre.** La colonne « aucun parti » passe
+toujours en premier, et deux fois par tour : ce sont les mesures de la Cour
+des comptes, de la DEPP, de l'inspection générale et de la recherche, celles
+dont le niveau de preuve est le plus élevé. Sans cela, un menu politiquement
+varié devient un menu sans preuve. Et **dans chaque colonne, la mesure la
+mieux étayée passe devant** : chaque camp est représenté par son meilleur
+argument, pas par le premier venu.
+
+Ces deux règles ne sont pas cosmétiques : mesurées, elles font passer l'écart
+de la stratégie « tout réel » de −0,4 à **−2,8** (la cible en demande moins de
+−1). Le menu court, seul, faisait tomber la cible 3 ; c'est le tri par preuve
+à l'intérieur de chaque colonne qui la restaure — et au-delà de son niveau
+d'avant (−1,4).
+
+**Au bilan, on nomme.** La boussole ne se contente plus de compter : sous
+chaque camp, elle **liste les mesures** que ce camp porte aussi, et liste
+séparément celles que ne porte aucun parti. C'est le moment où le
+rattachement politique devient concret : « ce que vous avez signé, voilà qui
+le portait aussi ».
+
+Vérifications : 4/4 sur trois graines (écarts −2,5 à −3,0), aucun débordement,
+et le décompte des menus contrôlé en partie réelle (4 cartes / 2 annonces à la
+rentrée, 6 en janvier, 5 le soir de PISA).
+
 ## 5. Paramètres à réexaminer après tests humains
 
 | Paramètre | Valeur | Ce qu'il faut regarder |
