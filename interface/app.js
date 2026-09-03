@@ -196,6 +196,7 @@ function nouvellesEntrees() {
    les surprises se logent. Les alertes ci-dessous servent à cela : quand une
    mécanique invisible se met à mordre, elle vient le dire. */
 let repereAnnee = null;   // valeurs des compteurs à l'ouverture de l'année en cours
+let hudPrecedent = {};    // dernière valeur affichée par compteur, pour signaler ce qui bouge
 function majHud() {
   const S = ETAT.s;
   $('#hud').hidden = false;
@@ -207,6 +208,8 @@ function majHud() {
     const v = S.affiche[c];
     const d = v - repereAnnee.v[c];
     const j = el('div', 'jauge grande');
+    if (hudPrecedent[c] !== undefined && fmt0(hudPrecedent[c]) !== fmt0(v)) j.classList.add('pulse');
+    hudPrecedent[c] = v;
     j.innerHTML = `<div class="nom"><span>${NOMS_C[c]}</span><b>${fmt0(v)}</b></div>
       <div class="rail"><i style="width:${Math.max(2, Math.min(100, v))}%;background:${COULEURS_C[c]}"></i></div>
       <div class="delta ${d > 0.5 ? 'up' : d < -0.5 ? 'down' : ''}">${Math.abs(d) > 0.5 ? (d > 0 ? '▲ +' : '▼ −') + fmt1(Math.abs(d)) + ' cette année' : 'stable cette année'}</div>`;
@@ -278,17 +281,38 @@ function majAlertes(S) {
 }
 
 /* ------------------------------------------------------------ écrans ------- */
+/* Le bloc de choix d'un écran : un groupe nommé, que le lecteur d'écran
+   annonce, et que la feuille de style étiquette « À vous de décider ». */
+const groupeOptions = () => {
+  const g = el('div', 'opts');
+  g.setAttribute('role', 'group'); g.setAttribute('aria-label', 'À vous de décider');
+  return g;
+};
+/* Un choix coché se dit aussi au clavier et au lecteur d'écran. */
+const cocher = (groupe, bouton) => {
+  groupe.querySelectorAll('.opt').forEach((n) => { n.classList.remove('choisi'); n.setAttribute('aria-pressed', 'false'); });
+  bouton.classList.add('choisi'); bouton.setAttribute('aria-pressed', 'true');
+};
 function scene(...blocs) {
   const sc = $('#scene'); sc.innerHTML = '';
   for (const b of blocs) sc.appendChild(b);
   $('#suite').hidden = true;
   window.scrollTo({ top: 0 });
+  ETAT.tScene = performance.now();
+  /* Le focus suit l'écran : au clavier comme au lecteur d'écran, on repart
+     du titre du nouveau document et non du bas de l'ancien. */
+  const h = sc.querySelector('h2, h1');
+  if (h) { h.tabIndex = -1; h.focus({ preventScroll: true }); }
 }
 function boutonSuite(label, ctx, action) {
+  const etaitCache = $('#suite').hidden;
   $('#suite').hidden = false;
   $('#suite-ctx').textContent = ctx || '';
   const b = $('#suite-btn'); b.textContent = label;
   b.onclick = action;
+  /* Si le bouton apparaît après un choix (et non avec l'écran), il prend le
+     focus : le prochain geste est là, sans chercher. */
+  if (etaitCache && ETAT.tScene && performance.now() - ETAT.tScene > 400) b.focus({ preventScroll: true });
 }
 /* Pictogrammes d'en-tête : un trait, une couleur, vingt-quatre pixels. Ils
    servent à reconnaître l'écran avant de le lire, pas à décorer. */
@@ -780,7 +804,7 @@ function ecranBercy(q) {
      SCHÉMA D’EMPLOIS EXIGÉ : <b>${fmt0(p.schemaEmplois)} ETP</b><br>
      MARGE EN MESURES NOUVELLES : <b>${fmt0(p.marge * 1000)} M€</b> (crédit Bercy : ${fmt0(S.creditBercy)}/100)<br>
      RAPPEL : toute dépense pérenne engage vos successeurs. Les nôtres aussi.`));
-  const opts = el('div', 'opts');
+  const opts = groupeOptions();
   const acc = el('button', 'opt', `<b>Accepter le cadrage</b><span class="det">Vous gardez vos munitions politiques pour janvier. Bercy note votre esprit de responsabilité, ce qui ne coûte rien à Bercy.</span>`);
   acc.onclick = () => suivant('accepter');
   const con = el('button', 'opt', `<b>Contester et porter l’arbitrage à Matignon</b><span class="det">Coût : 12 points de capital politique (il vous en reste ${fmt0(S.capital)}). Chances de gagner : moyennes, et décroissantes avec l’usage.${S.annee === 1 ? ' Un ministre qui menace trop souvent finit par ne plus être craint, seulement remplacé.' : ''}</span>`);
@@ -795,7 +819,7 @@ function ecranPolemique(q) {
   const d = docu('Rentrée, la question qui occupe l’antenne', esc(p.titre));
   d.classList.add('papier');
   d.appendChild(el('p', 'chapo', fr(p.recit)));
-  const opts = el('div', 'opts');
+  const opts = groupeOptions();
   p.reponses.forEach((r, i) => {
     const eff = [
       r.parents ? `parents ${signe(r.parents)}` : '',
@@ -869,7 +893,7 @@ function ecranPlateau(q) {
     bloc.appendChild(el('div', 'plateau-num', `Question ${courante + 1} sur ${P.questions.length}`));
     bloc.appendChild(el('h3', '', fr(qu.q)));
     if (qu.aparte) bloc.appendChild(el('p', 'aparte', fr(qu.aparte)));
-    const opts = el('div', 'opts');
+    const opts = groupeOptions();
     qu.reponses.forEach((r, k) => {
       const b = el('button', 'opt', `<b>${esc(r.label)}</b>`);
       b.onclick = () => {
@@ -926,7 +950,7 @@ function ecranAffaire(q) {
   d.appendChild(el('div', 'decryptage',
     `<div class="titre-d">Ce que ce type d’affaire enseigne</div><p>${fr(a.lecon)}</p>`));
 
-  const opts = el('div', 'opts');
+  const opts = groupeOptions();
   a.reponses.forEach((r, i) => {
     const chiffres = [
       r.adhesion ? `adhésion ${signe(r.adhesion)}` : '',
@@ -975,13 +999,12 @@ function ecranEntretien(q) {
     const bloc = el('section', 'entretien-q');
     bloc.appendChild(el('h3', '', esc(quest.question)));
     bloc.appendChild(el('p', 'aparte', fr(quest.aparte)));
-    const opts = el('div', 'opts');
+    const opts = groupeOptions();
     quest.reponses.forEach((r, k) => {
       const b = el('button', 'opt', `<b>${esc(r.label)}</b><span class="det">${fr(r.det)}</span>`);
       b.onclick = () => {
         rep[i] = k;
-        opts.querySelectorAll('.opt').forEach((n) => n.classList.remove('choisi'));
-        b.classList.add('choisi');
+        cocher(opts, b);
         maj();
       };
       opts.appendChild(b);
@@ -1009,7 +1032,7 @@ function ecranEntretien(q) {
 function ecranProfil(q) {
   const d = docu('Notice biographique, service de presse', 'D’où venez-vous ?');
   d.appendChild(el('p', 'chapo', 'Le service de presse a besoin de deux lignes pour les dépêches de demain. Ce que vous déclarez ne vous rend ni meilleur ni moins bon ministre (<b>aucun profil ne donne d’avantage sur les compteurs</b>) mais décide de ce que le corps enseignant attendra de vous, et de ce qu’on vous reprochera.'));
-  const opts = el('div', 'opts');
+  const opts = groupeOptions();
   q.profils.forEach((p, i) => {
     const eff = [
       p.adhesion ? `adhésion enseignante ${signe(p.adhesion)}` : '',
@@ -1032,7 +1055,7 @@ function ecranAvance(q) {
   const d = docu('Note du secrétariat général, négociation de gestion', 'Demander une rallonge à Bercy');
   d.appendChild(el('p', 'chapo', 'Vous arrivez en juin sur un budget déjà voté. Un seul levier existe pour agir tout de suite : la <b>réserve de précaution</b>, cette part des crédits que Bercy gèle en début d’exercice sur chaque programme et ne dégèle qu’en gestion. Elle immobilise plusieurs centaines de millions d’euros sur votre mission. <b>Bercy n’est pas obligé de dire oui.</b>'));
 
-  const opts = el('div', 'opts');
+  const opts = groupeOptions();
   let choix = null, mesureChoisie = null;
   const zoneMesure = el('div', '');
 
@@ -1050,8 +1073,7 @@ function ecranAvance(q) {
       + `<span class="det mot">« ${fr(o.mot)} »</span>`);
     b.onclick = () => {
       choix = i; mesureChoisie = null;
-      opts.querySelectorAll('.opt').forEach((n) => n.classList.remove('choisi'));
-      b.classList.add('choisi');
+      cocher(opts, b);
       construireMesure(o);
       maj();
     };
@@ -1073,8 +1095,7 @@ function ecranAvance(q) {
       const b = el('button', 'opt', `<b>${esc(c.label)}</b><span class="chiffres"><span>${fmt0(k.cout * 1000)} M€/an</span><span>${k.pol} capital</span></span>`);
       b.onclick = () => {
         mesureChoisie = c.id;
-        ul.querySelectorAll('.opt').forEach((n) => n.classList.remove('choisi'));
-        b.classList.add('choisi');
+        cocher(ul, b);
         maj();
       };
       ul.appendChild(b);
@@ -1104,7 +1125,7 @@ function ecranAvance(q) {
 function ecranIntention(q) {
   const d = docu('Conférence de presse, préparation de la rentrée', 'Que ferez-vous des postes que la démographie libère ?');
   d.appendChild(el('p', 'chapo', 'La question tombera dès votre premier point presse : chaque rentrée « libère » environ 6 600 postes, et tout le monde veut savoir où ils iront. Ce que vous répondez aujourd’hui n’engage rien juridiquement et tout politiquement : <b>Bercy comparera votre phrase à votre carte scolaire de janvier</b>.'));
-  const opts = el('div', 'opts');
+  const opts = groupeOptions();
   q.options.forEach((o, i) => {
     const eff = [
       `<b>${Math.round(o.restitution * 100)} %</b> rendus`,
@@ -1127,7 +1148,7 @@ function ecranRentree() {
   const S = ETAT.s;
   const d = docu('Cellule de crise, rentrée', 'Des classes sans professeur, et un micro devant vous');
   d.appendChild(el('p', 'chapo', `Couverture des concours : ${fmt1(S.phys.couvertureConcours)} %. Heures non assurées : ${fmt1(S.phys.heuresNonAssurees)} %. Le comptage syndical des classes sans enseignant a commencé à 8 h 07. Il est 8 h 12.`));
-  const opts = el('div', 'opts');
+  const opts = groupeOptions();
   const b1 = el('button', 'opt', `<b>Assumer les chiffres</b><span class="det">« La situation est difficile, voici ce que nous faisons. » Les personnels entendent qu’on ne leur ment pas ; l’opposition entend un aveu. Les deux ont raison.</span>`);
   b1.onclick = () => suivant('assumer');
   const b2 = el('button', 'opt', `<b>Contester le comptage syndical</b><span class="det">« Ces chiffres ne correspondent à aucune réalité observable. » Défendable une fois. La réalité observable, elle, revient chaque matin à 8 h.</span>`);
@@ -1272,7 +1293,16 @@ function ecranAtelier(q) {
       <span><i class="puce" style="background:var(--c-sante)"></i>votre marge cette année <b>${fmt0(libre * 1000)} M€</b></span>
     </div>
     <div class="budget-legende" style="margin-top:6px"><span>Le liseré vert est tout ce que vous pouvez décider cette année : <b>${fmt1((libre / M) * 100)} %</b> du budget.${premierAtelier ? ' Chaque mesure pérenne le réduit pour toujours, pour vous et pour vos successeurs.' : ''}</span></div>`;
-  d.appendChild(bb);
+  /* Le budget et l'échelle de preuve : déployés la première fois, repliés
+     ensuite. Ce que le joueur vient décider, ce sont les cartes ; elles
+     doivent être visibles sans faire défiler l'explication qu'il a déjà lue. */
+  const repli = el('details', 'repli-atelier');
+  repli.open = premierAtelier;
+  repli.innerHTML = `<summary>Le budget et l’échelle de preuve${premierAtelier ? '' : ' — rappel'}</summary>`;
+  const repliIn = el('div', 'in');
+  repliIn.appendChild(bb);
+  repli.appendChild(repliIn);
+  d.appendChild(repli);
 
   if ((q.nouveaux || []).length) {
     /* On n'annonce que ce que le joueur voit réellement dans le menu : les
@@ -1286,7 +1316,7 @@ function ecranAtelier(q) {
     }
   }
 
-  d.appendChild(el('div', 'legende-cadenas', premierAtelier
+  repliIn.appendChild(el('div', 'legende-cadenas', premierAtelier
     ? '<b>Échelle de preuve</b> (d’après le Teaching &amp; Learning Toolkit de l’EEF). 🔒🔒🔒🔒🔒 : plus de 90 études concordantes, l’effet obtenu reste à ±20 % de l’annonce. 🔒🔒🔒 : preuve correcte, l’effet peut aller de la moitié au double. 🔒 : presque aucune évaluation, l’effet peut aller du négatif au triple. Un cadenas n’est pas un jugement de valeur, c’est la largeur de votre pari. <b>« Image »</b> : l’indicateur affiché bouge tout de suite, s’estompe d’un quart par an, et ne compte pas au bilan.'
     : '<b>Échelle de preuve</b> : 5 cadenas, effet à ±20 % de l’annonce ; 1 cadenas, du négatif au triple. « Image » : effet immédiat, qui s’évapore et ne compte pas au bilan.'));
 
@@ -1302,16 +1332,22 @@ function ecranAtelier(q) {
     const { cout, pol, reformes } = coutSel();
     const abs = absorption(S);
     const actives = abs.nActives + reformes;
+    /* Trois tuiles pour ce qui décide (enveloppe, annonces, capital), deux
+       chiffres en petit pour ce qui pèse (réformes actives, implémentation). */
+    const reste = enveloppe - cout, pctReste = enveloppe > 0 ? Math.max(0, Math.min(100, (reste / enveloppe) * 100)) : 0;
+    const tuile = (l, v, extra, neg) => `<div class="tuile${neg ? ' neg' : ''}"><span class="l">${l}</span><span class="v">${v}</span>${extra || ''}</div>`;
     solde.innerHTML = [
-      `Enveloppe <b class="${enveloppe - cout < 0 ? 'neg' : ''}">${fmt0((enveloppe - cout) * 1000)} M€</b>/${fmt0(enveloppe * 1000)}`,
-      `Capital <b class="${capital - pol < 0 ? 'neg' : ''}">${fmt0(capital - pol)}</b>/${fmt0(capital)}`,
-      `Annonces <b class="${selection.size >= q.maxAnnonces ? 'neg' : ''}">${selection.size}</b>/${q.maxAnnonces} possibles`,
-      `Réformes actives <b class="${actives > K.ABSORPTION.seuil ? 'neg' : ''}">${actives}</b>/${K.ABSORPTION.seuil} absorbables`,
-      `Implémentation ×<b>${(Math.round(facteurImplementation(S) * 100) / 100).toLocaleString('fr-FR')}</b> (adhésion ${fmt0(S.phys.adhesion)})`,
+      tuile('Enveloppe', `${fmt0(reste * 1000)} M€ <small>/ ${fmt0(enveloppe * 1000)}</small>`,
+        `<span class="rail" aria-hidden="true"><i style="width:${pctReste.toFixed(0)}%"></i></span>`, reste < 0),
+      tuile('Annonces', `${selection.size} <small>/ ${q.maxAnnonces}</small>`,
+        `<span class="points" aria-hidden="true">${Array.from({ length: q.maxAnnonces }, (_, i) => `<i class="${i < selection.size ? 'on' : ''}"></i>`).join('')}</span>`, selection.size > q.maxAnnonces),
+      tuile('Capital', `${fmt0(capital - pol)} <small>/ ${fmt0(capital)}</small>`, '', capital - pol < 0),
+      `<div class="mineur"><span>Réformes actives <b class="${actives > K.ABSORPTION.seuil ? 'neg' : ''}">${actives}</b>/${K.ABSORPTION.seuil} absorbables</span>`
+        + `<span>Implémentation <b>×${(Math.round(facteurImplementation(S) * 100) / 100).toLocaleString('fr-FR')}</b> (adhésion ${fmt0(S.phys.adhesion)})</span></div>`,
       cout > enveloppe ? (q.depassementAutorise
-        ? `<span class="neg">dépassement : −${fmt0(K.SURCOUT.creditBercyParMd * (cout - enveloppe))} crédit Bercy, −${fmt0(K.SURCOUT.capitalParMd * (cout - enveloppe))} capital</span>`
-        : '<span class="neg">hors enveloppe, impossible sans arbitrage budgétaire (janvier)</span>') : '',
-    ].filter(Boolean).map((x) => `<span>${x}</span>`).join('');
+        ? `<span class="avert">Dépassement : −${fmt0(K.SURCOUT.creditBercyParMd * (cout - enveloppe))} crédit Bercy, −${fmt0(K.SURCOUT.capitalParMd * (cout - enveloppe))} capital</span>`
+        : '<span class="avert">Hors enveloppe : impossible sans arbitrage budgétaire (janvier)</span>') : '',
+    ].filter(Boolean).join('');
     const tropCher = !q.depassementAutorise && cout > enveloppe;
     const tropDeCapital = pol > capital;
     valider.disabled = tropCher || tropDeCapital || selection.size > q.maxAnnonces;
@@ -1471,7 +1507,7 @@ function ecranDossier(q) {
   const d = docu('L’été des cent jours, dossier de crise', dos.titre, 'été 2027');
   d.classList.add('papier');
   d.appendChild(el('p', 'chapo', dos.contexte));
-  const opts = el('div', 'opts');
+  const opts = groupeOptions();
   dos.options.forEach((o, i) => {
     const b = el('button', 'opt', `<b>${esc(o.titre)}</b>`);
     b.onclick = () => {
@@ -1522,7 +1558,7 @@ function ecranAudience(q) {
   if (premiereAudience) {
     d.appendChild(el('p', '', '<span style="font-size:.82rem;color:var(--encre-2)">Il n’y a pas de bonne réponse dans l’absolu, il y a une bonne réponse à <b>ce</b> profil-là. La fermeté rassure l’opinion, la méthode paie selon l’interlocuteur, la concession paie partout… et surtout à Bercy.</span>'));
   }
-  const opts = el('div', 'opts');
+  const opts = groupeOptions();
   audience.reponses.forEach((r, i) => {
     const badge = { ferme: 'Fermeté', methode: 'Méthode', concession: 'Concession' }[r.type];
     const b = el('button', 'opt', `<b>${badge} — ${esc(r.titre)}</b>`);
@@ -1573,7 +1609,7 @@ function ecranRetrait(q) {
         : 'Légitime, et non mesurable : une conception de l’école, pas un résultat d’étude.'}</p></div>`;
   d.appendChild(box);
   d.appendChild(el('p', '', `<span style="font-size:.85rem;color:var(--encre-2)">Céder retire vraiment la mesure : ses ${fmt0(mesure.cout * 1000)} M€/an reviennent à votre marge, ses effets à venir sont annulés.</span>`));
-  const opts = el('div', 'opts');
+  const opts = groupeOptions();
 
   const bMaintenir = el('button', 'opt', `<b>Maintenir la mesure</b>
     <span class="det">« Cette mesure a été décidée, elle sera appliquée. » Capital +2, adhésion en baisse.</span>
@@ -1657,6 +1693,28 @@ function ecranEtape(etape) {
     for (const c of S.doctrine.slice(0, 2)) dec.appendChild(el('p', '', K.PROJETS_2027[c].decode));
     dec.appendChild(el('p', '', `<span style="color:var(--encre-3);font-size:.8rem">En queue de classement : ${NOMS_C_LONGS[S.doctrine[4]].toLowerCase()} (8 % de votre bilan). Ses défenseurs relisent votre conférence de presse en prenant des notes.</span>`));
     blocs.push(dec);
+  }
+
+  if (etape === 'cloture' && repereAnnee && repereAnnee.annee === S.annee) {
+    /* L'année en trois chiffres : d'où l'on partait en juin, où l'on arrive
+       en mai, sur les compteurs que le joueur s'est choisis. C'est le seul
+       moment où l'on lui montre son année comme un tout. */
+    const ac = el('div', 'annee-chiffres');
+    const ordre = (S.doctrine || Object.keys(NOMS_C)).slice(0, 3);
+    let hausse = 0, baisse = 0;
+    ac.innerHTML = `<div class="titre-d">Votre année ${2026 + S.annee}‑${(2027 + S.annee) % 100}, en trois chiffres</div><div class="tuiles">${ordre.map((c) => {
+      const v0 = repereAnnee.v[c], v1 = S.affiche[c], d = v1 - v0;
+      if (d > 0.5) hausse++; else if (d < -0.5) baisse++;
+      const cls = d > 0.5 ? 'up' : d < -0.5 ? 'down' : '';
+      return `<div class="t" style="border-top-color:${COULEURS_C[c]}"><span class="n">${NOMS_C[c]}</span><span class="v">${fmt0(v1)}</span>
+        <span class="d ${cls}">${Math.abs(d) > 0.5 ? (d > 0 ? '▲ +' : '▼ −') + fmt1(Math.abs(d)) : 'stable'} <small>depuis juin (${fmt0(v0)})</small></span>
+        <span class="rail" aria-hidden="true"><i style="width:${Math.max(2, Math.min(100, v1)).toFixed(0)}%;background:${COULEURS_C[c]}"></i><b class="tick" style="left:${Math.max(0, Math.min(99, v0)).toFixed(0)}%"></b></span></div>`;
+    }).join('')}</div>
+    <p class="lecture">${hausse === 3 ? 'Trois compteurs en hausse : une année comme les ministres n’en ont pas deux.'
+      : baisse === 3 ? 'Trois compteurs en baisse. L’effet d’annonce s’est évaporé ; l’effet réel, lui, n’est pas encore arrivé.'
+      : hausse + baisse === 0 ? 'Rien n’a bougé de plus d’un demi-point : le système scolaire avance à la vitesse d’un paquebot.'
+      : 'Ce que vous voyez, c’est l’affiché. Le réel s’ouvre au bilan, scellé par scellé.'}</p>`;
+    blocs.push(ac);
   }
 
   if (etape === 'cloture') {
@@ -2040,11 +2098,15 @@ function ouvrirComprendre() {
   c.appendChild(src);
   $('#comprendre').hidden = false;
   $('#comprendre').scrollTop = 0;
+  $('#comprendre-btn').setAttribute('aria-expanded', 'true');
   document.documentElement.style.overflow = 'hidden';
+  $('#comprendre-fermer').focus();
 }
 function fermerComprendre() {
   $('#comprendre').hidden = true;
+  $('#comprendre-btn').setAttribute('aria-expanded', 'false');
   document.documentElement.style.overflow = '';
+  $('#comprendre-btn').focus();
 }
 
 /* -------------------------------------------------------- boucle & sauvegarde */

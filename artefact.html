@@ -12,7 +12,7 @@
   --papier-creme:#f6f1e6; --papier-creme-bord:#e3dbc8;
   --rouge-rf:#e1000f;
   --papier:#f2f3f7; --fiche:#ffffff; --fiche-2:#eceef4;
-  --encre:#1e1f26; --encre-2:#565b6b; --encre-3:#8a8fa3;
+  --encre:#1e1f26; --encre-2:#565b6b; --encre-3:#6b7086;
   --filet:#d8dae4; --filet-fort:#b9bdcf;
   --or:#c9a227;
   --c-reussite:#2a78d6; --c-egalite:#e87ba4; --c-sante:#1baf7a;
@@ -26,7 +26,7 @@
     --papier-creme:#232219; --papier-creme-bord:#3c3a2c;
     --rouge-rf:#ff5655;
     --papier:#14151b; --fiche:#1d1e26; --fiche-2:#262834;
-    --encre:#ecedf3; --encre-2:#a6a9b8; --encre-3:#767b8e;
+    --encre:#ecedf3; --encre-2:#a6a9b8; --encre-3:#8f94a8;
     --filet:#33343e; --filet-fort:#484a58;
     --or:#d9b545;
     --c-reussite:#3987e5; --c-egalite:#d55181; --c-sante:#199e70;
@@ -40,7 +40,7 @@
   --papier-creme:#232219; --papier-creme-bord:#3c3a2c;
   --rouge-rf:#ff5655;
   --papier:#14151b; --fiche:#1d1e26; --fiche-2:#262834;
-  --encre:#ecedf3; --encre-2:#a6a9b8; --encre-3:#767b8e;
+  --encre:#ecedf3; --encre-2:#a6a9b8; --encre-3:#8f94a8;
   --filet:#33343e; --filet-fort:#484a58;
   --or:#d9b545;
   --c-reussite:#3987e5; --c-egalite:#d55181; --c-sante:#199e70;
@@ -60,6 +60,9 @@ button{font:inherit; color:inherit}
 h1,h2,h3{text-wrap:balance; margin:0}
 
 /* ---------- HUD ---------- */
+.skip{position:absolute; left:-9999px; top:8px; z-index:100; background:var(--bleu-rf); color:var(--fiche); padding:8px 14px; font-weight:700; border-radius:2px}
+.skip:focus{left:12px; outline:3px solid var(--rouge-rf)}
+#scene:focus{outline:none}
 #hud{position:sticky; top:0; z-index:20; background:var(--fiche); box-shadow:var(--ombre)}
 #hud .tricolore{height:4px; display:flex}
 #hud .tricolore i{flex:1}
@@ -71,13 +74,17 @@ h1,h2,h3{text-wrap:balance; margin:0}
 #hud .qui small{display:block; font-weight:400; letter-spacing:.02em; text-transform:none; color:var(--encre-2); font-size:.72rem}
 #hud .jauges{display:flex; flex-wrap:wrap; gap:4px 14px; margin-left:auto}
 .jauge{min-width:86px}
-.jauge .nom{font-size:.62rem; letter-spacing:.07em; text-transform:uppercase; color:var(--encre-2); display:flex; justify-content:space-between; gap:6px}
+.jauge .nom{font-size:.68rem; letter-spacing:.07em; text-transform:uppercase; color:var(--encre-2); display:flex; justify-content:space-between; gap:6px}
 .jauge .nom b{color:var(--encre); font-variant-numeric:tabular-nums; letter-spacing:0}
 .jauge .rail{height:4px; background:var(--fiche-2); border-radius:2px; margin-top:2px; overflow:hidden}
 .jauge .rail i{display:block; height:100%; border-radius:2px; transition:width .5s ease}
-.jauge .delta{font-size:.62rem; color:var(--encre-3); font-variant-numeric:tabular-nums}
+.jauge .delta{font-size:.7rem; color:var(--encre-3); font-variant-numeric:tabular-nums}
 .jauge .delta.up{color:var(--ok)} .jauge .delta.down{color:var(--alerte)}
-#hud .sous{max-width:1100px; margin:0 auto; padding:0 16px 7px; display:flex; flex-wrap:wrap; gap:4px 16px; font-size:.7rem; color:var(--encre-2)}
+@keyframes pulse-jauge{0%{background:color-mix(in srgb, var(--bleu-rf) 18%, transparent)} 100%{background:transparent}}
+.jauge.pulse{animation:pulse-jauge 1.1s ease-out; border-radius:3px}
+@keyframes entree-scene{from{opacity:0; transform:translateY(6px)} to{opacity:1; transform:none}}
+@media (prefers-reduced-motion: no-preference){ #scene > *{animation:entree-scene .22s ease-out} }
+#hud .sous{max-width:1100px; margin:0 auto; padding:0 16px 7px; display:flex; flex-wrap:wrap; gap:4px 16px; font-size:.76rem; color:var(--encre-2)}
 #hud .sous span{white-space:nowrap; font-variant-numeric:tabular-nums}
 #hud .sous b{color:var(--encre); font-weight:600}
 
@@ -105,7 +112,7 @@ h1,h2,h3{text-wrap:balance; margin:0}
 
 /* ---------- la frise : où l'on est dans le mandat ---------- */
 #frise{position:fixed; left:14px; top:118px; width:188px; padding:12px 12px 14px; background:var(--fiche); border:1px solid var(--filet); box-shadow:var(--ombre); font-size:.74rem; line-height:1.35; z-index:5}
-.frise-titre{font-size:.62rem; letter-spacing:.12em; text-transform:uppercase; font-weight:700; color:var(--encre-3); margin-bottom:8px}
+.frise-titre{font-size:.68rem; letter-spacing:.12em; text-transform:uppercase; font-weight:700; color:var(--encre-3); margin-bottom:8px}
 .frise-an{display:flex; justify-content:space-between; align-items:baseline; padding:5px 0 5px 10px; border-left:3px solid var(--filet); color:var(--encre-3)}
 .frise-an .num{font-weight:700; letter-spacing:.02em; font-variant-numeric:tabular-nums}
 .frise-an .civ{font-size:.66rem; font-variant-numeric:tabular-nums}
@@ -133,7 +140,7 @@ h1,h2,h3{text-wrap:balance; margin:0}
   .frise-pas li.ici::before{display:none}
   .frise-pas li.apres{display:none}
 }
-.doc h2{font-size:clamp(1.3rem,3vw,1.8rem); line-height:1.18; font-weight:700; margin:0 0 10px; letter-spacing:-.01em}
+.doc h2{font-size:clamp(1.45rem,3.3vw,2.05rem); line-height:1.15; font-weight:700; margin:0 0 12px; letter-spacing:-.012em; max-width:30ch}
 .doc .chapo{color:var(--encre-2); max-width:62ch; margin:0 0 6px; font-size:1.02rem; line-height:1.6}
 .doc p{max-width:66ch; line-height:1.62}
 
@@ -150,6 +157,8 @@ h1,h2,h3{text-wrap:balance; margin:0}
 
 /* ---------- options (choix à réponses) ---------- */
 .opts{display:grid; gap:10px; margin-top:18px}
+.opts::before{content:"À vous de décider"; font-size:.7rem; letter-spacing:.14em; text-transform:uppercase; font-weight:700; color:var(--rouge-rf); margin-bottom:-2px}
+.entretien-q .opts::before, .plateau-q .opts::before, .flechage-liste .opts::before{content:none}
 .opt{cursor:pointer; text-align:left; background:var(--fiche); border:1px solid var(--filet); border-left:4px solid var(--filet-fort); padding:14px 18px; border-radius:2px; transition:border-color .12s, background .12s}
 .opt:hover, .opt:focus-visible{border-color:var(--bleu-rf); border-left-color:var(--bleu-rf); background:var(--fiche-2); outline:none}
 .opt:focus-visible{box-shadow:0 0 0 3px color-mix(in srgb, var(--bleu-rf) 25%, transparent)}
@@ -217,6 +226,20 @@ h1,h2,h3{text-wrap:balance; margin:0}
 .risque-ligne b{font-variant-numeric:tabular-nums}
 
 /* ---------- scellés ouverts ---------- */
+.annee-chiffres{background:var(--fiche); border:1px solid var(--filet); box-shadow:var(--ombre); max-width:860px; margin:0 auto 14px; padding:16px 20px 14px}
+.annee-chiffres .titre-d{font-size:.68rem; letter-spacing:.12em; text-transform:uppercase; font-weight:700; color:var(--encre-2); margin-bottom:10px; text-align:center}
+.annee-chiffres .tuiles{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:14px}
+.annee-chiffres .t{text-align:center; padding:8px 6px 10px; border-top:3px solid var(--filet)}
+.annee-chiffres .t > span{display:block}
+.annee-chiffres .t .d small{display:block; font-size:.72rem; font-weight:400; color:var(--encre-3)}
+.annee-chiffres .t .n{font-size:.7rem; letter-spacing:.1em; text-transform:uppercase; color:var(--encre-2); font-weight:700}
+.annee-chiffres .t .v{font-size:2rem; font-weight:700; line-height:1.1; margin-top:4px; font-variant-numeric:tabular-nums}
+.annee-chiffres .t .d{font-size:.84rem; margin-top:2px; font-variant-numeric:tabular-nums; color:var(--encre-3)}
+.annee-chiffres .t .d.up{color:var(--ok); font-weight:600} .annee-chiffres .t .d.down{color:var(--alerte); font-weight:600}
+.annee-chiffres .t .rail{height:6px; background:var(--fiche-2); border-radius:3px; margin:8px auto 0; max-width:130px; overflow:hidden; position:relative}
+.annee-chiffres .t .rail i{position:absolute; top:0; bottom:0; left:0; border-radius:3px}
+.annee-chiffres .t .rail .tick{position:absolute; top:-3px; bottom:-3px; width:2px; margin-left:-1px; background:var(--encre)}
+.annee-chiffres .lecture{text-align:center; font-size:.84rem; color:var(--encre-2); margin:12px 0 0; font-family:"Newsreader",georgia,serif; font-style:italic}
 .scelles{background:var(--fiche); border:1px solid var(--filet); border-left:3px solid var(--or); max-width:860px; margin:0 auto 14px; padding:14px 18px}
 .scelles .titre-d{font-size:.68rem; letter-spacing:.12em; text-transform:uppercase; font-weight:700; color:var(--or); margin-bottom:6px}
 .scelles .ligne-s{display:flex; flex-wrap:wrap; gap:6px 14px; font-size:.85rem; padding:4px 0; border-top:1px dashed var(--filet)}
@@ -294,9 +317,31 @@ details.mecanisme[open]>summary.titre-d{margin-bottom:6px}
 .curseur .lecture{font-family:"IBM Plex Mono",monospace; font-size:.85rem; color:var(--encre); background:var(--fiche-2); padding:8px 12px; margin-top:6px; font-variant-numeric:tabular-nums}
 
 /* ---------- atelier / cartes-mesures ---------- */
-.solde{position:sticky; top:86px; z-index:5; background:var(--fiche); border:1px solid var(--filet-fort); padding:9px 14px; display:flex; flex-wrap:wrap; gap:6px 22px; font-family:"IBM Plex Mono",monospace; font-size:.82rem; margin-bottom:16px; font-variant-numeric:tabular-nums}
-.solde b{font-weight:500}
-.solde .neg{color:var(--alerte)}
+.solde{position:sticky; top:86px; z-index:5; background:var(--fiche); border:1px solid var(--filet-fort); box-shadow:var(--ombre); padding:10px 14px 8px; display:flex; flex-wrap:wrap; gap:8px 26px; align-items:stretch; margin-bottom:16px; font-variant-numeric:tabular-nums}
+.solde .tuile{display:flex; flex-direction:column; gap:2px; min-width:96px; justify-content:flex-start}
+.solde .tuile .rail, .solde .tuile .points{margin-top:auto}
+.solde .tuile .l{font-size:.66rem; letter-spacing:.1em; text-transform:uppercase; font-weight:700; color:var(--encre-2)}
+.solde .tuile .v{font-size:1.28rem; font-weight:700; line-height:1.1; color:var(--encre)}
+.solde .tuile .v small{font-size:.78rem; font-weight:400; color:var(--encre-2)}
+.solde .tuile .rail{height:4px; background:var(--fiche-2); border-radius:2px; overflow:hidden; margin-top:3px; width:100%}
+.solde .tuile .rail i{display:block; height:100%; background:var(--c-sante); border-radius:2px; transition:width .25s ease}
+.solde .tuile.neg .v, .solde .tuile.neg .l{color:var(--alerte)} .solde .tuile.neg .rail i{background:var(--alerte)}
+.solde .points{display:flex; gap:4px; margin-top:5px}
+.solde .points i{width:11px; height:11px; border-radius:50%; border:1.5px solid var(--filet-fort); background:transparent}
+.solde .points i.on{background:var(--bleu-rf); border-color:var(--bleu-rf)}
+.solde .mineur{display:flex; flex-wrap:wrap; gap:3px 16px; font-size:.76rem; color:var(--encre-2); margin-left:auto; align-self:center}
+.solde .mineur b{color:var(--encre); font-weight:600}
+.solde .mineur .neg, .solde .avert{color:var(--alerte)}
+.solde .avert{flex-basis:100%; font-size:.8rem; font-weight:600}
+.repli-atelier{border:1px solid var(--filet); background:var(--fiche); margin:0 0 14px}
+.repli-atelier > summary{cursor:pointer; padding:10px 14px; font-size:.78rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--encre-2); list-style:none; display:flex; align-items:center; gap:8px}
+.repli-atelier > summary::-webkit-details-marker{display:none}
+.repli-atelier > summary::before{content:"▸"; color:var(--bleu-rf); font-size:.9rem}
+.repli-atelier[open] > summary::before{content:"▾"}
+.repli-atelier > summary:hover, .repli-atelier > summary:focus-visible{color:var(--bleu-rf); outline:none}
+.repli-atelier > summary:focus-visible{box-shadow:inset 0 0 0 2px var(--bleu-rf)}
+.repli-atelier > .in{padding:0 14px 6px}
+.repli-atelier .budget-bloc, .repli-atelier .legende-cadenas{margin-left:0; margin-right:0}
 .grille-cartes{display:grid; grid-template-columns:repeat(auto-fill,minmax(310px,1fr)); gap:14px}
 .carte{cursor:pointer; text-align:left; background:var(--fiche); border:1px solid var(--filet); border-top:3px solid var(--filet-fort); padding:14px 16px 12px; display:flex; flex-direction:column; gap:8px; position:relative}
 .carte:hover{border-color:var(--bleu-rf)}
@@ -322,13 +367,13 @@ details.mecanisme[open]>summary.titre-d{margin-bottom:6px}
 .journal{background:var(--fiche); border:1px solid var(--filet); box-shadow:var(--ombre); max-width:860px; margin:0 auto; padding:26px clamp(18px,4vw,44px); font-family:"Newsreader",georgia,serif}
 .journal .manchette{display:flex; justify-content:space-between; align-items:baseline; gap:10px; border-bottom:3px double var(--encre); padding-bottom:6px}
 .journal .titre-j{font-weight:700; font-size:1.25rem; letter-spacing:.01em}
-.journal .ours{font-family:"Public Sans",sans-serif; font-size:.66rem; color:var(--encre-2); letter-spacing:.06em; text-transform:uppercase; white-space:nowrap}
+.journal .ours{font-family:"Public Sans",sans-serif; font-size:.7rem; color:var(--encre-2); letter-spacing:.06em; text-transform:uppercase; white-space:nowrap}
 .journal h2.une{font-size:clamp(1.5rem,4.4vw,2.3rem); line-height:1.08; font-weight:700; margin:16px 0 8px}
 .journal .sous-une{font-size:1.02rem; font-style:italic; color:var(--encre-2); max-width:60ch}
 .journal .breves{margin-top:18px; border-top:1px solid var(--encre); padding-top:10px; display:grid; gap:9px}
 .journal .breve{font-size:.94rem; line-height:1.35}
 .journal .breve b{font-weight:700}
-.journal .breve .sig{font-family:"Public Sans",sans-serif; font-size:.66rem; color:var(--encre-3); text-transform:uppercase; letter-spacing:.07em}
+.journal .breve .sig{font-family:"Public Sans",sans-serif; font-size:.7rem; color:var(--encre-3); text-transform:uppercase; letter-spacing:.07em}
 
 /* ---------- fil social ---------- */
 .fil{max-width:860px; margin:14px auto 0; display:grid; gap:8px}
@@ -402,7 +447,7 @@ table.bilan .num{text-align:right}
 .cadrage-bloc{border:1px solid var(--filet); background:var(--fiche); padding:16px 18px 14px; margin:16px 0}
 .cadrage-bloc h3{font-size:1.05rem; font-weight:700; margin:0 0 4px}
 .cadrage-phrase{font-family:"Newsreader",georgia,serif; font-size:1.02rem; line-height:1.5; color:var(--encre-2); margin:0 0 10px; max-width:66ch}
-.cadrage-retenir{margin:12px 0 0; padding-top:10px; border-top:1px solid var(--filet); font-size:.86rem; font-weight:600; color:var(--bleu-rf)}
+.cadrage-retenir{margin:18px auto 0; padding:14px 18px; border-top:1px solid var(--bleu-rf); border-bottom:1px solid var(--bleu-rf); font-family:"Newsreader",georgia,serif; font-size:1.12rem; font-style:italic; font-weight:500; line-height:1.4; color:var(--bleu-rf); text-align:center; max-width:46ch}
 .cadrage-bloc .rep-liste{margin-top:10px}
 
 /* graphiques de la note de cadrage */
@@ -433,14 +478,14 @@ table.bilan .num{text-align:right}
 .rep-valeurs span,.rep-annees span{flex:1; text-align:center; min-width:0; font-variant-numeric:tabular-nums}
 .rep-valeurs span{font-family:"IBM Plex Mono",monospace; font-size:.68rem; padding-bottom:3px}
 .rep-valeurs em{display:block; font-style:normal; font-weight:700; color:var(--bleu-rf); font-size:.72rem}
-.rep-annees span{font-size:.62rem; color:var(--encre-3); padding-top:4px}
+.rep-annees span{font-size:.7rem; color:var(--encre-3); padding-top:4px}
 
 @media (max-width:640px){
   .rep-plot,.rep-valeurs,.rep-annees{padding-left:22px}
   .rep-plot .grad{left:22px} .rep-plot .grad b{left:-22px; width:18px; font-size:.58rem}
   .rep-cols{inset:0 0 0 22px; gap:3px}
   .rep-valeurs,.rep-annees{gap:3px}
-  .rep-valeurs span{font-size:.58rem} .rep-annees span{font-size:.55rem}
+  .rep-valeurs span{font-size:.64rem} .rep-annees span{font-size:.62rem}
   .accroche b{font-size:2rem}
 }
 .rep-courbe{width:100%; height:auto; display:block; margin:10px 0 4px; overflow:visible}
@@ -577,7 +622,8 @@ table.bilan tr.cache td{background:var(--fiche-2)}
   .solde{top:0}
 }
 </style>
-<div id="hud" hidden>
+<a class="skip" href="#scene">Aller au contenu</a>
+<header id="hud" hidden>
   <div class="tricolore"><i></i><i></i><i></i></div>
   <div class="barre">
     <div class="qui">Ministère de l'Éducation nationale<small id="hud-date"></small></div>
@@ -585,13 +631,13 @@ table.bilan tr.cache td{background:var(--fiche-2)}
   </div>
   <div class="sous" id="hud-sous"></div>
   <div id="hud-alertes" hidden></div>
-</div>
+</header>
 <aside id="frise" hidden aria-label="Où vous en êtes dans le mandat"></aside>
-<div id="scene"></div>
-<button id="comprendre-btn" hidden>Comprendre le jeu</button>
-<div id="comprendre" hidden><div class="in"><div class="tete"><h2>Comprendre le jeu</h2><button class="btn secondaire" id="comprendre-fermer">Fermer</button></div><div id="comprendre-corps"></div></div></div>
-<div class="suite" id="suite" hidden><div class="in">
-  <div class="contexte" id="suite-ctx"></div>
+<main id="scene" tabindex="-1"></main>
+<button id="comprendre-btn" hidden aria-expanded="false" aria-controls="comprendre">Comprendre le jeu</button>
+<div id="comprendre" hidden role="dialog" aria-modal="true" aria-labelledby="comprendre-titre"><div class="in"><div class="tete"><h2 id="comprendre-titre">Comprendre le jeu</h2><button class="btn secondaire" id="comprendre-fermer">Fermer</button></div><div id="comprendre-corps"></div></div></div>
+<div class="suite" id="suite" hidden role="region" aria-label="Poursuivre"><div class="in">
+  <div class="contexte" id="suite-ctx" aria-live="polite"></div>
   <button class="btn" id="suite-btn">Continuer</button>
 </div></div>
 <script>
@@ -5613,6 +5659,7 @@ function nouvellesEntrees() {
    les surprises se logent. Les alertes ci-dessous servent à cela : quand une
    mécanique invisible se met à mordre, elle vient le dire. */
 let repereAnnee = null;   // valeurs des compteurs à l'ouverture de l'année en cours
+let hudPrecedent = {};    // dernière valeur affichée par compteur, pour signaler ce qui bouge
 function majHud() {
   const S = ETAT.s;
   $('#hud').hidden = false;
@@ -5624,6 +5671,8 @@ function majHud() {
     const v = S.affiche[c];
     const d = v - repereAnnee.v[c];
     const j = el('div', 'jauge grande');
+    if (hudPrecedent[c] !== undefined && fmt0(hudPrecedent[c]) !== fmt0(v)) j.classList.add('pulse');
+    hudPrecedent[c] = v;
     j.innerHTML = `<div class="nom"><span>${NOMS_C[c]}</span><b>${fmt0(v)}</b></div>
       <div class="rail"><i style="width:${Math.max(2, Math.min(100, v))}%;background:${COULEURS_C[c]}"></i></div>
       <div class="delta ${d > 0.5 ? 'up' : d < -0.5 ? 'down' : ''}">${Math.abs(d) > 0.5 ? (d > 0 ? '▲ +' : '▼ −') + fmt1(Math.abs(d)) + ' cette année' : 'stable cette année'}</div>`;
@@ -5695,17 +5744,38 @@ function majAlertes(S) {
 }
 
 /* ------------------------------------------------------------ écrans ------- */
+/* Le bloc de choix d'un écran : un groupe nommé, que le lecteur d'écran
+   annonce, et que la feuille de style étiquette « À vous de décider ». */
+const groupeOptions = () => {
+  const g = el('div', 'opts');
+  g.setAttribute('role', 'group'); g.setAttribute('aria-label', 'À vous de décider');
+  return g;
+};
+/* Un choix coché se dit aussi au clavier et au lecteur d'écran. */
+const cocher = (groupe, bouton) => {
+  groupe.querySelectorAll('.opt').forEach((n) => { n.classList.remove('choisi'); n.setAttribute('aria-pressed', 'false'); });
+  bouton.classList.add('choisi'); bouton.setAttribute('aria-pressed', 'true');
+};
 function scene(...blocs) {
   const sc = $('#scene'); sc.innerHTML = '';
   for (const b of blocs) sc.appendChild(b);
   $('#suite').hidden = true;
   window.scrollTo({ top: 0 });
+  ETAT.tScene = performance.now();
+  /* Le focus suit l'écran : au clavier comme au lecteur d'écran, on repart
+     du titre du nouveau document et non du bas de l'ancien. */
+  const h = sc.querySelector('h2, h1');
+  if (h) { h.tabIndex = -1; h.focus({ preventScroll: true }); }
 }
 function boutonSuite(label, ctx, action) {
+  const etaitCache = $('#suite').hidden;
   $('#suite').hidden = false;
   $('#suite-ctx').textContent = ctx || '';
   const b = $('#suite-btn'); b.textContent = label;
   b.onclick = action;
+  /* Si le bouton apparaît après un choix (et non avec l'écran), il prend le
+     focus : le prochain geste est là, sans chercher. */
+  if (etaitCache && ETAT.tScene && performance.now() - ETAT.tScene > 400) b.focus({ preventScroll: true });
 }
 /* Pictogrammes d'en-tête : un trait, une couleur, vingt-quatre pixels. Ils
    servent à reconnaître l'écran avant de le lire, pas à décorer. */
@@ -6197,7 +6267,7 @@ function ecranBercy(q) {
      SCHÉMA D’EMPLOIS EXIGÉ : <b>${fmt0(p.schemaEmplois)} ETP</b><br>
      MARGE EN MESURES NOUVELLES : <b>${fmt0(p.marge * 1000)} M€</b> (crédit Bercy : ${fmt0(S.creditBercy)}/100)<br>
      RAPPEL : toute dépense pérenne engage vos successeurs. Les nôtres aussi.`));
-  const opts = el('div', 'opts');
+  const opts = groupeOptions();
   const acc = el('button', 'opt', `<b>Accepter le cadrage</b><span class="det">Vous gardez vos munitions politiques pour janvier. Bercy note votre esprit de responsabilité, ce qui ne coûte rien à Bercy.</span>`);
   acc.onclick = () => suivant('accepter');
   const con = el('button', 'opt', `<b>Contester et porter l’arbitrage à Matignon</b><span class="det">Coût : 12 points de capital politique (il vous en reste ${fmt0(S.capital)}). Chances de gagner : moyennes, et décroissantes avec l’usage.${S.annee === 1 ? ' Un ministre qui menace trop souvent finit par ne plus être craint, seulement remplacé.' : ''}</span>`);
@@ -6212,7 +6282,7 @@ function ecranPolemique(q) {
   const d = docu('Rentrée, la question qui occupe l’antenne', esc(p.titre));
   d.classList.add('papier');
   d.appendChild(el('p', 'chapo', fr(p.recit)));
-  const opts = el('div', 'opts');
+  const opts = groupeOptions();
   p.reponses.forEach((r, i) => {
     const eff = [
       r.parents ? `parents ${signe(r.parents)}` : '',
@@ -6286,7 +6356,7 @@ function ecranPlateau(q) {
     bloc.appendChild(el('div', 'plateau-num', `Question ${courante + 1} sur ${P.questions.length}`));
     bloc.appendChild(el('h3', '', fr(qu.q)));
     if (qu.aparte) bloc.appendChild(el('p', 'aparte', fr(qu.aparte)));
-    const opts = el('div', 'opts');
+    const opts = groupeOptions();
     qu.reponses.forEach((r, k) => {
       const b = el('button', 'opt', `<b>${esc(r.label)}</b>`);
       b.onclick = () => {
@@ -6343,7 +6413,7 @@ function ecranAffaire(q) {
   d.appendChild(el('div', 'decryptage',
     `<div class="titre-d">Ce que ce type d’affaire enseigne</div><p>${fr(a.lecon)}</p>`));
 
-  const opts = el('div', 'opts');
+  const opts = groupeOptions();
   a.reponses.forEach((r, i) => {
     const chiffres = [
       r.adhesion ? `adhésion ${signe(r.adhesion)}` : '',
@@ -6392,13 +6462,12 @@ function ecranEntretien(q) {
     const bloc = el('section', 'entretien-q');
     bloc.appendChild(el('h3', '', esc(quest.question)));
     bloc.appendChild(el('p', 'aparte', fr(quest.aparte)));
-    const opts = el('div', 'opts');
+    const opts = groupeOptions();
     quest.reponses.forEach((r, k) => {
       const b = el('button', 'opt', `<b>${esc(r.label)}</b><span class="det">${fr(r.det)}</span>`);
       b.onclick = () => {
         rep[i] = k;
-        opts.querySelectorAll('.opt').forEach((n) => n.classList.remove('choisi'));
-        b.classList.add('choisi');
+        cocher(opts, b);
         maj();
       };
       opts.appendChild(b);
@@ -6426,7 +6495,7 @@ function ecranEntretien(q) {
 function ecranProfil(q) {
   const d = docu('Notice biographique, service de presse', 'D’où venez-vous ?');
   d.appendChild(el('p', 'chapo', 'Le service de presse a besoin de deux lignes pour les dépêches de demain. Ce que vous déclarez ne vous rend ni meilleur ni moins bon ministre (<b>aucun profil ne donne d’avantage sur les compteurs</b>) mais décide de ce que le corps enseignant attendra de vous, et de ce qu’on vous reprochera.'));
-  const opts = el('div', 'opts');
+  const opts = groupeOptions();
   q.profils.forEach((p, i) => {
     const eff = [
       p.adhesion ? `adhésion enseignante ${signe(p.adhesion)}` : '',
@@ -6449,7 +6518,7 @@ function ecranAvance(q) {
   const d = docu('Note du secrétariat général, négociation de gestion', 'Demander une rallonge à Bercy');
   d.appendChild(el('p', 'chapo', 'Vous arrivez en juin sur un budget déjà voté. Un seul levier existe pour agir tout de suite : la <b>réserve de précaution</b>, cette part des crédits que Bercy gèle en début d’exercice sur chaque programme et ne dégèle qu’en gestion. Elle immobilise plusieurs centaines de millions d’euros sur votre mission. <b>Bercy n’est pas obligé de dire oui.</b>'));
 
-  const opts = el('div', 'opts');
+  const opts = groupeOptions();
   let choix = null, mesureChoisie = null;
   const zoneMesure = el('div', '');
 
@@ -6467,8 +6536,7 @@ function ecranAvance(q) {
       + `<span class="det mot">« ${fr(o.mot)} »</span>`);
     b.onclick = () => {
       choix = i; mesureChoisie = null;
-      opts.querySelectorAll('.opt').forEach((n) => n.classList.remove('choisi'));
-      b.classList.add('choisi');
+      cocher(opts, b);
       construireMesure(o);
       maj();
     };
@@ -6490,8 +6558,7 @@ function ecranAvance(q) {
       const b = el('button', 'opt', `<b>${esc(c.label)}</b><span class="chiffres"><span>${fmt0(k.cout * 1000)} M€/an</span><span>${k.pol} capital</span></span>`);
       b.onclick = () => {
         mesureChoisie = c.id;
-        ul.querySelectorAll('.opt').forEach((n) => n.classList.remove('choisi'));
-        b.classList.add('choisi');
+        cocher(ul, b);
         maj();
       };
       ul.appendChild(b);
@@ -6521,7 +6588,7 @@ function ecranAvance(q) {
 function ecranIntention(q) {
   const d = docu('Conférence de presse, préparation de la rentrée', 'Que ferez-vous des postes que la démographie libère ?');
   d.appendChild(el('p', 'chapo', 'La question tombera dès votre premier point presse : chaque rentrée « libère » environ 6 600 postes, et tout le monde veut savoir où ils iront. Ce que vous répondez aujourd’hui n’engage rien juridiquement et tout politiquement : <b>Bercy comparera votre phrase à votre carte scolaire de janvier</b>.'));
-  const opts = el('div', 'opts');
+  const opts = groupeOptions();
   q.options.forEach((o, i) => {
     const eff = [
       `<b>${Math.round(o.restitution * 100)} %</b> rendus`,
@@ -6544,7 +6611,7 @@ function ecranRentree() {
   const S = ETAT.s;
   const d = docu('Cellule de crise, rentrée', 'Des classes sans professeur, et un micro devant vous');
   d.appendChild(el('p', 'chapo', `Couverture des concours : ${fmt1(S.phys.couvertureConcours)} %. Heures non assurées : ${fmt1(S.phys.heuresNonAssurees)} %. Le comptage syndical des classes sans enseignant a commencé à 8 h 07. Il est 8 h 12.`));
-  const opts = el('div', 'opts');
+  const opts = groupeOptions();
   const b1 = el('button', 'opt', `<b>Assumer les chiffres</b><span class="det">« La situation est difficile, voici ce que nous faisons. » Les personnels entendent qu’on ne leur ment pas ; l’opposition entend un aveu. Les deux ont raison.</span>`);
   b1.onclick = () => suivant('assumer');
   const b2 = el('button', 'opt', `<b>Contester le comptage syndical</b><span class="det">« Ces chiffres ne correspondent à aucune réalité observable. » Défendable une fois. La réalité observable, elle, revient chaque matin à 8 h.</span>`);
@@ -6689,7 +6756,16 @@ function ecranAtelier(q) {
       <span><i class="puce" style="background:var(--c-sante)"></i>votre marge cette année <b>${fmt0(libre * 1000)} M€</b></span>
     </div>
     <div class="budget-legende" style="margin-top:6px"><span>Le liseré vert est tout ce que vous pouvez décider cette année : <b>${fmt1((libre / M) * 100)} %</b> du budget.${premierAtelier ? ' Chaque mesure pérenne le réduit pour toujours, pour vous et pour vos successeurs.' : ''}</span></div>`;
-  d.appendChild(bb);
+  /* Le budget et l'échelle de preuve : déployés la première fois, repliés
+     ensuite. Ce que le joueur vient décider, ce sont les cartes ; elles
+     doivent être visibles sans faire défiler l'explication qu'il a déjà lue. */
+  const repli = el('details', 'repli-atelier');
+  repli.open = premierAtelier;
+  repli.innerHTML = `<summary>Le budget et l’échelle de preuve${premierAtelier ? '' : ' — rappel'}</summary>`;
+  const repliIn = el('div', 'in');
+  repliIn.appendChild(bb);
+  repli.appendChild(repliIn);
+  d.appendChild(repli);
 
   if ((q.nouveaux || []).length) {
     /* On n'annonce que ce que le joueur voit réellement dans le menu : les
@@ -6703,7 +6779,7 @@ function ecranAtelier(q) {
     }
   }
 
-  d.appendChild(el('div', 'legende-cadenas', premierAtelier
+  repliIn.appendChild(el('div', 'legende-cadenas', premierAtelier
     ? '<b>Échelle de preuve</b> (d’après le Teaching &amp; Learning Toolkit de l’EEF). 🔒🔒🔒🔒🔒 : plus de 90 études concordantes, l’effet obtenu reste à ±20 % de l’annonce. 🔒🔒🔒 : preuve correcte, l’effet peut aller de la moitié au double. 🔒 : presque aucune évaluation, l’effet peut aller du négatif au triple. Un cadenas n’est pas un jugement de valeur, c’est la largeur de votre pari. <b>« Image »</b> : l’indicateur affiché bouge tout de suite, s’estompe d’un quart par an, et ne compte pas au bilan.'
     : '<b>Échelle de preuve</b> : 5 cadenas, effet à ±20 % de l’annonce ; 1 cadenas, du négatif au triple. « Image » : effet immédiat, qui s’évapore et ne compte pas au bilan.'));
 
@@ -6719,16 +6795,22 @@ function ecranAtelier(q) {
     const { cout, pol, reformes } = coutSel();
     const abs = absorption(S);
     const actives = abs.nActives + reformes;
+    /* Trois tuiles pour ce qui décide (enveloppe, annonces, capital), deux
+       chiffres en petit pour ce qui pèse (réformes actives, implémentation). */
+    const reste = enveloppe - cout, pctReste = enveloppe > 0 ? Math.max(0, Math.min(100, (reste / enveloppe) * 100)) : 0;
+    const tuile = (l, v, extra, neg) => `<div class="tuile${neg ? ' neg' : ''}"><span class="l">${l}</span><span class="v">${v}</span>${extra || ''}</div>`;
     solde.innerHTML = [
-      `Enveloppe <b class="${enveloppe - cout < 0 ? 'neg' : ''}">${fmt0((enveloppe - cout) * 1000)} M€</b>/${fmt0(enveloppe * 1000)}`,
-      `Capital <b class="${capital - pol < 0 ? 'neg' : ''}">${fmt0(capital - pol)}</b>/${fmt0(capital)}`,
-      `Annonces <b class="${selection.size >= q.maxAnnonces ? 'neg' : ''}">${selection.size}</b>/${q.maxAnnonces} possibles`,
-      `Réformes actives <b class="${actives > K.ABSORPTION.seuil ? 'neg' : ''}">${actives}</b>/${K.ABSORPTION.seuil} absorbables`,
-      `Implémentation ×<b>${(Math.round(facteurImplementation(S) * 100) / 100).toLocaleString('fr-FR')}</b> (adhésion ${fmt0(S.phys.adhesion)})`,
+      tuile('Enveloppe', `${fmt0(reste * 1000)} M€ <small>/ ${fmt0(enveloppe * 1000)}</small>`,
+        `<span class="rail" aria-hidden="true"><i style="width:${pctReste.toFixed(0)}%"></i></span>`, reste < 0),
+      tuile('Annonces', `${selection.size} <small>/ ${q.maxAnnonces}</small>`,
+        `<span class="points" aria-hidden="true">${Array.from({ length: q.maxAnnonces }, (_, i) => `<i class="${i < selection.size ? 'on' : ''}"></i>`).join('')}</span>`, selection.size > q.maxAnnonces),
+      tuile('Capital', `${fmt0(capital - pol)} <small>/ ${fmt0(capital)}</small>`, '', capital - pol < 0),
+      `<div class="mineur"><span>Réformes actives <b class="${actives > K.ABSORPTION.seuil ? 'neg' : ''}">${actives}</b>/${K.ABSORPTION.seuil} absorbables</span>`
+        + `<span>Implémentation <b>×${(Math.round(facteurImplementation(S) * 100) / 100).toLocaleString('fr-FR')}</b> (adhésion ${fmt0(S.phys.adhesion)})</span></div>`,
       cout > enveloppe ? (q.depassementAutorise
-        ? `<span class="neg">dépassement : −${fmt0(K.SURCOUT.creditBercyParMd * (cout - enveloppe))} crédit Bercy, −${fmt0(K.SURCOUT.capitalParMd * (cout - enveloppe))} capital</span>`
-        : '<span class="neg">hors enveloppe, impossible sans arbitrage budgétaire (janvier)</span>') : '',
-    ].filter(Boolean).map((x) => `<span>${x}</span>`).join('');
+        ? `<span class="avert">Dépassement : −${fmt0(K.SURCOUT.creditBercyParMd * (cout - enveloppe))} crédit Bercy, −${fmt0(K.SURCOUT.capitalParMd * (cout - enveloppe))} capital</span>`
+        : '<span class="avert">Hors enveloppe : impossible sans arbitrage budgétaire (janvier)</span>') : '',
+    ].filter(Boolean).join('');
     const tropCher = !q.depassementAutorise && cout > enveloppe;
     const tropDeCapital = pol > capital;
     valider.disabled = tropCher || tropDeCapital || selection.size > q.maxAnnonces;
@@ -6888,7 +6970,7 @@ function ecranDossier(q) {
   const d = docu('L’été des cent jours, dossier de crise', dos.titre, 'été 2027');
   d.classList.add('papier');
   d.appendChild(el('p', 'chapo', dos.contexte));
-  const opts = el('div', 'opts');
+  const opts = groupeOptions();
   dos.options.forEach((o, i) => {
     const b = el('button', 'opt', `<b>${esc(o.titre)}</b>`);
     b.onclick = () => {
@@ -6939,7 +7021,7 @@ function ecranAudience(q) {
   if (premiereAudience) {
     d.appendChild(el('p', '', '<span style="font-size:.82rem;color:var(--encre-2)">Il n’y a pas de bonne réponse dans l’absolu, il y a une bonne réponse à <b>ce</b> profil-là. La fermeté rassure l’opinion, la méthode paie selon l’interlocuteur, la concession paie partout… et surtout à Bercy.</span>'));
   }
-  const opts = el('div', 'opts');
+  const opts = groupeOptions();
   audience.reponses.forEach((r, i) => {
     const badge = { ferme: 'Fermeté', methode: 'Méthode', concession: 'Concession' }[r.type];
     const b = el('button', 'opt', `<b>${badge} — ${esc(r.titre)}</b>`);
@@ -6990,7 +7072,7 @@ function ecranRetrait(q) {
         : 'Légitime, et non mesurable : une conception de l’école, pas un résultat d’étude.'}</p></div>`;
   d.appendChild(box);
   d.appendChild(el('p', '', `<span style="font-size:.85rem;color:var(--encre-2)">Céder retire vraiment la mesure : ses ${fmt0(mesure.cout * 1000)} M€/an reviennent à votre marge, ses effets à venir sont annulés.</span>`));
-  const opts = el('div', 'opts');
+  const opts = groupeOptions();
 
   const bMaintenir = el('button', 'opt', `<b>Maintenir la mesure</b>
     <span class="det">« Cette mesure a été décidée, elle sera appliquée. » Capital +2, adhésion en baisse.</span>
@@ -7074,6 +7156,28 @@ function ecranEtape(etape) {
     for (const c of S.doctrine.slice(0, 2)) dec.appendChild(el('p', '', K.PROJETS_2027[c].decode));
     dec.appendChild(el('p', '', `<span style="color:var(--encre-3);font-size:.8rem">En queue de classement : ${NOMS_C_LONGS[S.doctrine[4]].toLowerCase()} (8 % de votre bilan). Ses défenseurs relisent votre conférence de presse en prenant des notes.</span>`));
     blocs.push(dec);
+  }
+
+  if (etape === 'cloture' && repereAnnee && repereAnnee.annee === S.annee) {
+    /* L'année en trois chiffres : d'où l'on partait en juin, où l'on arrive
+       en mai, sur les compteurs que le joueur s'est choisis. C'est le seul
+       moment où l'on lui montre son année comme un tout. */
+    const ac = el('div', 'annee-chiffres');
+    const ordre = (S.doctrine || Object.keys(NOMS_C)).slice(0, 3);
+    let hausse = 0, baisse = 0;
+    ac.innerHTML = `<div class="titre-d">Votre année ${2026 + S.annee}‑${(2027 + S.annee) % 100}, en trois chiffres</div><div class="tuiles">${ordre.map((c) => {
+      const v0 = repereAnnee.v[c], v1 = S.affiche[c], d = v1 - v0;
+      if (d > 0.5) hausse++; else if (d < -0.5) baisse++;
+      const cls = d > 0.5 ? 'up' : d < -0.5 ? 'down' : '';
+      return `<div class="t" style="border-top-color:${COULEURS_C[c]}"><span class="n">${NOMS_C[c]}</span><span class="v">${fmt0(v1)}</span>
+        <span class="d ${cls}">${Math.abs(d) > 0.5 ? (d > 0 ? '▲ +' : '▼ −') + fmt1(Math.abs(d)) : 'stable'} <small>depuis juin (${fmt0(v0)})</small></span>
+        <span class="rail" aria-hidden="true"><i style="width:${Math.max(2, Math.min(100, v1)).toFixed(0)}%;background:${COULEURS_C[c]}"></i><b class="tick" style="left:${Math.max(0, Math.min(99, v0)).toFixed(0)}%"></b></span></div>`;
+    }).join('')}</div>
+    <p class="lecture">${hausse === 3 ? 'Trois compteurs en hausse : une année comme les ministres n’en ont pas deux.'
+      : baisse === 3 ? 'Trois compteurs en baisse. L’effet d’annonce s’est évaporé ; l’effet réel, lui, n’est pas encore arrivé.'
+      : hausse + baisse === 0 ? 'Rien n’a bougé de plus d’un demi-point : le système scolaire avance à la vitesse d’un paquebot.'
+      : 'Ce que vous voyez, c’est l’affiché. Le réel s’ouvre au bilan, scellé par scellé.'}</p>`;
+    blocs.push(ac);
   }
 
   if (etape === 'cloture') {
@@ -7457,11 +7561,15 @@ function ouvrirComprendre() {
   c.appendChild(src);
   $('#comprendre').hidden = false;
   $('#comprendre').scrollTop = 0;
+  $('#comprendre-btn').setAttribute('aria-expanded', 'true');
   document.documentElement.style.overflow = 'hidden';
+  $('#comprendre-fermer').focus();
 }
 function fermerComprendre() {
   $('#comprendre').hidden = true;
+  $('#comprendre-btn').setAttribute('aria-expanded', 'false');
   document.documentElement.style.overflow = '';
+  $('#comprendre-btn').focus();
 }
 
 /* -------------------------------------------------------- boucle & sauvegarde */

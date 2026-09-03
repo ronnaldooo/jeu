@@ -1491,6 +1491,54 @@ défaillante — ce que la polémique enseigne — reste intacte, les trois rép
 (se déplacer, annoncer un plan de plus, renvoyer à la responsabilité locale) et
 leurs effets sont inchangés.
 
+## 3 sexvicies. Une passe de design : hiérarchie, accessibilité, engagement
+
+Demande : améliorer la lecture, l'interactivité et l'engagement ; choisir sur
+chaque page ce qui se lit en premier. Méthode : capture de chaque écran d'une
+partie complète, lecture à l'écran, puis corrections — et nouvelle capture.
+
+**Ce que l'état des lieux montrait.** L'écran le plus fréquent du jeu,
+l'atelier de mesures, faisait passer le joueur par une illustration, un chapô,
+un bloc budget, une échelle de preuve et une ligne d'état en monospace avant la
+première carte : la décision commençait sous le pli. Les blocs de choix
+n'étaient pas annoncés comme tels. La fin d'année ne montrait pas l'année. Le
+gris tertiaire (`--encre-3`) était sous 4,5:1 sur blanc, plusieurs corps
+descendaient à 10 px, la page n'avait ni repères ARIA ni lien d'évitement, et
+rien ne suivait le focus d'un écran à l'autre.
+
+**Hiérarchie.**
+- Atelier : le budget et l'échelle de preuve sont repliés dans un `<details>`
+  dès le deuxième atelier (ouverts au premier). La ligne d'état devient un
+  tableau de bord collant à trois tuiles — enveloppe restante avec sa jauge,
+  annonces sous forme de points, capital — et deux chiffres mineurs. Les cartes
+  arrivent juste dessous.
+- Chaque bloc de choix porte un libellé « À vous de décider » (feuille de
+  style) et un rôle de groupe nommé (lecteur d'écran).
+- Les phrases « à retenir » des notes deviennent des exergues centrés.
+- Titres de documents plus grands, limités à 30 caractères de large.
+
+**Engagement.**
+- Clôture d'année : un bloc « Votre année en trois chiffres » — les trois
+  compteurs choisis, valeur de mai, écart depuis juin, jauge avec repère du
+  point de départ, et une phrase de lecture selon le cas.
+- Le compteur du bandeau qui change de valeur s'allume une seconde.
+- Chaque nouvel écran entre en fondu (désactivé si le système demande moins
+  de mouvement).
+
+**Accessibilité.**
+- `<header>`, `<main>`, lien d'évitement « Aller au contenu », boîte
+  « Comprendre le jeu » en `role="dialog"` avec `aria-modal`, bouton
+  `aria-expanded`, focus rendu à la fermeture.
+- Le focus va au titre du nouvel écran ; quand le bouton « Continuer »
+  apparaît après un choix, il prend le focus. Zone de contexte en
+  `aria-live`.
+- Choix coché : `aria-pressed`.
+- Contraste : `--encre-3` passe à `#6b7086` (≈4,6:1) et `#8f94a8` en sombre.
+  Plus aucun corps sous 11 px.
+
+Vérifications : quarante écrans capturés sur une partie, mobile 390 px et
+thème sombre sans débordement, équilibre 4/4.
+
 ## 5. Paramètres à réexaminer après tests humains
 
 | Paramètre | Valeur | Ce qu'il faut regarder |
