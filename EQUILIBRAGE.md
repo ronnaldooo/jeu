@@ -1366,6 +1366,52 @@ bitmap.
 Le brief `ILLUSTRATIONS.md` reste valable pour les sept scènes restantes, avec
 les sept premières marquées « FAIT ».
 
+## 3 duovicies. Des visages : quatre scènes avec personnages
+
+Demande : « j'aimerais ajouter des visages, des personnages (par exemple, le
+plateau tv avec la ou le journaliste) ». Les sept premières illustrations
+étaient des objets et des lieux, sans personne — c'était une facilité autant
+qu'un parti pris, et le brief l'avait même écrit comme une règle.
+
+Quatre scènes ajoutées : le **plateau** de 20 heures (caméra sur pied, bureau
+courbe, la ou le journaliste face au ministre, micros, retour d'antenne,
+projecteurs), la **délégation** syndicale (trois représentants derrière une
+table, une main levée, une pancarte), la **classe** (le tableau, l'enseignante
+bras tendu, deux élèves dont un qui lève la main), le **pupitre** (une figure
+seule, mains posées, face à la salle).
+
+Un kit commun plutôt que quatre dessins indépendants : `tete`, `buste` et
+`jambes` construisent chaque figure à partir des mêmes fonctions, avec
+quelques variantes (cheveux court / carré / raie, regard à gauche ou à droite,
+bouche en arc ou en ligne, bras baissé / tendu / levé, cravate). Les
+silhouettes se ressemblent donc d'une scène à l'autre, et personne n'est
+identifiable : ce sont des fonctions, pas des portraits.
+
+Deux erreurs de la première passe, corrigées après les avoir regardées :
+
+- **Le buste en pierre tombale.** Un seul arc large descendant jusqu'au sol ne
+  fait pas un corps : il fait un dôme, et la tête flotte au-dessus. Il faut des
+  épaules arrondies, des côtés verticaux, des bras détachés du tronc par deux
+  traits, et des jambes quand la figure est debout.
+- **Le meuble qui traverse les corps.** Un bureau au premier plan dessiné au
+  trait laisse passer les lignes du corps derrière. Le mobilier est désormais
+  rempli d'un aplat, et le buste descend volontairement sous la ligne du meuble
+  qui le masque.
+
+Troisième correction, trouvée seulement en regardant les écrans réels et pas la
+planche de contact : l'aplat était blanc, alors que les écrans de presse sont
+sur papier crème. Une variable CSS `--fond-illus` suit désormais le fond du
+document (`.doc` blanche, `.doc.papier` crème), et le remplissage la suit.
+
+Affectation : `plateau` au plateau de 20 heures, `delegation` à l'audience
+syndicale (l'ancienne table vide reste sur l'écran de retrait), `classe` à la
+livraison PISA — ce que les comparaisons internationales mesurent se passe là —
+et `pupitre` en vignette sur l'écran de doctrine.
+
+Vérifications : quatre écrans capturés en cours de partie et regardés, équilibre
+4/4 sur 400 mandats, aucun débordement horizontal en 390 px ni en thème sombre.
+Coût : +12 Ko.
+
 ## 5. Paramètres à réexaminer après tests humains
 
 | Paramètre | Valeur | Ce qu'il faut regarder |

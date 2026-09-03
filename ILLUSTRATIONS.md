@@ -9,6 +9,12 @@ SVG au trait ; ce qui manque, ce sont des **scènes**.
 - Registre : « papier administratif et presse ». Pas de mascotte, pas de
   personnage caricaturé, pas de visage reconnaissable. La satire du jeu est
   symétrique : les illustrations ne doivent viser personne.
+- Personnages : autorisés, et même attendus dans les scènes de dialogue
+  (plateau, audience, classe, pupitre). Ce sont des **silhouettes de fonction**,
+  pas des portraits : tête ronde, deux yeux en points, une bouche en arc, aucun
+  trait distinctif, aucun âge, aucune ressemblance possible avec une personne
+  réelle. Le kit est codé une fois (`tete`, `buste`, `jambes` dans
+  `interface/app.js`) pour que les figures se ressemblent d'une scène à l'autre.
 - Trait : dessin au trait, une seule couleur, épaisseur constante (1,5 px à
   24 px de haut, 2 px au-delà), bouts arrondis. Pas de dégradé, pas d'ombre
   portée, pas de remplissage sauf un aplat léger optionnel.
@@ -23,14 +29,24 @@ SVG au trait ; ce qui manque, ce sont des **scènes**.
   morte, une pile qui penche, une photocopieuse en panne). Jamais de blague
   dans le trait sur les élèves ou les enseignants.
 
-## État : sept sont faites
+## État : onze sont faites
 
-Sept illustrations sont **dessinées et intégrées au jeu** (façade de l'accueil,
-déménagement du bilan, bureau de l'atelier, enveloppe de Bercy, carte scolaire,
-table d'audience, cour de rentrée). Elles ont été écrites en SVG à la main, puis
-rendues dans un navigateur et corrigées à la vue : deux passes ont suffi. Les
-demandes ci-dessous marquées « FAIT » n'ont donc plus besoin d'être commandées ;
-les autres restent ouvertes.
+Onze illustrations sont **dessinées et intégrées au jeu**. Sept objets ou lieux
+(façade de l'accueil, déménagement du bilan, bureau de l'atelier, enveloppe de
+Bercy, carte scolaire, table d'audience, cour de rentrée) et quatre scènes avec
+personnages (le plateau de 20 heures, la délégation syndicale, la classe, le
+pupitre). Elles ont été écrites en SVG à la main, puis rendues dans un
+navigateur — fond clair et fond sombre — et corrigées à la vue : deux à trois
+passes chacune. Les demandes ci-dessous marquées « FAIT » n'ont donc plus besoin
+d'être commandées ; les autres restent ouvertes.
+
+Deux règles de fabrication apprises à la correction, à respecter pour la suite :
+un buste ne se dessine pas d'un seul arc jusqu'au sol (cela produit une pierre
+tombale) — il faut des épaules, des côtés verticaux, des bras détachés, et des
+jambes si la figure est debout ; et le mobilier au premier plan doit être
+**rempli** de la couleur du fond (`fill="var(--fond-illus)"`, qui suit la fiche
+blanche ou le papier crème de la presse) pour masquer le bas des corps, sinon
+les traits du meuble traversent les personnages.
 
 ## Les demandes, par ordre d'importance
 
@@ -62,24 +78,27 @@ une règle posée dessus.
 ### 6. L'audience syndicale : la table — 280 × 120  — **FAIT**
 Une table de réunion vue de haut, deux rangées de chaises face à face, des
 parapheurs et des bouteilles d'eau. Un côté a plus de chaises que l'autre.
-Sans personnage.
+Sans personnage. Sert désormais à l'écran de retrait d'une mesure ; l'audience
+elle-même a reçu la scène avec délégation (n° 15).
 
 ### 7. La rentrée : la cour — 280 × 120  — **FAIT**
 Une cour d'école vide, tôt le matin : le préau, un panier de basket, des
 marelles au sol, une porte ouverte. L'heure sur une horloge : 8 h 07.
 
-### 8. Le plateau de 20 heures : le studio — 120 × 120
-Un pupitre de plateau télé, deux micros, un projecteur, un moniteur de retour
-qui affiche un compte à rebours. Sans visage.
+### 8. Le plateau de 20 heures : le studio — 280 × 120  — **FAIT**
+Le plateau vu de face : une caméra sur pied à gauche, un bureau courbe, la ou le
+journaliste et le ministre face à face, deux micros de table entre eux, un
+moniteur de retour avec sa diode d'antenne, deux projecteurs suspendus.
 
 ### 9. L'affaire : la une — 120 × 120
 Un journal plié dont on ne lit pas le titre, un téléphone portable posé dessus
 avec beaucoup de notifications. Doit rester neutre : la même image sert à
 toutes les affaires.
 
-### 10. La livraison PISA : la mallette — 120 × 120
+### 10. La livraison PISA : la mallette — 120 × 120  — *sans objet*
 Une mallette de rapport ouverte, des feuilles de tableaux, un logo générique
 d'organisation internationale (pas celui de l'OCDE). Un tampon « 11 h 00 ».
+Remplacée par la scène de classe (n° 16) : l'écran n'a besoin que d'un dessin.
 
 ### 11. L'été des cent jours : le ventilateur — 120 × 120
 Un bureau en juillet : un ventilateur, des stores baissés, un dossier « urgent »
@@ -100,10 +119,24 @@ routes vu de haut. Illustre « même partie, deux doctrines ».
 - Guerre scolaire : une rue vue de haut, remplie de points (la foule), sans
   détail.
 
+### 15. L'audience : la délégation — 280 × 120  — **FAIT**
+Trois représentants derrière une longue table, l'un lève la main, une pancarte
+posée à gauche, des papiers sur la table.
+
+### 16. La livraison PISA : la classe — 280 × 120  — **FAIT**
+Le tableau, l'enseignante bras tendu vers lui, deux élèves à leur table dont
+l'un lève la main. Sert à l'écran des résultats internationaux : ce que les
+comparaisons mesurent se passe là.
+
+### 17. La doctrine : le pupitre — 120 × 120  — **FAIT**
+Une seule figure derrière un pupitre, les mains posées dessus, face à la salle.
+Pour l'écran où l'on annonce l'ordre de ses priorités.
+
 ## Ce qu'il ne faut pas faire
 
-- Pas de personnage identifiable ni de silhouette qui puisse ressembler à un
-  ministre réel.
+- Pas de personnage identifiable : ni visage reconnaissable, ni coiffure, ni
+  attribut qui puisse désigner un ministre, un syndicaliste ou un journaliste
+  réel. Les personnages sont autorisés, les portraits non.
 - Pas de logo réel (ministère, syndicat, journal, OCDE) : le jeu n'en utilise
   aucun, tout est pseudonymisé.
 - Pas de texte dans l'image, sauf un chiffre ou une heure (8 h 07, 11 h 00) :
