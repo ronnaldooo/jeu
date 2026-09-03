@@ -1412,6 +1412,49 @@ Vérifications : quatre écrans capturés en cours de partie et regardés, équi
 4/4 sur 400 mandats, aucun débordement horizontal en 390 px ni en thème sombre.
 Coût : +12 Ko.
 
+## 3 tervicies. Le calendrier en années réelles, et une passe graphique
+
+Trois demandes.
+
+**Les années plutôt que les rangs.** « An 1 », « An 2 » n'existent pour
+personne : le calendrier affiche désormais **2027‑28**, **2028‑29**… jusqu'à
+**2031‑32**. Le format est celui de l'année scolaire, parce que la case court de
+juin à mai : l'écrire « 2027 » tout court aurait contredit la date « janvier
+2028 » imprimée sur les documents de la même case.
+
+**Un seul été.** « Été » et « Juillet » racontaient la même chose sur deux
+lignes. Les deux étapes sont fusionnées en une, « Été — cent jours, lettre
+plafond ». La lettre plafond, la note démographique et l'annonce d'intention y
+sont raccrochées. Le calendrier de l'année 1 passe de neuf lignes à huit, et
+celui des années suivantes de huit à sept.
+
+**Une passe graphique sur les onze illustrations.** La série était honnête mais
+plate : une seule épaisseur de trait, aucun remplissage, tous les objets posés
+sur la même ligne de sol. Trois outils ajoutés, écrits une fois et partagés :
+
+- `masse(d)` — une surface d'abord opaque (elle masque ce qui est derrière),
+  puis une trame d'encre à 7 % (elle donne le volume), puis le trait ;
+- `trame(d, t)` — une surface teintée sans masquage, pour les plans arrière ;
+- `ombre(x, y, r)` — une ellipse très pâle qui pose l'objet au sol.
+
+À quoi s'ajoutent une hiérarchie d'épaisseurs (1,9 / 1,5 / 1,05) et un accent
+rouge, un seul par scène et seulement quand il signifie quelque chose : le
+voyant d'antenne du plateau, les écoles fermées de la carte scolaire, le cachet
+de Bercy, l'onglet du dossier urgent, la pancarte de la délégation.
+
+Quatre objets ont été redessinés parce qu'ils lisaient de travers, ce que seule
+la mise à l'écran révèle : le fauteuil du déménagement faisait une lampe (il est
+devenu un fauteuil vu de face, dossier, assise, accoudoirs, pieds) ; l'enveloppe
+de Bercy faisait une sacoche (le cachet en arc est devenu une feuille qui dépasse
+et un trombone) ; le bureau de l'atelier n'avait ni volume ni pieds ; et la
+marelle de la cour faisait un podium — un tracé au sol en perspective ne se lit
+pas à cette taille, elle est remplacée par un banc.
+
+Vérifications : planche de contact rendue sur les trois fonds du jeu (fiche
+blanche, papier crème de la presse, thème sombre), cinq écrans capturés en cours
+de partie, équilibre 4/4 sur 400 mandats, aucun débordement horizontal.
+Coût : +6 Ko.
+
 ## 5. Paramètres à réexaminer après tests humains
 
 | Paramètre | Valeur | Ce qu'il faut regarder |

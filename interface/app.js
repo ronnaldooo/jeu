@@ -387,154 +387,231 @@ function jambes(x, yH, yB, e) {
     + 'M' + A(x + 2) + ' ' + yH + 'L' + A(x + e) + ' ' + yB + '" stroke-width="1.5"/>';
 }
 
-/* Les illustrations : dessins au trait, une seule couleur, héritée du thème.
-   Un bandeau 280×120 en tête de document, une vignette 120×120 flottant à
-   droite du chapô. Elles nomment l'écran d'un coup d'œil ; elles n'ajoutent
-   rien à lire. */
+/* ---------------------------------------------------------------------------
+   Vocabulaire graphique commun à toutes les illustrations.
+
+   Trois défauts de la première série, corrigés ici : tout était au même
+   trait (aucune hiérarchie), tout était vide (aucun volume), et tout
+   flottait sur une ligne de sol unique (aucune profondeur).
+
+   - `masse`  : une surface opaque (elle masque ce qui est derrière) puis
+                une trame d'encre à 7 % (elle donne le volume), puis le trait.
+   - `trame`  : une surface teintée sans masquage, pour les plans arrière.
+   - `ombre`  : une ellipse très pâle au sol, qui pose l'objet.
+   - Épaisseurs : 1,9 pour les contours porteurs, 1,5 pour le mobilier,
+     1,05 pour les détails. C'est ce qui fait lire une image au premier coup
+     d'œil plutôt qu'un fil de fer.
+   - Accent : `ACC` (le rouge de la charte) sur UN élément par scène, et
+     seulement quand il dit quelque chose — le voyant d'antenne, les écoles
+     fermées, le cachet de Bercy.
+--------------------------------------------------------------------------- */
+const ACC = 'var(--rouge-rf)';
+const masse = (d, o) => `<path d="${d}" fill="var(--fond-illus,#fff)" stroke="none"/>`
+  + `<path d="${d}" fill="currentColor" fill-opacity=".07"${o || ''}/>`;
+const trame = (d, t, o) => `<path d="${d}" fill="currentColor" fill-opacity="${t || '.07'}"${o || ' stroke="none"'}/>`;
+const ombre = (x, y, rx, t) => `<ellipse cx="${x}" cy="${y}" rx="${rx}" ry="${Math.max(2, Math.round(rx * 0.14))}" fill="currentColor" fill-opacity="${t || '.07'}" stroke="none"/>`;
+const carreau = (x, y, w, h) => masse(`M${x} ${y}h${w}v${h}h${-w}z`, ' stroke-width="1.3"')
+  + `<path d="M${x + w / 2} ${y}v${h}M${x} ${y + h / 2}h${w}" stroke-width="1.05"/>`;
+
+/* Les illustrations : encre du thème, aplats de trame, un accent rouge par
+   scène au plus. Un bandeau 280×120 en tête de document, une vignette
+   120×120 flottant à droite du chapô. Elles nomment l'écran d'un coup d'œil ;
+   elles n'ajoutent rien à lire. */
 const ILLUS = {
 
+
+/* L'accueil : la façade du 110, vue de la rue. */
 facade: `<svg viewBox="0 0 280 120" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-  <path d="M6 112h268"/>
-  <path d="M30 112V44h220v68"/>
-  <path d="M30 44h220M26 44l4-8h220l4 8"/>
-  <path d="M30 36V26h220v10"/>
-  <path d="M52 112V62h22v50M92 112V62h22v50M166 112V62h22v50M206 112V62h22v50"/>
-  <path d="M52 62h22M92 62h22M166 62h22M206 62h22"/>
-  <path d="M60 74h6M100 74h6M174 74h6M214 74h6"/>
-  <path d="M126 112V70h28v42M126 70a14 14 0 0 1 28 0"/>
-  <path d="M140 70v42M126 88h28"/>
-  <path d="M120 112h40"/>
-  <path d="M140 26V8M140 8h22l-4 5 4 5h-22"/>
-  <path d="M96 36v8M184 36v8M52 36v8M228 36v8"/>
-  <path d="M12 112c6-10 12-10 18 0M250 112c6-10 12-10 18 0" stroke-width="1.1"/>
+  ${ombre(140, 111, 124, '.06')}
+  ${trame('M40 44h200v22H40z', '.05')}
+  ${masse('M30 110V44h220v66', ' stroke-width="1.9"')}
+  ${masse('M23 44l8-11h218l8 11z', ' stroke-width="1.6"')}
+  ${masse('M60 33V21h12v12M206 33V17h12v16', ' stroke-width="1.3"')}
+  ${[48, 84, 178, 214].map((x) => carreau(x, 58, 24, 28)).join('\n  ')}
+  ${masse('M124 110V74a16 16 0 0 1 32 0v36z', ' stroke-width="1.7"')}
+  <path d="M140 74v36M126 90h28" stroke-width="1.05"/>
+  <path d="M112 110h56M118 104h44" stroke-width="1.4"/>
+  <path d="M140 33V8" stroke-width="1.4"/>
+  ${masse('M140 8h26l-6 7 6 7h-26z', ' stroke-width="1.3"')}
+  <path d="M6 110h268" stroke-width="1.4"/>
+  <path d="M14 110c5-8 11-8 16 0M250 110c5-8 11-8 16 0" stroke-width="1.05"/>
 </svg>`,
 
+/* Le bilan : le bureau qu'on vide. */
 demenagement: `<svg viewBox="0 0 280 120" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-  <path d="M14 100h252"/>
-  <path d="M14 100V18h108"/>
-  <rect x="34" y="30" width="52" height="38" stroke-dasharray="4 5" stroke-width="1.2"/>
-  <path d="M60 24v6M58 24h4" stroke-width="1.2"/>
-  <path d="M30 100V72h56v28M30 72l8-10h40l8 10M58 72v28"/>
-  <path d="M38 80h14M64 80h14" stroke-width="1.2"/>
-  <path d="M96 100V80h40v20M96 80l6-8h28l6 8M116 80v20"/>
-  <path d="M96 68c5-5 12-5 17 0M119 68c5-5 12-5 17 0" stroke-width="1.2"/>
-  <path d="M204 100v-14M188 86h32M192 86l-3-24h30l-3 24"/>
-  <path d="M190 62c0-14 8-22 19-22s19 8 19 22"/>
-  <path d="M228 62v20M228 82h-8" stroke-width="1.3"/>
-  <path d="M198 100l-8 8M210 100l8 8" stroke-width="1.3"/>
-  <path d="M252 100V84h16v16M252 84h16" stroke-width="1.3"/>
+  ${trame('M16 14h132v84H16z', '.04')}
+  <path d="M16 98V14h132" stroke-width="1.3"/>
+  ${trame('M40 28h56v40H40z', '.11')}
+  <path d="M40 28h56v40H40z" stroke-width="1.2" stroke-dasharray="5 5"/>
+  <path d="M68 22v6M64 22h8" stroke-width="1.2"/>
+  ${ombre(66, 99, 34)}
+  ${masse('M36 98V70h60v28z', ' stroke-width="1.8"')}
+  ${masse('M36 70l9-11h42l9 11z', ' stroke-width="1.4"')}
+  <path d="M66 70v28M45 78h14M73 78h14" stroke-width="1.05"/>
+  ${ombre(122, 99, 26)}
+  ${masse('M100 98V78h44v20z', ' stroke-width="1.7"')}
+  ${masse('M100 78l7-9h30l7 9z', ' stroke-width="1.3"')}
+  <path d="M122 78v20" stroke-width="1.05"/>
+  <path d="M101 66c5-6 13-6 19 0M124 66c5-6 13-6 19 0" stroke-width="1.2"/>
+  ${ombre(216, 99, 42)}
+  ${masse('M190 76V50c0-6 4-10 10-10h32c6 0 10 4 10 10v26z', ' stroke-width="1.7"')}
+  ${masse('M180 74h72v12h-72z', ' stroke-width="1.8"')}
+  ${masse('M180 62h10v12h-10zM242 62h10v12h-10z', ' stroke-width="1.4"')}
+  <path d="M188 86v12M244 86v12" stroke-width="1.5"/>
+  <path d="M200 50h32" stroke-width="1.05"/>
+  <path d="M12 98h262" stroke-width="1.4"/>
 </svg>`,
 
+/* L'atelier : le bureau où l'on choisit. */
 bureau: `<svg viewBox="0 0 280 120" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-  <path d="M12 88h256"/>
-  <path d="M30 88v22M250 88v22"/>
-  <path d="M18 88l16-12h212l16 12"/>
-  <path d="M44 76V52h50v24M44 52l4-4h42l4 4"/>
-  <path d="M50 58h38M50 64h38M50 70h26" stroke-width="1.2"/>
-  <path d="M118 76l14-30 30 8-12 22z"/>
-  <path d="M132 46l30 8" stroke-width="1.3"/>
-  <path d="M140 58h18M138 64h18" stroke-width="1.2"/>
-  <path d="M184 76V44h44v32M184 44h44"/>
-  <path d="M192 52h28M192 58h28M192 64h18" stroke-width="1.2"/>
-  <path d="M236 76l26-26M262 50l-3 9 9-3" stroke-width="1.4"/>
+  ${ombre(70, 79, 30)} ${ombre(146, 79, 26)} ${ombre(212, 79, 26)}
+  ${masse('M42 78V48h56v30z', ' stroke-width="1.6"')}
+  ${masse('M42 48l5-5h46l5 5z', ' stroke-width="1.3"')}
+  <path d="M50 56h40M50 63h40M50 70h24" stroke-width="1.05"/>
+  <path d="M92 43v-7h10v9" stroke="${ACC}" stroke-width="1.6"/>
+  ${masse('M116 78l14-31 32 9-13 22z', ' stroke-width="1.6"')}
+  <path d="M130 47l32 9" stroke-width="1.2"/>
+  <path d="M139 60h18M137 67h18" stroke-width="1.05"/>
+  ${masse('M186 78V42h46v36z', ' stroke-width="1.6"')}
+  <path d="M186 42h46M209 42v36" stroke-width="1.2"/>
+  <path d="M192 52h12M192 59h12M215 52h12M215 59h12" stroke-width="1.05"/>
+  ${masse('M238 78V60h22v18z', ' stroke-width="1.6"')}
+  <path d="M260 64c6 0 6 9 0 9" stroke-width="1.3"/>
+  <path d="M238 66h22" stroke-width="1.05"/>
+  <path d="M126 58l16-8" stroke-width="1.4"/>
+  <path d="M142 50l5-1-2 5z" stroke-width="1.2"/>
+  ${masse('M10 86l16-8h228l16 8z', ' stroke-width="1.5"')}
+  ${masse('M10 86h260v9H10z', ' stroke-width="1.9"')}
+  ${masse('M26 95h10v22H26zM244 95h10v22h-10z', ' stroke-width="1.6"')}
 </svg>`,
 
+/* La lettre plafond : l'enveloppe de Bercy. */
 enveloppe: `<svg viewBox="0 0 120 120" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-  <rect x="16" y="34" width="88" height="58" rx="2"/>
-  <path d="M16 40l44 30 44-30"/>
-  <path d="M16 88l30-24M104 88L74 64" stroke-width="1.2"/>
-  <circle cx="88" cy="80" r="10"/>
-  <path d="M84 80l3 3 5-6" stroke-width="1.2"/>
-  <path d="M40 30c0-6 4-10 9-10h30c5 0 9 4 9 10"/>
-  <path d="M46 20V12h36v8" stroke-width="1.2"/>
-  <path d="M28 30V22c0-4 3-7 7-7h4" stroke-width="1.2"/>
+  ${masse('M32 10h58v30H32z', ' stroke-width="1.5"')}
+  <path d="M40 20h34M40 28h22" stroke-width="1.1"/>
+  <path d="M56 4v22a5 5 0 0 0 10 0V8a6.5 6.5 0 0 0-13 0v26" stroke-width="1.3"/>
+  ${ombre(60, 96, 44)}
+  ${masse('M14 34h92v58H14z', ' stroke-width="1.9"')}
+  ${trame('M14 34l46 32 46-32z', '.10')}
+  <path d="M14 38l46 31 46-31" stroke-width="1.4"/>
+  <path d="M14 88l30-24M106 88L76 64" stroke-width="1.1"/>
+  <circle cx="88" cy="80" r="12" stroke="${ACC}" stroke-width="1.5"/>
+  <circle cx="88" cy="80" r="8" stroke="${ACC}" stroke-width="1.05"/>
+  <path d="M83 80l4 4 6-8" stroke="${ACC}" stroke-width="1.4"/>
 </svg>`,
 
+/* La carte scolaire : ce qu'on ferme et ce qu'on ouvre. */
 carte: `<svg viewBox="0 0 120 120" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-  <path d="M14 26l30-10 32 10 30-10v78l-30 10-32-10-30 10z"/>
-  <path d="M44 16v78M76 26v78" stroke-width="1.1"/>
-  <circle cx="29" cy="44" r="3"/><circle cx="60" cy="36" r="3"/><circle cx="92" cy="50" r="3"/>
-  <circle cx="34" cy="72" r="3"/><circle cx="64" cy="66" r="3"/><circle cx="90" cy="80" r="3"/>
-  <path d="M56 32l8 8M64 32l-8 8" stroke-width="1.3"/>
-  <path d="M86 76l8 8M94 76l-8 8" stroke-width="1.3"/>
-  <circle cx="29" cy="44" r="7" stroke-width="1.1"/>
-  <path d="M74 96l26-26M100 70l-4 10 10-4z" stroke-width="1.2"/>
+  ${ombre(60, 108, 46, '.06')}
+  ${masse('M12 24l32-11 32 11 32-11v80l-32 11-32-11-32 11z', ' stroke-width="1.9"')}
+  <path d="M44 13v80M76 24v80" stroke-width="1.1"/>
+  <path d="M12 52l32-8 32 8 32-8M12 76l32-8 32 8 32-8" stroke-width="1.05"/>
+  <circle cx="28" cy="40" r="3.2" fill="currentColor" stroke="none"/>
+  <circle cx="28" cy="40" r="8" stroke-width="1.2"/>
+  <circle cx="60" cy="34" r="3.2" fill="currentColor" stroke="none"/>
+  <circle cx="90" cy="46" r="3.2" fill="currentColor" stroke="none"/>
+  <circle cx="34" cy="70" r="3.2" fill="currentColor" stroke="none"/>
+  <circle cx="64" cy="64" r="3.2" fill="currentColor" stroke="none"/>
+  <path d="M56 30l8 8M64 30l-8 8" stroke="${ACC}" stroke-width="1.7"/>
+  <path d="M86 42l8 8M94 42l-8 8" stroke="${ACC}" stroke-width="1.7"/>
+  ${masse('M70 100l26-27 7 7-26 27z', ' stroke-width="1.4"')}
+  <path d="M96 73l7 7" stroke-width="1.05"/>
+  <path d="M72 102l-6 6 8-2z" stroke-width="1.3"/>
 </svg>`,
 
+/* Le retrait : la table d'audience, vidée de ses occupants. */
 audience: `<svg viewBox="0 0 280 120" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-  <rect x="66" y="38" width="148" height="44" rx="4"/>
-  <path d="M96 46h30M96 52h22" stroke-width="1.1"/>
-  <path d="M154 46h30M154 52h22" stroke-width="1.1"/>
-  <rect x="132" y="62" width="16" height="12" rx="2"/>
-  <path d="M76 20h20v14H76zM106 20h20v14h-20zM136 20h20v14h-20zM166 20h20v14h-20zM196 20h20v14h-20z"/>
-  <path d="M96 86h20v14H96zM126 86h20v14h-20zM156 86h20v14h-20z"/>
-  <path d="M56 44v32M224 44v32" stroke-width="1.1"/>
-  <path d="M52 52h8M220 52h8" stroke-width="1.1"/>
+  ${[76, 106, 136, 166, 196].map((x) => masse(`M${x} 18h20v16h-20z`, ' stroke-width="1.3"')).join('\n  ')}
+  ${[96, 126, 156].map((x) => masse(`M${x} 88h20v16h-20z`, ' stroke-width="1.3"')).join('\n  ')}
+  ${ombre(140, 86, 78, '.06')}
+  ${masse('M62 36h156v46H62z', ' stroke-width="1.9"')}
+  ${trame('M92 42h34v8H92zM152 42h34v8h-34z', '.13')}
+  <path d="M92 42h34v8H92zM152 42h34v8h-34z" stroke-width="1.1"/>
+  ${masse('M130 60h20v14h-20z', ' stroke-width="1.3"')}
+  <path d="M136 60v-4h8v4" stroke-width="1.1"/>
+  <path d="M50 44v28M52 50h8M230 44v28M228 50h-8" stroke-width="1.1"/>
 </svg>`,
 
+/* La rentrée : la cour, tôt le matin. */
 cour: `<svg viewBox="0 0 280 120" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-  <path d="M8 100h264"/>
-  <path d="M14 100V40h84v60M8 40h96M14 40l8-10h72l8 10"/>
-  <path d="M30 100V64h20v36M30 64h20" stroke-width="1.3"/>
-  <path d="M64 100V64h22v36M64 64h22" stroke-width="1.3"/>
-  <path d="M44 52h20" stroke-width="1.2"/>
-  <circle cx="80" cy="20" r="10"/>
-  <path d="M80 14v6l4 3" stroke-width="1.3"/>
-  <path d="M204 100V70" stroke-width="1.4"/>
-  <rect x="182" y="44" width="44" height="26" rx="1"/>
-  <path d="M196 58h16v12h-16z" stroke-width="1.2"/>
-  <path d="M204 70a9 9 0 1 0 0 .1" stroke-width="1.3"/>
-  <path d="M118 100h30v-12h-30zM118 88h30V76h-30zM126 76h14V64h-14z" stroke-width="1.2"/>
-  <path d="M248 100V70h14v30M248 70h14M252 76h6" stroke-width="1.3"/>
+  ${trame('M14 40h84v58H14z', '.05')}
+  ${masse('M14 98V40h84v58z', ' stroke-width="1.9"')}
+  ${masse('M7 40l8-11h82l8 11z', ' stroke-width="1.4"')}
+  ${carreau(28, 58, 20, 24)}
+  ${masse('M64 98V60h22v38z', ' stroke-width="1.5"')}
+  <path d="M75 60v38" stroke-width="1.05"/>
+  <circle cx="80" cy="20" r="11" stroke-width="1.5"/>
+  <path d="M80 13v7l5 4" stroke-width="1.3"/>
+  <path d="M204 98V64" stroke-width="1.6"/>
+  ${masse('M182 40h44v24h-44z', ' stroke-width="1.6"')}
+  ${trame('M194 52h20v12h-20z', '.13')}
+  <path d="M194 52h20v12h-20z" stroke-width="1.1"/>
+  <path d="M204 64c-6 0-9 4-9 8s4 8 9 8 9-4 9-8-3-8-9-8" stroke-width="1.2"/>
+  ${ombre(138, 99, 30, '.06')}
+  ${masse('M112 72h52v6h-52z', ' stroke-width="1.5"')}
+  ${masse('M112 84h52v6h-52z', ' stroke-width="1.6"')}
+  <path d="M118 78v6M158 78v6M118 90v8M158 90v8" stroke-width="1.4"/>
+  ${masse('M246 98V68h16v30z', ' stroke-width="1.4"')}
+  <path d="M250 74h8" stroke-width="1.05"/>
+  ${ombre(140, 99, 130, '.05')}
+  <path d="M8 98h264" stroke-width="1.4"/>
 </svg>`,
 
-
-
-/* Le plateau : la journaliste, le ministre, la caméra, le retour d'antenne. */
+/* Le plateau : la ou le journaliste, le ministre, le voyant d'antenne. */
 plateau: `<svg viewBox="0 0 280 120" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M90 0v6M192 0v6" stroke-width="1.2"/>
+  ${masse('M80 6h20l-5 14H85z', ' stroke-width="1.3"')}
+  ${masse('M182 6h20l-5 14h-10z', ' stroke-width="1.3"')}
+  <path d="M84 20h12M186 20h12" stroke-width="1.9"/>
+  <path d="M83 24l-3 6M97 24l3 6M185 24l-3 6M199 24l3 6" stroke-width="1.05"/>
+  ${trame('M74 34h136v40H74z', '.04')}
   ${tete(112, 40, 11, { cheveux: 'carre', regard: 1 })}
-  ${buste(112, 40, 11, 88, {})}
+  ${buste(112, 40, 11, 90, {})}
   ${tete(168, 40, 11, { cheveux: 'raie', regard: -1 })}
-  ${buste(168, 40, 11, 88, { cravate: true })}
-  <path d="M74 106V80c0-4 3-6 7-6h118c4 0 7 2 7 6v26z" fill="var(--fond-illus,#fff)"/>
-  <path d="M74 84h132" stroke-width="1.1"/>
+  ${buste(168, 40, 11, 90, { cravate: true })}
+  ${ombre(140, 107, 72, '.06')}
+  ${masse('M74 106V80c0-4 3-6 7-6h118c4 0 7 2 7 6v26z', ' stroke-width="1.9"')}
+  <path d="M74 85h132" stroke-width="1.05"/>
   <path d="M134 74v-9M146 74v-9" stroke-width="1.3"/>
-  <ellipse cx="134" cy="62" rx="2.6" ry="4" stroke-width="1.3"/>
-  <ellipse cx="146" cy="62" rx="2.6" ry="4" stroke-width="1.3"/>
-  <path d="M6 106h268"/>
-  <path d="M34 106V80M22 106l12-12 12 12" stroke-width="1.4"/>
-  <rect x="16" y="52" width="30" height="24" rx="2" fill="var(--fond-illus,#fff)"/>
-  <path d="M46 59l10-5v18l-10-5z" fill="var(--fond-illus,#fff)"/>
-  <circle cx="24" cy="46" r="5" stroke-width="1.3"/><circle cx="38" cy="46" r="5" stroke-width="1.3"/>
-  <rect x="214" y="30" width="54" height="38" rx="2" fill="var(--fond-illus,#fff)"/>
-  <path d="M222 54l7-11 6 15 6-19 6 15 6-9" stroke-width="1.3"/>
-  <circle cx="261" cy="36" r="2.4" fill="currentColor" stroke="none"/>
-  <path d="M241 68v10M229 78h24" stroke-width="1.3"/>
-  <path d="M90 0v8M81 8h18l-4 13H85z" stroke-width="1.3"/>
-  <path d="M192 0v8M183 8h18l-4 13h-10z" stroke-width="1.3"/>
+  ${masse('M134 58a2.8 4.5 0 0 1 0 9 2.8 4.5 0 0 1 0-9z', ' stroke-width="1.2"')}
+  ${masse('M146 58a2.8 4.5 0 0 1 0 9 2.8 4.5 0 0 1 0-9z', ' stroke-width="1.2"')}
+  <path d="M28 106V80M17 106l11-11 11 11" stroke-width="1.4"/>
+  ${masse('M12 50h30v26H12z', ' stroke-width="1.7"')}
+  ${masse('M42 57l11-6v20l-11-6z', ' stroke-width="1.4"')}
+  ${masse('M20 36a6 6 0 0 1 0 12 6 6 0 0 1 0-12z', ' stroke-width="1.3"')}
+  ${masse('M34 36a6 6 0 0 1 0 12 6 6 0 0 1 0-12z', ' stroke-width="1.3"')}
+  <path d="M20 42h14" stroke-width="1.05"/>
+  ${masse('M214 28h54v40h-54z', ' stroke-width="1.8"')}
+  <path d="M221 54l7-12 6 16 6-20 6 16 6-10" stroke-width="1.3"/>
+  <circle cx="260" cy="35" r="2.6" fill="${ACC}" stroke="none"/>
+  <path d="M241 68v9M228 77h26" stroke-width="1.4"/>
+  <path d="M6 106h268" stroke-width="1.4"/>
 </svg>`,
 
-/* La délégation : trois représentants, la table, la pancarte, une main levée. */
+/* L'audience : la délégation, ses papiers, sa pancarte. */
 delegation: `<svg viewBox="0 0 280 120" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-  <rect x="10" y="18" width="42" height="28" rx="2"/>
-  <path d="M18 28h26M18 36h16" stroke-width="1.2"/>
-  <path d="M31 46v34" stroke-width="1.4"/>
+  <path d="M31 46v34" stroke-width="1.5"/>
+  ${masse('M8 16h46v30H8z', ' stroke-width="1.6"')}
+  <path d="M17 26h28M17 35h16" stroke="${ACC}" stroke-width="1.5"/>
   ${tete(82, 40, 11, { cheveux: 'court', regard: 1 })}
-  ${buste(82, 40, 11, 94, {})}
+  ${buste(82, 40, 11, 96, {})}
   ${tete(134, 44, 10, { cheveux: 'carre', regard: 1, bouche: 'ligne' })}
-  ${buste(134, 44, 10, 94, {})}
+  ${buste(134, 44, 10, 96, {})}
   ${tete(194, 38, 11, { cheveux: 'raie', regard: -1 })}
-  ${buste(194, 38, 11, 94, { cravate: true, brasDroit: 'leve' })}
-  <path d="M36 106V80h208v26z" fill="var(--fond-illus,#fff)"/>
-  <path d="M30 80h220" stroke-width="1.5"/>
-  <path d="M52 88h44M52 95h28M158 88h40" stroke-width="1.1"/>
-  <path d="M8 106h264"/>
+  ${buste(194, 38, 11, 96, { cravate: true, brasDroit: 'leve' })}
+  ${ombre(142, 107, 106, '.06')}
+  ${masse('M32 106V80h216v26z', ' stroke-width="1.9"')}
+  <path d="M26 80h230" stroke-width="1.6"/>
+  ${trame('M54 87h44v10H54zM162 87h40v10h-40z', '.12')}
+  <path d="M54 87h44v10H54zM162 87h40v10h-40z" stroke-width="1.1"/>
+  <path d="M8 106h264" stroke-width="1.4"/>
 </svg>`,
 
-/* La classe : le tableau, l'enseignante, deux élèves dont un qui lève la main. */
+/* La livraison : la classe, là où se joue ce que les enquêtes mesurent. */
 classe: `<svg viewBox="0 0 280 120" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-  <rect x="10" y="14" width="88" height="54" rx="2"/>
-  <path d="M20 30h34M20 40h50M20 50h28" stroke-width="1.2"/>
+  ${masse('M8 12h92v56H8z', ' stroke-width="1.9"')}
+  ${trame('M14 18h80v44H14z', '.10')}
+  <path d="M22 30h36M22 40h52M22 50h28" stroke-width="1.2"/>
   ${tete(130, 34, 11, { cheveux: 'court', regard: -1 })}
   ${buste(130, 34, 11, 78, { brasGauche: 'tendu' })}
   ${jambes(130, 78, 104, 7)}
@@ -542,24 +619,28 @@ classe: `<svg viewBox="0 0 280 120" fill="none" stroke="currentColor" stroke-wid
   ${buste(178, 62, 8, 98, { col: false })}
   ${tete(238, 60, 8, { cheveux: 'carre', regard: -1, bouche: 'ligne' })}
   ${buste(238, 60, 8, 98, { col: false, brasDroit: 'leve' })}
-  <path d="M156 106V86h44v20z" fill="var(--fond-illus,#fff)"/>
-  <path d="M152 86h52" stroke-width="1.5"/>
-  <path d="M216 106V86h44v20z" fill="var(--fond-illus,#fff)"/>
-  <path d="M212 86h52" stroke-width="1.5"/>
-  <path d="M8 106h264"/>
+  ${ombre(130, 105, 20, '.06')}
+  ${ombre(178, 107, 28, '.06')} ${ombre(238, 107, 28, '.06')}
+  ${masse('M156 106V86h44v20z', ' stroke-width="1.7"')}
+  <path d="M150 86h56" stroke-width="1.6"/>
+  ${masse('M216 106V86h44v20z', ' stroke-width="1.7"')}
+  <path d="M210 86h56" stroke-width="1.6"/>
+  <path d="M8 106h264" stroke-width="1.4"/>
 </svg>`,
 
-/* Le pupitre : l'annonce, seul face à la salle. */
+/* La doctrine : l'annonce, seul face à la salle. */
 pupitre: `<svg viewBox="0 0 120 120" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
   ${tete(60, 30, 12, { cheveux: 'court', regard: 0 })}
-  ${buste(60, 30, 12, 86, { cravate: true, brasGauche: 'aucun', brasDroit: 'aucun' })}
+  ${buste(60, 30, 12, 88, { cravate: true, brasGauche: 'aucun', brasDroit: 'aucun' })}
   <path d="M49 49L40 67M71 49l9 18" stroke-width="1.4"/>
   <circle cx="38.5" cy="68.5" r="2.3" stroke-width="1.2"/>
   <circle cx="81.5" cy="68.5" r="2.3" stroke-width="1.2"/>
-  <path d="M38 104V72l4-6h36l4 6v32z" fill="var(--fond-illus,#fff)"/>
-  <path d="M34 72h52" stroke-width="1.6"/>
-  <path d="M46 82h28M46 90h18" stroke-width="1.2"/>
-  <path d="M10 106h100"/>
+  ${ombre(60, 105, 30, '.06')}
+  ${masse('M38 104V72l4-6h36l4 6v32z', ' stroke-width="1.9"')}
+  <path d="M32 72h56" stroke-width="1.7"/>
+  ${trame('M46 82h28v12H46z', '.12')}
+  <path d="M46 82h28v12H46z" stroke-width="1.1"/>
+  <path d="M10 106h100" stroke-width="1.4"/>
 </svg>`,
 
 };
@@ -1990,9 +2071,11 @@ function dateDe(q) {
 /* Le pictogramme et le pas de temps de chaque écran, lus depuis la question
    posée par le moteur. La frise de gauche et l'en-tête des documents s'en
    servent tous les deux. */
+/* L'été tient en une seule étape : juillet, c'est l'été, et les cent jours
+   n'ont pas besoin de deux cases pour se raconter. */
 const PAS = [
-  ['juin', 'Juin', 'Prise de fonction'], ['ete', 'Été', 'Les cent jours'],
-  ['juillet', 'Juillet', 'Lettre plafond, concours'], ['septembre', 'Septembre', 'Rentrée, circulaire'],
+  ['juin', 'Juin', 'Prise de fonction'],
+  ['ete', 'Été', 'Cent jours, lettre plafond'], ['septembre', 'Septembre', 'Rentrée, circulaire'],
   ['octobre', 'Octobre', 'Audience syndicale'], ['decembre', 'Décembre', 'Budget, presse'],
   ['janvier', 'Janvier', 'Carte scolaire, atelier'], ['mars', 'Mars', 'Mobilisations'], ['mai', 'Mai', 'Clôture'],
 ];
@@ -2002,11 +2085,11 @@ function situer(q) {
   if (t === 'entretien') return ['juin', 'colonnes'];
   if (t === 'profil') return ['juin', 'carte'];
   if (t === 'doctrine') return ['juin', 'pupitre'];
-  if (t === 'reperes') return [q.note === 'budget' ? 'juin' : 'juillet', q.note === 'budget' ? 'pieces' : 'courbe'];
+  if (t === 'reperes') return [q.note === 'budget' ? 'juin' : 'ete', q.note === 'budget' ? 'pieces' : 'courbe'];
   if (t === 'avance') return ['juin', 'pieces'];
-  if (t === 'intention') return ['juillet', 'courbe'];
+  if (t === 'intention') return ['ete', 'courbe'];
   if (t === 'dossier') return ['ete', 'soleil'];
-  if (t === 'lettrePlafond') return ['juillet', 'lettre'];
+  if (t === 'lettrePlafond') return ['ete', 'lettre'];
   if (t === 'rentree') return ['septembre', 'ecole'];
   if (t === 'polemique') return ['septembre', 'journal'];
   if (t === 'audience') return ['octobre', 'megaphone'];
@@ -2016,7 +2099,7 @@ function situer(q) {
   if (t === 'affaire') return ['decembre', 'alerte'];
   if (t === 'carteScolaire') return ['janvier', 'plan'];
   if (t === 'mesures') return [m === 'prise_fonction' ? 'juin' : m === 'rentree' ? 'septembre' : m === 'livraison' ? 'decembre' : 'janvier', 'liste'];
-  if (t === 'etape') return [{ ouverture: 'ete', juillet: 'juillet', rentree: 'septembre', decembre: 'decembre', mars: 'mars', cloture: 'mai' }[e] || 'mai', 'journal'];
+  if (t === 'etape') return [{ ouverture: 'ete', juillet: 'ete', rentree: 'septembre', decembre: 'decembre', mars: 'mars', cloture: 'mai' }[e] || 'mai', 'journal'];
   return ['mai', 'drapeau'];
 }
 function majFrise(pasCourant) {
@@ -2026,16 +2109,17 @@ function majFrise(pasCourant) {
   const fini = pasCourant === 'fin';
   const annee = fini ? 6 : Math.max(1, Math.min(5, S.annee || 1));
   const iCourant = PAS.findIndex((x) => x[0] === pasCourant);
-  const anLabel = (a) => `${2026 + a}-${(2027 + a) % 100 < 10 ? '0' : ''}${(2027 + a) % 100}`;
+  /* L'année du jeu court de juin à mai : on l'affiche comme une année
+     scolaire, 2027-28, et non « An 1 » — c'est le repère de tout le monde. */
+  const anLabel = (a) => `${2026 + a}\u2011${(2027 + a) % 100}`;
   let html = '<div class="frise-titre">Calendrier</div>';
   for (let a = 1; a <= 5; a++) {
     const etat = a < annee ? 'passe' : a === annee ? 'courant' : 'avenir';
-    html += `<div class="frise-an ${etat}"><span class="num">An ${a}</span><span class="civ">${anLabel(a)}</span></div>`;
+    html += `<div class="frise-an ${etat}"><span class="num">${anLabel(a)}</span></div>`;
     if (a !== annee) continue;
     html += '<ol class="frise-pas">';
     PAS.forEach(([cle, mois, quoi], i) => {
       if (cle === 'juin' && annee > 1) return;
-      if (cle === 'ete' && annee > 1) return;
       const st = i < iCourant ? 'fait' : i === iCourant ? 'ici' : 'apres';
       /* Le mois seul, sauf pour l'étape courante : c'est la seule qui ait
          besoin d'être expliquée, et c'est ce qui rend la colonne lisible. */

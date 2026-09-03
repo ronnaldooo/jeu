@@ -15,12 +15,22 @@ SVG au trait ; ce qui manque, ce sont des **scènes**.
   trait distinctif, aucun âge, aucune ressemblance possible avec une personne
   réelle. Le kit est codé une fois (`tete`, `buste`, `jambes` dans
   `interface/app.js`) pour que les figures se ressemblent d'une scène à l'autre.
-- Trait : dessin au trait, une seule couleur, épaisseur constante (1,5 px à
-  24 px de haut, 2 px au-delà), bouts arrondis. Pas de dégradé, pas d'ombre
-  portée, pas de remplissage sauf un aplat léger optionnel.
+- Trait : dessin au trait, bouts arrondis, mais **trois épaisseurs** — 1,9 pour
+  les contours porteurs (le volume principal), 1,5 pour le mobilier, 1,05 pour
+  les détails intérieurs. C'est cette hiérarchie qui distingue un dessin d'un
+  fil de fer.
+- Volume : les surfaces reçoivent un **aplat de trame** — la même encre à 7 %
+  d'opacité (13 % pour un plan qu'on veut détacher). Les plans arrière peuvent
+  descendre à 4 %. Une image entièrement vide paraît inachevée.
+- Sol : une **ombre portée** très pâle (ellipse, 6 %) sous chaque masse, plutôt
+  qu'une ligne d'horizon unique où tout flotte.
 - Couleur : encre bleu République `#000091` sur fond clair, `#8585f6` sur fond
   sombre. Chaque fichier doit fonctionner sur les deux fonds (trait en
   `currentColor`, sans couleur codée en dur).
+- Accent : **un seul élément par scène** peut passer au rouge de la charte
+  (`var(--rouge-rf)`), et seulement s'il dit quelque chose — le voyant
+  d'antenne, les écoles fermées sur la carte, le cachet de Bercy, l'onglet du
+  dossier urgent. Deux accents dans une image, c'est un accent de trop.
 - Format : **SVG**, `viewBox` propre, sans police embarquée, sans image
   bitmap, poids visé < 8 Ko. Exports PNG inutiles.
 - Tailles : bandeau large 280 × 120 (en-tête d'écran), vignette 120 × 120
@@ -39,6 +49,13 @@ pupitre). Elles ont été écrites en SVG à la main, puis rendues dans un
 navigateur — fond clair et fond sombre — et corrigées à la vue : deux à trois
 passes chacune. Les demandes ci-dessous marquées « FAIT » n'ont donc plus besoin
 d'être commandées ; les autres restent ouvertes.
+
+Une deuxième passe graphique a ensuite repris les onze : hiérarchie de traits,
+aplats de trame, ombres au sol, accent rouge parcimonieux. Quatre objets ont
+dû être redessinés parce qu'ils lisaient de travers — un fauteuil qui faisait
+lampe, une enveloppe qui faisait sacoche, un bureau sans volume, une marelle
+qui faisait podium (remplacée par un banc, plus lisible qu'un tracé au sol en
+perspective).
 
 Deux règles de fabrication apprises à la correction, à respecter pour la suite :
 un buste ne se dessine pas d'un seul arc jusqu'au sol (cela produit une pierre
