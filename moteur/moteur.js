@@ -365,7 +365,7 @@ function* etapeRentree(s) {
    finance par redéploiement — et par ce que Bercy a bien voulu débloquer. */
 function* etapeCirculaireRentree(s) {
   crediter(s, K.ENVELOPPE_RENTREE);
-  yield* etapeMesures(s, { moment: 'rentree', taille: K.TAILLE_MENU_COURT });
+  yield* etapeMesures(s, { moment: 'rentree', taille: K.TAILLE_MENU_CALENDRIER });
 }
 
 /* --- OCTOBRE : l'audience — face à face avec l'organisation majoritaire ---- */
@@ -816,7 +816,7 @@ function* etapeMesures(s, opts) {
   s.cadrage = null;
   const dispo = mesuresDisponibles(s, opts.taille, cadrage);
   const cadre = cadrage && dispo.every((c) => passeLeCadrage(c, cadrage));
-  const maxAnnonces = K.ANNONCES_MAX[opts.moment] || 3;
+  const maxAnnonces = (K.MENUS === 'classique' ? K.ANNONCES_MAX_CLASSIQUE : K.ANNONCES_MAX)[opts.moment] || 3;
   /* On n'arrache un arbitrage interministériel qu'au moment du budget. Une
      circulaire de rentrée se finance par redéploiement, ou ne se finance pas. */
   const depassementAutorise = opts.moment === 'janvier';
@@ -1098,11 +1098,14 @@ function passeLeCadrage(c, cadrage) {
 }
 
 export function mesuresDisponibles(s, tailleVoulue, cadrage) {
-  const TAILLE_MENU = tailleVoulue || K.TAILLES_MENU[Math.min(4, s.annee - 1)];
+  const classique = K.MENUS === 'classique';
+  const tailles = classique ? K.TAILLES_MENU_CLASSIQUE : K.TAILLES_MENU;
+  let TAILLE_MENU = tailleVoulue || tailles[Math.min(4, s.annee - 1)];
+  if (classique && tailleVoulue) TAILLE_MENU = K.TAILLE_MENU_COURT_CLASSIQUE;
   let pool = CATALOGUE.filter((c) => estJouable(s, c));
   if (cadrage) {
     const cadre = pool.filter((c) => passeLeCadrage(c, cadrage));
-    if (cadre.length >= 5) pool = cadre;
+    if (cadre.length >= 4) pool = cadre;
   }
   const menu = [];
   const pousse = (c) => { if (c && !menu.includes(c)) menu.push(c); };
@@ -1115,6 +1118,56 @@ export function mesuresDisponibles(s, tailleVoulue, cadrage) {
 
   pousse(pool.find((c) => c.id === 'revalorisation'));
 
+  /* --- position « classique » : le menu d'avant, long et doctrinal -------- */
+  if (classique) {
+    const r = reste();
+    const aff = r.filter((c) => affiniteDoctrine(s, c) >= 2);
+    const autres = r.filter((c) => !aff.includes(c));
+    const quota = [5, 4, 3, 2, 1][Math.min(4, s.annee - 1)];
+    for (const c of tourner(aff, 7)) { if (menu.length >= 1 + quota + 2) break; pousse(c); }
+    for (const c of tourner(autres, 5)) { if (menu.length >= TAILLE_MENU) break; pousse(c); }
+    for (const c of tourner(aff, 7)) { if (menu.length >= TAILLE_MENU) break; pousse(c); }
+    return menu;
+  }
+
+  /* --- moment de CALENDRIER : le classement des priorités commande --------
+     Rien ne brûle : le menu couvre plusieurs thèmes, et il les sert dans
+     l'ordre que le joueur a déclaré au premier jour. Deux cartes pour la
+     première priorité, une pour chacune des suivantes : un joueur cohérent
+     retrouve sa feuille de route sans qu'on la lui rappelle. */
+  if (!cadrage) {
+    /* On tourne sur les FAMILLES — moyens, autonomie, parcours, autorité,
+       mixité — parce que c'est le thème que le joueur voit sur la carte, et
+       que « varié » veut dire varié à l'écran. L'ordre des familles est donné
+       par le classement des priorités : la famille qui sert le plus la
+       première priorité déclarée ouvre le menu. */
+    const preuveDe = (c) => Math.max(0, ...(c.reel || []).map((e) => e.cadenas));
+    const parFamille = {};
+    for (const c of tourner(reste(), 5)) (parFamille[c.famille] = parFamille[c.famille] || []).push(c);
+    /* Dans chaque famille, la mesure la mieux étayée d'abord — même règle que
+       pour les menus d'événement, et c'est elle qui fait tenir l'équilibre :
+       trier d'abord par affinité doctrinale mettait en avant des mesures
+       alignées mais mal étayées, et la partie « tout réel » perdait sa
+       matière. L'ORDRE DES FAMILLES, lui, suit bien les priorités déclarées. */
+    for (const f of Object.keys(parFamille)) {
+      parFamille[f].sort((x, y) => (preuveDe(y) - preuveDe(x)) || (affiniteDoctrine(s, y) - affiniteDoctrine(s, x)));
+    }
+    const affiniteFamille = (f) => Math.max(0, ...parFamille[f].map((c) => affiniteDoctrine(s, c)));
+    const familles = Object.keys(parFamille).sort((f, g) => affiniteFamille(g) - affiniteFamille(f));
+    for (let tour = 0; tour < 4 && menu.length < TAILLE_MENU; tour++) {
+      let ajoute = false;
+      for (const f of familles) {
+        if (menu.length >= TAILLE_MENU) break;
+        const c = parFamille[f].find((x) => !menu.includes(x));
+        if (c) { pousse(c); ajoute = true; }
+      }
+      if (!ajoute) break;
+    }
+    for (const c of tourner(reste(), 3)) { if (menu.length >= TAILLE_MENU) break; pousse(c); }
+    return menu;
+  }
+
+  /* --- moment d'ÉVÉNEMENT : court, cadré, la réponse de chaque camp ------- */
   /* 1. Votre doctrine ouvre d'abord un dossier qui la sert : sur un menu court,
      une carte alignée sur vos priorités déclarées, pas davantage. */
   const quotaAffins = Math.max(1, Math.min(3, Math.round(TAILLE_MENU / 3)));
@@ -1311,7 +1364,7 @@ export function* derouler(s) {
   crediter(s, K.ENVELOPPE_PRISE_FONCTION);
   yield { type: 'reperes', note: 'budget' };
   yield* etapeAvance(s);
-  yield* etapeMesures(s, { moment: 'prise_fonction', taille: K.TAILLE_MENU_COURT });
+  yield* etapeMesures(s, { moment: 'prise_fonction', taille: K.TAILLE_MENU_CALENDRIER });
   rafraichir(s);
   yield { type: 'etape', etape: 'ouverture' };
   yield* etapeEte(s);
