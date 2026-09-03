@@ -26,19 +26,70 @@ Le tag `pre-theme-telephone` marque l'état d'avant. La branche
 Pour abandonner : ne pas fusionner. Pour garder : fusionner, les deux fichiers
 coexistent.
 
-## Comment la coque lit le jeu
+## Pas de coque : le texte prend la largeur
+
+Premier essai : le jeu était enfermé dans une maquette de téléphone de 390 px
+au milieu de l'écran. C'était fidèle à la charte et mauvais à l'usage — la
+boîte mangeait l'écran alors que le texte est le contenu. La coque a sauté ;
+le langage visuel est resté.
+
+La charpente tient en trois pièces :
+
+- une **barre haute collante** (fond sombre translucide, flou) : le mois en
+  grand, l'année scolaire, la progression du mandat en cinq segments, et les
+  quatre curseurs alignés à droite ;
+- une **colonne de lecture** de 640 px pour les fiches, qui s'élargit à
+  1 040 px pour ce qui le mérite — la pile de notifications (deux colonnes
+  au-delà de 820 px), le solde, le bilan de l'année ;
+- une **barre basse collante** : le contexte, l'action principale, la note.
+
+Sur un téléphone tout s'empile ; sur un écran de bureau on lit une colonne
+confortable au lieu d'une vignette.
+
+## Comment la charpente lit le jeu
 
 `telephone.js` ne calcule rien. Il cache le bandeau et le calendrier classiques
 et les **lit** (observateurs de mutations) pour remplir :
 
-- la barre d'état — la date du jeu, et une « batterie » qui descend avec les années ;
-- l'horloge — le mois en grand, « An n / 5 · 2027‑28 » au-dessus, l'étape et le
-  temps restant en italique dessous (en rouge la dernière année) ;
-- le widget « Vos curseurs » — les trois compteurs de la doctrine, avec leur
-  jauge, plus le capital politique en quatrième colonne (sans jauge, comme le
-  « Budget » de la charte). Le chiffre s'anime sur 600 ms, un delta ▲/▼
-  s'affiche 1,2 s, le chiffre pulse et passe en rouge sous le seuil ;
-- l'alerte du cabinet — une notification « sourde » sous le widget.
+- la barre haute — le mois, l'année scolaire, et la progression du mandat en
+  cinq segments (passé plein, année en cours en clair, avenir en creux) ;
+- l'écran d'ouverture — le mois en très grand, avant la première décision ;
+- « Vos curseurs » — les trois compteurs de la doctrine, avec leur jauge, plus
+  le capital politique en quatrième colonne. Le chiffre s'anime sur 600 ms, un
+  delta ▲/▼ s'affiche 1,2 s, le chiffre pulse et passe en rouge sous le seuil ;
+- l'alerte du cabinet — une notification « sourde » en tête de contenu.
+
+## Les quatre variantes de notification
+
+C'est ce que la charte a de plus frappant, et ce que le premier essai avait
+laissé de côté. Chaque fiche prend la couleur de qui écrit :
+
+| Expéditeur | Variante | Écrans |
+|---|---|---|
+| Matignon, l'Élysée | **rouge** | l'appel, l'entretien préalable, le remaniement, le renvoi |
+| Bercy, la carte scolaire | **bleu** | la lettre plafond, le bordereau DHG |
+| la presse, les syndicats | **sourde** | polémiques, plateau, affaires, audiences, retraits |
+| les dossiers à trancher | **papier** | tout le reste |
+
+Les fiches qui portent un graphique restent sur le papier : une courbe sur
+fond rouge ne se lit pas. Dans chaque variante colorée, les jetons de la
+feuille classique sont renvoyés en clair, et l'auditeur de contraste vérifie
+qu'aucun texte n'y tombe sous 4,5:1.
+
+## Ce qui a été modernisé
+
+- **Profondeur.** La charte empilait deux marches dures de 8 px. Remplacées par
+  deux liserés fins plus une ombre diffuse, et un liseré clair en haut de
+  chaque carte.
+- **Fond.** Un dégradé radial chaud plutôt qu'un aplat noir.
+- **Barres translucides** avec flou d'arrière-plan.
+- **Progression du mandat** en cinq segments plutôt qu'« An 1 / 5 ».
+- **Retour au toucher** : chaque élément cliquable se creuse de 2 % à l'appui.
+- **Entrée en vague** : les fiches et les notifications arrivent décalées de
+  55 à 60 ms, comme un lot de notifications.
+- **Rayons et boutons** en capsule dans les barres, coins à 18–20 px ailleurs.
+
+Tout cela s'annule sous `prefers-reduced-motion`.
 
 Chaque document du jeu devient une **fiche papier** (rayon 18, pile d'ombres).
 Les cartes de l'atelier sortent du papier et deviennent des **notifications**

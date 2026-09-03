@@ -1,9 +1,14 @@
 /* ============================================================================
-   THÈME « LE TÉLÉPHONE DU MINISTRE » — la coque et les gestes.
+   THÈME « LE TÉLÉPHONE DU MINISTRE » — la charpente et les gestes.
+
+   Pas de coque de téléphone : le texte est le contenu, il prend la largeur.
+   On garde le langage de la charte — fond sombre, fiches papier, dossiers
+   qui arrivent comme des notifications, balayage — dans une mise en page
+   qui se lit aussi bien sur un écran de bureau que sur un téléphone.
 
    Ce fichier est ajouté APRÈS app.js dans l'assemblage « téléphone ». Il ne
-   modifie ni le moteur ni app.js : il construit une coque autour des zones
-   existantes (#scene, #suite), LIT le bandeau et le calendrier classiques
+   modifie ni le moteur ni app.js : il construit une charpente autour des
+   zones existantes (#scene, #suite), LIT le bandeau et le calendrier classiques
    (cachés par la feuille de style) pour remplir l'horloge et le widget des
    curseurs, et ajoute le balayage sur les cartes et les fiches à deux choix.
    Frontière étanche : aucune donnée de jeu n'est calculée ici, tout est lu
@@ -15,28 +20,41 @@
   const mk = (tag, cls, html) => { const e = document.createElement(tag); if (cls) e.className = cls; if (html !== undefined) e.innerHTML = html; return e; };
   const mouvementReduit = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  /* --- la coque ------------------------------------------------------------ */
-  const fond = mk('div', 'tel-fond');
-  const coque = mk('div', 'tel-coque');
-  const ecran = mk('div', 'tel-ecran');
-  const statut = mk('div', 'tel-statut', '<span class="heure">juin 2027</span><span class="reseau">▮▮▮ ⌁ 94%</span>');
-  const horloge = mk('div', 'tel-horloge', '<div class="l1">Rue de Grenelle</div><div class="l2">2027</div><div class="l3">Juin. Le gouvernement se forme.</div>');
+  /* --- la charpente -------------------------------------------------------
+     Une barre haute collante (où l'on est dans le mandat, et les curseurs),
+     le contenu au centre dans une colonne de lecture, une barre basse
+     collante (le contexte, l'action, la note). */
+  const page = mk('div', 'tel-page');
+  const barre = mk('header', 'tel-barre');
+  const barreIn = mk('div', 'in');
+  const quand = mk('div', 'quand',
+    '<b class="mois">Juin</b><span class="an">2027‑28</span>'
+    + '<span class="mandat" aria-hidden="true">' + '<i></i>'.repeat(5) + '</span>');
   const curseurs = mk('div', 'tel-curseurs'); curseurs.hidden = true;
+  barreIn.append(quand, curseurs); barre.appendChild(barreIn);
+  barre.hidden = true;
+
+  /* Le grand écran d'ouverture : il ne sert qu'avant la première décision,
+     puis la barre haute prend le relais. */
+  const horloge = mk('div', 'tel-horloge',
+    '<div class="l1">Rue de Grenelle</div><div class="l2">Juin 2027</div>'
+    + '<div class="l3">Le gouvernement se forme.</div>');
+
+  const corps = mk('main', 'tel-corps');
   const alerte = mk('div', 'tel-alerte'); alerte.hidden = true;
-  const pile = mk('div', 'tel-pile');
   const pileTete = mk('div', 'tel-pile-tete'); pileTete.hidden = true;
   const pied = mk('div', 'tel-pied');
+  const piedIn = mk('div', 'in');
 
   const scene = $t('#scene'), suite = $t('#suite');
-  pile.append(pileTete, scene);
-  const noteBtn = mk('button', 'btn-borde', 'Demander une note<br>à la DGESCO');
+  corps.append(horloge, alerte, pileTete, scene);
+  const noteBtn = mk('button', 'btn-borde', 'Demander une note à la DGESCO');
   noteBtn.setAttribute('aria-haspopup', 'dialog');
   noteBtn.onclick = () => ouvrirNote();
-  pied.append(suite, noteBtn);
+  piedIn.append(suite, noteBtn); pied.appendChild(piedIn);
   $t('#suite-ctx', suite).classList.add('contexte');
-  ecran.append(statut, horloge, curseurs, alerte, pile, pied);
-  coque.appendChild(ecran); fond.appendChild(coque);
-  document.body.insertBefore(fond, document.body.firstChild);
+  page.append(barre, corps, pied);
+  document.body.insertBefore(page, document.body.firstChild);
 
   /* --- la note de la DGESCO ------------------------------------------------
      Deux temps : on choisit un sujet, la note arrive. C'est la seule façon de
@@ -52,7 +70,7 @@
     + '<div class="titre">Note à la DGESCO</div></div>'
     + '<button class="fermer" type="button">Fermer</button></div>'
     + '<div class="tel-note-corps"></div>';
-  ecran.appendChild(note);
+  document.body.appendChild(note);
   const noteCorps = $t('.tel-note-corps', note);
   $t('.fermer', note).onclick = () => fermerNote();
 
@@ -100,8 +118,9 @@
   /* --- l'horloge : lue dans le calendrier classique ----------------------- */
   function majHorloge() {
     const f = $t('#frise');
-    const l1 = $t('.l1', horloge), l2 = $t('.l2', horloge), l3 = $t('.l3', horloge);
+    const l3 = $t('.l3', horloge);
     if (!f || f.hidden) return;
+    barre.hidden = false; horloge.hidden = true;
     const ans = [...f.querySelectorAll('.frise-an')];
     const iAn = ans.findIndex((a) => a.classList.contains('courant'));
     const anCourant = ans[iAn];
@@ -111,21 +130,25 @@
     const quoi = ici && $t('.quoi', ici) ? $t('.quoi', ici).textContent.trim() : '';
     const an = bilan ? 5 : Math.max(1, iAn + 1);
     const civ = anCourant ? $t('.num', anCourant).textContent.trim() : '2027‑28';
-    l1.textContent = bilan ? 'Fin de mandat' : `An ${an} / 5 · ${civ}`;
-    l2.textContent = mois;
+    $t('.mois', quand).textContent = mois;
+    $t('.an', quand).textContent = bilan ? 'fin de mandat' : civ;
     const reste = 5 - an;
-    l3.textContent = bilan ? 'Le déménageur est en bas.' : `${quoi}${quoi ? ' · ' : ''}${reste === 0 ? 'dernière année du mandat' : reste + ' an' + (reste > 1 ? 's' : '') + ' avant la fin du mandat'}`;
+    l3.textContent = bilan ? 'Le déménageur est en bas.' : `${quoi}${quoi ? ' · ' : ''}${reste === 0 ? 'dernière année du mandat' : reste + ' an' + (reste > 1 ? 's' : '') + ' avant la fin'}`;
     l3.classList.toggle('fin', reste === 0 || bilan);
-    $t('.reseau', statut).textContent = `▮▮▮ ⌁ ${Math.max(6, 94 - (an - 1) * 18)}%`;
+    quand.title = l3.textContent;
+    /* La progression du mandat, en cinq segments : passé plein, année en
+       cours en clair, avenir en creux. Plus lisible qu'« An 1 / 5 ». */
+    [...quand.querySelectorAll('.mandat i')].forEach((seg, i) => {
+      seg.className = bilan || i + 1 < an ? 'passe' : i + 1 === an ? 'ici' : '';
+    });
   }
 
   /* --- les curseurs : lus dans le bandeau classique ------------------------ */
   const precedent = {};
   function majCurseurs() {
     const hud = $t('#hud');
-    if (!hud || hud.hidden) { curseurs.hidden = true; alerte.hidden = true; return; }
-    curseurs.hidden = false;
-    const date = $t('#hud-date'); if (date) $t('.heure', statut).textContent = date.textContent;
+    if (!hud || hud.hidden) { curseurs.hidden = true; alerte.hidden = true; barre.hidden = true; horloge.hidden = false; return; }
+    curseurs.hidden = false; barre.hidden = false; horloge.hidden = true;
     const jauges = [...hud.querySelectorAll('.jauge.grande')];
     const sous = [...hud.querySelectorAll('#hud-sous b')];
     const capital = sous[0] ? sous[0].textContent.trim() : '';
@@ -136,7 +159,7 @@
       return { nom, v, w: rail ? rail.style.width : '0%', c: rail ? rail.style.background : '', delta: $t('.delta', j) ? $t('.delta', j).textContent.trim() : '' };
     });
     if (!curseurs.childElementCount) {
-      curseurs.innerHTML = '<div class="titre">Vos curseurs</div><div class="rangee"></div>';
+      curseurs.innerHTML = '<div class="rangee"></div>';
     }
     const rangee = $t('.rangee', curseurs);
     const cle = cols.map((c) => c.nom).join('|') + '|capital';
@@ -230,7 +253,7 @@
     /* On ne remonte en haut qu'au changement d'écran, pas à chaque ajout. */
     const marque = scene.firstElementChild;
     if (marque !== dernierEcran) {
-      dernierEcran = marque; pile.scrollTop = 0;
+      dernierEcran = marque; window.scrollTo({ top: 0 });
       pied.querySelectorAll('.atelier-pied').forEach((n) => n.remove());
     }
     const type = (typeof ETAT !== 'undefined' && ETAT.typeEcran) || '';
@@ -301,15 +324,44 @@
       const actions = $t('#scene .actions');
       if (actions && !actions.classList.contains('atelier-pied')) {
         actions.classList.add('atelier-pied');
-        pied.insertBefore(actions, noteBtn);
+        piedIn.insertBefore(actions, noteBtn);
       }
       pileTete.hidden = false; majPileTete();
-    } else { pileTete.hidden = true; pile.insertBefore(pileTete, scene); }
+    } else { pileTete.hidden = true; corps.insertBefore(pileTete, scene); }
 
     /* le tampon URGENT sur ce qui brûle */
     if (/^(affaire|polemique|dossier|retrait|guerre_scolaire)$/.test(type)) {
       const e = $t('.doc .entete-doc', scene);
       if (e && !$t('.tampon-urgent', e)) e.appendChild(mk('span', 'tampon-urgent', 'Urgent'));
+    }
+
+    /* Les quatre variantes de la charte, par expéditeur. Le rouge est réservé
+       à Matignon et à l'Élysée — jamais rien d'autre. Le bleu aux institutions
+       qui vous écrivent (Bercy, la carte scolaire). Le sourd à la presse et
+       aux syndicats. Le papier, par défaut, aux dossiers à trancher : ce sont
+       eux qui portent des graphiques, et ils doivent rester sur du papier. */
+    const VARIANTE = {
+      nomination: 'matignon', entretien: 'matignon', remaniement: 'matignon', renvoi: 'matignon',
+      lettrePlafond: 'institution', carteScolaire: 'institution',
+      polemique: 'presse', plateau: 'presse', affaire: 'presse',
+      audience: 'presse', retrait: 'presse', guerre_scolaire: 'presse',
+    };
+    const v = VARIANTE[type];
+    scene.querySelectorAll('.doc').forEach((d) => {
+      if (d.dataset.variante) return; d.dataset.variante = v || 'papier';
+      if (v) d.classList.add('tel-' + v);
+    });
+
+    /* Entrée décalée de la pile, comme une vague de notifications. */
+    if (!mouvementReduit()) {
+      [...scene.children].forEach((n, i) => {
+        if (n.dataset.entree) return; n.dataset.entree = '1';
+        n.style.setProperty('--retard', Math.min(6, i) * 60 + 'ms');
+      });
+      cartes.forEach((c, i) => {
+        if (c.dataset.entree) return; c.dataset.entree = '1';
+        c.style.setProperty('--retard', Math.min(8, i) * 55 + 'ms');
+      });
     }
   }
   function majPileTete() {

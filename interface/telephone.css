@@ -17,7 +17,15 @@ body.telephone{
   --p70:rgba(244,241,234,.82); --p55:rgba(244,241,234,.7); --p45:rgba(244,241,234,.6);
   --p35:rgba(244,241,234,.52); --p16:rgba(244,241,234,.22); --p14:rgba(244,241,234,.2);
   --p12:rgba(244,241,234,.12); --p08:rgba(244,241,234,.08); --p07:rgba(244,241,234,.07); --p06:rgba(244,241,234,.06);
-  --pile:0 8px 0 -4px var(--paper-shade-1), 0 16px 0 -8px var(--paper-shade-2);
+  /* La pile de fiches, en version douce : deux liserés fins qui suggèrent
+     l'épaisseur, plus une ombre portée diffuse. La charte empilait deux
+     marches de 8 px — net en maquette, lourd sur un vrai écran. */
+  --pile:0 2px 0 -1px var(--paper-shade-1), 0 5px 0 -3px var(--paper-shade-2),
+         0 1px 2px rgba(5,7,10,.3), 0 14px 30px -12px rgba(5,7,10,.55);
+  --pile-sombre:0 1px 2px rgba(5,7,10,.35), 0 14px 30px -12px rgba(5,7,10,.6);
+  --liseré:inset 0 1px 0 rgba(255,255,255,.55);
+  --liseré-sombre:inset 0 1px 0 rgba(244,241,234,.07);
+  --ressort:cubic-bezier(.22,1,.36,1);
   --serif:"Spectral",Georgia,"Times New Roman",serif;
   --mono:"JetBrains Mono","IBM Plex Mono",ui-monospace,Menlo,monospace;
 
@@ -40,84 +48,122 @@ body.telephone{
 }
 body.telephone *{box-sizing:border-box}
 
-/* ---------- la coque ---------------------------------------------------- */
-body.telephone .tel-fond{min-height:100vh; display:flex; justify-content:center; align-items:flex-start; padding:20px 0}
-body.telephone .tel-coque{width:390px; height:844px; border-radius:46px; padding:10px; background:#05070A; box-shadow:0 34px 64px -24px rgba(5,7,10,.55); flex:0 0 auto}
-body.telephone .tel-ecran{width:100%; height:100%; border-radius:36px; overflow:hidden; display:flex; flex-direction:column; background:var(--ink); color:var(--paper); position:relative}
-@media (max-width:430px), (max-height:884px){
-  body.telephone .tel-fond{padding:0; min-height:100dvh}
-  body.telephone .tel-coque{width:100%; height:100dvh; border-radius:0; padding:0; box-shadow:none}
-  body.telephone .tel-ecran{border-radius:0}
-}
+/* ---------- la charpente -------------------------------------------------
+   Pas de coque de téléphone : elle mangeait l'écran alors que le texte est
+   le contenu. Une barre haute collante, une colonne de lecture, une barre
+   basse collante. Le langage de la charte est conservé ; c'est la boîte
+   qui disparaît. */
+body.telephone{--colonne:min(640px, 100%); --colonne-large:min(1040px, 100%)}
+body.telephone .tel-page{min-height:100vh; min-height:100dvh; display:flex; flex-direction:column;
+  background:radial-gradient(140% 55% at 50% 0%, #251F16 0%, var(--ink) 60%) fixed, var(--ink)}
 
-/* barre d'état */
-body.telephone .tel-statut{height:44px; flex:0 0 auto; display:flex; align-items:center; justify-content:space-between; padding:0 28px; font-family:var(--mono); font-size:12px; color:var(--p70)}
-body.telephone .tel-statut .reseau{letter-spacing:.1em}
+/* barre haute : où l'on est dans le mandat, et les curseurs */
+body.telephone .tel-barre{position:sticky; top:0; z-index:20; background:rgba(20,18,14,.86);
+  backdrop-filter:saturate(1.4) blur(14px); -webkit-backdrop-filter:saturate(1.4) blur(14px);
+  border-bottom:1px solid var(--p12)}
+body.telephone .tel-barre[hidden]{display:none}
+body.telephone .tel-barre .in{max-width:var(--colonne-large); margin:0 auto; padding:10px 20px;
+  display:flex; align-items:center; gap:16px 28px; flex-wrap:wrap}
+body.telephone .quand{display:flex; align-items:baseline; gap:10px; flex:0 0 auto}
+body.telephone .quand .mois{font-family:var(--serif); font-weight:700; font-size:22px; line-height:1.1; letter-spacing:-.01em; color:var(--paper)}
+body.telephone .quand .an{font-family:var(--mono); font-size:11.5px; letter-spacing:.06em; color:var(--p45); font-variant-numeric:tabular-nums}
+body.telephone .quand .mandat{display:flex; gap:4px; width:64px; align-self:center}
+body.telephone .quand .mandat i{flex:1; height:4px; border-radius:999px; background:rgba(244,241,234,.16); transition:background .4s ease}
+body.telephone .quand .mandat i.passe{background:var(--p35)}
+body.telephone .quand .mandat i.ici{background:var(--paper); box-shadow:0 0 8px rgba(244,241,234,.4)}
 
-/* en-tête horloge */
-body.telephone .tel-horloge{flex:0 0 auto; padding:10px 24px 12px; text-align:center}
-body.telephone .tel-horloge .l1{font-family:var(--mono); font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:var(--p45)}
-body.telephone .tel-horloge .l2{font-family:var(--serif); font-weight:300; font-size:48px; line-height:1.05; color:var(--paper); margin-top:2px}
-body.telephone .tel-horloge .l3{font-family:var(--serif); font-style:italic; font-size:14px; color:var(--p55); margin-top:2px}
+/* écran d'ouverture : le grand titre, avant la première décision */
+body.telephone .tel-horloge{text-align:center; padding:6vh 10px 4vh}
+body.telephone .tel-horloge[hidden]{display:none}
+body.telephone .tel-horloge .l1{font-family:var(--mono); font-size:11.5px; letter-spacing:.24em; text-transform:uppercase; color:var(--p45)}
+body.telephone .tel-horloge .l2{font-family:var(--serif); font-weight:300; font-size:clamp(46px,10vw,72px); line-height:1; letter-spacing:-.02em; color:var(--paper); margin-top:8px}
+body.telephone .tel-horloge .l3{font-family:var(--serif); font-style:italic; font-size:16px; color:var(--p55); margin-top:8px}
 body.telephone .tel-horloge .l3.fin{color:var(--alert-soft)}
 
-/* widget curseurs */
-body.telephone .tel-curseurs{margin:0 20px; background:var(--p07); border:1px solid var(--p14); border-radius:16px; padding:11px 15px; flex:0 0 auto}
-body.telephone .tel-curseurs .titre{font-family:var(--mono); font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:var(--p45)}
-body.telephone .tel-curseurs .rangee{display:flex; gap:10px; margin-top:8px}
-body.telephone .tel-curseurs .col{flex:1; min-width:0}
-body.telephone .tel-curseurs .col.large{flex:1.2}
-body.telephone .tel-curseurs .v{font-family:var(--mono); font-weight:700; font-size:22px; line-height:1; color:var(--paper); display:flex; align-items:baseline; gap:6px}
-body.telephone .tel-curseurs .v.mauvais{color:var(--alert-soft)}
-body.telephone .tel-curseurs .v .delta{font-size:12px; font-weight:400; color:var(--p55); opacity:0; transition:opacity .4s}
-body.telephone .tel-curseurs .v .delta.visible{opacity:1}
-body.telephone .tel-curseurs .v .delta.up{color:var(--positive)} body.telephone .tel-curseurs .v .delta.down{color:var(--alert-soft)}
-body.telephone .tel-curseurs .l{font-family:var(--mono); font-size:10.5px; letter-spacing:0; text-transform:none; color:var(--p45); margin-top:4px; line-height:1.25; white-space:nowrap}
-body.telephone .tel-curseurs .jauge-t{height:3px; border-radius:2px; background:rgba(244,241,234,.2); margin-top:6px; overflow:hidden}
-body.telephone .tel-curseurs .jauge-t i{display:block; height:100%; border-radius:2px; transition:width .6s ease}
-body.telephone .tel-curseurs .col.large .v{font-size:18px; padding-top:3px; color:var(--alert-soft)}
-body.telephone .tel-curseurs .col.large .v.bon{color:var(--paper)}
-body.telephone .tel-curseurs .col.large .l{margin-top:5px}
-@keyframes tel-pulse{0%{transform:scale(1)} 40%{transform:scale(1.12)} 100%{transform:scale(1)}}
-body.telephone .tel-curseurs .v.pulse{animation:tel-pulse .5s ease-out}
-
-/* alerte du cabinet : notification sourde sous le widget */
-body.telephone .tel-alerte{margin:10px 20px 0; background:var(--p08); border:1px solid var(--p16); border-radius:16px; padding:11px 15px; flex:0 0 auto}
-body.telephone .tel-alerte .src{font-family:var(--mono); font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--p45)}
-body.telephone .tel-alerte .corps{font-family:var(--serif); font-size:15px; line-height:1.3; color:var(--paper); margin-top:4px}
-
-/* zone de contenu : la pile, défilante */
-body.telephone .tel-pile{flex:1; min-height:0; overflow-y:auto; overscroll-behavior:contain; padding:14px 20px 12px; scrollbar-width:thin; scrollbar-color:var(--p16) transparent}
-body.telephone .tel-pile-tete{display:flex; justify-content:space-between; align-items:baseline; margin-bottom:10px}
+/* le corps : une colonne de lecture, des blocs larges quand il le faut */
+body.telephone .tel-corps{flex:1; width:100%; max-width:var(--colonne-large); margin:0 auto; padding:22px 20px 132px}
+body.telephone .tel-corps > *, body.telephone #scene > *{max-width:var(--colonne); margin-left:auto; margin-right:auto}
+body.telephone #scene{max-width:none; margin:0; padding:0}
+/* Ces blocs-là méritent toute la largeur ; le sélecteur doit égaler celui du
+   dessus (qui porte un identifiant) pour l'emporter. */
+body.telephone #scene > .grille-cartes, body.telephone #scene > .solde,
+body.telephone #scene > .annee-chiffres, body.telephone #scene > .repli-atelier,
+body.telephone .tel-pile-tete{max-width:var(--colonne-large)}
+body.telephone .tel-pile-tete{display:flex; justify-content:space-between; align-items:baseline; margin:0 auto 10px}
 body.telephone .tel-pile-tete .g{font-family:var(--mono); font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:var(--p45)}
 body.telephone .tel-pile-tete .d{font-family:var(--mono); font-size:11px; color:var(--p35)}
 
-/* pied */
-body.telephone .tel-pied{flex:0 0 auto; padding:12px 22px 22px; border-top:1px solid var(--p12); display:flex; align-items:center; justify-content:space-between; gap:12px}
-body.telephone .tel-pied .contexte{font-family:var(--serif); font-size:13px; line-height:1.35; color:var(--p70); max-width:20ch; flex:1; min-width:0}
-body.telephone .tel-pied .btn-borde, body.telephone .tel-pied .btn{cursor:pointer; font-family:var(--mono); font-size:11.5px; line-height:1.35; letter-spacing:.04em; text-transform:uppercase; color:var(--paper); background:transparent; border:1px solid var(--p35); border-radius:9px; padding:9px 12px; transform:none; font-weight:400; text-align:center; min-height:44px}
-body.telephone .tel-pied .btn{white-space:nowrap}
-body.telephone .tel-pied .btn{background:var(--official); border-color:var(--official-line); font-weight:700}
-body.telephone .tel-pied .btn:hover, body.telephone .tel-pied .btn:focus-visible{background:var(--official-line); outline:none}
-body.telephone .tel-pied .btn-borde:hover, body.telephone .tel-pied .btn-borde:focus-visible{border-color:var(--paper); outline:none}
-body.telephone .tel-pied .btn:disabled{opacity:.45}
-body.telephone .tel-pied .barre-saisie{width:120px; height:5px; border-radius:3px; background:var(--p35); margin:0 auto}
+/* l'alerte du cabinet, en tête de contenu */
+body.telephone .tel-alerte{background:var(--p08); border:1px solid var(--p16); border-radius:18px; padding:12px 15px; margin:0 auto 16px; box-shadow:var(--liseré-sombre)}
+body.telephone .tel-alerte[hidden]{display:none}
+body.telephone .tel-alerte .src{font-family:var(--mono); font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--p45)}
+body.telephone .tel-alerte .corps{font-family:var(--serif); font-size:15px; line-height:1.4; color:var(--paper); margin-top:4px}
 
-/* on neutralise le chrome classique */
-body.telephone #hud{display:none !important}
-body.telephone #frise{display:none !important}
-body.telephone .skip{display:none}
-body.telephone #comprendre-btn{display:none}
-body.telephone #scene{max-width:none; margin:0; padding:0}
-body.telephone #suite{position:static; background:transparent; border:0; box-shadow:none}
-body.telephone #suite .in{padding:0; max-width:none; display:contents}
+/* les curseurs, dans la barre haute */
+body.telephone .tel-curseurs{flex:1; min-width:220px}
+body.telephone .tel-curseurs[hidden]{display:none}
+body.telephone .tel-curseurs .rangee{display:flex; gap:14px; justify-content:flex-end}
+body.telephone .tel-curseurs .col{min-width:0; text-align:right}
+body.telephone .tel-curseurs .v{font-family:var(--mono); font-weight:700; font-size:19px; line-height:1; color:var(--paper); display:flex; align-items:baseline; gap:5px; justify-content:flex-end}
+body.telephone .tel-curseurs .v.mauvais{color:var(--alert-soft)}
+body.telephone .tel-curseurs .v .delta{font-size:11.5px; font-weight:400; color:var(--p55); opacity:0; transition:opacity .4s}
+body.telephone .tel-curseurs .v .delta.visible{opacity:1}
+body.telephone .tel-curseurs .v .delta.up{color:var(--positive)} body.telephone .tel-curseurs .v .delta.down{color:var(--alert-soft)}
+body.telephone .tel-curseurs .l{font-family:var(--mono); font-size:10.5px; color:var(--p45); margin-top:3px; white-space:nowrap}
+body.telephone .tel-curseurs .jauge-t{height:3px; border-radius:999px; background:rgba(244,241,234,.2); margin-top:5px; overflow:hidden}
+body.telephone .tel-curseurs .jauge-t i{display:block; height:100%; border-radius:999px; transition:width .6s var(--ressort)}
+body.telephone .tel-curseurs .col.large .v{color:var(--alert-soft)}
+body.telephone .tel-curseurs .col.large .v.bon{color:var(--paper)}
+@keyframes tel-pulse{0%{transform:scale(1)} 40%{transform:scale(1.1)} 100%{transform:scale(1)}}
+body.telephone .tel-curseurs .v.pulse{animation:tel-pulse .5s ease-out}
+
+/* barre basse : le contexte, l'action, la note */
+body.telephone .tel-pied{position:sticky; bottom:0; z-index:20; background:rgba(20,18,14,.9);
+  backdrop-filter:saturate(1.4) blur(14px); -webkit-backdrop-filter:saturate(1.4) blur(14px);
+  border-top:1px solid var(--p12)}
+body.telephone .tel-pied .in{max-width:var(--colonne-large); margin:0 auto; padding:12px 20px;
+  display:flex; align-items:center; justify-content:space-between; gap:14px}
+body.telephone .tel-pied .contexte{font-family:var(--serif); font-size:14px; line-height:1.35; color:var(--p70); flex:1; min-width:0}
+body.telephone .tel-pied .btn-borde{cursor:pointer; font-family:var(--mono); font-size:11.5px; line-height:1.35; letter-spacing:.04em; text-transform:uppercase; color:var(--paper); background:transparent; border:1px solid var(--p35); border-radius:999px; padding:11px 16px; font-weight:400; text-align:center; min-height:44px; flex:0 0 auto}
+body.telephone .tel-pied .btn-borde:hover, body.telephone .tel-pied .btn-borde:focus-visible{border-color:var(--paper); background:var(--p07); outline:none}
+body.telephone .tel-pied .btn{white-space:nowrap; width:auto; border-radius:999px; padding:12px 22px; flex:0 0 auto}
+body.telephone .tel-pied .atelier-pied{margin:0; display:block; flex:0 1 auto; max-width:min(420px, 60%)}
+body.telephone .tel-pied .atelier-pied .btn{white-space:normal; width:100%; border-radius:999px; padding:12px 20px}
+body.telephone #suite{position:static; background:transparent; border:0; box-shadow:none; flex:1; min-width:0}
+body.telephone #suite .in{padding:0; max-width:none; display:flex; align-items:center; gap:14px; justify-content:space-between}
 body.telephone #suite[hidden]{display:none}
 
+/* on neutralise le chrome classique */
+body.telephone #hud, body.telephone #frise, body.telephone .skip, body.telephone #comprendre-btn{display:none !important}
+
+@media (max-width:640px){
+  body.telephone .tel-barre .in{padding:8px 14px; gap:8px 14px}
+  body.telephone .quand{width:100%; justify-content:space-between}
+  body.telephone .tel-curseurs .rangee{justify-content:space-between; gap:10px}
+  body.telephone .tel-curseurs .col{flex:1; text-align:left}
+  body.telephone .tel-curseurs .v{justify-content:flex-start}
+  body.telephone .tel-corps{padding:16px 14px 128px}
+  /* En-tête de fiche : la date et le tampon sur une ligne, l'expéditeur en
+     dessous — sinon les trois s'entrelacent sur quatre lignes. */
+  body.telephone .entete-doc{flex-wrap:wrap; gap:4px 10px}
+  body.telephone .entete-doc .type{flex:1 1 100%; order:2}
+  body.telephone .entete-doc .date{order:1}
+  body.telephone .tampon-urgent{order:1; margin-left:auto}
+  /* En bas d'un téléphone, on empile : l'action d'abord, pleine largeur. */
+  body.telephone .tel-pied .in{padding:10px 14px; gap:8px; flex-wrap:wrap}
+  body.telephone .tel-pied .btn-borde{font-size:11px; padding:11px 12px; flex:1 1 100%; border-radius:12px}
+  body.telephone .tel-pied .atelier-pied{flex:1 1 100%; max-width:none; order:-1}
+  body.telephone .tel-pied .atelier-pied .btn{border-radius:12px}
+  body.telephone #suite{flex:1 1 100%}
+  body.telephone #suite .in{flex-wrap:wrap; gap:8px}
+  body.telephone .tel-pied .contexte{flex:1 1 100%; font-size:13px}
+  body.telephone .tel-pied .btn{flex:1 1 100%; border-radius:12px; white-space:normal}
+}
 /* ---------- le papier : toute fiche posée sur le noir ------------------- */
 body.telephone .doc, body.telephone .journal, body.telephone .annee-chiffres, body.telephone .scelles,
 body.telephone .decode, body.telephone .fil .post, body.telephone .accueil, body.telephone .boussole{
-  background:var(--paper); color:var(--ink); border:0; border-radius:18px; box-shadow:var(--pile);
-  padding:18px 18px 20px; margin:0 0 22px; max-width:none; font-family:var(--serif)}
+  background:var(--paper); color:var(--ink); border:0; border-radius:20px; box-shadow:var(--pile), var(--liseré);
+  padding:clamp(18px,2.6vw,30px); margin:0 auto 20px; font-family:var(--serif)}
 body.telephone .doc.papier{background:var(--paper)}
 body.telephone .doc > * + *{margin-top:12px}
 body.telephone .entete-doc{display:flex; justify-content:space-between; gap:12px; align-items:flex-start; border:0; padding:0; margin:0 0 4px}
@@ -206,7 +252,7 @@ body.telephone .entretien-q .indice, body.telephone .plateau-q .indice, body.tel
 /* ---------- l'atelier : la pile de notifications ------------------------ */
 body.telephone .grille-cartes{display:flex; flex-direction:column; gap:10px; padding-bottom:8px}
 body.telephone .solde + .tel-pile-tete{margin-top:4px}
-body.telephone .carte{background:var(--paper); color:var(--ink); border:0; border-radius:16px; padding:13px 15px; box-shadow:var(--pile); position:relative; touch-action:pan-y; will-change:transform; transition:transform .26s cubic-bezier(.22,1,.36,1), opacity .2s}
+body.telephone .carte{background:var(--paper); color:var(--ink); border:0; border-radius:18px; padding:14px 15px; box-shadow:var(--pile), var(--liseré); position:relative; touch-action:pan-y; will-change:transform; transition:transform .26s cubic-bezier(.22,1,.36,1), opacity .2s}
 body.telephone .carte.glisse{transition:none}
 body.telephone .carte.sortie{transition:transform .22s ease-out, opacity .08s ease-out .14s; opacity:0}
 body.telephone .carte.ecartee{display:none}
@@ -217,6 +263,7 @@ body.telephone .carte .plie, body.telephone .carte .porteurs{font-family:var(--s
 body.telephone .carte .chiffres{font-family:var(--mono); font-size:11.5px; color:var(--ink-text-4); gap:4px 12px}
 body.telephone .carte .numero{position:absolute; top:14px; right:15px; font-family:var(--mono); font-size:11px; color:var(--ink-text-4)}
 body.telephone .carte.sel{background:var(--paper); box-shadow:var(--pile), inset 0 0 0 2px var(--official)}
+body.telephone .tel-sujet, body.telephone .tel-note-fiche{box-shadow:var(--pile), var(--liseré)}
 body.telephone .carte.sel::after{content:"SIGNÉE"; font-family:var(--mono); font-size:11px; letter-spacing:.14em; color:var(--official); top:13px; right:15px}
 body.telephone .carte.sel .numero{display:none}
 body.telephone .carte .corps{gap:8px; border-top:1px solid var(--rule); padding-top:10px; margin-top:4px}
@@ -239,7 +286,7 @@ body.telephone .carte .indice-glisse.d{right:14px; color:var(--official)}
 body.telephone .carte.vise-g .indice-glisse.g, body.telephone .carte.vise-d .indice-glisse.d{opacity:1}
 
 /* le solde : widget noir au-dessus de la pile */
-body.telephone .solde{position:sticky; top:-14px; z-index:5; margin-top:-8px; background:var(--ink); border:1px solid var(--p14); border-radius:16px; padding:11px 15px; box-shadow:none; margin:0 0 12px; gap:8px 14px; color:var(--paper)}
+body.telephone .solde{position:sticky; top:78px; z-index:10; margin:0 auto 12px; background:var(--ink); border:1px solid var(--p14); border-radius:16px; padding:11px 15px; box-shadow:none; margin:0 0 12px; gap:8px 14px; color:var(--paper)}
 body.telephone .solde .tuile .l{font-family:var(--mono); font-size:10.5px; letter-spacing:.08em; color:var(--p45); font-weight:400}
 body.telephone .solde .tuile .v{font-family:var(--mono); font-size:20px; font-weight:700; color:var(--paper)}
 body.telephone .solde .tuile .v small{color:var(--p45); font-size:12px}
@@ -285,7 +332,7 @@ body.telephone .scelles .ligne-s{font-size:14px; line-height:1.5}
 body.telephone .decode p{font-size:15px; line-height:1.55}
 
 /* ---------- l'accueil : écran verrouillé -------------------------------- */
-body.telephone .accueil{text-align:center; margin-top:0}
+body.telephone .accueil{text-align:center; margin:0 auto 20px}
 body.telephone .accueil .tampon{border:2px solid var(--alert); color:var(--alert); transform:rotate(-4deg); padding:8px 14px; font-family:var(--mono); margin-bottom:18px}
 body.telephone .accueil .tampon .rf{font-size:10.5px; letter-spacing:.14em}
 body.telephone .accueil .tampon div:not(.rf){font-size:9px !important; letter-spacing:.06em !important}
@@ -296,25 +343,86 @@ body.telephone .accueil .echelle{font-family:var(--mono); font-size:11.5px; lett
 body.telephone .accueil .chute{font-family:var(--serif); font-style:italic; font-size:15px; color:var(--ink-text-3); margin:0 0 18px; max-width:none}
 body.telephone .accueil .avertissement{font-family:var(--serif); font-size:13px; line-height:1.5; color:var(--ink-text-3); max-width:none; margin-top:18px; border-top:1px solid var(--rule); padding-top:12px; text-align:left}
 
+/* ---------- les quatre variantes de notification ------------------------
+   La charte prévoit quatre expéditeurs et quatre couleurs. Les fiches qui
+   portent un graphique restent sur le papier (une courbe sur fond rouge est
+   illisible) ; les autres prennent la couleur de qui écrit. Dans chaque
+   variante, les jetons de la feuille classique sont renvoyés pour que les
+   composants hérités suivent sans être réécrits. */
+body.telephone .doc.tel-matignon, body.telephone .doc.tel-institution, body.telephone .doc.tel-presse{
+  --encre:var(--paper); --encre-2:var(--p70); --encre-3:var(--p55);
+  --ink-text-2:var(--p70); --ink-text-3:var(--p55); --ink-text-4:var(--p45);
+  --filet:rgba(244,241,234,.24); --filet-fort:rgba(244,241,234,.4);
+  --fiche:transparent; --fiche-2:rgba(0,0,0,.14); --rule:rgba(244,241,234,.24);
+  --ok:#9FE0BE; --alerte:#FFC9C2; --rouge-rf:#FFC9C2; --bleu-rf:var(--paper); --or:#F0D48A;
+  --fond-illus:transparent;
+  color:var(--paper);
+}
+body.telephone .doc.tel-matignon .entete-doc .type, body.telephone .doc.tel-institution .entete-doc .type,
+body.telephone .doc.tel-presse .entete-doc .type{color:var(--paper); opacity:.78}
+body.telephone .doc.tel-matignon .entete-doc .date, body.telephone .doc.tel-institution .entete-doc .date,
+body.telephone .doc.tel-presse .entete-doc .date{color:var(--paper); opacity:.6}
+body.telephone .doc.tel-matignon h2, body.telephone .doc.tel-institution h2, body.telephone .doc.tel-presse h2{color:var(--paper)}
+body.telephone .doc.tel-matignon p, body.telephone .doc.tel-institution p, body.telephone .doc.tel-presse p,
+body.telephone .doc.tel-matignon .chapo, body.telephone .doc.tel-institution .chapo, body.telephone .doc.tel-presse .chapo{color:var(--p70)}
+body.telephone .doc.tel-matignon b, body.telephone .doc.tel-institution b, body.telephone .doc.tel-presse b{color:var(--paper)}
+body.telephone .doc.tel-matignon a, body.telephone .doc.tel-institution a, body.telephone .doc.tel-presse a,
+body.telephone .doc.tel-matignon cite a, body.telephone .doc.tel-institution cite a, body.telephone .doc.tel-presse cite a{color:var(--paper); text-decoration-color:rgba(244,241,234,.45)}
+body.telephone .doc.tel-matignon .note-passation, body.telephone .doc.tel-institution .note-passation, body.telephone .doc.tel-presse .note-passation{
+  border-left-color:rgba(244,241,234,.4); color:var(--p70)}
+body.telephone .doc.tel-matignon .note-passation b, body.telephone .doc.tel-institution .note-passation b, body.telephone .doc.tel-presse .note-passation b{color:var(--paper)}
+body.telephone .doc.tel-matignon .cadrage-retenir, body.telephone .doc.tel-institution .cadrage-retenir, body.telephone .doc.tel-presse .cadrage-retenir{color:var(--paper)}
+body.telephone .doc.tel-matignon .regle, body.telephone .doc.tel-institution .regle, body.telephone .doc.tel-presse .regle{color:var(--paper); border-left-color:var(--paper)}
+body.telephone .doc.tel-matignon pre, body.telephone .doc.tel-institution pre, body.telephone .doc.tel-presse pre,
+body.telephone .doc.tel-matignon .bordereau, body.telephone .doc.tel-institution .bordereau{background:rgba(0,0,0,.18); color:var(--paper)}
+body.telephone .doc.tel-matignon .opts.sur-papier .opt, body.telephone .doc.tel-institution .opts.sur-papier .opt, body.telephone .doc.tel-presse .opts.sur-papier .opt{
+  background:rgba(0,0,0,.16); border-color:rgba(244,241,234,.24); border-left-color:rgba(244,241,234,.45); color:var(--paper)}
+body.telephone .doc.tel-matignon .opts.sur-papier .opt b, body.telephone .doc.tel-institution .opts.sur-papier .opt b, body.telephone .doc.tel-presse .opts.sur-papier .opt b{color:var(--paper)}
+body.telephone .doc.tel-matignon .opts.sur-papier .opt .det, body.telephone .doc.tel-institution .opts.sur-papier .opt .det, body.telephone .doc.tel-presse .opts.sur-papier .opt .det{color:var(--p70)}
+body.telephone .doc.tel-matignon .opts.sur-papier .opt.choisi, body.telephone .doc.tel-institution .opts.sur-papier .opt.choisi, body.telephone .doc.tel-presse .opts.sur-papier .opt.choisi{
+  background:rgba(0,0,0,.3); border-color:var(--paper); border-left-color:var(--paper); box-shadow:none}
+body.telephone .doc.tel-matignon .opts.sur-papier .opt.choisi b, body.telephone .doc.tel-institution .opts.sur-papier .opt.choisi b, body.telephone .doc.tel-presse .opts.sur-papier .opt.choisi b{color:var(--paper)}
+body.telephone .doc.tel-matignon .opts.sur-papier .opt .chiffres span, body.telephone .doc.tel-institution .opts.sur-papier .opt .chiffres span, body.telephone .doc.tel-presse .opts.sur-papier .opt .chiffres span{
+  border-color:rgba(244,241,234,.4); color:var(--p70)}
+
+/* Tout ce qui, dans les composants hérités, écrit en encre sombre doit
+   basculer en clair à l'intérieur d'une fiche colorée. */
+body.telephone .doc:is(.tel-matignon,.tel-institution,.tel-presse) :is(h3,h4,.titre-d,.etiq,.ps,.res,.num-q,.plateau-num,.indice,.note-q,summary){color:var(--paper) !important}
+body.telephone .doc:is(.tel-matignon,.tel-institution,.tel-presse) :is(.ps,.indice,.note-q,.res){opacity:.78}
+body.telephone .doc:is(.tel-matignon,.tel-institution,.tel-presse) .note-passation{
+  --ink-text-2:var(--p70); --ink-text-3:var(--p55); --ink-text-4:var(--p45);
+  --encre:var(--paper); --encre-2:var(--p70); --encre-3:var(--p55);
+  --ok:#9FE0BE; --alerte:#FFC9C2; --rouge-rf:#FFC9C2; --bleu-rf:var(--paper); --or:#F0D48A;
+  --filet:rgba(244,241,234,.24); --filet-fort:rgba(244,241,234,.4); --fiche-2:rgba(0,0,0,.16)}
+
+/* Matignon et l'Élysée : le rouge de la charte, et rien d'autre ne l'utilise. */
+body.telephone .doc.tel-matignon{background:linear-gradient(168deg, #D01633 0%, var(--alert) 55%, #A80D24 100%); box-shadow:var(--pile-sombre), var(--liseré-sombre)}
+body.telephone .doc.tel-matignon .tampon-urgent{color:var(--paper); border-color:var(--paper)}
+/* Les institutions qui vous écrivent : Bercy, la carte scolaire. */
+body.telephone .doc.tel-institution{background:linear-gradient(168deg, #23477E 0%, var(--official) 55%, #142C52 100%); box-shadow:var(--pile-sombre), var(--liseré-sombre)}
+/* La presse et les syndicats : sourd, c'est du bruit de fond. */
+body.telephone .doc.tel-presse{background:rgba(244,241,234,.08); border:1px solid var(--p16); box-shadow:var(--liseré-sombre)}
+body.telephone .doc.tel-presse .tampon-urgent{color:var(--alert-soft); border-color:var(--alert-soft)}
+
 /* ---------- la note de la DGESCO ---------------------------------------- */
-body.telephone .tel-note{position:absolute; inset:0; z-index:40; background:var(--ink); display:flex; flex-direction:column}
+body.telephone .tel-note{position:fixed; inset:0; z-index:60; background:var(--ink); display:flex; flex-direction:column}
 body.telephone .tel-note[hidden]{display:none}
-body.telephone .tel-note-tete{flex:0 0 auto; display:flex; align-items:flex-start; justify-content:space-between; gap:12px; padding:18px 20px 14px; border-bottom:1px solid var(--p16)}
+body.telephone .tel-note-tete{flex:0 0 auto; display:flex; align-items:flex-start; justify-content:space-between; gap:12px; padding:18px 20px 14px; border-bottom:1px solid var(--p16); max-width:var(--colonne-large); margin:0 auto; width:100%}
 body.telephone .tel-note-tete .src{font-family:var(--mono); font-size:10.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--p45); line-height:1.4}
 body.telephone .tel-note-tete .titre{font-family:var(--serif); font-weight:800; font-size:23px; line-height:1.15; color:var(--paper); margin-top:4px}
 body.telephone .tel-note-tete .fermer{cursor:pointer; flex:0 0 auto; font-family:var(--mono); font-size:11.5px; letter-spacing:.06em; text-transform:uppercase; color:var(--paper); background:transparent; border:1px solid var(--p35); border-radius:9px; padding:9px 12px}
 body.telephone .tel-note-tete .fermer:hover, body.telephone .tel-note-tete .fermer:focus-visible{border-color:var(--paper); outline:none}
-body.telephone .tel-note-corps{flex:1; min-height:0; overflow-y:auto; overscroll-behavior:contain; padding:16px 20px 24px}
-body.telephone .tel-note-question{font-family:var(--serif); font-style:italic; font-size:16px; color:var(--p70); margin:0 0 14px}
-body.telephone .tel-note-liste{display:grid; gap:10px}
+body.telephone .tel-note-corps{flex:1; min-height:0; overflow-y:auto; overscroll-behavior:contain; padding:18px 20px 40px; max-width:var(--colonne-large); margin:0 auto; width:100%}
+body.telephone .tel-note-question{font-family:var(--serif); font-style:italic; font-size:17px; color:var(--p70); margin:0 0 16px}
+body.telephone .tel-note-liste{display:grid; gap:10px; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr))}
 body.telephone .tel-sujet{cursor:pointer; text-align:left; width:100%; background:var(--paper); color:var(--ink); border:0; border-radius:16px; box-shadow:var(--pile); padding:14px 16px; display:block; min-height:44px}
 body.telephone .tel-sujet b{display:block; font-family:var(--serif); font-weight:700; font-size:17px; line-height:1.25; color:var(--ink)}
 body.telephone .tel-sujet span{display:block; font-family:var(--serif); font-size:14px; line-height:1.4; color:var(--ink-text-3); margin-top:4px}
 body.telephone .tel-sujet:hover, body.telephone .tel-sujet:focus-visible{box-shadow:var(--pile), inset 0 0 0 2px var(--official); outline:none}
-body.telephone .tel-note-pied{font-family:var(--serif); font-style:italic; font-size:14px; line-height:1.5; color:var(--p55); margin:18px 0 0; border-top:1px solid var(--p16); padding-top:14px}
-body.telephone .tel-retour{cursor:pointer; font-family:var(--mono); font-size:11.5px; letter-spacing:.06em; text-transform:uppercase; color:var(--paper); background:transparent; border:1px solid var(--p35); border-radius:9px; padding:10px 13px; margin-bottom:14px; min-height:44px}
+body.telephone .tel-note-pied{font-family:var(--serif); font-style:italic; font-size:14px; line-height:1.5; color:var(--p55); margin:18px auto 0; max-width:var(--colonne); border-top:1px solid var(--p16); padding-top:14px}
+body.telephone .tel-retour{display:block; margin-left:auto; margin-right:auto; cursor:pointer; font-family:var(--mono); font-size:11.5px; letter-spacing:.06em; text-transform:uppercase; color:var(--paper); background:transparent; border:1px solid var(--p35); border-radius:9px; padding:10px 13px; margin-bottom:14px; min-height:44px}
 body.telephone .tel-retour:hover, body.telephone .tel-retour:focus-visible{border-color:var(--paper); outline:none}
-body.telephone .tel-note-fiche{background:var(--paper); color:var(--ink); border-radius:18px; box-shadow:var(--pile); padding:16px 16px 18px}
+body.telephone .tel-note-fiche{background:var(--paper); color:var(--ink); border-radius:20px; box-shadow:var(--pile); padding:clamp(18px,3vw,30px); max-width:var(--colonne); margin:0 auto}
 body.telephone .tel-note-fiche .reperes{margin:0}
 body.telephone .tel-note-fiche .rep-theme{border:0; background:transparent; padding:0; margin:0}
 body.telephone .tel-note-fiche .rep-theme > summary{list-style:none; cursor:default; padding:0}
@@ -346,6 +454,17 @@ body.telephone #comprendre .rep-theme .res, body.telephone #comprendre .rep-them
 body.telephone #comprendre .rep-sources li{color:var(--p70); font-size:13px}
 body.telephone #comprendre .rep-sources a{color:var(--positive)}
 body.telephone #comprendre .btn.secondaire{width:auto; font-family:var(--mono); background:transparent; border-color:var(--p35); color:var(--paper)}
+
+/* ---------- retour au toucher ------------------------------------------- */
+@media (prefers-reduced-motion: no-preference){
+  body.telephone .opt, body.telephone .carte .btn-mini, body.telephone .btn,
+  body.telephone .tel-sujet, body.telephone .tel-pied .btn-borde, body.telephone .tel-retour{transition:transform .12s var(--ressort), background .15s, border-color .15s, box-shadow .15s}
+  body.telephone .opt:active, body.telephone .carte .btn-mini:active, body.telephone .btn:active,
+  body.telephone .tel-sujet:active, body.telephone .tel-pied .btn-borde:active, body.telephone .tel-retour:active{transform:scale(.977)}
+  /* Entrée en vague : chaque élément prend son tour, 55 à 60 ms d'écart. */
+  @keyframes tel-entree{from{opacity:0; transform:translateY(14px) scale(.99)} to{opacity:1; transform:none}}
+  body.telephone #scene > *, body.telephone .grille-cartes > .carte{animation:tel-entree .32s var(--ressort) both; animation-delay:var(--retard, 0ms)}
+}
 
 /* ---------- ce qui se pose sur le noir ----------------------------------
    Les composants hérités (options, encadrés, fil de presse) sont écrits pour
@@ -409,4 +528,11 @@ body.telephone .tel-vide{text-align:center; font-family:var(--serif); font-style
 @media (prefers-reduced-motion: reduce){
   body.telephone .carte, body.telephone .carte.sortie{transition:opacity .12s !important; transform:none !important}
   body.telephone .tel-curseurs .v.pulse{animation:none}
+}
+
+/* ---------- deux colonnes de notifications quand l'écran le permet ------
+   Déclaré en fin de feuille : la règle de l'atelier plus haut passe la pile
+   en colonne unique, et c'est ici qu'on la reprend. */
+@media (min-width:820px){
+  body.telephone #scene > .grille-cartes{display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:14px; align-items:start}
 }
