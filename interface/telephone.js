@@ -29,14 +29,73 @@
 
   const scene = $t('#scene'), suite = $t('#suite');
   pile.append(pileTete, scene);
-  const noteBtn = mk('button', 'btn-borde', 'Demander une note');
+  const noteBtn = mk('button', 'btn-borde', 'Demander une note<br>à la DGESCO');
   noteBtn.setAttribute('aria-haspopup', 'dialog');
-  noteBtn.onclick = () => { if (typeof ouvrirComprendre === 'function') ouvrirComprendre(); };
+  noteBtn.onclick = () => ouvrirNote();
   pied.append(suite, noteBtn);
   $t('#suite-ctx', suite).classList.add('contexte');
   ecran.append(statut, horloge, curseurs, alerte, pile, pied);
   coque.appendChild(ecran); fond.appendChild(coque);
   document.body.insertBefore(fond, document.body.firstChild);
+
+  /* --- la note de la DGESCO ------------------------------------------------
+     Deux temps : on choisit un sujet, la note arrive. C'est la seule façon de
+     rendre les onze fiches de référence consultables sur un écran de 390 px —
+     et c'est aussi le vrai fonctionnement d'un cabinet : on ne lit pas la
+     documentation, on la demande. */
+  const note = mk('div', 'tel-note');
+  note.hidden = true;
+  note.setAttribute('role', 'dialog'); note.setAttribute('aria-modal', 'true');
+  note.setAttribute('aria-label', 'Demander une note à la DGESCO');
+  note.innerHTML = '<div class="tel-note-tete">'
+    + '<div><div class="src">Direction générale de l’enseignement scolaire</div>'
+    + '<div class="titre">Note à la DGESCO</div></div>'
+    + '<button class="fermer" type="button">Fermer</button></div>'
+    + '<div class="tel-note-corps"></div>';
+  ecran.appendChild(note);
+  const noteCorps = $t('.tel-note-corps', note);
+  $t('.fermer', note).onclick = () => fermerNote();
+
+  function listeSujets() {
+    noteCorps.innerHTML = '';
+    noteCorps.appendChild(mk('p', 'tel-note-question', 'Sur quel sujet ?'));
+    const liste = mk('div', 'tel-note-liste');
+    (typeof REPERES !== 'undefined' ? REPERES : []).forEach((r) => {
+      const b2 = mk('button', 'tel-sujet', `<b>${r.titre}</b><span>${r.resume}</span>`);
+      b2.type = 'button';
+      b2.onclick = () => afficherNote(r.cle);
+      liste.appendChild(b2);
+    });
+    noteCorps.appendChild(liste);
+    noteCorps.appendChild(mk('p', 'tel-note-pied', 'Onze notes tenues à jour par la direction générale. Elles sont sourcées, elles sont exactes, et personne ne les lit jamais.'));
+    noteCorps.scrollTop = 0;
+    const p1 = $t('.tel-sujet', noteCorps); if (p1) p1.focus();
+  }
+  function afficherNote(cle) {
+    noteCorps.innerHTML = '';
+    const retour = mk('button', 'tel-retour', '← Choisir un autre sujet');
+    retour.type = 'button'; retour.onclick = listeSujets;
+    noteCorps.appendChild(retour);
+    const fiche = mk('div', 'tel-note-fiche');
+    if (typeof blocReperes === 'function') fiche.appendChild(blocReperes([cle], [cle]));
+    fiche.appendChild(mk('p', 'remise', 'Note remise en trois jours. Vous êtes la première personne à l’ouvrir.'));
+    noteCorps.appendChild(fiche);
+    noteCorps.scrollTop = 0;
+    retour.focus();
+  }
+  let rendreLeFocus = null;
+  function ouvrirNote() {
+    rendreLeFocus = document.activeElement;
+    note.hidden = false;
+    noteBtn.setAttribute('aria-expanded', 'true');
+    listeSujets();
+  }
+  function fermerNote() {
+    note.hidden = true;
+    noteBtn.setAttribute('aria-expanded', 'false');
+    if (rendreLeFocus && rendreLeFocus.focus) rendreLeFocus.focus();
+  }
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !note.hidden) { e.stopPropagation(); fermerNote(); } }, true);
 
   /* --- l'horloge : lue dans le calendrier classique ----------------------- */
   function majHorloge() {
@@ -166,22 +225,45 @@
   }
 
   /* --- habiller chaque écran ---------------------------------------------- */
+  let dernierEcran = null;
   function habillerScene() {
-    pile.scrollTop = 0;
+    /* On ne remonte en haut qu'au changement d'écran, pas à chaque ajout. */
+    const marque = scene.firstElementChild;
+    if (marque !== dernierEcran) {
+      dernierEcran = marque; pile.scrollTop = 0;
+      pied.querySelectorAll('.atelier-pied').forEach((n) => n.remove());
+    }
     const type = (typeof ETAT !== 'undefined' && ETAT.typeEcran) || '';
 
-    /* les blocs de choix : deux → gauche/droite balayables ; sinon une pile */
+    /* Les blocs de choix d'une décision sortent de la fiche pour se poser sur
+       le noir : c'est la charte, et surtout c'est ce qui les rend lisibles —
+       à l'intérieur du papier, le texte clair des blocs devenait invisible.
+       Les questions d'entretien et de plateau, elles, restent dans le papier
+       (un formulaire), et prennent la variante « papier ». */
+    scene.querySelectorAll('.opts').forEach((g) => {
+      if (g.dataset.place) return; g.dataset.place = '1';
+      if (g.closest('.entretien-q, .plateau-q, .flechage-liste')) { g.classList.add('sur-papier'); return; }
+      const doc = g.closest('.doc');
+      if (!doc) return;
+      let apres = doc, n = g;
+      while (n && n.parentElement !== doc) n = n.parentElement;
+      const suiteDoc = [];
+      for (let q = n; q; q = q.nextElementSibling) suiteDoc.push(q);
+      for (const x of suiteDoc) { apres.after(x); apres = x; }
+    });
     scene.querySelectorAll('.opts').forEach((g) => {
       if (g.dataset.tel) return; g.dataset.tel = '1';
       const opts = [...g.querySelectorAll(':scope > .opt')];
-      const deux = opts.length === 2 && !g.closest('.entretien-q, .plateau-q, .flechage-liste');
+      const deux = opts.length === 2 && !g.classList.contains('sur-papier');
       g.classList.toggle('deux', deux);
-      opts.forEach((o, i) => {
-        const s = mk('span', 'surtitre', deux ? (i === 0 ? '← Glisser' : 'Glisser →') : `Choix ${i + 1}`);
-        o.insertBefore(s, o.firstChild);
-      });
+      if (!g.classList.contains('sur-papier')) {
+        opts.forEach((o, i) => {
+          const s = mk('span', 'surtitre', deux ? (i === 0 ? '← Glisser' : 'Glisser →') : `Choix ${i + 1}`);
+          o.insertBefore(s, o.firstChild);
+        });
+      }
       if (deux) {
-        const doc = g.closest('.doc') || g.parentElement;
+        const doc = g.previousElementSibling && g.previousElementSibling.classList.contains('doc') ? g.previousElementSibling : g.parentElement;
         doc.tabIndex = doc.tabIndex >= 0 ? doc.tabIndex : -1;
         glisser(doc, {
           gauche: () => opts[0].click(), droite: () => opts[1].click(),
@@ -214,8 +296,13 @@
           gauche: () => { if (c.classList.contains('sel')) retenir(); else c.classList.add('ecartee'); majPileTete(); },
         });
       });
-      const actions = $t('.actions', scene);
-      if (actions && !actions.classList.contains('atelier-pied')) actions.classList.add('atelier-pied');
+      /* Le bouton de validation rejoint la barre du bas : l'action principale
+         est toujours au même endroit, et elle ne recouvre plus le solde. */
+      const actions = $t('#scene .actions');
+      if (actions && !actions.classList.contains('atelier-pied')) {
+        actions.classList.add('atelier-pied');
+        pied.insertBefore(actions, noteBtn);
+      }
       pileTete.hidden = false; majPileTete();
     } else { pileTete.hidden = true; pile.insertBefore(pileTete, scene); }
 
@@ -235,8 +322,14 @@
     }
   }
 
-  /* --- observation : le thème suit ce que le jeu affiche ------------------ */
-  new MutationObserver(habillerScene).observe(scene, { childList: true });
+  /* --- observation : le thème suit ce que le jeu affiche ------------------
+     `subtree` est nécessaire : le plateau de 20 heures ajoute ses questions
+     une par une DANS un bloc existant. habillerScene est idempotente (chaque
+     élément traité porte une marque), et l'appel est groupé sur une frame
+     pour ne pas se déclencher à chaque nœud d'une même vague. */
+  let attendu = false;
+  const habillerBientot = () => { if (attendu) return; attendu = true; requestAnimationFrame(() => { attendu = false; habillerScene(); }); };
+  new MutationObserver(habillerBientot).observe(scene, { childList: true, subtree: true });
   const hud = $t('#hud'), frise = $t('#frise');
   if (hud) new MutationObserver(majCurseurs).observe(hud, { childList: true, subtree: true, attributes: true, attributeFilter: ['hidden'] });
   if (frise) new MutationObserver(majHorloge).observe(frise, { childList: true, subtree: true, attributes: true, attributeFilter: ['hidden'] });

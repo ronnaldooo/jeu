@@ -643,10 +643,11 @@ table.bilan tr.cache td{background:var(--fiche-2)}
 body.telephone{
   --ink:#14120E; --paper:#F4F1EA; --paper-shade-1:#C9C2B0; --paper-shade-2:#A79F8D;
   --official:#1B3A6B; --official-line:#2E5BA8;
+  --or-sombre:#7A5D00;
   --alert:#C8102E; --alert-soft:#E8746A; --positive:#7FA3D8; --on-alert:#F7EFE9;
-  --ink-text-2:#3E3A33; --ink-text-3:#77726A; --ink-text-4:#8A8579; --rule:#DED8C8;
-  --p70:rgba(244,241,234,.7); --p55:rgba(244,241,234,.55); --p45:rgba(244,241,234,.45);
-  --p35:rgba(244,241,234,.35); --p16:rgba(244,241,234,.16); --p14:rgba(244,241,234,.14);
+  --ink-text-2:#3E3A33; --ink-text-3:#615C55; --ink-text-4:#5F5A52; --rule:#DED8C8;
+  --p70:rgba(244,241,234,.82); --p55:rgba(244,241,234,.7); --p45:rgba(244,241,234,.6);
+  --p35:rgba(244,241,234,.52); --p16:rgba(244,241,234,.22); --p14:rgba(244,241,234,.2);
   --p12:rgba(244,241,234,.12); --p08:rgba(244,241,234,.08); --p07:rgba(244,241,234,.07); --p06:rgba(244,241,234,.06);
   --pile:0 8px 0 -4px var(--paper-shade-1), 0 16px 0 -8px var(--paper-shade-2);
   --serif:"Spectral",Georgia,"Times New Roman",serif;
@@ -659,9 +660,12 @@ body.telephone{
   --papier:var(--ink); --fiche:var(--paper); --fiche-2:#EBE7DC;
   --papier-creme:var(--paper); --papier-creme-bord:var(--rule);
   --encre:var(--ink); --encre-2:var(--ink-text-2); --encre-3:var(--ink-text-3);
-  --filet:var(--rule); --filet-fort:#C9C2B0; --rouge-rf:var(--alert); --or:#A07A1F;
-  --c-reussite:#7FA3D8; --c-egalite:#E8746A; --c-sante:#5E9C7C; --c-paix:#D08A3E; --c-budget:#B89A3C; --c-violet:#8B7BC0;
-  --ok:#3E7F5A; --alerte:var(--alert); --ombre:none;
+  --filet:var(--rule); --filet-fort:#C9C2B0; --rouge-rf:var(--alert); --or:var(--or-sombre);
+  /* Assombries pour le papier : les teintes de la charte, posées sur le
+     crème, tombaient à 2,2:1. Elles servent aussi de puces et de jauges
+     sans texte à côté, donc elles doivent se voir. */
+  --c-reussite:#2C5FA6; --c-egalite:#A63562; --c-sante:#1F6E4E; --c-paix:#9A4A18; --c-budget:#7A5D00; --c-violet:#5F4AA8;
+  --ok:#1F6E4E; --alerte:var(--alert); --ombre:none;
   --fond-illus:var(--paper);
   background:#E6E4DF; color:var(--ink); font-family:var(--serif); margin:0;
   color-scheme:light;
@@ -684,24 +688,24 @@ body.telephone .tel-statut .reseau{letter-spacing:.1em}
 
 /* en-tête horloge */
 body.telephone .tel-horloge{flex:0 0 auto; padding:10px 24px 12px; text-align:center}
-body.telephone .tel-horloge .l1{font-family:var(--mono); font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:rgba(244,241,234,.5)}
+body.telephone .tel-horloge .l1{font-family:var(--mono); font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:var(--p45)}
 body.telephone .tel-horloge .l2{font-family:var(--serif); font-weight:300; font-size:48px; line-height:1.05; color:var(--paper); margin-top:2px}
 body.telephone .tel-horloge .l3{font-family:var(--serif); font-style:italic; font-size:14px; color:var(--p55); margin-top:2px}
 body.telephone .tel-horloge .l3.fin{color:var(--alert-soft)}
 
 /* widget curseurs */
 body.telephone .tel-curseurs{margin:0 20px; background:var(--p07); border:1px solid var(--p14); border-radius:16px; padding:11px 15px; flex:0 0 auto}
-body.telephone .tel-curseurs .titre{font-family:var(--mono); font-size:9px; letter-spacing:.18em; text-transform:uppercase; color:var(--p45)}
-body.telephone .tel-curseurs .rangee{display:flex; gap:14px; margin-top:8px}
+body.telephone .tel-curseurs .titre{font-family:var(--mono); font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:var(--p45)}
+body.telephone .tel-curseurs .rangee{display:flex; gap:10px; margin-top:8px}
 body.telephone .tel-curseurs .col{flex:1; min-width:0}
 body.telephone .tel-curseurs .col.large{flex:1.2}
 body.telephone .tel-curseurs .v{font-family:var(--mono); font-weight:700; font-size:22px; line-height:1; color:var(--paper); display:flex; align-items:baseline; gap:6px}
 body.telephone .tel-curseurs .v.mauvais{color:var(--alert-soft)}
-body.telephone .tel-curseurs .v .delta{font-size:10px; font-weight:400; color:var(--p55); opacity:0; transition:opacity .4s}
+body.telephone .tel-curseurs .v .delta{font-size:12px; font-weight:400; color:var(--p55); opacity:0; transition:opacity .4s}
 body.telephone .tel-curseurs .v .delta.visible{opacity:1}
 body.telephone .tel-curseurs .v .delta.up{color:var(--positive)} body.telephone .tel-curseurs .v .delta.down{color:var(--alert-soft)}
-body.telephone .tel-curseurs .l{font-family:var(--mono); font-size:8.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--p45); margin-top:4px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
-body.telephone .tel-curseurs .jauge-t{height:3px; border-radius:2px; background:rgba(244,241,234,.15); margin-top:6px; overflow:hidden}
+body.telephone .tel-curseurs .l{font-family:var(--mono); font-size:10.5px; letter-spacing:0; text-transform:none; color:var(--p45); margin-top:4px; line-height:1.25; white-space:nowrap}
+body.telephone .tel-curseurs .jauge-t{height:3px; border-radius:2px; background:rgba(244,241,234,.2); margin-top:6px; overflow:hidden}
 body.telephone .tel-curseurs .jauge-t i{display:block; height:100%; border-radius:2px; transition:width .6s ease}
 body.telephone .tel-curseurs .col.large .v{font-size:18px; padding-top:3px; color:var(--alert-soft)}
 body.telephone .tel-curseurs .col.large .v.bon{color:var(--paper)}
@@ -711,19 +715,20 @@ body.telephone .tel-curseurs .v.pulse{animation:tel-pulse .5s ease-out}
 
 /* alerte du cabinet : notification sourde sous le widget */
 body.telephone .tel-alerte{margin:10px 20px 0; background:var(--p08); border:1px solid var(--p16); border-radius:16px; padding:11px 15px; flex:0 0 auto}
-body.telephone .tel-alerte .src{font-family:var(--mono); font-size:9px; letter-spacing:.16em; text-transform:uppercase; color:var(--p45)}
-body.telephone .tel-alerte .corps{font-family:var(--serif); font-size:14px; line-height:1.3; color:var(--paper); margin-top:4px}
+body.telephone .tel-alerte .src{font-family:var(--mono); font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--p45)}
+body.telephone .tel-alerte .corps{font-family:var(--serif); font-size:15px; line-height:1.3; color:var(--paper); margin-top:4px}
 
 /* zone de contenu : la pile, défilante */
 body.telephone .tel-pile{flex:1; min-height:0; overflow-y:auto; overscroll-behavior:contain; padding:14px 20px 12px; scrollbar-width:thin; scrollbar-color:var(--p16) transparent}
 body.telephone .tel-pile-tete{display:flex; justify-content:space-between; align-items:baseline; margin-bottom:10px}
-body.telephone .tel-pile-tete .g{font-family:var(--mono); font-size:9px; letter-spacing:.18em; text-transform:uppercase; color:var(--p45)}
-body.telephone .tel-pile-tete .d{font-family:var(--mono); font-size:9.5px; color:var(--p35)}
+body.telephone .tel-pile-tete .g{font-family:var(--mono); font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:var(--p45)}
+body.telephone .tel-pile-tete .d{font-family:var(--mono); font-size:11px; color:var(--p35)}
 
 /* pied */
 body.telephone .tel-pied{flex:0 0 auto; padding:12px 22px 22px; border-top:1px solid var(--p12); display:flex; align-items:center; justify-content:space-between; gap:12px}
-body.telephone .tel-pied .contexte{font-family:var(--mono); font-size:10.5px; line-height:1.45; color:var(--p45); max-width:22ch; flex:1; min-width:0}
-body.telephone .tel-pied .btn-borde, body.telephone .tel-pied .btn{cursor:pointer; font-family:var(--mono); font-size:10.5px; letter-spacing:.06em; text-transform:uppercase; color:var(--paper); background:transparent; border:1px solid var(--p35); border-radius:9px; padding:9px 13px; white-space:nowrap; transform:none; font-weight:400}
+body.telephone .tel-pied .contexte{font-family:var(--serif); font-size:13px; line-height:1.35; color:var(--p70); max-width:20ch; flex:1; min-width:0}
+body.telephone .tel-pied .btn-borde, body.telephone .tel-pied .btn{cursor:pointer; font-family:var(--mono); font-size:11.5px; line-height:1.35; letter-spacing:.04em; text-transform:uppercase; color:var(--paper); background:transparent; border:1px solid var(--p35); border-radius:9px; padding:9px 12px; transform:none; font-weight:400; text-align:center; min-height:44px}
+body.telephone .tel-pied .btn{white-space:nowrap}
 body.telephone .tel-pied .btn{background:var(--official); border-color:var(--official-line); font-weight:700}
 body.telephone .tel-pied .btn:hover, body.telephone .tel-pied .btn:focus-visible{background:var(--official-line); outline:none}
 body.telephone .tel-pied .btn-borde:hover, body.telephone .tel-pied .btn-borde:focus-visible{border-color:var(--paper); outline:none}
@@ -748,16 +753,22 @@ body.telephone .decode, body.telephone .fil .post, body.telephone .accueil, body
 body.telephone .doc.papier{background:var(--paper)}
 body.telephone .doc > * + *{margin-top:12px}
 body.telephone .entete-doc{display:flex; justify-content:space-between; gap:12px; align-items:flex-start; border:0; padding:0; margin:0 0 4px}
-body.telephone .entete-doc .type{font-family:var(--mono); font-size:9.5px; letter-spacing:.18em; text-transform:uppercase; color:var(--ink-text-4); font-weight:400; line-height:1.4}
+body.telephone .entete-doc .type{font-family:var(--mono); font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:var(--ink-text-4); font-weight:400; line-height:1.4}
 body.telephone .entete-doc .type .picto{display:none}
-body.telephone .entete-doc .date{font-family:var(--mono); font-size:9.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-text-4); white-space:nowrap}
-body.telephone .doc h2, body.telephone .journal h2.une{font-family:var(--serif); font-weight:800; font-size:26px; line-height:1.1; letter-spacing:-.015em; color:var(--ink); margin:10px 0 0; max-width:none; text-wrap:pretty}
+body.telephone .entete-doc .date{font-family:var(--mono); font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-text-4); white-space:nowrap}
+body.telephone .doc h2, body.telephone .journal h2.une{font-family:var(--serif); font-weight:800; font-size:25px; line-height:1.1; letter-spacing:-.015em; color:var(--ink); margin:10px 0 0; max-width:none; text-wrap:pretty}
 body.telephone .doc h2:focus, body.telephone h1:focus{outline:none}
-body.telephone .doc p, body.telephone .chapo{font-family:var(--serif); font-size:15px; line-height:1.5; color:var(--ink-text-2); max-width:none}
-body.telephone .regle{font-family:var(--serif); font-weight:700; font-size:17px; line-height:1.3; color:var(--ink); border-left:3px solid var(--alert); padding-left:10px; margin:10px 0 0}
-body.telephone .cadrage-retenir, body.telephone .doc .mot, body.telephone .carte .mot{font-family:var(--serif); font-style:italic; font-size:13.5px; line-height:1.4; color:var(--ink-text-3); border:0; border-top:1px solid var(--rule); padding:10px 0 0; margin:13px 0 0; text-align:left; max-width:none}
-body.telephone .doc cite, body.telephone .doc .src, body.telephone .rep-serie-note, body.telephone .doc small{font-family:var(--mono); font-size:9.5px; letter-spacing:.02em; color:var(--ink-text-4); line-height:1.5}
+body.telephone .doc p, body.telephone .chapo{font-family:var(--serif); font-size:16px; line-height:1.55; color:var(--ink-text-2); max-width:none}
+body.telephone .regle{font-family:var(--serif); font-weight:700; font-size:18px; line-height:1.3; color:var(--ink); border-left:3px solid var(--alert); padding-left:10px; margin:10px 0 0}
+body.telephone .cadrage-retenir, body.telephone .doc .mot, body.telephone .carte .mot{font-family:var(--serif); font-style:italic; font-size:15px; line-height:1.45; color:var(--ink-text-3); border:0; border-top:1px solid var(--rule); padding:11px 0 0; margin:14px 0 0; text-align:left; max-width:none}
+body.telephone .doc cite, body.telephone .doc .src, body.telephone .rep-serie-note, body.telephone .doc small{font-family:var(--mono); font-size:11px; letter-spacing:.02em; color:var(--ink-text-4); line-height:1.5}
 body.telephone .doc a{color:var(--official)}
+/* Les sources restent citées et cliquables, mais elles ne dominent plus la
+   fiche : encre secondaire, soulignée pour rester identifiable comme lien. */
+body.telephone .doc cite{line-height:1.4}
+body.telephone .doc cite a, body.telephone .tel-note-fiche cite a{color:var(--ink-text-4); text-decoration:underline; text-decoration-color:var(--filet-fort); text-underline-offset:2px}
+body.telephone .doc cite a:hover, body.telephone .tel-note-fiche cite a:hover{color:var(--official); text-decoration-color:var(--official)}
+body.telephone .journal .manchette{flex-wrap:wrap}
 body.telephone .doc .illus{display:none}
 body.telephone .doc table{display:block; overflow-x:auto; max-width:100%}
 body.telephone .accroche{display:block}
@@ -768,10 +779,10 @@ body.telephone .accroche .sous em{color:var(--alert); font-size:18px}
 body.telephone .accroche p{margin-top:10px; font-size:15px}
 
 /* tampon URGENT sur les affaires et alertes : dans le flux, jamais en absolu */
-body.telephone .tampon-urgent{flex:0 0 auto; font-family:var(--mono); font-weight:700; font-size:10px; letter-spacing:.14em; color:var(--alert); border:2px solid var(--alert); padding:4px 7px; transform:rotate(-7deg); text-transform:uppercase}
+body.telephone .tampon-urgent{flex:0 0 auto; font-family:var(--mono); font-weight:700; font-size:11px; letter-spacing:.14em; color:var(--alert); border:2px solid var(--alert); padding:4px 7px; transform:rotate(-7deg); text-transform:uppercase}
 
 /* boutons dans le papier */
-body.telephone .btn{font-family:var(--mono); font-size:10.5px; letter-spacing:.08em; text-transform:uppercase; font-weight:700; background:var(--official); border:1px solid var(--official-line); color:var(--paper); border-radius:9px; padding:11px 14px; transform:none; box-shadow:none; width:100%; text-align:center; line-height:1.3}
+body.telephone .btn{font-family:var(--mono); font-size:12px; letter-spacing:.08em; text-transform:uppercase; font-weight:700; background:var(--official); border:1px solid var(--official-line); color:var(--paper); border-radius:9px; padding:11px 14px; transform:none; box-shadow:none; width:100%; text-align:center; line-height:1.3}
 body.telephone .btn.tamponner{transform:none; letter-spacing:.08em}
 body.telephone .btn.tamponner:active{transform:none}
 body.telephone .btn:hover{background:var(--official-line)}
@@ -783,18 +794,18 @@ body.telephone .opts{display:grid; gap:12px; margin:22px 0 0; grid-template-colu
 body.telephone .opts.deux{grid-template-columns:1fr 1fr}
 body.telephone .opts::before{content:none}
 body.telephone .opt{cursor:pointer; text-align:left; background:var(--p07); border:1px solid var(--p16); border-radius:15px; padding:13px 14px; color:var(--paper); transition:background .15s, border-color .15s; display:flex; flex-direction:column; min-height:44px}
-body.telephone .opt .surtitre{font-family:var(--mono); font-size:9.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--p55); margin-bottom:5px}
+body.telephone .opt .surtitre{font-family:var(--mono); font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--p55); margin-bottom:5px}
 /* Écart assumé avec la charte : gauche rouge = refus, droite bleue = signer
    supposent que le sens des deux options est fixe. Ici il ne l'est pas
    (« Accepter le cadrage » est à gauche). Les deux blocs sont donc neutres,
    la direction reste indiquée, et le bleu marque le choix fait. */
 body.telephone .opts.deux .opt:last-child{text-align:right; align-items:flex-end}
 body.telephone .opt b{font-family:var(--serif); font-weight:700; font-size:17px; line-height:1.25; color:var(--paper); margin:0; display:block}
-body.telephone .opt .det{font-family:var(--serif); font-size:13px; line-height:1.4; color:var(--p70); margin-top:6px; max-width:none}
+body.telephone .opt .det{font-family:var(--serif); font-size:14.5px; line-height:1.45; color:var(--p70); margin-top:6px; max-width:none}
 body.telephone .opt .det.mot{font-style:italic; color:var(--p55)}
 body.telephone .opt .chiffres{display:flex; flex-wrap:wrap; gap:5px; margin-top:10px; padding:0; border:0}
 body.telephone .opts.deux .opt:last-child .chiffres{justify-content:flex-end}
-body.telephone .opt .chiffres span, body.telephone .pastille{font-family:var(--mono); font-size:10px; border-radius:20px; padding:3px 6px; border:1px solid rgba(244,241,234,.3); color:rgba(244,241,234,.6); background:transparent; line-height:1.2}
+body.telephone .opt .chiffres span, body.telephone .pastille{font-family:var(--mono); font-size:11.5px; border-radius:20px; padding:3px 6px; border:1px solid rgba(244,241,234,.3); color:rgba(244,241,234,.6); background:transparent; line-height:1.2}
 body.telephone .opt .chiffres .neg, body.telephone .pastille.neg{background:var(--alert); color:var(--on-alert); border-color:var(--alert); padding:3px 7px}
 body.telephone .opt .chiffres .pos, body.telephone .pastille.pos{background:var(--paper); color:var(--ink); border-color:var(--paper); padding:3px 7px}
 body.telephone .opt:hover, body.telephone .opt:focus-visible{border-color:var(--alert-soft); background:var(--p08); outline:none}
@@ -804,10 +815,25 @@ body.telephone .opt.choisi b{color:var(--paper)}
 body.telephone .opt.vise{border-color:var(--official-line); background:var(--official)}
 body.telephone .echappatoire{margin-top:22px; background:var(--p06); border-radius:14px; padding:12px 14px; font-family:var(--serif); font-style:italic; font-size:14px; line-height:1.4; color:var(--p70)}
 
+/* Variante papier : les choix restés dans la fiche (entretien, plateau).
+   Encre sombre sur blanc, filet officiel à gauche — jamais de texte clair
+   sur le crème. */
+body.telephone .opts.sur-papier{gap:8px; margin-top:14px}
+body.telephone .opts.sur-papier .opt{background:#FFFDF8; border:1px solid var(--rule); border-left:4px solid var(--filet-fort); border-radius:10px; color:var(--ink); padding:12px 14px}
+body.telephone .opts.sur-papier .opt b{color:var(--ink); font-size:16px}
+body.telephone .opts.sur-papier .opt .det{color:var(--ink-text-2); font-size:14px}
+body.telephone .opts.sur-papier .opt .det.mot{color:var(--ink-text-3)}
+body.telephone .opts.sur-papier .opt .chiffres span{border-color:var(--filet-fort); color:var(--ink-text-3); background:transparent}
+body.telephone .opts.sur-papier .opt .chiffres .neg{background:var(--alert); color:var(--on-alert); border-color:var(--alert)}
+body.telephone .opts.sur-papier .opt .chiffres .pos{background:var(--official); color:var(--paper); border-color:var(--official)}
+body.telephone .opts.sur-papier .opt:hover, body.telephone .opts.sur-papier .opt:focus-visible{border-left-color:var(--official); background:#FFFFFF}
+body.telephone .opts.sur-papier .opt.choisi{background:#FFFFFF; border-color:var(--official); border-left-color:var(--official); box-shadow:inset 0 0 0 1px var(--official)}
+body.telephone .opts.sur-papier .opt.choisi b{color:var(--official)}
+
 /* questions d'entretien et de plateau : chaque question en papier, ses choix en noir dessous */
 body.telephone .entretien-q, body.telephone .plateau-q{margin:0 0 18px}
-body.telephone .entretien-q h3, body.telephone .plateau-q h3, body.telephone .doc h3{font-family:var(--serif); font-weight:700; font-size:17px; line-height:1.25; color:var(--ink); margin:14px 0 0}
-body.telephone .entretien-q .indice, body.telephone .plateau-q .indice, body.telephone .doc .note-q{font-style:italic; font-size:13.5px; color:var(--ink-text-3)}
+body.telephone .entretien-q h3, body.telephone .plateau-q h3, body.telephone .doc h3{font-family:var(--serif); font-weight:700; font-size:17px; line-height:1.3; color:var(--ink); margin:14px 0 0; text-wrap:pretty}
+body.telephone .entretien-q .indice, body.telephone .plateau-q .indice, body.telephone .doc .note-q{font-style:italic; font-size:14.5px; line-height:1.5; color:var(--ink-text-3)}
 
 /* ---------- l'atelier : la pile de notifications ------------------------ */
 body.telephone .grille-cartes{display:flex; flex-direction:column; gap:10px; padding-bottom:8px}
@@ -816,101 +842,187 @@ body.telephone .carte{background:var(--paper); color:var(--ink); border:0; borde
 body.telephone .carte.glisse{transition:none}
 body.telephone .carte.sortie{transition:transform .22s ease-out, opacity .08s ease-out .14s; opacity:0}
 body.telephone .carte.ecartee{display:none}
-body.telephone .carte .famille{font-family:var(--mono); font-size:9px; letter-spacing:.16em; text-transform:uppercase; font-weight:400; color:var(--alert) !important; padding-right:40px}
+body.telephone .carte .famille{font-family:var(--mono); font-size:11px; letter-spacing:.16em; text-transform:uppercase; font-weight:400; color:var(--alert) !important; padding-right:40px}
 body.telephone .carte h3{font-family:var(--serif); font-weight:700; font-size:17px; line-height:1.2; color:var(--ink); padding-right:0}
-body.telephone .carte .nouveau-dossier{font-family:var(--mono); font-size:8.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--official); margin-left:8px; font-weight:400}
-body.telephone .carte .plie, body.telephone .carte .porteurs{font-family:var(--serif); font-size:13.5px; color:var(--ink-text-3); line-height:1.35}
-body.telephone .carte .chiffres{font-family:var(--mono); font-size:9.5px; color:var(--ink-text-4); gap:4px 12px}
-body.telephone .carte .numero{position:absolute; top:13px; right:15px; font-family:var(--mono); font-size:9.5px; color:var(--ink-text-4)}
+body.telephone .carte .nouveau-dossier{font-family:var(--mono); font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; background:var(--official); color:var(--paper); margin-left:8px; font-weight:400; padding:2px 7px; border-radius:20px; white-space:nowrap}
+body.telephone .carte .plie, body.telephone .carte .porteurs{font-family:var(--serif); font-size:14.5px; color:var(--ink-text-3); line-height:1.4}
+body.telephone .carte .chiffres{font-family:var(--mono); font-size:11.5px; color:var(--ink-text-4); gap:4px 12px}
+body.telephone .carte .numero{position:absolute; top:14px; right:15px; font-family:var(--mono); font-size:11px; color:var(--ink-text-4)}
 body.telephone .carte.sel{background:var(--paper); box-shadow:var(--pile), inset 0 0 0 2px var(--official)}
-body.telephone .carte.sel::after{content:"SIGNÉE"; font-family:var(--mono); font-size:8.5px; letter-spacing:.14em; color:var(--official); top:13px; right:15px}
+body.telephone .carte.sel::after{content:"SIGNÉE"; font-family:var(--mono); font-size:11px; letter-spacing:.14em; color:var(--official); top:13px; right:15px}
 body.telephone .carte.sel .numero{display:none}
 body.telephone .carte .corps{gap:8px; border-top:1px solid var(--rule); padding-top:10px; margin-top:4px}
-body.telephone .carte .reels{font-size:13px}
-body.telephone .carte .reels .src{font-family:var(--mono); font-size:9.5px; color:var(--ink-text-4)}
-body.telephone .carte .alerte-greve{font-family:var(--mono); font-size:10px; color:var(--alert)}
+body.telephone .carte .reels{font-size:14px; line-height:1.45}
+body.telephone .carte .reels .src{font-family:var(--mono); font-size:11px; color:var(--ink-text-4)}
+body.telephone .carte .alerte-greve{font-family:var(--mono); font-size:12px; color:var(--alert)}
 body.telephone .carte .barre-actions{gap:8px; margin-top:8px}
-body.telephone .carte .btn-mini{font-family:var(--mono); font-size:10px; letter-spacing:.08em; text-transform:uppercase; border:1px solid var(--rule); background:transparent; color:var(--ink-text-2); border-radius:9px; padding:8px 11px; flex:1; text-align:center}
+body.telephone .carte .btn-mini{font-family:var(--mono); font-size:11.5px; letter-spacing:.08em; text-transform:uppercase; border:1px solid var(--rule); background:transparent; color:var(--ink-text-2); border-radius:9px; padding:8px 11px; flex:1; text-align:center}
 body.telephone .carte .btn-retenir{background:var(--official); border-color:var(--official); color:var(--paper); font-weight:700}
 body.telephone .carte.sel .btn-retenir{background:transparent; color:var(--alert); border-color:var(--alert)}
-body.telephone .carte .comprendre{background:#EBE7DC; border-left:3px solid var(--official); border-radius:0 10px 10px 0; font-size:13px}
-body.telephone .carte .comprendre .titre-d{font-family:var(--mono); font-size:9px; letter-spacing:.16em; color:var(--official)}
+body.telephone .carte .comprendre{background:#EBE7DC; border-left:3px solid var(--official); border-radius:0 10px 10px 0; font-size:14px; line-height:1.5; padding:12px 14px}
+body.telephone .carte .comprendre .titre-d{font-family:var(--mono); font-size:11px; letter-spacing:.16em; color:var(--official)}
 body.telephone .carte .comprendre .idee .titre-d{color:var(--alert)}
-body.telephone .carte .curseurs-carte label{font-family:var(--mono); font-size:9px; letter-spacing:.14em}
+body.telephone .carte .curseurs-carte label{font-family:var(--mono); font-size:11px; letter-spacing:.14em}
 body.telephone .carte .curseurs-carte select, body.telephone .carte input[type=range]{width:100%}
-body.telephone .carte .chiffrage .l{font-size:13px}
-body.telephone .carte .indice-glisse{position:absolute; top:50%; transform:translateY(-50%); font-family:var(--mono); font-size:10px; letter-spacing:.14em; text-transform:uppercase; opacity:0; transition:opacity .12s; pointer-events:none}
+body.telephone .carte .chiffrage .l{font-size:14px}
+body.telephone .carte .indice-glisse{position:absolute; top:50%; transform:translateY(-50%); font-family:var(--mono); font-size:12px; letter-spacing:.14em; text-transform:uppercase; opacity:0; transition:opacity .12s; pointer-events:none}
 body.telephone .carte .indice-glisse.g{left:14px; color:var(--alert)}
 body.telephone .carte .indice-glisse.d{right:14px; color:var(--official)}
 body.telephone .carte.vise-g .indice-glisse.g, body.telephone .carte.vise-d .indice-glisse.d{opacity:1}
 
 /* le solde : widget noir au-dessus de la pile */
 body.telephone .solde{position:sticky; top:-14px; z-index:5; margin-top:-8px; background:var(--ink); border:1px solid var(--p14); border-radius:16px; padding:11px 15px; box-shadow:none; margin:0 0 12px; gap:8px 14px; color:var(--paper)}
-body.telephone .solde .tuile .l{font-family:var(--mono); font-size:8.5px; letter-spacing:.1em; color:var(--p45); font-weight:400}
+body.telephone .solde .tuile .l{font-family:var(--mono); font-size:10.5px; letter-spacing:.08em; color:var(--p45); font-weight:400}
 body.telephone .solde .tuile .v{font-family:var(--mono); font-size:20px; font-weight:700; color:var(--paper)}
-body.telephone .solde .tuile .v small{color:var(--p45); font-size:10px}
-body.telephone .solde .tuile .rail{background:rgba(244,241,234,.15)} body.telephone .solde .tuile .rail i{background:var(--positive)}
+body.telephone .solde .tuile .v small{color:var(--p45); font-size:12px}
+body.telephone .solde .tuile .rail{background:rgba(244,241,234,.2)} body.telephone .solde .tuile .rail i{background:var(--positive)}
 body.telephone .solde .tuile.neg .v, body.telephone .solde .tuile.neg .l{color:var(--alert-soft)} body.telephone .solde .tuile.neg .rail i{background:var(--alert-soft)}
 body.telephone .solde .points i{border-color:var(--p35)} body.telephone .solde .points i.on{background:var(--paper); border-color:var(--paper)}
-body.telephone .solde .mineur{font-family:var(--mono); font-size:9px; letter-spacing:.04em; color:var(--p45); margin-left:0; flex-basis:100%}
+body.telephone .solde .mineur{font-family:var(--mono); font-size:11px; letter-spacing:.04em; color:var(--p45); margin-left:0; flex-basis:100%}
 body.telephone .solde .mineur b{color:var(--paper)}
-body.telephone .solde .avert{font-family:var(--mono); font-size:10px; color:var(--alert-soft)}
+body.telephone .solde .avert{font-family:var(--mono); font-size:11.5px; color:var(--alert-soft)}
 body.telephone .repli-atelier{background:var(--paper); border:0; border-radius:16px; box-shadow:var(--pile); margin:0 0 12px}
-body.telephone .repli-atelier > summary{font-family:var(--mono); font-size:9.5px; letter-spacing:.16em; color:var(--ink-text-4); padding:12px 15px}
+body.telephone .repli-atelier > summary{font-family:var(--mono); font-size:11px; letter-spacing:.16em; color:var(--ink-text-4); padding:12px 15px}
 body.telephone .repli-atelier > .in{padding:0 15px 8px}
 body.telephone .budget-bloc, body.telephone .legende-cadenas, body.telephone .cadrage-menu, body.telephone .bandeau-neuf{border:0; border-top:1px solid var(--rule); background:transparent; padding:10px 0 0; margin:10px 0 0; border-radius:0; font-size:13px}
-body.telephone .cadrage-menu b{font-family:var(--mono); font-size:9.5px; letter-spacing:.14em; color:var(--alert); font-weight:400}
-body.telephone .cadrage-menu span, body.telephone .bandeau-neuf{color:var(--ink-text-2); font-family:var(--serif); font-size:13.5px}
-body.telephone .lire-carte{font-size:13.5px}
-body.telephone .atelier-pied{position:sticky; bottom:-12px; z-index:5; margin:4px -20px -12px; padding:22px 20px 14px; background:linear-gradient(to top, var(--ink) 70%, transparent)}
-body.telephone .atelier-pied .btn{margin:0}
+body.telephone .cadrage-menu b{font-family:var(--mono); font-size:11px; letter-spacing:.14em; color:var(--alert); font-weight:400}
+body.telephone .cadrage-menu span, body.telephone .bandeau-neuf{color:var(--ink-text-2); font-family:var(--serif); font-size:14.5px; line-height:1.5}
+body.telephone .lire-carte{font-size:14.5px; line-height:1.55}
+body.telephone .tel-pied .atelier-pied{flex:1; min-width:0; margin:0; display:block}
+body.telephone .tel-pied .atelier-pied .btn{width:100%; margin:0; white-space:normal}
 
 /* ---------- le journal et le fil ---------------------------------------- */
 body.telephone .journal .manchette{border-bottom:1px solid var(--rule); padding-bottom:8px}
 body.telephone .journal .titre-j{font-family:var(--serif); font-weight:800; font-size:18px}
-body.telephone .journal .ours{font-family:var(--mono); font-size:9px; letter-spacing:.14em; color:var(--ink-text-4)}
-body.telephone .journal .sous-une{font-size:14px; color:var(--ink-text-3)}
+body.telephone .journal .ours{font-family:var(--mono); font-size:11px; letter-spacing:.14em; color:var(--ink-text-4)}
+body.telephone .journal .sous-une{font-size:15px; color:var(--ink-text-3)}
 body.telephone .journal .breves{border-top:1px solid var(--rule)}
-body.telephone .journal .breve{font-size:14px; line-height:1.4; color:var(--ink-text-2)}
-body.telephone .journal .breve .sig{font-family:var(--mono); font-size:9px; letter-spacing:.12em; color:var(--ink-text-4)}
+body.telephone .journal .breve{font-size:15px; line-height:1.45; color:var(--ink-text-2)}
+body.telephone .journal .breve .sig{font-family:var(--mono); font-size:11px; letter-spacing:.12em; color:var(--ink-text-4)}
 body.telephone .fil{margin:0; gap:10px; display:grid}
-body.telephone .fil .post{background:var(--p08); color:var(--paper); border:1px solid var(--p16); box-shadow:none; border-radius:16px; padding:11px 15px; margin:0; font-family:var(--serif); font-size:14px}
-body.telephone .post .auteur{font-family:var(--mono); font-size:9px; letter-spacing:.14em; text-transform:uppercase; color:var(--p45); font-weight:400}
-body.telephone .post .pseudo{font-family:var(--mono); font-size:9px; color:var(--p35)}
+body.telephone .fil .post{background:var(--p08); color:var(--paper); border:1px solid var(--p16); box-shadow:none; border-radius:16px; padding:12px 15px; margin:0; font-family:var(--serif); font-size:15px}
+body.telephone .post .auteur{font-family:var(--mono); font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--p45); font-weight:400}
+body.telephone .post .pseudo{font-family:var(--mono); font-size:11px; color:var(--p35)}
 body.telephone .post p{color:var(--paper); line-height:1.35; margin-top:4px}
-body.telephone .annee-chiffres .titre-d, body.telephone .scelles .titre-d, body.telephone .decode .titre-d{font-family:var(--mono); font-size:9.5px; letter-spacing:.16em; color:var(--ink-text-4); font-weight:400}
-body.telephone .annee-chiffres .t .v{font-family:var(--mono); font-size:26px}
-body.telephone .annee-chiffres .t .n{font-family:var(--mono); font-size:8.5px; letter-spacing:.1em; color:var(--ink-text-4); font-weight:400}
-body.telephone .annee-chiffres .t .d{font-family:var(--mono); font-size:11px}
-body.telephone .annee-chiffres .lecture{font-family:var(--serif); font-style:italic; font-size:13.5px; color:var(--ink-text-3)}
-body.telephone .scelles .ligne-s{font-size:13px}
-body.telephone .decode p{font-size:14px}
+body.telephone .annee-chiffres .titre-d, body.telephone .scelles .titre-d, body.telephone .decode .titre-d{font-family:var(--mono); font-size:11px; letter-spacing:.16em; color:var(--ink-text-4); font-weight:400}
+body.telephone .annee-chiffres .tuiles{grid-template-columns:repeat(3,1fr); gap:8px}
+body.telephone .annee-chiffres .t{padding:8px 2px 10px}
+body.telephone .annee-chiffres .t .v{font-family:var(--mono); font-size:24px}
+body.telephone .annee-chiffres .t .d small{font-size:11px}
+body.telephone .annee-chiffres .t .rail{max-width:none}
+body.telephone .annee-chiffres .t .n{font-family:var(--mono); font-size:10.5px; letter-spacing:.06em; color:var(--ink-text-4); font-weight:400}
+body.telephone .annee-chiffres .t .d{font-family:var(--mono); font-size:12px}
+body.telephone .annee-chiffres .lecture{font-family:var(--serif); font-style:italic; font-size:14.5px; color:var(--ink-text-3)}
+body.telephone .scelles .ligne-s{font-size:14px; line-height:1.5}
+body.telephone .decode p{font-size:15px; line-height:1.55}
 
 /* ---------- l'accueil : écran verrouillé -------------------------------- */
 body.telephone .accueil{text-align:center; margin-top:0}
 body.telephone .accueil .tampon{border:2px solid var(--alert); color:var(--alert); transform:rotate(-4deg); padding:8px 14px; font-family:var(--mono); margin-bottom:18px}
-body.telephone .accueil .tampon .rf{font-size:9px; letter-spacing:.2em}
-body.telephone .accueil .tampon div:not(.rf){font-size:7.5px !important; letter-spacing:.1em !important}
+body.telephone .accueil .tampon .rf{font-size:10.5px; letter-spacing:.14em}
+body.telephone .accueil .tampon div:not(.rf){font-size:9px !important; letter-spacing:.06em !important}
 body.telephone .accueil .illustration{display:none}
 body.telephone .accueil h1{font-family:var(--serif); font-weight:800; font-size:34px; letter-spacing:-.015em; text-transform:none; line-height:1.05; margin:6px 0 10px; color:var(--ink)}
-body.telephone .accueil .devise{font-family:var(--serif); font-weight:700; font-size:17px; color:var(--ink); margin:0 0 6px; max-width:none}
-body.telephone .accueil .echelle{font-family:var(--mono); font-size:10px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-text-4); line-height:1.7; margin:0 0 8px}
-body.telephone .accueil .chute{font-family:var(--serif); font-style:italic; font-size:13.5px; color:var(--ink-text-3); margin:0 0 18px; max-width:none}
-body.telephone .accueil .avertissement{font-family:var(--mono); font-size:9px; line-height:1.6; color:var(--ink-text-4); max-width:none; margin-top:18px; border-top:1px solid var(--rule); padding-top:12px}
+body.telephone .accueil .devise{font-family:var(--serif); font-weight:700; font-size:18px; color:var(--ink); margin:0 0 6px; max-width:none}
+body.telephone .accueil .echelle{font-family:var(--mono); font-size:11.5px; letter-spacing:.04em; text-transform:uppercase; color:var(--ink-text-3); line-height:1.8; margin:0 0 10px}
+body.telephone .accueil .chute{font-family:var(--serif); font-style:italic; font-size:15px; color:var(--ink-text-3); margin:0 0 18px; max-width:none}
+body.telephone .accueil .avertissement{font-family:var(--serif); font-size:13px; line-height:1.5; color:var(--ink-text-3); max-width:none; margin-top:18px; border-top:1px solid var(--rule); padding-top:12px; text-align:left}
+
+/* ---------- la note de la DGESCO ---------------------------------------- */
+body.telephone .tel-note{position:absolute; inset:0; z-index:40; background:var(--ink); display:flex; flex-direction:column}
+body.telephone .tel-note[hidden]{display:none}
+body.telephone .tel-note-tete{flex:0 0 auto; display:flex; align-items:flex-start; justify-content:space-between; gap:12px; padding:18px 20px 14px; border-bottom:1px solid var(--p16)}
+body.telephone .tel-note-tete .src{font-family:var(--mono); font-size:10.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--p45); line-height:1.4}
+body.telephone .tel-note-tete .titre{font-family:var(--serif); font-weight:800; font-size:23px; line-height:1.15; color:var(--paper); margin-top:4px}
+body.telephone .tel-note-tete .fermer{cursor:pointer; flex:0 0 auto; font-family:var(--mono); font-size:11.5px; letter-spacing:.06em; text-transform:uppercase; color:var(--paper); background:transparent; border:1px solid var(--p35); border-radius:9px; padding:9px 12px}
+body.telephone .tel-note-tete .fermer:hover, body.telephone .tel-note-tete .fermer:focus-visible{border-color:var(--paper); outline:none}
+body.telephone .tel-note-corps{flex:1; min-height:0; overflow-y:auto; overscroll-behavior:contain; padding:16px 20px 24px}
+body.telephone .tel-note-question{font-family:var(--serif); font-style:italic; font-size:16px; color:var(--p70); margin:0 0 14px}
+body.telephone .tel-note-liste{display:grid; gap:10px}
+body.telephone .tel-sujet{cursor:pointer; text-align:left; width:100%; background:var(--paper); color:var(--ink); border:0; border-radius:16px; box-shadow:var(--pile); padding:14px 16px; display:block; min-height:44px}
+body.telephone .tel-sujet b{display:block; font-family:var(--serif); font-weight:700; font-size:17px; line-height:1.25; color:var(--ink)}
+body.telephone .tel-sujet span{display:block; font-family:var(--serif); font-size:14px; line-height:1.4; color:var(--ink-text-3); margin-top:4px}
+body.telephone .tel-sujet:hover, body.telephone .tel-sujet:focus-visible{box-shadow:var(--pile), inset 0 0 0 2px var(--official); outline:none}
+body.telephone .tel-note-pied{font-family:var(--serif); font-style:italic; font-size:14px; line-height:1.5; color:var(--p55); margin:18px 0 0; border-top:1px solid var(--p16); padding-top:14px}
+body.telephone .tel-retour{cursor:pointer; font-family:var(--mono); font-size:11.5px; letter-spacing:.06em; text-transform:uppercase; color:var(--paper); background:transparent; border:1px solid var(--p35); border-radius:9px; padding:10px 13px; margin-bottom:14px; min-height:44px}
+body.telephone .tel-retour:hover, body.telephone .tel-retour:focus-visible{border-color:var(--paper); outline:none}
+body.telephone .tel-note-fiche{background:var(--paper); color:var(--ink); border-radius:18px; box-shadow:var(--pile); padding:16px 16px 18px}
+body.telephone .tel-note-fiche .reperes{margin:0}
+body.telephone .tel-note-fiche .rep-theme{border:0; background:transparent; padding:0; margin:0}
+body.telephone .tel-note-fiche .rep-theme > summary{list-style:none; cursor:default; padding:0}
+body.telephone .tel-note-fiche .rep-theme > summary::-webkit-details-marker{display:none}
+body.telephone .tel-note-fiche .rep-theme > summary::marker{content:""}
+body.telephone .tel-note-fiche .rep-theme > summary::before{content:none !important}
+body.telephone .tel-note-fiche h4{font-family:var(--serif); font-weight:800; font-size:22px; line-height:1.15; color:var(--ink); margin:0}
+body.telephone .tel-note-fiche .res{display:block; font-family:var(--serif); font-style:italic; font-size:15px; line-height:1.45; color:var(--ink-text-3); margin-top:6px}
+body.telephone .tel-note-fiche .rep-corps{margin-top:14px; padding-top:14px; border-top:1px solid var(--rule)}
+body.telephone .tel-note-fiche .rep-liste li{display:block; padding:12px 0; border-bottom:1px solid var(--rule)}
+body.telephone .tel-note-fiche .rep-liste .v{display:block; font-family:var(--mono); font-weight:700; font-size:17px; color:var(--official); margin-bottom:5px}
+body.telephone .tel-note-fiche .rep-liste .l{display:block; font-family:var(--serif); font-size:15px; line-height:1.5; color:var(--ink-text-2)}
+body.telephone .tel-note-fiche .rep-liste cite{display:block; font-family:var(--mono); font-size:11px; line-height:1.5; color:var(--ink-text-4); margin-top:5px}
+body.telephone .tel-note-fiche .rep-retenir{margin-top:14px; padding-top:12px; border-top:2px solid var(--ink); font-family:var(--serif); font-size:15px; line-height:1.5; color:var(--ink)}
+body.telephone .tel-note-fiche .rep-retenir b{display:block; font-family:var(--mono); font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--alert); margin-bottom:5px; font-weight:400}
+body.telephone .tel-note-fiche .remise{font-family:var(--serif); font-style:italic; font-size:13.5px; line-height:1.45; color:var(--ink-text-3); margin:16px 0 0; border-top:1px solid var(--rule); padding-top:12px}
+body.telephone .tel-note-fiche .rep-serie-note{display:block; margin-top:8px}
 
 /* ---------- comprendre le jeu : la note demandée ------------------------ */
 body.telephone #comprendre{background:var(--ink); color:var(--paper); font-family:var(--serif)}
 body.telephone #comprendre .in{max-width:390px}
 body.telephone #comprendre .tete{background:var(--ink); border-bottom:1px solid var(--p12)}
 body.telephone #comprendre .tete h2{font-family:var(--serif); font-weight:800; font-size:22px; color:var(--paper)}
-body.telephone #comprendre h3{font-family:var(--mono); font-size:9.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--p45); font-weight:400}
-body.telephone #comprendre .chapo, body.telephone #comprendre p{color:var(--p70); font-size:14px}
+body.telephone #comprendre h3{font-family:var(--mono); font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--p45); font-weight:400}
+body.telephone #comprendre .chapo, body.telephone #comprendre p{color:var(--p70); font-size:15px; line-height:1.55}
 body.telephone #comprendre .rep-theme{background:var(--paper); color:var(--ink); border-radius:16px; border:0; padding:12px 15px; margin-bottom:10px}
-body.telephone #comprendre .rep-theme summary h4{font-family:var(--serif); font-weight:700; font-size:16px; color:var(--ink)}
+body.telephone #comprendre .rep-theme summary h4{font-family:var(--serif); font-weight:700; font-size:17px; color:var(--ink)}
 body.telephone #comprendre .rep-theme .res, body.telephone #comprendre .rep-theme p, body.telephone #comprendre .rep-liste .l{color:var(--ink-text-2)}
-body.telephone #comprendre .rep-sources li{color:var(--p70); font-size:12px}
+body.telephone #comprendre .rep-sources li{color:var(--p70); font-size:13px}
 body.telephone #comprendre .rep-sources a{color:var(--positive)}
 body.telephone #comprendre .btn.secondaire{width:auto; font-family:var(--mono); background:transparent; border-color:var(--p35); color:var(--paper)}
+
+/* ---------- ce qui se pose sur le noir ----------------------------------
+   Les composants hérités (options, encadrés, fil de presse) sont écrits pour
+   du papier. Plutôt que de les réécrire un par un, on redéfinit les jetons
+   de la feuille classique à l'intérieur des conteneurs posés sur le noir :
+   l'encre devient claire, le vert et le rouge passent à leurs variantes
+   lisibles sur fond sombre, les fonds s'effacent. */
+body.telephone .opts:not(.sur-papier) .opt,
+body.telephone .echappatoire, body.telephone .fil, body.telephone .fil .post,
+body.telephone .note-passation, body.telephone .tel-alerte, body.telephone .solde,
+body.telephone .tel-note-question, body.telephone .tel-note-pied{
+  --encre:var(--paper); --encre-2:var(--p70); --encre-3:var(--p55);
+  --ok:var(--positive); --alerte:var(--alert-soft); --rouge-rf:var(--alert-soft);
+  --bleu-rf:var(--positive); --bleu-rf-2:var(--positive); --or:#D9B545;
+  --ink-text-2:var(--p70); --ink-text-3:var(--p55); --ink-text-4:var(--p45);
+  --filet:var(--p16); --filet-fort:var(--p35); --fiche:transparent; --fiche-2:var(--p07);
+  --c-reussite:#7FA3D8; --c-egalite:#E8746A; --c-sante:#5EBF95; --c-paix:#E39A5A; --c-budget:#D9B545; --c-violet:#A98FE0;
+  color:var(--paper);
+}
+body.telephone .note-passation{background:var(--p07); border:1px solid var(--p16); border-radius:16px; padding:14px 16px; margin:0 0 12px; font-family:var(--serif); font-size:15px; line-height:1.5; box-shadow:none; color:var(--p70)}
+body.telephone .note-passation b{color:var(--paper)}
+body.telephone .opts:not(.sur-papier) .opt .risque-ligne,
+body.telephone .opts:not(.sur-papier) .opt > .det{color:var(--p70)}
+body.telephone .opts:not(.sur-papier) .opt > b{color:var(--paper)}
+/* La note de passation reste sur le papier quand elle y est : le renvoi de
+   jetons ci-dessus ne vaut que pour ce qui est posé sur le noir. */
+body.telephone .doc .note-passation{background:transparent; border:0; border-left:3px solid var(--rule); border-radius:0; padding:2px 0 2px 14px; margin:12px 0 0; color:var(--ink-text-2);
+  --encre:var(--ink); --encre-2:var(--ink-text-2); --encre-3:var(--ink-text-3);
+  --ok:#1F6E4E; --alerte:var(--alert); --rouge-rf:var(--alert); --bleu-rf:var(--official); --or:var(--or-sombre);
+  --ink-text-2:#3E3A33; --ink-text-3:#615C55; --ink-text-4:#5F5A52;
+  --filet:var(--rule); --filet-fort:var(--paper-shade-1); --fiche-2:#EBE7DC}
+body.telephone .doc .note-passation b{color:var(--ink)}
+body.telephone .doc .note-passation .ps{color:var(--ink-text-3); font-style:italic}
+
+/* ---------- derniers points relevés à l'audit --------------------------- */
+body.telephone .etiq{font-size:12px !important; letter-spacing:.04em; color:var(--ink-text-2)}
+body.telephone .argumentaire .titre-d, body.telephone .doc .titre-d{font-size:11.5px; letter-spacing:.14em}
+body.telephone .soutien-synd b, body.telephone .argumentaire b{color:var(--official)}
+body.telephone .budget-legende, body.telephone .budget-legende b{font-size:12px}
+body.telephone .plateau-num, body.telephone .doc .num-q{font-size:11.5px}
+body.telephone .accueil .tampon div:not(.rf){font-size:11px !important}
+body.telephone .rep-plot .grad b{font-size:10.5px}
+body.telephone .rep-annees span{font-size:10.5px}
+body.telephone .rep-valeurs span{font-size:11px}
+body.telephone .revele, body.telephone .annee-chiffres .t .d{font-weight:600}
 
 /* ---------- graphiques hérités : en palette papier ---------------------- */
 body.telephone .rep-plot .grad{background:var(--rule)}
@@ -919,8 +1031,8 @@ body.telephone .rep-cols .bar{background:var(--official)}
 body.telephone .rep-cols .col.prev .bar{background:repeating-linear-gradient(45deg,var(--official),var(--official) 3px,transparent 3px,transparent 6px); border-color:var(--official)}
 body.telephone .rep-valeurs em{color:var(--alert)}
 body.telephone .budget-barre{background:var(--rule)}
-body.telephone table.bilan th{font-family:var(--mono); font-size:8.5px; letter-spacing:.12em; border-bottom-color:var(--ink)}
-body.telephone table.bilan td{font-size:13px}
+body.telephone table.bilan th{font-family:var(--mono); font-size:10.5px; letter-spacing:.12em; border-bottom-color:var(--ink)}
+body.telephone table.bilan td{font-size:14px}
 
 /* ---------- squelettes et file vide ------------------------------------- */
 body.telephone .tel-vide{text-align:center; font-family:var(--serif); font-style:italic; font-size:15px; color:var(--p55); padding:36px 10px}
@@ -8101,14 +8213,73 @@ document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !$('#com
 
   const scene = $t('#scene'), suite = $t('#suite');
   pile.append(pileTete, scene);
-  const noteBtn = mk('button', 'btn-borde', 'Demander une note');
+  const noteBtn = mk('button', 'btn-borde', 'Demander une note<br>à la DGESCO');
   noteBtn.setAttribute('aria-haspopup', 'dialog');
-  noteBtn.onclick = () => { if (typeof ouvrirComprendre === 'function') ouvrirComprendre(); };
+  noteBtn.onclick = () => ouvrirNote();
   pied.append(suite, noteBtn);
   $t('#suite-ctx', suite).classList.add('contexte');
   ecran.append(statut, horloge, curseurs, alerte, pile, pied);
   coque.appendChild(ecran); fond.appendChild(coque);
   document.body.insertBefore(fond, document.body.firstChild);
+
+  /* --- la note de la DGESCO ------------------------------------------------
+     Deux temps : on choisit un sujet, la note arrive. C'est la seule façon de
+     rendre les onze fiches de référence consultables sur un écran de 390 px —
+     et c'est aussi le vrai fonctionnement d'un cabinet : on ne lit pas la
+     documentation, on la demande. */
+  const note = mk('div', 'tel-note');
+  note.hidden = true;
+  note.setAttribute('role', 'dialog'); note.setAttribute('aria-modal', 'true');
+  note.setAttribute('aria-label', 'Demander une note à la DGESCO');
+  note.innerHTML = '<div class="tel-note-tete">'
+    + '<div><div class="src">Direction générale de l’enseignement scolaire</div>'
+    + '<div class="titre">Note à la DGESCO</div></div>'
+    + '<button class="fermer" type="button">Fermer</button></div>'
+    + '<div class="tel-note-corps"></div>';
+  ecran.appendChild(note);
+  const noteCorps = $t('.tel-note-corps', note);
+  $t('.fermer', note).onclick = () => fermerNote();
+
+  function listeSujets() {
+    noteCorps.innerHTML = '';
+    noteCorps.appendChild(mk('p', 'tel-note-question', 'Sur quel sujet ?'));
+    const liste = mk('div', 'tel-note-liste');
+    (typeof REPERES !== 'undefined' ? REPERES : []).forEach((r) => {
+      const b2 = mk('button', 'tel-sujet', `<b>${r.titre}</b><span>${r.resume}</span>`);
+      b2.type = 'button';
+      b2.onclick = () => afficherNote(r.cle);
+      liste.appendChild(b2);
+    });
+    noteCorps.appendChild(liste);
+    noteCorps.appendChild(mk('p', 'tel-note-pied', 'Onze notes tenues à jour par la direction générale. Elles sont sourcées, elles sont exactes, et personne ne les lit jamais.'));
+    noteCorps.scrollTop = 0;
+    const p1 = $t('.tel-sujet', noteCorps); if (p1) p1.focus();
+  }
+  function afficherNote(cle) {
+    noteCorps.innerHTML = '';
+    const retour = mk('button', 'tel-retour', '← Choisir un autre sujet');
+    retour.type = 'button'; retour.onclick = listeSujets;
+    noteCorps.appendChild(retour);
+    const fiche = mk('div', 'tel-note-fiche');
+    if (typeof blocReperes === 'function') fiche.appendChild(blocReperes([cle], [cle]));
+    fiche.appendChild(mk('p', 'remise', 'Note remise en trois jours. Vous êtes la première personne à l’ouvrir.'));
+    noteCorps.appendChild(fiche);
+    noteCorps.scrollTop = 0;
+    retour.focus();
+  }
+  let rendreLeFocus = null;
+  function ouvrirNote() {
+    rendreLeFocus = document.activeElement;
+    note.hidden = false;
+    noteBtn.setAttribute('aria-expanded', 'true');
+    listeSujets();
+  }
+  function fermerNote() {
+    note.hidden = true;
+    noteBtn.setAttribute('aria-expanded', 'false');
+    if (rendreLeFocus && rendreLeFocus.focus) rendreLeFocus.focus();
+  }
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !note.hidden) { e.stopPropagation(); fermerNote(); } }, true);
 
   /* --- l'horloge : lue dans le calendrier classique ----------------------- */
   function majHorloge() {
@@ -8238,22 +8409,45 @@ document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !$('#com
   }
 
   /* --- habiller chaque écran ---------------------------------------------- */
+  let dernierEcran = null;
   function habillerScene() {
-    pile.scrollTop = 0;
+    /* On ne remonte en haut qu'au changement d'écran, pas à chaque ajout. */
+    const marque = scene.firstElementChild;
+    if (marque !== dernierEcran) {
+      dernierEcran = marque; pile.scrollTop = 0;
+      pied.querySelectorAll('.atelier-pied').forEach((n) => n.remove());
+    }
     const type = (typeof ETAT !== 'undefined' && ETAT.typeEcran) || '';
 
-    /* les blocs de choix : deux → gauche/droite balayables ; sinon une pile */
+    /* Les blocs de choix d'une décision sortent de la fiche pour se poser sur
+       le noir : c'est la charte, et surtout c'est ce qui les rend lisibles —
+       à l'intérieur du papier, le texte clair des blocs devenait invisible.
+       Les questions d'entretien et de plateau, elles, restent dans le papier
+       (un formulaire), et prennent la variante « papier ». */
+    scene.querySelectorAll('.opts').forEach((g) => {
+      if (g.dataset.place) return; g.dataset.place = '1';
+      if (g.closest('.entretien-q, .plateau-q, .flechage-liste')) { g.classList.add('sur-papier'); return; }
+      const doc = g.closest('.doc');
+      if (!doc) return;
+      let apres = doc, n = g;
+      while (n && n.parentElement !== doc) n = n.parentElement;
+      const suiteDoc = [];
+      for (let q = n; q; q = q.nextElementSibling) suiteDoc.push(q);
+      for (const x of suiteDoc) { apres.after(x); apres = x; }
+    });
     scene.querySelectorAll('.opts').forEach((g) => {
       if (g.dataset.tel) return; g.dataset.tel = '1';
       const opts = [...g.querySelectorAll(':scope > .opt')];
-      const deux = opts.length === 2 && !g.closest('.entretien-q, .plateau-q, .flechage-liste');
+      const deux = opts.length === 2 && !g.classList.contains('sur-papier');
       g.classList.toggle('deux', deux);
-      opts.forEach((o, i) => {
-        const s = mk('span', 'surtitre', deux ? (i === 0 ? '← Glisser' : 'Glisser →') : `Choix ${i + 1}`);
-        o.insertBefore(s, o.firstChild);
-      });
+      if (!g.classList.contains('sur-papier')) {
+        opts.forEach((o, i) => {
+          const s = mk('span', 'surtitre', deux ? (i === 0 ? '← Glisser' : 'Glisser →') : `Choix ${i + 1}`);
+          o.insertBefore(s, o.firstChild);
+        });
+      }
       if (deux) {
-        const doc = g.closest('.doc') || g.parentElement;
+        const doc = g.previousElementSibling && g.previousElementSibling.classList.contains('doc') ? g.previousElementSibling : g.parentElement;
         doc.tabIndex = doc.tabIndex >= 0 ? doc.tabIndex : -1;
         glisser(doc, {
           gauche: () => opts[0].click(), droite: () => opts[1].click(),
@@ -8286,8 +8480,13 @@ document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !$('#com
           gauche: () => { if (c.classList.contains('sel')) retenir(); else c.classList.add('ecartee'); majPileTete(); },
         });
       });
-      const actions = $t('.actions', scene);
-      if (actions && !actions.classList.contains('atelier-pied')) actions.classList.add('atelier-pied');
+      /* Le bouton de validation rejoint la barre du bas : l'action principale
+         est toujours au même endroit, et elle ne recouvre plus le solde. */
+      const actions = $t('#scene .actions');
+      if (actions && !actions.classList.contains('atelier-pied')) {
+        actions.classList.add('atelier-pied');
+        pied.insertBefore(actions, noteBtn);
+      }
       pileTete.hidden = false; majPileTete();
     } else { pileTete.hidden = true; pile.insertBefore(pileTete, scene); }
 
@@ -8307,8 +8506,14 @@ document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !$('#com
     }
   }
 
-  /* --- observation : le thème suit ce que le jeu affiche ------------------ */
-  new MutationObserver(habillerScene).observe(scene, { childList: true });
+  /* --- observation : le thème suit ce que le jeu affiche ------------------
+     `subtree` est nécessaire : le plateau de 20 heures ajoute ses questions
+     une par une DANS un bloc existant. habillerScene est idempotente (chaque
+     élément traité porte une marque), et l'appel est groupé sur une frame
+     pour ne pas se déclencher à chaque nœud d'une même vague. */
+  let attendu = false;
+  const habillerBientot = () => { if (attendu) return; attendu = true; requestAnimationFrame(() => { attendu = false; habillerScene(); }); };
+  new MutationObserver(habillerBientot).observe(scene, { childList: true, subtree: true });
   const hud = $t('#hud'), frise = $t('#frise');
   if (hud) new MutationObserver(majCurseurs).observe(hud, { childList: true, subtree: true, attributes: true, attributeFilter: ['hidden'] });
   if (frise) new MutationObserver(majHorloge).observe(frise, { childList: true, subtree: true, attributes: true, attributeFilter: ['hidden'] });
