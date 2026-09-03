@@ -646,42 +646,63 @@ table.bilan tr.cache td{background:var(--fiche-2)}
    icône. Sur le noir, pas de gris : le papier en opacité variable.
    ============================================================ */
 body.telephone{
-  --ink:#14120E; --paper:#F4F1EA; --paper-shade-1:#C9C2B0; --paper-shade-2:#A79F8D;
-  --official:#1B3A6B; --official-line:#2E5BA8;
-  --or-sombre:#7A5D00;
-  --alert:#C8102E; --alert-soft:#E8746A; --positive:#7FA3D8; --on-alert:#F7EFE9;
-  --ink-text-2:#3E3A33; --ink-text-3:#615C55; --ink-text-4:#5F5A52; --rule:#DED8C8;
-  --p70:rgba(244,241,234,.82); --p55:rgba(244,241,234,.7); --p45:rgba(244,241,234,.6);
-  --p35:rgba(244,241,234,.52); --p16:rgba(244,241,234,.22); --p14:rgba(244,241,234,.2);
-  --p12:rgba(244,241,234,.12); --p08:rgba(244,241,234,.08); --p07:rgba(244,241,234,.07); --p06:rgba(244,241,234,.06);
-  /* La pile de fiches, en version douce : deux liserés fins qui suggèrent
-     l'épaisseur, plus une ombre portée diffuse. La charte empilait deux
-     marches de 8 px — net en maquette, lourd sur un vrai écran. */
-  --pile:0 2px 0 -1px var(--paper-shade-1), 0 5px 0 -3px var(--paper-shade-2),
-         0 1px 2px rgba(5,7,10,.3), 0 14px 30px -12px rgba(5,7,10,.55);
-  --pile-sombre:0 1px 2px rgba(5,7,10,.35), 0 14px 30px -12px rgba(5,7,10,.6);
-  --liseré:inset 0 1px 0 rgba(255,255,255,.55);
-  --liseré-sombre:inset 0 1px 0 rgba(244,241,234,.07);
+  /* ---- fond sombre -----------------------------------------------------
+     Un noir FROID. Le noir chaud de la charte (var(--ink)) virait au brun dès
+     qu'on posait du crème dessus : c'est ce qui salissait tout l'écran. */
+  --ink:#0F1116; --ink-2:#161922; --ink-3:#1F232D;
+  --c1:#E9EBF0;
+  --p70:rgba(233,235,240,.80); --p55:rgba(233,235,240,.66); --p45:rgba(233,235,240,.56);
+  --p35:rgba(233,235,240,.52); --p16:rgba(233,235,240,.17); --p14:rgba(233,235,240,.14);
+  --p12:rgba(233,235,240,.11); --p08:rgba(233,235,240,.075); --p07:rgba(233,235,240,.06); --p06:rgba(233,235,240,.05);
+
+  /* ---- papier ----------------------------------------------------------
+     Un blanc chaud à peine teinté, pas un crème. Les documents doivent
+     avoir l'air de papier neuf, pas de vieux dossier jauni. */
+  --paper:#FBF9F5; --paper-2:#F2EFE8; --rule:#E3DED4;
+  --paper-shade-1:#DCD6CA; --paper-shade-2:#C4BDAF;
+  --t1:#171A21; --t2:#454A55; --t3:#5E6470;
+
+  /* ---- accents ---------------------------------------------------------
+     Deux seulement, et chacun a un sens : le bleu de la République pour ce
+     qui engage (action, institution), le rouge pour ce qui alerte. Chaque
+     accent a sa version sombre (sur papier) et sa version claire (sur noir),
+     toutes deux vérifiées au-dessus de 4,5:1. */
+  --bleu:#2B4B8F; --bleu-vif:#3C63B4; --bleu-clair:#8FB0EC;
+  --rouge:#B3222F; --rouge-clair:#F09A94;
+  --vert:#1C7358; --vert-clair:#6FCFAE;
+
+  /* ---- les cinq compteurs ----------------------------------------------
+     Une vraie palette catégorielle — bleu, rose, sarcelle, ambre, violet —
+     régulièrement espacée en teinte, et déclinée pour les deux fonds. */
+  --k1:#2F5FA8; --k2:#B03A6B; --k3:#1C7358; --k4:#95610F; --k5:#5B4BA8;
+  --k1c:#8FB0EC; --k2c:#F291B7; --k3c:#6FCFAE; --k4c:#E5AE55; --k5c:#AFA2EC;
+
+  --pile:0 1px 0 var(--paper-shade-1), 0 4px 0 -2px var(--paper-shade-2),
+         0 2px 4px rgba(0,0,0,.22), 0 18px 40px -16px rgba(0,0,0,.5);
+  --pile-sombre:0 2px 4px rgba(0,0,0,.25), 0 18px 40px -16px rgba(0,0,0,.55);
+  --liseré:inset 0 1px 0 rgba(255,255,255,.7);
+  --liseré-sombre:inset 0 1px 0 rgba(233,235,240,.06);
   --ressort:cubic-bezier(.22,1,.36,1);
   --serif:"Spectral",Georgia,"Times New Roman",serif;
   --mono:"JetBrains Mono","IBM Plex Mono",ui-monospace,Menlo,monospace;
 
-  /* On rejoue les jetons de la feuille classique pour que ses composants
-     (graphiques, tableaux, bilan) tombent dans la bonne palette sans être
-     réécrits un par un. Ici la « fiche » est le papier crème. */
-  --bleu-rf:var(--official); --bleu-rf-2:var(--official-line);
-  --papier:var(--ink); --fiche:var(--paper); --fiche-2:#EBE7DC;
+  /* ---- alias hérités ---------------------------------------------------
+     La feuille classique et le thème s'appuient encore sur ces noms ; on les
+     fait pointer vers la nouvelle palette plutôt que de tout renommer. */
+  --official:var(--bleu); --official-line:var(--bleu-vif);
+  --alert:var(--rouge); --alert-soft:var(--rouge-clair); --positive:var(--bleu-clair); --on-alert:#FFF3F1;
+  --ink-text-2:var(--t2); --ink-text-3:var(--t3); --ink-text-4:var(--t3);
+  --or-sombre:#95610F;
+  --bleu-rf:var(--bleu); --bleu-rf-2:var(--bleu-vif);
+  --papier:var(--ink); --fiche:var(--paper); --fiche-2:var(--paper-2);
   --papier-creme:var(--paper); --papier-creme-bord:var(--rule);
-  --encre:var(--ink); --encre-2:var(--ink-text-2); --encre-3:var(--ink-text-3);
-  --filet:var(--rule); --filet-fort:#C9C2B0; --rouge-rf:var(--alert); --or:var(--or-sombre);
-  /* Assombries pour le papier : les teintes de la charte, posées sur le
-     crème, tombaient à 2,2:1. Elles servent aussi de puces et de jauges
-     sans texte à côté, donc elles doivent se voir. */
-  --c-reussite:#2C5FA6; --c-egalite:#A63562; --c-sante:#1F6E4E; --c-paix:#9A4A18; --c-budget:#7A5D00; --c-violet:#5F4AA8;
-  --ok:#1F6E4E; --alerte:var(--alert); --ombre:none;
+  --encre:var(--t1); --encre-2:var(--t2); --encre-3:var(--t3);
+  --filet:var(--rule); --filet-fort:var(--paper-shade-1); --rouge-rf:var(--rouge); --or:var(--k4);
+  --c-reussite:var(--k1); --c-egalite:var(--k2); --c-sante:var(--k3); --c-paix:var(--k4); --c-budget:var(--k4); --c-violet:var(--k5);
+  --ok:var(--vert); --alerte:var(--rouge); --ombre:none;
   --fond-illus:var(--paper);
-  background:#E6E4DF; color:var(--ink); font-family:var(--serif); margin:0;
-  color-scheme:light;
+  background:var(--ink); color:var(--t1); font-family:var(--serif); margin:0;
+  color-scheme:dark;
 }
 body.telephone *{box-sizing:border-box}
 
@@ -692,10 +713,10 @@ body.telephone *{box-sizing:border-box}
    qui disparaît. */
 body.telephone{--colonne:min(640px, 100%); --colonne-large:min(1040px, 100%)}
 body.telephone .tel-page{min-height:100vh; min-height:100dvh; display:flex; flex-direction:column;
-  background:radial-gradient(140% 55% at 50% 0%, #251F16 0%, var(--ink) 60%) fixed, var(--ink)}
+  background:linear-gradient(180deg, var(--ink-2) 0%, var(--ink) 340px) fixed, var(--ink)}
 
 /* barre haute : où l'on est dans le mandat, et les curseurs */
-body.telephone .tel-barre{position:sticky; top:0; z-index:20; background:rgba(20,18,14,.86);
+body.telephone .tel-barre{position:sticky; top:0; z-index:20; background:rgba(15,17,22,.82);
   backdrop-filter:saturate(1.4) blur(14px); -webkit-backdrop-filter:saturate(1.4) blur(14px);
   border-bottom:1px solid var(--p12)}
 body.telephone .tel-barre[hidden]{display:none}
@@ -705,9 +726,9 @@ body.telephone .quand{display:flex; align-items:baseline; gap:10px; flex:0 0 aut
 body.telephone .quand .mois{font-family:var(--serif); font-weight:700; font-size:22px; line-height:1.1; letter-spacing:-.01em; color:var(--paper)}
 body.telephone .quand .an{font-family:var(--mono); font-size:11.5px; letter-spacing:.06em; color:var(--p45); font-variant-numeric:tabular-nums}
 body.telephone .quand .mandat{display:flex; gap:4px; width:64px; align-self:center}
-body.telephone .quand .mandat i{flex:1; height:4px; border-radius:999px; background:rgba(244,241,234,.16); transition:background .4s ease}
+body.telephone .quand .mandat i{flex:1; height:4px; border-radius:999px; background:rgba(233,235,240,.16); transition:background .4s ease}
 body.telephone .quand .mandat i.passe{background:var(--p35)}
-body.telephone .quand .mandat i.ici{background:var(--paper); box-shadow:0 0 8px rgba(244,241,234,.4)}
+body.telephone .quand .mandat i.ici{background:var(--paper); box-shadow:0 0 8px rgba(233,235,240,.4)}
 
 /* écran d'ouverture : le grand titre, avant la première décision */
 body.telephone .tel-horloge{text-align:center; padding:6vh 10px 4vh}
@@ -728,7 +749,7 @@ body.telephone #scene > .annee-chiffres, body.telephone #scene > .repli-atelier,
 body.telephone .tel-pile-tete{max-width:var(--colonne-large)}
 body.telephone .tel-pile-tete{display:flex; justify-content:space-between; align-items:baseline; margin:0 auto 10px}
 body.telephone .tel-pile-tete .g{font-family:var(--mono); font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:var(--p45)}
-body.telephone .tel-pile-tete .d{font-family:var(--mono); font-size:11px; color:var(--p35)}
+body.telephone .tel-pile-tete .d{font-family:var(--mono); font-size:11px; color:var(--p45)}
 
 /* l'alerte du cabinet, en tête de contenu */
 body.telephone .tel-alerte{background:var(--p08); border:1px solid var(--p16); border-radius:18px; padding:12px 15px; margin:0 auto 16px; box-shadow:var(--liseré-sombre)}
@@ -747,7 +768,7 @@ body.telephone .tel-curseurs .v .delta{font-size:11.5px; font-weight:400; color:
 body.telephone .tel-curseurs .v .delta.visible{opacity:1}
 body.telephone .tel-curseurs .v .delta.up{color:var(--positive)} body.telephone .tel-curseurs .v .delta.down{color:var(--alert-soft)}
 body.telephone .tel-curseurs .l{font-family:var(--mono); font-size:10.5px; color:var(--p45); margin-top:3px; white-space:nowrap}
-body.telephone .tel-curseurs .jauge-t{height:3px; border-radius:999px; background:rgba(244,241,234,.2); margin-top:5px; overflow:hidden}
+body.telephone .tel-curseurs .jauge-t{height:3px; border-radius:999px; background:rgba(233,235,240,.2); margin-top:5px; overflow:hidden}
 body.telephone .tel-curseurs .jauge-t i{display:block; height:100%; border-radius:999px; transition:width .6s var(--ressort)}
 body.telephone .tel-curseurs .col.large .v{color:var(--alert-soft)}
 body.telephone .tel-curseurs .col.large .v.bon{color:var(--paper)}
@@ -755,7 +776,7 @@ body.telephone .tel-curseurs .col.large .v.bon{color:var(--paper)}
 body.telephone .tel-curseurs .v.pulse{animation:tel-pulse .5s ease-out}
 
 /* barre basse : le contexte, l'action, la note */
-body.telephone .tel-pied{position:sticky; bottom:0; z-index:20; background:rgba(20,18,14,.9);
+body.telephone .tel-pied{position:sticky; bottom:0; z-index:20; background:rgba(15,17,22,.88);
   backdrop-filter:saturate(1.4) blur(14px); -webkit-backdrop-filter:saturate(1.4) blur(14px);
   border-top:1px solid var(--p12)}
 body.telephone .tel-pied .in{max-width:var(--colonne-large); margin:0 auto; padding:12px 20px;
@@ -804,9 +825,9 @@ body.telephone .decode, body.telephone .fil .post, body.telephone .accueil, body
 body.telephone .doc.papier{background:var(--paper)}
 body.telephone .doc > * + *{margin-top:12px}
 body.telephone .entete-doc{display:flex; justify-content:space-between; gap:12px; align-items:flex-start; border:0; padding:0; margin:0 0 4px}
-body.telephone .entete-doc .type{font-family:var(--mono); font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:var(--ink-text-4); font-weight:400; line-height:1.4}
+body.telephone .entete-doc .type{font-family:var(--mono); font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--t3); font-weight:700; line-height:1.4}
 body.telephone .entete-doc .type .picto{display:none}
-body.telephone .entete-doc .date{font-family:var(--mono); font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-text-4); white-space:nowrap}
+body.telephone .entete-doc .date{font-family:var(--mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--t3); white-space:nowrap; opacity:.85}
 body.telephone .doc h2, body.telephone .journal h2.une{font-family:var(--serif); font-weight:800; font-size:25px; line-height:1.1; letter-spacing:-.015em; color:var(--ink); margin:10px 0 0; max-width:none; text-wrap:pretty}
 body.telephone .doc h2:focus, body.telephone h1:focus{outline:none}
 body.telephone .doc p, body.telephone .chapo{font-family:var(--serif); font-size:16px; line-height:1.55; color:var(--ink-text-2); max-width:none}
@@ -856,7 +877,7 @@ body.telephone .opt .det{font-family:var(--serif); font-size:14.5px; line-height
 body.telephone .opt .det.mot{font-style:italic; color:var(--p55)}
 body.telephone .opt .chiffres{display:flex; flex-wrap:wrap; gap:5px; margin-top:10px; padding:0; border:0}
 body.telephone .opts.deux .opt:last-child .chiffres{justify-content:flex-end}
-body.telephone .opt .chiffres span, body.telephone .pastille{font-family:var(--mono); font-size:11.5px; border-radius:20px; padding:3px 6px; border:1px solid rgba(244,241,234,.3); color:rgba(244,241,234,.6); background:transparent; line-height:1.2}
+body.telephone .opt .chiffres span, body.telephone .pastille{font-family:var(--mono); font-size:11.5px; border-radius:20px; padding:3px 6px; border:1px solid rgba(233,235,240,.3); color:rgba(233,235,240,.6); background:transparent; line-height:1.2}
 body.telephone .opt .chiffres .neg, body.telephone .pastille.neg{background:var(--alert); color:var(--on-alert); border-color:var(--alert); padding:3px 7px}
 body.telephone .opt .chiffres .pos, body.telephone .pastille.pos{background:var(--paper); color:var(--ink); border-color:var(--paper); padding:3px 7px}
 body.telephone .opt:hover, body.telephone .opt:focus-visible{border-color:var(--alert-soft); background:var(--p08); outline:none}
@@ -870,7 +891,7 @@ body.telephone .echappatoire{margin-top:22px; background:var(--p06); border-radi
    Encre sombre sur blanc, filet officiel à gauche — jamais de texte clair
    sur le crème. */
 body.telephone .opts.sur-papier{gap:8px; margin-top:14px}
-body.telephone .opts.sur-papier .opt{background:#FFFDF8; border:1px solid var(--rule); border-left:4px solid var(--filet-fort); border-radius:10px; color:var(--ink); padding:12px 14px}
+body.telephone .opts.sur-papier .opt{background:#FFFFFF; border:1px solid var(--rule); border-left:4px solid var(--filet-fort); border-radius:10px; color:var(--ink); padding:12px 14px}
 body.telephone .opts.sur-papier .opt b{color:var(--ink); font-size:16px}
 body.telephone .opts.sur-papier .opt .det{color:var(--ink-text-2); font-size:14px}
 body.telephone .opts.sur-papier .opt .det.mot{color:var(--ink-text-3)}
@@ -889,11 +910,11 @@ body.telephone .entretien-q .indice, body.telephone .plateau-q .indice, body.tel
 /* ---------- l'atelier : la pile de notifications ------------------------ */
 body.telephone .grille-cartes{display:flex; flex-direction:column; gap:10px; padding-bottom:8px}
 body.telephone .solde + .tel-pile-tete{margin-top:4px}
-body.telephone .carte{background:var(--paper); color:var(--ink); border:0; border-radius:18px; padding:14px 15px; box-shadow:var(--pile), var(--liseré); position:relative; touch-action:pan-y; will-change:transform; transition:transform .26s cubic-bezier(.22,1,.36,1), opacity .2s}
+body.telephone .carte{background:var(--paper); color:var(--t1); border:0; border-top:4px solid currentColor; border-radius:18px; padding:14px 15px; box-shadow:var(--pile), var(--liseré); position:relative; touch-action:pan-y; will-change:transform; transition:transform .26s cubic-bezier(.22,1,.36,1), opacity .2s}
 body.telephone .carte.glisse{transition:none}
 body.telephone .carte.sortie{transition:transform .22s ease-out, opacity .08s ease-out .14s; opacity:0}
 body.telephone .carte.ecartee{display:none}
-body.telephone .carte .famille{font-family:var(--mono); font-size:11px; letter-spacing:.16em; text-transform:uppercase; font-weight:400; color:var(--alert) !important; padding-right:40px}
+body.telephone .carte .famille{font-family:var(--mono); font-size:11px; letter-spacing:.14em; text-transform:uppercase; font-weight:700; padding-right:40px}
 body.telephone .carte h3{font-family:var(--serif); font-weight:700; font-size:17px; line-height:1.2; color:var(--ink); padding-right:0}
 body.telephone .carte .nouveau-dossier{font-family:var(--mono); font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; background:var(--official); color:var(--paper); margin-left:8px; font-weight:400; padding:2px 7px; border-radius:20px; white-space:nowrap}
 body.telephone .carte .plie, body.telephone .carte .porteurs{font-family:var(--serif); font-size:14.5px; color:var(--ink-text-3); line-height:1.4}
@@ -911,7 +932,7 @@ body.telephone .carte .barre-actions{gap:8px; margin-top:8px}
 body.telephone .carte .btn-mini{font-family:var(--mono); font-size:11.5px; letter-spacing:.08em; text-transform:uppercase; border:1px solid var(--rule); background:transparent; color:var(--ink-text-2); border-radius:9px; padding:8px 11px; flex:1; text-align:center}
 body.telephone .carte .btn-retenir{background:var(--official); border-color:var(--official); color:var(--paper); font-weight:700}
 body.telephone .carte.sel .btn-retenir{background:transparent; color:var(--alert); border-color:var(--alert)}
-body.telephone .carte .comprendre{background:#EBE7DC; border-left:3px solid var(--official); border-radius:0 10px 10px 0; font-size:14px; line-height:1.5; padding:12px 14px}
+body.telephone .carte .comprendre{background:var(--paper-2); border-left:3px solid var(--official); border-radius:0 10px 10px 0; font-size:14px; line-height:1.5; padding:12px 14px}
 body.telephone .carte .comprendre .titre-d{font-family:var(--mono); font-size:11px; letter-spacing:.16em; color:var(--official)}
 body.telephone .carte .comprendre .idee .titre-d{color:var(--alert)}
 body.telephone .carte .curseurs-carte label{font-family:var(--mono); font-size:11px; letter-spacing:.14em}
@@ -927,7 +948,7 @@ body.telephone .solde{position:sticky; top:78px; z-index:10; margin:0 auto 12px;
 body.telephone .solde .tuile .l{font-family:var(--mono); font-size:10.5px; letter-spacing:.08em; color:var(--p45); font-weight:400}
 body.telephone .solde .tuile .v{font-family:var(--mono); font-size:20px; font-weight:700; color:var(--paper)}
 body.telephone .solde .tuile .v small{color:var(--p45); font-size:12px}
-body.telephone .solde .tuile .rail{background:rgba(244,241,234,.2)} body.telephone .solde .tuile .rail i{background:var(--positive)}
+body.telephone .solde .tuile .rail{background:rgba(233,235,240,.2)} body.telephone .solde .tuile .rail i{background:var(--positive)}
 body.telephone .solde .tuile.neg .v, body.telephone .solde .tuile.neg .l{color:var(--alert-soft)} body.telephone .solde .tuile.neg .rail i{background:var(--alert-soft)}
 body.telephone .solde .points i{border-color:var(--p35)} body.telephone .solde .points i.on{background:var(--paper); border-color:var(--paper)}
 body.telephone .solde .mineur{font-family:var(--mono); font-size:11px; letter-spacing:.04em; color:var(--p45); margin-left:0; flex-basis:100%}
@@ -954,7 +975,7 @@ body.telephone .journal .breve .sig{font-family:var(--mono); font-size:11px; let
 body.telephone .fil{margin:0; gap:10px; display:grid}
 body.telephone .fil .post{background:var(--p08); color:var(--paper); border:1px solid var(--p16); box-shadow:none; border-radius:16px; padding:12px 15px; margin:0; font-family:var(--serif); font-size:15px}
 body.telephone .post .auteur{font-family:var(--mono); font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--p45); font-weight:400}
-body.telephone .post .pseudo{font-family:var(--mono); font-size:11px; color:var(--p35)}
+body.telephone .post .pseudo{font-family:var(--mono); font-size:11px; color:var(--p45)}
 body.telephone .post p{color:var(--paper); line-height:1.35; margin-top:4px}
 body.telephone .annee-chiffres .titre-d, body.telephone .scelles .titre-d, body.telephone .decode .titre-d{font-family:var(--mono); font-size:11px; letter-spacing:.16em; color:var(--ink-text-4); font-weight:400}
 body.telephone .annee-chiffres .tuiles{grid-template-columns:repeat(3,1fr); gap:8px}
@@ -980,66 +1001,19 @@ body.telephone .accueil .echelle{font-family:var(--mono); font-size:11.5px; lett
 body.telephone .accueil .chute{font-family:var(--serif); font-style:italic; font-size:15px; color:var(--ink-text-3); margin:0 0 18px; max-width:none}
 body.telephone .accueil .avertissement{font-family:var(--serif); font-size:13px; line-height:1.5; color:var(--ink-text-3); max-width:none; margin-top:18px; border-top:1px solid var(--rule); padding-top:12px; text-align:left}
 
-/* ---------- les quatre variantes de notification ------------------------
-   La charte prévoit quatre expéditeurs et quatre couleurs. Les fiches qui
-   portent un graphique restent sur le papier (une courbe sur fond rouge est
-   illisible) ; les autres prennent la couleur de qui écrit. Dans chaque
-   variante, les jetons de la feuille classique sont renvoyés pour que les
-   composants hérités suivent sans être réécrits. */
-body.telephone .doc.tel-matignon, body.telephone .doc.tel-institution, body.telephone .doc.tel-presse{
-  --encre:var(--paper); --encre-2:var(--p70); --encre-3:var(--p55);
-  --ink-text-2:var(--p70); --ink-text-3:var(--p55); --ink-text-4:var(--p45);
-  --filet:rgba(244,241,234,.24); --filet-fort:rgba(244,241,234,.4);
-  --fiche:transparent; --fiche-2:rgba(0,0,0,.14); --rule:rgba(244,241,234,.24);
-  --ok:#9FE0BE; --alerte:#FFC9C2; --rouge-rf:#FFC9C2; --bleu-rf:var(--paper); --or:#F0D48A;
-  --fond-illus:transparent;
-  color:var(--paper);
-}
-body.telephone .doc.tel-matignon .entete-doc .type, body.telephone .doc.tel-institution .entete-doc .type,
-body.telephone .doc.tel-presse .entete-doc .type{color:var(--paper); opacity:.78}
-body.telephone .doc.tel-matignon .entete-doc .date, body.telephone .doc.tel-institution .entete-doc .date,
-body.telephone .doc.tel-presse .entete-doc .date{color:var(--paper); opacity:.6}
-body.telephone .doc.tel-matignon h2, body.telephone .doc.tel-institution h2, body.telephone .doc.tel-presse h2{color:var(--paper)}
-body.telephone .doc.tel-matignon p, body.telephone .doc.tel-institution p, body.telephone .doc.tel-presse p,
-body.telephone .doc.tel-matignon .chapo, body.telephone .doc.tel-institution .chapo, body.telephone .doc.tel-presse .chapo{color:var(--p70)}
-body.telephone .doc.tel-matignon b, body.telephone .doc.tel-institution b, body.telephone .doc.tel-presse b{color:var(--paper)}
-body.telephone .doc.tel-matignon a, body.telephone .doc.tel-institution a, body.telephone .doc.tel-presse a,
-body.telephone .doc.tel-matignon cite a, body.telephone .doc.tel-institution cite a, body.telephone .doc.tel-presse cite a{color:var(--paper); text-decoration-color:rgba(244,241,234,.45)}
-body.telephone .doc.tel-matignon .note-passation, body.telephone .doc.tel-institution .note-passation, body.telephone .doc.tel-presse .note-passation{
-  border-left-color:rgba(244,241,234,.4); color:var(--p70)}
-body.telephone .doc.tel-matignon .note-passation b, body.telephone .doc.tel-institution .note-passation b, body.telephone .doc.tel-presse .note-passation b{color:var(--paper)}
-body.telephone .doc.tel-matignon .cadrage-retenir, body.telephone .doc.tel-institution .cadrage-retenir, body.telephone .doc.tel-presse .cadrage-retenir{color:var(--paper)}
-body.telephone .doc.tel-matignon .regle, body.telephone .doc.tel-institution .regle, body.telephone .doc.tel-presse .regle{color:var(--paper); border-left-color:var(--paper)}
-body.telephone .doc.tel-matignon pre, body.telephone .doc.tel-institution pre, body.telephone .doc.tel-presse pre,
-body.telephone .doc.tel-matignon .bordereau, body.telephone .doc.tel-institution .bordereau{background:rgba(0,0,0,.18); color:var(--paper)}
-body.telephone .doc.tel-matignon .opts.sur-papier .opt, body.telephone .doc.tel-institution .opts.sur-papier .opt, body.telephone .doc.tel-presse .opts.sur-papier .opt{
-  background:rgba(0,0,0,.16); border-color:rgba(244,241,234,.24); border-left-color:rgba(244,241,234,.45); color:var(--paper)}
-body.telephone .doc.tel-matignon .opts.sur-papier .opt b, body.telephone .doc.tel-institution .opts.sur-papier .opt b, body.telephone .doc.tel-presse .opts.sur-papier .opt b{color:var(--paper)}
-body.telephone .doc.tel-matignon .opts.sur-papier .opt .det, body.telephone .doc.tel-institution .opts.sur-papier .opt .det, body.telephone .doc.tel-presse .opts.sur-papier .opt .det{color:var(--p70)}
-body.telephone .doc.tel-matignon .opts.sur-papier .opt.choisi, body.telephone .doc.tel-institution .opts.sur-papier .opt.choisi, body.telephone .doc.tel-presse .opts.sur-papier .opt.choisi{
-  background:rgba(0,0,0,.3); border-color:var(--paper); border-left-color:var(--paper); box-shadow:none}
-body.telephone .doc.tel-matignon .opts.sur-papier .opt.choisi b, body.telephone .doc.tel-institution .opts.sur-papier .opt.choisi b, body.telephone .doc.tel-presse .opts.sur-papier .opt.choisi b{color:var(--paper)}
-body.telephone .doc.tel-matignon .opts.sur-papier .opt .chiffres span, body.telephone .doc.tel-institution .opts.sur-papier .opt .chiffres span, body.telephone .doc.tel-presse .opts.sur-papier .opt .chiffres span{
-  border-color:rgba(244,241,234,.4); color:var(--p70)}
-
-/* Tout ce qui, dans les composants hérités, écrit en encre sombre doit
-   basculer en clair à l'intérieur d'une fiche colorée. */
-body.telephone .doc:is(.tel-matignon,.tel-institution,.tel-presse) :is(h3,h4,.titre-d,.etiq,.ps,.res,.num-q,.plateau-num,.indice,.note-q,summary){color:var(--paper) !important}
-body.telephone .doc:is(.tel-matignon,.tel-institution,.tel-presse) :is(.ps,.indice,.note-q,.res){opacity:.78}
-body.telephone .doc:is(.tel-matignon,.tel-institution,.tel-presse) .note-passation{
-  --ink-text-2:var(--p70); --ink-text-3:var(--p55); --ink-text-4:var(--p45);
-  --encre:var(--paper); --encre-2:var(--p70); --encre-3:var(--p55);
-  --ok:#9FE0BE; --alerte:#FFC9C2; --rouge-rf:#FFC9C2; --bleu-rf:var(--paper); --or:#F0D48A;
-  --filet:rgba(244,241,234,.24); --filet-fort:rgba(244,241,234,.4); --fiche-2:rgba(0,0,0,.16)}
-
-/* Matignon et l'Élysée : le rouge de la charte, et rien d'autre ne l'utilise. */
-body.telephone .doc.tel-matignon{background:linear-gradient(168deg, #D01633 0%, var(--alert) 55%, #A80D24 100%); box-shadow:var(--pile-sombre), var(--liseré-sombre)}
-body.telephone .doc.tel-matignon .tampon-urgent{color:var(--paper); border-color:var(--paper)}
-/* Les institutions qui vous écrivent : Bercy, la carte scolaire. */
-body.telephone .doc.tel-institution{background:linear-gradient(168deg, #23477E 0%, var(--official) 55%, #142C52 100%); box-shadow:var(--pile-sombre), var(--liseré-sombre)}
-/* La presse et les syndicats : sourd, c'est du bruit de fond. */
-body.telephone .doc.tel-presse{background:rgba(244,241,234,.08); border:1px solid var(--p16); box-shadow:var(--liseré-sombre)}
-body.telephone .doc.tel-presse .tampon-urgent{color:var(--alert-soft); border-color:var(--alert-soft)}
+/* ---------- d'où vient le document -------------------------------------
+   La charte code l'expéditeur par la couleur du fond. Elle a raison sur une
+   notification d'une ligne ; elle a tort sur un document de vingt lignes —
+   une page entière en rouge vif est agressive et le texte y perd. On garde
+   le codage, on change le support : un filet de couleur en tête de fiche et
+   l'expéditeur écrit dans la même couleur. Le papier reste du papier. */
+body.telephone .doc{border-top:4px solid transparent}
+body.telephone .doc.tel-matignon{border-top-color:var(--rouge)}
+body.telephone .doc.tel-matignon .entete-doc .type{color:var(--rouge)}
+body.telephone .doc.tel-institution{border-top-color:var(--bleu)}
+body.telephone .doc.tel-institution .entete-doc .type{color:var(--bleu)}
+body.telephone .doc.tel-presse{border-top-color:var(--paper-shade-2)}
+body.telephone .doc.tel-presse .entete-doc .type{color:var(--t3)}
 
 /* ---------- la note de la DGESCO ---------------------------------------- */
 body.telephone .tel-note{position:fixed; inset:0; z-index:60; background:var(--ink); display:flex; flex-direction:column}
@@ -1103,6 +1077,15 @@ body.telephone #comprendre .btn.secondaire{width:auto; font-family:var(--mono); 
   body.telephone #scene > *, body.telephone .grille-cartes > .carte{animation:tel-entree .32s var(--ressort) both; animation-delay:var(--retard, 0ms)}
 }
 
+/* Les couleurs de compteur existent en deux versions ; sur fond sombre, on
+   bascule sur les claires. Les jauges héritées portent `var(--c-…)` en style
+   en ligne : redéfinir la variable ici suffit, sans toucher au code. */
+body.telephone .tel-curseurs, body.telephone .tel-barre, body.telephone .fil,
+body.telephone .tel-alerte, body.telephone .opts:not(.sur-papier), body.telephone .solde{
+  --c-reussite:var(--k1c); --c-egalite:var(--k2c); --c-sante:var(--k3c);
+  --c-paix:var(--k4c); --c-budget:var(--k4c); --c-violet:var(--k5c);
+}
+
 /* ---------- ce qui se pose sur le noir ----------------------------------
    Les composants hérités (options, encadrés, fil de presse) sont écrits pour
    du papier. Plutôt que de les réécrire un par un, on redéfinit les jetons
@@ -1115,10 +1098,10 @@ body.telephone .note-passation, body.telephone .tel-alerte, body.telephone .sold
 body.telephone .tel-note-question, body.telephone .tel-note-pied{
   --encre:var(--paper); --encre-2:var(--p70); --encre-3:var(--p55);
   --ok:var(--positive); --alerte:var(--alert-soft); --rouge-rf:var(--alert-soft);
-  --bleu-rf:var(--positive); --bleu-rf-2:var(--positive); --or:#D9B545;
+  --bleu-rf:var(--positive); --bleu-rf-2:var(--positive); --or:var(--k4c);
   --ink-text-2:var(--p70); --ink-text-3:var(--p55); --ink-text-4:var(--p45);
   --filet:var(--p16); --filet-fort:var(--p35); --fiche:transparent; --fiche-2:var(--p07);
-  --c-reussite:#7FA3D8; --c-egalite:#E8746A; --c-sante:#5EBF95; --c-paix:#E39A5A; --c-budget:#D9B545; --c-violet:#A98FE0;
+  --c-reussite:var(--bleu-clair); --c-egalite:var(--rouge-clair); --c-sante:var(--k3c); --c-paix:var(--k4c); --c-budget:var(--k4c); --c-violet:var(--k5c);
   color:var(--paper);
 }
 body.telephone .note-passation{background:var(--p07); border:1px solid var(--p16); border-radius:16px; padding:14px 16px; margin:0 0 12px; font-family:var(--serif); font-size:15px; line-height:1.5; box-shadow:none; color:var(--p70)}
@@ -1130,9 +1113,9 @@ body.telephone .opts:not(.sur-papier) .opt > b{color:var(--paper)}
    jetons ci-dessus ne vaut que pour ce qui est posé sur le noir. */
 body.telephone .doc .note-passation{background:transparent; border:0; border-left:3px solid var(--rule); border-radius:0; padding:2px 0 2px 14px; margin:12px 0 0; color:var(--ink-text-2);
   --encre:var(--ink); --encre-2:var(--ink-text-2); --encre-3:var(--ink-text-3);
-  --ok:#1F6E4E; --alerte:var(--alert); --rouge-rf:var(--alert); --bleu-rf:var(--official); --or:var(--or-sombre);
-  --ink-text-2:#3E3A33; --ink-text-3:#615C55; --ink-text-4:#5F5A52;
-  --filet:var(--rule); --filet-fort:var(--paper-shade-1); --fiche-2:#EBE7DC}
+  --ok:var(--vert); --alerte:var(--alert); --rouge-rf:var(--alert); --bleu-rf:var(--official); --or:var(--or-sombre);
+  --ink-text-2:var(--t2); --ink-text-3:var(--t3); --ink-text-4:var(--t3);
+  --filet:var(--rule); --filet-fort:var(--paper-shade-1); --fiche-2:var(--paper-2)}
 body.telephone .doc .note-passation b{color:var(--ink)}
 body.telephone .doc .note-passation .ps{color:var(--ink-text-3); font-style:italic}
 
@@ -1143,7 +1126,7 @@ body.telephone .soutien-synd b, body.telephone .argumentaire b{color:var(--offic
 body.telephone .budget-legende, body.telephone .budget-legende b{font-size:12px}
 body.telephone .plateau-num, body.telephone .doc .num-q{font-size:11.5px}
 body.telephone .accueil .tampon div:not(.rf){font-size:11px !important}
-body.telephone .rep-plot .grad b{font-size:10.5px}
+body.telephone .rep-plot .grad b{font-size:10.5px; color:var(--t2)}
 body.telephone .rep-annees span{font-size:10.5px}
 body.telephone .rep-valeurs span{font-size:11px}
 body.telephone .revele, body.telephone .annee-chiffres .t .d{font-weight:600}

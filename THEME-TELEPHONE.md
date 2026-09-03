@@ -59,22 +59,52 @@ et les **lit** (observateurs de mutations) pour remplir :
   delta ▲/▼ s'affiche 1,2 s, le chiffre pulse et passe en rouge sous le seuil ;
 - l'alerte du cabinet — une notification « sourde » en tête de contenu.
 
-## Les quatre variantes de notification
+## La palette
 
-C'est ce que la charte a de plus frappant, et ce que le premier essai avait
-laissé de côté. Chaque fiche prend la couleur de qui écrit :
+Premier essai : le noir « chaud » de la charte (`#14120E`) et le crème
+(`#F4F1EA`). Posés l'un sur l'autre, ils tirent au brun ; tout l'écran a
+l'air sale. Et les fiches d'expéditeur en rouge vif ou en bleu plein, qui
+marchent sur une notification d'une ligne, deviennent agressives sur un
+document de vingt lignes.
 
-| Expéditeur | Variante | Écrans |
+La palette a donc été refaite :
+
+```
+fond      #0F1116  noir FROID (surfaces #161922, #1F232D)
+papier    #FBF9F5  blanc chaud à peine teinté (plus de crème jauni)
+encre     #171A21 / #454A55 / #5E6470
+bleu      #2B4B8F   sur papier   ·  #8FB0EC  sur fond sombre
+rouge     #B3222F   sur papier   ·  #F09A94  sur fond sombre
+vert      #1C7358   sur papier   ·  #6FCFAE  sur fond sombre
+```
+
+Deux accents seulement, et chacun a un sens : le bleu pour ce qui engage
+(l'action, l'institution), le rouge pour ce qui alerte. Chaque accent existe
+en deux versions, l'une pour le papier, l'autre pour le fond sombre, toutes
+vérifiées au-dessus de 4,5:1.
+
+Les cinq compteurs forment une vraie palette catégorielle — bleu, rose,
+sarcelle, ambre, violet, régulièrement espacée en teinte — elle aussi
+déclinée pour les deux fonds. Les jauges héritées portent `var(--c-…)` en
+style en ligne : il suffit de redéfinir la variable dans les conteneurs
+sombres pour que la version claire s'applique, sans toucher au code du jeu.
+
+## D'où vient le document
+
+La charte code l'expéditeur par la couleur du fond. On garde le codage, on
+change le support : **un filet de couleur en tête de fiche et l'expéditeur
+écrit dans la même couleur.** Le papier reste du papier.
+
+| Expéditeur | Filet | Écrans |
 |---|---|---|
-| Matignon, l'Élysée | **rouge** | l'appel, l'entretien préalable, le remaniement, le renvoi |
-| Bercy, la carte scolaire | **bleu** | la lettre plafond, le bordereau DHG |
-| la presse, les syndicats | **sourde** | polémiques, plateau, affaires, audiences, retraits |
-| les dossiers à trancher | **papier** | tout le reste |
+| Matignon, l'Élysée | rouge | l'appel, l'entretien préalable, le remaniement, le renvoi |
+| Bercy, la carte scolaire | bleu | la lettre plafond, le bordereau DHG |
+| la presse, les syndicats | gris | polémiques, plateau, affaires, audiences, retraits |
+| les dossiers à trancher | aucun | tout le reste |
 
-Les fiches qui portent un graphique restent sur le papier : une courbe sur
-fond rouge ne se lit pas. Dans chaque variante colorée, les jetons de la
-feuille classique sont renvoyés en clair, et l'auditeur de contraste vérifie
-qu'aucun texte n'y tombe sous 4,5:1.
+Les cartes de mesures gardent le filet de leur famille, comme dans le thème
+classique. Ce qui n'est pas un document — l'alerte du cabinet, le fil de
+presse — reste une carte sombre : **papier = document, sombre = notification.**
 
 ## Ce qui a été modernisé
 
@@ -166,6 +196,9 @@ Ce qui a changé :
 6. **Les tailles et les opacités** de la charte ont été relevées : mesurées,
    elles ne passaient ni le contraste ni le plancher de taille. Les proportions
    et le vocabulaire graphique sont conservés.
+7. **La palette** est refaite (voir plus haut) : noir froid au lieu du noir
+   chaud, blanc chaud au lieu du crème, deux accents au lieu d'une famille de
+   rouges, et l'expéditeur codé par un filet plutôt que par un fond plein.
 
 ## Recette
 
