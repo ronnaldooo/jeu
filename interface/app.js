@@ -708,7 +708,9 @@ function ecranAccueil(sauvegarde) {
     <div class="tampon"><div class="rf">RÉPUBLIQUE FRANÇAISE</div><div style="font-size:.62rem;letter-spacing:.18em">MINISTÈRE DE L'ÉDUCATION NATIONALE</div></div>
     ${ILLUS.facade.replace('<svg ', '<svg class="illustration" ')}
     <h1>Rue de Grenelle</h1>
-    <p class="devise">Vous êtes ministre de l'Éducation nationale.<br>1,2 million d'agents, 12 millions d'élèves. Un quinquennat, c'est cinq rentrées et cinq budgets.<br>Une durée moyenne dans le poste de deux ans, mais sept ministres sur les cinq dernières années…</p>`;
+    <p class="devise">Vous êtes ministre de l’Éducation nationale.</p>
+    <p class="echelle">1,2 million d’agents · 12 millions d’élèves<br>cinq rentrées · cinq budgets</p>
+    <p class="chute">Durée moyenne dans le poste : deux ans. Sept ministres sur les cinq dernières années…</p>`;
   const actions = el('div', 'actions'); actions.style.justifyContent = 'center';
   if (sauvegarde) {
     const rep = el('button', 'btn', 'Reprendre la partie en cours');
@@ -1231,25 +1233,32 @@ function ecranAtelier(q) {
   const enveloppe = q.tresor, capital = q.capital;
 
   const MOMENTS = {
+    /* `regle` : la contrainte, en une ligne forte. `chapo` : le contexte, en
+       deux phrases. Le mécanisme du jeu (effet d'annonce, cadenas, bilan) est
+       dans le repli, pas dans le chapô : on ne le relit pas cinq fois. */
     prise_fonction: {
       type: 'Prise de fonction, vos premières annonces',
       titre: 'Vos premières annonces',
-      chapo: 'Vous n’attendez pas le prochain budget : la loi de finances votée par votre prédécesseur laisse une marge de redéploiement, et le pays regarde ce qu’un nouveau ministre fait de ses premiers jours. Deux annonces au maximum, au-delà, plus personne ne retient rien.',
+      regle: 'Deux annonces au maximum. Au-delà, plus personne ne retient rien.',
+      chapo: 'Vous n’attendez pas le prochain budget : la loi de finances votée par votre prédécesseur laisse une marge de redéploiement, et le pays regarde ce qu’un nouveau ministre fait de ses premiers jours.',
     },
     rentree: {
       type: 'Circulaire de rentrée',
       titre: 'Que met-on dans la circulaire de rentrée ?',
-      titreSuite: 'Une mesure, pas davantage : la circulaire de rentrée porte un message, pas un programme.',
+      regle: 'Une mesure, pas davantage.',
+      chapo: 'La circulaire de rentrée porte un message, pas un programme.',
     },
     livraison: {
       type: 'Après la livraison, vos annonces de ce soir',
       titre: 'Trois mesures pour le niveau des élèves',
-      chapo: 'Vous n’avez pas le choix d’annoncer : à 20 heures, on attend des mesures. Vous avez le choix de celles-ci. Selon les familles de mesures retenues, la salle des professeurs applaudira, haussera les épaules, ou déposera un préavis pour le printemps.',
+      regle: 'Trois mesures, ce soir. Vous n’avez pas le choix d’annoncer, vous avez le choix de quoi.',
+      chapo: 'Selon les familles de mesures retenues, la salle des professeurs applaudira, haussera les épaules, ou déposera un préavis pour le printemps.',
     },
     janvier: {
       type: 'L’atelier, l’arbitrage de janvier',
       titre: 'Que portez-vous cette année ?',
-      chapo: 'Le moment où le budget de l’année se transforme en décisions. Jusqu’à trois annonces, et le seul moment où vous pouvez arracher un arbitrage interministériel pour dépasser votre enveloppe.',
+      regle: 'Jusqu’à trois annonces, et le seul moment où un arbitrage interministériel peut dépasser votre enveloppe.',
+      chapo: 'Le moment où le budget de l’année se transforme en décisions.',
     },
   };
   const MOM = MOMENTS[q.moment] || MOMENTS.janvier;
@@ -1262,9 +1271,8 @@ function ecranAtelier(q) {
      Ensuite, un rappel de dix mots suffit : la réimprimer cinq fois par partie
      ne l'apprend à personne, elle fait seulement de la page à sauter. */
   const premierAtelier = S.annee === 1 && q.moment === 'prise_fonction';
-  d.appendChild(el('p', 'chapo', (MOM.chapo || MOM.titreSuite) + (premierAtelier
-    ? ' L’effet d’annonce est chiffré : vous le verrez. L’effet réel ne l’est pas, vous n’avez que le niveau de preuve (🔒) et le délai, et vous découvrirez au bilan ce que vous avez produit. Rien ne s’applique sans les personnels.'
-    : ' Effet d’annonce chiffré, effet réel caché.')));
+  d.appendChild(el('p', 'regle', MOM.regle));
+  d.appendChild(el('p', 'chapo', MOM.chapo));
   /* Le menu cadré : on dit pourquoi il l'est, sinon le joueur croit à un bug.
      C'est tout l'intérêt du dispositif — que l'enchaînement des écrans se lise
      comme une suite de conséquences et non comme une liste de courses. */
@@ -1300,6 +1308,7 @@ function ecranAtelier(q) {
   repli.open = premierAtelier;
   repli.innerHTML = `<summary>Le budget et l’échelle de preuve${premierAtelier ? '' : ' — rappel'}</summary>`;
   const repliIn = el('div', 'in');
+  if (premierAtelier) repliIn.appendChild(el('p', 'lire-carte', '<b>Comment lire une carte.</b> L’effet d’annonce est chiffré : vous le verrez. L’effet réel ne l’est pas, vous n’avez que le niveau de preuve (🔒) et le délai, et vous découvrirez au bilan ce que vous avez produit. Rien ne s’applique sans les personnels.'));
   repliIn.appendChild(bb);
   repli.appendChild(repliIn);
   d.appendChild(repli);

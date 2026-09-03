@@ -1539,6 +1539,44 @@ rien ne suivait le focus d'un écran à l'autre.
 Vérifications : quarante écrans capturés sur une partie, mobile 390 px et
 thème sombre sans débordement, équilibre 4/4.
 
+## 3 sexvicies. La passe de design : lire d'abord ce qui compte
+
+Demande : un état des lieux design, accessibilité et engagement, puis les
+corrections. Quarante écrans d'une partie ont été capturés et regardés.
+
+**Trois défauts de fond.** La décision commençait sous le pli (sur l'atelier,
+il fallait passer une illustration, un chapô, le bloc budget, l'échelle de
+preuve et une ligne d'état avant la première carte). Rien ne disait « c'est
+ici que vous jouez ». La fin d'année ne montrait pas l'année.
+
+**Hiérarchie.** Sur l'atelier, le chapô se scinde en une *règle* (« Deux
+annonces au maximum. ») en une ligne forte et un *contexte* de deux phrases ;
+le mécanisme du jeu (effet d'annonce, cadenas, bilan) rejoint un repli
+« Le budget et l'échelle de preuve », ouvert au premier atelier et replié
+ensuite. La ligne d'état devient un tableau de bord collant à trois tuiles
+(enveloppe et sa jauge, annonces en points, capital) avec les deux chiffres
+secondaires en petit. Chaque bloc de choix porte un libellé « À vous de
+décider ». Les phrases à retenir des notes deviennent des exergues centrés.
+L'accueil a trois niveaux au lieu d'un paragraphe italique gris de quatre
+lignes : la situation en gras, l'échelle en romain, la chute en italique.
+
+Centrer n'est pas lisibilité : un paragraphe de sept lignes centré se lit
+moins bien qu'aligné à gauche. On centre une ligne, deux au plus.
+
+**Engagement.** À la clôture, « Votre année en trois chiffres » : valeur de
+mai, écart depuis juin, jauge avec repère du point de départ, phrase de lecture
+selon le cas. Le compteur du bandeau qui bouge s'allume une seconde. Chaque
+écran entre en fondu, désactivé sous `prefers-reduced-motion`.
+
+**Accessibilité.** Repères `header`, `main`, lien d'évitement ; la boîte
+« Comprendre le jeu » est un dialogue ARIA avec retour du focus. Le focus suit
+le jeu : titre du nouvel écran, puis bouton « Continuer » quand il apparaît
+après un choix. Choix cochés en `aria-pressed`, contexte en `aria-live`. Le
+gris tertiaire passait sous 4,5:1 : relevé. Plus aucun texte sous 11 px.
+
+Vérifications : 1280 px, 390 px, thème sombre, équilibre 4/4 (le moteur n'est
+pas touché).
+
 ## 5. Paramètres à réexaminer après tests humains
 
 | Paramètre | Valeur | Ce qu'il faut regarder |
