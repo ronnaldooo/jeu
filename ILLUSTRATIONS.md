@@ -23,39 +23,48 @@ SVG au trait ; ce qui manque, ce sont des **scènes**.
   morte, une pile qui penche, une photocopieuse en panne). Jamais de blague
   dans le trait sur les élèves ou les enseignants.
 
+## État : sept sont faites
+
+Sept illustrations sont **dessinées et intégrées au jeu** (façade de l'accueil,
+déménagement du bilan, bureau de l'atelier, enveloppe de Bercy, carte scolaire,
+table d'audience, cour de rentrée). Elles ont été écrites en SVG à la main, puis
+rendues dans un navigateur et corrigées à la vue : deux passes ont suffi. Les
+demandes ci-dessous marquées « FAIT » n'ont donc plus besoin d'être commandées ;
+les autres restent ouvertes.
+
 ## Les demandes, par ordre d'importance
 
-### 1. L'accueil : la façade — 280 × 120 (existe en version simple, à refaire mieux)
+### 1. L'accueil : la façade — 280 × 120 (existe en version simple, à refaire mieux)  — **FAIT**
 Façade du 110 rue de Grenelle : le porche, l'hôtel particulier derrière, le
 drapeau. Vu de la rue, légèrement en contre-plongée. C'est la seule image que
 tout le monde verra.
 
-### 2. Le bilan : le déménagement — 280 × 120
+### 2. Le bilan : le déménagement — 280 × 120  — **FAIT**
 Un bureau ministériel vidé : cartons fermés, un fauteuil, un cadre décroché
 laissant une trace claire sur le mur, un téléphone débranché. Sans personnage.
 Sert à l'écran final, toutes fins confondues.
 
-### 3. L'atelier de mesures : le bureau — 280 × 120
+### 3. L'atelier de mesures : le bureau — 280 × 120  — **FAIT**
 Un grand bureau avec des dossiers alignés, un parapheur ouvert, un stylo, une
 tasse. Éventuellement un dossier estampillé « nouveau ». C'est l'écran le plus
 fréquent du jeu (cinq fois par partie).
 
-### 4. La lettre plafond : l'enveloppe de Bercy — 120 × 120
+### 4. La lettre plafond : l'enveloppe de Bercy — 120 × 120  — **FAIT**
 Une enveloppe épaisse, cachet « Ministère des comptes publics », un coin
 relevé. Le détail drôle possible : un trombone qui tient une seconde feuille
 plus épaisse que la première.
 
-### 5. La carte scolaire : la carte — 120 × 120
+### 5. La carte scolaire : la carte — 120 × 120  — **FAIT**
 Une carte de France simplifiée, sans région identifiable, avec des points
 d'école dont certains sont barrés au crayon et d'autres entourés. Un compas ou
 une règle posée dessus.
 
-### 6. L'audience syndicale : la table — 280 × 120
+### 6. L'audience syndicale : la table — 280 × 120  — **FAIT**
 Une table de réunion vue de haut, deux rangées de chaises face à face, des
 parapheurs et des bouteilles d'eau. Un côté a plus de chaises que l'autre.
 Sans personnage.
 
-### 7. La rentrée : la cour — 280 × 120
+### 7. La rentrée : la cour — 280 × 120  — **FAIT**
 Une cour d'école vide, tôt le matin : le préau, un panier de basket, des
 marelles au sol, une porte ouverte. L'heure sur une horloge : 8 h 07.
 

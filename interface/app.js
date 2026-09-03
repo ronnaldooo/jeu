@@ -313,14 +313,136 @@ const PICTO = {
   boussole: '<circle cx="12" cy="12" r="9"/><path d="m15.5 8.5-2 5-5 2 2-5z"/>',
   drapeau: '<path d="M5 21V4M5 4h11l-2 4 2 4H5"/>',
 };
+/* Les illustrations : dessins au trait, une seule couleur, héritée du thème.
+   Un bandeau 280×120 en tête de document, une vignette 120×120 flottant à
+   droite du chapô. Elles nomment l'écran d'un coup d'œil ; elles n'ajoutent
+   rien à lire. */
+const ILLUS = {
+
+facade: `<svg viewBox="0 0 280 120" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M6 112h268"/>
+  <path d="M30 112V44h220v68"/>
+  <path d="M30 44h220M26 44l4-8h220l4 8"/>
+  <path d="M30 36V26h220v10"/>
+  <path d="M52 112V62h22v50M92 112V62h22v50M166 112V62h22v50M206 112V62h22v50"/>
+  <path d="M52 62h22M92 62h22M166 62h22M206 62h22"/>
+  <path d="M60 74h6M100 74h6M174 74h6M214 74h6"/>
+  <path d="M126 112V70h28v42M126 70a14 14 0 0 1 28 0"/>
+  <path d="M140 70v42M126 88h28"/>
+  <path d="M120 112h40"/>
+  <path d="M140 26V8M140 8h22l-4 5 4 5h-22"/>
+  <path d="M96 36v8M184 36v8M52 36v8M228 36v8"/>
+  <path d="M12 112c6-10 12-10 18 0M250 112c6-10 12-10 18 0" stroke-width="1.1"/>
+</svg>`,
+
+demenagement: `<svg viewBox="0 0 280 120" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M14 100h252"/>
+  <path d="M14 100V18h108"/>
+  <rect x="34" y="30" width="52" height="38" stroke-dasharray="4 5" stroke-width="1.2"/>
+  <path d="M60 24v6M58 24h4" stroke-width="1.2"/>
+  <path d="M30 100V72h56v28M30 72l8-10h40l8 10M58 72v28"/>
+  <path d="M38 80h14M64 80h14" stroke-width="1.2"/>
+  <path d="M96 100V80h40v20M96 80l6-8h28l6 8M116 80v20"/>
+  <path d="M96 68c5-5 12-5 17 0M119 68c5-5 12-5 17 0" stroke-width="1.2"/>
+  <path d="M204 100v-14M188 86h32M192 86l-3-24h30l-3 24"/>
+  <path d="M190 62c0-14 8-22 19-22s19 8 19 22"/>
+  <path d="M228 62v20M228 82h-8" stroke-width="1.3"/>
+  <path d="M198 100l-8 8M210 100l8 8" stroke-width="1.3"/>
+  <path d="M252 100V84h16v16M252 84h16" stroke-width="1.3"/>
+</svg>`,
+
+bureau: `<svg viewBox="0 0 280 120" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 88h256"/>
+  <path d="M30 88v22M250 88v22"/>
+  <path d="M18 88l16-12h212l16 12"/>
+  <path d="M44 76V52h50v24M44 52l4-4h42l4 4"/>
+  <path d="M50 58h38M50 64h38M50 70h26" stroke-width="1.2"/>
+  <path d="M118 76l14-30 30 8-12 22z"/>
+  <path d="M132 46l30 8" stroke-width="1.3"/>
+  <path d="M140 58h18M138 64h18" stroke-width="1.2"/>
+  <path d="M184 76V44h44v32M184 44h44"/>
+  <path d="M192 52h28M192 58h28M192 64h18" stroke-width="1.2"/>
+  <path d="M236 76l26-26M262 50l-3 9 9-3" stroke-width="1.4"/>
+</svg>`,
+
+enveloppe: `<svg viewBox="0 0 120 120" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+  <rect x="16" y="34" width="88" height="58" rx="2"/>
+  <path d="M16 40l44 30 44-30"/>
+  <path d="M16 88l30-24M104 88L74 64" stroke-width="1.2"/>
+  <circle cx="88" cy="80" r="10"/>
+  <path d="M84 80l3 3 5-6" stroke-width="1.2"/>
+  <path d="M40 30c0-6 4-10 9-10h30c5 0 9 4 9 10"/>
+  <path d="M46 20V12h36v8" stroke-width="1.2"/>
+  <path d="M28 30V22c0-4 3-7 7-7h4" stroke-width="1.2"/>
+</svg>`,
+
+carte: `<svg viewBox="0 0 120 120" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M14 26l30-10 32 10 30-10v78l-30 10-32-10-30 10z"/>
+  <path d="M44 16v78M76 26v78" stroke-width="1.1"/>
+  <circle cx="29" cy="44" r="3"/><circle cx="60" cy="36" r="3"/><circle cx="92" cy="50" r="3"/>
+  <circle cx="34" cy="72" r="3"/><circle cx="64" cy="66" r="3"/><circle cx="90" cy="80" r="3"/>
+  <path d="M56 32l8 8M64 32l-8 8" stroke-width="1.3"/>
+  <path d="M86 76l8 8M94 76l-8 8" stroke-width="1.3"/>
+  <circle cx="29" cy="44" r="7" stroke-width="1.1"/>
+  <path d="M74 96l26-26M100 70l-4 10 10-4z" stroke-width="1.2"/>
+</svg>`,
+
+audience: `<svg viewBox="0 0 280 120" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+  <rect x="66" y="38" width="148" height="44" rx="4"/>
+  <path d="M96 46h30M96 52h22" stroke-width="1.1"/>
+  <path d="M154 46h30M154 52h22" stroke-width="1.1"/>
+  <rect x="132" y="62" width="16" height="12" rx="2"/>
+  <path d="M76 20h20v14H76zM106 20h20v14h-20zM136 20h20v14h-20zM166 20h20v14h-20zM196 20h20v14h-20z"/>
+  <path d="M96 86h20v14H96zM126 86h20v14h-20zM156 86h20v14h-20z"/>
+  <path d="M56 44v32M224 44v32" stroke-width="1.1"/>
+  <path d="M52 52h8M220 52h8" stroke-width="1.1"/>
+</svg>`,
+
+cour: `<svg viewBox="0 0 280 120" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M8 100h264"/>
+  <path d="M14 100V40h84v60M8 40h96M14 40l8-10h72l8 10"/>
+  <path d="M30 100V64h20v36M30 64h20" stroke-width="1.3"/>
+  <path d="M64 100V64h22v36M64 64h22" stroke-width="1.3"/>
+  <path d="M44 52h20" stroke-width="1.2"/>
+  <circle cx="80" cy="20" r="10"/>
+  <path d="M80 14v6l4 3" stroke-width="1.3"/>
+  <path d="M204 100V70" stroke-width="1.4"/>
+  <rect x="182" y="44" width="44" height="26" rx="1"/>
+  <path d="M196 58h16v12h-16z" stroke-width="1.2"/>
+  <path d="M204 70a9 9 0 1 0 0 .1" stroke-width="1.3"/>
+  <path d="M118 100h30v-12h-30zM118 88h30V76h-30zM126 76h14V64h-14z" stroke-width="1.2"/>
+  <path d="M248 100V70h14v30M248 70h14M252 76h6" stroke-width="1.3"/>
+</svg>`,
+
+};
+
+/* Un bandeau en tête de document ; `vignette` la place en flottant. */
+function illustration(nom, vignette) {
+  if (!ILLUS[nom]) return null;
+  const d = el('div', 'illus' + (vignette ? ' vignette' : ' bandeau'));
+  d.innerHTML = ILLUS[nom];
+  d.setAttribute('aria-hidden', 'true');
+  return d;
+}
+
 const picto = (nom) => PICTO[nom]
   ? `<svg class="picto" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${PICTO[nom]}</svg>`
   : '';
 
+/* Quel dessin pour quel écran, et sous quelle forme. Un bandeau pour les
+   scènes larges, une vignette flottante pour les objets. */
+const DESSIN = {
+  audience: ['audience', false], retrait: ['audience', false],
+  rentree: ['cour', false], mesures: ['bureau', false],
+  lettrePlafond: ['enveloppe', true], carteScolaire: ['carte', true],
+};
 function docu(type, titre, dateLabel) {
   const d = el('article', 'doc');
   d.appendChild(el('div', 'entete-doc', `<span class="type">${picto(ETAT.picto)}${type}</span><span class="date">${dateLabel || ETAT.dateLabel || ''}</span>`));
+  const dessin = DESSIN[ETAT.typeEcran];
+  if (dessin && dessin[1]) { const v = illustration(dessin[0], true); if (v) d.appendChild(v); }
   if (titre) d.appendChild(el('h2', '', titre));
+  if (dessin && !dessin[1]) { const bn = illustration(dessin[0], false); if (bn) d.appendChild(bn); }
   return d;
 }
 
@@ -329,15 +451,7 @@ function ecranAccueil(sauvegarde) {
   const a = el('div', 'accueil');
   a.innerHTML = `
     <div class="tampon"><div class="rf">RÉPUBLIQUE FRANÇAISE</div><div style="font-size:.62rem;letter-spacing:.18em">MINISTÈRE DE L'ÉDUCATION NATIONALE</div></div>
-    <svg class="illustration" viewBox="0 0 280 120" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-      <path d="M12 110h256M22 110V46h236v64"/>
-      <path d="M22 46 140 14l118 32"/>
-      <path d="M40 110V64h20v46M76 110V64h20v46M112 110V64h20v46M184 110V64h20v46M220 110V64h20v46"/>
-      <path d="M148 110V72h28v38M148 72a14 14 0 0 1 28 0"/>
-      <path d="M40 60h20M76 60h20M112 60h20M184 60h20M220 60h20"/>
-      <path d="M128 30h24M134 24v12M146 24v12" stroke-width="1.2"/>
-      <path d="M2 110c8-6 14-6 22 0M256 110c8-6 14-6 22 0" stroke-width="1"/>
-    </svg>
+    ${ILLUS.facade.replace('<svg ', '<svg class="illustration" ')}
     <h1>Rue de Grenelle</h1>
     <p class="devise">Vous êtes ministre de l'Éducation nationale.<br>1,2 million d'agents, 12 millions d'élèves. Un quinquennat, c'est cinq rentrées et cinq budgets.<br>Une durée moyenne dans le poste de deux ans, mais sept ministres sur les cinq dernières années…</p>`;
   const actions = el('div', 'actions'); actions.style.justifyContent = 'center';
@@ -889,8 +1003,9 @@ function ecranAtelier(q) {
   const MOM = MOMENTS[q.moment] || MOMENTS.janvier;
 
   const d = el('article', 'doc large');
-  d.appendChild(el('div', 'entete-doc', `<span class="type">${MOM.type}</span><span class="date">${ETAT.dateLabel}</span>`));
+  d.appendChild(el('div', 'entete-doc', `<span class="type">${picto(ETAT.picto)}${MOM.type}</span><span class="date">${ETAT.dateLabel}</span>`));
   d.appendChild(el('h2', '', MOM.titre));
+  { const bn = illustration('bureau', false); if (bn) d.appendChild(bn); }
   /* La règle du jeu s'énonce une fois, à la première ouverture de l'atelier.
      Ensuite, un rappel de dix mots suffit : la réimprimer cinq fois par partie
      ne l'apprend à personne, elle fait seulement de la page à sauter. */
@@ -1383,7 +1498,8 @@ function ecranBilan(B) {
     <h2 class="une">${fins[0]}</h2><p class="sous-une">${fins[1] || esc(B.fin.texte)}</p>`;
 
   const d = el('article', 'doc large');
-  d.appendChild(el('div', 'entete-doc', `<span class="type">Le bilan, la vérité, enfin</span><span class="date">${B.anneesJouees} an${B.anneesJouees > 1 ? 's' : ''} de mandat</span>`));
+  d.appendChild(el('div', 'entete-doc', `<span class="type">${picto('drapeau')}Le bilan, la vérité, enfin</span><span class="date">${B.anneesJouees} an${B.anneesJouees > 1 ? 's' : ''} de mandat</span>`));
+  { const bn = illustration('demenagement', false); if (bn) d.appendChild(bn); }
 
   const sc = el('div', 'score-final');
   const bloc = (val, lib, note) => { const b = el('div', 'score-bloc', `<div class="val">${fmt0(val)}<span style="font-size:.9rem;color:var(--encre-2)">/100</span></div><div class="lib">${lib}</div>${note ? `<div style="font-size:.72rem;color:var(--encre-2);margin-top:4px">${note}</div>` : ''}`); return b; };
@@ -1783,6 +1899,7 @@ function majFrise(pasCourant) {
 
 function rendre(q) {
   ETAT.dateLabel = dateDe(q);
+  ETAT.typeEcran = q.type;
   const [pas, ic] = situer(q);
   ETAT.picto = ic;
   majFrise(pas);

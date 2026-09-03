@@ -1346,6 +1346,26 @@ gauche épaissi, état survol et focus visibles). Le brief d'illustrations pour
 Claude Design est dans `ILLUSTRATIONS.md` : quatorze scènes, une ligne
 graphique, ce qu'il ne faut pas faire.
 
+## 3 unvicies. Sept illustrations, dessinées et vérifiées
+
+Question posée en relecture : faut-il passer par un outil de design ? Réponse
+par la preuve. Sept scènes ont été écrites en SVG à la main, rendues dans le
+navigateur sur fond clair et sur fond sombre, regardées, et corrigées.
+
+Première passe : quatre bonnes (façade, enveloppe, carte, table d'audience),
+trois ratées où les objets se confondaient (déménagement, bureau, cour d'école).
+Seconde passe sur ces trois, en appliquant la règle qui manquait — moins
+d'objets, plus grands, mieux séparés. Les sept tiennent.
+
+Intégration : une table `DESSIN` associe chaque type d'écran à un dessin et à sa
+forme, bandeau 280×120 sous le titre ou vignette 104 px flottant à droite. Le
+trait est en `currentColor`, donc les deux thèmes sont gérés sans duplication.
+Coût : +30 Ko sur un fichier qui en fait 505, aucune requête réseau, aucun
+bitmap.
+
+Le brief `ILLUSTRATIONS.md` reste valable pour les sept scènes restantes, avec
+les sept premières marquées « FAIT ».
+
 ## 5. Paramètres à réexaminer après tests humains
 
 | Paramètre | Valeur | Ce qu'il faut regarder |
