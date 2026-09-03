@@ -1158,7 +1158,7 @@ où l'actualité décide à sa place :
 |---|---|
 | La livraison PISA (an 2) | les mesures à effet documenté sur la réussite |
 | Polémique « un vêtement » | autorité et familles |
-| Polémique « un drame, la chaîne des signalements » | autorité et familles, moyens humains |
+| Polémique « six mois de courriers sans réponse » | autorité et familles, moyens humains |
 
 Un bandeau bleu dit **pourquoi** le menu est réduit, sinon le joueur croit à un
 défaut. Garde-fou : si le cadrage laisse moins de cinq cartes jouables, il est
@@ -1476,6 +1476,20 @@ ouvre la note de bas de graphique.
 
 La liste de deux lignes disparaît donc entièrement : la page perd un bloc et
 gagne ses deux chiffres.
+
+## 3 quinvicies. Le suicide d'élève retiré
+
+Demande de relecture : supprimer l'histoire de l'élève qui se suicide. Elle
+ouvrait l'une des deux polémiques de rentrée.
+
+La supprimer entièrement aurait laissé une seule polémique de rentrée, donc la
+même à chaque partie — exactement le reproche de répétition formulé plus tôt
+sur la presse. Le drame est donc retiré, et le mécanisme conservé : une famille
+rend publics six mois de courriers restés sans réponse, un élève harcelé
+déscolarisé, un collège alerté trois fois. La chaîne de signalements
+défaillante — ce que la polémique enseigne — reste intacte, les trois réponses
+(se déplacer, annoncer un plan de plus, renvoyer à la responsabilité locale) et
+leurs effets sont inchangés.
 
 ## 5. Paramètres à réexaminer après tests humains
 
