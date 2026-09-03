@@ -28,6 +28,8 @@ const reperes = lire('moteur/reperes.js');
 const moteur = lire('moteur/moteur.js');
 const app = lire('interface/app.js');
 const gabarit = lire('interface/gabarit.html');
+const telCss = lire('interface/telephone.css');
+const telJs = lire('interface/telephone.js');
 
 const K = nomsExportes(constantes);
 const bundle = [
@@ -52,3 +54,19 @@ const tete = page.slice(0, coupe), corps = page.slice(coupe);
 writeFileSync(new URL('../index.html', import.meta.url),
   `<!doctype html>\n<html lang="fr">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1">\n${tete}\n</head>\n<body>${corps}\n</body>\n</html>\n`);
 console.log('index.html + artefact.html assemblés (' + Math.round(page.length / 1024) + ' Ko)');
+
+/* ---------------------------------------------------------------------------
+   Thème « le téléphone du ministre » : mêmes moteur et interface, plus une
+   feuille de style et une coque ajoutées PAR-DESSUS. L'interrupteur, c'est
+   le fichier qu'on ouvre : index-telephone.html / artefact-telephone.html.
+   Aucun `if (theme)` dans le jeu : la coque lit ce que le jeu affiche.
+   ------------------------------------------------------------------------- */
+const polices = '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;700&display=swap">';
+const pageTel = polices + '\n' + gabarit.replace('</style>', () => '</style>\n<style>\n' + telCss + '\n</style>')
+  .replace('/*__MOTEUR__*/', () => bundle)
+  .replace('/*__APP__*/', () => app + '\n/* ===== interface/telephone.js ===== */\n' + telJs);
+writeFileSync(new URL('../artefact-telephone.html', import.meta.url), pageTel);
+const coupeTel = pageTel.lastIndexOf('</style>') + '</style>'.length;
+writeFileSync(new URL('../index-telephone.html', import.meta.url),
+  `<!doctype html>\n<html lang="fr">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n${pageTel.slice(0, coupeTel)}\n</head>\n<body>${pageTel.slice(coupeTel)}\n</body>\n</html>\n`);
+console.log('index-telephone.html + artefact-telephone.html assemblés (' + Math.round(pageTel.length / 1024) + ' Ko)');

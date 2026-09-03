@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;0,600;0,800;1,400&family=JetBrains+Mono:wght@400;500;700&family=Barlow+Condensed:wght@400;500;600;700&family=Archivo:wght@400;500;600;700&family=Archivo+Black&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap" rel="stylesheet">
+<style>
+  body { margin:0; background:#E6E4DF; }
+  a { color:#1B3A6B; text-decoration:none; border-bottom:1px solid rgba(27,58,107,.35); }
+  a:hover { color:#C8102E; border-bottom-color:rgba(200,16,46,.5); }
+  @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+</style>
+</helmet>
+
+<section style="padding:64px 72px 40px;font-family:'Archivo',system-ui,sans-serif">
+  <div style="max-width:900px;margin-bottom:56px">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:#8A8579;margin-bottom:14px">Tour 2 · Croisements</div>
+    <h1 style="margin:0 0 16px;font-family:'Spectral',serif;font-size:44px;font-weight:800;letter-spacing:-.015em;color:#14120E">Trois mélanges</h1>
+    <p style="margin:0;font-size:17px;line-height:1.55;color:#4A463D;text-wrap:pretty;max-width:70ch">Vous avez retenu quatre choses : le papier administratif de <a href="#1a">1a</a>, la lisibilité des indicateurs de <a href="#1b">1b</a>, les notifications et le glisser de <a href="#1c">1c</a>. Les trois options ci-dessous les contiennent toutes — elles diffèrent par ce qui commande l'écran : <strong>la note de service</strong>, <strong>le journal du matin</strong>, ou <strong>le téléphone lui-même</strong>. Deux écrans chacune.</p>
+  </div>
+
+  <div style="display:flex;flex-wrap:wrap;gap:80px;align-items:flex-start">
+
+    <!-- ============ 2a — NOTE DE SERVICE ============ -->
+    <div id="2a" style="display:flex;flex-direction:column;gap:28px">
+      <div style="display:flex;align-items:flex-start;gap:16px;max-width:560px">
+        <div style="flex:0 0 auto;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;letter-spacing:.06em;background:#14120E;color:#F4F1EA;padding:6px 11px;border-radius:3px">2a</div>
+        <div>
+          <div style="font-family:'Spectral',serif;font-size:26px;font-weight:700;color:#14120E;line-height:1.15">La note de service</div>
+          <div style="font-size:15px;line-height:1.5;color:#57534A;margin-top:6px;text-wrap:pretty">Le papier de 1a, mais les curseurs passent en tuiles chiffrées comme dans 1b, et le glisser prend les gros cartons ombrés de 1c — en encre noire. Les notifications arrivent en bandeau bleu, une couleur qui n'existe nulle part ailleurs sur l'écran : impossible de la rater.</div>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:36px">
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div style="width:390px;height:844px;border-radius:46px;padding:10px;background:#25231E;box-shadow:0 34px 64px -24px rgba(20,18,14,.55)">
+            <div style="width:100%;height:100%;border-radius:36px;overflow:hidden;display:flex;flex-direction:column;background:#F4F1EA">
+              <div style="height:44px;flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;padding:0 28px;font-family:'JetBrains Mono',monospace;font-size:12px;color:#14120E"><span>9:41</span><span style="letter-spacing:.1em">▮▮▮ ⌁ 78%</span></div>
+
+              <div style="flex:0 0 auto;padding:6px 24px 14px;border-bottom:2px solid #14120E">
+                <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;color:#8A8579">Ministère de l'Instruction publique</div>
+                <div style="display:flex;align-items:baseline;justify-content:space-between;margin-top:8px">
+                  <div style="font-family:'Spectral',serif;font-size:26px;font-weight:800;color:#14120E">{{ ministerName }}</div>
+                  <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#C8102E">{{ weekLabel }}</div>
+                </div>
+              </div>
+
+              <div style="flex:1 1 auto;overflow:hidden;padding:16px 24px 0;display:flex;flex-direction:column;gap:14px">
+                <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:#8A8579">État des curseurs</div>
+
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+                  <div style="border:1.5px solid #14120E;background:#FFFDF7;padding:12px 13px">
+                    <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:#8A8579">Opinion publique</div>
+                    <div style="display:flex;align-items:baseline;gap:6px;margin-top:5px"><span style="font-family:'JetBrains Mono',monospace;font-size:29px;font-weight:700;color:#14120E;line-height:1">41</span><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#C8102E">▼6</span></div>
+                    <div style="height:5px;margin-top:9px;background:#E3DED1;border:1px solid #14120E"><div style="width:41%;height:100%;background:#C8102E"></div></div>
+                  </div>
+                  <div style="border:1.5px solid #14120E;background:#FFFDF7;padding:12px 13px">
+                    <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:#8A8579">Niveau des élèves</div>
+                    <div style="display:flex;align-items:baseline;gap:6px;margin-top:5px"><span style="font-family:'JetBrains Mono',monospace;font-size:29px;font-weight:700;color:#14120E;line-height:1">52</span><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#1B6B45">▲1</span></div>
+                    <div style="height:5px;margin-top:9px;background:#E3DED1;border:1px solid #14120E"><div style="width:52%;height:100%;background:#1B3A6B"></div></div>
+                  </div>
+                  <div style="border:1.5px solid #14120E;background:#FFFDF7;padding:12px 13px">
+                    <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:#8A8579">Inégalités</div>
+                    <div style="display:flex;align-items:baseline;gap:6px;margin-top:5px"><span style="font-family:'JetBrains Mono',monospace;font-size:29px;font-weight:700;color:#C8102E;line-height:1">68</span><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#C8102E">▲4</span></div>
+                    <div style="height:5px;margin-top:9px;background:#E3DED1;border:1px solid #14120E"><div style="width:68%;height:100%;background:#C8102E"></div></div>
+                  </div>
+                  <div style="border:1.5px solid #14120E;background:#FFFDF7;padding:12px 13px">
+                    <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:#8A8579">Budget</div>
+                    <div style="font-family:'JetBrains Mono',monospace;font-size:24px;font-weight:700;color:#C8102E;line-height:1;margin-top:6px">−1,2 Md</div>
+                    <div style="font-family:'Spectral',serif;font-style:italic;font-size:12.5px;color:#77726A;margin-top:8px">Les Comptes vous ont vu.</div>
+                  </div>
+                </div>
+
+                <div style="display:flex;justify-content:space-between;align-items:baseline;margin-top:2px">
+                  <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:#8A8579">File du jour</div>
+                  <div style="font-family:'JetBrains Mono',monospace;font-size:10.5px;color:#C8102E">6 dossiers</div>
+                </div>
+                <div style="display:flex;flex-direction:column">
+                  <div style="display:flex;gap:12px;padding:9px 0;border-bottom:1px solid #DED8C8"><div style="flex:0 0 20px;font-family:'JetBrains Mono',monospace;font-size:11px;color:#C8102E">01</div><div><div style="font-family:'Spectral',serif;font-size:15.5px;font-weight:600;color:#14120E">Dédoubler les CE1 en quartier prioritaire</div><div style="font-size:12.5px;color:#77726A">Promis par vos trois prédécesseurs.</div></div></div>
+                  <div style="display:flex;gap:12px;padding:9px 0;border-bottom:1px solid #DED8C8"><div style="flex:0 0 20px;font-family:'JetBrains Mono',monospace;font-size:11px;color:#8A8579">02</div><div><div style="font-family:'Spectral',serif;font-size:15.5px;font-weight:600;color:#14120E">Les Comptes veulent −2 % sur le pédagogique</div><div style="font-size:12.5px;color:#77726A">Déjà chiffré. Sans vous.</div></div></div>
+                  <div style="display:flex;gap:12px;padding:9px 0;border-bottom:1px solid #DED8C8"><div style="flex:0 0 20px;font-family:'JetBrains Mono',monospace;font-size:11px;color:#8A8579">03</div><div><div style="font-family:'Spectral',serif;font-size:15.5px;font-weight:600;color:#14120E">Votre propre rapport vous accuse</div><div style="font-size:12.5px;color:#77726A">Fuité à 6 h 12.</div></div></div>
+                </div>
+
+                <div style="background:#1B3A6B;border-radius:12px;padding:13px 15px;display:flex;gap:12px;align-items:flex-start">
+                  <div style="flex:1 1 auto"><div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:rgba(244,241,234,.68)">Hôtel Malesherbes · maintenant</div><div style="font-family:'Spectral',serif;font-size:15.5px;color:#F4F1EA;margin-top:5px;line-height:1.35">« Tu peux passer ce matin ? Ce n'est rien. »</div></div>
+                </div>
+              </div>
+
+              <div style="flex:0 0 auto;display:flex;border-top:2px solid #14120E;background:#EDE8DC">
+                <div style="flex:1;padding:12px 0 22px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;color:#14120E;background:#F4F1EA;border-right:1px solid #DED8C8">CABINET</div>
+                <div style="flex:1;padding:12px 0 22px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;color:#8A8579;border-right:1px solid #DED8C8">FILE</div>
+                <div style="flex:1;padding:12px 0 22px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;color:#8A8579;border-right:1px solid #DED8C8">PRESSE</div>
+                <div style="flex:1;padding:12px 0 22px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;color:#8A8579">BILAN</div>
+              </div>
+            </div>
+          </div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#8A8579;text-align:center">Tableau de bord</div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div style="width:390px;height:844px;border-radius:46px;padding:10px;background:#25231E;box-shadow:0 34px 64px -24px rgba(20,18,14,.55)">
+            <div style="width:100%;height:100%;border-radius:36px;overflow:hidden;display:flex;flex-direction:column;background:#EDE8DC">
+              <div style="height:44px;flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;padding:0 28px;font-family:'JetBrains Mono',monospace;font-size:12px;color:#14120E"><span>9:41</span><span style="letter-spacing:.1em">▮▮▮ ⌁ 78%</span></div>
+              <div style="flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;padding:4px 24px 12px;border-bottom:2px solid #14120E">
+                <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#8A8579">Dossier 1 / 6</div>
+                <div style="display:flex;gap:4px;align-items:center"><span style="width:16px;height:4px;background:#14120E;display:inline-block"></span><span style="width:16px;height:4px;background:#C9C2B0;display:inline-block"></span><span style="width:16px;height:4px;background:#C9C2B0;display:inline-block"></span><span style="width:16px;height:4px;background:#C9C2B0;display:inline-block"></span><span style="width:16px;height:4px;background:#C9C2B0;display:inline-block"></span><span style="width:16px;height:4px;background:#C9C2B0;display:inline-block"></span></div>
+              </div>
+
+              <div style="flex:1 1 auto;overflow:hidden;padding:20px 22px 0">
+                <div style="background:#FFFDF7;border:2px solid #14120E;padding:18px 18px 20px;box-shadow:0 8px 0 -4px #EDE8DC, 0 8px 0 -2px #C9C2B0, 0 16px 0 -8px #E5DFCF, 0 16px 0 -6px #C9C2B0">
+                  <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+                    <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:#8A8579">Fiche n° 014</div>
+                    <div style="flex:0 0 auto;transform:rotate(-7deg);border:2px solid #C8102E;color:#C8102E;font-family:'JetBrains Mono',monospace;font-weight:700;font-size:10px;letter-spacing:.14em;padding:4px 7px">URGENT</div>
+                  </div>
+                  <h2 style="margin:12px 0 0;font-family:'Spectral',serif;font-size:28px;font-weight:800;line-height:1.1;letter-spacing:-.015em;color:#14120E;text-wrap:pretty">Dédoubler les CE1 en quartier prioritaire</h2>
+                  <p style="margin:12px 0 0;font-family:'Spectral',serif;font-size:15px;line-height:1.5;color:#3E3A33;text-wrap:pretty">Vos services ont prouvé que ça marche il y a huit ans. Trois ministres l'ont annoncé, aucun ne l'a financé. Il manque 4 800 salles.</p>
+                  <div style="margin-top:13px;border-top:1px solid #DED8C8;padding-top:10px;font-family:'Spectral',serif;font-style:italic;font-size:13.5px;color:#77726A;line-height:1.4">Le conseiller budget respire fort derrière vous.</div>
+                </div>
+
+                <div style="display:flex;gap:12px;margin-top:26px">
+                  <div style="flex:1;background:#F4F1EA;border:2px solid #14120E;padding:13px 14px;box-shadow:4px 4px 0 #14120E">
+                    <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:#8A8579">← Glisser</div>
+                    <div style="font-family:'Spectral',serif;font-size:18px;font-weight:700;color:#14120E;margin-top:5px">Classer sans suite</div>
+                    <div style="display:flex;flex-wrap:wrap;gap:5px;margin-top:10px;font-family:'JetBrains Mono',monospace;font-size:10px"><span style="border:1px solid #8A8579;color:#8A8579;padding:3px 6px">Budget 0</span><span style="border:1px solid #C8102E;color:#C8102E;padding:3px 6px">Inég. +5</span></div>
+                  </div>
+                  <div style="flex:1;background:#14120E;border:2px solid #14120E;padding:13px 14px;box-shadow:4px 4px 0 #C8102E">
+                    <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:rgba(244,241,234,.6);text-align:right">Glisser →</div>
+                    <div style="font-family:'Spectral',serif;font-size:18px;font-weight:700;color:#F4F1EA;margin-top:5px;text-align:right">Signer</div>
+                    <div style="display:flex;flex-wrap:wrap;gap:5px;margin-top:10px;justify-content:flex-end;font-family:'JetBrains Mono',monospace;font-size:10px"><span style="border:1px solid #E8746A;color:#E8746A;padding:3px 6px">−800 M€</span><span style="border:1px solid #7FB79A;color:#7FB79A;padding:3px 6px">Inég. −7</span></div>
+                  </div>
+                </div>
+
+                <div style="background:#1B3A6B;border-radius:12px;padding:12px 15px;margin-top:20px">
+                  <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:rgba(244,241,234,.68)">Les Comptes · il y a 2 min</div>
+                  <div style="font-family:'Spectral',serif;font-size:15.5px;color:#F4F1EA;margin-top:5px;line-height:1.35">« On a vu passer votre note. On l'a corrigée. »</div>
+                </div>
+              </div>
+
+              <div style="flex:0 0 auto;padding:14px 24px 30px;border-top:2px solid #14120E;background:#EDE8DC;display:flex;align-items:center;justify-content:space-between">
+                <div style="font-family:'JetBrains Mono',monospace;font-size:10.5px;color:#8A8579;line-height:1.4;max-width:18ch">Aucune fiche ne revient une deuxième fois.</div>
+                <div style="font-family:'JetBrains Mono',monospace;font-size:10.5px;color:#14120E;border:1px solid #14120E;padding:8px 12px">DEMANDER UNE NOTE</div>
+              </div>
+            </div>
+          </div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#8A8579;text-align:center">Carte à trancher</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ 2b — LE QUOTIDIEN ============ -->
+    <div id="2b" style="display:flex;flex-direction:column;gap:28px">
+      <div style="display:flex;align-items:flex-start;gap:16px;max-width:560px">
+        <div style="flex:0 0 auto;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;letter-spacing:.06em;background:#14120E;color:#F4F1EA;padding:6px 11px;border-radius:3px">2b</div>
+        <div>
+          <div style="font-family:'Spectral',serif;font-size:26px;font-weight:700;color:#14120E;line-height:1.15">Le quotidien</div>
+          <div style="font-size:15px;line-height:1.5;color:#57534A;margin-top:6px;text-wrap:pretty">Toute la partie est un journal qu'on feuillette : le tableau de bord <em>est</em> la une, vos indicateurs défilent en bandeau comme des cours de bourse, et chaque dossier arrive sous forme de coupure à glisser. Le papier journal de 1a poussé jusqu'au bout — c'est la version où l'on comprend en une seconde qu'on joue contre la presse.</div>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:36px">
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div style="width:390px;height:844px;border-radius:46px;padding:10px;background:#25231E;box-shadow:0 34px 64px -24px rgba(20,18,14,.55)">
+            <div style="width:100%;height:100%;border-radius:36px;overflow:hidden;display:flex;flex-direction:column;background:#EDE9E0">
+              <div style="height:44px;flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;padding:0 28px;font-family:'JetBrains Mono',monospace;font-size:12px;color:#14120E"><span>7:12</span><span style="letter-spacing:.1em">▮▮▮ ⌁ 94%</span></div>
+
+              <div style="flex:0 0 auto;background:#14120E;padding:11px 22px;display:flex;align-items:baseline;justify-content:space-between">
+                <div style="font-family:'Spectral',serif;font-size:23px;font-weight:800;letter-spacing:.02em;color:#EDE9E0">Le Bulletin</div>
+                <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;color:rgba(237,233,224,.66)">{{ weekLabel }} · 0,90 €</div>
+              </div>
+
+              <div style="flex:0 0 auto;background:#C8102E;padding:7px 0;overflow:hidden">
+                <div style="display:flex;width:max-content;animation:ticker 20s linear infinite">
+                  <div style="display:flex;gap:22px;padding-right:22px;font-family:'JetBrains Mono',monospace;font-size:11px;color:#F7EFE9;white-space:nowrap"><span>OPINION 41 ▼6</span><span>NIVEAU 52 ▲1</span><span>INÉGALITÉS 68 ▲4</span><span>BUDGET −1,2 Md €</span></div>
+                  <div style="display:flex;gap:22px;padding-right:22px;font-family:'JetBrains Mono',monospace;font-size:11px;color:#F7EFE9;white-space:nowrap"><span>OPINION 41 ▼6</span><span>NIVEAU 52 ▲1</span><span>INÉGALITÉS 68 ▲4</span><span>BUDGET −1,2 Md €</span></div>
+                </div>
+              </div>
+
+              <div style="flex:1 1 auto;overflow:hidden;padding:18px 22px 0;display:flex;flex-direction:column;gap:14px">
+                <div>
+                  <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:#C8102E">Édition du matin</div>
+                  <h2 style="margin:9px 0 0;font-family:'Spectral',serif;font-size:33px;font-weight:800;line-height:1.02;letter-spacing:-.025em;color:#14120E;text-wrap:pretty">Le ministre a six dossiers et cinq semaines</h2>
+                  <p style="margin:11px 0 0;font-family:'Spectral',serif;font-size:14.5px;line-height:1.45;color:#3E3A33;text-wrap:pretty">Notre rédaction a obtenu la liste. Elle est plus courte que prévu, ce qui n'est pas rassurant. Les Comptes ont déjà rechiffré deux des six.</p>
+                </div>
+
+                <div style="border-top:3px double #14120E;border-bottom:1px solid #C9C2B0;padding:10px 0;display:flex;justify-content:space-between;align-items:baseline">
+                  <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:#8A8579">Au sommaire</div>
+                  <div style="font-family:'JetBrains Mono',monospace;font-size:10.5px;color:#C8102E">6 coupures</div>
+                </div>
+
+                <div style="display:flex;flex-direction:column;gap:11px">
+                  <div style="display:flex;gap:12px">
+                    <div style="flex:0 0 62px;height:62px;background:repeating-linear-gradient(135deg,#DCD6C8 0 6px,#EDE9E0 6px 12px);border:1px solid #C9C2B0"></div>
+                    <div style="flex:1 1 auto"><div style="font-family:'Spectral',serif;font-size:16px;font-weight:700;color:#14120E;line-height:1.2">Dédoubler les CE1 en quartier prioritaire</div><div style="font-family:'Spectral',serif;font-size:13px;color:#77726A;margin-top:2px;line-height:1.35">Promis par vos trois prédécesseurs. Payé par aucun.</div></div>
+                  </div>
+                  <div style="display:flex;gap:12px;border-top:1px solid #DED8C8;padding-top:11px">
+                    <div style="flex:0 0 62px;height:62px;background:repeating-linear-gradient(135deg,#DCD6C8 0 6px,#EDE9E0 6px 12px);border:1px solid #C9C2B0"></div>
+                    <div style="flex:1 1 auto"><div style="font-family:'Spectral',serif;font-size:16px;font-weight:700;color:#14120E;line-height:1.2">Les Comptes réclament −2 % sur le pédagogique</div><div style="font-family:'Spectral',serif;font-size:13px;color:#77726A;margin-top:2px;line-height:1.35">Chiffré sans vous, annoncé avant vous.</div></div>
+                  </div>
+                </div>
+
+                <div style="background:#1B3A6B;border-radius:12px;padding:12px 15px">
+                  <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:rgba(237,233,224,.68)">Hôtel Malesherbes · 07:04</div>
+                  <div style="font-family:'Spectral',serif;font-size:15.5px;color:#EDE9E0;margin-top:5px;line-height:1.35">« Tu as vu la une ? Passe. »</div>
+                </div>
+              </div>
+
+              <div style="flex:0 0 auto;display:flex;border-top:2px solid #14120E;background:#E4DFD4">
+                <div style="flex:1;padding:12px 0 22px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;color:#14120E;background:#EDE9E0;border-right:1px solid #D3CCBD">UNE</div>
+                <div style="flex:1;padding:12px 0 22px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;color:#8A8579;border-right:1px solid #D3CCBD">COUPURES</div>
+                <div style="flex:1;padding:12px 0 22px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;color:#8A8579;border-right:1px solid #D3CCBD">COURRIER</div>
+                <div style="flex:1;padding:12px 0 22px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;color:#8A8579">BILAN</div>
+              </div>
+            </div>
+          </div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#8A8579;text-align:center">La une = le tableau de bord</div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div style="width:390px;height:844px;border-radius:46px;padding:10px;background:#25231E;box-shadow:0 34px 64px -24px rgba(20,18,14,.55)">
+            <div style="width:100%;height:100%;border-radius:36px;overflow:hidden;display:flex;flex-direction:column;background:#DCD6C8">
+              <div style="height:44px;flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;padding:0 28px;font-family:'JetBrains Mono',monospace;font-size:12px;color:#14120E"><span>9:41</span><span style="letter-spacing:.1em">▮▮▮ ⌁ 78%</span></div>
+              <div style="flex:0 0 auto;background:#C8102E;padding:7px 0;overflow:hidden">
+                <div style="display:flex;width:max-content;animation:ticker 20s linear infinite">
+                  <div style="display:flex;gap:22px;padding-right:22px;font-family:'JetBrains Mono',monospace;font-size:11px;color:#F7EFE9;white-space:nowrap"><span>OPINION 41 ▼6</span><span>NIVEAU 52 ▲1</span><span>INÉGALITÉS 68 ▲4</span><span>BUDGET −1,2 Md €</span></div>
+                  <div style="display:flex;gap:22px;padding-right:22px;font-family:'JetBrains Mono',monospace;font-size:11px;color:#F7EFE9;white-space:nowrap"><span>OPINION 41 ▼6</span><span>NIVEAU 52 ▲1</span><span>INÉGALITÉS 68 ▲4</span><span>BUDGET −1,2 Md €</span></div>
+                </div>
+              </div>
+              <div style="flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;padding:12px 22px 10px">
+                <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#6E685C">Coupure 1 / 6</div>
+                <div style="display:flex;gap:4px;align-items:center"><span style="width:16px;height:4px;background:#14120E;display:inline-block"></span><span style="width:16px;height:4px;background:#BDB5A4;display:inline-block"></span><span style="width:16px;height:4px;background:#BDB5A4;display:inline-block"></span><span style="width:16px;height:4px;background:#BDB5A4;display:inline-block"></span><span style="width:16px;height:4px;background:#BDB5A4;display:inline-block"></span><span style="width:16px;height:4px;background:#BDB5A4;display:inline-block"></span></div>
+              </div>
+
+              <div style="flex:1 1 auto;overflow:hidden;padding:6px 20px 0">
+                <div style="background:#EDE9E0;padding:18px 18px 20px;box-shadow:0 8px 0 -4px #E4DFD4, 0 8px 0 -2px #BDB5A4, 0 16px 0 -8px #DCD6C8, 0 16px 0 -6px #BDB5A4">
+                  <div style="display:flex;align-items:baseline;justify-content:space-between;border-bottom:2px solid #14120E;padding-bottom:8px">
+                    <div style="font-family:'Spectral',serif;font-size:15px;font-weight:800;color:#14120E">Le Bulletin</div>
+                    <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:#C8102E">Éducation · p. 3</div>
+                  </div>
+                  <h2 style="margin:12px 0 0;font-family:'Spectral',serif;font-size:29px;font-weight:800;line-height:1.05;letter-spacing:-.02em;color:#14120E;text-wrap:pretty">Dédoubler les CE1 : la promesse de trop ?</h2>
+                  <p style="margin:11px 0 0;font-family:'Spectral',serif;font-size:14.5px;line-height:1.5;color:#3E3A33;text-wrap:pretty">Vos services ont prouvé que ça marche il y a huit ans. Trois ministres l'ont annoncé, aucun ne l'a financé. Il manque 4 800 salles, et le rédacteur en chef le sait aussi bien que vous.</p>
+                  <div style="margin-top:13px;border-top:1px solid #C9C2B0;padding-top:10px;font-family:'Spectral',serif;font-style:italic;font-size:13.5px;color:#77726A;line-height:1.4">« Nous publions demain, avec ou sans votre réponse. »</div>
+                </div>
+
+                <div style="display:flex;gap:12px;margin-top:26px">
+                  <div style="flex:1;background:#EDE9E0;border:2px solid #14120E;padding:13px 14px;box-shadow:4px 4px 0 #14120E">
+                    <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:#8A8579">← Glisser</div>
+                    <div style="font-family:'Spectral',serif;font-size:18px;font-weight:700;color:#14120E;margin-top:5px">Ne pas répondre</div>
+                    <div style="display:flex;flex-wrap:wrap;gap:5px;margin-top:10px;font-family:'JetBrains Mono',monospace;font-size:10px"><span style="border:1px solid #8A8579;color:#8A8579;padding:3px 6px">Budget 0</span><span style="border:1px solid #C8102E;color:#C8102E;padding:3px 6px">Inég. +5</span></div>
+                  </div>
+                  <div style="flex:1;background:#C8102E;border:2px solid #14120E;padding:13px 14px;box-shadow:4px 4px 0 #14120E">
+                    <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:rgba(247,239,233,.75);text-align:right">Glisser →</div>
+                    <div style="font-family:'Spectral',serif;font-size:18px;font-weight:700;color:#F7EFE9;margin-top:5px;text-align:right">Annoncer</div>
+                    <div style="display:flex;flex-wrap:wrap;gap:5px;margin-top:10px;justify-content:flex-end;font-family:'JetBrains Mono',monospace;font-size:10px"><span style="border:1px solid rgba(247,239,233,.7);color:#F7EFE9;padding:3px 6px">−800 M€</span><span style="border:1px solid rgba(247,239,233,.7);color:#F7EFE9;padding:3px 6px">Inég. −7</span></div>
+                  </div>
+                </div>
+              </div>
+
+              <div style="flex:0 0 auto;padding:14px 22px 30px;background:#D3CCBD;border-top:2px solid #14120E;display:flex;align-items:center;justify-content:space-between">
+                <div style="font-family:'JetBrains Mono',monospace;font-size:10.5px;color:#6E685C;line-height:1.4;max-width:18ch">Le journal boucle à 22 h.</div>
+                <div style="font-family:'JetBrains Mono',monospace;font-size:10.5px;color:#14120E;border:1px solid #14120E;padding:8px 12px">OFF THE RECORD</div>
+              </div>
+            </div>
+          </div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#8A8579;text-align:center">Coupure à glisser</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ 2c — LE TÉLÉPHONE DU MINISTRE ============ -->
+    <div id="2c" style="display:flex;flex-direction:column;gap:28px">
+      <div style="display:flex;align-items:flex-start;gap:16px;max-width:560px">
+        <div style="flex:0 0 auto;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;letter-spacing:.06em;background:#14120E;color:#F4F1EA;padding:6px 11px;border-radius:3px">2c</div>
+        <div>
+          <div style="font-family:'Spectral',serif;font-size:26px;font-weight:700;color:#14120E;line-height:1.15">Le téléphone du ministre</div>
+          <div style="font-size:15px;line-height:1.5;color:#57534A;margin-top:6px;text-wrap:pretty">On ne joue pas à une appli : on tient <em>son</em> téléphone. Écran verrouillé, widget d'indicateurs, et une pile de notifications qu'on balaie une par une — chaque notification est un dossier. Les fiches restent en papier, posées sur le noir. C'est la version la plus immédiate, et la plus cruelle : les mauvaises nouvelles arrivent avant le café.</div>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:36px">
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div style="width:390px;height:844px;border-radius:46px;padding:10px;background:#05070A;box-shadow:0 34px 64px -24px rgba(5,7,10,.55)">
+            <div style="width:100%;height:100%;border-radius:36px;overflow:hidden;display:flex;flex-direction:column;background:#14120E">
+              <div style="height:44px;flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;padding:0 28px;font-family:'JetBrains Mono',monospace;font-size:12px;color:rgba(244,241,234,.7)"><span>6:58</span><span style="letter-spacing:.1em">▮▮▮ ⌁ 94%</span></div>
+
+              <div style="flex:0 0 auto;padding:16px 24px 18px;text-align:center">
+                <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:rgba(244,241,234,.5)">Mardi · {{ weekLabel }}</div>
+                <div style="font-family:'Spectral',serif;font-size:64px;font-weight:300;color:#F4F1EA;line-height:1.05;margin-top:4px">6:58</div>
+                <div style="font-family:'Spectral',serif;font-style:italic;font-size:14px;color:rgba(244,241,234,.55);margin-top:2px">{{ ministerName }} · 5 semaines avant remaniement</div>
+              </div>
+
+              <div style="flex:0 0 auto;margin:0 20px;background:rgba(244,241,234,.07);border:1px solid rgba(244,241,234,.14);border-radius:16px;padding:13px 15px">
+                <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:rgba(244,241,234,.45)">Vos curseurs</div>
+                <div style="display:flex;gap:14px;margin-top:10px">
+                  <div style="flex:1"><div style="font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:700;color:#F4F1EA;line-height:1">41</div><div style="font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.1em;text-transform:uppercase;color:rgba(244,241,234,.45);margin-top:4px">Opinion</div><div style="height:3px;margin-top:6px;background:rgba(244,241,234,.15);border-radius:2px"><div style="width:41%;height:100%;background:#E8746A;border-radius:2px"></div></div></div>
+                  <div style="flex:1"><div style="font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:700;color:#F4F1EA;line-height:1">52</div><div style="font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.1em;text-transform:uppercase;color:rgba(244,241,234,.45);margin-top:4px">Niveau</div><div style="height:3px;margin-top:6px;background:rgba(244,241,234,.15);border-radius:2px"><div style="width:52%;height:100%;background:#7FA3D8;border-radius:2px"></div></div></div>
+                  <div style="flex:1"><div style="font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:700;color:#E8746A;line-height:1">68</div><div style="font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.1em;text-transform:uppercase;color:rgba(244,241,234,.45);margin-top:4px">Inégalités</div><div style="height:3px;margin-top:6px;background:rgba(244,241,234,.15);border-radius:2px"><div style="width:68%;height:100%;background:#E8746A;border-radius:2px"></div></div></div>
+                  <div style="flex:1.2"><div style="font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;color:#E8746A;line-height:1;padding-top:3px">−1,2 Md</div><div style="font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.1em;text-transform:uppercase;color:rgba(244,241,234,.45);margin-top:5px">Budget</div></div>
+                </div>
+              </div>
+
+              <div style="flex:1 1 auto;overflow:hidden;padding:16px 20px 0;display:flex;flex-direction:column;gap:10px">
+                <div style="display:flex;justify-content:space-between;align-items:baseline">
+                  <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:rgba(244,241,234,.45)">6 notifications</div>
+                  <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;color:rgba(244,241,234,.35)">Glissez pour trancher</div>
+                </div>
+
+                <div style="background:#F4F1EA;border-radius:16px;padding:13px 15px;box-shadow:0 8px 0 -4px #C9C2B0, 0 16px 0 -8px #A79F8D">
+                  <div style="display:flex;justify-content:space-between;align-items:baseline"><div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:#C8102E">Direction générale · 6:12</div><div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;color:#8A8579">01</div></div>
+                  <div style="font-family:'Spectral',serif;font-size:17px;font-weight:700;color:#14120E;margin-top:6px;line-height:1.2">Dédoubler les CE1 en quartier prioritaire</div>
+                  <div style="font-family:'Spectral',serif;font-size:13.5px;color:#77726A;margin-top:3px;line-height:1.35">Promis par vos trois prédécesseurs. Payé par aucun.</div>
+                </div>
+
+                <div style="background:#1B3A6B;border-radius:16px;padding:13px 15px">
+                  <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:rgba(244,241,234,.6)">Les Comptes · 6:31</div>
+                  <div style="font-family:'Spectral',serif;font-size:16px;color:#F4F1EA;margin-top:5px;line-height:1.3">« On a vu passer votre note. On l'a corrigée. »</div>
+                </div>
+
+                <div style="background:rgba(244,241,234,.08);border:1px solid rgba(244,241,234,.16);border-radius:16px;padding:13px 15px">
+                  <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:rgba(244,241,234,.45)">FUSE · 6:44</div>
+                  <div style="font-family:'Spectral',serif;font-size:16px;color:#F4F1EA;margin-top:5px;line-height:1.3">Quatrième demande d'audience. Le ton a changé.</div>
+                </div>
+
+                <div style="background:#C8102E;border-radius:16px;padding:13px 15px">
+                  <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:rgba(247,239,233,.75)">Hôtel Malesherbes · 7:04</div>
+                  <div style="font-family:'Spectral',serif;font-size:16px;color:#F7EFE9;margin-top:5px;line-height:1.3">« Tu peux passer ce matin ? Ce n'est rien. »</div>
+                </div>
+              </div>
+
+              <div style="flex:0 0 auto;padding:14px 0 26px;text-align:center"><div style="width:120px;height:5px;border-radius:3px;background:rgba(244,241,234,.35);margin:0 auto"></div></div>
+            </div>
+          </div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#8A8579;text-align:center">Écran verrouillé</div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div style="width:390px;height:844px;border-radius:46px;padding:10px;background:#05070A;box-shadow:0 34px 64px -24px rgba(5,7,10,.55)">
+            <div style="width:100%;height:100%;border-radius:36px;overflow:hidden;display:flex;flex-direction:column;background:#14120E">
+              <div style="height:44px;flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;padding:0 28px;font-family:'JetBrains Mono',monospace;font-size:12px;color:rgba(244,241,234,.7)"><span>7:06</span><span style="letter-spacing:.1em">▮▮▮ ⌁ 93%</span></div>
+
+              <div style="flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;padding:4px 22px 12px;border-bottom:1px solid rgba(244,241,234,.12)">
+                <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:rgba(244,241,234,.5)">Notification 1 / 6</div>
+                <div style="display:flex;gap:4px;align-items:center"><span style="width:16px;height:4px;background:#F4F1EA;display:inline-block;border-radius:2px"></span><span style="width:16px;height:4px;background:rgba(244,241,234,.22);display:inline-block;border-radius:2px"></span><span style="width:16px;height:4px;background:rgba(244,241,234,.22);display:inline-block;border-radius:2px"></span><span style="width:16px;height:4px;background:rgba(244,241,234,.22);display:inline-block;border-radius:2px"></span><span style="width:16px;height:4px;background:rgba(244,241,234,.22);display:inline-block;border-radius:2px"></span><span style="width:16px;height:4px;background:rgba(244,241,234,.22);display:inline-block;border-radius:2px"></span></div>
+              </div>
+
+              <div style="flex:1 1 auto;overflow:hidden;padding:20px 20px 0">
+                <div style="background:#F4F1EA;border-radius:18px;padding:18px 18px 20px;box-shadow:0 8px 0 -4px #C9C2B0, 0 16px 0 -8px #A79F8D">
+                  <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+                    <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:#8A8579">Direction générale · fiche 014</div>
+                    <div style="flex:0 0 auto;transform:rotate(-7deg);border:2px solid #C8102E;color:#C8102E;font-family:'JetBrains Mono',monospace;font-weight:700;font-size:10px;letter-spacing:.14em;padding:4px 7px">URGENT</div>
+                  </div>
+                  <h2 style="margin:12px 0 0;font-family:'Spectral',serif;font-size:28px;font-weight:800;line-height:1.1;letter-spacing:-.015em;color:#14120E;text-wrap:pretty">Dédoubler les CE1 en quartier prioritaire</h2>
+                  <p style="margin:12px 0 0;font-family:'Spectral',serif;font-size:15px;line-height:1.5;color:#3E3A33;text-wrap:pretty">Vos services ont prouvé que ça marche il y a huit ans. Trois ministres l'ont annoncé, aucun ne l'a financé. Il manque 4 800 salles.</p>
+                  <div style="margin-top:13px;border-top:1px solid #DED8C8;padding-top:10px;font-family:'Spectral',serif;font-style:italic;font-size:13.5px;color:#77726A;line-height:1.4">Le conseiller budget respire fort derrière vous.</div>
+                </div>
+
+                <div style="display:flex;gap:12px;margin-top:26px">
+                  <div style="flex:1;background:rgba(244,241,234,.07);border:1px solid rgba(232,116,106,.5);border-radius:15px;padding:13px 14px">
+                    <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:#E8746A">← Glisser</div>
+                    <div style="font-family:'Spectral',serif;font-size:18px;font-weight:700;color:#F4F1EA;margin-top:5px">Classer sans suite</div>
+                    <div style="display:flex;flex-wrap:wrap;gap:5px;margin-top:10px;font-family:'JetBrains Mono',monospace;font-size:10px"><span style="border:1px solid rgba(244,241,234,.3);color:rgba(244,241,234,.6);padding:3px 6px;border-radius:20px">Budget 0</span><span style="background:#C8102E;color:#F7EFE9;padding:3px 7px;border-radius:20px">Inég. +5</span></div>
+                  </div>
+                  <div style="flex:1;background:#1B3A6B;border:1px solid #2E5BA8;border-radius:15px;padding:13px 14px">
+                    <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:rgba(244,241,234,.65);text-align:right">Glisser →</div>
+                    <div style="font-family:'Spectral',serif;font-size:18px;font-weight:700;color:#F4F1EA;margin-top:5px;text-align:right">Signer</div>
+                    <div style="display:flex;flex-wrap:wrap;gap:5px;margin-top:10px;justify-content:flex-end;font-family:'JetBrains Mono',monospace;font-size:10px"><span style="background:#C8102E;color:#F7EFE9;padding:3px 7px;border-radius:20px">−800 M€</span><span style="background:#F4F1EA;color:#14120E;padding:3px 7px;border-radius:20px">Inég. −7</span></div>
+                  </div>
+                </div>
+
+                <div style="margin-top:22px;display:flex;gap:10px;align-items:center;background:rgba(244,241,234,.06);border-radius:14px;padding:12px 14px">
+                  <div style="flex:1 1 auto;font-family:'Spectral',serif;font-style:italic;font-size:14px;color:rgba(244,241,234,.7);line-height:1.4">Vous pouvez aussi laisser sonner. Le dossier partira au suivant.</div>
+                </div>
+              </div>
+
+              <div style="flex:0 0 auto;padding:14px 22px 30px;border-top:1px solid rgba(244,241,234,.12);display:flex;align-items:center;justify-content:space-between">
+                <div style="font-family:'JetBrains Mono',monospace;font-size:10.5px;color:rgba(244,241,234,.45);line-height:1.4;max-width:18ch">Aucune notification ne revient.</div>
+                <div style="font-family:'JetBrains Mono',monospace;font-size:10.5px;color:#F4F1EA;border:1px solid rgba(244,241,234,.35);border-radius:9px;padding:9px 13px">DEMANDER UNE NOTE</div>
+              </div>
+            </div>
+          </div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#8A8579;text-align:center">Notification ouverte</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section style="padding:24px 72px 96px;font-family:'Archivo',system-ui,sans-serif">
+  <div style="max-width:900px;margin-bottom:56px">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:#8A8579;margin-bottom:14px">Tour 1 · Chartes graphiques</div>
+    <h1 style="margin:0 0 16px;font-family:'Spectral',serif;font-size:44px;font-weight:800;letter-spacing:-.015em;color:#14120E">Ministre — trois directions visuelles</h1>
+    <p style="margin:0 0 14px;font-size:17px;line-height:1.55;color:#4A463D;text-wrap:pretty;max-width:70ch">Même jeu, trois partis pris, déclinés sur les trois écrans qui portent la boucle : le <strong>tableau de bord</strong> (quatre curseurs et la file du jour), la <strong>carte à trancher</strong> (on swipe à gauche ou à droite, chaque geste coûte) et la <strong>revue de presse</strong> (les conséquences, le lendemain matin, en pleine figure).</p>
+    <p style="margin:0;font-size:15px;line-height:1.55;color:#6B6559;text-wrap:pretty;max-width:70ch">Partie de 8 semaines, 5 à 10 minutes, qui finit toujours par un remaniement et une une de journal. Ton : satire mordante, personne n'est épargné. Institutions et syndicats sont des fictions transparentes — <em>les Comptes</em>, <em>l'Hôtel Malesherbes</em>, la <em>FUSE</em>. Dites-moi laquelle tenir : <a href="#1a">1a</a>, <a href="#1b">1b</a> ou <a href="#1c">1c</a>.</p>
+  </div>
+
+  <div style="display:flex;flex-wrap:wrap;gap:80px;align-items:flex-start">
+
+    <!-- ============ 1a — PAPIER OFFICIEL ============ -->
+    <div id="1a" style="display:flex;flex-direction:column;gap:28px">
+      <div style="display:flex;align-items:flex-start;gap:16px;max-width:640px">
+        <div style="flex:0 0 auto;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;letter-spacing:.06em;background:#14120E;color:#F4F1EA;padding:6px 11px;border-radius:3px">1a</div>
+        <div>
+          <div style="font-family:'Spectral',serif;font-size:26px;font-weight:700;color:#14120E;line-height:1.15">Papier officiel</div>
+          <div style="font-size:15px;line-height:1.5;color:#57534A;margin-top:6px;text-wrap:pretty">La note de service comme interface : crème, filets, tampons, chiffres en machine à écrire. La satire passe par le contraste — on glisse le doigt sur une fiche cartonnée pour décider du sort de douze millions d'élèves, et la fiche est tamponnée avant qu'on ait lu.</div>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:36px">
+
+        <!-- 1a · dashboard -->
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div style="width:390px;height:844px;border-radius:46px;padding:10px;background:#25231E;box-shadow:0 34px 64px -24px rgba(20,18,14,.55)">
+            <div style="width:100%;height:100%;border-radius:36px;overflow:hidden;display:flex;flex-direction:column;background:#F4F1EA">
+              <div style="height:44px;flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;padding:0 28px;font-family:'JetBrains Mono',monospace;font-size:12px;color:#14120E">
+                <span>9:41</span><span style="letter-spacing:.1em">▮▮▮ ⌁ 78%</span>
+              </div>
+              <div style="flex:0 0 auto;padding:6px 26px 16px;border-bottom:2px solid #14120E">
+                <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;color:#8A8579">Ministère de l'Instruction publique</div>
+                <div style="display:flex;align-items:baseline;justify-content:space-between;margin-top:9px">
+                  <div style="font-family:'Spectral',serif;font-size:26px;font-weight:800;letter-spacing:-.01em;color:#14120E">{{ ministerName }}</div>
+                  <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#C8102E">{{ weekLabel }}</div>
+                </div>
+                <div style="font-family:'Spectral',serif;font-style:italic;font-size:14px;color:#57534A;margin-top:2px">Profil : technocrate réformateur. Espérance de vie au poste : 11 semaines.</div>
+              </div>
+
+              <div style="flex:1 1 auto;overflow:hidden;padding:18px 26px 0;display:flex;flex-direction:column;gap:15px">
+                <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:#8A8579">I. État des curseurs</div>
+
+                <div style="display:flex;flex-direction:column;gap:12px">
+                  <div>
+                    <div style="display:flex;justify-content:space-between;align-items:baseline;font-family:'JetBrains Mono',monospace;font-size:12px;color:#14120E"><span>Opinion publique</span><span style="font-weight:700">41 <span style="color:#C8102E">▼6</span></span></div>
+                    <div style="height:7px;margin-top:5px;background:#E3DED1;border:1px solid #14120E"><div style="width:41%;height:100%;background:#C8102E"></div></div>
+                  </div>
+                  <div>
+                    <div style="display:flex;justify-content:space-between;align-items:baseline;font-family:'JetBrains Mono',monospace;font-size:12px;color:#14120E"><span>Niveau des élèves</span><span style="font-weight:700">52 <span style="color:#1B6B45">▲1</span></span></div>
+                    <div style="height:7px;margin-top:5px;background:#E3DED1;border:1px solid #14120E"><div style="width:52%;height:100%;background:#1B3A6B"></div></div>
+                  </div>
+                  <div>
+                    <div style="display:flex;justify-content:space-between;align-items:baseline;font-family:'JetBrains Mono',monospace;font-size:12px;color:#14120E"><span>Inégalités scolaires</span><span style="font-weight:700">68 <span style="color:#C8102E">▲4</span></span></div>
+                    <div style="height:7px;margin-top:5px;background:#E3DED1;border:1px solid #14120E"><div style="width:68%;height:100%;background:#C8102E"></div></div>
+                  </div>
+                </div>
+
+                <div style="display:flex;justify-content:space-between;align-items:center;border-top:1px solid #C9C2B0;border-bottom:1px solid #C9C2B0;padding:11px 0;font-family:'JetBrains Mono',monospace;font-size:12px;color:#14120E">
+                  <span style="color:#8A8579">Budget disponible</span><span style="font-weight:700;color:#C8102E">− 1,2 Md €</span>
+                </div>
+
+                <div style="display:flex;justify-content:space-between;align-items:baseline">
+                  <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:#8A8579">II. File du jour</div>
+                  <div style="font-family:'JetBrains Mono',monospace;font-size:10.5px;color:#C8102E">6 dossiers</div>
+                </div>
+
+                <div style="display:flex;flex-direction:column">
+                  <div style="display:flex;gap:12px;padding:10px 0;border-bottom:1px solid #DED8C8">
+                    <div style="flex:0 0 22px;font-family:'JetBrains Mono',monospace;font-size:11px;color:#C8102E">01</div>
+                    <div><div style="font-family:'Spectral',serif;font-size:15.5px;font-weight:600;color:#14120E">Dédoubler les CE1 en quartier prioritaire</div><div style="font-size:12.5px;color:#77726A;margin-top:1px">Promis par vos trois prédécesseurs.</div></div>
+                  </div>
+                  <div style="display:flex;gap:12px;padding:10px 0;border-bottom:1px solid #DED8C8">
+                    <div style="flex:0 0 22px;font-family:'JetBrains Mono',monospace;font-size:11px;color:#8A8579">02</div>
+                    <div><div style="font-family:'Spectral',serif;font-size:15.5px;font-weight:600;color:#14120E">Les Comptes réclament −2 % sur le pédagogique</div><div style="font-size:12.5px;color:#77726A;margin-top:1px">Ils ont déjà chiffré. Sans vous.</div></div>
+                  </div>
+                  <div style="display:flex;gap:12px;padding:10px 0;border-bottom:1px solid #DED8C8">
+                    <div style="flex:0 0 22px;font-family:'JetBrains Mono',monospace;font-size:11px;color:#8A8579">03</div>
+                    <div><div style="font-family:'Spectral',serif;font-size:15.5px;font-weight:600;color:#14120E">La FUSE demande une audience</div><div style="font-size:12.5px;color:#77726A;margin-top:1px">Quatrième demande. Ton en baisse.</div></div>
+                  </div>
+                  <div style="display:flex;gap:12px;padding:10px 0;border-bottom:1px solid #DED8C8">
+                    <div style="flex:0 0 22px;font-family:'JetBrains Mono',monospace;font-size:11px;color:#8A8579">04</div>
+                    <div><div style="font-family:'Spectral',serif;font-size:15.5px;font-weight:600;color:#14120E">Le rapport que vous avez commandé vous accuse</div><div style="font-size:12.5px;color:#77726A;margin-top:1px">Fuité à 6 h 12.</div></div>
+                  </div>
+                </div>
+              </div>
+
+              <div style="flex:0 0 auto;padding:14px 26px 16px;border-top:2px solid #14120E;background:#EDE8DC;display:flex;align-items:center;justify-content:space-between">
+                <div style="font-family:'JetBrains Mono',monospace;font-size:10.5px;color:#8A8579;line-height:1.4;max-width:15ch">Le remaniement est dans 5 semaines.</div>
+                <div style="background:#14120E;color:#F4F1EA;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.12em;padding:13px 20px">OUVRIR LA FILE</div>
+              </div>
+              <div style="flex:0 0 auto;display:flex;border-top:1px solid #DED8C8;background:#EDE8DC">
+                <div style="flex:1;padding:12px 0 22px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;color:#14120E;background:#F4F1EA;border-right:1px solid #DED8C8">CABINET</div>
+                <div style="flex:1;padding:12px 0 22px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;color:#8A8579;border-right:1px solid #DED8C8">FILE</div>
+                <div style="flex:1;padding:12px 0 22px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;color:#8A8579;border-right:1px solid #DED8C8">PRESSE</div>
+                <div style="flex:1;padding:12px 0 22px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;color:#8A8579">BILAN</div>
+              </div>
+            </div>
+          </div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#8A8579;text-align:center">Tableau de bord</div>
+        </div>
+
+        <!-- 1a · carte à trancher -->
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div style="width:390px;height:844px;border-radius:46px;padding:10px;background:#25231E;box-shadow:0 34px 64px -24px rgba(20,18,14,.55)">
+            <div style="width:100%;height:100%;border-radius:36px;overflow:hidden;display:flex;flex-direction:column;background:#EDE8DC">
+              <div style="height:44px;flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;padding:0 28px;font-family:'JetBrains Mono',monospace;font-size:12px;color:#14120E">
+                <span>9:41</span><span style="letter-spacing:.1em">▮▮▮ ⌁ 78%</span>
+              </div>
+              <div style="flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;padding:4px 26px 12px;border-bottom:2px solid #14120E">
+                <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#8A8579">Dossier 1 / 6</div>
+                <div style="display:flex;gap:4px;align-items:center">
+                  <span style="width:16px;height:4px;background:#14120E;display:inline-block"></span>
+                  <span style="width:16px;height:4px;background:#C9C2B0;display:inline-block"></span>
+                  <span style="width:16px;height:4px;background:#C9C2B0;display:inline-block"></span>
+                  <span style="width:16px;height:4px;background:#C9C2B0;display:inline-block"></span>
+                  <span style="width:16px;height:4px;background:#C9C2B0;display:inline-block"></span>
+                  <span style="width:16px;height:4px;background:#C9C2B0;display:inline-block"></span>
+                </div>
+              </div>
+
+              <div style="flex:1 1 auto;overflow:hidden;padding:20px 22px 0;position:relative">
+                <div style="position:relative;background:#FFFDF7;border:2px solid #14120E;padding:18px 18px 20px;box-shadow:0 8px 0 -4px #EDE8DC, 0 8px 0 -2px #C9C2B0, 0 16px 0 -8px #E5DFCF, 0 16px 0 -6px #C9C2B0">
+                  <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+                    <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:#8A8579">Fiche n° 014 · éducation prioritaire</div>
+                    <div style="flex:0 0 auto;transform:rotate(-7deg);border:2px solid #C8102E;color:#C8102E;font-family:'JetBrains Mono',monospace;font-weight:700;font-size:10px;letter-spacing:.14em;padding:4px 7px;opacity:.85">URGENT</div>
+                  </div>
+                  <h2 style="margin:12px 0 0;font-family:'Spectral',serif;font-size:28px;font-weight:800;line-height:1.12;letter-spacing:-.015em;color:#14120E;text-wrap:pretty">Dédoubler les CE1 en quartier prioritaire</h2>
+                  <p style="margin:12px 0 0;font-family:'Spectral',serif;font-size:15px;line-height:1.5;color:#3E3A33;text-wrap:pretty">Vos services ont prouvé que ça marche il y a huit ans. Depuis, trois ministres l'ont annoncé. Aucun ne l'a financé. Vous êtes le quatrième, et il manque 4 800 salles.</p>
+                  <div style="margin-top:14px;border-top:1px solid #DED8C8;padding-top:11px;font-family:'Spectral',serif;font-style:italic;font-size:13.5px;color:#77726A;line-height:1.45">Le conseiller budget respire fort derrière vous. C'est sa manière de participer.</div>
+                </div>
+
+                <div style="display:flex;gap:12px;margin-top:18px">
+                  <div style="flex:1;border:1px solid #C9C2B0;background:#F4F1EA;padding:12px 13px">
+                    <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:#8A8579">← Glisser</div>
+                    <div style="font-family:'Spectral',serif;font-size:17px;font-weight:700;color:#14120E;margin-top:5px">Classer sans suite</div>
+                    <div style="display:flex;flex-wrap:wrap;gap:5px;margin-top:9px;font-family:'JetBrains Mono',monospace;font-size:10px">
+                      <span style="border:1px solid #8A8579;color:#8A8579;padding:3px 6px">Budget 0</span>
+                      <span style="border:1px solid #C8102E;color:#C8102E;padding:3px 6px">Inég. +5</span>
+                    </div>
+                  </div>
+                  <div style="flex:1;border:2px solid #14120E;background:#FFFDF7;padding:12px 13px">
+                    <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:#C8102E;text-align:right">Glisser →</div>
+                    <div style="font-family:'Spectral',serif;font-size:17px;font-weight:700;color:#14120E;margin-top:5px;text-align:right">Signer</div>
+                    <div style="display:flex;flex-wrap:wrap;gap:5px;margin-top:9px;justify-content:flex-end;font-family:'JetBrains Mono',monospace;font-size:10px">
+                      <span style="border:1px solid #C8102E;color:#C8102E;padding:3px 6px">−800 M€</span>
+                      <span style="border:1px solid #1B6B45;color:#1B6B45;padding:3px 6px">Inég. −7</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div style="flex:0 0 auto;padding:14px 26px 30px;border-top:2px solid #14120E;background:#EDE8DC;display:flex;align-items:center;justify-content:space-between">
+                <div style="font-family:'JetBrains Mono',monospace;font-size:10.5px;color:#8A8579;line-height:1.4;max-width:18ch">Aucune fiche ne revient une deuxième fois.</div>
+                <div style="font-family:'JetBrains Mono',monospace;font-size:10.5px;color:#14120E;border:1px solid #14120E;padding:8px 12px">DEMANDER UNE NOTE</div>
+              </div>
+            </div>
+          </div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#8A8579;text-align:center">Carte à trancher</div>
+        </div>
+
+        <!-- 1a · presse -->
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div style="width:390px;height:844px;border-radius:46px;padding:10px;background:#25231E;box-shadow:0 34px 64px -24px rgba(20,18,14,.55)">
+            <div style="width:100%;height:100%;border-radius:36px;overflow:hidden;display:flex;flex-direction:column;background:#F4F1EA">
+              <div style="height:44px;flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;padding:0 28px;font-family:'JetBrains Mono',monospace;font-size:12px;color:#14120E">
+                <span>7:12</span><span style="letter-spacing:.1em">▮▮▮ ⌁ 94%</span>
+              </div>
+
+              <div style="flex:1 1 auto;overflow:hidden;display:flex;flex-direction:column">
+                <div style="padding:6px 26px 14px;border-bottom:3px double #14120E">
+                  <div style="font-family:'Spectral',serif;font-size:13px;font-style:italic;color:#8A8579;text-align:center">Revue de presse du cabinet — 6 h 55</div>
+                </div>
+
+                <div style="padding:20px 26px 16px;border-bottom:1px solid #C9C2B0">
+                  <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:#C8102E">À la une · le quotidien du soir</div>
+                  <h2 style="margin:10px 0 0;font-family:'Spectral',serif;font-size:30px;font-weight:800;line-height:1.08;letter-spacing:-.02em;color:#14120E;text-wrap:pretty">Il annonce une réforme, ils annoncent une grève</h2>
+                  <p style="margin:11px 0 0;font-family:'Spectral',serif;font-size:14.5px;line-height:1.45;color:#4A463D;text-wrap:pretty">Onze minutes séparent les deux communiqués. Le ministère salue « un dialogue enfin engagé ». Les Comptes, eux, ont déjà rechiffré la mesure à la baisse — sans prévenir la rue Condorcet.</p>
+                  <div style="display:flex;gap:8px;margin-top:12px;font-family:'JetBrains Mono',monospace;font-size:10.5px">
+                    <span style="border:1px solid #C8102E;color:#C8102E;padding:3px 7px">Opinion −6</span>
+                    <span style="border:1px solid #C8102E;color:#C8102E;padding:3px 7px">Budget −800 M€</span>
+                  </div>
+                </div>
+
+                <div style="padding:16px 26px 0;display:flex;flex-direction:column;gap:13px">
+                  <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:#8A8579">Réactions recueillies</div>
+                  <div style="display:flex;gap:12px">
+                    <div style="flex:0 0 3px;background:#C8102E"></div>
+                    <div><div style="font-family:'Spectral',serif;font-size:15.5px;font-style:italic;color:#14120E;line-height:1.35">« Consternation. » <span style="font-style:normal;color:#77726A">(communiqué de 41 pages)</span></div><div style="font-family:'JetBrains Mono',monospace;font-size:10.5px;color:#8A8579;margin-top:3px">FUSE — second degré</div></div>
+                  </div>
+                  <div style="display:flex;gap:12px">
+                    <div style="flex:0 0 3px;background:#1B3A6B"></div>
+                    <div><div style="font-family:'Spectral',serif;font-size:15.5px;font-style:italic;color:#14120E;line-height:1.35">« Un pas dans la bonne direction, mais dans le mauvais sens. »</div><div style="font-family:'JetBrains Mono',monospace;font-size:10.5px;color:#8A8579;margin-top:3px">UNIPE — parents d'élèves</div></div>
+                  </div>
+                  <div style="display:flex;gap:12px">
+                    <div style="flex:0 0 3px;background:#8A8579"></div>
+                    <div><div style="font-family:'Spectral',serif;font-size:15.5px;font-style:italic;color:#14120E;line-height:1.35">« Le ministre ? Très bien. Très, très bien. »</div><div style="font-family:'JetBrains Mono',monospace;font-size:10.5px;color:#8A8579;margin-top:3px">Un conseiller de l'Hôtel Malesherbes, anonyme</div></div>
+                  </div>
+                </div>
+
+                <div style="margin:16px 26px 0;border:2px solid #14120E;background:#FFFDF7;padding:13px 15px">
+                  <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:#C8102E">Message reçu · 07:04</div>
+                  <div style="font-family:'Spectral',serif;font-size:16.5px;color:#14120E;margin-top:6px;line-height:1.35">« Tu peux passer ce matin ? Ce n'est rien. »</div>
+                  <div style="font-family:'JetBrains Mono',monospace;font-size:10.5px;color:#8A8579;margin-top:5px">Directeur de cabinet de l'Hôtel Malesherbes</div>
+                </div>
+              </div>
+
+              <div style="flex:0 0 auto;padding:14px 26px 30px;border-top:2px solid #14120E;background:#EDE8DC;display:flex;gap:10px">
+                <div style="flex:1;text-align:center;border:1px solid #14120E;color:#14120E;font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.08em;padding:13px 0">DÉMENTIR</div>
+                <div style="flex:1;text-align:center;background:#14120E;color:#F4F1EA;font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.08em;padding:13px 0">Y ALLER →</div>
+              </div>
+            </div>
+          </div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#8A8579;text-align:center">Revue de presse</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ============ 1b — CABINET DE CRISE ============ -->
+    <div id="1b" style="display:flex;flex-direction:column;gap:28px">
+      <div style="display:flex;align-items:flex-start;gap:16px;max-width:640px">
+        <div style="flex:0 0 auto;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;letter-spacing:.06em;background:#14120E;color:#F4F1EA;padding:6px 11px;border-radius:3px">1b</div>
+        <div>
+          <div style="font-family:'Spectral',serif;font-size:26px;font-weight:700;color:#14120E;line-height:1.15">Cabinet de crise</div>
+          <div style="font-size:15px;line-height:1.5;color:#57534A;margin-top:6px;text-wrap:pretty">Sombre, dense, sous tension : une salle de commandement pour un ministère qui n'éteint que des incendies. Les swipes sont éclairés en bleu et en rouge, le compte à rebours du remaniement ne s'arrête jamais. La méchanceté est dans les libellés, pas dans les couleurs.</div>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:36px">
+
+        <!-- 1b · dashboard -->
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div style="width:390px;height:844px;border-radius:46px;padding:10px;background:#05070A;box-shadow:0 34px 64px -24px rgba(5,7,10,.6)">
+            <div style="width:100%;height:100%;border-radius:36px;overflow:hidden;display:flex;flex-direction:column;background:#0E1116">
+              <div style="height:44px;flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;padding:0 28px;font-family:'JetBrains Mono',monospace;font-size:12px;color:#8FA0B4">
+                <span>9:41</span><span style="letter-spacing:.1em">▮▮▮ ⌁ 78%</span>
+              </div>
+              <div style="flex:0 0 auto;padding:6px 22px 14px">
+                <div style="display:flex;align-items:center;justify-content:space-between">
+                  <div style="font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:#5C6B7F">Cabinet · situation</div>
+                  <div style="display:flex;align-items:center;gap:6px"><span style="width:6px;height:6px;border-radius:50%;background:#E5484D;display:inline-block"></span><span style="font-family:'JetBrains Mono',monospace;font-size:10.5px;color:#E5484D;letter-spacing:.08em">TENDU</span></div>
+                </div>
+                <div style="display:flex;align-items:baseline;justify-content:space-between;margin-top:7px">
+                  <div style="font-family:'Barlow Condensed',sans-serif;font-size:33px;font-weight:700;text-transform:uppercase;color:#E9EDF2;line-height:1">{{ ministerName }}</div>
+                  <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#E8B04B">{{ weekLabel }}</div>
+                </div>
+                <div style="font-family:'Archivo',sans-serif;font-size:12.5px;color:#5C6B7F;margin-top:5px">Technocrate réformateur · 5 semaines avant remaniement</div>
+              </div>
+
+              <div style="flex:1 1 auto;overflow:hidden;padding:0 22px;display:flex;flex-direction:column;gap:13px">
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+                  <div style="background:#161B22;border:1px solid #232B36;border-radius:10px;padding:12px 13px">
+                    <div style="font-family:'Barlow Condensed',sans-serif;font-size:11.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:#5C6B7F">Opinion publique</div>
+                    <div style="display:flex;align-items:baseline;gap:7px;margin-top:5px"><span style="font-family:'JetBrains Mono',monospace;font-size:28px;font-weight:700;color:#E9EDF2;line-height:1">41</span><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#E5484D">−6</span></div>
+                    <div style="height:3px;margin-top:9px;background:#232B36;border-radius:2px"><div style="width:41%;height:100%;background:#E5484D;border-radius:2px"></div></div>
+                  </div>
+                  <div style="background:#161B22;border:1px solid #232B36;border-radius:10px;padding:12px 13px">
+                    <div style="font-family:'Barlow Condensed',sans-serif;font-size:11.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:#5C6B7F">Niveau des élèves</div>
+                    <div style="display:flex;align-items:baseline;gap:7px;margin-top:5px"><span style="font-family:'JetBrains Mono',monospace;font-size:28px;font-weight:700;color:#E9EDF2;line-height:1">52</span><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#4CAF7D">+1</span></div>
+                    <div style="height:3px;margin-top:9px;background:#232B36;border-radius:2px"><div style="width:52%;height:100%;background:#4C8DFF;border-radius:2px"></div></div>
+                  </div>
+                  <div style="background:#161B22;border:1px solid #232B36;border-radius:10px;padding:12px 13px">
+                    <div style="font-family:'Barlow Condensed',sans-serif;font-size:11.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:#5C6B7F">Inégalités</div>
+                    <div style="display:flex;align-items:baseline;gap:7px;margin-top:5px"><span style="font-family:'JetBrains Mono',monospace;font-size:28px;font-weight:700;color:#E8B04B;line-height:1">68</span><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#E5484D">+4</span></div>
+                    <div style="height:3px;margin-top:9px;background:#232B36;border-radius:2px"><div style="width:68%;height:100%;background:#E8B04B;border-radius:2px"></div></div>
+                  </div>
+                  <div style="background:#161B22;border:1px solid #232B36;border-radius:10px;padding:12px 13px">
+                    <div style="font-family:'Barlow Condensed',sans-serif;font-size:11.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:#5C6B7F">Budget</div>
+                    <div style="font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:700;color:#E5484D;line-height:1;margin-top:7px">−1,2 Md</div>
+                    <div style="font-family:'Archivo',sans-serif;font-size:11px;color:#5C6B7F;margin-top:7px">Les Comptes vous ont vu.</div>
+                  </div>
+                </div>
+
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-top:2px">
+                  <div style="font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#5C6B7F">File du jour</div>
+                  <div style="font-family:'JetBrains Mono',monospace;font-size:10.5px;color:#E8B04B">6 dossiers</div>
+                </div>
+
+                <div style="display:flex;flex-direction:column;gap:8px">
+                  <div style="display:flex;gap:12px;align-items:center;background:#161B22;border:1px solid #232B36;border-left:3px solid #E5484D;border-radius:8px;padding:11px 13px">
+                    <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#8FA0B4">01</div>
+                    <div style="flex:1 1 auto"><div style="font-family:'Archivo',sans-serif;font-size:14px;font-weight:600;color:#E9EDF2">Dédoubler les CE1 en quartier prioritaire</div><div style="font-family:'Archivo',sans-serif;font-size:11.5px;color:#5C6B7F;margin-top:1px">Promis par vos trois prédécesseurs.</div></div>
+                  </div>
+                  <div style="display:flex;gap:12px;align-items:center;background:#161B22;border:1px solid #232B36;border-left:3px solid #E8B04B;border-radius:8px;padding:11px 13px">
+                    <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#8FA0B4">02</div>
+                    <div style="flex:1 1 auto"><div style="font-family:'Archivo',sans-serif;font-size:14px;font-weight:600;color:#E9EDF2">Les Comptes veulent −2 % sur le pédagogique</div><div style="font-family:'Archivo',sans-serif;font-size:11.5px;color:#5C6B7F;margin-top:1px">Déjà chiffré. Sans vous.</div></div>
+                  </div>
+                  <div style="display:flex;gap:12px;align-items:center;background:#161B22;border:1px solid #232B36;border-left:3px solid #4C8DFF;border-radius:8px;padding:11px 13px">
+                    <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#8FA0B4">03</div>
+                    <div style="flex:1 1 auto"><div style="font-family:'Archivo',sans-serif;font-size:14px;font-weight:600;color:#E9EDF2">La FUSE demande une audience</div><div style="font-family:'Archivo',sans-serif;font-size:11.5px;color:#5C6B7F;margin-top:1px">Quatrième demande. Ton en baisse.</div></div>
+                  </div>
+                  <div style="display:flex;gap:12px;align-items:center;background:#161B22;border:1px solid #232B36;border-left:3px solid #5C6B7F;border-radius:8px;padding:11px 13px">
+                    <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#8FA0B4">04</div>
+                    <div style="flex:1 1 auto"><div style="font-family:'Archivo',sans-serif;font-size:14px;font-weight:600;color:#E9EDF2">Votre propre rapport vous accuse</div><div style="font-family:'Archivo',sans-serif;font-size:11.5px;color:#5C6B7F;margin-top:1px">Fuité à 6 h 12.</div></div>
+                  </div>
+                </div>
+
+                <div style="text-align:center;background:#4C8DFF;color:#05070A;border-radius:11px;font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:13px 0">Ouvrir la file</div>
+              </div>
+
+              <div style="flex:0 0 auto;display:flex;gap:4px;padding:12px 18px 28px;border-top:1px solid #232B36;background:#0B0E13">
+                <div style="flex:1;text-align:center;padding:8px 0;border-radius:7px;background:#1B222C;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#E9EDF2">Cabinet</div>
+                <div style="flex:1;text-align:center;padding:8px 0;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#5C6B7F">File</div>
+                <div style="flex:1;text-align:center;padding:8px 0;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#5C6B7F">Presse</div>
+                <div style="flex:1;text-align:center;padding:8px 0;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#5C6B7F">Bilan</div>
+              </div>
+            </div>
+          </div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#8A8579;text-align:center">Tableau de bord</div>
+        </div>
+
+        <!-- 1b · carte à trancher -->
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div style="width:390px;height:844px;border-radius:46px;padding:10px;background:#05070A;box-shadow:0 34px 64px -24px rgba(5,7,10,.6)">
+            <div style="width:100%;height:100%;border-radius:36px;overflow:hidden;display:flex;flex-direction:column;background:#0E1116">
+              <div style="height:44px;flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;padding:0 28px;font-family:'JetBrains Mono',monospace;font-size:12px;color:#8FA0B4">
+                <span>9:41</span><span style="letter-spacing:.1em">▮▮▮ ⌁ 78%</span>
+              </div>
+              <div style="flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;padding:4px 22px 12px;border-bottom:1px solid #232B36">
+                <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#5C6B7F">Dossier 1 / 6</div>
+                <div style="display:flex;gap:4px;align-items:center">
+                  <span style="width:15px;height:3px;background:#4C8DFF;display:inline-block;border-radius:2px"></span>
+                  <span style="width:15px;height:3px;background:#232B36;display:inline-block;border-radius:2px"></span>
+                  <span style="width:15px;height:3px;background:#232B36;display:inline-block;border-radius:2px"></span>
+                  <span style="width:15px;height:3px;background:#232B36;display:inline-block;border-radius:2px"></span>
+                  <span style="width:15px;height:3px;background:#232B36;display:inline-block;border-radius:2px"></span>
+                  <span style="width:15px;height:3px;background:#232B36;display:inline-block;border-radius:2px"></span>
+                </div>
+              </div>
+
+              <div style="flex:1 1 auto;overflow:hidden;padding:18px 20px 0;position:relative">
+                <div style="position:relative;background:#161B22;border:1px solid #2B3542;border-radius:18px;padding:18px;box-shadow:0 8px 0 -4px #141A22, 0 8px 0 -3px #202834, 0 16px 0 -8px #12171E, 0 16px 0 -7px #1D242E, 0 24px 40px -20px rgba(0,0,0,.8)">
+                  <div style="display:flex;align-items:center;gap:8px">
+                    <span style="font-family:'Barlow Condensed',sans-serif;font-size:11.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:#0E1116;background:#E8B04B;padding:3px 8px;border-radius:4px">Priorité haute</span>
+                    <span style="font-family:'JetBrains Mono',monospace;font-size:10.5px;color:#5C6B7F">dossier 014</span>
+                  </div>
+                  <h2 style="margin:13px 0 0;font-family:'Barlow Condensed',sans-serif;font-size:36px;font-weight:700;line-height:1;text-transform:uppercase;color:#E9EDF2;text-wrap:pretty">Dédoubler les CE1 en quartier prioritaire</h2>
+                  <p style="margin:12px 0 0;font-family:'Archivo',sans-serif;font-size:13.5px;line-height:1.5;color:#8FA0B4;text-wrap:pretty">Vos services ont prouvé que ça marche il y a huit ans. Depuis, trois ministres l'ont annoncé, aucun ne l'a financé. Vous êtes le quatrième, et il manque 4 800 salles.</p>
+                  <div style="margin-top:13px;border-top:1px solid #232B36;padding-top:11px;font-family:'Archivo',sans-serif;font-size:12.5px;font-style:italic;color:#5C6B7F;line-height:1.45">Le conseiller budget respire fort derrière vous. C'est sa manière de participer.</div>
+                </div>
+
+                <div style="display:flex;gap:11px;margin-top:16px">
+                  <div style="flex:1;background:rgba(229,72,77,.08);border:1px solid rgba(229,72,77,.45);border-radius:13px;padding:12px 13px">
+                    <div style="font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#E5484D">← Glisser</div>
+                    <div style="font-family:'Archivo',sans-serif;font-size:15px;font-weight:600;color:#E9EDF2;margin-top:4px">Classer sans suite</div>
+                    <div style="display:flex;flex-wrap:wrap;gap:5px;margin-top:9px;font-family:'JetBrains Mono',monospace;font-size:10px">
+                      <span style="background:rgba(143,160,180,.12);color:#8FA0B4;padding:3px 7px;border-radius:5px">Budget 0</span>
+                      <span style="background:rgba(229,72,77,.16);color:#E5484D;padding:3px 7px;border-radius:5px">Inég. +5</span>
+                    </div>
+                  </div>
+                  <div style="flex:1;background:rgba(76,141,255,.09);border:1px solid rgba(76,141,255,.5);border-radius:13px;padding:12px 13px">
+                    <div style="font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#4C8DFF;text-align:right">Glisser →</div>
+                    <div style="font-family:'Archivo',sans-serif;font-size:15px;font-weight:600;color:#E9EDF2;margin-top:4px;text-align:right">Signer</div>
+                    <div style="display:flex;flex-wrap:wrap;gap:5px;margin-top:9px;justify-content:flex-end;font-family:'JetBrains Mono',monospace;font-size:10px">
+                      <span style="background:rgba(229,72,77,.16);color:#E5484D;padding:3px 7px;border-radius:5px">−800 M€</span>
+                      <span style="background:rgba(76,175,125,.16);color:#4CAF7D;padding:3px 7px;border-radius:5px">Inég. −7</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div style="flex:0 0 auto;padding:14px 22px 28px;border-top:1px solid #232B36;background:#0B0E13;display:flex;align-items:center;justify-content:space-between">
+                <div style="font-family:'Archivo',sans-serif;font-size:11.5px;color:#5C6B7F;line-height:1.4;max-width:18ch">Aucun dossier ne repasse une deuxième fois.</div>
+                <div style="font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#E9EDF2;border:1px solid #2E3946;border-radius:9px;padding:10px 14px">Demander une note</div>
+              </div>
+            </div>
+          </div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#8A8579;text-align:center">Carte à trancher</div>
+        </div>
+
+        <!-- 1b · presse -->
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div style="width:390px;height:844px;border-radius:46px;padding:10px;background:#05070A;box-shadow:0 34px 64px -24px rgba(5,7,10,.6)">
+            <div style="width:100%;height:100%;border-radius:36px;overflow:hidden;display:flex;flex-direction:column;background:#0E1116">
+              <div style="height:44px;flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;padding:0 28px;font-family:'JetBrains Mono',monospace;font-size:12px;color:#8FA0B4">
+                <span>7:12</span><span style="letter-spacing:.1em">▮▮▮ ⌁ 94%</span>
+              </div>
+              <div style="flex:0 0 auto;padding:4px 22px 12px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #232B36">
+                <div style="font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#5C6B7F">Veille médias · 6 h 55</div>
+                <div style="font-family:'JetBrains Mono',monospace;font-size:10.5px;color:#E5484D;letter-spacing:.08em">ALERTE</div>
+              </div>
+
+              <div style="flex:1 1 auto;overflow:hidden;padding:16px 22px 0;display:flex;flex-direction:column;gap:13px">
+                <div style="background:#161B22;border:1px solid #232B36;border-top:3px solid #E5484D;border-radius:12px;padding:15px">
+                  <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#E5484D">À la une · le quotidien du soir</div>
+                  <h2 style="margin:9px 0 0;font-family:'Barlow Condensed',sans-serif;font-size:31px;font-weight:700;line-height:1.02;text-transform:uppercase;color:#E9EDF2;text-wrap:pretty">Il annonce une réforme, ils annoncent une grève</h2>
+                  <p style="margin:10px 0 0;font-family:'Archivo',sans-serif;font-size:13px;line-height:1.5;color:#8FA0B4;text-wrap:pretty">Onze minutes entre les deux communiqués. Les Comptes ont déjà rechiffré la mesure à la baisse, sans prévenir la rue Condorcet.</p>
+                  <div style="display:flex;gap:7px;margin-top:12px;font-family:'JetBrains Mono',monospace;font-size:10.5px">
+                    <span style="background:rgba(229,72,77,.14);color:#E5484D;padding:4px 8px;border-radius:5px">Opinion −6</span>
+                    <span style="background:rgba(229,72,77,.14);color:#E5484D;padding:4px 8px;border-radius:5px">Budget −800 M€</span>
+                  </div>
+                </div>
+
+                <div style="font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#5C6B7F">Réactions</div>
+                <div style="display:flex;flex-direction:column;gap:9px">
+                  <div style="background:#161B22;border:1px solid #232B36;border-left:3px solid #E5484D;border-radius:9px;padding:11px 13px">
+                    <div style="font-family:'Archivo',sans-serif;font-size:14px;color:#E9EDF2;line-height:1.4">« Consternation. » <span style="color:#5C6B7F">(communiqué de 41 pages)</span></div>
+                    <div style="font-family:'JetBrains Mono',monospace;font-size:10.5px;color:#5C6B7F;margin-top:4px">FUSE — second degré</div>
+                  </div>
+                  <div style="background:#161B22;border:1px solid #232B36;border-left:3px solid #4C8DFF;border-radius:9px;padding:11px 13px">
+                    <div style="font-family:'Archivo',sans-serif;font-size:14px;color:#E9EDF2;line-height:1.4">« Un pas dans la bonne direction, mais dans le mauvais sens. »</div>
+                    <div style="font-family:'JetBrains Mono',monospace;font-size:10.5px;color:#5C6B7F;margin-top:4px">UNIPE — parents d'élèves</div>
+                  </div>
+                  <div style="background:#161B22;border:1px solid #232B36;border-left:3px solid #E8B04B;border-radius:9px;padding:11px 13px">
+                    <div style="font-family:'Archivo',sans-serif;font-size:14px;color:#E9EDF2;line-height:1.4">« Le ministre ? Très bien. Très, très bien. »</div>
+                    <div style="font-family:'JetBrains Mono',monospace;font-size:10.5px;color:#5C6B7F;margin-top:4px">Un conseiller de l'Hôtel Malesherbes, anonyme</div>
+                  </div>
+                </div>
+
+                <div style="background:rgba(232,176,75,.09);border:1px solid #E8B04B;border-radius:11px;padding:12px 14px">
+                  <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#E8B04B">Message · 07:04</div>
+                  <div style="font-family:'Archivo',sans-serif;font-size:15px;color:#E9EDF2;margin-top:6px;line-height:1.4">« Tu peux passer ce matin ? Ce n'est rien. »</div>
+                  <div style="font-family:'JetBrains Mono',monospace;font-size:10.5px;color:#8FA0B4;margin-top:5px">Dircab de l'Hôtel Malesherbes</div>
+                </div>
+              </div>
+
+              <div style="flex:0 0 auto;padding:14px 22px 28px;border-top:1px solid #232B36;background:#0B0E13;display:flex;gap:9px">
+                <div style="flex:1;text-align:center;border:1px solid #2E3946;color:#E9EDF2;border-radius:11px;font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:14px 0">Démentir</div>
+                <div style="flex:1;text-align:center;background:#E9EDF2;color:#0E1116;border-radius:11px;font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:14px 0">Y aller</div>
+              </div>
+            </div>
+          </div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#8A8579;text-align:center">Revue de presse</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ============ 1c — TABLOÏD RISO ============ -->
+    <div id="1c" style="display:flex;flex-direction:column;gap:28px">
+      <div style="display:flex;align-items:flex-start;gap:16px;max-width:640px">
+        <div style="flex:0 0 auto;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;letter-spacing:.06em;background:#14120E;color:#F4F1EA;padding:6px 11px;border-radius:3px">1c</div>
+        <div>
+          <div style="font-family:'Spectral',serif;font-size:26px;font-weight:700;color:#14120E;line-height:1.15">Tabloïd riso</div>
+          <div style="font-size:15px;line-height:1.5;color:#57534A;margin-top:6px;text-wrap:pretty">Deux encres, une trame, des titres énormes. Le jeu se lit comme une une de journal satirique : la direction la plus méchante au premier coup d'œil, la plus lisible en une seconde, et celle qui supporte le mieux le swipe — la carte est un carton imprimé qu'on jette à gauche ou à droite.</div>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:36px">
+
+        <!-- 1c · dashboard -->
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div style="width:390px;height:844px;border-radius:46px;padding:10px;background:#14110F;box-shadow:0 34px 64px -24px rgba(20,17,15,.5)">
+            <div style="width:100%;height:100%;border-radius:36px;overflow:hidden;display:flex;flex-direction:column;background:#F2E9DC">
+              <div style="height:44px;flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;padding:0 28px;font-family:'DM Sans',sans-serif;font-weight:700;font-size:12px;color:#14110F">
+                <span>9:41</span><span style="letter-spacing:.1em">▮▮▮ 78%</span>
+              </div>
+
+              <div style="flex:0 0 auto;background:#2B4CE0;padding:13px 22px 15px;position:relative;overflow:hidden">
+                <div style="position:absolute;inset:0;background-image:radial-gradient(#F2E9DC 1.1px, transparent 1.1px);background-size:7px 7px;opacity:.14"></div>
+                <div style="position:relative">
+                  <div style="font-family:'DM Sans',sans-serif;font-weight:700;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:rgba(242,233,220,.72)">Instruction publique · {{ weekLabel }}</div>
+                  <div style="font-family:'Archivo Black',sans-serif;font-size:32px;line-height:1;text-transform:uppercase;color:#F2E9DC;margin-top:7px;letter-spacing:-.01em">{{ ministerName }}</div>
+                  <div style="font-family:'DM Sans',sans-serif;font-size:13px;color:rgba(242,233,220,.85);margin-top:5px">Technocrate réformateur · remaniement dans 5 semaines</div>
+                </div>
+              </div>
+
+              <div style="flex:1 1 auto;overflow:hidden;padding:16px 22px 0;display:flex;flex-direction:column;gap:13px">
+                <div style="display:flex;gap:8px">
+                  <div style="flex:1;background:#2B4CE0;border-radius:14px;padding:12px 11px">
+                    <div style="font-family:'Archivo Black',sans-serif;font-size:27px;line-height:1;color:#F2E9DC">41</div>
+                    <div style="font-family:'DM Sans',sans-serif;font-weight:700;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:rgba(242,233,220,.85);margin-top:6px;line-height:1.25">Opinion</div>
+                  </div>
+                  <div style="flex:1;background:#14110F;border-radius:14px;padding:12px 11px">
+                    <div style="font-family:'Archivo Black',sans-serif;font-size:27px;line-height:1;color:#F2E9DC">52</div>
+                    <div style="font-family:'DM Sans',sans-serif;font-weight:700;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:rgba(242,233,220,.72);margin-top:6px;line-height:1.25">Niveau</div>
+                  </div>
+                  <div style="flex:1;background:#E8443A;border-radius:14px;padding:12px 11px">
+                    <div style="font-family:'Archivo Black',sans-serif;font-size:27px;line-height:1;color:#F2E9DC">68</div>
+                    <div style="font-family:'DM Sans',sans-serif;font-weight:700;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:rgba(242,233,220,.85);margin-top:6px;line-height:1.25">Inégalités</div>
+                  </div>
+                </div>
+
+                <div style="border:2.5px solid #14110F;border-radius:14px;padding:11px 14px;display:flex;align-items:center;justify-content:space-between">
+                  <div style="font-family:'DM Sans',sans-serif;font-weight:700;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#14110F">Budget</div>
+                  <div style="font-family:'Archivo Black',sans-serif;font-size:18px;color:#E8443A">− 1,2 Md €</div>
+                </div>
+
+                <div style="display:flex;align-items:baseline;gap:9px;margin-top:2px">
+                  <div style="font-family:'Archivo Black',sans-serif;font-size:19px;text-transform:uppercase;color:#14110F">La file du jour</div>
+                  <div style="flex:1;height:3px;background:#14110F"></div>
+                  <div style="font-family:'DM Sans',sans-serif;font-weight:700;font-size:12px;color:#E8443A">6</div>
+                </div>
+
+                <div style="display:flex;flex-direction:column;gap:9px">
+                  <div style="background:#FFFDF8;border:2.5px solid #14110F;border-radius:14px;padding:11px 13px;box-shadow:4px 4px 0 #14110F">
+                    <div style="font-family:'DM Sans',sans-serif;font-weight:700;font-size:15px;color:#14110F;line-height:1.25">Dédoubler les CE1 en quartier prioritaire</div>
+                    <div style="font-family:'DM Sans',sans-serif;font-size:12.5px;color:#5D574E;margin-top:2px">Promis par vos trois prédécesseurs.</div>
+                  </div>
+                  <div style="background:#FFFDF8;border:2.5px solid #14110F;border-radius:14px;padding:11px 13px;box-shadow:4px 4px 0 #14110F">
+                    <div style="font-family:'DM Sans',sans-serif;font-weight:700;font-size:15px;color:#14110F;line-height:1.25">Les Comptes veulent −2 % sur le pédagogique</div>
+                    <div style="font-family:'DM Sans',sans-serif;font-size:12.5px;color:#5D574E;margin-top:2px">Déjà chiffré. Sans vous.</div>
+                  </div>
+                  <div style="background:#E8443A;border:2.5px solid #14110F;border-radius:14px;padding:11px 13px;box-shadow:4px 4px 0 #14110F">
+                    <div style="font-family:'DM Sans',sans-serif;font-weight:700;font-size:15px;color:#F2E9DC;line-height:1.25">Votre propre rapport vous accuse</div>
+                    <div style="font-family:'DM Sans',sans-serif;font-size:12.5px;color:rgba(242,233,220,.85);margin-top:2px">Fuité à 6 h 12.</div>
+                  </div>
+                </div>
+
+                <div style="text-align:center;background:#14110F;color:#F2E9DC;border-radius:14px;font-family:'Archivo Black',sans-serif;font-size:16px;letter-spacing:.04em;text-transform:uppercase;padding:14px 0">Ouvrir la file</div>
+              </div>
+
+              <div style="flex:0 0 auto;display:flex;gap:5px;padding:12px 18px 28px;background:#F2E9DC;border-top:2.5px solid #14110F">
+                <div style="flex:1;text-align:center;padding:9px 0;border-radius:9px;background:#14110F;color:#F2E9DC;font-family:'DM Sans',sans-serif;font-weight:700;font-size:11.5px;letter-spacing:.06em;text-transform:uppercase">Cabinet</div>
+                <div style="flex:1;text-align:center;padding:9px 0;color:#8A8172;font-family:'DM Sans',sans-serif;font-weight:700;font-size:11.5px;letter-spacing:.06em;text-transform:uppercase">File</div>
+                <div style="flex:1;text-align:center;padding:9px 0;color:#8A8172;font-family:'DM Sans',sans-serif;font-weight:700;font-size:11.5px;letter-spacing:.06em;text-transform:uppercase">Presse</div>
+                <div style="flex:1;text-align:center;padding:9px 0;color:#8A8172;font-family:'DM Sans',sans-serif;font-weight:700;font-size:11.5px;letter-spacing:.06em;text-transform:uppercase">Bilan</div>
+              </div>
+            </div>
+          </div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#8A8579;text-align:center">Tableau de bord</div>
+        </div>
+
+        <!-- 1c · carte à trancher -->
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div style="width:390px;height:844px;border-radius:46px;padding:10px;background:#14110F;box-shadow:0 34px 64px -24px rgba(20,17,15,.5)">
+            <div style="width:100%;height:100%;border-radius:36px;overflow:hidden;display:flex;flex-direction:column;background:#F2E9DC">
+              <div style="height:44px;flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;padding:0 28px;font-family:'DM Sans',sans-serif;font-weight:700;font-size:12px;color:#14110F">
+                <span>9:41</span><span style="letter-spacing:.1em">▮▮▮ 78%</span>
+              </div>
+              <div style="flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;padding:4px 22px 12px">
+                <div style="font-family:'DM Sans',sans-serif;font-weight:700;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#5D574E">Dossier 1 / 6</div>
+                <div style="display:flex;gap:4px;align-items:center">
+                  <span style="width:16px;height:5px;background:#E8443A;display:inline-block;border-radius:3px"></span>
+                  <span style="width:16px;height:5px;background:#D8CDBB;display:inline-block;border-radius:3px"></span>
+                  <span style="width:16px;height:5px;background:#D8CDBB;display:inline-block;border-radius:3px"></span>
+                  <span style="width:16px;height:5px;background:#D8CDBB;display:inline-block;border-radius:3px"></span>
+                  <span style="width:16px;height:5px;background:#D8CDBB;display:inline-block;border-radius:3px"></span>
+                  <span style="width:16px;height:5px;background:#D8CDBB;display:inline-block;border-radius:3px"></span>
+                </div>
+              </div>
+
+              <div style="flex:1 1 auto;overflow:hidden;padding:14px 20px 0;position:relative">
+                <div style="position:relative;background:#14110F;border:2.5px solid #14110F;border-radius:18px;padding:18px 18px 20px;overflow:hidden;box-shadow:0 8px 0 -4px #EADFCD, 0 8px 0 -2px #14110F, 0 16px 0 -8px #E3D8C6, 0 16px 0 -6px #14110F, 7px 7px 0 #2B4CE0">
+                  <div style="position:absolute;inset:0;background-image:radial-gradient(#E8443A 1.2px, transparent 1.2px);background-size:8px 8px;opacity:.32"></div>
+                  <div style="position:relative">
+                    <div style="display:inline-block;background:#E8443A;color:#F2E9DC;font-family:'DM Sans',sans-serif;font-weight:700;font-size:11px;letter-spacing:.14em;text-transform:uppercase;padding:4px 9px;border-radius:20px">Urgent · dossier 014</div>
+                    <h2 style="margin:13px 0 0;font-family:'Archivo Black',sans-serif;font-size:33px;line-height:.98;text-transform:uppercase;color:#F2E9DC;letter-spacing:-.015em;text-wrap:pretty">Dédoubler les CE1 en quartier prioritaire</h2>
+                    <p style="margin:12px 0 0;font-family:'DM Sans',sans-serif;font-size:13.5px;line-height:1.5;color:rgba(242,233,220,.85);text-wrap:pretty">Ça marche : vos services l'ont prouvé il y a huit ans. Trois ministres l'ont annoncé, aucun ne l'a payé. Vous êtes le quatrième, et il manque 4 800 salles.</p>
+                    <div style="margin-top:13px;padding-top:11px;border-top:1px solid rgba(242,233,220,.25);font-family:'DM Sans',sans-serif;font-size:12.5px;font-style:italic;color:rgba(242,233,220,.7);line-height:1.45">Le conseiller budget respire fort derrière vous. C'est sa manière de participer.</div>
+                  </div>
+                </div>
+
+                <div style="display:flex;gap:11px;margin-top:16px">
+                  <div style="flex:1;background:#FFFDF8;border:2.5px solid #14110F;border-radius:15px;padding:12px 13px;box-shadow:4px 4px 0 #14110F">
+                    <div style="font-family:'DM Sans',sans-serif;font-weight:700;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#8A8172">← Glisser</div>
+                    <div style="font-family:'DM Sans',sans-serif;font-weight:700;font-size:16px;color:#14110F;margin-top:4px">Classer sans suite</div>
+                    <div style="display:flex;flex-wrap:wrap;gap:5px;margin-top:9px;font-family:'DM Sans',sans-serif;font-weight:700;font-size:10.5px">
+                      <span style="border:1.5px solid #14110F;color:#14110F;padding:3px 8px;border-radius:20px">Budget 0</span>
+                      <span style="background:#E8443A;color:#F2E9DC;padding:3px 8px;border-radius:20px">Inég. +5</span>
+                    </div>
+                  </div>
+                  <div style="flex:1;background:#2B4CE0;border:2.5px solid #14110F;border-radius:15px;padding:12px 13px;box-shadow:4px 4px 0 #14110F">
+                    <div style="font-family:'DM Sans',sans-serif;font-weight:700;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(242,233,220,.75);text-align:right">Glisser →</div>
+                    <div style="font-family:'DM Sans',sans-serif;font-weight:700;font-size:16px;color:#F2E9DC;margin-top:4px;text-align:right">Signer</div>
+                    <div style="display:flex;flex-wrap:wrap;gap:5px;margin-top:9px;justify-content:flex-end;font-family:'DM Sans',sans-serif;font-weight:700;font-size:10.5px">
+                      <span style="background:#E8443A;color:#F2E9DC;padding:3px 8px;border-radius:20px">−800 M€</span>
+                      <span style="background:#F2E9DC;color:#14110F;padding:3px 8px;border-radius:20px">Inég. −7</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div style="flex:0 0 auto;padding:14px 22px 28px;display:flex;align-items:center;justify-content:space-between;gap:12px">
+                <div style="font-family:'DM Sans',sans-serif;font-size:12px;color:#8A8172;line-height:1.35;max-width:17ch">Aucune carte ne revient une deuxième fois.</div>
+                <div style="font-family:'DM Sans',sans-serif;font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:#14110F;border:2.5px solid #14110F;border-radius:12px;padding:11px 14px">Une note ?</div>
+              </div>
+            </div>
+          </div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#8A8579;text-align:center">Carte à trancher</div>
+        </div>
+
+        <!-- 1c · presse -->
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div style="width:390px;height:844px;border-radius:46px;padding:10px;background:#14110F;box-shadow:0 34px 64px -24px rgba(20,17,15,.5)">
+            <div style="width:100%;height:100%;border-radius:36px;overflow:hidden;display:flex;flex-direction:column;background:#F2E9DC">
+              <div style="height:44px;flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;padding:0 28px;font-family:'DM Sans',sans-serif;font-weight:700;font-size:12px;color:#14110F">
+                <span>7:12</span><span style="letter-spacing:.1em">▮▮▮ 94%</span>
+              </div>
+
+              <div style="flex:1 1 auto;overflow:hidden;display:flex;flex-direction:column">
+                <div style="background:#14110F;padding:10px 22px;display:flex;align-items:center;justify-content:space-between">
+                  <div style="font-family:'DM Sans',sans-serif;font-weight:700;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#F2E9DC">La revue de presse</div>
+                  <div style="font-family:'DM Sans',sans-serif;font-weight:700;font-size:11px;color:#E8443A">6 h 55</div>
+                </div>
+
+                <div style="padding:18px 22px 16px;background:#E8443A;position:relative;overflow:hidden">
+                  <div style="position:absolute;inset:0;background-image:radial-gradient(#14110F 1.2px, transparent 1.2px);background-size:8px 8px;opacity:.18"></div>
+                  <div style="position:relative">
+                    <div style="font-family:'DM Sans',sans-serif;font-weight:700;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:rgba(242,233,220,.8)">À la une</div>
+                    <h2 style="margin:8px 0 0;font-family:'Archivo Black',sans-serif;font-size:34px;line-height:.96;text-transform:uppercase;color:#F2E9DC;letter-spacing:-.02em;text-wrap:pretty">Il annonce une réforme, ils annoncent une grève</h2>
+                    <p style="margin:11px 0 0;font-family:'DM Sans',sans-serif;font-size:13px;line-height:1.45;color:rgba(242,233,220,.9);text-wrap:pretty">Onze minutes entre les deux communiqués. Les Comptes ont rechiffré la mesure à la baisse sans prévenir personne.</p>
+                    <div style="display:flex;gap:7px;margin-top:12px;font-family:'DM Sans',sans-serif;font-weight:700;font-size:11px">
+                      <span style="background:#14110F;color:#F2E9DC;padding:4px 9px;border-radius:20px">Opinion −6</span>
+                      <span style="background:#14110F;color:#F2E9DC;padding:4px 9px;border-radius:20px">Budget −800 M€</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div style="padding:15px 22px 0;display:flex;flex-direction:column;gap:9px">
+                  <div style="display:flex;align-items:baseline;gap:9px">
+                    <div style="font-family:'Archivo Black',sans-serif;font-size:18px;text-transform:uppercase;color:#14110F">Ils ont dit</div>
+                    <div style="flex:1;height:3px;background:#14110F"></div>
+                  </div>
+                  <div style="background:#FFFDF8;border:2.5px solid #14110F;border-radius:14px;padding:11px 13px">
+                    <div style="font-family:'DM Sans',sans-serif;font-size:14.5px;font-weight:700;color:#14110F;line-height:1.3">« Consternation. » <span style="font-weight:400;color:#8A8172">(communiqué de 41 pages)</span></div>
+                    <div style="font-family:'DM Sans',sans-serif;font-size:12px;color:#8A8172;margin-top:3px">FUSE — second degré</div>
+                  </div>
+                  <div style="background:#FFFDF8;border:2.5px solid #14110F;border-radius:14px;padding:11px 13px">
+                    <div style="font-family:'DM Sans',sans-serif;font-size:14.5px;font-weight:700;color:#14110F;line-height:1.3">« Un pas dans la bonne direction, mais dans le mauvais sens. »</div>
+                    <div style="font-family:'DM Sans',sans-serif;font-size:12px;color:#8A8172;margin-top:3px">UNIPE — parents d'élèves</div>
+                  </div>
+                </div>
+
+                <div style="margin:13px 22px 0;background:#2B4CE0;border-radius:14px;padding:13px 15px">
+                  <div style="font-family:'DM Sans',sans-serif;font-weight:700;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(242,233,220,.75)">Message · 07:04</div>
+                  <div style="font-family:'DM Sans',sans-serif;font-weight:700;font-size:16px;color:#F2E9DC;margin-top:5px;line-height:1.3">« Tu peux passer ce matin ? Ce n'est rien. »</div>
+                  <div style="font-family:'DM Sans',sans-serif;font-size:12px;color:rgba(242,233,220,.8);margin-top:4px">Dircab de l'Hôtel Malesherbes</div>
+                </div>
+              </div>
+
+              <div style="flex:0 0 auto;padding:14px 22px 28px;display:flex;gap:9px">
+                <div style="flex:1;text-align:center;background:#F2E9DC;border:2.5px solid #14110F;border-radius:14px;color:#14110F;font-family:'DM Sans',sans-serif;font-weight:700;font-size:14px;text-transform:uppercase;letter-spacing:.06em;padding:14px 0">Démentir</div>
+                <div style="flex:1;text-align:center;background:#14110F;border:2.5px solid #14110F;border-radius:14px;color:#F2E9DC;font-family:'DM Sans',sans-serif;font-weight:700;font-size:14px;text-transform:uppercase;letter-spacing:.06em;padding:14px 0">Y aller</div>
+              </div>
+            </div>
+          </div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#8A8579;text-align:center">Revue de presse</div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;ministerName&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Camille Vasseur&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Partie&quot;},&quot;week&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:3,&quot;min&quot;:1,&quot;max&quot;:12,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Partie&quot;},&quot;mandateWeeks&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:8,&quot;min&quot;:4,&quot;max&quot;:16,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Partie&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    const week = this.props.week ?? 3;
+    const total = this.props.mandateWeeks ?? 8;
+    return {
+      ministerName: this.props.ministerName ?? "Camille Vasseur",
+      weekLabel: "Semaine " + week + " / " + total
+    };
+  }
+}
+</script>
+</body>
+</html>
