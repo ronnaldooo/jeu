@@ -329,6 +329,35 @@
       pileTete.hidden = false; majPileTete();
     } else { pileTete.hidden = true; corps.insertBefore(pileTete, scene); }
 
+    /* --- une question à la fois -------------------------------------------
+       L'entretien de l'Élysée en pose deux, le plateau trois. Les empiler sur
+       une page fait défiler pour rien : on n'en montre qu'une, les répondues
+       se replient sur leur réponse, et on peut rouvrir pour se corriger. */
+    const questions = [...scene.querySelectorAll('.entretien-q, .plateau-q')];
+    if (questions.length > 1 && !questions[0].dataset.pas) {
+      questions.forEach((q, i) => {
+        q.dataset.pas = String(i);
+        q.classList.add('tel-q');
+        const rang = mk('div', 'tel-q-rang', `Question ${i + 1} sur ${questions.length}`);
+        q.insertBefore(rang, q.firstChild);
+        q.appendChild(mk('div', 'tel-q-reponse', ''));
+        q.addEventListener('click', (e) => {
+          if (q.classList.contains('replie') && !e.target.closest('.opt')) { ouvrirQuestion(i); return; }
+          const opt = e.target.closest('.opt');
+          if (!opt || !q.contains(opt)) return;
+          const b2 = $t('b', opt);
+          $t('.tel-q-reponse', q).textContent = b2 ? b2.textContent : '';
+          const suivante = questions.findIndex((x, j) => j > i && !$t('.opt.choisi', x));
+          ouvrirQuestion(suivante >= 0 ? suivante : -1);
+        });
+      });
+      const ouvrirQuestion = (n) => {
+        questions.forEach((q, i) => q.classList.toggle('replie', i !== n));
+        if (n >= 0) questions[n].scrollIntoView({ block: 'nearest', behavior: mouvementReduit() ? 'auto' : 'smooth' });
+      };
+      ouvrirQuestion(0);
+    }
+
     /* le tampon URGENT sur ce qui brûle */
     if (/^(affaire|polemique|dossier|retrait|guerre_scolaire)$/.test(type)) {
       const e = $t('.doc .entete-doc', scene);

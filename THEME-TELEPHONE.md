@@ -184,9 +184,55 @@ Ce qui a changé :
   `--alerte`, `--filet`…) sont redéfinies à l'intérieur de ces conteneurs.
 - **L'action principale** de l'atelier rejoint la barre du bas, au lieu de
   flotter au-dessus du solde et de le masquer.
+- **Une seule alarme à la fois.** Le dépassement d'enveloppe affichait le
+  montant en gros et en couleur, une phrase pleine largeur, et un bouton
+  coloré : trois signaux pour une information. Le montant reste blanc, c'est
+  la jauge qui passe à l'ocre et se remplit, l'avertissement devient une
+  pastille, et le bouton indisponible se tait.
 - **L'observateur** regarde désormais les descendants : le plateau de 20 heures
   ajoute ses questions une par une dans un bloc existant, et elles n'étaient
   pas habillées.
+
+## Tenir sur un écran
+
+Mesuré : au départ, **98 % des écrans débordaient sur un téléphone**. Un
+robot parcourt une partie entière et compare, pour chaque écran, la hauteur
+du contenu à celle de la fenêtre.
+
+Quatre changements :
+
+1. **Une question à la fois.** L'entretien de l'Élysée en pose deux, le
+   plateau de 20 heures trois. Elles s'affichent l'une après l'autre : la
+   question répondue se replie sur sa réponse (« ✓ Oui, dans le public »), et
+   se rouvre d'un toucher pour se corriger.
+2. **Deux colonnes au-delà de 1 040 px** — le dossier à gauche, la décision à
+   droite. `:has()` fait le tri : un écran sans options, ou la pile de
+   mesures, garde sa colonne unique.
+3. **Cartes de mesures compactes.** Fermée, une carte tient en trois lignes :
+   famille, titre, chiffres. Qui la porte s'affiche à l'ouverture. La pile
+   est deux fois plus courte.
+4. **Passe de densité** sur tout le thème : marges, interlignes et rembourrages
+   resserrés d'environ 15 %, sans descendre sous les planchers de lisibilité.
+
+Résultat mesuré :
+
+| | tiennent | moins d'un demi-défilement | plus long |
+|---|---|---|---|
+| bureau 1280×900 | 13 | 22 | 14 |
+| téléphone 390×844 | 3 | 9 | 29 |
+
+Hauteur médiane : **1,14 écran** sur un bureau, **1,55** sur un téléphone.
+
+La limite est atteinte sans toucher au texte : sur 390 px de large, un
+document de 120 mots fait déjà 700 px à lui seul. Les écrans les plus longs
+qui restent sont ceux qui doivent l'être — la pile de mesures, le bilan de
+fin de mandat, le journal de fin d'année. Pour aller plus loin il faudrait
+raccourcir les textes eux-mêmes, ce qui est une décision d'auteur.
+
+Un mécanisme a été essayé puis retiré : couper automatiquement les écrans
+longs en « document » puis « choix ». Il coûtait trois bugs de synchronisation
+pour un gain modeste, et ajoutait un clic partout. La pagination des questions,
+elle, est explicite et sûre.
 
 ## Écarts assumés avec la charte
 
