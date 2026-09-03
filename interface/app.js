@@ -1887,7 +1887,13 @@ function serieBudget() {
      gauche et la même gouttière que les barres : rien ne peut se chevaucher. */
   const g = el('div', '');
   g.innerHTML = `
-  <div class="rep-valeurs">${SERIE_BUDGET.map((b) => `<span>${md1(b.md)}</span>`).join('')}</div>
+  <div class="rep-valeurs">${SERIE_BUDGET.map((b, i) => {
+    /* La hausse de l'année s'écrit sur sa colonne : à l'échelle du graphique
+       elle ne fait qu'un pixel et demi, mais c'est elle que le ministre
+       arbitre. */
+    const d = b.prevision && i > 0 ? `<em>+${md1(b.md - SERIE_BUDGET[i - 1].md)}</em>` : '';
+    return `<span>${d}${md1(b.md)}</span>`;
+  }).join('')}</div>
   <div class="rep-plot" role="img" aria-label="Budget de l’enseignement scolaire, de 52,3 milliards d’euros en 2019 à 65,3 milliards en 2027">
     ${grads.map((v) => `<i class="grad" style="bottom:${((v / max) * HP).toFixed(1)}px"><b>${v}</b></i>`).join('')}
     <div class="rep-cols">
@@ -1897,7 +1903,7 @@ function serieBudget() {
   </div>
   <div class="rep-annees">${SERIE_BUDGET.map((b) => `<span>${b.annee}</span>`).join('')}</div>
   <div class="rep-lgd"><i class="c-bleu-bloc"></i>budget voté<i class="c-hachure"></i>plafond prévisionnel 2027<span class="unite">en milliards d’euros courants</span></div>
-  <p class="rep-serie-note">Crédits de paiement de la mission « Enseignement scolaire », hors pensions. <b>L’échelle part de zéro</b> : la hausse est réelle mais modeste — +25 % en huit ans d’euros courants, soit à peu près l’inflation. 2021 n’est pas représentée, le périmètre de la mission ayant changé cette année-là.</p>`;
+  <p class="rep-serie-note"><b>+0,8 Md€ en 2027</b>, soit +1,2 % : c’est tout ce qui est nouveau, et une bonne moitié en est déjà engagée par votre prédécesseur. Crédits de paiement de la mission « Enseignement scolaire », hors pensions. <b>L’échelle part de zéro</b> : la hausse est réelle mais modeste — +25 % en huit ans d’euros courants, soit à peu près l’inflation. 2021 n’est pas représentée, le périmètre de la mission ayant changé cette année-là.</p>`;
   return g;
 }
 
@@ -1982,10 +1988,14 @@ function ecranReperes(q) {
   d.appendChild(el('h2', '', esc(b.titre)));
 
   const a = el('div', 'accroche');
-  a.innerHTML = `<b>${fr(b.accroche.v)}</b><p>${fr(b.accroche.l)}${citer(b.accroche.src)}</p>`;
+  /* Le chiffre-clé et, juste dessous, celui qui le commande. */
+  const sa = b.sousAccroche;
+  a.innerHTML = `<div class="chiffre-cle"><b>${fr(b.accroche.v)}</b>`
+    + (sa ? `<span class="sous"><em>${fr(sa.v)}</em> ${fr(sa.l)}.${citer(sa.src)}</span>` : '')
+    + `</div><p>${fr(b.accroche.l)}${citer(b.accroche.src)}</p>`;
   d.appendChild(a);
   if (GRAPH[b.graphique]) d.appendChild(GRAPH[b.graphique]());
-  d.appendChild(el('ul', 'rep-liste', b.chiffres.map((x) =>
+  if (b.chiffres.length) d.appendChild(el('ul', 'rep-liste', b.chiffres.map((x) =>
     `<li><span class="v">${fr(x.v)}</span><span class="l">${fr(x.l)}.${citer(x.src)}</span></li>`).join('')));
   d.appendChild(el('p', 'cadrage-retenir', fr(b.aRetenir)));
 

@@ -1455,6 +1455,28 @@ blanche, papier crème de la presse, thème sombre), cinq écrans capturés en c
 de partie, équilibre 4/4 sur 400 mandats, aucun débordement horizontal.
 Coût : +6 Ko.
 
+## 3 quatervicies. La note budget : le bon chiffre au bon endroit
+
+Retour de relecture sur la première note de la DGESCO. Deux chiffres y étaient
+alignés en liste sous le graphique, là où personne ne les lisait.
+
+**Les 93 % de masse salariale remontent sous le total.** C'est le chiffre qui
+commande tout le reste : si 93 % du budget sont des salaires, la marge
+d'arbitrage de l'année n'est pas 65,3 Md€, c'est ce qui reste. Il s'affiche
+désormais directement sous « 65,3 Md€ », séparé par un filet, avec sa source.
+Un champ `sousAccroche` a été ajouté aux notes de cadrage pour cela.
+
+**Les +0,8 Md€ passent sur le graphique.** La hausse de l'année est écrite au
+sommet de la colonne 2027, calculée depuis la série et non recopiée à la main.
+C'est le seul endroit où elle veut dire quelque chose : à l'échelle du
+graphique — qui part de zéro, et qui doit continuer d'en partir — elle ne fait
+qu'un pixel et demi de haut. L'écrire sur la colonne, c'est montrer l'écart
+que la barre ne peut pas montrer. Le commentaire (+1,2 %, moitié déjà engagée)
+ouvre la note de bas de graphique.
+
+La liste de deux lignes disparaît donc entièrement : la page perd un bloc et
+gagne ses deux chiffres.
+
 ## 5. Paramètres à réexaminer après tests humains
 
 | Paramètre | Valeur | Ce qu'il faut regarder |

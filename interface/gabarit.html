@@ -406,7 +406,13 @@ table.bilan .num{text-align:right}
 .cadrage-bloc .rep-liste{margin-top:10px}
 
 /* graphiques de la note de cadrage */
-.accroche{display:flex; gap:16px; align-items:baseline; margin:6px 0 14px; flex-wrap:wrap}
+.accroche{display:flex; gap:16px 22px; align-items:baseline; margin:6px 0 14px; flex-wrap:wrap}
+.accroche .chiffre-cle{flex-shrink:0; max-width:26ch}
+.accroche .sous{display:block; margin-top:8px; padding-top:8px; border-top:1px solid var(--filet);
+  font-size:.86rem; line-height:1.45; color:var(--encre-2)}
+.accroche .sous em{font-style:normal; font-weight:700; font-size:1.16rem; color:var(--bleu-rf);
+  font-variant-numeric:tabular-nums}
+.accroche .sous cite{margin-top:3px}
 .accroche b{font-size:clamp(1.9rem,5vw,2.6rem); font-weight:700; color:var(--bleu-rf); line-height:1; font-variant-numeric:tabular-nums; flex-shrink:0}
 .accroche p{margin:0; font-family:"Newsreader",georgia,serif; font-size:1.04rem; line-height:1.5; flex:1; min-width:20ch; max-width:60ch}
 .accroche cite{display:block; font-style:normal; font-size:.7rem; color:var(--encre-3); margin-top:4px}
@@ -423,8 +429,10 @@ table.bilan .num{text-align:right}
 .rep-cols .bar{width:100%; background:var(--bleu-rf)}
 .rep-cols .col.prev .bar{background:repeating-linear-gradient(45deg,var(--bleu-rf),var(--bleu-rf) 3px,transparent 3px,transparent 6px); border:1px solid var(--bleu-rf)}
 .rep-valeurs,.rep-annees{display:flex; gap:5px; padding-left:30px}
+.rep-valeurs{align-items:flex-end}
 .rep-valeurs span,.rep-annees span{flex:1; text-align:center; min-width:0; font-variant-numeric:tabular-nums}
 .rep-valeurs span{font-family:"IBM Plex Mono",monospace; font-size:.68rem; padding-bottom:3px}
+.rep-valeurs em{display:block; font-style:normal; font-weight:700; color:var(--bleu-rf); font-size:.72rem}
 .rep-annees span{font-size:.62rem; color:var(--encre-3); padding-top:4px}
 
 @media (max-width:640px){

@@ -461,11 +461,12 @@ export const CADRAGE_INITIAL = [
     cle: 'budget',
     titre: 'Un budget contraint',
     accroche: { v: '65,3 Md€', l: 'C’est le budget de l’Éducation nationale en 2027, hors pensions, le premier budget de l’État. Il augmente, un peu, et il est presque entièrement pré-engagé.', src: 'plafonds27' },
+    /* Le chiffre qui commande tous les autres se lit sous le total, pas dans
+       une liste sous le graphique où personne ne le voyait. La hausse de
+       +0,8 Md€, elle, est écrite sur la colonne 2027 du graphique. */
+    sousAccroche: { v: '93 %', l: 'du total, c’est de la masse salariale : ce que vous ne pouvez pas arbitrer dans l’année', src: 'cc_neb24' },
     graphique: 'budget',
-    chiffres: [
-      { v: '+0,8 Md€', l: 'ce qui est nouveau cette année, soit +1,2 %. Une bonne moitié est déjà engagée par votre prédécesseur', src: 'plafonds27' },
-      { v: '93 %', l: 'de ce budget est de la masse salariale : ce que vous ne pouvez pas arbitrer dans l’année', src: 'cc_neb24' },
-    ],
+    chiffres: [],
     aRetenir: 'Tout votre mandat se joue dans le liséré qui reste.',
   },
   {
