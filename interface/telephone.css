@@ -27,18 +27,19 @@ body.telephone{
 
   /* ---- accents ---------------------------------------------------------
      Deux seulement, et chacun a un sens : le bleu de la République pour ce
-     qui engage (action, institution), le rouge pour ce qui alerte. Chaque
-     accent a sa version sombre (sur papier) et sa version claire (sur noir),
-     toutes deux vérifiées au-dessus de 4,5:1. */
+     qui engage (action, institution), l'ocre pour ce qui alerte. Pas de
+     rouge : sur un fond sombre chargé de texte, il crie. Chaque accent a sa
+     version sombre (sur papier) et sa version claire (sur noir), toutes deux
+     vérifiées au-dessus de 4,5:1. */
   --bleu:#2B4B8F; --bleu-vif:#3C63B4; --bleu-clair:#8FB0EC;
-  --rouge:#B3222F; --rouge-clair:#F09A94;
+  --ocre:#8A6410; --ocre-clair:#E3B45F;
   --vert:#1C7358; --vert-clair:#6FCFAE;
 
   /* ---- les cinq compteurs ----------------------------------------------
      Une vraie palette catégorielle — bleu, rose, sarcelle, ambre, violet —
      régulièrement espacée en teinte, et déclinée pour les deux fonds. */
-  --k1:#2F5FA8; --k2:#B03A6B; --k3:#1C7358; --k4:#95610F; --k5:#5B4BA8;
-  --k1c:#8FB0EC; --k2c:#F291B7; --k3c:#6FCFAE; --k4c:#E5AE55; --k5c:#AFA2EC;
+  --k1:#2F5FA8; --k2:#B03A6B; --k3:#1C7358; --k4:#9A5326; --k5:#5B4BA8;
+  --k1c:#8FB0EC; --k2c:#F291B7; --k3c:#6FCFAE; --k4c:#E39C6B; --k5c:#AFA2EC;
 
   --pile:0 1px 0 var(--paper-shade-1), 0 4px 0 -2px var(--paper-shade-2),
          0 2px 4px rgba(0,0,0,.22), 0 18px 40px -16px rgba(0,0,0,.5);
@@ -53,16 +54,16 @@ body.telephone{
      La feuille classique et le thème s'appuient encore sur ces noms ; on les
      fait pointer vers la nouvelle palette plutôt que de tout renommer. */
   --official:var(--bleu); --official-line:var(--bleu-vif);
-  --alert:var(--rouge); --alert-soft:var(--rouge-clair); --positive:var(--bleu-clair); --on-alert:#FFF3F1;
+  --alert:var(--ocre); --alert-soft:var(--ocre-clair); --positive:var(--bleu-clair); --on-alert:#FFF8EC;
   --ink-text-2:var(--t2); --ink-text-3:var(--t3); --ink-text-4:var(--t3);
-  --or-sombre:#95610F;
+  --or-sombre:var(--ocre);
   --bleu-rf:var(--bleu); --bleu-rf-2:var(--bleu-vif);
   --papier:var(--ink); --fiche:var(--paper); --fiche-2:var(--paper-2);
   --papier-creme:var(--paper); --papier-creme-bord:var(--rule);
   --encre:var(--t1); --encre-2:var(--t2); --encre-3:var(--t3);
-  --filet:var(--rule); --filet-fort:var(--paper-shade-1); --rouge-rf:var(--rouge); --or:var(--k4);
+  --filet:var(--rule); --filet-fort:var(--paper-shade-1); --rouge-rf:var(--ocre); --or:var(--ocre);
   --c-reussite:var(--k1); --c-egalite:var(--k2); --c-sante:var(--k3); --c-paix:var(--k4); --c-budget:var(--k4); --c-violet:var(--k5);
-  --ok:var(--vert); --alerte:var(--rouge); --ombre:none;
+  --ok:var(--vert); --alerte:var(--ocre); --ombre:none;
   --fond-illus:var(--paper);
   background:var(--ink); color:var(--t1); font-family:var(--serif); margin:0;
   color-scheme:dark;
@@ -230,10 +231,10 @@ body.telephone .opts.deux{grid-template-columns:1fr 1fr}
 body.telephone .opts::before{content:none}
 body.telephone .opt{cursor:pointer; text-align:left; background:var(--p07); border:1px solid var(--p16); border-radius:15px; padding:13px 14px; color:var(--paper); transition:background .15s, border-color .15s; display:flex; flex-direction:column; min-height:44px}
 body.telephone .opt .surtitre{font-family:var(--mono); font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--p55); margin-bottom:5px}
-/* Écart assumé avec la charte : gauche rouge = refus, droite bleue = signer
-   supposent que le sens des deux options est fixe. Ici il ne l'est pas
-   (« Accepter le cadrage » est à gauche). Les deux blocs sont donc neutres,
-   la direction reste indiquée, et le bleu marque le choix fait. */
+/* Écart assumé avec la charte : « gauche rouge = refus, droite bleue =
+   signer » suppose que le sens des deux options est fixe. Ici il ne l'est
+   pas (« Accepter le cadrage » est à gauche). Les deux blocs sont donc
+   neutres, la direction reste indiquée, et le bleu marque le choix fait. */
 body.telephone .opts.deux .opt:last-child{text-align:right; align-items:flex-end}
 body.telephone .opt b{font-family:var(--serif); font-weight:700; font-size:17px; line-height:1.25; color:var(--paper); margin:0; display:block}
 body.telephone .opt .det{font-family:var(--serif); font-size:14.5px; line-height:1.45; color:var(--p70); margin-top:6px; max-width:none}
@@ -243,7 +244,7 @@ body.telephone .opts.deux .opt:last-child .chiffres{justify-content:flex-end}
 body.telephone .opt .chiffres span, body.telephone .pastille{font-family:var(--mono); font-size:11.5px; border-radius:20px; padding:3px 6px; border:1px solid rgba(233,235,240,.3); color:rgba(233,235,240,.6); background:transparent; line-height:1.2}
 body.telephone .opt .chiffres .neg, body.telephone .pastille.neg{background:var(--alert); color:var(--on-alert); border-color:var(--alert); padding:3px 7px}
 body.telephone .opt .chiffres .pos, body.telephone .pastille.pos{background:var(--paper); color:var(--ink); border-color:var(--paper); padding:3px 7px}
-body.telephone .opt:hover, body.telephone .opt:focus-visible{border-color:var(--alert-soft); background:var(--p08); outline:none}
+body.telephone .opt:hover, body.telephone .opt:focus-visible{border-color:var(--bleu-clair); background:var(--p08); outline:none}
 
 body.telephone .opt.choisi{background:var(--official); border-color:var(--official-line); box-shadow:none}
 body.telephone .opt.choisi b{color:var(--paper)}
@@ -354,7 +355,7 @@ body.telephone .decode p{font-size:15px; line-height:1.55}
 
 /* ---------- l'accueil : écran verrouillé -------------------------------- */
 body.telephone .accueil{text-align:center; margin:0 auto 20px}
-body.telephone .accueil .tampon{border:2px solid var(--alert); color:var(--alert); transform:rotate(-4deg); padding:8px 14px; font-family:var(--mono); margin-bottom:18px}
+body.telephone .accueil .tampon{border:2px solid var(--bleu); color:var(--bleu); transform:rotate(-4deg); padding:8px 14px; font-family:var(--mono); margin-bottom:18px}
 body.telephone .accueil .tampon .rf{font-size:10.5px; letter-spacing:.14em}
 body.telephone .accueil .tampon div:not(.rf){font-size:9px !important; letter-spacing:.06em !important}
 body.telephone .accueil .illustration{display:none}
@@ -367,12 +368,14 @@ body.telephone .accueil .avertissement{font-family:var(--serif); font-size:13px;
 /* ---------- d'où vient le document -------------------------------------
    La charte code l'expéditeur par la couleur du fond. Elle a raison sur une
    notification d'une ligne ; elle a tort sur un document de vingt lignes —
-   une page entière en rouge vif est agressive et le texte y perd. On garde
-   le codage, on change le support : un filet de couleur en tête de fiche et
-   l'expéditeur écrit dans la même couleur. Le papier reste du papier. */
+   une page entière en couleur pleine est agressive et le texte y perd. On
+   garde le codage, on change le support : un filet en tête de fiche et
+   l'expéditeur écrit dans la même couleur. Le papier reste du papier.
+   Matignon prend l'encre noire — c'est ce qui fait le plus autorité sur du
+   papier, et cela évite une alarme rouge sur un coup de téléphone. */
 body.telephone .doc{border-top:4px solid transparent}
-body.telephone .doc.tel-matignon{border-top-color:var(--rouge)}
-body.telephone .doc.tel-matignon .entete-doc .type{color:var(--rouge)}
+body.telephone .doc.tel-matignon{border-top-color:var(--t1)}
+body.telephone .doc.tel-matignon .entete-doc .type{color:var(--t1)}
 body.telephone .doc.tel-institution{border-top-color:var(--bleu)}
 body.telephone .doc.tel-institution .entete-doc .type{color:var(--bleu)}
 body.telephone .doc.tel-presse{border-top-color:var(--paper-shade-2)}
@@ -453,18 +456,18 @@ body.telephone .tel-alerte, body.telephone .opts:not(.sur-papier), body.telephon
    Les composants hérités (options, encadrés, fil de presse) sont écrits pour
    du papier. Plutôt que de les réécrire un par un, on redéfinit les jetons
    de la feuille classique à l'intérieur des conteneurs posés sur le noir :
-   l'encre devient claire, le vert et le rouge passent à leurs variantes
+   l'encre devient claire, le vert et l'ocre passent à leurs variantes
    lisibles sur fond sombre, les fonds s'effacent. */
 body.telephone .opts:not(.sur-papier) .opt,
 body.telephone .echappatoire, body.telephone .fil, body.telephone .fil .post,
 body.telephone .note-passation, body.telephone .tel-alerte, body.telephone .solde,
 body.telephone .tel-note-question, body.telephone .tel-note-pied{
   --encre:var(--paper); --encre-2:var(--p70); --encre-3:var(--p55);
-  --ok:var(--positive); --alerte:var(--alert-soft); --rouge-rf:var(--alert-soft);
+  --ok:var(--vert-clair); --alerte:var(--alert-soft); --rouge-rf:var(--alert-soft);
   --bleu-rf:var(--positive); --bleu-rf-2:var(--positive); --or:var(--k4c);
   --ink-text-2:var(--p70); --ink-text-3:var(--p55); --ink-text-4:var(--p45);
   --filet:var(--p16); --filet-fort:var(--p35); --fiche:transparent; --fiche-2:var(--p07);
-  --c-reussite:var(--bleu-clair); --c-egalite:var(--rouge-clair); --c-sante:var(--k3c); --c-paix:var(--k4c); --c-budget:var(--k4c); --c-violet:var(--k5c);
+  --c-reussite:var(--k1c); --c-egalite:var(--k2c); --c-sante:var(--k3c); --c-paix:var(--k4c); --c-budget:var(--k4c); --c-violet:var(--k5c);
   color:var(--paper);
 }
 body.telephone .note-passation{background:var(--p07); border:1px solid var(--p16); border-radius:16px; padding:14px 16px; margin:0 0 12px; font-family:var(--serif); font-size:15px; line-height:1.5; box-shadow:none; color:var(--p70)}

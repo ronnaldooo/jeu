@@ -74,14 +74,21 @@ fond      #0F1116  noir FROID (surfaces #161922, #1F232D)
 papier    #FBF9F5  blanc chaud à peine teinté (plus de crème jauni)
 encre     #171A21 / #454A55 / #5E6470
 bleu      #2B4B8F   sur papier   ·  #8FB0EC  sur fond sombre
-rouge     #B3222F   sur papier   ·  #F09A94  sur fond sombre
+ocre      #8A6410   sur papier   ·  #E3B45F  sur fond sombre
 vert      #1C7358   sur papier   ·  #6FCFAE  sur fond sombre
 ```
 
-Deux accents seulement, et chacun a un sens : le bleu pour ce qui engage
-(l'action, l'institution), le rouge pour ce qui alerte. Chaque accent existe
-en deux versions, l'une pour le papier, l'autre pour le fond sombre, toutes
-vérifiées au-dessus de 4,5:1.
+**Pas de rouge.** Sur un fond sombre chargé de texte, il crie ; et une alarme
+rouge sur un simple coup de téléphone de Matignon est un contresens. Deux
+accents seulement, chacun avec un sens : le bleu pour ce qui engage (l'action,
+l'institution), l'**ocre** pour ce qui alerte — urgence, dépassement, valeur
+négative. Chaque accent existe en deux versions, l'une pour le papier, l'autre
+pour le fond sombre, toutes vérifiées au-dessus de 4,5:1. Un contrôle
+automatique relit la feuille et refuse toute teinte de la famille rouge.
+
+La seule couleur chaude qui reste est celle du compteur « Réduction des
+inégalités » — un rose framboise, hérité du thème classique où il code ce
+compteur depuis le début.
 
 Les cinq compteurs forment une vraie palette catégorielle — bleu, rose,
 sarcelle, ambre, violet, régulièrement espacée en teinte — elle aussi
@@ -97,7 +104,7 @@ change le support : **un filet de couleur en tête de fiche et l'expéditeur
 
 | Expéditeur | Filet | Écrans |
 |---|---|---|
-| Matignon, l'Élysée | rouge | l'appel, l'entretien préalable, le remaniement, le renvoi |
+| Matignon, l'Élysée | encre noire | l'appel, l'entretien préalable, le remaniement, le renvoi |
 | Bercy, la carte scolaire | bleu | la lettre plafond, le bordereau DHG |
 | la presse, les syndicats | gris | polémiques, plateau, affaires, audiences, retraits |
 | les dossiers à trancher | aucun | tout le reste |
@@ -197,8 +204,9 @@ Ce qui a changé :
    elles ne passaient ni le contraste ni le plancher de taille. Les proportions
    et le vocabulaire graphique sont conservés.
 7. **La palette** est refaite (voir plus haut) : noir froid au lieu du noir
-   chaud, blanc chaud au lieu du crème, deux accents au lieu d'une famille de
-   rouges, et l'expéditeur codé par un filet plutôt que par un fond plein.
+   chaud, blanc chaud au lieu du crème, l'expéditeur codé par un filet plutôt
+   que par un fond plein, et **aucun rouge** — l'accent d'alerte est un ocre,
+   Matignon se distingue par un filet d'encre noire.
 
 ## Recette
 
