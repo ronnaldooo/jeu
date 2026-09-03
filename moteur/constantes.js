@@ -46,7 +46,29 @@ export const ENVELOPPE_BASE = 0.42;   // Md€ de mesures nouvelles « gratuites
    refait pas un budget, on déplace des crédits et on signe des circulaires. */
 export const ENVELOPPE_PRISE_FONCTION = 0.55;  // Md€, juin 2027, une seule fois
 export const ENVELOPPE_RENTREE = 0.22;         // Md€, chaque septembre (circulaire de rentrée)
+/* ---------------------------------------------------------------------------
+   DEUX FAMILLES DE MENUS
+   ---------------------------------------------------------------------------
+   Le jeu alterne deux régimes, et ce n'est pas la même décision :
+
+   - les MOMENTS D'ÉVÉNEMENT — une enquête internationale tombe, une polémique
+     d'août s'installe, un dossier de crise arrive. Le menu est CADRÉ sur le
+     sujet, court, et propose la réponse de plusieurs camps au même problème.
+     On répond à une question précise, sous contrainte de temps ;
+
+   - les MOMENTS DE CALENDRIER — la prise de fonction, la circulaire de rentrée,
+     l'arbitrage de janvier. Rien ne brûle : c'est le ministre qui choisit son
+     sujet. Le menu est plus large, il couvre plusieurs thèmes, et il est
+     ordonné par le CLASSEMENT DES PRIORITÉS déclaré au premier jour. C'est là
+     qu'un joueur cohérent doit retrouver sa feuille de route.
+
+   L'interrupteur `MENUS` remet le jeu dans son état antérieur (`'classique'`),
+   où le menu était unique, long, et rempli par affinité doctrinale. Les deux
+   positions sont vérifiées 4/4 par les simulations. */
+export const MENUS = 'contrastes';             // 'contrastes' | 'classique'
+
 export const TAILLE_MENU_COURT = 4;            // menus cadrés : quatre réponses à UNE question
+export const TAILLE_MENU_CALENDRIER = 6;       // rentrée, prise de fonction : plusieurs thèmes
 
 /* Combien d'annonces une fenêtre peut porter. La contrainte n'est pas
    budgétaire mais réglementaire et humaine : le calendrier du Conseil
@@ -627,6 +649,10 @@ export const PROJETS_2027 = {
    cadré par ce qui vient d'arriver. Même là, un menu de seize cartes n'était
    pas un choix, c'était un catalogue : on choisit mieux dans six. */
 export const TAILLES_MENU = [6, 7, 8, 8, 8];
+/* Les tailles d'avant l'interrupteur, restaurées en position « classique ». */
+export const TAILLES_MENU_CLASSIQUE = [8, 11, 14, 16, 16];
+export const TAILLE_MENU_COURT_CLASSIQUE = 5;
+export const ANNONCES_MAX_CLASSIQUE = { prise_fonction: 3, rentree: 3, livraison: 3, janvier: 3 };
 
 export const MOIS = ['janvier','février','mars','avril','mai','juin',
                      'juillet','août','septembre','octobre','novembre','décembre'];

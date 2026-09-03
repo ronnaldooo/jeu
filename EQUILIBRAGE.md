@@ -1619,6 +1619,49 @@ Vérifications : 4/4 sur trois graines (écarts −2,5 à −3,0), aucun débord
 et le décompte des menus contrôlé en partie réelle (4 cartes / 2 annonces à la
 rentrée, 6 en janvier, 5 le soir de PISA).
 
+## 3 octovicies. Deux familles de menus, et un interrupteur pour revenir
+
+Suite du retour précédent : « il y a des moments dans le jeu où ce sont des
+thèmes bien particuliers […] et puis des moments classiques qui font partie de
+la vie d'école, la rentrée scolaire notamment ». Et : « je ne suis pas sûr que
+je veuille la garder, j'espère qu'on pourra revenir en arrière ».
+
+**Deux régimes de menu**, désormais distingués par la présence d'un cadrage :
+
+| | menu d'ÉVÉNEMENT | menu de CALENDRIER |
+|---|---|---|
+| quand | PISA, polémique d'août, dossier de crise | prise de fonction, circulaire de rentrée, arbitrage de janvier |
+| cadré | oui, sur un compteur ou des familles | non |
+| taille | 4 (5 le soir de PISA) | 6 |
+| composition | la réponse de chaque camp au même problème | une mesure par famille, dans l'ordre des priorités déclarées |
+
+Le menu de calendrier tourne sur les **familles** — moyens, autonomie,
+parcours, autorité, mixité — parce que c'est le thème que le joueur voit sur
+la carte : « varié » veut dire varié à l'écran. L'ordre des familles suit le
+classement des priorités du premier jour, donc un joueur cohérent y retrouve
+sa feuille de route sans qu'on la lui rappelle.
+
+**La même règle sauve l'équilibre deux fois.** Trier chaque famille par
+affinité doctrinale mettait en avant des mesures alignées mais mal étayées :
+la cible 3 tombait (écart −0,8). Trier d'abord par **niveau de preuve**, et
+ne laisser la doctrine décider que de l'ORDRE DES FAMILLES, la restaure à
+−2,6/−2,8. C'est exactement ce qui s'était passé sur les menus d'événement.
+La leçon est stable : la doctrine choisit les sujets, la preuve choisit les
+mesures qui les représentent.
+
+**Revenir en arrière.** `MENUS` dans `moteur/constantes.js` :
+
+```js
+export const MENUS = 'contrastes';   // 'contrastes' | 'classique'
+```
+
+En position `'classique'`, le jeu retrouve exactement son état antérieur —
+menu unique, long (8 à 16 cartes), rempli par affinité doctrinale, trois
+annonces partout. Les tailles et les plafonds d'annonces d'avant sont
+conservés à côté (`TAILLES_MENU_CLASSIQUE`, `TAILLE_MENU_COURT_CLASSIQUE`,
+`ANNONCES_MAX_CLASSIQUE`). **Les deux positions sont vérifiées 4/4** : ce
+n'est pas un interrupteur de secours laissé sans garantie.
+
 ## 5. Paramètres à réexaminer après tests humains
 
 | Paramètre | Valeur | Ce qu'il faut regarder |
