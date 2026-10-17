@@ -147,10 +147,11 @@ export const CATALOGUE = [
     id: 'sante_scolaire',
     label: 'Plan de recrutement en santé scolaire (infirmiers, PsyEN, assistants sociaux)',
     famille: 'moyens',
-    porteurs: ['Cour des comptes', 'intersyndicale', 'fédérations de parents'],
+    porteurs: ['les organisations lycéennes (personnels de santé et d’orientation)', 'Cour des comptes', 'intersyndicale', 'fédérations de parents'],
     perimetre: 'ministeriel',
-    cout: 0.19, coutETP: 1200, pol: 3,
+    cout: 0.19, coutETP: 1200, horsEnseignants: true, pol: 3,
     theme: 'sante_scolaire', once: true, reforme: false,
+    lyceens: 8,
     goulot: true,                           // l'argent ne produit qu'au rythme des concours pourvus
     vitrine: { parents: +5, enseignants: +4, presse: +2, compteurs: { sante: +2 } },
     reel: [
@@ -295,8 +296,9 @@ export const CATALOGUE = [
     porteurs: ['fédérations de parents (FCPE, PEEP)', 'Cour des comptes', 'recteurs'],
     contre: ['Bercy, qui compte les postes'],
     perimetre: 'ministeriel',
-    cout: 0.04, coutETP: 4000, pol: 3,
+    cout: 0.29, coutETP: 4000, pol: 3,   // 4 000 titulaires remplaçants à 72 k€ : le prix d'un poste, pas d'une intention
     theme: 'remplacement', once: true, reforme: false,
+    lyceens: 7,
     vitrine: { parents: +7, enseignants: +3, presse: +4, compteurs: { sante: +5 } },
     reel: [
       { compteur: 'sante',    central: 4, delai: 2, cadenas: 3, source: 'DEPP 26-14 : 9,8 % d’heures non assurées, dont 7,5 points de non-remplacement' },
@@ -400,8 +402,9 @@ export const CATALOGUE = [
     famille: 'moyens',
     porteurs: ['intersyndicale', 'recherche sur le climat scolaire', 'chefs d’établissement'],
     perimetre: 'ministeriel',
-    cout: 0.03, coutETP: 4000, pol: 4,
+    cout: 0.13, coutETP: 4000, horsEnseignants: true, pol: 4,   // 4 000 AED et CPE à ~32 k€ ; ce ne sont pas des professeurs : pas d'effet sur la taille des classes
     theme: 'vie_scolaire', once: true, reforme: false,
+    lyceens: 4,
     vitrine: { parents: +3, enseignants: +5, presse: +1, compteurs: { sante: +3 } },
     reel: [
       { compteur: 'sante',    central: 5, delai: 2, cadenas: 4, source: 'la densité et la stabilité des adultes sont le facteur le mieux établi du climat scolaire' },
@@ -737,6 +740,7 @@ export const CATALOGUE = [
     perimetre: 'ministeriel',
     cout: 0.001, coutETP: 0, pol: 3,
     theme: 'empathie', once: true, reforme: true,
+    lyceens: 3,
     vitrine: { parents: +2, enseignants: +1, presse: -3, compteurs: {} },
     reel: [
       { compteur: 'sante',    central: 5, delai: 4, cadenas: 4, source: 'programmes structurés (KiVa et apparentés) : réduction mesurée des violences entre élèves' },
@@ -755,7 +759,7 @@ export const CATALOGUE = [
     famille: 'autorite',
     porteurs: ['Rassemblement national', 'Reconquête', 'la nostalgie, qui vote beaucoup'],
     perimetre: 'ministeriel',
-    cout: 0, coutETP: 1500, pol: 3,
+    cout: 0.05, coutETP: 1500, horsEnseignants: true, pol: 3,
     theme: 'surges', once: true, reforme: false,
     vitrine: { parents: +4, enseignants: 0, presse: +4, compteurs: {} },
     reel: [
@@ -1123,8 +1127,9 @@ export const CATALOGUE = [
     famille: 'parcours',
     porteurs: ['régions (compétentes depuis 2018)', 'fédérations de parents', 'Cour des comptes'],
     perimetre: 'ministeriel',
-    cout: 0.11, coutETP: 1500, pol: 3,
+    cout: 0.11, coutETP: 1500, horsEnseignants: true, pol: 3,
     theme: 'orientation', once: true, reforme: false,
+    lyceens: 5,
     decouverte: { annee: 2 },
     vitrine: { parents: +5, enseignants: +2, presse: +2, compteurs: { egalite: +3 } },
     reel: [
@@ -1142,10 +1147,11 @@ export const CATALOGUE = [
     id: 'outremer',
     label: 'Plan d’urgence pour Mayotte, la Guyane et les territoires en tension',
     famille: 'moyens',
-    porteurs: ['préfets', 'parlementaires ultramarins', 'Défenseur des droits'],
+    porteurs: ['les lycéens de Mayotte et de Guyane (septembre 2026)', 'préfets', 'parlementaires ultramarins', 'Défenseur des droits'],
     perimetre: 'matignon',
     cout: 0.46, coutETP: 2200, pol: 5,
     theme: 'outremer', once: true, reforme: false,
+    lyceens: 6,
     decouverte: { si: 'apres_un_an', note: 'Une note de la direction générale remonte la situation scolaire à Mayotte et en Guyane. Elle n’est pas rassurante.' },
     vitrine: { parents: +2, enseignants: +3, presse: +4, compteurs: { egalite: +4 } },
     reel: [
@@ -1436,7 +1442,8 @@ export const CATALOGUE = [
       { compteur: 'reussite', central: 1, delai: 3, cadenas: 2, source: 'OCDE : 1 224 heures de cours par an à 15 ans en France contre 962 dans l’Union européenne, pour des résultats moyens ; le volume n’explique pas le niveau (HCSP 2026)' },
     ],
     physique: {},
-    greve: { intensite: 2, theme: 'statut', segment: 'lycee' },
+    /* Pas de grève en propre : les professeurs grincent sur les emplois du
+       temps (vitrine), ils ne défilent pas contre une pause de midi. */
     preuve: 'Sur la plateforme de consultation ouverte en octobre 2026, 71 % des 76 500 premières contributions évoquent l’organisation du temps scolaire : journées trop longues, emplois du temps déséquilibrés, charge de travail. Les lycéens décrivent des journées de 8 h à 18 h avec des heures de trou et parfois trente minutes pour déjeuner. À 15 ans, un élève français passe 1 224 heures par an en classe contre 962 en moyenne dans l’Union européenne (OCDE). Le Haut-commissariat à la Stratégie et au Plan conclut que le volume horaire n’explique pas la baisse du niveau. Plafonner la journée se décide par circulaire ; cela se paie dans les emplois du temps des professeurs et dans les salles disponibles.',
     ideeRecue: '« Finir plus tôt, c’est apprendre moins. » Les lycéens français ont déjà 260 heures de plus que leurs voisins européens pour des résultats dans la moyenne. Ce qui manque n’est pas le volume ; ce qui se joue, c’est l’organisation.',
     mot: "La revendication la plus partagée de la consultation, et la moins chère. Son prix est dans les emplois du temps des professeurs, qui ne votent pas sur Agora.",
@@ -1615,7 +1622,29 @@ export const CATALOGUE = [
     ideeRecue: '« Un repas à un euro, c’est de l’aide sociale, pas de l’école. » Un élève qui saute le déjeuner apprend moins l’après-midi : c’est l’un des effets les plus simples à mesurer de tout le catalogue.',
     mot: "La mesure que les lycéens de Cayenne ont mise en tête de leurs dix-sept revendications. Une région paie la cuisine, vous payez l’assiette.",
   },
+  /* ------------------------------ L11 · les postes ----------------- */
+  {
+    id: 'annuler_suppressions',
+    label: 'Annuler les 1 588 suppressions de postes du budget 2027, par amendement',
+    famille: 'lycee',
+    porteurs: ['l’intersyndicale de l’éducation (grève du 8 octobre 2026)', 'les organisations lycéennes', 'les députés écologistes et insoumis (amendements au PLF 2027)'],
+    contre: ['le ministère : « 36 200 élèves de moins dans le second degré, les postes suivent la démographie »', 'Bercy'],
+    perimetre: 'matignon',
+    cout: 0.12, coutETP: 1588, pol: 7, bercy: -6,
+    theme: 'postes_2027', once: true, reforme: false,
+    lyceens: 9,
+    vitrine: { parents: +3, enseignants: +8, presse: +3, compteurs: { sante: +3 } },
+    reel: [
+      { compteur: 'sante',    central: 3, delai: 1, cadenas: 3, source: '1 588 postes conservés, dont 836 dans le second degré public : c’est l’équivalent d’un professeur dans un lycée sur deux' },
+      { compteur: 'reussite', central: 1, delai: 3, cadenas: 2, source: 'le taux d’encadrement joue peu sur les résultats au lycée ; l’effet passe par les remplacements et les options maintenues' },
+    ],
+    physique: { adhesion: +3 },
+    preuve: 'Le projet de loi de finances pour 2027, présenté le 2 octobre 2026, augmente le budget de l’Éducation nationale de 1,2 milliard d’euros et supprime 1 588 postes d’enseignants, dont 1 250 dans le public (414 dans le premier degré, 836 dans le second). Le ministère justifie ces suppressions par la baisse du nombre d’élèves : 36 200 de moins dans le second degré à la rentrée 2026 selon la DEPP. Les syndicats et les lycéens répondent qu’il manque déjà un professeur dans un établissement sur deux. Les deux séries de chiffres sont exactes : l’une compte des élèves, l’autre des classes sans professeur, et la baisse des élèves ne se produit pas là où les professeurs manquent.',
+    ideeRecue: '« Moins d’élèves, donc moins de profs, c’est logique. » C’est logique en moyenne nationale. Dans un lycée donné, une classe de 35 ne devient pas une classe de 30 parce qu’un collège de l’autre bout du pays a perdu trois élèves par niveau.',
+    mot: "Cent vingt millions d’euros, le prix le plus bas du catalogue pour la colère la plus précise. Bercy, lui, retiendra que vous avez commencé par défaire son budget.",
+  },
 ];
+
 
 
 /* --------------------------------------------------------------------------
@@ -2394,6 +2423,145 @@ export const POLEMIQUES_RENTREE = [
   },
 ];
 
+/* ============================================================================
+   LES COLÈRES DE L'AUTOMNE 2026
+   ----------------------------------------------------------------------------
+   Le cœur de la version grand public. Chaque colère est présentée comme les
+   lycéens l'ont dite, puis le joueur donne son avis (fondée, en partie, pas
+   fondée), puis il lit les faits, deux ou trois chiffres vérifiés avec leur
+   source et, quand deux sources se contredisent, les deux. Puis il décide.
+
+   `verdict` n'est pas le jugement du jeu sur les lycéens : c'est ce que les
+   données permettent de dire. `fondee` : les chiffres confirment le constat.
+   `partielle` : le constat est vrai, la cible ou l'explication est discutable.
+   `ouverte` : les données disponibles ne permettent pas de trancher, et le
+   jeu le dit, parce que c'est aussi une leçon d'esprit critique.
+
+   `mesures` : les cartes du catalogue entre lesquelles le joueur choisit, une
+   par camp quand c'est possible. `postures` : pour la colère qui ne se règle
+   pas par une mesure, les trois attitudes de l'automne 2026.
+   ========================================================================== */
+export const AVIS = [
+  { id: 'fondee', label: 'Fondée', det: 'Les chiffres vont leur donner raison.' },
+  { id: 'partielle', label: 'En partie', det: 'Il y a du vrai, et quelque chose qui cloche dans la façon de le dire.' },
+  { id: 'infondee', label: 'Pas fondée', det: 'C’est un ressenti, pas un fait.' },
+];
+
+export const COLERES = [
+  {
+    id: 'profs',
+    cri: '« Il nous manque un prof depuis septembre. »',
+    qui: 'La pancarte la plus fréquente devant les grilles ; 28,5 % des contributions de la consultation nationale.',
+    contexte: 'Dans un lycée bloqué sur deux, la première revendication est un professeur absent depuis la rentrée : en maths, en français, en anglais. Le rectorat « est saisi ».',
+    faits: [
+      { v: '53 %', l: 'des collèges et lycées publics manquaient d’au moins un professeur à la rentrée 2026, selon le syndicat SNES-FSU (1 033 établissements interrogés). Le ministère répond qu’il s’agit surtout d’heures à couvrir, pas de postes entiers', src: 'snes_rentree26' },
+      { v: '9 %', l: 'des heures de cours ne sont pas assurées dans les collèges publics (Cour des comptes, année 2023-2024) ; le ministre a reconnu 7 % en octobre 2026. Les absences courtes ne sont presque jamais remplacées, les longues presque toujours', src: 'cc_absences' },
+      { v: '3 000', l: 'remplaçants titulaires envoyés en urgence en octobre 2026 : les lycées « en grande difficulté » sont passés de 114 à 47 en une semaine', src: 'remplacants26' },
+    ],
+    lecture: 'Deux chiffres s’opposent, « 53 % des établissements » et « des volumes d’heures » : ils ne comptent pas la même chose, et les deux sont vrais. Ce qui est sûr : un élève perd environ une heure de cours sur onze, et ce sont les absences courtes, celles qu’aucune brigade ne couvre, qui pèsent le plus.',
+    verdict: 'fondee',
+    mesures: ['remplacement_lycee', 'brigades', 'ors_remplacement'],
+  },
+  {
+    id: 'journees',
+    cri: '« On est au lycée de 8 h à 18 h, avec une demi-heure pour manger. »',
+    qui: 'Le premier sujet de la consultation nationale : 71 % des contributions.',
+    contexte: 'Des journées de dix heures, des heures de trou, une cantine saturée. Les lycéens disent qu’ils n’ont plus le temps de rien, ni de dormir, ni de réviser, ni de vivre.',
+    faits: [
+      { v: '1 224 h', l: 'de cours par an pour un élève français de 15 ans, contre 962 h en moyenne dans l’Union européenne, selon l’OCDE', src: 'ocde_temps' },
+      { v: '71 %', l: 'des 76 500 premières contributions de la consultation lycéenne évoquent l’organisation du temps scolaire : journées trop longues, emplois du temps déséquilibrés, charge de travail', src: 'consult26' },
+      { v: 'pas le volume', l: 'le Haut-commissariat à la Stratégie et au Plan conclut que le nombre d’heures n’explique pas la baisse du niveau : les élèves français en ont plus que leurs voisins, pour des résultats moyens', src: 'hcsp26' },
+    ],
+    lecture: 'La colère est fondée sur les chiffres : les lycéens français passent 260 heures de plus en classe que leurs voisins européens. Et l’argument « plus d’heures, meilleur niveau » ne tient pas : le rapport officiel d’août 2026 l’écarte. Ce qui reste ouvert, c’est comment raccourcir sans appauvrir.',
+    verdict: 'fondee',
+    mesures: ['journee_lycee', 'matinees'],
+  },
+  {
+    id: 'bati',
+    cri: '« Il fait 35 °C en salle 204 et les toilettes sont fermées depuis la rentrée. »',
+    qui: 'Deuxième sujet de la consultation (51 %) ; les lycéens de Cayenne, de Mayotte, de Lormont, du Loiret.',
+    contexte: 'Des vidéos de salles surchauffées, des sanitaires sans eau ni papier, un lycée de Mayotte conçu pour 900 élèves qui en accueille 2 300. On vous demande « un plan national pour le bâti ».',
+    faits: [
+      { v: '6,8 Md€', l: 'dépensés par les régions pour le second degré en 2025, dont 2,5 Md€ d’investissement : ce sont elles qui possèdent, construisent et entretiennent les lycées, depuis 1986', src: 'regions_lycees' },
+      { v: '2 300 pour 900', l: 'élèves au lycée du Nord, à Mayotte, dans des bâtiments conçus pour 900 ; bloqué cinq semaines dès la rentrée', src: 'outremer26' },
+      { v: '51 %', l: 'des contributions lycéennes évoquent les bâtiments et les conditions matérielles', src: 'consult26' },
+    ],
+    lecture: 'La colère est fondée ; l’adresse est à moitié fausse. Le ministre de l’Éducation ne possède aucun lycée : ce sont les régions, et c’est ce que le Premier ministre a rappelé le 4 octobre. Un ministre peut payer une partie des travaux et convaincre ; il ne peut pas signer le devis. Dire « ce n’est pas moi » est exact, et c’est la phrase la plus chère du répertoire.',
+    verdict: 'partielle',
+    mesures: ['bati_lycee', 'bati', 'outremer'],
+  },
+  {
+    id: 'parcoursup',
+    cri: '« Parcoursup nous trie au hasard. »',
+    qui: 'La revendication nationale la plus visible : suppression demandée par les organisations lycéennes et étudiantes.',
+    contexte: 'Chaque printemps, des lycéens découvrent qu’ils sont « en attente » sans savoir pourquoi, ni de qui. En 2026, un candidat sur six n’avait rien à l’issue de la phase principale.',
+    faits: [
+      { v: '126 632', l: 'candidats sans aucune proposition à l’issue de la phase principale 2026, soit 17,4 %, 5,5 points de plus qu’en 2025. Le ministère invoque la démographie', src: 'parcoursup26' },
+      { v: 'pas de hasard', l: 'l’algorithme national ne classe personne : il transmet des classements faits dans chaque formation, par des enseignants, avec des critères qu’ils ne publient pas. Le comité éthique de Parcoursup recommande de publier le code du module de classement', src: 'cespm26' },
+      { v: '14,5 %', l: 'des contributions lycéennes évoquent Parcoursup et l’orientation, loin derrière le temps scolaire et les bâtiments', src: 'consult26' },
+    ],
+    lecture: 'L’opacité est réelle : les critères de classement des formations ne sont pas publics, et un rapport parlementaire de 2026 montre que le lycée d’origine pèse dans les dossiers. Le « hasard », lui, est faux : ce sont des humains qui classent. Supprimer la plateforme ne supprime pas le tri ; cela le déplace, vers les places disponibles ou l’échec en première année, comme en 2017.',
+    verdict: 'partielle',
+    mesures: ['parcoursup_transparence', 'parcoursup_fin', 'orientation'],
+  },
+  {
+    id: 'effectifs',
+    cri: '« On est 35 par classe. »',
+    qui: 'Un quart des contributions de la consultation ; les lycées de Loiret, de Guyane, de Seine-Saint-Denis.',
+    contexte: 'Des classes de seconde à 35, des salles où l’on ajoute des chaises, des professeurs qui ne connaissent pas les prénoms avant novembre.',
+    faits: [
+      { v: '24 %', l: 'des contributions lycéennes évoquent les effectifs par classe', src: 'consult26' },
+      { v: '25,8', l: 'élèves par classe au collège en 2023, le nombre le plus élevé des pays européens (21,5 au primaire)', src: 'hcsp26' },
+      { v: 'surtout au CP', l: 'l’effet de la taille des classes sur les résultats est documenté au primaire et pour les élèves défavorisés ; au lycée, il est faible. Le rapport officiel d’août 2026 recommande de ne pas tout miser dessus', src: 'hcsp26' },
+    ],
+    lecture: 'Le constat est vrai : les classes françaises sont parmi les plus chargées d’Europe. L’explication implicite, « moins nombreux, on apprendrait mieux », est plus solide au CP qu’en seconde. Au lycée, 30 au lieu de 35 change la vie des professeurs et le climat de la classe ; les études ne promettent pas grand-chose de plus.',
+    verdict: 'partielle',
+    mesures: ['classe30_lycee', 'classe19'],
+  },
+  {
+    id: 'postes',
+    cri: '« Le gouvernement supprime 1 588 postes pendant qu’on manque de profs. »',
+    qui: 'L’intersyndicale de l’éducation (grève du 8 octobre 2026) et les organisations lycéennes.',
+    contexte: 'Le budget 2027 est présenté le 2 octobre, en plein mouvement : 1 588 postes d’enseignants en moins. Les syndicats appellent à la grève « en soutien aux lycéens » ; le ministère parle de démographie.',
+    faits: [
+      { v: '−1 588 postes', l: 'd’enseignants au budget 2027, dont 1 250 dans le public : 414 dans le premier degré, 836 dans le second', src: 'plf27' },
+      { v: '+1,2 Md€', l: 'de crédits en plus pour l’Éducation nationale dans le même budget, avec 1 300 accompagnants d’élèves handicapés et 200 conseillers principaux d’éducation supplémentaires', src: 'plf27' },
+      { v: '−36 200', l: 'élèves dans le second degré à la rentrée 2026, selon la DEPP : la baisse qui justifie, pour le ministère, les suppressions', src: 'depp_ni2609' },
+    ],
+    lecture: 'Tout est vrai en même temps : des postes supprimés, un budget en hausse, des élèves en moins. La question n’est pas « qui ment » mais « quel ratio » : 1 588 postes pour 36 200 élèves de moins, c’est un poste rendu pour 23 élèves perdus, dans un système qui n’arrive déjà pas à mettre un professeur devant chaque classe. Et la baisse des élèves ne se produit pas là où les professeurs manquent.',
+    verdict: 'partielle',
+    mesures: ['annuler_suppressions', 'titularisation'],
+  },
+  {
+    id: 'ecoute',
+    cri: '« On n’a ni infirmière ni psy, et personne ne nous écoute. »',
+    qui: 'Les organisations lycéennes (« refonte de la démocratie lycéenne ») ; la pancarte « ni prof ni infirmière » des premiers blocus.',
+    contexte: 'Le gouvernement a répondu par une demi-journée de « temps lycéen » et une consultation en ligne. Les chefs d’établissement ont jugé la demi-journée improvisée. Les lycéens ont rempli la consultation, et demandent ce qu’on en fait.',
+    faits: [
+      { v: '≈ 900', l: 'médecins scolaires pour 12 millions d’élèves : 1 143 en 2013, 818 en 2022 ; 28 postes seulement ouverts au concours 2025', src: 'an_medecine' },
+      { v: '2 %', l: 'des lycéens se déclarent victimes de harcèlement (enquête de climat scolaire de novembre 2025) ; 3 % à l’école, 4 % au collège', src: 'depp_climat' },
+      { v: '76 500', l: 'contributions en deux semaines à la consultation nationale, anonyme et en ligne, dont le gouvernement a promis une synthèse publique', src: 'agora26' },
+    ],
+    lecture: 'La partie « santé » est fondée et ancienne : la médecine scolaire s’effondre depuis dix ans, les infirmières et psychologues manquent. La partie « personne ne nous écoute » est plus difficile à juger : la consultation a eu lieu, 76 500 lycéens ont écrit, et c’est ce qu’on en fera qui dira si elle était une écoute ou une diversion. Vous êtes la personne qui en décide.',
+    verdict: 'fondee',
+    mesures: ['sante_scolaire', 'democratie_lyceenne', 'vie_scolaire'],
+  },
+  {
+    id: 'repression',
+    cri: '« Arrêtez de nous gazer. »',
+    qui: 'La dixième des « 10 mesures d’urgence » : la fin de la répression. En face : des lycées incendiés.',
+    contexte: 'Des vidéos d’interpellations de mineurs tournent sur les réseaux. En face, d’autres vidéos : des poubelles en feu, un lycée de Nantes incendié, des agents qui nettoient. Chaque camp a sa vidéo, et la vôtre est attendue.',
+    faits: [
+      { v: '≈ 2 000', l: 'interpellations recensées au 2 octobre 2026, dont 90 % de mineurs, et quelque 400 lycées fermés ce jour-là', src: 'interpellations26' },
+      { v: '2 M€', l: 'de dégâts au lycée Nelson-Mandela de Nantes, fermé un mois après un incendie ; une centaine d’établissements « gravement dégradés » au 2 octobre', src: 'nantes26' },
+      { v: '62 % et 74 %', l: 'des Français jugent la mobilisation justifiée, et 74 % estiment que La France insoumise met les lycéens en danger : le soutien aux lycéens et la peur des violences cohabitent dans la même opinion', src: 'odoxa26' },
+    ],
+    lecture: 'Ici, les chiffres ne tranchent pas, et le jeu ne tranchera pas pour vous : deux colères se font face, celle des lycéens interpellés et celle des agents qui nettoient les lycées brûlés, et chacune a ses images. C’est le moment où un ministre choisit une attitude, pas une mesure. Méfiez-vous de ceux qui vous disent que c’est simple.',
+    verdict: 'ouverte',
+    postures: true,
+  },
+];
+
 /* LE BLOCUS LYCÉEN. Quand la colère lycéenne (jauge cachée) dépasse le seuil
    à la rentrée, les lycées se bloquent à nouveau comme à l'automne 2026, et
    la circulaire de rentrée ne peut plus parler que d'eux : le menu qui suit
@@ -2404,7 +2572,7 @@ export const POLEMIQUES_RENTREE = [
    ministère de l'Enseignement supérieur (4 octobre). */
 export const BLOCUS_LYCEEN = {
   titre: 'Les lycées se bloquent à nouveau',
-  recit: 'Des poubelles devant les grilles, des vidéos sur les réseaux, et le décompte des lycées « perturbés » qui tourne sur les chaînes d’information. Les lycéens reprennent les mots de l’automne 2026 : professeurs absents, journées trop longues, bâtiments dégradés, Parcoursup. Ils ajoutent les vôtres, ceux de juin, qu’ils ont gardés.',
+  recit: 'Des poubelles devant les grilles, des vidéos sur les réseaux, et le décompte des lycées « perturbés » qui tourne sur les chaînes d’information. Les lycéens reprennent les mots de l’automne 2026 : professeurs absents, journées trop longues, bâtiments dégradés, Parcoursup. Ils ajoutent les vôtres, ceux de l’automne dernier, qu’ils ont gardés.',
   cadrage: { familles: ['lycee'],
     titre: 'La circulaire de rentrée ne parlera que des lycées',
     cause: 'Les lycées sont bloqués : personne n’attend de vous une circulaire sur l’école maternelle. Le menu ne contient que des réponses aux revendications lycéennes, et elles ne viennent pas du même endroit.' },

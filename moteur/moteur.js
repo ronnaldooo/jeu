@@ -12,7 +12,7 @@
    ========================================================================== */
 
 import * as K from './constantes.js';
-import { CATALOGUE, PAR_ID, AFFAIRES, AFFAIRE_PAR_ID, POLEMIQUES_RENTREE, LIVRAISON_PISA, PLATEAU, REVALORISATION, chiffrerRevalorisation, FINANCEMENT_19, DOSSIERS_ETE, AUDIENCES, RECEPTION, BLOCUS_LYCEEN, argumentaireSyndical, porteursSyndicaux, estContestable, bordsDeCarte } from './catalogue.js';
+import { CATALOGUE, PAR_ID, AFFAIRES, AFFAIRE_PAR_ID, POLEMIQUES_RENTREE, LIVRAISON_PISA, PLATEAU, REVALORISATION, chiffrerRevalorisation, FINANCEMENT_19, DOSSIERS_ETE, AUDIENCES, RECEPTION, BLOCUS_LYCEEN, COLERES, AVIS, argumentaireSyndical, porteursSyndicaux, estContestable, bordsDeCarte } from './catalogue.js';
 
 /* ---------------------------------------------------------------- ALÉA --- */
 export function rngDepuis(graine) {
@@ -37,7 +37,7 @@ export function creerPartie({ graine = 1, politique }) {
   const rng = rngDepuis(graine);
   const s = {
     rng, graine, politique,
-    annee: 1, anneeCiv: 2027, mois: 5,        // juin 2027
+    annee: 0, anneeCiv: 2026, mois: 10,       // novembre 2026 : le prologue ; l'an 1 commence à l'été 2027
     fini: false, fin: null,
 
     doctrine: null,                            // ordre des 5 compteurs, déclaré en juin
@@ -89,6 +89,9 @@ export function creerPartie({ graine = 1, politique }) {
     /* L'héritage de l'automne 2026 : une colère lycéenne (0-100), des
        promesses datées, et le compte des rentrées bloquées. */
     lyceens: { colere: K.LYCEENS.colereInitiale, blocus: 0, rompues: [], tenues: [], reponses: [] },
+    /* Les colères de l'automne 2026 : l'avis donné, la décision prise. */
+    coleres: { avis: {}, decisions: {} },
+    margeAnnee: 0,
 
     attractiviteCible: 0,
     couvertureAnnoncee: K.PHYSIQUE_INITIALE.couvertureConcours,
@@ -228,7 +231,7 @@ function recalculerVrai(s) {
    effet-vitrine + bruit annuel. Les deux premières années, il est jugé sur ce
    qu'il n'a pas fait. */
 function recalculerAffiche(s) {
-  const w = K.POIDS_HERITAGE[Math.min(4, s.annee - 1)];
+  const w = K.POIDS_HERITAGE[Math.max(0, Math.min(4, s.annee - 1))];
   for (const c of Object.keys(s.vrai)) {
     s.affiche[c] = borne(s.heritage[c] * w + s.vrai[c] * (1 - w) + s.vitrine[c] + s.bruit[c], 0, 100);
   }
@@ -329,9 +332,9 @@ function verifierPromesses(s) {
     else { L.rompues.push(p.id); L.colere = borne(L.colere + p.colere, 0, 100); }
   }
   if (L.rompues.length) {
-    note(s, `Rentrée : ${L.rompues.length} des cinq promesses de l’automne 2026 n’ont pas trouvé de réponse. Les lycéens les ont comptées.`, 'lyceens');
+    note(s, `Rentrée : ${L.rompues.length} des cinq sujets de l’automne 2026 n’ont toujours pas de réponse. Les lycéens les ont comptés.`, 'lyceens');
   } else {
-    note(s, 'Rentrée : les cinq chantiers de l’automne 2026 ont tous une réponse. Les organisations lycéennes « jugeront sur pièces ».', 'lyceens');
+    note(s, 'Rentrée : les cinq sujets de l’automne 2026 ont tous une réponse. Les organisations lycéennes « jugeront sur pièces ».', 'lyceens');
   }
 }
 
@@ -342,6 +345,69 @@ export function humeurLyceenne(colere) {
   if (colere >= 45) return 'méfiants';
   if (colere >= 30) return 'attentifs';
   return 'apaisés';
+}
+
+/* Une attitude face aux lycéens dans la rue : la même grammaire à l'automne
+   2026 (prologue) et à chaque rentrée bloquée. */
+function appliquerPosture(s, idx) {
+  const L = s.lyceens;
+  const r = BLOCUS_LYCEEN.reponses[Math.max(0, Math.min(BLOCUS_LYCEEN.reponses.length - 1, idx | 0))];
+  s.phys.parents = borne(s.phys.parents + r.parents, 0, 100);
+  s.phys.adhesion = borne(s.phys.adhesion + r.adhesion, 0, s.plafondAdhesion);
+  s.credibilite = borne(s.credibilite + r.credibilite, 0, 100);
+  s.capital = borne(s.capital + r.capital, 0, K.CAPITAL.plafond);
+  s.vitrine.paix += r.presse * 0.25;
+  s.agendaConfisque = (s.agendaConfisque || 0) + r.agenda;
+  L.colere = borne(L.colere + r.colere, 0, 100);
+  if (r.greve) {
+    (s.grevesEnAttente = s.grevesEnAttente || []).push({ intensite: 2, theme: 'moyens', segment: 'lycee', cause: 'soutien aux lycéens' });
+  }
+  return r;
+}
+
+/* ============================================================================
+   LE PROLOGUE : L'AUTOMNE 2026, colère par colère
+   ----------------------------------------------------------------------------
+   Pour chaque colère : le joueur donne son avis, lit les faits, puis décide
+   parmi les mesures qui y répondent (une par camp quand c'est possible) ou
+   choisit d'attendre. Les mesures s'appliquent tout de suite, avec les règles
+   ordinaires : elles coûtent sur l'enveloppe des amendements, elles occupent
+   la capacité d'absorption, et elles apaisent les lycéens.
+   ========================================================================== */
+function* etapePrologue(s) {
+  crediter(s, K.ENVELOPPE_PROLOGUE);
+  /* Le PLF 2027 en discussion demande déjà 1 588 postes : c'est le schéma
+     d'emplois que Bercy comparera à la carte scolaire de janvier 2027. */
+  s.schemaEmploisDemande = -1588;
+  s.decouvertes = s.decouvertes || new Set();
+  for (const col of COLERES.slice(0, K.COLERES_MAX)) {
+    const ia = yield { type: 'colere', colere: col, avis: AVIS };
+    const avis = AVIS[Math.max(0, Math.min(AVIS.length - 1, ia | 0))];
+    s.coleres.avis[col.id] = avis.id;
+    if (col.postures) {
+      const ip = yield { type: 'faits', colere: col, avis: avis.id, postures: BLOCUS_LYCEEN.reponses, tresor: s.tresor, capital: s.capital };
+      const r = appliquerPosture(s, ip);
+      s.coleres.decisions[col.id] = 'posture:' + r.type;
+      note(s, `Automne 2026 — « ${col.cri} » : ${r.label}.`, 'colere');
+      continue;
+    }
+    /* Les mesures proposées sont sur la table, quel que soit leur calendrier
+       de découverte habituel : la crise les a remontées. */
+    for (const id of col.mesures) if (PAR_ID[id]) s.decouvertes.add(id);
+    const dispo = col.mesures.map((id) => PAR_ID[id]).filter((c) => c && estJouable(s, c));
+    const rep = yield { type: 'faits', colere: col, avis: avis.id, dispo, tresor: s.tresor, capital: s.capital };
+    if (rep && rep.id && dispo.some((c) => c.id === rep.id)) {
+      const avant = s.joue.size;
+      appliquerMesures(s, [rep], 1, false, 'prologue', false);
+      s.coleres.decisions[col.id] = s.joue.size > avant ? rep.id : null;
+    } else {
+      s.coleres.decisions[col.id] = null;
+    }
+    const d = s.coleres.decisions[col.id];
+    note(s, `Automne 2026 — « ${col.cri} » : ${d ? '« ' + PAR_ID[d].label + ' »' : 'pas de réponse pour l’instant'}.`, 'colere');
+  }
+  const n = Object.values(s.coleres.decisions).filter((d) => d && !String(d).startsWith('posture:')).length;
+  note(s, `Automne 2026 : ${n} mesure${n > 1 ? 's' : ''} annoncée${n > 1 ? 's' : ''} en réponse aux lycéens. Les lycéens sont ${humeurLyceenne(s.lyceens.colere)}.`, 'lyceens');
 }
 
 function* etapeBlocus(s) {
@@ -359,17 +425,7 @@ function* etapeBlocus(s) {
   s.phys.parents = borne(s.phys.parents + K.LYCEENS.parentsParBlocus, 0, 100);
   const nonTenues = K.LYCEENS.promesses.filter((p) => !p.themes.some((t) => s.themes.has(t)));
   const idx = yield { type: 'blocus', blocus: BLOCUS_LYCEEN, humeur: humeurLyceenne(L.colere), nonTenues, n: L.blocus };
-  const r = BLOCUS_LYCEEN.reponses[Math.max(0, Math.min(BLOCUS_LYCEEN.reponses.length - 1, idx | 0))];
-  s.phys.parents = borne(s.phys.parents + r.parents, 0, 100);
-  s.phys.adhesion = borne(s.phys.adhesion + r.adhesion, 0, s.plafondAdhesion);
-  s.credibilite = borne(s.credibilite + r.credibilite, 0, 100);
-  s.capital = borne(s.capital + r.capital, 0, K.CAPITAL.plafond);
-  s.vitrine.paix += r.presse * 0.25;
-  s.agendaConfisque = (s.agendaConfisque || 0) + r.agenda;
-  L.colere = borne(L.colere + r.colere, 0, 100);
-  if (r.greve) {
-    (s.grevesEnAttente = s.grevesEnAttente || []).push({ intensite: 2, theme: 'moyens', segment: 'lycee', cause: 'soutien aux lycéens' });
-  }
+  const r = appliquerPosture(s, idx);
   /* La circulaire de rentrée ne parlera que d'eux. */
   s.cadrage = BLOCUS_LYCEEN.cadrage;
   note(s, `Blocus des lycées (${L.blocus === 1 ? 'première' : 'deuxième'} fois) : réponse ${r.type === 'ferme' ? 'de fermeté' : r.type === 'methode' ? 'de méthode' : 'd’esquive'}. ${r.agenda} semaines d’agenda consommées.`, 'blocus');
@@ -758,7 +814,7 @@ function etapeDecembre(s) {
 }
 
 /* --- JANVIER : CSA ministériel, carte scolaire, DHG, et l'atelier de mesures */
-function* etapeJanvier(s) {
+function* etapeJanvier(s, opts = {}) {
   s.capital = Math.min(K.CAPITAL.plafond, s.capital + K.CAPITAL.parAn);
 
   /* (a) Le tendanciel démographique de l'année. */
@@ -826,6 +882,10 @@ function* etapeJanvier(s) {
      passées. C'est l'effet cliquet : vos décisions réduisent la marge de vos
      successeurs, pas la vôtre. */
   s.economieCarteScolaire = economie;
+  /* Janvier 2027 (prologue) : la carte scolaire se signe, l'argent des postes
+     rendus reste disponible, mais il n'y a pas d'atelier : les réponses de
+     l'automne viennent d'être annoncées, et le budget n'est pas le vôtre. */
+  if (opts.sansAtelier) { crediter(s, economie); return; }
   crediter(s, s.margeAnnee + economie);
   yield* etapeMesures(s, { moment: 'janvier' });
 }
@@ -1327,13 +1387,13 @@ export function coutDe(carte, options = {}) {
   return { cout: carte.cout, coutETP: carte.coutETP, pol: carte.pol };
 }
 
-function appliquerMesures(s, choix, maxAnnonces = 3, depassementAutorise = true, moment = 'janvier') {
+function appliquerMesures(s, choix, maxAnnonces = 3, depassementAutorise = true, moment = 'janvier', verifierMenu = true) {
   const retenues = [];
   for (const ch of choix) {
     if (retenues.length >= maxAnnonces) break;   // le calendrier réglementaire ne suit pas
     const carte = PAR_ID[ch.id];
     if (!carte) continue;
-    if (!mesuresDisponibles(s).includes(carte)) continue;
+    if (verifierMenu ? !mesuresDisponibles(s).includes(carte) : !estJouable(s, carte)) continue;
     const { cout, coutETP, pol } = coutDe(carte, ch.options || {});
     if (pol > s.capital) continue;                       // le capital bloque réellement
     if (carte.perimetre === 'matignon' && pol * 2 > s.capital) continue;
@@ -1376,7 +1436,9 @@ function appliquerMesures(s, choix, maxAnnonces = 3, depassementAutorise = true,
     if (ph.hna) s.hnaTemporaires.push({ delta: ph.hna.delta, reste: ph.hna.duree, applique: 0 });
     if (ph.attractivite) s.bonusAttractivite = (s.bonusAttractivite || 0) + ph.attractivite;
     if (carte.bercy) s.creditBercy = borne(s.creditBercy + carte.bercy, 0, 100);
-    if (carte.coutETP) s.ratioED -= carte.coutETP / 35000;   // les ETP créés desserrent l'encadrement
+    /* Les postes d'enseignants créés desserrent l'encadrement ; les AED, CPE,
+       infirmiers ou psychologues, non : ils comptent ailleurs. */
+    if (carte.coutETP && !carte.horsEnseignants) s.ratioED -= carte.coutETP / 35000;
     if (carte.lyceens) apaiserLyceens(s, carte.lyceens, carte.label);
 
     /* Effets réels, curseurs compris. Une mesure partie en retard produit peu :
@@ -1430,7 +1492,9 @@ function appliquerMesures(s, choix, maxAnnonces = 3, depassementAutorise = true,
   if (surEngagement > 0.05) {
     s.creditBercy = borne(s.creditBercy - Math.min(K.SURCOUT.penaliteStructurelleMax, surEngagement * K.SURCOUT.penaliteStructurelleParMd), 0, 100);
   }
-  s.mesuresParAnnee[s.annee - 1] = (s.mesuresParAnnee[s.annee - 1] || []).concat(retenues);
+  /* Les mesures du prologue (an 0) sont rangées avec celles de l'an 1. */
+  const ia = Math.max(0, s.annee - 1);
+  s.mesuresParAnnee[ia] = (s.mesuresParAnnee[ia] || []).concat(retenues);
   s.phys.adhesion = borne(s.phys.adhesion, 0, 100);
   s.phys.parents = borne(s.phys.parents, 0, 100);
 }
@@ -1445,31 +1509,40 @@ function appliquerMesures(s, choix, maxAnnonces = 3, depassementAutorise = true,
    équilibré est ce qui sera joué. Les yields `type:'etape'` sont
    informatifs : l'interface y affiche le récit, les simulations les ignorent. */
 export function* derouler(s) {
+  /* NOVEMBRE 2026. Dans la fiction du jeu, le ministre a démissionné après
+     six semaines de blocus ; le joueur est nommé au retour des vacances de la
+     Toussaint. Nomination, entretien, profil, feuille de route : comme
+     toujours. Puis la situation (la note lycéens), le budget en discussion,
+     et le prologue, colère par colère. */
   yield* etapeDoctrine(s);
   rafraichir(s);
-  /* La note de cadrage que la direction générale remet à tout nouveau ministre
-     avant son premier arbitrage : budget, démographie, niveaux. Tous les
-     chiffres viennent de `moteur/reperes.js` et sont sourcés. */
-  /* Les notes de la DGESCO n'arrivent pas en pile : chacune vient au moment où
-     la décision qu'elle éclaire se présente. En juin, le budget, parce que la
-     première chose qu'un ministre demande est une rallonge. La démographie
-     attend juillet et la lettre plafond, qui la rend concrète. Les niveaux
-     n'ont pas de note du tout : ils arrivent avec PISA, quand la presse en
-     parle, et pas avant. */
-  crediter(s, K.ENVELOPPE_PRISE_FONCTION);
-  /* L'héritage d'abord : ce que les lycéens ont obtenu à l'automne 2026 et
-     ce qu'on leur a promis. Puis le budget, parce que la première chose qu'un
-     ministre demande est une rallonge. */
   yield { type: 'reperes', note: 'lyceens' };
   yield { type: 'reperes', note: 'budget' };
   yield* etapeAvance(s);
-  /* Le premier menu est un menu de calendrier (plusieurs thèmes), mais il
-     ouvre sur le lycée : deux réponses aux lycéens en tête, le reste ensuite. */
-  yield* etapeMesures(s, { moment: 'prise_fonction', taille: K.TAILLE_MENU_CALENDRIER, priorite: 'lycee' });
+  yield* etapePrologue(s);
   rafraichir(s);
-  yield { type: 'etape', etape: 'ouverture' };
-  yield* etapeEte(s);
+  yield { type: 'etape', etape: 'automne' };
+  /* JANVIER 2027 : la carte scolaire de la rentrée 2027 se signe, sous le
+     schéma d'emplois du PLF 2027. Pas d'atelier : les annonces sont faites. */
+  s.mois = 0;
+  yield* etapeJanvier(s, { sansAtelier: true });
   rafraichir(s);
+  /* MAI 2027 : l'élection présidentielle. Dans la vraie vie, le ministre
+     change presque toujours. Dans le jeu, il reste : c'est la seule entorse à
+     la réalité, et elle sert à voir ce que les décisions de l'automne
+     produisent. Une promesse vieillit entre-temps. */
+  s.mois = 4;
+  s.lyceens.colere = borne(s.lyceens.colere + K.LYCEENS.derive, 0, 100);
+  {
+    const pNon = borne(K.RENVOI.electionBase - s.capital / K.RENVOI.remaniementParCapital - (s.phys.parents - 45) / K.RENVOI.remaniementParParents,
+      K.RENVOI.remaniementMin, K.RENVOI.remaniementMax);
+    if (s.rng() < pNon) {
+      s.fini = true;
+      s.fin = { type: 'election', annee: 0, texte: 'Mai 2027. Un nouveau président, un nouveau gouvernement, et votre nom n’y figure pas. Six mois rue de Grenelle : vos décisions de l’automne, elles, restent dans les textes.' };
+    }
+  }
+  yield { type: 'etape', etape: 'election' };
+  if (s.fini) return;
 
   for (s.annee = 1; s.annee <= K.DUREE_MANDAT && !s.fini; s.annee++) {
     s.anneeCiv = 2026 + s.annee;                 // année civile de la carte scolaire
@@ -1503,7 +1576,7 @@ export function* derouler(s) {
     rafraichir(s);
     yield { type: 'etape', etape: 'cloture' };
   }
-  if (!s.fini) { s.fini = true; s.fin = { type: 'mandat_complet', annee: K.DUREE_MANDAT, texte: `${K.DUREE_MANDAT === 3 ? 'Trois' : K.DUREE_MANDAT} rentrées. Vous partez debout — ce qui, rue de Grenelle, est déjà un résultat.` }; }
+  if (!s.fini) { s.fini = true; s.fin = { type: 'mandat_complet', annee: K.DUREE_MANDAT, texte: `Un automne de crise et ${({ 1: 'une rentrée', 2: 'deux rentrées', 3: 'trois rentrées' })[K.DUREE_MANDAT] || K.DUREE_MANDAT + ' rentrées'}. Vous partez debout — ce qui, rue de Grenelle, est déjà un résultat.` }; }
   s.annee = Math.min(K.DUREE_MANDAT, s.annee);
 }
 
@@ -1525,6 +1598,15 @@ export function jouerMandat({ graine = 1, politique }) {
     else if (q.type === 'affaire') rep = politique.affaire ? politique.affaire(s, q) : 0;
     else if (q.type === 'polemique') rep = politique.polemique ? politique.polemique(s, q) : 1;
     else if (q.type === 'blocus') rep = politique.blocus ? politique.blocus(s, q) : 0;
+    else if (q.type === 'colere') rep = politique.colere ? politique.colere(s, q) : 1;
+    /* Sans méthode dédiée, une stratégie répond aux colères comme elle choisit
+       ses mesures : son propre sélecteur, une carte au plus, sans dépassement ;
+       et face à la rue, comme face à un blocus. */
+    else if (q.type === 'faits') {
+      if (politique.faits) rep = politique.faits(s, q);
+      else if (q.postures) rep = politique.blocus ? politique.blocus(s, q) : 0;
+      else rep = (politique.mesures(s, q.dispo, { maxAnnonces: 1, depassementAutorise: false, tresor: q.tresor, capital: q.capital }) || [])[0] || null;
+    }
     else if (q.type === 'livraison') rep = null;
     /* Défaut délibérément médiocre : le plateau ne doit rien offrir à qui ne
        s'y prépare pas — sinon l'immobilisme paie, ce qui serait faux. */
@@ -1672,6 +1754,7 @@ export function bilan(s) {
     greves: s.greves.length,
     pointsGreve: +s.pointsGreveCumules.toFixed(1),
     lyceens: { ...s.lyceens, humeur: humeurLyceenne(s.lyceens.colere) },
+    coleres: s.coleres,
     fatigue: s.fatigue, abandons: s.abandons,
     mesures: s.mesuresParAnnee.flat().map((m) => m.id),
     histoire: s.histoire,

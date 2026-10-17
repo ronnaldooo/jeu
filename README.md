@@ -1,17 +1,21 @@
 # Rue de Grenelle
 
-**Un jeu de gestion politique où vous êtes ministre de l'Éducation nationale,
-de juin 2027 à mai 2030. Trois rentrées, trois budgets, des lycéens qui
-attendent les réponses promises à l'automne 2026, et une question : sur quoi
-serez-vous jugé ?**
+**Automne 2026. Les lycées sont bloqués depuis six semaines, le ministre
+démissionne, on vous nomme. Huit colères lycéennes à examiner, un budget en
+discussion, trois rentrées à tenir, et une question : sur quoi serez-vous
+jugé ?**
 
-> **Version grand public.** Cette branche (`claude/jeu-grand-public`) est la
-> version courte et sans jargon du jeu : un mandat de trois rentrées joué en
-> vingt à trente minutes, des jauges qui se lisent en mots, des choix
-> préréglés au lieu de curseurs, et le mouvement lycéen de l'automne 2026 au
-> cœur de la première année. La version complète (cinq rentrées, réglages
-> fins) reste sur la branche principale. Le dossier de recherche qui a
-> précédé cette version est dans `RECHERCHE-GRAND-PUBLIC.md`.
+> **Version grand public et lycéens.** Cette branche (`claude/jeu-grand-public`)
+> est la version courte et sans jargon du jeu. Elle commence dans la fiction
+> d'une démission du ministre à l'automne 2026 : le joueur est nommé au milieu
+> des blocus et commence par examiner, une par une, les colères des lycéens.
+> Pour chacune : ce qu'ils disent, votre avis, les faits vérifiés (deux ou
+> trois chiffres sourcés, et les deux chiffres quand ils se contredisent),
+> puis votre décision parmi les réponses des différents camps. Le but n'est
+> pas d'avoir raison d'avance : c'est de savoir, avant de décider, sur quoi
+> repose ce qu'on pense. La version complète (cinq rentrées, réglages fins)
+> reste sur la branche principale. Le dossier de recherche qui a précédé cette
+> version est dans `RECHERCHE-GRAND-PUBLIC.md`.
 
 Le jeu s'adresse au grand public. Il ne cherche pas à convaincre : chaque
 mesure du catalogue cite ceux qui la défendent réellement (gouvernement,
@@ -50,18 +54,31 @@ venez de faire. Aucune ne touche un compteur éducatif : elles attaquent votre
 documentées de chute d'un ministre de l'Éducation, une seule relève de la
 politique éducative.
 
-**Les lycéens n'ont pas oublié.** Le mandat commence huit mois après le
-mouvement lycéen de l'automne 2026 : 891 lycées aux cours suspendus le même
-jour, 76 500 contributions à la consultation nationale, cinq chantiers ouverts
-par le Premier ministre avec des promesses datées. Vous héritez des promesses.
-Une jauge cachée, la colère lycéenne, se lit en mots dans le bandeau ; si elle
-dépasse le seuil à la rentrée, les lycées se bloquent à nouveau, et la
-circulaire de rentrée ne peut plus parler que d'eux : le menu propose alors la
-réponse de chaque camp à la même revendication, et le bilan dit à qui vous
-aurez donné raison. Dix cartes « lycée » traduisent les revendications de 2026
-en décisions : remplaçants, journée plafonnée, bâti, Parcoursup (le rendre
-lisible, ou le supprimer), trente par classe, démocratie lycéenne, bac,
-cantine à un euro.
+**L'automne 2026, colère par colère.** Le jeu s'ouvre en novembre 2026 : 891
+lycées aux cours suspendus le même jour un mois plus tôt, 76 500 contributions
+à la consultation nationale, cinq chantiers ouverts par le Premier ministre, et
+un ministre qui vient de démissionner (c'est la fiction du jeu ; personne n'est
+nommé). Huit colères sont examinées dans l'ordre : les professeurs absents, les
+journées de dix heures, les bâtiments, Parcoursup, les effectifs, les 1 588
+postes supprimés au budget 2027, la santé scolaire et l'écoute, la répression.
+Pour chacune, le joueur dit d'abord s'il la trouve fondée, puis lit les faits,
+et le jeu dit si les chiffres vont dans son sens : « les chiffres confirment »,
+« vrai, mais pas tout à fait comme ils le disent », ou « les chiffres ne
+tranchent pas », et dans ce dernier cas il le dit aussi. Puis il décide, parmi
+les réponses que portent réellement le gouvernement, les candidats de 2027 et
+les organisations lycéennes, ou il attend. Onze cartes « lycée » traduisent
+les revendications en décisions : remplaçants, journée plafonnée, bâti,
+Parcoursup (le rendre lisible, ou le supprimer), trente par classe, démocratie
+lycéenne, bac, cantine à un euro, annulation des suppressions de postes.
+
+**Puis les rentrées.** Une jauge cachée, la colère lycéenne, se lit en mots
+dans le bandeau. Si les réponses de l'automne manquent, les lycées se bloquent
+à la rentrée suivante et la circulaire de rentrée ne peut plus parler que
+d'eux. En mai 2027, l'élection présidentielle peut mettre fin au mandat ; si
+le ministre reste, c'est la seule entorse à la réalité du jeu, et elle sert à
+voir ce que les décisions de l'automne produisent. Le bilan rend tout : les
+effets réels, d'où venaient les mesures, ce que vous pensiez des colères et ce
+qu'en disaient les faits.
 
 **Le temps ne joue pas pour vous.** PISA tombe en septembre de votre première
 année et mesure des élèves scolarisés depuis dix ans : vous répondez de ce que
@@ -111,12 +128,12 @@ source, cliquable.
 
 Le jeu est équilibré par simulation (700 mandats par stratégie-type, trois
 jeux de graines) et l'interface pilote exactement le même moteur que les
-simulations. Les quatre cibles du cahier des charges sont tenues : survivre
-aux trois rentrées réussit à **55-59 %** pour un joueur attentif ; aucun des
-cinq compteurs n'est maximisable sans en sacrifier d'autres ; « tout vitrine »
-fait un bon mandat et un mauvais bilan, « tout réel » l'inverse, et les deux
-perdent contre le jeu mixte ; mettre les cinq compteurs au vert en trois ans
-est impossible — en dix ans, presque.
+simulations. Les quatre cibles du cahier des charges sont tenues : survivre à
+l'automne de crise, à l'élection et aux trois rentrées réussit à **52-59 %**
+pour un joueur attentif ; aucun des cinq compteurs n'est maximisable sans en
+sacrifier d'autres ; « tout vitrine » fait un bon mandat et un mauvais bilan,
+« tout réel » l'inverse, et les deux perdent contre le jeu mixte ; mettre les
+cinq compteurs au vert pendant le mandat est impossible — en dix ans, presque.
 
 ### Pour les collègues qui veulent l'utiliser en formation
 
@@ -147,8 +164,8 @@ jouer.
 
 ```
 index.html                   LE JEU — fichier unique autonome
-moteur/                      constantes sourcées, catalogue de 74 cartes, repères sourcés, moteur en générateur
-moteur/reperes.js            les 12 fiches de référence et leurs 47 sources
+moteur/                      constantes sourcées, catalogue de 75 cartes et 8 colères, repères sourcés, moteur en générateur
+moteur/reperes.js            les 12 fiches de référence et leurs 51 sources
 RECHERCHE-GRAND-PUBLIC.md    le dossier de recherche d'octobre 2026 : mouvement lycéen, projets des partis
 simulations/                 stratégies-types et bancs d'essai
 interface/                   gabarit (styles) + application (écrans, presse, bilan)

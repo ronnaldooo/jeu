@@ -627,6 +627,45 @@ table.bilan tr.cache td{background:var(--fiche-2)}
   #comprendre-btn{left:8px; bottom:8px}
 }
 /* ---------- version grand public : mots, choix préréglés, lycéens ---------- */
+.qui-dit{font-size:.8rem; color:var(--encre-3); margin:-6px 0 10px; font-style:italic}
+.consigne{font-size:.9rem; color:var(--encre-2); max-width:62ch}
+.rappel-cri{font-family:"Newsreader",georgia,serif; font-size:1.2rem; font-style:italic; color:var(--encre-2); margin:0 0 8px}
+.rep-liste.faits{margin-top:6px}
+.rep-liste.faits .v{color:var(--c-violet)}
+.verdict-bloc{background:var(--fiche-2); border-left:3px solid var(--c-violet); padding:12px 16px; margin:14px 0}
+.verdict-bloc .titre-d{font-size:.68rem; letter-spacing:.12em; text-transform:uppercase; font-weight:700; margin-bottom:4px}
+.verdict-bloc p{margin:6px 0 0; font-size:.92rem; max-width:70ch}
+.verdict-bloc .miroir{border-top:1px dotted var(--filet-fort); padding-top:8px; margin-top:10px; font-size:.88rem}
+h3.decider{font-size:1.05rem; margin:18px 0 0; font-weight:700}
+.enveloppe-ligne{font-size:.86rem; color:var(--encre-2); margin:4px 0 0}
+.enveloppe-ligne b{color:var(--encre)}
+.mots{display:flex; flex-wrap:wrap; gap:5px; margin:4px 0 6px}
+.mots span{font-size:.72rem; font-weight:600; padding:2px 8px; border:1px solid var(--filet-fort); border-radius:12px; color:var(--encre-2); background:var(--fiche)}
+.mots .pos{color:color-mix(in srgb, var(--ok) 62%, var(--encre)); border-color:var(--ok)}
+.mots .neg{color:color-mix(in srgb, var(--alerte) 70%, var(--encre)); border-color:var(--alerte)}
+.mots .lyc{color:color-mix(in srgb, var(--c-violet) 72%, var(--encre)); border-color:var(--c-violet)}
+.mots .preuve.p5, .mots .preuve.p4{color:color-mix(in srgb, var(--c-sante) 62%, var(--encre)); border-color:var(--c-sante)}
+.mots .preuve.p1{color:color-mix(in srgb, var(--alerte) 70%, var(--encre)); border-color:var(--alerte)}
+.opt.reponse .det{margin-top:3px}
+.opt.reponse .neg-l{color:color-mix(in srgb, var(--alerte) 70%, var(--encre)); font-weight:600}
+.opt.reponse.indispo{opacity:.62; cursor:not-allowed}
+.opt.reponse .btn-mini{cursor:pointer; font-size:.72rem; font-weight:600; padding:5px 9px; border:1px solid var(--filet-fort); background:var(--fiche); color:var(--encre-2); margin-top:8px}
+.opt.reponse .btn-mini:hover{border-color:var(--bleu-rf); color:var(--bleu-rf)}
+.opt.reponse .comprendre{display:none; background:var(--fiche-2); border-left:3px solid var(--c-sante); padding:10px 12px; font-size:.8rem; margin-top:8px}
+.opt.reponse .comprendre.visible{display:block}
+.opt.reponse .comprendre .titre-d{font-size:.62rem; letter-spacing:.1em; text-transform:uppercase; font-weight:700; color:var(--c-sante)}
+.opt.reponse .comprendre p{margin:5px 0; max-width:70ch; font-weight:400}
+.opt.reponse .comprendre .idee{border-top:1px dashed var(--filet-fort); margin-top:8px; padding-top:8px}
+.opt.reponse .comprendre .idee .titre-d{color:var(--rouge-rf)}
+.opt.reponse .comprendre .mot-carte{font-family:"Newsreader",georgia,serif; font-style:italic; color:var(--encre-2); border-top:1px solid var(--filet); padding-top:6px}
+.miroir-bloc{background:var(--fiche); border:1px solid var(--filet); border-left:3px solid var(--c-violet); max-width:860px; margin:0 auto 14px; padding:13px 16px 14px}
+.doc .miroir-bloc{max-width:none; margin:18px 0 0}
+.miroir-bloc .titre-d{font-size:.68rem; letter-spacing:.12em; text-transform:uppercase; font-weight:700; color:var(--c-violet); margin-bottom:8px}
+.miroir-bloc ul{list-style:none; margin:0; padding:0; display:grid; gap:7px}
+.miroir-bloc li{border-left:3px solid var(--filet-fort); padding:4px 0 4px 10px}
+.miroir-bloc li.ok{border-left-color:var(--ok)} .miroir-bloc li.ecart{border-left-color:var(--c-budget)}
+.miroir-bloc .cri{display:block; font-family:"Newsreader",georgia,serif; font-style:italic; font-size:.95rem}
+.miroir-bloc .d{display:block; font-size:.78rem; color:var(--encre-2); line-height:1.5}
 .accroche.grille{display:grid; grid-template-columns:auto 1fr; column-gap:22px; row-gap:0; align-items:start}
 .accroche.grille .chiffre-cle{grid-column:1; grid-row:1}
 .accroche.grille > p{grid-column:2; grid-row:1 / span 2}

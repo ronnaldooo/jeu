@@ -298,6 +298,30 @@ export const SOURCES = {
     date: '2 octobre 2026',
     url: 'https://www.banquedesterritoires.fr/leducation-nationale-preservee-par-le-projet-de-loi-de-finances-pour-2027',
   },
+  outremer26: {
+    org: 'Outre-mer La 1ère (France Télévisions)',
+    titre: 'Ce que l’on sait du mouvement des lycéens, de La Réunion à la Guyane en passant par Mayotte : au lycée du Nord, 2 300 élèves dans des bâtiments conçus pour 900',
+    date: 'octobre 2026',
+    url: 'https://la1ere.franceinfo.fr/ce-que-l-on-sait-du-mouvement-des-lyceens-de-la-reunion-a-la-guyane-en-passant-par-la-guyane-mayotte-et-la-martinique-1744191.html',
+  },
+  depp_ni2609: {
+    org: 'DEPP, ministère de l’Éducation nationale (note d’information 26.09)',
+    titre: 'Prévisions d’effectifs : 5,58 millions d’élèves dans le second degré à la rentrée 2026, soit 36 200 de moins qu’en 2025',
+    date: 'avril 2026',
+    url: 'https://www.education.gouv.fr/sites/default/files/document/education-nationale-depp-ni-2026-09-pdf-508061.pdf',
+  },
+  interpellations26: {
+    org: 'Euronews, d’après l’AFP et le ministère de l’Intérieur',
+    titre: '400 lycées fermés, près de 2 000 interpellations (90 % de mineurs), une centaine d’établissements gravement dégradés',
+    date: '2 octobre 2026',
+    url: 'https://fr.euronews.com/2026/10/02/400-lycees-fermes-plus-de-2-000-interpellations-la-mobilisation-lyceenne-ne-faiblit-pas',
+  },
+  nantes26: {
+    org: 'Assemblée nationale, proposition de résolution (17e législature)',
+    titre: 'Incendie du lycée Nelson-Mandela de Nantes : 2 millions d’euros de dégâts, un mois de fermeture',
+    date: 'octobre 2026',
+    url: 'https://www.assemblee-nationale.fr/dyn/17/textes/l17b3292_proposition-resolution.pdf',
+  },
   odoxa26: {
     org: 'Odoxa pour Le Figaro et Backbone Consulting',
     titre: 'Les Français soutiennent les lycéens mais réprouvent l’implication de LFI (62 % jugent la mobilisation justifiée)',
@@ -576,15 +600,15 @@ export const SERIE_PISA_MATHS = [
 export const CADRAGE_INITIAL = [
   {
     cle: 'lyceens',
-    titre: 'Ce dont vous héritez : l’automne 2026 des lycéens',
-    accroche: { v: '891 lycées', l: 'ont eu leurs cours suspendus le même jour, le 6 octobre 2026, sur 3 700. Huit mois plus tard, vous héritez des promesses faites ce jour-là.', src: 'mobilisation26' },
-    sousAccroche: { v: '76 500', l: 'lycéens ont écrit au gouvernement ce qui n’allait pas. Ils attendent la réponse à la rentrée', src: 'consult26' },
+    titre: 'Où vous mettez les pieds : l’automne 2026 des lycéens',
+    accroche: { v: '891 lycées', l: 'ont eu leurs cours suspendus le même jour, le 6 octobre 2026, sur 3 700. Votre prédécesseur a promis, puis démissionné. Les promesses restent, et les blocus aussi.', src: 'mobilisation26' },
+    sousAccroche: { v: '76 500', l: 'lycéens ont écrit au gouvernement ce qui n’allait pas. Ils attendent votre réponse', src: 'consult26' },
     graphique: 'consultation',
     chiffres: [
       { v: '5 promesses', l: 'un professeur devant chaque classe « à la Toussaint », des travaux « avant l’été 2027 », des règles de Parcoursup lisibles, des emplois du temps revus, une place pour les élèves dans les décisions : les cinq chantiers du 4 octobre 2026', src: 'chantiers26' },
       { v: '10 milliards', l: 'ce que les organisations lycéennes demandent pour les lycées. Le budget 2027 ajoute 1,2 milliard à toute l’Éducation nationale, et supprime 1 588 postes', src: 'dix_mesures' },
     ],
-    aRetenir: 'Vous n’avez pas bloqué les lycées. Vous êtes la personne à qui l’on demandera pourquoi ils le sont encore.',
+    aRetenir: 'Vous n’avez pas bloqué les lycées. Vous êtes la personne à qui l’on demandera, dès demain matin, pourquoi ils le sont encore.',
   },
   {
     cle: 'budget',

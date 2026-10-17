@@ -440,3 +440,28 @@ pages sera possible, ou à partir de vos propres lectures) :
 6. Le programme de Bruno Retailleau sur l'orientation et les lycées professionnels.
 7. Le texte intégral des « 10 mesures d'urgence » sur 10mesures.fr (pause méridienne d'1 h 30, 800 personnels, bourses +200 €).
 8. Le bilan judiciaire du mouvement (5 060 gardes à vue selon Wikipédia citant la Chancellerie), non utilisé dans le jeu.
+
+---
+
+## 7. Deuxième cadrage (même jour) : le jeu commence à l'automne 2026
+
+Nouvelle commande : le jeu s'adresse au grand public et aux lycéens, il
+commence à l'automne 2026 dans la fiction d'une démission du ministre, et son
+but est que le joueur comprenne les colères, juge de leur légitimité sur des
+données vérifiées, et décide. Ce qui a été construit à partir du dossier :
+
+- huit colères (`COLERES`), chacune avec deux ou trois faits tirés des parties
+  1 et 2 ci-dessus, leur source, et le verdict que les données permettent
+  (fondée, en partie, ou « les chiffres ne tranchent pas ») ;
+- quatre sources ajoutées pour ces faits : Outre-mer La 1ère (Mayotte), la
+  note DEPP 26.09 (−36 200 élèves), Euronews/AFP (interpellations du
+  2 octobre), la proposition de résolution sur le lycée Nelson-Mandela ;
+- une onzième carte lycée, l'annulation des 1 588 suppressions de postes ;
+- le prologue, la carte scolaire de janvier 2027, l'élection de mai 2027,
+  puis trois rentrées. Voir `EQUILIBRAGE.md`, section 3 tricies.
+
+La liste des points de sourçage ouverts (partie 6) reste valable. Deux
+précautions supplémentaires ont été prises dans les colères : le bilan
+judiciaire de 5 060 gardes à vue n'est pas utilisé (seul le chiffre AFP du
+2 octobre l'est), et la colère sur la répression est présentée comme
+indécidable par les chiffres, avec les deux séries de faits.

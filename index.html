@@ -632,6 +632,45 @@ table.bilan tr.cache td{background:var(--fiche-2)}
   #comprendre-btn{left:8px; bottom:8px}
 }
 /* ---------- version grand public : mots, choix préréglés, lycéens ---------- */
+.qui-dit{font-size:.8rem; color:var(--encre-3); margin:-6px 0 10px; font-style:italic}
+.consigne{font-size:.9rem; color:var(--encre-2); max-width:62ch}
+.rappel-cri{font-family:"Newsreader",georgia,serif; font-size:1.2rem; font-style:italic; color:var(--encre-2); margin:0 0 8px}
+.rep-liste.faits{margin-top:6px}
+.rep-liste.faits .v{color:var(--c-violet)}
+.verdict-bloc{background:var(--fiche-2); border-left:3px solid var(--c-violet); padding:12px 16px; margin:14px 0}
+.verdict-bloc .titre-d{font-size:.68rem; letter-spacing:.12em; text-transform:uppercase; font-weight:700; margin-bottom:4px}
+.verdict-bloc p{margin:6px 0 0; font-size:.92rem; max-width:70ch}
+.verdict-bloc .miroir{border-top:1px dotted var(--filet-fort); padding-top:8px; margin-top:10px; font-size:.88rem}
+h3.decider{font-size:1.05rem; margin:18px 0 0; font-weight:700}
+.enveloppe-ligne{font-size:.86rem; color:var(--encre-2); margin:4px 0 0}
+.enveloppe-ligne b{color:var(--encre)}
+.mots{display:flex; flex-wrap:wrap; gap:5px; margin:4px 0 6px}
+.mots span{font-size:.72rem; font-weight:600; padding:2px 8px; border:1px solid var(--filet-fort); border-radius:12px; color:var(--encre-2); background:var(--fiche)}
+.mots .pos{color:color-mix(in srgb, var(--ok) 62%, var(--encre)); border-color:var(--ok)}
+.mots .neg{color:color-mix(in srgb, var(--alerte) 70%, var(--encre)); border-color:var(--alerte)}
+.mots .lyc{color:color-mix(in srgb, var(--c-violet) 72%, var(--encre)); border-color:var(--c-violet)}
+.mots .preuve.p5, .mots .preuve.p4{color:color-mix(in srgb, var(--c-sante) 62%, var(--encre)); border-color:var(--c-sante)}
+.mots .preuve.p1{color:color-mix(in srgb, var(--alerte) 70%, var(--encre)); border-color:var(--alerte)}
+.opt.reponse .det{margin-top:3px}
+.opt.reponse .neg-l{color:color-mix(in srgb, var(--alerte) 70%, var(--encre)); font-weight:600}
+.opt.reponse.indispo{opacity:.62; cursor:not-allowed}
+.opt.reponse .btn-mini{cursor:pointer; font-size:.72rem; font-weight:600; padding:5px 9px; border:1px solid var(--filet-fort); background:var(--fiche); color:var(--encre-2); margin-top:8px}
+.opt.reponse .btn-mini:hover{border-color:var(--bleu-rf); color:var(--bleu-rf)}
+.opt.reponse .comprendre{display:none; background:var(--fiche-2); border-left:3px solid var(--c-sante); padding:10px 12px; font-size:.8rem; margin-top:8px}
+.opt.reponse .comprendre.visible{display:block}
+.opt.reponse .comprendre .titre-d{font-size:.62rem; letter-spacing:.1em; text-transform:uppercase; font-weight:700; color:var(--c-sante)}
+.opt.reponse .comprendre p{margin:5px 0; max-width:70ch; font-weight:400}
+.opt.reponse .comprendre .idee{border-top:1px dashed var(--filet-fort); margin-top:8px; padding-top:8px}
+.opt.reponse .comprendre .idee .titre-d{color:var(--rouge-rf)}
+.opt.reponse .comprendre .mot-carte{font-family:"Newsreader",georgia,serif; font-style:italic; color:var(--encre-2); border-top:1px solid var(--filet); padding-top:6px}
+.miroir-bloc{background:var(--fiche); border:1px solid var(--filet); border-left:3px solid var(--c-violet); max-width:860px; margin:0 auto 14px; padding:13px 16px 14px}
+.doc .miroir-bloc{max-width:none; margin:18px 0 0}
+.miroir-bloc .titre-d{font-size:.68rem; letter-spacing:.12em; text-transform:uppercase; font-weight:700; color:var(--c-violet); margin-bottom:8px}
+.miroir-bloc ul{list-style:none; margin:0; padding:0; display:grid; gap:7px}
+.miroir-bloc li{border-left:3px solid var(--filet-fort); padding:4px 0 4px 10px}
+.miroir-bloc li.ok{border-left-color:var(--ok)} .miroir-bloc li.ecart{border-left-color:var(--c-budget)}
+.miroir-bloc .cri{display:block; font-family:"Newsreader",georgia,serif; font-style:italic; font-size:.95rem}
+.miroir-bloc .d{display:block; font-size:.78rem; color:var(--encre-2); line-height:1.5}
 .accroche.grille{display:grid; grid-template-columns:auto 1fr; column-gap:22px; row-gap:0; align-items:start}
 .accroche.grille .chiffre-cle{grid-column:1; grid-row:1}
 .accroche.grille > p{grid-column:2; grid-row:1 / span 2}
@@ -907,6 +946,16 @@ const POINTS_SALAIRE_PAR_MD = 2.0;
    cinq entrées : on n'en lit que les premières. */
 const DUREE_MANDAT = 3;
 
+/* Le PROLOGUE : l'automne 2026. Dans la fiction du jeu, le ministre démissionne
+   après six semaines de blocus et le joueur est nommé au retour des vacances
+   de la Toussaint. Il n'a pas de budget à lui : le PLF 2027 est en discussion
+   au Parlement. Ce qu'il peut obtenir par amendement et redéploiement, pour
+   répondre tout de suite, c'est cette enveloppe. */
+const ENVELOPPE_PROLOGUE = 0.45;   // Md€, amendements au budget 2027 en discussion
+/* Les colères examinées à l'automne 2026 : chacune donne lieu à un avis du
+   joueur, puis aux faits, puis à une décision. */
+const COLERES_MAX = 8;
+
 /* ---------------------------------------------------------------------------
    LES LYCÉENS, l'héritage de l'automne 2026                       [source D]
    ---------------------------------------------------------------------------
@@ -926,7 +975,7 @@ const DUREE_MANDAT = 3;
    réponse apportée aux revendications la fait baisser ; chaque rentrée sans
    réponse la fait remonter. */
 const LYCEENS = {
-  colereInitiale: 52,
+  colereInitiale: 90,     // les lycées sont bloqués le jour de la nomination
   /* Les cinq promesses héritées. Si rien n'est fait sur un chantier avant la
      première rentrée, la colère remonte d'autant : les lycéens comparent la
      rentrée 2027 à ce qu'on leur a dit à l'automne 2026. */
@@ -956,7 +1005,7 @@ const LYCEENS = {
 /* Projections DEPP avril 2026 : −1 676 800 élèves d'ici 2035 (−14,2 %).
    Baisse par rentrée, en milliers d'élèves. La rentrée 2026 (−161 000) est
    l'héritage ; le joueur arbitre les rentrées 2027 à 2031. */
-const BAISSE_ELEVES = { 2027: -158, 2028: -172, 2029: -181, 2030: -176, 2031: -168 };
+const BAISSE_ELEVES = { 2026: -158, 2027: -158, 2028: -172, 2029: -181, 2030: -176, 2031: -168 };
 const ELEVES_INITIAL = 11607.6;     // milliers, rentrée 2026
 
 /* Conversion élèves → postes « libérés ». C'EST le choix politique du jeu.
@@ -1208,10 +1257,14 @@ const RENVOI = {
      moyenne dans le poste dépasse rarement deux ans. Le risque est modulé par
      le capital politique et l'opinion des familles : un ministre solide n'est
      pas à l'abri, il est seulement moins exposé. */
-  remaniementBase: 0.30,       // trois ans de mandat : le risque annuel est relevé pour que finir reste une performance
+  remaniementBase: 0.33,       // trois ans de mandat : le risque annuel est relevé pour que finir reste une performance
   remaniementParCapital: 900,
   remaniementParParents: 700,
   remaniementMin: 0.05, remaniementMax: 0.40,
+  /* Mai 2027 : le nouveau gouvernement se forme. Dans la vraie vie, le
+     ministre change presque toujours ; dans le jeu, il a une chance de rester,
+     meilleure s'il est solide. Même modulation que le remaniement. */
+  electionBase: 0.0,
 };
 
 /* ===========================================================================
@@ -1423,7 +1476,7 @@ const ANNONCES_MAX_CLASSIQUE = { prise_fonction: 3, rentree: 3, livraison: 3, ja
 const MOIS = ['janvier','février','mars','avril','mai','juin',
                      'juillet','août','septembre','octobre','novembre','décembre'];
 
-const K = { CADRAGE, ENVELOPPE_BASE, ENVELOPPE_PRISE_FONCTION, ENVELOPPE_RENTREE, MENUS, TAILLE_MENU_COURT, TAILLE_MENU_CALENDRIER, ANNONCES_MAX, TAILLE_MENU_LIVRAISON, AVANCE_GESTION, REFUS_BERCY, INTENTIONS_POSTES, RETRAIT_MARS, MANQUEMENT_ENGAGEMENT, TROISIEME_ANNONCE, PALIERS_BERCY, SURCOUT, POINTS_SALAIRE_PAR_MD, DUREE_MANDAT, LYCEENS, BAISSE_ELEVES, ELEVES_INITIAL, ELEVES_PAR_POSTE, RATIO_ED_INITIAL, SEUIL_COLERE_MAIRES, COMPTEURS_INITIAUX, COMPTEURS_META, POIDS_DOCTRINE, PHYSIQUE_INITIALE, INERTIE_OPINION, TENDANCIEL, INTERVALLE_CADENAS, ABSORPTION, REQUALIFICATION, FATIGUE, IMPLEMENTATION, POIDS_HERITAGE, REVERSION, BRUIT_AFFICHE, COUT_AFFICHAGE_LONG_TERME, DECROISSANCE_VITRINE, ATTRACTIVITE, GREVE, SYNDICATS, SENSIBILITES, CAPITAL, IMMOBILISME, CREDIT_BERCY_INITIAL, RENVOI, PROFILS, ENTRETIEN, MENSONGE, CREDIBILITE, AFFAIRES_TIRAGE, PROJECTION, PROJETS_2027, TAILLES_MENU, TAILLES_MENU_CLASSIQUE, TAILLE_MENU_COURT_CLASSIQUE, ANNONCES_MAX_CLASSIQUE, MOIS };   // espace de noms attendu par le moteur
+const K = { CADRAGE, ENVELOPPE_BASE, ENVELOPPE_PRISE_FONCTION, ENVELOPPE_RENTREE, MENUS, TAILLE_MENU_COURT, TAILLE_MENU_CALENDRIER, ANNONCES_MAX, TAILLE_MENU_LIVRAISON, AVANCE_GESTION, REFUS_BERCY, INTENTIONS_POSTES, RETRAIT_MARS, MANQUEMENT_ENGAGEMENT, TROISIEME_ANNONCE, PALIERS_BERCY, SURCOUT, POINTS_SALAIRE_PAR_MD, DUREE_MANDAT, ENVELOPPE_PROLOGUE, COLERES_MAX, LYCEENS, BAISSE_ELEVES, ELEVES_INITIAL, ELEVES_PAR_POSTE, RATIO_ED_INITIAL, SEUIL_COLERE_MAIRES, COMPTEURS_INITIAUX, COMPTEURS_META, POIDS_DOCTRINE, PHYSIQUE_INITIALE, INERTIE_OPINION, TENDANCIEL, INTERVALLE_CADENAS, ABSORPTION, REQUALIFICATION, FATIGUE, IMPLEMENTATION, POIDS_HERITAGE, REVERSION, BRUIT_AFFICHE, COUT_AFFICHAGE_LONG_TERME, DECROISSANCE_VITRINE, ATTRACTIVITE, GREVE, SYNDICATS, SENSIBILITES, CAPITAL, IMMOBILISME, CREDIT_BERCY_INITIAL, RENVOI, PROFILS, ENTRETIEN, MENSONGE, CREDIBILITE, AFFAIRES_TIRAGE, PROJECTION, PROJETS_2027, TAILLES_MENU, TAILLES_MENU_CLASSIQUE, TAILLE_MENU_COURT_CLASSIQUE, ANNONCES_MAX_CLASSIQUE, MOIS };   // espace de noms attendu par le moteur
 /* ===== moteur/catalogue.js ===== */
 
 
@@ -1574,10 +1627,11 @@ const CATALOGUE = [
     id: 'sante_scolaire',
     label: 'Plan de recrutement en santé scolaire (infirmiers, PsyEN, assistants sociaux)',
     famille: 'moyens',
-    porteurs: ['Cour des comptes', 'intersyndicale', 'fédérations de parents'],
+    porteurs: ['les organisations lycéennes (personnels de santé et d’orientation)', 'Cour des comptes', 'intersyndicale', 'fédérations de parents'],
     perimetre: 'ministeriel',
-    cout: 0.19, coutETP: 1200, pol: 3,
+    cout: 0.19, coutETP: 1200, horsEnseignants: true, pol: 3,
     theme: 'sante_scolaire', once: true, reforme: false,
+    lyceens: 8,
     goulot: true,                           // l'argent ne produit qu'au rythme des concours pourvus
     vitrine: { parents: +5, enseignants: +4, presse: +2, compteurs: { sante: +2 } },
     reel: [
@@ -1722,8 +1776,9 @@ const CATALOGUE = [
     porteurs: ['fédérations de parents (FCPE, PEEP)', 'Cour des comptes', 'recteurs'],
     contre: ['Bercy, qui compte les postes'],
     perimetre: 'ministeriel',
-    cout: 0.04, coutETP: 4000, pol: 3,
+    cout: 0.29, coutETP: 4000, pol: 3,   // 4 000 titulaires remplaçants à 72 k€ : le prix d'un poste, pas d'une intention
     theme: 'remplacement', once: true, reforme: false,
+    lyceens: 7,
     vitrine: { parents: +7, enseignants: +3, presse: +4, compteurs: { sante: +5 } },
     reel: [
       { compteur: 'sante',    central: 4, delai: 2, cadenas: 3, source: 'DEPP 26-14 : 9,8 % d’heures non assurées, dont 7,5 points de non-remplacement' },
@@ -1827,8 +1882,9 @@ const CATALOGUE = [
     famille: 'moyens',
     porteurs: ['intersyndicale', 'recherche sur le climat scolaire', 'chefs d’établissement'],
     perimetre: 'ministeriel',
-    cout: 0.03, coutETP: 4000, pol: 4,
+    cout: 0.13, coutETP: 4000, horsEnseignants: true, pol: 4,   // 4 000 AED et CPE à ~32 k€ ; ce ne sont pas des professeurs : pas d'effet sur la taille des classes
     theme: 'vie_scolaire', once: true, reforme: false,
+    lyceens: 4,
     vitrine: { parents: +3, enseignants: +5, presse: +1, compteurs: { sante: +3 } },
     reel: [
       { compteur: 'sante',    central: 5, delai: 2, cadenas: 4, source: 'la densité et la stabilité des adultes sont le facteur le mieux établi du climat scolaire' },
@@ -2164,6 +2220,7 @@ const CATALOGUE = [
     perimetre: 'ministeriel',
     cout: 0.001, coutETP: 0, pol: 3,
     theme: 'empathie', once: true, reforme: true,
+    lyceens: 3,
     vitrine: { parents: +2, enseignants: +1, presse: -3, compteurs: {} },
     reel: [
       { compteur: 'sante',    central: 5, delai: 4, cadenas: 4, source: 'programmes structurés (KiVa et apparentés) : réduction mesurée des violences entre élèves' },
@@ -2182,7 +2239,7 @@ const CATALOGUE = [
     famille: 'autorite',
     porteurs: ['Rassemblement national', 'Reconquête', 'la nostalgie, qui vote beaucoup'],
     perimetre: 'ministeriel',
-    cout: 0, coutETP: 1500, pol: 3,
+    cout: 0.05, coutETP: 1500, horsEnseignants: true, pol: 3,
     theme: 'surges', once: true, reforme: false,
     vitrine: { parents: +4, enseignants: 0, presse: +4, compteurs: {} },
     reel: [
@@ -2550,8 +2607,9 @@ const CATALOGUE = [
     famille: 'parcours',
     porteurs: ['régions (compétentes depuis 2018)', 'fédérations de parents', 'Cour des comptes'],
     perimetre: 'ministeriel',
-    cout: 0.11, coutETP: 1500, pol: 3,
+    cout: 0.11, coutETP: 1500, horsEnseignants: true, pol: 3,
     theme: 'orientation', once: true, reforme: false,
+    lyceens: 5,
     decouverte: { annee: 2 },
     vitrine: { parents: +5, enseignants: +2, presse: +2, compteurs: { egalite: +3 } },
     reel: [
@@ -2569,10 +2627,11 @@ const CATALOGUE = [
     id: 'outremer',
     label: 'Plan d’urgence pour Mayotte, la Guyane et les territoires en tension',
     famille: 'moyens',
-    porteurs: ['préfets', 'parlementaires ultramarins', 'Défenseur des droits'],
+    porteurs: ['les lycéens de Mayotte et de Guyane (septembre 2026)', 'préfets', 'parlementaires ultramarins', 'Défenseur des droits'],
     perimetre: 'matignon',
     cout: 0.46, coutETP: 2200, pol: 5,
     theme: 'outremer', once: true, reforme: false,
+    lyceens: 6,
     decouverte: { si: 'apres_un_an', note: 'Une note de la direction générale remonte la situation scolaire à Mayotte et en Guyane. Elle n’est pas rassurante.' },
     vitrine: { parents: +2, enseignants: +3, presse: +4, compteurs: { egalite: +4 } },
     reel: [
@@ -2863,7 +2922,8 @@ const CATALOGUE = [
       { compteur: 'reussite', central: 1, delai: 3, cadenas: 2, source: 'OCDE : 1 224 heures de cours par an à 15 ans en France contre 962 dans l’Union européenne, pour des résultats moyens ; le volume n’explique pas le niveau (HCSP 2026)' },
     ],
     physique: {},
-    greve: { intensite: 2, theme: 'statut', segment: 'lycee' },
+    /* Pas de grève en propre : les professeurs grincent sur les emplois du
+       temps (vitrine), ils ne défilent pas contre une pause de midi. */
     preuve: 'Sur la plateforme de consultation ouverte en octobre 2026, 71 % des 76 500 premières contributions évoquent l’organisation du temps scolaire : journées trop longues, emplois du temps déséquilibrés, charge de travail. Les lycéens décrivent des journées de 8 h à 18 h avec des heures de trou et parfois trente minutes pour déjeuner. À 15 ans, un élève français passe 1 224 heures par an en classe contre 962 en moyenne dans l’Union européenne (OCDE). Le Haut-commissariat à la Stratégie et au Plan conclut que le volume horaire n’explique pas la baisse du niveau. Plafonner la journée se décide par circulaire ; cela se paie dans les emplois du temps des professeurs et dans les salles disponibles.',
     ideeRecue: '« Finir plus tôt, c’est apprendre moins. » Les lycéens français ont déjà 260 heures de plus que leurs voisins européens pour des résultats dans la moyenne. Ce qui manque n’est pas le volume ; ce qui se joue, c’est l’organisation.',
     mot: "La revendication la plus partagée de la consultation, et la moins chère. Son prix est dans les emplois du temps des professeurs, qui ne votent pas sur Agora.",
@@ -3042,7 +3102,29 @@ const CATALOGUE = [
     ideeRecue: '« Un repas à un euro, c’est de l’aide sociale, pas de l’école. » Un élève qui saute le déjeuner apprend moins l’après-midi : c’est l’un des effets les plus simples à mesurer de tout le catalogue.',
     mot: "La mesure que les lycéens de Cayenne ont mise en tête de leurs dix-sept revendications. Une région paie la cuisine, vous payez l’assiette.",
   },
+  /* ------------------------------ L11 · les postes ----------------- */
+  {
+    id: 'annuler_suppressions',
+    label: 'Annuler les 1 588 suppressions de postes du budget 2027, par amendement',
+    famille: 'lycee',
+    porteurs: ['l’intersyndicale de l’éducation (grève du 8 octobre 2026)', 'les organisations lycéennes', 'les députés écologistes et insoumis (amendements au PLF 2027)'],
+    contre: ['le ministère : « 36 200 élèves de moins dans le second degré, les postes suivent la démographie »', 'Bercy'],
+    perimetre: 'matignon',
+    cout: 0.12, coutETP: 1588, pol: 7, bercy: -6,
+    theme: 'postes_2027', once: true, reforme: false,
+    lyceens: 9,
+    vitrine: { parents: +3, enseignants: +8, presse: +3, compteurs: { sante: +3 } },
+    reel: [
+      { compteur: 'sante',    central: 3, delai: 1, cadenas: 3, source: '1 588 postes conservés, dont 836 dans le second degré public : c’est l’équivalent d’un professeur dans un lycée sur deux' },
+      { compteur: 'reussite', central: 1, delai: 3, cadenas: 2, source: 'le taux d’encadrement joue peu sur les résultats au lycée ; l’effet passe par les remplacements et les options maintenues' },
+    ],
+    physique: { adhesion: +3 },
+    preuve: 'Le projet de loi de finances pour 2027, présenté le 2 octobre 2026, augmente le budget de l’Éducation nationale de 1,2 milliard d’euros et supprime 1 588 postes d’enseignants, dont 1 250 dans le public (414 dans le premier degré, 836 dans le second). Le ministère justifie ces suppressions par la baisse du nombre d’élèves : 36 200 de moins dans le second degré à la rentrée 2026 selon la DEPP. Les syndicats et les lycéens répondent qu’il manque déjà un professeur dans un établissement sur deux. Les deux séries de chiffres sont exactes : l’une compte des élèves, l’autre des classes sans professeur, et la baisse des élèves ne se produit pas là où les professeurs manquent.',
+    ideeRecue: '« Moins d’élèves, donc moins de profs, c’est logique. » C’est logique en moyenne nationale. Dans un lycée donné, une classe de 35 ne devient pas une classe de 30 parce qu’un collège de l’autre bout du pays a perdu trois élèves par niveau.',
+    mot: "Cent vingt millions d’euros, le prix le plus bas du catalogue pour la colère la plus précise. Bercy, lui, retiendra que vous avez commencé par défaire son budget.",
+  },
 ];
+
 
 
 /* --------------------------------------------------------------------------
@@ -3821,6 +3903,145 @@ const POLEMIQUES_RENTREE = [
   },
 ];
 
+/* ============================================================================
+   LES COLÈRES DE L'AUTOMNE 2026
+   ----------------------------------------------------------------------------
+   Le cœur de la version grand public. Chaque colère est présentée comme les
+   lycéens l'ont dite, puis le joueur donne son avis (fondée, en partie, pas
+   fondée), puis il lit les faits, deux ou trois chiffres vérifiés avec leur
+   source et, quand deux sources se contredisent, les deux. Puis il décide.
+
+   `verdict` n'est pas le jugement du jeu sur les lycéens : c'est ce que les
+   données permettent de dire. `fondee` : les chiffres confirment le constat.
+   `partielle` : le constat est vrai, la cible ou l'explication est discutable.
+   `ouverte` : les données disponibles ne permettent pas de trancher, et le
+   jeu le dit, parce que c'est aussi une leçon d'esprit critique.
+
+   `mesures` : les cartes du catalogue entre lesquelles le joueur choisit, une
+   par camp quand c'est possible. `postures` : pour la colère qui ne se règle
+   pas par une mesure, les trois attitudes de l'automne 2026.
+   ========================================================================== */
+const AVIS = [
+  { id: 'fondee', label: 'Fondée', det: 'Les chiffres vont leur donner raison.' },
+  { id: 'partielle', label: 'En partie', det: 'Il y a du vrai, et quelque chose qui cloche dans la façon de le dire.' },
+  { id: 'infondee', label: 'Pas fondée', det: 'C’est un ressenti, pas un fait.' },
+];
+
+const COLERES = [
+  {
+    id: 'profs',
+    cri: '« Il nous manque un prof depuis septembre. »',
+    qui: 'La pancarte la plus fréquente devant les grilles ; 28,5 % des contributions de la consultation nationale.',
+    contexte: 'Dans un lycée bloqué sur deux, la première revendication est un professeur absent depuis la rentrée : en maths, en français, en anglais. Le rectorat « est saisi ».',
+    faits: [
+      { v: '53 %', l: 'des collèges et lycées publics manquaient d’au moins un professeur à la rentrée 2026, selon le syndicat SNES-FSU (1 033 établissements interrogés). Le ministère répond qu’il s’agit surtout d’heures à couvrir, pas de postes entiers', src: 'snes_rentree26' },
+      { v: '9 %', l: 'des heures de cours ne sont pas assurées dans les collèges publics (Cour des comptes, année 2023-2024) ; le ministre a reconnu 7 % en octobre 2026. Les absences courtes ne sont presque jamais remplacées, les longues presque toujours', src: 'cc_absences' },
+      { v: '3 000', l: 'remplaçants titulaires envoyés en urgence en octobre 2026 : les lycées « en grande difficulté » sont passés de 114 à 47 en une semaine', src: 'remplacants26' },
+    ],
+    lecture: 'Deux chiffres s’opposent, « 53 % des établissements » et « des volumes d’heures » : ils ne comptent pas la même chose, et les deux sont vrais. Ce qui est sûr : un élève perd environ une heure de cours sur onze, et ce sont les absences courtes, celles qu’aucune brigade ne couvre, qui pèsent le plus.',
+    verdict: 'fondee',
+    mesures: ['remplacement_lycee', 'brigades', 'ors_remplacement'],
+  },
+  {
+    id: 'journees',
+    cri: '« On est au lycée de 8 h à 18 h, avec une demi-heure pour manger. »',
+    qui: 'Le premier sujet de la consultation nationale : 71 % des contributions.',
+    contexte: 'Des journées de dix heures, des heures de trou, une cantine saturée. Les lycéens disent qu’ils n’ont plus le temps de rien, ni de dormir, ni de réviser, ni de vivre.',
+    faits: [
+      { v: '1 224 h', l: 'de cours par an pour un élève français de 15 ans, contre 962 h en moyenne dans l’Union européenne, selon l’OCDE', src: 'ocde_temps' },
+      { v: '71 %', l: 'des 76 500 premières contributions de la consultation lycéenne évoquent l’organisation du temps scolaire : journées trop longues, emplois du temps déséquilibrés, charge de travail', src: 'consult26' },
+      { v: 'pas le volume', l: 'le Haut-commissariat à la Stratégie et au Plan conclut que le nombre d’heures n’explique pas la baisse du niveau : les élèves français en ont plus que leurs voisins, pour des résultats moyens', src: 'hcsp26' },
+    ],
+    lecture: 'La colère est fondée sur les chiffres : les lycéens français passent 260 heures de plus en classe que leurs voisins européens. Et l’argument « plus d’heures, meilleur niveau » ne tient pas : le rapport officiel d’août 2026 l’écarte. Ce qui reste ouvert, c’est comment raccourcir sans appauvrir.',
+    verdict: 'fondee',
+    mesures: ['journee_lycee', 'matinees'],
+  },
+  {
+    id: 'bati',
+    cri: '« Il fait 35 °C en salle 204 et les toilettes sont fermées depuis la rentrée. »',
+    qui: 'Deuxième sujet de la consultation (51 %) ; les lycéens de Cayenne, de Mayotte, de Lormont, du Loiret.',
+    contexte: 'Des vidéos de salles surchauffées, des sanitaires sans eau ni papier, un lycée de Mayotte conçu pour 900 élèves qui en accueille 2 300. On vous demande « un plan national pour le bâti ».',
+    faits: [
+      { v: '6,8 Md€', l: 'dépensés par les régions pour le second degré en 2025, dont 2,5 Md€ d’investissement : ce sont elles qui possèdent, construisent et entretiennent les lycées, depuis 1986', src: 'regions_lycees' },
+      { v: '2 300 pour 900', l: 'élèves au lycée du Nord, à Mayotte, dans des bâtiments conçus pour 900 ; bloqué cinq semaines dès la rentrée', src: 'outremer26' },
+      { v: '51 %', l: 'des contributions lycéennes évoquent les bâtiments et les conditions matérielles', src: 'consult26' },
+    ],
+    lecture: 'La colère est fondée ; l’adresse est à moitié fausse. Le ministre de l’Éducation ne possède aucun lycée : ce sont les régions, et c’est ce que le Premier ministre a rappelé le 4 octobre. Un ministre peut payer une partie des travaux et convaincre ; il ne peut pas signer le devis. Dire « ce n’est pas moi » est exact, et c’est la phrase la plus chère du répertoire.',
+    verdict: 'partielle',
+    mesures: ['bati_lycee', 'bati', 'outremer'],
+  },
+  {
+    id: 'parcoursup',
+    cri: '« Parcoursup nous trie au hasard. »',
+    qui: 'La revendication nationale la plus visible : suppression demandée par les organisations lycéennes et étudiantes.',
+    contexte: 'Chaque printemps, des lycéens découvrent qu’ils sont « en attente » sans savoir pourquoi, ni de qui. En 2026, un candidat sur six n’avait rien à l’issue de la phase principale.',
+    faits: [
+      { v: '126 632', l: 'candidats sans aucune proposition à l’issue de la phase principale 2026, soit 17,4 %, 5,5 points de plus qu’en 2025. Le ministère invoque la démographie', src: 'parcoursup26' },
+      { v: 'pas de hasard', l: 'l’algorithme national ne classe personne : il transmet des classements faits dans chaque formation, par des enseignants, avec des critères qu’ils ne publient pas. Le comité éthique de Parcoursup recommande de publier le code du module de classement', src: 'cespm26' },
+      { v: '14,5 %', l: 'des contributions lycéennes évoquent Parcoursup et l’orientation, loin derrière le temps scolaire et les bâtiments', src: 'consult26' },
+    ],
+    lecture: 'L’opacité est réelle : les critères de classement des formations ne sont pas publics, et un rapport parlementaire de 2026 montre que le lycée d’origine pèse dans les dossiers. Le « hasard », lui, est faux : ce sont des humains qui classent. Supprimer la plateforme ne supprime pas le tri ; cela le déplace, vers les places disponibles ou l’échec en première année, comme en 2017.',
+    verdict: 'partielle',
+    mesures: ['parcoursup_transparence', 'parcoursup_fin', 'orientation'],
+  },
+  {
+    id: 'effectifs',
+    cri: '« On est 35 par classe. »',
+    qui: 'Un quart des contributions de la consultation ; les lycées de Loiret, de Guyane, de Seine-Saint-Denis.',
+    contexte: 'Des classes de seconde à 35, des salles où l’on ajoute des chaises, des professeurs qui ne connaissent pas les prénoms avant novembre.',
+    faits: [
+      { v: '24 %', l: 'des contributions lycéennes évoquent les effectifs par classe', src: 'consult26' },
+      { v: '25,8', l: 'élèves par classe au collège en 2023, le nombre le plus élevé des pays européens (21,5 au primaire)', src: 'hcsp26' },
+      { v: 'surtout au CP', l: 'l’effet de la taille des classes sur les résultats est documenté au primaire et pour les élèves défavorisés ; au lycée, il est faible. Le rapport officiel d’août 2026 recommande de ne pas tout miser dessus', src: 'hcsp26' },
+    ],
+    lecture: 'Le constat est vrai : les classes françaises sont parmi les plus chargées d’Europe. L’explication implicite, « moins nombreux, on apprendrait mieux », est plus solide au CP qu’en seconde. Au lycée, 30 au lieu de 35 change la vie des professeurs et le climat de la classe ; les études ne promettent pas grand-chose de plus.',
+    verdict: 'partielle',
+    mesures: ['classe30_lycee', 'classe19'],
+  },
+  {
+    id: 'postes',
+    cri: '« Le gouvernement supprime 1 588 postes pendant qu’on manque de profs. »',
+    qui: 'L’intersyndicale de l’éducation (grève du 8 octobre 2026) et les organisations lycéennes.',
+    contexte: 'Le budget 2027 est présenté le 2 octobre, en plein mouvement : 1 588 postes d’enseignants en moins. Les syndicats appellent à la grève « en soutien aux lycéens » ; le ministère parle de démographie.',
+    faits: [
+      { v: '−1 588 postes', l: 'd’enseignants au budget 2027, dont 1 250 dans le public : 414 dans le premier degré, 836 dans le second', src: 'plf27' },
+      { v: '+1,2 Md€', l: 'de crédits en plus pour l’Éducation nationale dans le même budget, avec 1 300 accompagnants d’élèves handicapés et 200 conseillers principaux d’éducation supplémentaires', src: 'plf27' },
+      { v: '−36 200', l: 'élèves dans le second degré à la rentrée 2026, selon la DEPP : la baisse qui justifie, pour le ministère, les suppressions', src: 'depp_ni2609' },
+    ],
+    lecture: 'Tout est vrai en même temps : des postes supprimés, un budget en hausse, des élèves en moins. La question n’est pas « qui ment » mais « quel ratio » : 1 588 postes pour 36 200 élèves de moins, c’est un poste rendu pour 23 élèves perdus, dans un système qui n’arrive déjà pas à mettre un professeur devant chaque classe. Et la baisse des élèves ne se produit pas là où les professeurs manquent.',
+    verdict: 'partielle',
+    mesures: ['annuler_suppressions', 'titularisation'],
+  },
+  {
+    id: 'ecoute',
+    cri: '« On n’a ni infirmière ni psy, et personne ne nous écoute. »',
+    qui: 'Les organisations lycéennes (« refonte de la démocratie lycéenne ») ; la pancarte « ni prof ni infirmière » des premiers blocus.',
+    contexte: 'Le gouvernement a répondu par une demi-journée de « temps lycéen » et une consultation en ligne. Les chefs d’établissement ont jugé la demi-journée improvisée. Les lycéens ont rempli la consultation, et demandent ce qu’on en fait.',
+    faits: [
+      { v: '≈ 900', l: 'médecins scolaires pour 12 millions d’élèves : 1 143 en 2013, 818 en 2022 ; 28 postes seulement ouverts au concours 2025', src: 'an_medecine' },
+      { v: '2 %', l: 'des lycéens se déclarent victimes de harcèlement (enquête de climat scolaire de novembre 2025) ; 3 % à l’école, 4 % au collège', src: 'depp_climat' },
+      { v: '76 500', l: 'contributions en deux semaines à la consultation nationale, anonyme et en ligne, dont le gouvernement a promis une synthèse publique', src: 'agora26' },
+    ],
+    lecture: 'La partie « santé » est fondée et ancienne : la médecine scolaire s’effondre depuis dix ans, les infirmières et psychologues manquent. La partie « personne ne nous écoute » est plus difficile à juger : la consultation a eu lieu, 76 500 lycéens ont écrit, et c’est ce qu’on en fera qui dira si elle était une écoute ou une diversion. Vous êtes la personne qui en décide.',
+    verdict: 'fondee',
+    mesures: ['sante_scolaire', 'democratie_lyceenne', 'vie_scolaire'],
+  },
+  {
+    id: 'repression',
+    cri: '« Arrêtez de nous gazer. »',
+    qui: 'La dixième des « 10 mesures d’urgence » : la fin de la répression. En face : des lycées incendiés.',
+    contexte: 'Des vidéos d’interpellations de mineurs tournent sur les réseaux. En face, d’autres vidéos : des poubelles en feu, un lycée de Nantes incendié, des agents qui nettoient. Chaque camp a sa vidéo, et la vôtre est attendue.',
+    faits: [
+      { v: '≈ 2 000', l: 'interpellations recensées au 2 octobre 2026, dont 90 % de mineurs, et quelque 400 lycées fermés ce jour-là', src: 'interpellations26' },
+      { v: '2 M€', l: 'de dégâts au lycée Nelson-Mandela de Nantes, fermé un mois après un incendie ; une centaine d’établissements « gravement dégradés » au 2 octobre', src: 'nantes26' },
+      { v: '62 % et 74 %', l: 'des Français jugent la mobilisation justifiée, et 74 % estiment que La France insoumise met les lycéens en danger : le soutien aux lycéens et la peur des violences cohabitent dans la même opinion', src: 'odoxa26' },
+    ],
+    lecture: 'Ici, les chiffres ne tranchent pas, et le jeu ne tranchera pas pour vous : deux colères se font face, celle des lycéens interpellés et celle des agents qui nettoient les lycées brûlés, et chacune a ses images. C’est le moment où un ministre choisit une attitude, pas une mesure. Méfiez-vous de ceux qui vous disent que c’est simple.',
+    verdict: 'ouverte',
+    postures: true,
+  },
+];
+
 /* LE BLOCUS LYCÉEN. Quand la colère lycéenne (jauge cachée) dépasse le seuil
    à la rentrée, les lycées se bloquent à nouveau comme à l'automne 2026, et
    la circulaire de rentrée ne peut plus parler que d'eux : le menu qui suit
@@ -3831,7 +4052,7 @@ const POLEMIQUES_RENTREE = [
    ministère de l'Enseignement supérieur (4 octobre). */
 const BLOCUS_LYCEEN = {
   titre: 'Les lycées se bloquent à nouveau',
-  recit: 'Des poubelles devant les grilles, des vidéos sur les réseaux, et le décompte des lycées « perturbés » qui tourne sur les chaînes d’information. Les lycéens reprennent les mots de l’automne 2026 : professeurs absents, journées trop longues, bâtiments dégradés, Parcoursup. Ils ajoutent les vôtres, ceux de juin, qu’ils ont gardés.',
+  recit: 'Des poubelles devant les grilles, des vidéos sur les réseaux, et le décompte des lycées « perturbés » qui tourne sur les chaînes d’information. Les lycéens reprennent les mots de l’automne 2026 : professeurs absents, journées trop longues, bâtiments dégradés, Parcoursup. Ils ajoutent les vôtres, ceux de l’automne dernier, qu’ils ont gardés.',
   cadrage: { familles: ['lycee'],
     titre: 'La circulaire de rentrée ne parlera que des lycées',
     cause: 'Les lycées sont bloqués : personne n’attend de vous une circulaire sur l’école maternelle. Le menu ne contient que des réponses aux revendications lycéennes, et elles ne viennent pas du même endroit.' },
@@ -4215,6 +4436,30 @@ const SOURCES = {
     date: '2 octobre 2026',
     url: 'https://www.banquedesterritoires.fr/leducation-nationale-preservee-par-le-projet-de-loi-de-finances-pour-2027',
   },
+  outremer26: {
+    org: 'Outre-mer La 1ère (France Télévisions)',
+    titre: 'Ce que l’on sait du mouvement des lycéens, de La Réunion à la Guyane en passant par Mayotte : au lycée du Nord, 2 300 élèves dans des bâtiments conçus pour 900',
+    date: 'octobre 2026',
+    url: 'https://la1ere.franceinfo.fr/ce-que-l-on-sait-du-mouvement-des-lyceens-de-la-reunion-a-la-guyane-en-passant-par-la-guyane-mayotte-et-la-martinique-1744191.html',
+  },
+  depp_ni2609: {
+    org: 'DEPP, ministère de l’Éducation nationale (note d’information 26.09)',
+    titre: 'Prévisions d’effectifs : 5,58 millions d’élèves dans le second degré à la rentrée 2026, soit 36 200 de moins qu’en 2025',
+    date: 'avril 2026',
+    url: 'https://www.education.gouv.fr/sites/default/files/document/education-nationale-depp-ni-2026-09-pdf-508061.pdf',
+  },
+  interpellations26: {
+    org: 'Euronews, d’après l’AFP et le ministère de l’Intérieur',
+    titre: '400 lycées fermés, près de 2 000 interpellations (90 % de mineurs), une centaine d’établissements gravement dégradés',
+    date: '2 octobre 2026',
+    url: 'https://fr.euronews.com/2026/10/02/400-lycees-fermes-plus-de-2-000-interpellations-la-mobilisation-lyceenne-ne-faiblit-pas',
+  },
+  nantes26: {
+    org: 'Assemblée nationale, proposition de résolution (17e législature)',
+    titre: 'Incendie du lycée Nelson-Mandela de Nantes : 2 millions d’euros de dégâts, un mois de fermeture',
+    date: 'octobre 2026',
+    url: 'https://www.assemblee-nationale.fr/dyn/17/textes/l17b3292_proposition-resolution.pdf',
+  },
   odoxa26: {
     org: 'Odoxa pour Le Figaro et Backbone Consulting',
     titre: 'Les Français soutiennent les lycéens mais réprouvent l’implication de LFI (62 % jugent la mobilisation justifiée)',
@@ -4493,15 +4738,15 @@ const SERIE_PISA_MATHS = [
 const CADRAGE_INITIAL = [
   {
     cle: 'lyceens',
-    titre: 'Ce dont vous héritez : l’automne 2026 des lycéens',
-    accroche: { v: '891 lycées', l: 'ont eu leurs cours suspendus le même jour, le 6 octobre 2026, sur 3 700. Huit mois plus tard, vous héritez des promesses faites ce jour-là.', src: 'mobilisation26' },
-    sousAccroche: { v: '76 500', l: 'lycéens ont écrit au gouvernement ce qui n’allait pas. Ils attendent la réponse à la rentrée', src: 'consult26' },
+    titre: 'Où vous mettez les pieds : l’automne 2026 des lycéens',
+    accroche: { v: '891 lycées', l: 'ont eu leurs cours suspendus le même jour, le 6 octobre 2026, sur 3 700. Votre prédécesseur a promis, puis démissionné. Les promesses restent, et les blocus aussi.', src: 'mobilisation26' },
+    sousAccroche: { v: '76 500', l: 'lycéens ont écrit au gouvernement ce qui n’allait pas. Ils attendent votre réponse', src: 'consult26' },
     graphique: 'consultation',
     chiffres: [
       { v: '5 promesses', l: 'un professeur devant chaque classe « à la Toussaint », des travaux « avant l’été 2027 », des règles de Parcoursup lisibles, des emplois du temps revus, une place pour les élèves dans les décisions : les cinq chantiers du 4 octobre 2026', src: 'chantiers26' },
       { v: '10 milliards', l: 'ce que les organisations lycéennes demandent pour les lycées. Le budget 2027 ajoute 1,2 milliard à toute l’Éducation nationale, et supprime 1 588 postes', src: 'dix_mesures' },
     ],
-    aRetenir: 'Vous n’avez pas bloqué les lycées. Vous êtes la personne à qui l’on demandera pourquoi ils le sont encore.',
+    aRetenir: 'Vous n’avez pas bloqué les lycées. Vous êtes la personne à qui l’on demandera, dès demain matin, pourquoi ils le sont encore.',
   },
   {
     cle: 'budget',
@@ -4588,7 +4833,7 @@ function creerPartie({ graine = 1, politique }) {
   const rng = rngDepuis(graine);
   const s = {
     rng, graine, politique,
-    annee: 1, anneeCiv: 2027, mois: 5,        // juin 2027
+    annee: 0, anneeCiv: 2026, mois: 10,       // novembre 2026 : le prologue ; l'an 1 commence à l'été 2027
     fini: false, fin: null,
 
     doctrine: null,                            // ordre des 5 compteurs, déclaré en juin
@@ -4640,6 +4885,9 @@ function creerPartie({ graine = 1, politique }) {
     /* L'héritage de l'automne 2026 : une colère lycéenne (0-100), des
        promesses datées, et le compte des rentrées bloquées. */
     lyceens: { colere: K.LYCEENS.colereInitiale, blocus: 0, rompues: [], tenues: [], reponses: [] },
+    /* Les colères de l'automne 2026 : l'avis donné, la décision prise. */
+    coleres: { avis: {}, decisions: {} },
+    margeAnnee: 0,
 
     attractiviteCible: 0,
     couvertureAnnoncee: K.PHYSIQUE_INITIALE.couvertureConcours,
@@ -4779,7 +5027,7 @@ function recalculerVrai(s) {
    effet-vitrine + bruit annuel. Les deux premières années, il est jugé sur ce
    qu'il n'a pas fait. */
 function recalculerAffiche(s) {
-  const w = K.POIDS_HERITAGE[Math.min(4, s.annee - 1)];
+  const w = K.POIDS_HERITAGE[Math.max(0, Math.min(4, s.annee - 1))];
   for (const c of Object.keys(s.vrai)) {
     s.affiche[c] = borne(s.heritage[c] * w + s.vrai[c] * (1 - w) + s.vitrine[c] + s.bruit[c], 0, 100);
   }
@@ -4880,9 +5128,9 @@ function verifierPromesses(s) {
     else { L.rompues.push(p.id); L.colere = borne(L.colere + p.colere, 0, 100); }
   }
   if (L.rompues.length) {
-    note(s, `Rentrée : ${L.rompues.length} des cinq promesses de l’automne 2026 n’ont pas trouvé de réponse. Les lycéens les ont comptées.`, 'lyceens');
+    note(s, `Rentrée : ${L.rompues.length} des cinq sujets de l’automne 2026 n’ont toujours pas de réponse. Les lycéens les ont comptés.`, 'lyceens');
   } else {
-    note(s, 'Rentrée : les cinq chantiers de l’automne 2026 ont tous une réponse. Les organisations lycéennes « jugeront sur pièces ».', 'lyceens');
+    note(s, 'Rentrée : les cinq sujets de l’automne 2026 ont tous une réponse. Les organisations lycéennes « jugeront sur pièces ».', 'lyceens');
   }
 }
 
@@ -4893,6 +5141,69 @@ function humeurLyceenne(colere) {
   if (colere >= 45) return 'méfiants';
   if (colere >= 30) return 'attentifs';
   return 'apaisés';
+}
+
+/* Une attitude face aux lycéens dans la rue : la même grammaire à l'automne
+   2026 (prologue) et à chaque rentrée bloquée. */
+function appliquerPosture(s, idx) {
+  const L = s.lyceens;
+  const r = BLOCUS_LYCEEN.reponses[Math.max(0, Math.min(BLOCUS_LYCEEN.reponses.length - 1, idx | 0))];
+  s.phys.parents = borne(s.phys.parents + r.parents, 0, 100);
+  s.phys.adhesion = borne(s.phys.adhesion + r.adhesion, 0, s.plafondAdhesion);
+  s.credibilite = borne(s.credibilite + r.credibilite, 0, 100);
+  s.capital = borne(s.capital + r.capital, 0, K.CAPITAL.plafond);
+  s.vitrine.paix += r.presse * 0.25;
+  s.agendaConfisque = (s.agendaConfisque || 0) + r.agenda;
+  L.colere = borne(L.colere + r.colere, 0, 100);
+  if (r.greve) {
+    (s.grevesEnAttente = s.grevesEnAttente || []).push({ intensite: 2, theme: 'moyens', segment: 'lycee', cause: 'soutien aux lycéens' });
+  }
+  return r;
+}
+
+/* ============================================================================
+   LE PROLOGUE : L'AUTOMNE 2026, colère par colère
+   ----------------------------------------------------------------------------
+   Pour chaque colère : le joueur donne son avis, lit les faits, puis décide
+   parmi les mesures qui y répondent (une par camp quand c'est possible) ou
+   choisit d'attendre. Les mesures s'appliquent tout de suite, avec les règles
+   ordinaires : elles coûtent sur l'enveloppe des amendements, elles occupent
+   la capacité d'absorption, et elles apaisent les lycéens.
+   ========================================================================== */
+function* etapePrologue(s) {
+  crediter(s, K.ENVELOPPE_PROLOGUE);
+  /* Le PLF 2027 en discussion demande déjà 1 588 postes : c'est le schéma
+     d'emplois que Bercy comparera à la carte scolaire de janvier 2027. */
+  s.schemaEmploisDemande = -1588;
+  s.decouvertes = s.decouvertes || new Set();
+  for (const col of COLERES.slice(0, K.COLERES_MAX)) {
+    const ia = yield { type: 'colere', colere: col, avis: AVIS };
+    const avis = AVIS[Math.max(0, Math.min(AVIS.length - 1, ia | 0))];
+    s.coleres.avis[col.id] = avis.id;
+    if (col.postures) {
+      const ip = yield { type: 'faits', colere: col, avis: avis.id, postures: BLOCUS_LYCEEN.reponses, tresor: s.tresor, capital: s.capital };
+      const r = appliquerPosture(s, ip);
+      s.coleres.decisions[col.id] = 'posture:' + r.type;
+      note(s, `Automne 2026 — « ${col.cri} » : ${r.label}.`, 'colere');
+      continue;
+    }
+    /* Les mesures proposées sont sur la table, quel que soit leur calendrier
+       de découverte habituel : la crise les a remontées. */
+    for (const id of col.mesures) if (PAR_ID[id]) s.decouvertes.add(id);
+    const dispo = col.mesures.map((id) => PAR_ID[id]).filter((c) => c && estJouable(s, c));
+    const rep = yield { type: 'faits', colere: col, avis: avis.id, dispo, tresor: s.tresor, capital: s.capital };
+    if (rep && rep.id && dispo.some((c) => c.id === rep.id)) {
+      const avant = s.joue.size;
+      appliquerMesures(s, [rep], 1, false, 'prologue', false);
+      s.coleres.decisions[col.id] = s.joue.size > avant ? rep.id : null;
+    } else {
+      s.coleres.decisions[col.id] = null;
+    }
+    const d = s.coleres.decisions[col.id];
+    note(s, `Automne 2026 — « ${col.cri} » : ${d ? '« ' + PAR_ID[d].label + ' »' : 'pas de réponse pour l’instant'}.`, 'colere');
+  }
+  const n = Object.values(s.coleres.decisions).filter((d) => d && !String(d).startsWith('posture:')).length;
+  note(s, `Automne 2026 : ${n} mesure${n > 1 ? 's' : ''} annoncée${n > 1 ? 's' : ''} en réponse aux lycéens. Les lycéens sont ${humeurLyceenne(s.lyceens.colere)}.`, 'lyceens');
 }
 
 function* etapeBlocus(s) {
@@ -4910,17 +5221,7 @@ function* etapeBlocus(s) {
   s.phys.parents = borne(s.phys.parents + K.LYCEENS.parentsParBlocus, 0, 100);
   const nonTenues = K.LYCEENS.promesses.filter((p) => !p.themes.some((t) => s.themes.has(t)));
   const idx = yield { type: 'blocus', blocus: BLOCUS_LYCEEN, humeur: humeurLyceenne(L.colere), nonTenues, n: L.blocus };
-  const r = BLOCUS_LYCEEN.reponses[Math.max(0, Math.min(BLOCUS_LYCEEN.reponses.length - 1, idx | 0))];
-  s.phys.parents = borne(s.phys.parents + r.parents, 0, 100);
-  s.phys.adhesion = borne(s.phys.adhesion + r.adhesion, 0, s.plafondAdhesion);
-  s.credibilite = borne(s.credibilite + r.credibilite, 0, 100);
-  s.capital = borne(s.capital + r.capital, 0, K.CAPITAL.plafond);
-  s.vitrine.paix += r.presse * 0.25;
-  s.agendaConfisque = (s.agendaConfisque || 0) + r.agenda;
-  L.colere = borne(L.colere + r.colere, 0, 100);
-  if (r.greve) {
-    (s.grevesEnAttente = s.grevesEnAttente || []).push({ intensite: 2, theme: 'moyens', segment: 'lycee', cause: 'soutien aux lycéens' });
-  }
+  const r = appliquerPosture(s, idx);
   /* La circulaire de rentrée ne parlera que d'eux. */
   s.cadrage = BLOCUS_LYCEEN.cadrage;
   note(s, `Blocus des lycées (${L.blocus === 1 ? 'première' : 'deuxième'} fois) : réponse ${r.type === 'ferme' ? 'de fermeté' : r.type === 'methode' ? 'de méthode' : 'd’esquive'}. ${r.agenda} semaines d’agenda consommées.`, 'blocus');
@@ -5309,7 +5610,7 @@ function etapeDecembre(s) {
 }
 
 /* --- JANVIER : CSA ministériel, carte scolaire, DHG, et l'atelier de mesures */
-function* etapeJanvier(s) {
+function* etapeJanvier(s, opts = {}) {
   s.capital = Math.min(K.CAPITAL.plafond, s.capital + K.CAPITAL.parAn);
 
   /* (a) Le tendanciel démographique de l'année. */
@@ -5377,6 +5678,10 @@ function* etapeJanvier(s) {
      passées. C'est l'effet cliquet : vos décisions réduisent la marge de vos
      successeurs, pas la vôtre. */
   s.economieCarteScolaire = economie;
+  /* Janvier 2027 (prologue) : la carte scolaire se signe, l'argent des postes
+     rendus reste disponible, mais il n'y a pas d'atelier : les réponses de
+     l'automne viennent d'être annoncées, et le budget n'est pas le vôtre. */
+  if (opts.sansAtelier) { crediter(s, economie); return; }
   crediter(s, s.margeAnnee + economie);
   yield* etapeMesures(s, { moment: 'janvier' });
 }
@@ -5878,13 +6183,13 @@ function coutDe(carte, options = {}) {
   return { cout: carte.cout, coutETP: carte.coutETP, pol: carte.pol };
 }
 
-function appliquerMesures(s, choix, maxAnnonces = 3, depassementAutorise = true, moment = 'janvier') {
+function appliquerMesures(s, choix, maxAnnonces = 3, depassementAutorise = true, moment = 'janvier', verifierMenu = true) {
   const retenues = [];
   for (const ch of choix) {
     if (retenues.length >= maxAnnonces) break;   // le calendrier réglementaire ne suit pas
     const carte = PAR_ID[ch.id];
     if (!carte) continue;
-    if (!mesuresDisponibles(s).includes(carte)) continue;
+    if (verifierMenu ? !mesuresDisponibles(s).includes(carte) : !estJouable(s, carte)) continue;
     const { cout, coutETP, pol } = coutDe(carte, ch.options || {});
     if (pol > s.capital) continue;                       // le capital bloque réellement
     if (carte.perimetre === 'matignon' && pol * 2 > s.capital) continue;
@@ -5927,7 +6232,9 @@ function appliquerMesures(s, choix, maxAnnonces = 3, depassementAutorise = true,
     if (ph.hna) s.hnaTemporaires.push({ delta: ph.hna.delta, reste: ph.hna.duree, applique: 0 });
     if (ph.attractivite) s.bonusAttractivite = (s.bonusAttractivite || 0) + ph.attractivite;
     if (carte.bercy) s.creditBercy = borne(s.creditBercy + carte.bercy, 0, 100);
-    if (carte.coutETP) s.ratioED -= carte.coutETP / 35000;   // les ETP créés desserrent l'encadrement
+    /* Les postes d'enseignants créés desserrent l'encadrement ; les AED, CPE,
+       infirmiers ou psychologues, non : ils comptent ailleurs. */
+    if (carte.coutETP && !carte.horsEnseignants) s.ratioED -= carte.coutETP / 35000;
     if (carte.lyceens) apaiserLyceens(s, carte.lyceens, carte.label);
 
     /* Effets réels, curseurs compris. Une mesure partie en retard produit peu :
@@ -5981,7 +6288,9 @@ function appliquerMesures(s, choix, maxAnnonces = 3, depassementAutorise = true,
   if (surEngagement > 0.05) {
     s.creditBercy = borne(s.creditBercy - Math.min(K.SURCOUT.penaliteStructurelleMax, surEngagement * K.SURCOUT.penaliteStructurelleParMd), 0, 100);
   }
-  s.mesuresParAnnee[s.annee - 1] = (s.mesuresParAnnee[s.annee - 1] || []).concat(retenues);
+  /* Les mesures du prologue (an 0) sont rangées avec celles de l'an 1. */
+  const ia = Math.max(0, s.annee - 1);
+  s.mesuresParAnnee[ia] = (s.mesuresParAnnee[ia] || []).concat(retenues);
   s.phys.adhesion = borne(s.phys.adhesion, 0, 100);
   s.phys.parents = borne(s.phys.parents, 0, 100);
 }
@@ -5996,31 +6305,40 @@ function appliquerMesures(s, choix, maxAnnonces = 3, depassementAutorise = true,
    équilibré est ce qui sera joué. Les yields `type:'etape'` sont
    informatifs : l'interface y affiche le récit, les simulations les ignorent. */
 function* derouler(s) {
+  /* NOVEMBRE 2026. Dans la fiction du jeu, le ministre a démissionné après
+     six semaines de blocus ; le joueur est nommé au retour des vacances de la
+     Toussaint. Nomination, entretien, profil, feuille de route : comme
+     toujours. Puis la situation (la note lycéens), le budget en discussion,
+     et le prologue, colère par colère. */
   yield* etapeDoctrine(s);
   rafraichir(s);
-  /* La note de cadrage que la direction générale remet à tout nouveau ministre
-     avant son premier arbitrage : budget, démographie, niveaux. Tous les
-     chiffres viennent de `moteur/reperes.js` et sont sourcés. */
-  /* Les notes de la DGESCO n'arrivent pas en pile : chacune vient au moment où
-     la décision qu'elle éclaire se présente. En juin, le budget, parce que la
-     première chose qu'un ministre demande est une rallonge. La démographie
-     attend juillet et la lettre plafond, qui la rend concrète. Les niveaux
-     n'ont pas de note du tout : ils arrivent avec PISA, quand la presse en
-     parle, et pas avant. */
-  crediter(s, K.ENVELOPPE_PRISE_FONCTION);
-  /* L'héritage d'abord : ce que les lycéens ont obtenu à l'automne 2026 et
-     ce qu'on leur a promis. Puis le budget, parce que la première chose qu'un
-     ministre demande est une rallonge. */
   yield { type: 'reperes', note: 'lyceens' };
   yield { type: 'reperes', note: 'budget' };
   yield* etapeAvance(s);
-  /* Le premier menu est un menu de calendrier (plusieurs thèmes), mais il
-     ouvre sur le lycée : deux réponses aux lycéens en tête, le reste ensuite. */
-  yield* etapeMesures(s, { moment: 'prise_fonction', taille: K.TAILLE_MENU_CALENDRIER, priorite: 'lycee' });
+  yield* etapePrologue(s);
   rafraichir(s);
-  yield { type: 'etape', etape: 'ouverture' };
-  yield* etapeEte(s);
+  yield { type: 'etape', etape: 'automne' };
+  /* JANVIER 2027 : la carte scolaire de la rentrée 2027 se signe, sous le
+     schéma d'emplois du PLF 2027. Pas d'atelier : les annonces sont faites. */
+  s.mois = 0;
+  yield* etapeJanvier(s, { sansAtelier: true });
   rafraichir(s);
+  /* MAI 2027 : l'élection présidentielle. Dans la vraie vie, le ministre
+     change presque toujours. Dans le jeu, il reste : c'est la seule entorse à
+     la réalité, et elle sert à voir ce que les décisions de l'automne
+     produisent. Une promesse vieillit entre-temps. */
+  s.mois = 4;
+  s.lyceens.colere = borne(s.lyceens.colere + K.LYCEENS.derive, 0, 100);
+  {
+    const pNon = borne(K.RENVOI.electionBase - s.capital / K.RENVOI.remaniementParCapital - (s.phys.parents - 45) / K.RENVOI.remaniementParParents,
+      K.RENVOI.remaniementMin, K.RENVOI.remaniementMax);
+    if (s.rng() < pNon) {
+      s.fini = true;
+      s.fin = { type: 'election', annee: 0, texte: 'Mai 2027. Un nouveau président, un nouveau gouvernement, et votre nom n’y figure pas. Six mois rue de Grenelle : vos décisions de l’automne, elles, restent dans les textes.' };
+    }
+  }
+  yield { type: 'etape', etape: 'election' };
+  if (s.fini) return;
 
   for (s.annee = 1; s.annee <= K.DUREE_MANDAT && !s.fini; s.annee++) {
     s.anneeCiv = 2026 + s.annee;                 // année civile de la carte scolaire
@@ -6054,7 +6372,7 @@ function* derouler(s) {
     rafraichir(s);
     yield { type: 'etape', etape: 'cloture' };
   }
-  if (!s.fini) { s.fini = true; s.fin = { type: 'mandat_complet', annee: K.DUREE_MANDAT, texte: `${K.DUREE_MANDAT === 3 ? 'Trois' : K.DUREE_MANDAT} rentrées. Vous partez debout — ce qui, rue de Grenelle, est déjà un résultat.` }; }
+  if (!s.fini) { s.fini = true; s.fin = { type: 'mandat_complet', annee: K.DUREE_MANDAT, texte: `Un automne de crise et ${({ 1: 'une rentrée', 2: 'deux rentrées', 3: 'trois rentrées' })[K.DUREE_MANDAT] || K.DUREE_MANDAT + ' rentrées'}. Vous partez debout — ce qui, rue de Grenelle, est déjà un résultat.` }; }
   s.annee = Math.min(K.DUREE_MANDAT, s.annee);
 }
 
@@ -6076,6 +6394,15 @@ function jouerMandat({ graine = 1, politique }) {
     else if (q.type === 'affaire') rep = politique.affaire ? politique.affaire(s, q) : 0;
     else if (q.type === 'polemique') rep = politique.polemique ? politique.polemique(s, q) : 1;
     else if (q.type === 'blocus') rep = politique.blocus ? politique.blocus(s, q) : 0;
+    else if (q.type === 'colere') rep = politique.colere ? politique.colere(s, q) : 1;
+    /* Sans méthode dédiée, une stratégie répond aux colères comme elle choisit
+       ses mesures : son propre sélecteur, une carte au plus, sans dépassement ;
+       et face à la rue, comme face à un blocus. */
+    else if (q.type === 'faits') {
+      if (politique.faits) rep = politique.faits(s, q);
+      else if (q.postures) rep = politique.blocus ? politique.blocus(s, q) : 0;
+      else rep = (politique.mesures(s, q.dispo, { maxAnnonces: 1, depassementAutorise: false, tresor: q.tresor, capital: q.capital }) || [])[0] || null;
+    }
     else if (q.type === 'livraison') rep = null;
     /* Défaut délibérément médiocre : le plateau ne doit rien offrir à qui ne
        s'y prépare pas — sinon l'immobilisme paie, ce qui serait faux. */
@@ -6223,6 +6550,7 @@ function bilan(s) {
     greves: s.greves.length,
     pointsGreve: +s.pointsGreveCumules.toFixed(1),
     lyceens: { ...s.lyceens, humeur: humeurLyceenne(s.lyceens.colere) },
+    coleres: s.coleres,
     fatigue: s.fatigue, abandons: s.abandons,
     mesures: s.mesuresParAnnee.flat().map((m) => m.id),
     histoire: s.histoire,
@@ -6378,6 +6706,16 @@ function unesPossibles(etape) {
     ['Rentrée : les lycéens « jugeront sur pièces »',
      'Les organisations lycéennes saluent des réponses et préviennent qu’elles ont gardé la liste. La liste est longue, mais elle est datée.'],
   ]);
+  pousser(a('colere') && etape === 'automne', [
+    ['Lycées : le nouveau ministre répond, colère par colère',
+     'Huit sujets, autant de décisions, et des organisations lycéennes qui « jugeront sur pièces ». Les pièces sont attendues à la rentrée.'],
+    ['Automne de crise rue de Grenelle : des annonces, et une question',
+     'La question est celle de tous les automnes : qui paiera, et quand. Le ministère répond « le budget 2027 ». Le budget 2027 n’a pas encore été voté.'],
+  ]);
+  pousser(etape === 'election', [
+    ['Présidentielle : un nouveau gouvernement, et le même ministre de l’Éducation',
+     'Une continuité rare rue de Grenelle. Les lycéens y voient une personne à qui l’on peut encore rappeler ses promesses.'],
+  ]);
   pousser(a('matignon'), 'Rue de Grenelle : Matignon convoque, le ministre « conforté »',
     '« Conforté » est, dans la presse gouvernementale, le stade qui précède immédiatement « remplacé ».');
   pousser(a('prive'), 'École privée : la tension monte, le mot « Savary » est lâché',
@@ -6456,7 +6794,7 @@ let hudPrecedent = {};    // dernière valeur affichée par compteur, pour signa
 function majHud() {
   const S = ETAT.s;
   $('#hud').hidden = false;
-  $('#hud-date').textContent = ETAT.dateLabel || 'juin 2027';
+  $('#hud-date').textContent = ETAT.dateLabel || 'novembre 2026';
   if (!repereAnnee || repereAnnee.annee !== S.annee) repereAnnee = { annee: S.annee, v: { ...S.affiche } };
   const zone = $('#hud-compteurs'); zone.innerHTML = '';
   const ordre = S.doctrine || Object.keys(NOMS_C);
@@ -6513,7 +6851,7 @@ function reglesAlertes(S) {
   for (const c of cachees) {
     const v = S.affiche[c], d0 = K.COMPTEURS_INITIAUX[c], rang = S.doctrine.indexOf(c);
     R.push({ cle: 'cache-' + c, si: v <= d0 - 7, t: `Le compteur « ${NOMS_C_LONGS[c]} » décroche`,
-      p: `Ce compteur n’est pas affiché sur votre tableau de bord : vous l’avez classé n° ${rang + 1} de votre doctrine. Il est tenu quand même (${fmt0(d0)} en juin 2027, ${fmt0(v)} aujourd’hui) et il vaut ${K.POIDS_DOCTRINE[rang]} % de votre bilan final.` });
+      p: `Ce compteur n’est pas affiché sur votre tableau de bord : vous l’avez classé n° ${rang + 1} de votre doctrine. Il est tenu quand même (${fmt0(d0)} à votre arrivée, ${fmt0(v)} aujourd’hui) et il vaut ${K.POIDS_DOCTRINE[rang]} % de votre bilan final.` });
   }
   return R;
 }
@@ -6965,9 +7303,9 @@ function ecranAccueil(sauvegarde) {
     <div class="tampon"><div class="rf">RÉPUBLIQUE FRANÇAISE</div><div style="font-size:.62rem;letter-spacing:.18em">MINISTÈRE DE L'ÉDUCATION NATIONALE</div></div>
     ${ILLUS.facade.replace('<svg ', '<svg class="illustration" ')}
     <h1>Rue de Grenelle</h1>
-    <p class="devise">Vous êtes ministre de l’Éducation nationale.</p>
-    <p class="echelle">1,2 million d’agents · 12 millions d’élèves<br>trois rentrées · trois budgets · et les lycéens qui attendent</p>
-    <p class="chute">Durée moyenne dans le poste : deux ans. Huit mois plus tôt, 891 lycées fermaient le même jour…</p>`;
+    <p class="devise">Automne 2026. Les lycées sont bloqués depuis six semaines. Le ministre démissionne. On vous appelle.</p>
+    <p class="echelle">1,2 million d’agents · 12 millions d’élèves<br>huit colères à examiner · un budget en discussion · ${({ 2: 'deux', 3: 'trois' })[K.DUREE_MANDAT] || K.DUREE_MANDAT} rentrées pour tenir</p>
+    <p class="chute">Vous allez entendre ce que disent les lycéens, vérifier les chiffres, vous faire un avis, et décider.</p>`;
   const actions = el('div', 'actions'); actions.style.justifyContent = 'center';
   if (sauvegarde) {
     const rep = el('button', 'btn', 'Reprendre la partie en cours');
@@ -6977,7 +7315,7 @@ function ecranAccueil(sauvegarde) {
     neuf.onclick = () => { localStorage.removeItem(CLE_SAUVE); demarrer(null); };
     actions.appendChild(neuf);
   } else {
-    const go = el('button', 'btn', 'Prendre vos fonctions, juin 2027');
+    const go = el('button', 'btn', 'Prendre vos fonctions, novembre 2026');
     go.onclick = () => demarrer(null);
     actions.appendChild(go);
   }
@@ -6988,11 +7326,11 @@ function ecranAccueil(sauvegarde) {
 
 /* --- la nomination : on vous propose Grenelle -------------------------------- */
 function ecranNomination() {
-  const d = docu('Appel de Matignon', 'On vous propose la rue de Grenelle', 'juin 2027');
+  const d = docu('Appel de Matignon', 'On vous propose la rue de Grenelle', 'novembre 2026');
   d.classList.add('papier');
-  d.appendChild(el('p', 'chapo', 'Le gouvernement se forme. Votre téléphone sonne : on vous propose l’Éducation nationale. Le premier budget de l’État, 1,2 million d’agents, 12 millions d’élèves.<br>Et des lycéens qui, à l’automne dernier, ont bloqué 891 lycées le même jour et obtenu des promesses. Les promesses sont maintenant les vôtres.'));
+  d.appendChild(el('p', 'chapo', 'Dans la fiction du jeu, le ministre de l’Éducation nationale a démissionné hier soir, après six semaines de blocus. Votre téléphone sonne au retour des vacances de la Toussaint : on vous propose le poste. Le premier budget de l’État, 1,2 million d’agents, 12 millions d’élèves.<br>Et 400 lycées fermés ce matin, dont les élèves attendent que quelqu’un leur réponde. Ce quelqu’un, c’est vous, dès demain.'));
   d.appendChild(el('div', 'note-passation',
-    'Votre prédécesseur, huitième en quatre ans, laisse un mot : « Tout est dans les dossiers. Les dossiers sont dans les cartons. Les cartons traînent à la DGESCO.<br>Méfiez-vous de juillet, de septembre et de janvier, le reste de l’année est calme, sauf le reste de l’année. Bonne chance.'
+    'Votre prédécesseur laisse un mot : « Tout est dans les dossiers. Les dossiers sont dans les cartons. Les cartons sont devant les grilles, avec les lycéens.<br>J’ai promis cinq chantiers. Ils sont à vous. Bonne chance.'
     + '<span class="ps">P.-S. — La photocopieuse du deuxième est en panne depuis 2019. C’est le dossier le plus consensuel du ministère : ne le réglez pas, il fédère. »</span>'));
   d.appendChild(el('p', '', 'Vous acceptez. L’Élysée vous reçoit dans l’heure : deux questions, pour vérifier que votre nomination ne coûtera rien au Président.'));
   const act = el('div', 'actions');
@@ -7007,7 +7345,7 @@ function ecranNomination() {
 function ecranDoctrine() {
   const rev = ETAT.revanche;
   const ordre = rev && rev.doctrineInverse ? [...rev.doctrineInverse] : Object.keys(NOMS_C);
-  const d = docu('Conférence de presse, prise de fonction', 'Votre feuille de route, devant témoins', 'juin 2027');
+  const d = docu('Conférence de presse, prise de fonction', 'Votre feuille de route, devant témoins', 'novembre 2026');
   if (rev) {
     d.appendChild(el('div', 'bandeau-neuf',
       `<b>La revanche.</b> Mêmes tirages, mêmes crises, mêmes affaires : tout ce qui relève du hasard sera identique à votre partie précédente. Le classement ci-dessous est l’inverse exact de celui que vous aviez déclaré. Vous pouvez le modifier ; le jeu comparera les deux bilans à la fin.`));
@@ -7107,6 +7445,123 @@ function ecranPolemique(q) {
     box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }
   scene(d);
+}
+
+/* --- l'automne 2026 : une colère, votre avis ---------------------------------- */
+function ecranColere(q) {
+  const c = q.colere;
+  const d = docu('Automne 2026, ce que disent les lycéens', fr(c.cri));
+  d.classList.add('papier');
+  d.appendChild(el('p', 'qui-dit', fr(c.qui)));
+  d.appendChild(el('p', 'chapo', fr(c.contexte)));
+  d.appendChild(el('p', 'consigne', '<b>Avant de regarder les chiffres</b>, dites ce que vous en pensez. Les faits viennent juste après, et le jeu vous dira s’ils vont dans votre sens.'));
+  const opts = groupeOptions();
+  q.avis.forEach((a, i) => {
+    const b = el('button', 'opt', `<b>${esc(a.label)}</b><span class="det">${esc(a.det)}</span>`);
+    b.onclick = () => suivant(i);
+    opts.appendChild(b);
+  });
+  d.appendChild(opts);
+  scene(d);
+}
+
+/* --- l'automne 2026 : les faits, puis votre décision ------------------------- */
+const VERDICTS = {
+  fondee: { t: 'Les chiffres confirment', coul: 'var(--c-sante)' },
+  partielle: { t: 'Vrai, mais pas tout à fait comme ils le disent', coul: 'var(--c-budget)' },
+  ouverte: { t: 'Les chiffres ne tranchent pas', coul: 'var(--c-violet)' },
+};
+function miroirAvis(avis, verdict) {
+  if (verdict === 'ouverte') return avis === 'partielle'
+    ? 'Vous avez dit « en partie » : c’est la position la plus prudente quand les données ne tranchent pas.'
+    : 'Vous aviez un avis tranché. Les données, elles, ne le sont pas : ce n’est pas une faute, c’est une information. Gardez l’avis, et sachez sur quoi il repose.';
+  if (avis === verdict) return 'Les chiffres vont dans votre sens.';
+  if (avis === 'infondee') return 'Les chiffres ne vous donnent pas raison : le constat des lycéens est documenté. Ce qui peut se discuter, c’est ce qu’on en déduit.';
+  if (avis === 'fondee' && verdict === 'partielle') return 'Vous leur donniez entièrement raison. Le constat tient ; l’explication ou la cible, moins. C’est souvent là que se joue une bonne décision.';
+  return 'Vous étiez plus prudent que les chiffres : ici, le constat est solidement établi.';
+}
+function ecranFaits(q) {
+  const c = q.colere, S = ETAT.s;
+  const d = docu('Automne 2026, les faits', 'Ce que disent les chiffres');
+  d.appendChild(el('p', 'rappel-cri', fr(c.cri)));
+  d.appendChild(el('ul', 'rep-liste faits', c.faits.map((x) =>
+    `<li><span class="v">${fr(x.v)}</span><span class="l">${fr(x.l)}.${citer(x.src)}</span></li>`).join('')));
+  const V = VERDICTS[c.verdict] || VERDICTS.ouverte;
+  const av = el('div', 'verdict-bloc');
+  av.style.borderLeftColor = V.coul;
+  av.innerHTML = `<div class="titre-d" style="color:${V.coul}">${V.t}</div><p>${fr(c.lecture)}</p>
+    <p class="miroir"><b>Votre avis : « ${esc((AVIS.find((a) => a.id === q.avis) || {}).label || '')} ».</b> ${miroirAvis(q.avis, c.verdict)}</p>`;
+  d.appendChild(av);
+
+  d.appendChild(el('h3', 'decider', q.postures ? 'Votre attitude' : 'Votre réponse'));
+  const opts = groupeOptions();
+  if (q.postures) {
+    q.postures.forEach((r, i) => {
+      const b = el('button', 'opt', `<b>${esc(r.label)}</b><span class="det">${fr(r.det)}</span>`
+        + `<span class="chiffres"><span>${r.colere < 0 ? 'la colère retombe' : 'la colère monte'}</span><span>parents ${signe(r.parents)}</span><span>profs ${signe(r.adhesion)}</span>${r.greve ? '<span class="neg">préavis de grève</span>' : ''}</span>`);
+      b.onclick = () => finir(i, r.suite);
+      opts.appendChild(b);
+    });
+  } else {
+    d.appendChild(el('p', 'enveloppe-ligne', `Il vous reste <b>${fmt0(Math.max(0, q.tresor) * 1000)} millions d’euros</b> à redéployer cet automne, et ${fmt0(q.capital)} points de soutien du gouvernement.`));
+    q.dispo.forEach((carte) => {
+      const k = coutDe(carte, {});
+      const cadMax = Math.max(0, ...(carte.reel || []).map((e) => e.cadenas));
+      const motPreuve = cadMax >= 5 ? 'solide' : cadMax >= 3 ? 'correct' : cadMax >= 2 ? 'fragile' : 'personne ne sait';
+      const tropCher = k.cout > q.tresor + 1e-9, tropCapital = (carte.perimetre === 'matignon' ? k.pol * 2 : k.pol) > q.capital;
+      const vit = carte.vitrine || {};
+      const motProfs = vit.enseignants >= 3 ? 'les profs sont pour' : vit.enseignants <= -5 ? 'les profs sont contre' : vit.enseignants < 0 ? 'les profs grincent' : '';
+      const b = el('button', 'opt reponse', `<b>${esc(carte.label)}</b>
+        <span class="mots"><span class="${tropCher ? 'neg' : ''}">${fmt0(k.cout * 1000)} M€ par an</span><span class="preuve p${Math.min(5, Math.max(1, cadMax))}">ce qu’on sait : ${motPreuve}</span>${motProfs ? `<span class="${vit.enseignants >= 3 ? 'pos' : 'neg'}">${motProfs}</span>` : ''}${carte.greve ? `<span class="neg">risque de grève ${carte.greve.intensite}/5</span>` : ''}${carte.lyceens >= 12 ? '<span class="lyc">répond aux lycéens</span>' : carte.lyceens ? '<span class="lyc">apaise un peu</span>' : ''}</span>
+        <span class="det">Qui la défend : ${carte.porteurs.map(esc).join(' · ')}</span>
+        ${carte.contre ? `<span class="det">Qui est contre : ${carte.contre.map(esc).join(' · ')}</span>` : ''}
+        ${tropCher ? '<span class="det neg-l">Trop cher pour ce qu’il vous reste cet automne.</span>' : tropCapital ? '<span class="det neg-l">Le gouvernement ne vous suivra pas sur celle-là, pas encore.</span>' : ''}`);
+      /* Ce que disent les études, à la demande, sans quitter la page. */
+      const etudes = el('div', 'comprendre');
+      etudes.innerHTML = `<div class="titre-d">Ce que disent les études</div><p>${esc(carte.preuve || '')}</p>${carte.ideeRecue ? `<div class="idee"><div class="titre-d">L’idée reçue</div><p>${esc(carte.ideeRecue)}</p></div>` : ''}<p class="mot-carte">${esc(carte.mot)}</p>`;
+      const lire = el('button', 'btn-mini', 'Ce que disent les études');
+      lire.onclick = (e) => { e.stopPropagation(); etudes.classList.toggle('visible'); };
+      b.appendChild(lire); b.appendChild(etudes);
+      if (tropCher || tropCapital) { b.classList.add('indispo'); b.setAttribute('aria-disabled', 'true'); }
+      b.onclick = (e) => { if (e.target === lire || etudes.contains(e.target)) return; if (tropCher || tropCapital) return; finir({ id: carte.id }, carte.mot); };
+      opts.appendChild(b);
+    });
+    const rien = el('button', 'opt', `<b>Pas maintenant</b><span class="det">Vous notez la question. Les lycéens aussi : un sujet sans réponse à la rentrée fait remonter la colère.</span>`);
+    rien.onclick = () => finir(null, 'Rien n’est décidé, et c’est une décision : elle ne coûte rien aujourd’hui, elle se paie en septembre.');
+    opts.appendChild(rien);
+  }
+  d.appendChild(opts);
+  function finir(rep, suite) {
+    opts.querySelectorAll('.opt').forEach((n) => { n.disabled = true; });
+    const box = el('div', 'decryptage');
+    box.innerHTML = `<div class="titre-d">Ce qui suit</div><p>${fr(suite)}</p>`;
+    d.appendChild(box);
+    const act = el('div', 'actions');
+    const ok = el('button', 'btn', 'Colère suivante');
+    ok.onclick = () => suivant(rep);
+    act.appendChild(ok); d.appendChild(act);
+    box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+  scene(d);
+}
+
+/* Le miroir de l'automne : ce que vous pensiez, ce que disent les faits.
+   Pas une note : une liste, colère par colère. */
+function blocMiroir(S) {
+  const d = el('div', 'miroir-bloc');
+  d.appendChild(el('div', 'titre-d', 'Ce que vous pensiez, ce que disent les faits'));
+  let accord = 0, total = 0;
+  const lignes = COLERES.map((c) => {
+    const a = S.coleres.avis[c.id]; if (!a) return '';
+    total++;
+    const ok = c.verdict === 'ouverte' ? (a === 'partielle') : (a === c.verdict);
+    if (ok) accord++;
+    const dec = S.coleres.decisions[c.id];
+    const rep = !dec ? 'pas de réponse' : String(dec).startsWith('posture:') ? 'une attitude' : `« ${esc((PAR_ID[dec] || {}).label || dec)} »`;
+    return `<li class="${ok ? 'ok' : 'ecart'}"><span class="cri">${fr(c.cri)}</span><span class="d">votre avis : ${esc((AVIS.find((x) => x.id === a) || {}).label || a).toLowerCase()} · les faits : ${VERDICTS[c.verdict].t.toLowerCase()} · ${rep}</span></li>`;
+  }).join('');
+  d.innerHTML += `<ul>${lignes}</ul><p class="bous-note">${total ? `Sur ${total} colères, votre premier avis rejoignait les chiffres ${accord} fois. ` : ''}Le but n’était pas d’avoir raison d’avance : c’était de savoir, avant de décider, sur quoi repose ce qu’on pense.</p>`;
+  return d;
 }
 
 /* --- septembre : les lycées se bloquent ------------------------------------- */
@@ -7347,7 +7802,7 @@ function ecranProfil(q) {
 function ecranAvance(q) {
   const S = ETAT.s;
   const d = docu('Premier coup de téléphone à Bercy', 'Demander de l’argent dès votre arrivée ?');
-  d.appendChild(el('p', 'chapo', 'Vous arrivez en juin sur un budget déjà voté par votre prédécesseur. Pour agir tout de suite, un seul levier : demander à Bercy de débloquer une partie de l’argent qu’il garde en réserve. Cela se fait tous les ans. <b>Bercy n’est pas obligé de dire oui</b>, et un refus se sait.'));
+  d.appendChild(el('p', 'chapo', 'Vous arrivez en novembre : le budget 2026 est dépensé, le budget 2027 est en discussion au Parlement. Pour agir tout de suite, un levier : demander à Bercy de débloquer une partie de l’argent qu’il garde en réserve. Cela se fait tous les ans. <b>Bercy n’est pas obligé de dire oui</b>, et un refus se sait.'));
 
   const opts = groupeOptions();
   let choix = null, mesureChoisie = null;
@@ -8088,6 +8543,13 @@ function ecranEtape(etape) {
      programmes portent, eux aussi, les mesures que le joueur a signées. */
   if (etape === 'cloture' && S.annee >= 2) blocs.push(blocBoussole(S));
   if (etape === 'cloture' && S.lyceens) blocs.push(blocLyceens(S, false));
+  if (etape === 'automne') { blocs.push(blocMiroir(S)); blocs.push(blocLyceens(S, false)); }
+  if (etape === 'election') {
+    const fini = S.fini;
+    blocs.push(el('div', 'decode', `<div class="titre-d">Mai 2027, l’élection présidentielle</div>
+      <p>${fini ? fr(S.fin.texte) : 'Un nouveau président est élu, un nouveau gouvernement se forme. Dans la vraie vie, le ministre de l’Éducation change presque toujours à ce moment-là. Dans le jeu, vous restez : c’est la seule entorse à la réalité, et elle sert à une chose, voir ce que vos décisions de l’automne produisent.'}</p>
+      ${fini ? '' : '<p style="color:var(--encre-3);font-size:.8rem">Vos chances de rester dépendaient de votre soutien au gouvernement et de l’opinion des familles. Elles ont tenu.</p>'}`));
+  }
 
   const j = el('article', 'journal');
   j.innerHTML = `<div class="manchette"><span class="titre-j">${CAST.journal}</span><span class="ours">${ETAT.dateLabel} · n° ${1200 + S.annee * 37 + (S.mois || 0)} · 2,40 €</span></div>
@@ -8106,6 +8568,8 @@ function ecranEtape(etape) {
 
   ETAT.journalLu = S.journal.length;
   const ctx = {
+    automne: 'L’automne est passé. En janvier, la carte scolaire ; en mai, l’élection.',
+    election: S.fini ? 'Votre passage rue de Grenelle s’arrête ici. Le bilan, lui, continue.' : 'Vous restez. L’été 2027 commence, avec la lettre de Bercy.',
     ouverture: 'Votre doctrine est déclarée. L’été, lui, a ses propres plans.',
     juillet: 'La double sanction de juillet est tombée : lettre plafond et concours.',
     rentree: '',
@@ -8114,7 +8578,7 @@ function ecranEtape(etape) {
     cloture: `Fin de l’année scolaire, an ${S.annee} sur ${K.DUREE_MANDAT}.`,
   }[etape] || '';
   scene(...blocs, j, fil);
-  boutonSuite('Continuer', ctx, () => suivant(undefined));
+  boutonSuite(etape === 'election' && S.fini ? 'Voir le bilan' : 'Continuer', ctx, () => suivant(undefined));
 }
 
 /* --- bilan final -------------------------------------------------------------- */
@@ -8122,7 +8586,8 @@ function ecranBilan(B) {
   const S = ETAT.s;
   localStorage.removeItem(CLE_SAUVE);
   const fins = {
-    mandat_complet: ['TROIS RENTRÉES RUE DE GRENELLE : LE MINISTRE PART DEBOUT', 'Bravo ! Rester trois ans dans ce bureau est une performance : la moyenne est de deux. Le déménageur est déçu.'],
+    mandat_complet: [`UN AUTOMNE DE CRISE ET ${({ 2: 'DEUX', 3: 'TROIS' })[K.DUREE_MANDAT] || K.DUREE_MANDAT} RENTRÉES : LE MINISTRE PART DEBOUT`, 'Bravo ! Arrivé dans les blocus, parti debout : la moyenne dans ce bureau est de deux ans. Le déménageur est déçu.'],
+    election: ['PRÉSIDENTIELLE : LE MINISTRE DES SIX MOIS N’EST PAS RECONDUIT', 'Nommé dans la crise, remercié au changement de gouvernement. Ses décisions de l’automne, elles, restent dans les textes.'],
     renvoi: ['REMANIÉ', 'Trois convocations à Matignon font une porte. Vos cartons connaissaient le chemin.'],
     remaniement: ['REMANIEMENT SURPRISE !', 'Rien de personnel. Votre nom équilibrait un tableau qui ne vous concernait pas.'],
     guerre_scolaire: ['GUERRE SCOLAIRE : LE TEXTE RETIRÉ, LE MINISTRE AUSSI', 'Un million de personnes dans la rue. Comme en 1984, à la mode près.'],
@@ -8133,7 +8598,7 @@ function ecranBilan(B) {
     <h2 class="une">${fins[0]}</h2><p class="sous-une">${fins[1] || esc(B.fin.texte)}</p>`;
 
   const d = el('article', 'doc large');
-  d.appendChild(el('div', 'entete-doc', `<span class="type">${picto('drapeau')}Le bilan, la vérité, enfin</span><span class="date">${B.anneesJouees} an${B.anneesJouees > 1 ? 's' : ''} de mandat</span>`));
+  d.appendChild(el('div', 'entete-doc', `<span class="type">${picto('drapeau')}Le bilan, la vérité, enfin</span><span class="date">${B.fin.type === 'election' ? 'six mois de mandat' : `un automne et ${({ 1: 'une rentrée', 2: 'deux rentrées', 3: 'trois rentrées' })[B.anneesJouees] || B.anneesJouees + ' rentrées'}`}</span>`));
   { const bn = illustration('demenagement', false); if (bn) d.appendChild(bn); }
 
   const sc = el('div', 'score-final');
@@ -8152,7 +8617,7 @@ function ecranBilan(B) {
   /* --- les cinq compteurs, y compris les deux qui n'étaient pas affichés --- */
   const caches = (B.doctrine || []).slice(3);
   const t1 = el('div', 'defile');
-  t1.innerHTML = `<table class="bilan"><tr><th>Compteur (votre rang)</th><th class="num">Juin 2027</th><th class="num">Affiché</th><th class="num">Réel</th><th class="num">+10 ans</th></tr>
+  t1.innerHTML = `<table class="bilan"><tr><th>Compteur (votre rang)</th><th class="num">Nov. 2026</th><th class="num">Affiché</th><th class="num">Réel</th><th class="num">+10 ans</th></tr>
     ${B.doctrine.map((c, i) => `<tr${caches.includes(c) ? ' class="cache"' : ''}><td><span style="color:${COULEURS_C[c]}">●</span> ${NOMS_C_LONGS[c]} <span style="color:var(--encre-3)">(n° ${i + 1}, ${K.POIDS_DOCTRINE[i]} %${caches.includes(c) ? ', jamais affiché' : ''})</span></td>
       <td class="num">${fmt0(K.COMPTEURS_INITIAUX[c])}</td><td class="num">${fmt0(B.affiche[c])}</td>
       <td class="num"><b>${fmt0(B.vrai[c])}</b></td><td class="num">${fmt0(B.projection[c])}</td></tr>`).join('')}</table>`;
@@ -8193,6 +8658,7 @@ function ecranBilan(B) {
   d.appendChild(blocBoussole(S, true));
   /* --- et les lycéens --- */
   if (S.lyceens) d.appendChild(blocLyceens(S, true));
+  if (S.coleres && Object.keys(S.coleres.avis).length) d.appendChild(blocMiroir(S));
 
   const det = el('details', 'bilan-detail');
   det.innerHTML = '<summary>Le détail, mesure par mesure</summary>';
@@ -8220,7 +8686,7 @@ function ecranBilan(B) {
     const P = rev.precedent;
     const cmp = el('div', 'revanche-cmp');
     cmp.innerHTML = `<div class="titre-d">Même partie, deux doctrines</div>
-      <p class="bilan-note">Mêmes tirages, mêmes crises. Seul le classement de juin 2027 a changé. Voici ce que cela a fait.</p>
+      <p class="bilan-note">Mêmes tirages, mêmes crises. Seul le classement de novembre 2026 a changé. Voici ce que cela a fait.</p>
       <div class="defile"><table class="bilan">
         <tr><th></th><th class="num">Partie précédente</th><th class="num">Celle-ci</th></tr>
         <tr><td>Priorité déclarée</td><td class="num">${NOMS_C_LONGS[P.doctrine[0]]}</td><td class="num">${NOMS_C_LONGS[B.doctrine[0]]}</td></tr>
@@ -8474,16 +8940,17 @@ function fermerComprendre() {
 
 /* -------------------------------------------------------- boucle & sauvegarde */
 const CLE_SAUVE = 'rue-de-grenelle-gp1';  // version grand public : son propre jeu de sauvegarde
-const ETAT = { s: null, gen: null, journalLu: 0, pas: [], dateLabel: 'juin 2027', rentreeRatee: false, enAttente: null, rendre: null };
+const ETAT = { s: null, gen: null, journalLu: 0, pas: [], dateLabel: 'novembre 2026', rentreeRatee: false, enAttente: null, rendre: null };
 
 function dateDe(q) {
-  const S = ETAT.s, an = S.anneeCiv || 2027;
-  if (q.type === 'nomination') return 'juin 2027';
-  if (q.type === 'doctrine') return 'juin 2027';
-  if (q.type === 'reperes') return q.note === 'demographie' ? `juillet ${an}` : 'juin 2027';
-  if (q.type === 'avance') return 'juin 2027';
-  if (q.type === 'entretien') return 'juin 2027';
-  if (q.type === 'profil') return 'juin 2027';
+  const S = ETAT.s, an = S.anneeCiv || 2026;
+  if (q.type === 'nomination') return 'novembre 2026';
+  if (q.type === 'doctrine') return 'novembre 2026';
+  if (q.type === 'reperes') return q.note === 'demographie' ? `juillet ${an}` : 'novembre 2026';
+  if (q.type === 'avance') return 'novembre 2026';
+  if (q.type === 'entretien') return 'novembre 2026';
+  if (q.type === 'profil') return 'novembre 2026';
+  if (q.type === 'colere' || q.type === 'faits') return 'novembre 2026';
   if (q.type === 'intention') return `juillet ${an}`;
   if (q.type === 'affaire') return `décembre ${an}`;
   if (q.type === 'polemique') return `septembre ${an}`;
@@ -8500,7 +8967,7 @@ function dateDe(q) {
     return q.moment === 'prise_fonction' ? 'juin 2027'
       : q.moment === 'rentree' ? `septembre ${an}` : `janvier ${an + 1}`;
   }
-  const m = { ouverture: 'juin 2027', juillet: `juillet ${an}`, rentree: `septembre ${an}`, decembre: `décembre ${an}`, mars: `mars ${an + 1}`, cloture: `mai ${an + 1}` };
+  const m = { automne: 'décembre 2026', election: 'mai 2027', ouverture: 'juin 2027', juillet: `juillet ${an}`, rentree: `septembre ${an}`, decembre: `décembre ${an}`, mars: `mars ${an + 1}`, cloture: `mai ${an + 1}` };
   return m[q.etape] || `${MOIS_L[S.mois] || ''} ${an}`;
 }
 
@@ -8510,19 +8977,23 @@ function dateDe(q) {
 /* L'été tient en une seule étape : juillet, c'est l'été, et les cent jours
    n'ont pas besoin de deux cases pour se raconter. */
 const PAS = [
-  ['juin', 'Juin', 'Prise de fonction'],
-  ['ete', 'Été', 'Cent jours, lettre plafond'], ['septembre', 'Septembre', 'Rentrée, circulaire'],
+  ['ete', 'Été', 'Lettre de Bercy'], ['septembre', 'Septembre', 'Rentrée, circulaire'],
   ['octobre', 'Octobre', 'Audience syndicale'], ['decembre', 'Décembre', 'Budget, presse'],
-  ['janvier', 'Janvier', 'Carte scolaire, atelier'], ['mars', 'Mars', 'Mobilisations'], ['mai', 'Mai', 'Clôture'],
+  ['janvier', 'Janvier', 'Carte scolaire, budget'], ['mars', 'Mars', 'Mobilisations'], ['mai', 'Mai', 'Clôture'],
+];
+/* L'an 0 : le prologue de l'automne 2026, jusqu'à l'élection. */
+const PAS0 = [
+  ['novembre', 'Novembre', 'Nomination, les colères'], ['janvier0', 'Janvier', 'Carte scolaire'], ['mai0', 'Mai', 'Élection'],
 ];
 function situer(q) {
   const t = q.type, e = q.etape, m = q.moment;
-  if (t === 'nomination') return ['juin', 'telephone'];
-  if (t === 'entretien') return ['juin', 'colonnes'];
-  if (t === 'profil') return ['juin', 'carte'];
-  if (t === 'doctrine') return ['juin', 'pupitre'];
-  if (t === 'reperes') return [q.note === 'demographie' ? 'ete' : 'juin', q.note === 'budget' ? 'pieces' : q.note === 'lyceens' ? 'megaphone' : 'courbe'];
-  if (t === 'avance') return ['juin', 'pieces'];
+  if (t === 'nomination') return ['novembre', 'telephone'];
+  if (t === 'entretien') return ['novembre', 'colonnes'];
+  if (t === 'profil') return ['novembre', 'carte'];
+  if (t === 'doctrine') return ['novembre', 'pupitre'];
+  if (t === 'reperes') return [q.note === 'demographie' ? 'ete' : 'novembre', q.note === 'budget' ? 'pieces' : q.note === 'lyceens' ? 'megaphone' : 'courbe'];
+  if (t === 'avance') return ['novembre', 'pieces'];
+  if (t === 'colere' || t === 'faits') return ['novembre', 'megaphone'];
   if (t === 'intention') return ['ete', 'courbe'];
   if (t === 'dossier') return ['ete', 'soleil'];
   if (t === 'lettrePlafond') return ['ete', 'lettre'];
@@ -8534,9 +9005,9 @@ function situer(q) {
   if (t === 'livraison') return ['decembre', 'globe'];
   if (t === 'plateau') return ['decembre', 'tele'];
   if (t === 'affaire') return ['decembre', 'alerte'];
-  if (t === 'carteScolaire') return ['janvier', 'plan'];
+  if (t === 'carteScolaire') return [ETAT.s.annee === 0 ? 'janvier0' : 'janvier', 'plan'];
   if (t === 'mesures') return [m === 'prise_fonction' ? 'juin' : m === 'rentree' ? 'septembre' : m === 'livraison' ? 'decembre' : 'janvier', 'liste'];
-  if (t === 'etape') return [{ ouverture: 'ete', juillet: 'ete', rentree: 'septembre', decembre: 'decembre', mars: 'mars', cloture: 'mai' }[e] || 'mai', 'journal'];
+  if (t === 'etape') return [{ automne: 'novembre', election: 'mai0', ouverture: 'ete', juillet: 'ete', rentree: 'septembre', decembre: 'decembre', mars: 'mars', cloture: 'mai' }[e] || 'mai', e === 'election' ? 'drapeau' : 'journal'];
   return ['mai', 'drapeau'];
 }
 function majFrise(pasCourant) {
@@ -8544,19 +9015,20 @@ function majFrise(pasCourant) {
   if (!f) return;
   f.hidden = false;
   const fini = pasCourant === 'fin';
-  const annee = fini ? K.DUREE_MANDAT + 1 : Math.max(1, Math.min(K.DUREE_MANDAT, S.annee || 1));
-  const iCourant = PAS.findIndex((x) => x[0] === pasCourant);
-  /* L'année du jeu court de juin à mai : on l'affiche comme une année
-     scolaire, 2027-28, et non « An 1 » — c'est le repère de tout le monde. */
+  const annee = fini ? K.DUREE_MANDAT + 1 : Math.max(0, Math.min(K.DUREE_MANDAT, S.annee || 0));
+  /* L'année du jeu court de l'été à mai : on l'affiche comme une année
+     scolaire, 2027-28, et non « An 1 » — c'est le repère de tout le monde.
+     L'an 0 est l'automne 2026 et le printemps 2027. */
   const anLabel = (a) => `${2026 + a}\u2011${(2027 + a) % 100}`;
   let html = '<div class="frise-titre">Calendrier</div>';
-  for (let a = 1; a <= K.DUREE_MANDAT; a++) {
+  for (let a = 0; a <= K.DUREE_MANDAT; a++) {
     const etat = a < annee ? 'passe' : a === annee ? 'courant' : 'avenir';
     html += `<div class="frise-an ${etat}"><span class="num">${anLabel(a)}</span></div>`;
     if (a !== annee) continue;
+    const pas = a === 0 ? PAS0 : PAS;
+    const iCourant = pas.findIndex((x) => x[0] === pasCourant);
     html += '<ol class="frise-pas">';
-    PAS.forEach(([cle, mois, quoi], i) => {
-      if (cle === 'juin' && annee > 1) return;
+    pas.forEach(([cle, mois, quoi], i) => {
       const st = i < iCourant ? 'fait' : i === iCourant ? 'ici' : 'apres';
       /* Le mois seul, sauf pour l'étape courante : c'est la seule qui ait
          besoin d'être expliquée, et c'est ce qui rend la colonne lisible. */
@@ -8586,6 +9058,8 @@ function rendre(q) {
   else if (q.type === 'affaire') ecranAffaire(q);
   else if (q.type === 'polemique') ecranPolemique(q);
   else if (q.type === 'blocus') ecranBlocus(q);
+  else if (q.type === 'colere') ecranColere(q);
+  else if (q.type === 'faits') ecranFaits(q);
   else if (q.type === 'livraison') ecranLivraison(q);
   else if (q.type === 'plateau') ecranPlateau(q);
   else if (q.type === 'retrait') ecranRetrait(q);

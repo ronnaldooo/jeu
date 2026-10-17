@@ -1732,9 +1732,96 @@ bilan sur trois ans. La sauvegarde a sa propre clé (`rue-de-grenelle-gp1`).
 téléphone 390 px) : aucune erreur de script, aucun texte `undefined`, pas de
 défilement horizontal, bilan atteint.
 
+## 3 tricies. L'automne 2026 : le jeu commence dans la crise
+
+Après la section précédente, la commande a changé de cadre : le jeu est fait
+pour le grand public **et les lycéens**, il commence à l'automne 2026 (le
+ministre a démissionné, le joueur est nommé dans les blocus), et son but est
+que le joueur comprenne les colères, se fasse un avis sur leur légitimité à
+partir de données vérifiées, et décide.
+
+**Le prologue (`etapePrologue`).** Nomination, entretien, profil et feuille de
+route comme avant, puis la note sur la situation, le budget en discussion, la
+demande à Bercy, et huit colères (`COLERES` dans `catalogue.js`), chacune en
+deux écrans :
+
+1. *ce qu'ils disent* : la revendication telle qu'elle a été formulée, qui la
+   porte, le contexte, et un avis à donner avant de voir les chiffres
+   (fondée, en partie, pas fondée) ;
+2. *les faits* : deux ou trois chiffres sourcés (et les deux chiffres quand
+   deux sources se contredisent, par exemple 53 % d'établissements sans
+   professeur selon le SNES et « des volumes d'heures » selon le ministère),
+   une lecture, un verdict des données (`fondee`, `partielle`, `ouverte`), le
+   miroir de l'avis donné, puis la décision : une mesure parmi celles que
+   portent réellement les camps, ou « pas maintenant ». Pour la colère sur la
+   répression, les chiffres ne tranchent pas et le jeu le dit : le joueur
+   choisit une attitude, pas une mesure.
+
+Les mesures du prologue s'appliquent avec les règles ordinaires
+(`appliquerMesures` sans vérification du menu) : elles coûtent sur
+l'enveloppe des amendements au PLF 2027 (`ENVELOPPE_PROLOGUE = 0,45 Md€`,
+plus ce que Bercy a accordé), elles occupent la capacité d'absorption, elles
+apaisent la colère lycéenne (initiale à 90 : les lycées sont bloqués). Le
+schéma d'emplois du PLF (−1 588) est le schéma que Bercy compare à la carte
+scolaire de janvier 2027, signée sans atelier. En mai 2027, l'élection : une
+chance de ne pas être reconduit (`electionBase`, mise à 0 après essais, voir
+plus bas), puis les rentrées 2027, 2028 et 2029.
+
+**Ce que le prologue a changé à l'équilibre, et ce qu'il a révélé.**
+
+- Toutes les stratégies prennent quatre à six mesures en novembre : le jeu
+  devient plus généreux en effets réels précoces, et « tout vitrine » en
+  profite autant que « tout réel ». Le joueur attentif, lui, gardait en
+  réserve 22 points de capital comme en année ordinaire et ne répondait qu'à
+  trois colères : il subissait plus de blocus, moins de paix, et finissait
+  sous les deux extrêmes. Il répond maintenant à cinq colères au plus, sans
+  réforme supplémentaire quand trois tournent déjà, jamais à moins de trois
+  cadenas (deux pour une mesure qui n'est pas une réforme), avec une réserve
+  de capital de 8 ; et il rend à Bercy 85 % de ce qu'il exige au lieu de 70 %.
+- Deux cartes anciennes étaient sous-tarifées et le prologue le rendait
+  visible : les brigades de remplacement (40 M€ pour 4 000 postes) passent à
+  290 M€, la vie scolaire (30 M€ pour 4 000 AED et CPE) à 130 M€. Et un
+  défaut du moteur : tout `coutETP` desserrait la taille des classes, y
+  compris pour des surveillants, des infirmiers ou des psychologues. Le
+  champ `horsEnseignants` les en exclut (vie scolaire, santé scolaire,
+  orientation, surveillants généraux).
+- La journée de lycée plafonnée déclenchait une grève à coup sûr, puis une
+  demande de retrait à chaque audience : une pause de midi ne met pas les
+  professeurs dans la rue. Le champ `greve` lui est retiré ; les professeurs
+  grincent (vitrine −2), ils ne défilent pas.
+- Avec deux rentrées, l'horizon était trop court pour que le jeu mixte se
+  distingue : les effets réels n'arrivaient pas avant le bilan. Trois
+  rentrées (`DUREE_MANDAT = 3`) rétablissent l'écart. L'élection de mai 2027
+  éliminait un mandat sur cinq quelle que soit la stratégie, et biaisait le
+  bilan moyen contre les doctrines qui partent d'un compteur bas (le métier,
+  à 29) : `electionBase` est à 0, le texte de l'étape garde la fiction du
+  ministre qui reste, et le risque annuel de remaniement passe à 0,33.
+
+```
+graine 5 (400 parties)   survie  bilan   affiché
+passif                     47 %
+tout vitrine                      44,9    47,2
+tout réel                         44,0    41,3
+mixte                      59 %   48,8    41,6
+```
+
+Cibles : 4/4 sur les graines 5 (400 parties), 11 et 23 (700 parties) ;
+mixte entre 52 et 59 %, passif entre 47 et 53 %.
+
+**Interface.** Deux écrans par colère, lisibles au téléphone : la citation en
+titre, trois boutons d'avis ; puis les faits en liste (chiffre, phrase,
+source cliquable), le verdict des données en encadré, le miroir de l'avis,
+et les réponses en options compactes (coût, « ce qu'on sait », accueil des
+professeurs, réponse aux lycéens, qui la défend, qui est contre, « ce que
+disent les études » dépliable). Les réponses trop chères ou que le
+gouvernement ne suivrait pas sont visibles mais grisées, avec la raison. À
+la fin de l'automne et au bilan, un bloc « ce que vous pensiez, ce que disent
+les faits » reprend les huit colères. La frise commence par une année
+2026‑27 (novembre, janvier, mai).
+
 ## 5. Paramètres à réexaminer après tests humains
 
-- **Version grand public.** Le passif survit presque autant que le mixte sur trois ans (55 % contre 59 %). Si les premiers joueurs trouvent qu'on peut gagner en ne faisant rien, relever `IMMOBILISME` ou faire peser davantage la colère lycéenne sur les convocations. Et vérifier que la colère initiale (52) et le seuil (62) laissent une chance d'éviter le premier blocus à un joueur qui répond à deux chantiers en juin.
+- **Version grand public.** Le passif survit presque autant que le mixte (47-53 % contre 52-59 %). Si les premiers joueurs trouvent qu'on peut gagner en ne faisant rien, relever `IMMOBILISME` ou faire peser davantage la colère lycéenne sur les convocations. Et vérifier que la colère initiale (52) et le seuil (62) laissent une chance d'éviter le premier blocus à un joueur qui répond à deux chantiers en juin.
 
 | Paramètre | Valeur | Ce qu'il faut regarder |
 |---|---|---|

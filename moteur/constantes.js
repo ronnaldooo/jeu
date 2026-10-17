@@ -200,6 +200,16 @@ export const POINTS_SALAIRE_PAR_MD = 2.0;
    cinq entrées : on n'en lit que les premières. */
 export const DUREE_MANDAT = 3;
 
+/* Le PROLOGUE : l'automne 2026. Dans la fiction du jeu, le ministre démissionne
+   après six semaines de blocus et le joueur est nommé au retour des vacances
+   de la Toussaint. Il n'a pas de budget à lui : le PLF 2027 est en discussion
+   au Parlement. Ce qu'il peut obtenir par amendement et redéploiement, pour
+   répondre tout de suite, c'est cette enveloppe. */
+export const ENVELOPPE_PROLOGUE = 0.45;   // Md€, amendements au budget 2027 en discussion
+/* Les colères examinées à l'automne 2026 : chacune donne lieu à un avis du
+   joueur, puis aux faits, puis à une décision. */
+export const COLERES_MAX = 8;
+
 /* ---------------------------------------------------------------------------
    LES LYCÉENS, l'héritage de l'automne 2026                       [source D]
    ---------------------------------------------------------------------------
@@ -219,7 +229,7 @@ export const DUREE_MANDAT = 3;
    réponse apportée aux revendications la fait baisser ; chaque rentrée sans
    réponse la fait remonter. */
 export const LYCEENS = {
-  colereInitiale: 52,
+  colereInitiale: 90,     // les lycées sont bloqués le jour de la nomination
   /* Les cinq promesses héritées. Si rien n'est fait sur un chantier avant la
      première rentrée, la colère remonte d'autant : les lycéens comparent la
      rentrée 2027 à ce qu'on leur a dit à l'automne 2026. */
@@ -249,7 +259,7 @@ export const LYCEENS = {
 /* Projections DEPP avril 2026 : −1 676 800 élèves d'ici 2035 (−14,2 %).
    Baisse par rentrée, en milliers d'élèves. La rentrée 2026 (−161 000) est
    l'héritage ; le joueur arbitre les rentrées 2027 à 2031. */
-export const BAISSE_ELEVES = { 2027: -158, 2028: -172, 2029: -181, 2030: -176, 2031: -168 };
+export const BAISSE_ELEVES = { 2026: -158, 2027: -158, 2028: -172, 2029: -181, 2030: -176, 2031: -168 };
 export const ELEVES_INITIAL = 11607.6;     // milliers, rentrée 2026
 
 /* Conversion élèves → postes « libérés ». C'EST le choix politique du jeu.
@@ -501,10 +511,14 @@ export const RENVOI = {
      moyenne dans le poste dépasse rarement deux ans. Le risque est modulé par
      le capital politique et l'opinion des familles : un ministre solide n'est
      pas à l'abri, il est seulement moins exposé. */
-  remaniementBase: 0.30,       // trois ans de mandat : le risque annuel est relevé pour que finir reste une performance
+  remaniementBase: 0.33,       // trois ans de mandat : le risque annuel est relevé pour que finir reste une performance
   remaniementParCapital: 900,
   remaniementParParents: 700,
   remaniementMin: 0.05, remaniementMax: 0.40,
+  /* Mai 2027 : le nouveau gouvernement se forme. Dans la vraie vie, le
+     ministre change presque toujours ; dans le jeu, il a une chance de rester,
+     meilleure s'il est solide. Même modulation que le remaniement. */
+  electionBase: 0.0,
 };
 
 /* ===========================================================================

@@ -191,7 +191,45 @@ export const SYNDICAL = {
 /* -------------------------------------------------------------------------- */
 /* Le « joueur attentif » : il équilibre vitrine et réel, surveille l'adhésion
    (dont dépend l'implémentation), tient le crédit Bercy et évite les grèves. */
+/* Le score que le joueur attentif donne à une carte, réutilisé à l'automne
+   2026 et dans les ateliers de l'année. */
+const scorerMixte = (s) => (c) => {
+  const adhBasse = s.phys.adhesion < 32;
+  const restantes = K.DUREE_MANDAT - s.annee;
+  /* L'adhésion est le multiplicateur de tout le reste : tant qu'elle est
+     basse, un point d'adhésion vaut mieux qu'un point d'effet annoncé. */
+  return valeurReelle(c, null, restantes) * 1.25
+       + valeurVitrine(c) * 0.5
+       - risqueGreve(c) * (adhBasse ? 2.8 : 1.5)
+       + (c.physique?.adhesion || 0) * 1.2
+       + (c.vitrine?.enseignants || 0) * (adhBasse ? 1.3 : 0.4)
+       + (c.parametrique === 'revalorisation' && adhBasse ? 9 : 0)
+       /* Le joueur attentif a lu la note d'héritage : tant que les lycéens
+          sont en colère, une réponse qui les apaise vaut quelque chose. */
+       + (c.lyceens || 0) * (s.lyceens.colere >= 50 ? 0.6 : 0.2)
+      ;
+};
+const optionsMixte = (s) => () => ({ montant: Math.max(0.3, Math.min(2.6, s.tresor * 0.8)),
+                                      cible: s.phys.couvertureConcours < 90 ? 'debuts' : 'milieux',
+                                      instrument: 'indiciaire', financement: 'demographie' });
+
 export const MIXTE = {
+  /* À l'automne 2026, le joueur attentif répond, mais pas à tout : cinq
+     mesures au plus, jamais de réforme de plus quand trois tournent déjà,
+     jamais la carte qui déclenche à coup sûr une grève, et il lit la preuve
+     avant de signer. En revanche, il ne garde pas en réserve le capital
+     qu'il garde en année ordinaire : une crise se paie comptant. */
+  faits: (s, q) => {
+    if (q.postures) return 0;
+    const prises = Object.values(s.coleres.decisions).filter((d) => d && !String(d).startsWith('posture')).length;
+    if (prises >= 5) return null;
+    const actives = s.reformesActives.length;
+    const preuve = (c) => Math.max(0, ...(c.reel || []).map((e) => e.cadenas));
+    const dispo = q.dispo.filter((c) => !(c.reforme && actives >= 3) && !(c.greve && c.greve.intensite >= 4)
+      && (preuve(c) >= 3 || (!c.reforme && preuve(c) >= 2)));
+    return (selectionner(s, dispo, { maxAnnonces: 1, depassementAutorise: false, tresor: q.tresor, capital: q.capital },
+      scorerMixte(s), { reserveCapital: 8, options: optionsMixte(s) }) || [])[0] || null;
+  },
   polemique: () => 0,
   plateau: () => [0, 0, 0],
   entretien: () => [0, 0, 1],   // franc là où c'est gratuit, prudent là où ça coûte
@@ -210,31 +248,14 @@ export const MIXTE = {
     /* Rendre juste assez d'emplois pour tenir Bercy, jamais au-delà de la colère
        des maires ; épargner le privé quand la ségrégation est contenue. */
     const exige = Math.abs(ctx.schemaDemande) / Math.max(1, ctx.postesLiberables);
-    const rest = Math.min(0.52, Math.max(0.18, exige * (s.creditBercy < 40 ? 1.0 : 0.7)));
+    const rest = Math.min(0.54, Math.max(0.18, exige * (s.creditBercy < 40 ? 1.0 : 0.85)));
     return { restitution: rest, prive: s.phys.segregation > 19 ? 0.7 : 0.5 };
   },
   rentree: () => 'assumer',
-  mesures: (s, dispo, ctx) => selectionner(s, dispo, ctx, (c) => {
-    const adhBasse = s.phys.adhesion < 32;
-    const restantes = K.DUREE_MANDAT - s.annee;
-    /* L'adhésion est le multiplicateur de tout le reste : tant qu'elle est
-       basse, un point d'adhésion vaut mieux qu'un point d'effet annoncé. */
-    return valeurReelle(c, null, restantes) * 1.25
-         + valeurVitrine(c) * 0.5
-         - risqueGreve(c) * (adhBasse ? 2.8 : 1.5)
-         + (c.physique?.adhesion || 0) * 1.2
-         + (c.vitrine?.enseignants || 0) * (adhBasse ? 1.3 : 0.4)
-         + (c.parametrique === 'revalorisation' && adhBasse ? 9 : 0)
-         /* Le joueur attentif a lu la note d'héritage : tant que les lycéens
-            sont en colère, une réponse qui les apaise vaut quelque chose. */
-         + (c.lyceens || 0) * (s.lyceens.colere >= 50 ? 0.9 : 0.2)
-        ;
-  }, {
+  mesures: (s, dispo, ctx) => selectionner(s, dispo, ctx, scorerMixte(s), {
     toleranceDepassement: s.creditBercy > 45 ? 0.5 : 0.2,
     reserveCapital: 22,
-    options: () => ({ montant: Math.max(0.3, Math.min(2.6, s.tresor * 0.8)),
-                      cible: s.phys.couvertureConcours < 90 ? 'debuts' : 'milieux',
-                      instrument: 'indiciaire', financement: 'demographie' }),
+    options: optionsMixte(s),
   }),
 };
 
