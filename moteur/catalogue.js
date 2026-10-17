@@ -46,7 +46,7 @@ export const CATALOGUE = [
     id: 'redoublement',
     label: 'Redoublement facilité, décision rendue aux équipes et aux familles',
     famille: 'autorite',
-    porteurs: ['une large majorité de l’opinion', 'plusieurs candidats de droite'],
+    porteurs: ['une large majorité de l’opinion', 'Bruno Retailleau (fin du passage automatique)'],
     perimetre: 'ministeriel',
     cout: 0.55, coutETP: 0, pol: 3,
     theme: 'redoublement', once: true, reforme: true,
@@ -66,7 +66,7 @@ export const CATALOGUE = [
     id: 'revalorisation',
     label: 'Revalorisation des enseignants',
     famille: 'moyens',
-    porteurs: ['FSU (+20 % du point ≈ 10 Md€)', 'Parti socialiste (moyenne OCDE)', 'Gabriel Attal (+200 à +500 €/mois)', 'la droite parlementaire (+20 %/5 ans conditionnés)', 'HCSP (ciblage des pénuries)'],
+    porteurs: ['FSU (+20 % du point ≈ 10 Md€)', 'Édouard Philippe et Parti socialiste (+20 % en cinq ans)', 'Gabriel Attal (+200 à +500 €/mois)', 'Raphaël Glucksmann (+10 %, jusqu’à +25 %)', 'Les Écologistes (+15 % hors inflation)', 'Marine Le Pen (+3 % par an)', 'HCSP (ciblage des pénuries)'],
     perimetre: 'ministeriel',
     cout: 1.3, coutETP: 0, pol: 7,        // montant par défaut ; le curseur décide
     once: false, reforme: false,          // répétable : une mesure salariale par budget
@@ -108,6 +108,7 @@ export const CATALOGUE = [
     perimetre: 'ministeriel',
     cout: 0, coutETP: 0, pol: 11,          // dépend du financement choisi
     theme: 'taille_classe', once: true, excl: 'encadrement', reforme: true,
+    lyceens: 5,
     parametrique: 'financement19',          // recrutement (Bercy) ou démographie (syndicats)
     vitrine: { parents: +8, enseignants: +6, presse: +5, compteurs: { egalite: +5, sante: +4 } },
     reel: [
@@ -130,6 +131,7 @@ export const CATALOGUE = [
     perimetre: 'matignon',                  // législatif, rejeté au Sénat le 07/01/2026
     cout: 0.043, coutETP: 0, pol: 16,
     theme: 'aesh', once: true, reforme: false,
+    lyceens: 3,
     vitrine: { parents: +7, enseignants: +8, presse: +5, compteurs: { sante: +6 } },
     reel: [
       { compteur: 'sante',   central: 7, delai: 2, cadenas: 3, source: 'stabilisation d’un corps de 146 000 personnes aujourd’hui à temps incomplet subi' },
@@ -186,7 +188,7 @@ export const CATALOGUE = [
     id: 'groupes_niveau',
     label: 'Groupes de niveau permanents en français et en mathématiques au collège',
     famille: 'parcours',
-    porteurs: ['Gabriel Attal (« choc des savoirs »)', 'la droite parlementaire'],
+    porteurs: ['Gabriel Attal (généralisation en français et en mathématiques)', 'la droite parlementaire'],
     contre: ['IGÉSR juin 2025 : « dérive des continents » entre le texte et le terrain', 'l’ensemble des organisations syndicales'],
     perimetre: 'ministeriel',
     cout: 0.3, coutETP: 1800, pol: 10,
@@ -206,7 +208,7 @@ export const CATALOGUE = [
     id: 'certificat_6e',
     label: 'Un certificat de fin de CM2 pour entrer en sixième',
     famille: 'parcours',
-    porteurs: ['Gabriel Attal (classes « prépa-6e »)', 'la droite parlementaire', 'une majorité de l’opinion'],
+    porteurs: ['Gabriel Attal (certificat d’études et « année passerelle »)', 'la droite parlementaire', 'une majorité de l’opinion'],
     contre: ['les fédérations de parents', 'les organisations syndicales du premier degré'],
     perimetre: 'ministeriel',
     cout: 0.06, coutETP: 400, pol: 8,
@@ -227,7 +229,7 @@ export const CATALOGUE = [
     id: 'parcours_4e',
     label: 'Des parcours différenciés dès la quatrième, vers la voie professionnelle',
     famille: 'parcours',
-    porteurs: ['Reconquête (fin du collège unique)', 'Rassemblement national (collège modulaire)', 'une partie de la droite parlementaire'],
+    porteurs: ['Rassemblement national (collège modulaire, brevet d’orientation)', 'Bruno Retailleau (fin du collège unique)', 'Reconquête', 'Gabriel Attal (un quart du temps différencié en 4e et 3e)'],
     contre: ['les organisations syndicales', 'les fédérations de parents', 'la gauche parlementaire, au nom du collège unique'],
     perimetre: 'ministeriel',
     cout: 0.12, coutETP: 600, pol: 12,
@@ -250,7 +252,7 @@ export const CATALOGUE = [
     id: 'autonomie',
     label: 'Autonomie des établissements et publication des résultats',
     famille: 'autonomie',
-    porteurs: ['Édouard Philippe', 'Institut Montaigne', 'iFRAP', 'précédent anglais des academies'],
+    porteurs: ['Édouard Philippe', 'Bruno Retailleau (« liberté des établissements »)', 'Institut Montaigne', 'iFRAP', 'précédent anglais des academies'],
     perimetre: 'ministeriel',
     cout: 0.005, coutETP: 0, pol: 9,
     theme: 'autonomie', once: true, excl: 'evaluation', reforme: true,
@@ -271,7 +273,7 @@ export const CATALOGUE = [
     id: 'prive_mixite',
     label: 'Financement du privé sous contrat conditionné à des objectifs de mixité',
     famille: 'mixite',
-    porteurs: ['Nouveau Front populaire', 'Place publique (privé intégré à la carte scolaire)', 'Cour des comptes (contrôle des fonds publics)', 'FCPE'],
+    porteurs: ['Raphaël Glucksmann (aides au privé conditionnées à la mixité)', 'Parti socialiste (« reprendre le contrôle » du privé sous contrat)', 'Cour des comptes (contrôle des fonds publics)', 'FCPE'],
     perimetre: 'matignon',
     cout: -0.15, coutETP: 0, pol: 15,       // rapporte de l'argent, coûte tout le reste
     theme: 'prive', once: true, reforme: true,
@@ -309,11 +311,12 @@ export const CATALOGUE = [
     id: 'ors_remplacement',
     label: 'Inscrire le remplacement de courte durée dans les obligations de service',
     famille: 'moyens',
-    porteurs: ['Cour des comptes', 'fédérations de parents', 'la droite parlementaire'],
+    porteurs: ['Cour des comptes', 'fédérations de parents', 'Rassemblement national (remplacement obligatoire)', 'la droite parlementaire'],
     contre: ['l’annualisation touche au statut : l’intersyndicale la refuse en bloc'],
     perimetre: 'ministeriel',
     cout: 0.01, coutETP: 0, pol: 9,
     theme: 'ors_service', once: true, reforme: true,
+    lyceens: 6,
     decouverte: { si: 'heures_perdues', note: 'La direction générale vous rappelle que les deux tiers des heures perdues sont des absences courtes, et qu’aucune brigade ne les couvre.' },
     vitrine: { parents: +6, enseignants: -11, presse: +4, compteurs: { sante: +4 } },
     reel: [
@@ -493,6 +496,7 @@ export const CATALOGUE = [
     perimetre: 'matignon',                // l'État n'est pas propriétaire des murs
     cout: 0, coutETP: 0, pol: 8,
     theme: 'bati', once: true, reforme: false,
+    lyceens: 6,
     vitrine: { parents: +6, enseignants: +2, presse: +4, compteurs: {} },
     reel: [
       { compteur: 'sante',    central: 2, delai: 3, cadenas: 2, source: 'effet indirect : conditions de travail et d’étude' },
@@ -572,7 +576,7 @@ export const CATALOGUE = [
     id: 'pacte_pluriannuel',
     label: 'Pacte pluriannuel : moyens garantis trois ans contre contractualisation d’objectifs',
     famille: 'autonomie',
-    porteurs: ['Michel Barnier (pacte pluriannuel)', 'recteurs', 'associations d’élus', 'Cour des comptes (contractualisation)'],
+    porteurs: ['recteurs', 'associations d’élus', 'Cour des comptes (contractualisation)', 'Gabriel Attal (un ministre « qui restera cinq ans »)'],
     perimetre: 'ministeriel',
     cout: 0.08, coutETP: 0, pol: 5,
     theme: 'pluriannuel', once: true, reforme: false,
@@ -610,7 +614,7 @@ export const CATALOGUE = [
     id: 'brevet_barrage',
     label: 'Brevet obligatoire pour l’entrée en seconde',
     famille: 'parcours',
-    porteurs: ['Gabriel Attal', 'Fondation Jean-Jaurès (version mixité)'],
+    porteurs: ['Gabriel Attal (brevet obligatoire pour entrer au lycée)', 'Bruno Retailleau (fin du passage automatique)', 'Fondation Jean-Jaurès (version mixité)'],
     contre: ['CSEN : les effets de barrage nourrissent le décrochage'],
     perimetre: 'ministeriel',
     cout: 0.005, coutETP: 0, pol: 7,
@@ -631,7 +635,7 @@ export const CATALOGUE = [
     id: 'uniforme',
     label: 'Généralisation de la tenue unique',
     famille: 'autorite',
-    porteurs: ['une majorité constante de l’opinion', 'plusieurs candidats'],
+    porteurs: ['Rassemblement national (uniforme au primaire et au collège)', 'Reconquête (blouse au primaire)', 'une majorité constante de l’opinion'],
     perimetre: 'ministeriel',
     cout: 0.09, coutETP: 0, pol: 2,
     theme: 'uniforme', once: true, reforme: false,
@@ -691,7 +695,7 @@ export const CATALOGUE = [
     id: 'internats',
     label: 'Internats de rescolarisation pour élèves hautement perturbateurs',
     famille: 'autorite',
-    porteurs: ['la droite parlementaire', 'des chefs d’établissement épuisés', 'associations de victimes de violences scolaires'],
+    porteurs: ['Bruno Retailleau (internats disciplinaires)', 'Rassemblement national (structures spécialisées après deux exclusions)', 'des chefs d’établissement épuisés', 'associations de victimes de violences scolaires'],
     perimetre: 'ministeriel',
     cout: 0.21, coutETP: 0, pol: 5,
     theme: 'internats', once: true, reforme: false,
@@ -805,7 +809,7 @@ export const CATALOGUE = [
     id: 'loi_carle',
     label: 'Abroger la loi Carle et intégrer le privé sous contrat à la carte scolaire',
     famille: 'mixite',
-    porteurs: ['La France insoumise', 'Place publique (version carte scolaire)', 'Nouveau Front populaire', 'Comité national d’action laïque'],
+    porteurs: ['La France insoumise', 'Raphaël Glucksmann (privé sous contrat intégré à la carte scolaire)', 'Comité national d’action laïque'],
     perimetre: 'matignon',
     cout: -0.10, coutETP: 0, pol: 13,
     theme: 'carle', once: true, reforme: true,
@@ -1296,7 +1300,7 @@ export const CATALOGUE = [
     id: 'loi_programmation',
     label: 'Inscrire votre réforme dans une loi de programmation pluriannuelle',
     famille: 'autonomie',
-    porteurs: ['précédent des lois de programmation militaire et de la recherche', 'Michel Barnier (pacte pluriannuel)', 'organisations syndicales, pour la visibilité'],
+    porteurs: ['Gabriel Attal (loi de programmation pour l’école dès 2027)', 'Raphaël Glucksmann (plan de sauvetage sur cinq ans)', 'précédent des lois de programmation militaire et de la recherche', 'organisations syndicales, pour la visibilité'],
     contre: ['Bercy, qui déteste engager les budgets de ses successeurs', 'Matignon, qui déteste occuper le calendrier parlementaire'],
     perimetre: 'matignon',
     cout: 0.002, coutETP: 0, pol: 12,
@@ -1383,7 +1387,236 @@ export const CATALOGUE = [
     ideeRecue: '« Au moins, ça ne peut pas faire de mal. » Cela consomme la seule chose qui ne se reconstitue pas : la patience des équipes, et l’énergie du bureau de la santé de la DGESCO. Un cadenas de preuve, deux points d’adhésion en moins, six points chez les parents — c’est le profil exact d’une mesure de vitrine, et le jeu vous laisse la prendre en connaissance de cause.',
     mot: "Un kit, une journée banalisée, une infographie, un beau document sur Éduscol. Le harcèlement, lui, prend rendez-vous à la rentrée suivante.",
   },
+  /* =====================================================================
+     LE LYCÉE, l'héritage de l'automne 2026 (version grand public)
+     ---------------------------------------------------------------------
+     Chaque carte part d'une revendication telle que les lycéens l'ont
+     formulée à l'automne 2026 (consultation nationale, « 10 mesures
+     d'urgence », revendications locales rapportées par la presse), et
+     propose la réponse qu'un ministre peut y apporter, avec ceux qui la
+     portent réellement : gouvernement, candidats, organisations lycéennes.
+     `lyceens` : de combien la colère lycéenne (jauge cachée) retombe quand
+     la mesure est annoncée. Sources : RECHERCHE-GRAND-PUBLIC.md, partie 1.
+     ===================================================================== */
+
+  /* ------------------------------ L1 · remplacement ---------------- */
+  {
+    id: 'remplacement_lycee',
+    label: 'Une brigade de 3 000 remplaçants titulaires pour les lycées',
+    famille: 'lycee',
+    porteurs: ['le gouvernement (3 000 remplaçants appelés en octobre 2026)', 'les organisations lycéennes (des postes, pas des contrats précaires)', 'fédérations de parents', 'Cour des comptes (absences longues)'],
+    perimetre: 'ministeriel',
+    cout: 0.22, coutETP: 3000, pol: 4,
+    theme: 'remplacement_lycee', once: true, reforme: false, goulot: true,
+    lyceens: 12,
+    vitrine: { parents: +6, enseignants: +3, presse: +3, compteurs: { sante: +4 } },
+    reel: [
+      { compteur: 'sante',    central: 5, delai: 1, cadenas: 3, source: 'Cour des comptes : les absences de plus de quinze jours sont remplacées à 96 %, les courtes à 20 % ; une brigade agit sur les premières' },
+      { compteur: 'reussite', central: 2, delai: 2, cadenas: 3, source: 'le temps d’enseignement effectivement reçu est un déterminant direct des acquis ; 9 % des heures ne sont pas assurées au collège public (Cour des comptes, 2025)' },
+    ],
+    physique: { hna: { delta: -1.2, duree: 3 } },
+    preuve: 'Au 7 septembre 2026, 53 % des collèges et lycées publics manquaient d’au moins un professeur selon l’enquête du SNES-FSU (1 033 établissements) ; le ministère parlait de volumes d’heures plutôt que de postes entiers. Le ministre a reconnu que 7 % des heures de cours n’étaient pas assurées, et la Cour des comptes mesure 9 % d’heures perdues dans les collèges publics en 2023-2024. En octobre 2026, 3 000 professeurs titulaires remplaçants ont été affectés en urgence dans les lycées les plus touchés : le nombre de lycées « en grande difficulté » est passé de 114 à 47 en une semaine. Cette carte inscrit ce dispositif au budget au lieu de le reconduire en urgence.',
+    ideeRecue: '« Il suffit de recruter des remplaçants. » Deux tiers des absences non remplacées ont une cause institutionnelle (examens, formations, sorties) et sont courtes : une brigade ne les couvre pas. Et des postes créés ne mettent personne devant les élèves tant que les concours ne font pas le plein.',
+    mot: "La réponse d’octobre 2026, inscrite au budget. Elle marche là où les candidats existent ; le vivier, lui, n’a pas changé d’avis.",
+  },
+
+  /* ------------------------------ L2 · la journée ------------------- */
+  {
+    id: 'journee_lycee',
+    label: 'Journée de lycée plafonnée : fin des cours à 17 h, pause de midi d’une heure et demie',
+    famille: 'lycee',
+    porteurs: ['les organisations lycéennes (pause méridienne d’au moins 1 h 30)', 'le Premier ministre (revue des emplois du temps, octobre 2026)', 'SNPDEN (version négociée établissement par établissement)'],
+    perimetre: 'ministeriel',
+    cout: 0.08, coutETP: 0, pol: 4,
+    theme: 'temps_lycee', once: true, excl: 'temps_lycee', reforme: true,
+    lyceens: 14,
+    vitrine: { parents: +4, enseignants: -2, presse: +3, compteurs: { paix: +3 } },
+    reel: [
+      { compteur: 'paix',     central: 3, delai: 1, cadenas: 2, source: '71 % des 76 500 contributions de la consultation lycéenne portent sur le temps scolaire ; l’effet d’une journée plus courte sur le climat n’a pas été évalué' },
+      { compteur: 'reussite', central: 1, delai: 3, cadenas: 2, source: 'OCDE : 1 224 heures de cours par an à 15 ans en France contre 962 dans l’Union européenne, pour des résultats moyens ; le volume n’explique pas le niveau (HCSP 2026)' },
+    ],
+    physique: {},
+    greve: { intensite: 2, theme: 'statut', segment: 'lycee' },
+    preuve: 'Sur la plateforme de consultation ouverte en octobre 2026, 71 % des 76 500 premières contributions évoquent l’organisation du temps scolaire : journées trop longues, emplois du temps déséquilibrés, charge de travail. Les lycéens décrivent des journées de 8 h à 18 h avec des heures de trou et parfois trente minutes pour déjeuner. À 15 ans, un élève français passe 1 224 heures par an en classe contre 962 en moyenne dans l’Union européenne (OCDE). Le Haut-commissariat à la Stratégie et au Plan conclut que le volume horaire n’explique pas la baisse du niveau. Plafonner la journée se décide par circulaire ; cela se paie dans les emplois du temps des professeurs et dans les salles disponibles.',
+    ideeRecue: '« Finir plus tôt, c’est apprendre moins. » Les lycéens français ont déjà 260 heures de plus que leurs voisins européens pour des résultats dans la moyenne. Ce qui manque n’est pas le volume ; ce qui se joue, c’est l’organisation.',
+    mot: "La revendication la plus partagée de la consultation, et la moins chère. Son prix est dans les emplois du temps des professeurs, qui ne votent pas sur Agora.",
+  },
+
+  /* ------------------------------ L3 · les matinées ----------------- */
+  {
+    id: 'matinees',
+    label: 'Les cours le matin, le sport et la culture l’après-midi, des vacances raccourcies',
+    famille: 'lycee',
+    porteurs: ['Édouard Philippe (Horizons, octobre 2026)', 'Les Écologistes (semaine de cinq jours, deux zones de vacances)', 'avis du CESE sur les rythmes'],
+    contre: ['les collectivités, qui devront accueillir les après-midi', 'le secteur du tourisme, pour les vacances'],
+    perimetre: 'matignon',
+    cout: 0.45, coutETP: 0, pol: 8,
+    theme: 'temps_lycee', once: true, excl: 'temps_lycee', reforme: true,
+    lyceens: 6,
+    vitrine: { parents: +3, enseignants: -5, presse: +6, compteurs: { reussite: +4 } },
+    reel: [
+      { compteur: 'reussite', central: 3, delai: 4, cadenas: 2, source: 'chronobiologie : l’attention est meilleure le matin ; aucune évaluation d’ensemble d’un tel calendrier en France' },
+      { compteur: 'egalite',  central: -2, delai: 4, cadenas: 2, source: 'les activités de l’après-midi dépendent de l’offre locale et des familles : le risque d’inégalité est documenté, pas mesuré' },
+    ],
+    physique: {},
+    greve: { intensite: 3, theme: 'statut', segment: 'tous' },
+    preuve: 'Lors d’une réunion de campagne consacrée à l’éducation le 15 octobre 2026, Édouard Philippe a défendu des apprentissages concentrés le matin, des après-midi consacrés au sport, à la culture et aux langues, et le raccourcissement de certaines vacances ; calendrier, activités et financement restaient à préciser. Les Écologistes reprennent un avis du CESE : semaine de cinq jours, cours à 9 h au collège, deux zones de vacances. Ce qui est documenté : l’attention est meilleure le matin. Ce qui ne l’est pas : l’effet d’un tel calendrier sur les acquis, et qui accueille les élèves l’après-midi.',
+    ideeRecue: '« Les après-midi libérés, c’est du temps pour tous. » C’est du temps pour ceux dont la commune, le club ou la famille peuvent le remplir. Pour les autres, c’est un après-midi devant un écran.',
+    mot: "Une idée que tout le monde trouve bonne pour les enfants des autres : les siens finissent à midi, et quelqu’un doit les garder.",
+  },
+
+  /* ------------------------------ L4 · les murs -------------------- */
+  {
+    id: 'bati_lycee',
+    label: 'Fonds d’urgence État-régions pour les lycées : toilettes, chauffage, salles surchauffées',
+    famille: 'lycee',
+    porteurs: ['le Premier ministre (« l’État pourra accompagner les régions », octobre 2026)', 'Régions de France (qui demande un geste financier de l’État)', 'les organisations lycéennes (plan d’urgence bâti)', 'Les Écologistes (2 Md€ par an, « refuges climatiques »)'],
+    perimetre: 'matignon',
+    cout: 0.30, coutETP: 0, pol: 6,
+    theme: 'bati_lycee', once: true, reforme: false,
+    lyceens: 12,
+    vitrine: { parents: +7, enseignants: +4, presse: +5, compteurs: { paix: +3 } },
+    reel: [
+      { compteur: 'paix',     central: 3, delai: 1, cadenas: 2, source: '51 % des contributions lycéennes évoquent les bâtiments ; l’effet d’un plan de travaux sur le climat n’a pas été évalué' },
+      { compteur: 'reussite', central: 2, delai: 3, cadenas: 2, source: 'la littérature sur le confort thermique et les apprentissages est mince mais cohérente' },
+    ],
+    physique: {},
+    preuve: 'Les bâtiments, les équipements, la restauration et les internats des lycées publics relèvent de la compétence exclusive des régions, rappelée par le Premier ministre le 4 octobre 2026 ; l’État « pourra accompagner les régions qui en expriment le besoin ». Les régions ont consacré 6,8 Md€ au second degré en 2025, dont 2,5 Md€ d’investissement, et 2,6 Md€ d’investissement dans les lycées en 2026 ; Régions de France demande que leur effort soit plafonné à 500 M€ face au budget 2027. Les lycéens décrivent des toilettes fermées ou sans eau, des salles à plus de 30 °C, un lycée de Mayotte conçu pour 900 élèves qui en accueille 2 300. Cette carte paie une part des travaux « réalisables avant l’été 2027 » promis à l’automne 2026.',
+    ideeRecue: '« Le ministre n’a qu’à faire réparer les toilettes. » Il n’est propriétaire d’aucun lycée : ce sont les régions, depuis 1986. Il peut payer une partie et convaincre ; il ne peut pas signer le devis.',
+    mot: "Vous payez pour des murs qui ne sont pas à vous. C’est exactement ce que les lycéens demandent, et exactement ce que Bercy déteste.",
+  },
+
+  /* ------------------------------ L5 · Parcoursup, la lisibilité ---- */
+  {
+    id: 'parcoursup_transparence',
+    label: 'Parcoursup : règles de classement publiées, lycée d’origine retiré des dossiers, un tuteur par candidat',
+    famille: 'lycee',
+    porteurs: ['le gouvernement (chantier « transparence », octobre 2026)', 'comité éthique et scientifique de Parcoursup (avril 2026)', 'rapport parlementaire de février 2026', 'Gabriel Attal (mentorat et tutorat)', 'Édouard Philippe (accompagnement à l’orientation)', 'Raphaël Glucksmann (améliorer, pas supprimer)'],
+    perimetre: 'matignon',
+    cout: 0.06, coutETP: 0, pol: 5,
+    theme: 'parcoursup', once: true, excl: 'parcoursup', reforme: false,
+    lyceens: 9,
+    vitrine: { parents: +4, enseignants: +1, presse: +3, compteurs: { egalite: +2 } },
+    reel: [
+      { compteur: 'egalite', central: 3, delai: 2, cadenas: 3, source: 'rapport parlementaire 2026 : le lycée d’origine dans les dossiers entretient des inégalités socioculturelles durables ; le comité éthique recommande de publier le code du module de classement' },
+      { compteur: 'paix',    central: 2, delai: 1, cadenas: 2, source: '14,5 % des contributions lycéennes évoquent Parcoursup et l’orientation' },
+    ],
+    physique: {},
+    preuve: 'À l’issue de la phase principale du 11 juillet 2026, 126 632 candidats n’avaient reçu aucune proposition, soit 17,4 % ; la part de candidats « sans solution » a progressé de 5,5 points en un an, ce que le ministère attribue à la démographie. Le comité éthique et scientifique de Parcoursup recommandait en avril 2026 de publier le code, ou au moins la spécification, du module de classement ; un rapport parlementaire de février 2026 propose de retirer le lycée d’origine des dossiers et de publier les algorithmes locaux. Le gouvernement a exclu la suppression et promis des « mesures concrètes » de transparence pour fin octobre 2026. Gabriel Attal propose d’y ajouter mentorat, tutorat et stages.',
+    ideeRecue: '« Parcoursup, c’est un algorithme qui décide. » L’algorithme national ne classe personne : il transmet des classements faits dans chaque formation, par des humains, avec des critères qu’ils ne publient pas. C’est là que la transparence manque.',
+    mot: "La réponse la plus raisonnable, et celle qui ne fera jamais la une : personne n’a jamais défilé pour une documentation technique.",
+  },
+
+  /* ------------------------------ L6 · Parcoursup, la fin ----------- */
+  {
+    id: 'parcoursup_fin',
+    label: 'Supprimer Parcoursup : plus de sélection à l’entrée de l’université, et des places en plus',
+    famille: 'lycee',
+    porteurs: ['La France insoumise', 'Parti socialiste (projet « Vivre libre »)', 'les organisations lycéennes et étudiantes (« 10 mesures d’urgence », 250 000 places)', 'UDR, alliée du RN (proposition de loi de février 2026)'],
+    contre: ['le gouvernement et le ministre de l’Enseignement supérieur (« pas d’abolition »)', 'Raphaël Glucksmann et Édouard Philippe (améliorer plutôt que supprimer)'],
+    perimetre: 'matignon',
+    cout: 0.60, coutETP: 0, pol: 12,
+    theme: 'parcoursup', once: true, excl: 'parcoursup', reforme: true,
+    lyceens: 18,
+    vitrine: { parents: +6, enseignants: +2, presse: +8, compteurs: { egalite: +6, paix: +4 } },
+    reel: [
+      { compteur: 'paix',     central: 4, delai: 1, cadenas: 2, source: 'la suppression est la revendication nationale la plus visible du mouvement de 2026' },
+      { compteur: 'egalite',  central: 0, delai: 3, cadenas: 1, source: 'aucune évaluation d’un système sans classement en France ; le précédent (APB, 2017) a fini par un tirage au sort' },
+      { compteur: 'reussite', central: -2, delai: 4, cadenas: 1, source: 'sans sélection ni places suffisantes, le tri se déplace vers l’échec en première année ; effet non mesuré' },
+    ],
+    physique: {},
+    preuve: 'Parcoursup a été créé par la loi de 2018 après l’échec d’Admission post-bac, qui avait fini par tirer au sort des bacheliers en 2017. En 2026, 126 632 candidats restaient sans proposition à l’issue de la phase principale. La suppression est demandée par La France insoumise, le projet du Parti socialiste, les organisations lycéennes et étudiantes (avec 250 000 places supplémentaires dans le supérieur) et une proposition de loi déposée en février 2026. Le gouvernement l’exclut ; Raphaël Glucksmann et Édouard Philippe préfèrent l’améliorer. Aucune étude n’évalue ce que produirait, en France, une affectation sans classement : le niveau de preuve est au plus bas, dans les deux sens.',
+    ideeRecue: '« Sans Parcoursup, plus de tri. » Le tri se fait alors ailleurs : par le nombre de places, par le tirage au sort comme en 2017, ou par l’échec en première année. Supprimer la plateforme déplace la question ; cela ne la supprime pas.',
+    mot: "La mesure la plus demandée dans la rue, la moins étudiée dans les rapports. Dix-huit points de colère en moins le soir même ; ce qui se passe en septembre 2028 n’est écrit nulle part.",
+  },
+
+  /* ------------------------------ L7 · trente par classe ------------ */
+  {
+    id: 'classe30_lycee',
+    label: 'Trente élèves par classe au maximum au lycée',
+    famille: 'lycee',
+    porteurs: ['Rassemblement national (plafond de 30 dans le secondaire)', 'les organisations lycéennes (« on est 35 par classe »)', 'SNES-FSU (seuils d’effectifs)'],
+    perimetre: 'ministeriel',
+    cout: 0.58, coutETP: 8000, pol: 6,
+    theme: 'taille_classe', once: true, excl: 'encadrement', reforme: false, goulot: true,
+    lyceens: 10,
+    vitrine: { parents: +6, enseignants: +6, presse: +4, compteurs: { sante: +3 } },
+    reel: [
+      { compteur: 'sante',    central: 3, delai: 2, cadenas: 3, source: 'conditions de travail : moins d’élèves par classe réduit la charge de correction et de suivi' },
+      { compteur: 'reussite', central: 2, delai: 3, cadenas: 3, source: 'l’effet de la taille des classes est documenté surtout au primaire et pour les élèves défavorisés ; au lycée, il est faible' },
+    ],
+    physique: {},
+    preuve: 'Un quart des contributions lycéennes de la consultation d’octobre 2026 évoque les effectifs par classe ; la presse rapporte des classes « à 30 ou 35 ». Le Rassemblement national propose un plafond de 30 dans le secondaire et de 20 en grande section et au CP. La littérature de référence (expérience STAR, travaux de Piketty et Valdenaire) situe l’effet de la taille des classes au primaire et chez les élèves défavorisés ; au lycée, l’effet mesuré est faible. Au collège, la France a les classes les plus chargées d’Europe (25,8 élèves en 2023, HCSP).',
+    ideeRecue: '« Moins d’élèves par classe, c’est forcément mieux. » C’est mieux au CP, pour les élèves fragiles. Au lycée, les études trouvent peu ; les lycéens, eux, trouvent que 35 c’est trop, et ce n’est pas le même argument.',
+    mot: "Les lycéens le demandent, les études le promettent surtout au CP. Vous payez le prix d’une mesure de primaire pour un effet de lycée.",
+  },
+
+  /* ------------------------------ L8 · leur place ------------------- */
+  {
+    id: 'democratie_lyceenne',
+    label: 'Des lycéens qui décident : plus de sièges au conseil d’administration, un budget qu’ils votent, un droit de réunion',
+    famille: 'lycee',
+    porteurs: ['les organisations lycéennes (« refonte de la démocratie lycéenne »)', 'le gouvernement (« temps lycéen » et consultation, octobre 2026)', 'FCPE'],
+    perimetre: 'ministeriel',
+    cout: 0.04, coutETP: 0, pol: 3,
+    theme: 'democratie_lyceenne', once: true, reforme: false,
+    lyceens: 10,
+    vitrine: { parents: +1, enseignants: -1, presse: +1, compteurs: { paix: +2 } },
+    reel: [
+      { compteur: 'paix',     central: 3, delai: 2, cadenas: 2, source: 'la participation des élèves aux décisions améliore le climat déclaré dans les établissements qui l’ont instaurée ; peu d’évaluations comparatives' },
+      { compteur: 'reussite', central: 1, delai: 4, cadenas: 1, source: 'aucun effet documenté sur les acquis' },
+    ],
+    physique: {},
+    preuve: 'Les conseils de la vie lycéenne existent depuis 1990 et les élèves siègent au conseil d’administration des lycées, en minorité. Les organisations lycéennes demandent davantage de sièges et une « refonte de la démocratie lycéenne » ; le gouvernement a répondu à l’automne 2026 par une demi-journée banalisée de « temps lycéen » dans chaque lycée et par une consultation anonyme en ligne, que les chefs d’établissement ont jugée improvisée. La recherche sur la participation des élèves montre un effet sur le climat déclaré ; rien de solide sur les résultats scolaires.',
+    ideeRecue: '« Les lycéens ne sont pas là pour gérer le lycée. » Ils y passent 1 224 heures par an, et ils ont rempli 76 500 contributions en deux semaines quand on leur a demandé leur avis. La question n’est pas s’ils ont un avis : c’est qui l’écoute.',
+    mot: "Ne coûte rien, ne rapporte rien de visible, et c’est la seule mesure de la liste qui ne se retire pas : on ne reprend pas un siège qu’on a donné.",
+  },
+
+  /* ------------------------------ L9 · le bac ---------------------- */
+  {
+    id: 'bac_series',
+    label: 'Revenir sur la réforme du bac : retour des séries, moins de contrôle continu',
+    famille: 'lycee',
+    porteurs: ['Rassemblement national (retour des séries)', 'les organisations lycéennes et l’intersyndicale (revenir sur la réforme du bac et du lycée)'],
+    contre: ['le gouvernement (« pas de refonte générale du lycée », octobre 2026)', 'Édouard Philippe (pas de retour des séries)'],
+    perimetre: 'ministeriel',
+    cout: 0.12, coutETP: 0, pol: 9,
+    theme: 'bac', once: true, reforme: true,
+    lyceens: 8,
+    vitrine: { parents: +2, enseignants: +4, presse: +5, compteurs: { reussite: +2, paix: +3 } },
+    reel: [
+      { compteur: 'paix',     central: 3, delai: 1, cadenas: 2, source: 'revendication commune des organisations lycéennes et des syndicats enseignants en 2026' },
+      { compteur: 'sante',    central: -3, delai: 2, cadenas: 3, source: 'HCSP 2026 : au collège, l’enchaînement des réformes est cité comme source de stress plus souvent que la discipline en classe' },
+      { compteur: 'reussite', central: -1, delai: 4, cadenas: 1, source: 'aucune évaluation ne tranche entre séries et spécialités ; une réforme de la réforme coûte d’abord deux ans de transition' },
+    ],
+    physique: {},
+    preuve: 'La réforme du lycée de 2019 a remplacé les séries par des spécialités et introduit le contrôle continu dans le baccalauréat. Les syndicats enseignants y rattachent la pression de Parcoursup ; les organisations lycéennes demandent de « revenir sur la réforme du bac et du lycée » ; le Rassemblement national propose le retour des séries et un durcissement de la notation. Le ministre a écarté toute refonte générale du lycée en octobre 2026 et Édouard Philippe ne veut pas des séries. Le Haut-commissariat à la Stratégie et au Plan relève que l’enchaînement des réformes est, au collège, cité comme source de stress plus souvent que la discipline : une réforme de plus se paie d’abord en fatigue.',
+    ideeRecue: '« Le bac d’avant était plus juste. » Il était plus lisible. Sur la justice sociale des deux systèmes, personne n’a mesuré grand-chose ; sur le coût d’une réforme tous les six ans, si.',
+    mot: "La réforme de la réforme. Le Haut-commissariat a une formule pour cela : au collège, l’enchaînement des réformes stresse plus que la discipline.",
+  },
+
+  /* ------------------------------ L10 · la cantine ----------------- */
+  {
+    id: 'cantine_lycee',
+    label: 'Repas à un euro au lycée pour les boursiers, cofinancé avec les régions',
+    famille: 'lycee',
+    porteurs: ['les organisations lycéennes et étudiantes (repas à 1 €)', 'La France insoumise (gratuité réelle : cantines, transports, manuels)', 'Parti socialiste (cantine gratuite dans le public)', 'les lycéens de Cayenne (une cantine « chère et saturée », septembre 2026)'],
+    perimetre: 'matignon',
+    cout: 0.25, coutETP: 0, pol: 4,
+    theme: 'cantine', once: true, reforme: false,
+    lyceens: 8,
+    vitrine: { parents: +6, enseignants: 0, presse: +3, compteurs: { egalite: +3 } },
+    reel: [
+      { compteur: 'egalite',  central: 3, delai: 2, cadenas: 3, source: 'les dispositifs de repas gratuits ou à bas prix améliorent l’assiduité et la concentration des élèves modestes (littérature internationale, effet modeste)' },
+      { compteur: 'reussite', central: 1, delai: 3, cadenas: 2, source: 'effet indirect, via l’assiduité' },
+    ],
+    physique: {},
+    preuve: 'La restauration des lycées relève des régions, qui fixent les tarifs ; l’État cofinance déjà la cantine à 1 € dans les communes rurales pour les écoles. Les organisations lycéennes et étudiantes demandent un accès réel au repas à 1 €, La France insoumise une gratuité complète, le Parti socialiste la cantine gratuite dans le public. La littérature internationale sur les repas scolaires gratuits ou peu chers trouve des effets modestes mais réguliers sur l’assiduité et la concentration des élèves de milieux modestes.',
+    ideeRecue: '« Un repas à un euro, c’est de l’aide sociale, pas de l’école. » Un élève qui saute le déjeuner apprend moins l’après-midi : c’est l’un des effets les plus simples à mesurer de tout le catalogue.',
+    mot: "La mesure que les lycéens de Cayenne ont mise en tête de leurs dix-sept revendications. Une région paie la cuisine, vous payez l’assiette.",
+  },
 ];
+
 
 /* --------------------------------------------------------------------------
    Cartes paramétriques : les curseurs et leurs effets différenciés.
@@ -1417,7 +1650,7 @@ export const REVALORISATION = {
   instruments: {
     indiciaire: {
       label: 'Hausse du point d’indice (traitement)',
-      porteurs: ['FSU', 'intersyndicale', 'PS (moyenne OCDE)'],
+      porteurs: ['FSU', 'intersyndicale', 'Parti socialiste et Édouard Philippe (+20 % en cinq ans)'],
       facteurPosition: 1.00, adhesion: +7, bercy: -6, hna: 0, cas: true,
       note: 'Pérenne, compte pour la pension, irréversible. Entraîne mécaniquement +43 % de contribution employeur (CAS Pensions) que votre budget ne montre pas.',
       mot: 'Ce que réclament les syndicats depuis le gel de 2023. Ce que Bercy refuse depuis le gel de 2023.',
@@ -1431,7 +1664,7 @@ export const REVALORISATION = {
     },
     pacte: {
       label: 'Rémunération contre missions supplémentaires (« pacte »)',
-      porteurs: ['Gabriel Attal (« choc des savoirs », décembre 2023)', 'la droite parlementaire'],
+      porteurs: ['Gabriel Attal (« pacte », décembre 2023)', 'Bruno Retailleau (carrière au mérite)'],
       facteurPosition: 0.45, adhesion: -2, bercy: +4, hna: -0.6, cas: false,
       note: 'Vous budgétez la totalité, un tiers seulement la touche : 800 M€ au PLF 2025 pour ~34 % d’adhésion. Ceux qui sont épuisés ne prennent pas de mission de plus.',
       mot: 'Payer du travail supplémentaire plutôt que le travail existant. Comptablement élégant, humainement discuté.',
@@ -1509,6 +1742,24 @@ export const FINANCEMENT_19 = {
    chaque option porte son décryptage, la leçon vaut plus que les points.
    -------------------------------------------------------------------------- */
 export const DOSSIERS_ETE = [
+  /* Le premier dossier est toujours celui-ci : c'est l'héritage. Le moteur
+     tire ensuite un seul des suivants. */
+  {
+    id: 'lyceens_ete',
+    titre: 'Juillet : les organisations lycéennes demandent à vous voir avant la rentrée',
+    contexte: 'L’Union syndicale lycéenne et l’association Les Lycéens! écrivent au ministre : ils veulent savoir, avant la rentrée, ce qu’il advient des cinq chantiers ouverts en octobre 2026 et des « travaux avant l’été » promis aux lycéens. Faute de réponse, écrivent-ils, « la rentrée se fera devant les grilles ».',
+    options: [
+      { titre: 'Les recevoir en juillet et publier un calendrier, chantier par chantier',
+        effets: { adhesion: 1, parents: 2, capital: -2, colere: -8 },
+        decryptage: 'Recevoir coûte un après-midi et oblige à écrire des dates. C’est la seule des trois réponses qui traite la question posée, et elle vous engage : en septembre, on relira le calendrier.' },
+      { titre: 'Répondre par communiqué que les décisions d’octobre 2026 s’appliquent',
+        effets: { parents: -1, capital: 1, colere: 4 },
+        decryptage: 'Juridiquement exact : les chantiers existent. Mais les lycéens ont déjà entendu cette phrase à l’automne 2026, et ils savent compter les toilettes réparées. Un communiqué ne remplace pas une date.' },
+      { titre: 'Annoncer un « Grenelle des lycées » pour octobre',
+        effets: { parents: 3, capital: -1, colere: -3, credibilite: -2 },
+        decryptage: 'Le mot fait la une et achète un mois. Il annonce une méthode, pas une réponse, et un Grenelle qui ne produit rien se paie en crédibilité : vous venez d’emprunter sur votre parole.' },
+    ],
+  },
   {
     id: 'canicule',
     titre: 'Canicule de juillet : des écoles à 40 °C',
@@ -1954,28 +2205,32 @@ export function estContestable(carte, org) {
    ========================================================================== */
 
 export const BLOCS_2027 = {
-  gauche:   { label: 'la gauche', long: 'LFI, NFP, Parti socialiste, Place publique', coul: 'var(--c-egalite)' },
-  centre:   { label: 'le centre et la majorité sortante', long: 'Gabriel Attal, Édouard Philippe, Horizons, Michel Barnier', coul: 'var(--bleu-rf)' },
-  droite:   { label: 'la droite', long: 'la droite parlementaire, David Lisnard, iFRAP', coul: 'var(--c-budget)' },
-  extreme:  { label: 'l’extrême droite', long: 'Rassemblement national, Reconquête', coul: 'var(--rouge-rf)' },
+  gauche:   { label: 'la gauche', long: 'Mélenchon (LFI), Glucksmann (PS, Place publique), Tondelier (Écologistes), Roussel (PCF)', coul: 'var(--c-egalite)' },
+  centre:   { label: 'le centre et la majorité sortante', long: 'Attal (Renaissance), Philippe (Horizons), le gouvernement', coul: 'var(--bleu-rf)' },
+  droite:   { label: 'la droite', long: 'Retailleau (Les Républicains), David Lisnard, iFRAP', coul: 'var(--c-budget)' },
+  extreme:  { label: 'l’extrême droite et ses alliés', long: 'Le Pen et Bardella (RN), l’UDR, Zemmour (Reconquête)', coul: 'var(--rouge-rf)' },
 };
 
 /* Fragments cherchés dans les `porteurs` d'une carte. L'ordre compte : le
    premier fragment trouvé donne le bord. Tout ce qui n'est pas ici n'est pas un
    parti, et c'est délibéré : la Cour des comptes, la DEPP, le CSEN, l'IGÉSR,
-   le HCSP, l'OCDE, l'IPP, les syndicats et les fédérations de parents ne sont
-   rattachés à aucun bord par le jeu. */
+   le HCSP, l'OCDE, l'IPP, les syndicats, les fédérations de parents et les
+   ORGANISATIONS LYCÉENNES ne sont rattachés à aucun bord par le jeu. Le
+   gouvernement en place en 2026 (Lecornu, Geffray) est compté avec la majorité
+   sortante, parce que c'est elle ; l'UDR d'Éric Ciotti est comptée avec le RN,
+   parce qu'elle siège avec lui. */
 const RATTACHEMENTS = [
-  ['La France insoumise', 'gauche'], ['Nouveau Front populaire', 'gauche'],
-  ['Parti socialiste', 'gauche'], ['Place publique', 'gauche'],
-  ['la gauche parlementaire', 'gauche'], ['Terra Nova', 'gauche'],
-  ['Fondation Jean-Jaurès', 'gauche'], ['Glucksmann', 'gauche'],
-  ['Gabriel Attal', 'centre'], ['Édouard Philippe', 'centre'], ['Horizons', 'centre'],
-  ['Michel Barnier', 'centre'], ['politique engagée en 2017', 'centre'],
-  ['Institut Montaigne', 'centre'],
-  ['droite parlementaire', 'droite'], ['candidats de droite', 'droite'],
-  ['David Lisnard', 'droite'], ['iFRAP', 'droite'],
-  ['Rassemblement national', 'extreme'], ['Reconquête', 'extreme'],
+  ['La France insoumise', 'gauche'], ['Mélenchon', 'gauche'], ['Nouveau Front populaire', 'gauche'],
+  ['Parti socialiste', 'gauche'], ['Place publique', 'gauche'], ['Glucksmann', 'gauche'],
+  ['Écologistes', 'gauche'], ['Tondelier', 'gauche'], ['PCF', 'gauche'], ['Roussel', 'gauche'],
+  ['la gauche parlementaire', 'gauche'], ['Terra Nova', 'gauche'], ['Fondation Jean-Jaurès', 'gauche'],
+  ['Gabriel Attal', 'centre'], ['Renaissance', 'centre'], ['Édouard Philippe', 'centre'], ['Horizons', 'centre'],
+  ['le gouvernement', 'centre'], ['le Premier ministre', 'centre'], ['Michel Barnier', 'centre'],
+  ['politique engagée en 2017', 'centre'], ['Institut Montaigne', 'centre'],
+  ['droite parlementaire', 'droite'], ['candidats de droite', 'droite'], ['Retailleau', 'droite'],
+  ['Les Républicains', 'droite'], ['David Lisnard', 'droite'], ['iFRAP', 'droite'],
+  ['Rassemblement national', 'extreme'], ['Le Pen', 'extreme'], ['Bardella', 'extreme'],
+  ['UDR', 'extreme'], ['Reconquête', 'extreme'],
 ];
 
 /* Les bords qui portent cette mesure, d'après ses propres porteurs. */
@@ -1991,7 +2246,10 @@ export function bordsDeCarte(carte) {
    figurent aussi dans le programme de chaque bord, et combien ne viennent
    d'aucun parti. */
 export function boussole(ids) {
-  const cartes = ids.map((id) => PAR_ID[id]).filter(Boolean);
+  /* Une mesure répétée (la revalorisation, un budget sur deux) compte une
+     fois : la boussole dit d'où viennent vos choix, pas combien de fois vous
+     les avez signés. */
+  const cartes = [...new Set(ids)].map((id) => PAR_ID[id]).filter(Boolean);
   const parBord = { gauche: [], centre: [], droite: [], extreme: [] };
   const horsPartis = [];
   for (const c of cartes) {
@@ -2029,6 +2287,7 @@ const PRINCIPES_FAMILLE = {
   parcours: 'Trier les élèves, même provisoirement, même avec les meilleures intentions du monde, c’est assigner. Le collège unique n’est pas un détail d’organisation : c’est une promesse républicaine.',
   autorite: 'L’école n’est pas d’abord un lieu d’ordre, c’est un lieu d’émancipation. Chaque fois qu’on a répondu à une difficulté éducative par un règlement, on a déplacé le problème et fabriqué du décrochage.',
   mixite: 'La carte scolaire est un outil d’égalité, pas une contrainte administrative à négocier établissement par établissement. On ne construit pas la mixité en demandant leur avis à ceux qui la fuient.',
+  lycee: 'Les lycéens ont dit ce qui manquait : des professeurs, des murs qui tiennent, des journées vivables. Leur répondre par une mesure d’organisation qui se paie sur nos emplois du temps, sans un poste de plus, c’est leur dire qu’on les a entendus et qu’on ne les a pas écoutés.',
 };
 
 /* Les profils les plus durs ajoutent une phrase qui, elle, est franchement une
@@ -2134,6 +2393,36 @@ export const POLEMIQUES_RENTREE = [
     ],
   },
 ];
+
+/* LE BLOCUS LYCÉEN. Quand la colère lycéenne (jauge cachée) dépasse le seuil
+   à la rentrée, les lycées se bloquent à nouveau comme à l'automne 2026, et
+   la circulaire de rentrée ne peut plus parler que d'eux : le menu qui suit
+   est cadré sur les réponses aux lycéens, une par camp. Les trois réponses
+   reprennent celles qui ont réellement été données en 2026 : recevoir les
+   organisations (2 octobre), interdire les rassemblements par arrêtés
+   préfectoraux (1er octobre), renvoyer aux compétences des régions et du
+   ministère de l'Enseignement supérieur (4 octobre). */
+export const BLOCUS_LYCEEN = {
+  titre: 'Les lycées se bloquent à nouveau',
+  recit: 'Des poubelles devant les grilles, des vidéos sur les réseaux, et le décompte des lycées « perturbés » qui tourne sur les chaînes d’information. Les lycéens reprennent les mots de l’automne 2026 : professeurs absents, journées trop longues, bâtiments dégradés, Parcoursup. Ils ajoutent les vôtres, ceux de juin, qu’ils ont gardés.',
+  cadrage: { familles: ['lycee'],
+    titre: 'La circulaire de rentrée ne parlera que des lycées',
+    cause: 'Les lycées sont bloqués : personne n’attend de vous une circulaire sur l’école maternelle. Le menu ne contient que des réponses aux revendications lycéennes, et elles ne viennent pas du même endroit.' },
+  reponses: [
+    { label: 'Recevoir les organisations lycéennes rue de Grenelle, et sortir avec des dates', type: 'methode',
+      det: 'Vous recevez l’USL, Les Lycéens! et Renouveau lycéen le jour même. Vous ressortez avec un calendrier public, chantier par chantier.',
+      parents: +3, adhesion: +2, presse: +2, credibilite: +2, capital: -3, agenda: 3, colere: -10,
+      suite: 'La réunion dure quatre heures et produit une page. Les organisations « prennent acte » et suspendent l’appel, à condition que la page soit tenue. Vous venez de transformer une colère en échéancier : c’est mieux, et c’est daté.' },
+    { label: 'Demander aux préfets d’interdire les rassemblements devant les lycées bloqués', type: 'ferme',
+      det: 'Les arrêtés sont pris dans la journée. Les cours reprennent dans la plupart des établissements ; la vidéo d’une interpellation de mineur tourne dès le lendemain.',
+      parents: +4, adhesion: -3, presse: +3, credibilite: -1, capital: +1, agenda: 2, colere: +8, greve: true,
+      suite: 'Les grilles rouvrent, la colère ne retombe pas : elle change de sujet. Les organisations lycéennes ajoutent la « répression » à leurs dix mesures, et les syndicats enseignants déposent un préavis « en soutien aux lycéens », comme le 8 octobre 2026.' },
+    { label: 'Rappeler que le bâti relève des régions et Parcoursup du ministère de l’Enseignement supérieur', type: 'esquive',
+      det: 'C’est juridiquement exact, et c’est ce qu’a dit le Premier ministre le 4 octobre 2026.',
+      parents: -6, adhesion: -2, presse: -6, credibilite: -6, capital: -4, agenda: 4, colere: +6,
+      suite: 'La phrase est reprise en boucle avec, en incrustation, des toilettes fermées. Les régions répondent qu’elles « découvrent sur les réseaux sociaux » ce qu’on attend d’elles. Vous avez raison sur le droit et tort devant les caméras, et le droit ne passe pas à 20 heures.' },
+  ],
+};
 
 /* La livraison internationale de l'automne. Le ministre n'a pas le choix
    d'annoncer : il a le choix de ce qu'il annonce, et de ce que cela déclenche. */

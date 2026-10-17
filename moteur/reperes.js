@@ -12,7 +12,8 @@
    chiffres différents (c'est le cas du remplacement), on donne les deux et on
    dit pourquoi : c'est une leçon du jeu, pas une négligence.
 
-   Dernière vérification des sources : août 2026.
+   Dernière vérification des sources : août 2026 ; automne 2026 pour le
+   mouvement lycéen (relevé du 17 octobre 2026).
    ========================================================================== */
 
 export const SOURCES = {
@@ -220,6 +221,89 @@ export const SOURCES = {
     date: 'éditions 2018 et 2024',
     url: 'https://www.oecd.org/fr/themes/enquete-internationale-sur-l-enseignement-et-l-apprentissage-talis.html',
   },
+  /* --- l'automne 2026 : le mouvement lycéen et ses réponses -----------------
+     Relevé le 17 octobre 2026 (RECHERCHE-GRAND-PUBLIC.md). Quand le chiffre
+     est officiel mais n'a été lu que dans un relais de presse, l'organisme
+     d'origine est nommé et le relais indiqué : c'est une source de second
+     rang, et le jeu le dit. */
+  agora26: {
+    org: 'Gouvernement (info.gouv.fr)',
+    titre: 'Lycéennes, lycéens : donnez votre avis sur votre quotidien au lycée — consultation nationale sur la plateforme Agora, du 5 au 23 octobre 2026',
+    date: 'octobre 2026',
+    url: 'https://www.info.gouv.fr/actualite/lyceennes-lyceens-donnez-votre-avis-sur-votre-quotidien-au-lycee',
+  },
+  consult26: {
+    org: 'Premier ministre, premiers résultats de la consultation lycéenne (76 500 contributions), relayés par Europe 1',
+    titre: 'Colère des lycéens : temps scolaire, bâtiments… les principales revendications recensées sur la plateforme de concertation',
+    date: '11 octobre 2026',
+    url: 'https://www.europe1.fr/societe/colere-des-lyceens-temps-scolaire-batiments-les-principales-revendications-recensees-sur-la-plateforme-de-concertation-1139498',
+  },
+  mobilisation26: {
+    org: 'Ministère de l’Intérieur et ministère de l’Éducation nationale, chiffres du 6 octobre 2026 relayés par franceinfo',
+    titre: 'La mobilisation des lycéens a réuni 450 000 manifestants selon l’intersyndicale, 256 000 selon le ministère de l’Intérieur ; cours suspendus dans 891 lycées sur 3 700',
+    date: '6 octobre 2026',
+    url: 'https://www.franceinfo.fr/societe/education/blocage-des-lycees/la-mobilisation-des-lyceens-a-reuni-450-000-manifestants-selon-l-intersyndicale-de-la-jeunesse-contre-256-000-d-apres-le-ministere-de-l-interieur_8225587.html',
+  },
+  chantiers26: {
+    org: 'Premier ministre, lettre aux ministres du 4 octobre 2026 (cinq chantiers), relayée par la Banque des Territoires',
+    titre: 'Mouvement lycéen : Sébastien Lecornu lance cinq chantiers pour « répondre aux difficultés »',
+    date: '5 octobre 2026',
+    url: 'https://www.banquedesterritoires.fr/mouvement-lyceen-sebastien-lecornu-lance-cinq-chantiers-pour-repondre-aux-difficultes',
+  },
+  dix_mesures: {
+    org: 'Union étudiante et Union syndicale lycéenne',
+    titre: '« 10 mesures d’urgence pour la jeunesse »',
+    date: '5 octobre 2026',
+    url: 'https://union-etudiante.fr/10mesures/',
+  },
+  snes_rentree26: {
+    org: 'SNES-FSU, enquête de rentrée auprès de 1 033 collèges et lycées publics',
+    titre: 'Rentrée 2026, toujours la pénurie !',
+    date: '7 septembre 2026',
+    url: 'https://www.snes.edu/article/rentree-2026-toujours-la-penurie/',
+  },
+  remplacants26: {
+    org: 'Ministère de l’Éducation nationale, annonces du 15 octobre 2026 relayées par Europe 1',
+    titre: '3 000 professeurs titulaires remplaçants appelés en urgence ; les lycées « en grande difficulté » passés de 114 à 47 en une semaine',
+    date: '15 octobre 2026',
+    url: 'https://www.europe1.fr/societe/mouvement-des-lycees-les-problemes-de-remplacement-dans-les-etablissements-prioritaires-resolus-a-la-rentree-espere-edouard-geffray-1151282',
+  },
+  ocde_temps: {
+    org: 'OCDE, temps d’instruction à 15 ans, relayé par le CIDJ',
+    titre: 'Emploi du temps au lycée : le casse-tête des journées 8 h-18 h (1 224 heures par an en France, 962 dans l’Union européenne)',
+    date: 'octobre 2026',
+    url: 'https://www.cidj.com/s-orienter/au-coeur-des-revendications-le-8h-18h-pese-sur-les-lyceens',
+  },
+  parcoursup26: {
+    org: 'Ministère de l’Enseignement supérieur, bilan de la phase principale de Parcoursup 2026, relayé par Thotis',
+    titre: '126 632 candidats sans proposition à l’issue de la phase principale (17,4 %)',
+    date: '11 juillet 2026',
+    url: 'https://thotismedia.com/bilan-parcoursup-2026-plus-de-126-000-candidats-encore-sans-proposition-a-lissue-de-la-phase-principale/',
+  },
+  cespm26: {
+    org: 'Comité éthique et scientifique de Parcoursup et Mon Master (ministère de l’Enseignement supérieur)',
+    titre: '8e rapport : publier le code, ou au moins la spécification, du module de classement',
+    date: 'avril 2026',
+    url: 'https://www.enseignementsup-recherche.gouv.fr/sites/default/files/2026-04/8e-rapport-du-comit-thique-et-scientifique-de-parcoursup-et-mon-master-39958.pdf',
+  },
+  regions_lycees: {
+    org: 'Observatoire des finances publiques locales, dépenses des régions pour le second degré en 2025, relayé par Public Sénat',
+    titre: 'Blocage des lycées : que paient les régions pour la construction et l’entretien des établissements ? (6,8 Md€, dont 2,5 Md€ d’investissement)',
+    date: 'octobre 2026',
+    url: 'https://www.publicsenat.fr/actualites/economie/blocage-des-lycees-que-payent-les-regions-pour-la-construction-et-lentretien-des-etablissements',
+  },
+  plf27: {
+    org: 'Projet de loi de finances pour 2027, mission « Enseignement scolaire », relayé par la Banque des Territoires',
+    titre: 'L’Éducation nationale « préservée » par le PLF 2027 : +1,2 Md€, 1 588 suppressions de postes d’enseignants',
+    date: '2 octobre 2026',
+    url: 'https://www.banquedesterritoires.fr/leducation-nationale-preservee-par-le-projet-de-loi-de-finances-pour-2027',
+  },
+  odoxa26: {
+    org: 'Odoxa pour Le Figaro et Backbone Consulting',
+    titre: 'Les Français soutiennent les lycéens mais réprouvent l’implication de LFI (62 % jugent la mobilisation justifiée)',
+    date: '1er octobre 2026',
+    url: 'https://www.odoxa.fr/sondage/16286-2/',
+  },
 };
 
 /* ---------------------------------------------------------------------------
@@ -236,6 +320,20 @@ export const SERIE_BUDGET = [
   { annee: 2025, md: 64.32, src: 'senat_plf26' },
   { annee: 2026, md: 64.49, note: '+0,26 % : la progression la plus faible de la série', src: 'senat_plf26' },
   { annee: 2027, md: 65.30, prevision: true, note: 'plafond prévisionnel : +0,8 Md€. C’est votre marge, sur le papier.', src: 'plafonds27' },
+];
+
+/* ---------------------------------------------------------------------------
+   Ce que les lycéens ont écrit : part des 76 500 premières contributions de la
+   consultation nationale (octobre 2026) qui évoquent chaque sujet. Une
+   contribution peut en évoquer plusieurs ; la consultation est ouverte, pas
+   représentative, et le jeu le dit.
+   ------------------------------------------------------------------------- */
+export const SERIE_CONSULTATION = [
+  { sujet: 'Journées trop longues, emplois du temps', pct: 71, src: 'consult26' },
+  { sujet: 'Bâtiments, toilettes, chauffage, chaleur', pct: 51, src: 'consult26' },
+  { sujet: 'Professeurs absents, non remplacés', pct: 28.5, src: 'consult26' },
+  { sujet: 'Trop d’élèves par classe', pct: 24, src: 'consult26' },
+  { sujet: 'Parcoursup et l’orientation', pct: 14.5, src: 'consult26' },
 ];
 
 /* ---------------------------------------------------------------------------
@@ -399,6 +497,25 @@ export const REPERES = [
     aRetenir: 'Ce rapport est le contraire d’un pamphlet : il écarte méthodiquement les explications les plus commodes (le nombre d’heures, les élèves étrangers, l’argent seul) pour désigner ce qui est plus difficile à changer : la formation des maîtres, l’accompagnement de proximité, les méthodes d’apprentissage de la lecture, l’organisation du temps. Aucune de ces réponses ne se décrète en une rentrée, et c’est exactement ce que le jeu vous fait éprouver.',
   },
   {
+    cle: 'lyceens',
+    titre: 'L’automne 2026 des lycéens',
+    resume: 'Ce que les lycéens ont demandé, ce qu’on leur a répondu, et ce dont vous héritez.',
+    chiffres: [
+      { v: '891 lycées', l: 'ont eu leurs cours suspendus, totalement ou partiellement, le 6 octobre 2026, sur 3 700 ; 256 000 manifestants selon l’Intérieur, 450 000 selon les organisateurs', src: 'mobilisation26' },
+      { v: '76 500', l: 'contributions à la consultation nationale ouverte du 5 au 23 octobre 2026 : 71 % évoquent le temps scolaire, 51 % les bâtiments, 28,5 % les professeurs absents, 24 % les effectifs, 14,5 % Parcoursup', src: 'consult26' },
+      { v: '5 chantiers', l: 'ouverts par le Premier ministre le 4 octobre 2026 : remplacement, bâti (compétence des régions), emplois du temps, Parcoursup, démocratie lycéenne. Décisions annoncées pour la fin du mois', src: 'chantiers26' },
+      { v: '10 mesures', l: 'd’urgence des organisations lycéennes et étudiantes : rénovation du bâti, recrutements, rythmes, fin de la sélection via Parcoursup avec 250 000 places, démocratie lycéenne, bourses, repas à 1 €, logement, fin de la répression', src: 'dix_mesures' },
+      { v: '53 %', l: 'des collèges et lycées publics manquaient d’au moins un professeur à la rentrée 2026 selon le SNES-FSU ; le ministère parle de volumes d’heures, pas de postes entiers', src: 'snes_rentree26' },
+      { v: '3 000', l: 'professeurs titulaires remplaçants affectés en urgence en octobre 2026 ; les lycées « en grande difficulté » passent de 114 à 47 en une semaine', src: 'remplacants26' },
+      { v: '1 224 h', l: 'de cours par an à 15 ans en France, contre 962 h en moyenne dans l’Union européenne', src: 'ocde_temps' },
+      { v: '126 632', l: 'candidats sans proposition à l’issue de la phase principale de Parcoursup 2026 (17,4 %), 5,5 points de plus qu’en 2025', src: 'parcoursup26' },
+      { v: '6,8 Md€', l: 'dépensés par les régions pour le second degré en 2025, dont 2,5 Md€ d’investissement : ce sont elles qui possèdent les lycées, pas le ministre', src: 'regions_lycees' },
+      { v: '−1 588 postes', l: 'd’enseignants au budget 2027 (dont 836 dans le second degré public), pour +1,2 Md€ de crédits : c’est le budget que vous héritez', src: 'plf27' },
+      { v: '62 %', l: 'des Français jugeaient la mobilisation lycéenne justifiée début octobre 2026', src: 'odoxa26' },
+    ],
+    aRetenir: 'Le mouvement de 2026 a été le plus large depuis 2005, et il a obtenu des promesses datées plutôt que des moyens. C’est ce qu’un ministre hérite le plus souvent : non pas une crise, mais la facture d’une crise que d’autres ont apaisée avec sa signature.',
+  },
+  {
     cle: 'preuve',
     titre: 'Comment le jeu note les mesures',
     resume: 'Les cadenas, l’écart vitrine/réel, et pourquoi tout cela n’est pas arbitraire.',
@@ -457,6 +574,18 @@ export const SERIE_PISA_MATHS = [
    Le détail complet reste dans l'onglet « Comprendre le jeu ».
    ------------------------------------------------------------------------- */
 export const CADRAGE_INITIAL = [
+  {
+    cle: 'lyceens',
+    titre: 'Ce dont vous héritez : l’automne 2026 des lycéens',
+    accroche: { v: '891 lycées', l: 'ont eu leurs cours suspendus le même jour, le 6 octobre 2026, sur 3 700. Huit mois plus tard, vous héritez des promesses faites ce jour-là.', src: 'mobilisation26' },
+    sousAccroche: { v: '76 500', l: 'lycéens ont écrit au gouvernement ce qui n’allait pas. Ils attendent la réponse à la rentrée', src: 'consult26' },
+    graphique: 'consultation',
+    chiffres: [
+      { v: '5 promesses', l: 'un professeur devant chaque classe « à la Toussaint », des travaux « avant l’été 2027 », des règles de Parcoursup lisibles, des emplois du temps revus, une place pour les élèves dans les décisions : les cinq chantiers du 4 octobre 2026', src: 'chantiers26' },
+      { v: '10 milliards', l: 'ce que les organisations lycéennes demandent pour les lycées. Le budget 2027 ajoute 1,2 milliard à toute l’Éducation nationale, et supprime 1 588 postes', src: 'dix_mesures' },
+    ],
+    aRetenir: 'Vous n’avez pas bloqué les lycées. Vous êtes la personne à qui l’on demandera pourquoi ils le sont encore.',
+  },
   {
     cle: 'budget',
     titre: 'Un budget contraint',

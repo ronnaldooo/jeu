@@ -2,7 +2,7 @@
    BANC D'ESSAI D'ÉQUILIBRAGE — RUE DE GRENELLE
    ----------------------------------------------------------------------------
    Vérifie les quatre cibles d'équilibrage du brief (partie C.8) :
-     1. survivre 5 ans doit réussir ~1 partie sur 2 pour un joueur attentif ;
+     1. survivre au mandat (K.DUREE_MANDAT ans) doit réussir ~1 partie sur 2 ;
      2. aucun des 5 compteurs ne doit être maximisable sans en dégrader un autre ;
      3. « tout vitrine » = bon mandat / mauvais bilan, « tout réel » = l'inverse,
         les deux perdants au score, l'optimum étant mixte ;
@@ -147,7 +147,7 @@ console.log('='.repeat(79));
 const verdicts = [];
 const check = (nom, ok, detail) => { verdicts.push({ nom, ok, detail }); console.log((ok ? ' ✓ ' : ' ✗ ') + nom + '\n     ' + detail); };
 
-check('1. Survie du joueur attentif ≈ 1 partie sur 2',
+check('1. Survie du joueur attentif ≈ 1 partie sur 2 (sur la durée du mandat)',
   mixte.survie >= 0.40 && mixte.survie <= 0.62,
   `mixte survit à ${(mixte.survie * 100).toFixed(0)} % (cible 40-62 %) · durée moyenne ${mixte.dureeMoy.toFixed(1)} ans · passif ${(parNom['Passif (ne rien faire)'].survie * 100).toFixed(0)} %`);
 

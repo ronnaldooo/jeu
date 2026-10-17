@@ -626,6 +626,51 @@ table.bilan tr.cache td{background:var(--fiche-2)}
   .rep-liste .v{min-width:0}
   #comprendre-btn{left:8px; bottom:8px}
 }
+/* ---------- version grand public : mots, choix préréglés, lycéens ---------- */
+.accroche.grille{display:grid; grid-template-columns:auto 1fr; column-gap:22px; row-gap:0; align-items:start}
+.accroche.grille .chiffre-cle{grid-column:1; grid-row:1}
+.accroche.grille > p{grid-column:2; grid-row:1 / span 2}
+.accroche.grille .sous{grid-column:1; grid-row:2; max-width:26ch}
+@media (max-width:640px){ .accroche.grille{grid-template-columns:1fr} .accroche.grille > p{grid-column:1; grid-row:2} .accroche.grille .sous{grid-row:3; max-width:none} }
+.jauge .nom b small{font-weight:400; color:var(--encre-3); font-size:.7rem; margin-left:2px}
+.carte .mots{display:flex; flex-wrap:wrap; gap:5px}
+.carte .mots span{font-size:.72rem; font-weight:600; padding:2px 8px; border:1px solid var(--filet-fort); border-radius:12px; color:var(--encre-2); background:var(--fiche)}
+/* Les couleurs des pastilles sont tirées vers l'encre : lisibles en petit,
+   sur fond clair comme sur fond sombre. */
+.carte .mots .pos{color:color-mix(in srgb, var(--ok) 62%, var(--encre)); border-color:var(--ok)}
+.carte .mots .neg{color:color-mix(in srgb, var(--alerte) 70%, var(--encre)); border-color:var(--alerte)}
+.carte .mots .lyc{color:color-mix(in srgb, var(--c-violet) 72%, var(--encre)); border-color:var(--c-violet)}
+.carte .mots .preuve.p5, .carte .mots .preuve.p4{color:color-mix(in srgb, var(--c-sante) 62%, var(--encre)); border-color:var(--c-sante)}
+.carte .mots .preuve.p1{color:color-mix(in srgb, var(--alerte) 70%, var(--encre)); border-color:var(--alerte)}
+.lyceens-bloc .humeur b.neg, .lyceens-bloc .promesses-l .non{color:color-mix(in srgb, var(--alerte) 75%, var(--encre))}
+.lyceens-bloc .humeur b.pos, .lyceens-bloc .promesses-l .ok{color:color-mix(in srgb, var(--ok) 62%, var(--encre))}
+.presets{display:grid; gap:8px; margin:8px 0 4px}
+.opt.preset{padding:10px 14px}
+.opt.preset b{font-size:.96rem}
+.choix-bloc{margin:18px 0 6px}
+.choix-bloc h3{font-size:1.02rem; font-weight:700; margin:0 0 2px}
+.choix-bloc .aide{font-size:.83rem; color:var(--encre-2); max-width:70ch; margin:0 0 6px}
+.lecture-choix{background:var(--fiche-2); border-left:3px solid var(--bleu-rf); padding:10px 14px; font-size:.9rem; line-height:1.55; margin-top:14px}
+.conso{margin:12px 0 4px; display:grid; gap:7px}
+.conso-l{display:flex; align-items:center; gap:10px}
+.conso-l .sujet{flex:0 0 clamp(120px, 34%, 240px); font-size:.82rem; line-height:1.3}
+.conso-l .piste{flex:1; height:14px; background:var(--fiche-2); border:1px solid var(--filet); min-width:40px}
+.conso-l .piste i{display:block; height:100%; background:var(--bleu-rf)}
+.conso-l b{flex:0 0 auto; font-family:"IBM Plex Mono",monospace; font-size:.82rem; min-width:5ch; text-align:right; font-variant-numeric:tabular-nums}
+.conso .rep-serie-note{margin-top:4px}
+@media (max-width:560px){ .conso-l{flex-wrap:wrap} .conso-l .sujet{flex-basis:100%} }
+.promesses{border:1px solid var(--filet); border-left:3px solid var(--c-violet); background:var(--fiche-2); padding:10px 14px 12px; margin:14px 0}
+.promesses b{display:block; font-size:.72rem; font-weight:700; text-transform:uppercase; letter-spacing:.07em; color:var(--c-violet); margin-bottom:5px}
+.promesses ul{margin:0; padding-left:18px; font-size:.9rem; line-height:1.55}
+.promesses .src{display:block; font-size:.74rem; color:var(--encre-3); margin-top:7px}
+.lyceens-bloc{border:1px solid var(--filet); border-left:3px solid var(--c-violet); background:var(--fiche); padding:13px 16px 14px; max-width:860px; margin:0 auto 14px}
+.doc .lyceens-bloc{max-width:none; margin:18px 0 0}
+.lyceens-bloc .titre-d{font-size:.68rem; letter-spacing:.12em; text-transform:uppercase; font-weight:700; color:var(--c-violet); margin-bottom:6px}
+.lyceens-bloc .humeur{font-size:.95rem; margin:0 0 6px}
+.lyceens-bloc .humeur b.neg{color:var(--alerte)} .lyceens-bloc .humeur b.pos{color:var(--ok)}
+.lyceens-bloc .promesses-l{font-size:.82rem; line-height:1.7; color:var(--encre-2); margin:0}
+.lyceens-bloc .promesses-l span{display:inline-block; margin-right:10px}
+.lyceens-bloc .promesses-l .ok{color:var(--ok)} .lyceens-bloc .promesses-l .non{color:var(--alerte)}
 @media (prefers-reduced-motion: reduce){ *{transition:none !important; animation:none !important} }
 @media (max-width:640px){
   #hud{position:static}

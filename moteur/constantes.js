@@ -190,6 +190,60 @@ export const SURCOUT = {
 export const POINTS_SALAIRE_PAR_MD = 2.0;
 
 /* ---------------------------------------------------------------------------
+   LA DURÉE DU MANDAT (version grand public)
+   ---------------------------------------------------------------------------
+   Trois rentrées au lieu de cinq : 2027, 2028, 2029. Les deux dernières années
+   d'un quinquennat n'apportaient au grand public que de la répétition, et une
+   partie se joue maintenant en vingt à trente minutes. La projection à dix
+   ans, elle, reste : le bilan prolonge toujours la trajectoire de cinq ans.
+   Les tables indexées par année (tailles de menu, poids de l'héritage) gardent
+   cinq entrées : on n'en lit que les premières. */
+export const DUREE_MANDAT = 3;
+
+/* ---------------------------------------------------------------------------
+   LES LYCÉENS, l'héritage de l'automne 2026                       [source D]
+   ---------------------------------------------------------------------------
+   Le mandat s'ouvre huit mois après le mouvement lycéen de l'automne 2026 :
+   891 lycées aux cours suspendus le 6 octobre 2026 (ministère), 256 000
+   manifestants selon l'Intérieur et 450 000 selon les organisateurs, une
+   consultation nationale de 76 500 contributions, et cinq chantiers ouverts
+   par le Premier ministre avec des promesses datées : remplacement « réglé à
+   la Toussaint », travaux « réalisables avant l'été 2027 », Parcoursup
+   « transparence d'ici fin octobre », revue des emplois du temps, temps de
+   démocratie lycéenne. Le ministre hérite des promesses, pas des blocus.
+
+   Le jeu tient une seule jauge cachée, la COLÈRE LYCÉENNE (0-100). Elle part
+   haute, parce que la consultation a dit où le bât blesse, et elle décide d'une
+   chose : si, à la rentrée, elle dépasse le seuil, les lycées se bloquent à
+   nouveau et la circulaire de rentrée ne peut plus parler que d'eux. Chaque
+   réponse apportée aux revendications la fait baisser ; chaque rentrée sans
+   réponse la fait remonter. */
+export const LYCEENS = {
+  colereInitiale: 52,
+  /* Les cinq promesses héritées. Si rien n'est fait sur un chantier avant la
+     première rentrée, la colère remonte d'autant : les lycéens comparent la
+     rentrée 2027 à ce qu'on leur a dit à l'automne 2026. */
+  promesses: [
+    { id: 'remplacement', libelle: 'un professeur devant chaque classe à la rentrée', themes: ['remplacement', 'remplacement_lycee', 'ors_service'], colere: 8 },
+    { id: 'bati',         libelle: 'des travaux dans les lycées dégradés avant l’été 2027', themes: ['bati_lycee', 'bati'], colere: 7 },
+    { id: 'parcoursup',   libelle: 'des règles de Parcoursup lisibles', themes: ['parcoursup'], colere: 6 },
+    { id: 'temps',        libelle: 'des journées de lycée moins longues', themes: ['temps_lycee'], colere: 7 },
+    { id: 'democratie',   libelle: 'une place pour les élèves dans les décisions', themes: ['democratie_lyceenne'], colere: 4 },
+  ],
+  seuilBlocus: 62,        // au-dessus, la rentrée commence par des blocus
+  derive: +5,             // par an, sans réponse : une promesse vieillit mal
+  deriveHNA: 0.9,         // par point d'heures non assurées au-dessus de 9,8 : les profs absents, les lycéens les comptent
+  maxBlocus: 2,           // deux rentrées bloquées au plus : la troisième, le pays a tourné la page
+  /* Ce qu'un blocus coûte, avant même la réponse du ministre : des journées
+     perdues qui comptent dans l'histoire sociale du mandat. */
+  pointsGreveParBlocus: 2.2,
+  parentsParBlocus: -4,
+  /* Une deuxième rentrée bloquée, c'est Matignon qui appelle : « les lycées,
+     c'était le dossier de l'automne 2026, et il est encore ouvert. » */
+  convocationAuDeuxieme: true,
+};
+
+/* ---------------------------------------------------------------------------
    2. LE TENDANCIEL DÉMOGRAPHIQUE, le moteur du jeu           [source B.2]
    ------------------------------------------------------------------------- */
 /* Projections DEPP avril 2026 : −1 676 800 élèves d'ici 2035 (−14,2 %).
@@ -233,11 +287,14 @@ export const SEUIL_COLERE_MAIRES = 0.55;
 export const COMPTEURS_INITIAUX = { reussite: 41, egalite: 34, sante: 29, paix: 78, budget: 30 };
 
 export const COMPTEURS_META = {
-  reussite: { nom: 'Réussite des élèves', court: 'Réussite' },
-  egalite:  { nom: 'Réduction des inégalités', court: 'Inégalités' },
-  sante:    { nom: 'Santé du système', court: 'Santé' },
-  paix:     { nom: 'Paix sociale', court: 'Paix sociale' },
-  budget:   { nom: 'Salaires', court: 'Salaires' },
+  /* Les noms sont ceux de la version grand public : des mots de tous les
+     jours. Les clés, elles, ne changent pas : le moteur et les simulations
+     parlent toujours de reussite / egalite / sante / paix / budget. */
+  reussite: { nom: 'Le niveau des élèves', court: 'Niveau' },
+  egalite:  { nom: 'L’égalité des chances', court: 'Égalité' },
+  sante:    { nom: 'Le métier de prof', court: 'Métier' },
+  paix:     { nom: 'Le climat social', court: 'Climat' },
+  budget:   { nom: 'Les salaires', court: 'Salaires' },
 };
 
 /* Poids du score final selon le rang que le joueur a lui-même donné au compteur
@@ -422,7 +479,7 @@ export const CAPITAL = { initial: 50, parAn: 30, plafond: 100 };
 /* Le prix de l'immobilisme. La fatigue réformatrice retombe quand on n'annonce
    rien (c'est bon pour l'implémentation des réformes suivantes), mais un
    ministre qui n'annonce rien n'est pas un ministre qui dure. */
-export const IMMOBILISME = { capital: 7, parents: 3.5 };
+export const IMMOBILISME = { capital: 10, parents: 5 };
 export const CREDIT_BERCY_INITIAL = 48;
 
 /* Convocation à Matignon : 3 convocations cumulées = renvoi.
@@ -444,10 +501,10 @@ export const RENVOI = {
      moyenne dans le poste dépasse rarement deux ans. Le risque est modulé par
      le capital politique et l'opinion des familles : un ministre solide n'est
      pas à l'abri, il est seulement moins exposé. */
-  remaniementBase: 0.205,
+  remaniementBase: 0.30,       // trois ans de mandat : le risque annuel est relevé pour que finir reste une performance
   remaniementParCapital: 900,
   remaniementParParents: 700,
-  remaniementMin: 0.03, remaniementMax: 0.30,
+  remaniementMin: 0.05, remaniementMax: 0.40,
 };
 
 /* ===========================================================================
@@ -591,55 +648,57 @@ export const PROJECTION = {
    10. LES PROJETS DE 2027                                       [source B.7]
    ------------------------------------------------------------------------- */
 /* Chaque compteur du score est au cœur de projets politiques réels débattus en
-   2027 (propositions publiques, août 2026). La feuille de route que déclare le
+   2027 (propositions publiques des candidats, relevées en octobre 2026 ; voir
+   RECHERCHE-GRAND-PUBLIC.md pour les sources). La feuille de route que déclare le
    joueur le situe donc, qu'il le veuille ou non, sur une carte politique
    existante, c'est le premier enseignement du jeu : il n'y a pas de priorité
    neutre. Le `decode` sert à la revue de presse du premier jour.
    Neutralité par attribution : on cite, on ne juge pas. */
 export const PROJETS_2027 = {
   reussite: {
-    sousTitre: 'Les acquis des élèves, mesurés par les évaluations nationales et internationales.',
+    sousTitre: 'Ce que les élèves apprennent, mesuré par les évaluations nationales et internationales.',
     porteurs: [
-      { qui: 'Gabriel Attal', quoi: 'le « choc des savoirs » : exigence, certificats, groupes, brevet obligatoire' },
-      { qui: 'Édouard Philippe', quoi: 'l’autonomie des établissements jugée sur les résultats, publiés' },
-      { qui: 'David Lisnard', quoi: 'évaluation systématique et rémunération conditionnée' },
+      { qui: 'Gabriel Attal (Renaissance)', quoi: 'certificat d’études à l’entrée en 6e, brevet obligatoire pour le lycée, groupes de niveau généralisés' },
+      { qui: 'Édouard Philippe (Horizons)', quoi: 'les apprentissages le matin, l’autonomie des établissements, les résultats publiés' },
+      { qui: 'Marine Le Pen (RN)', quoi: 'priorité au français, aux maths et à l’histoire, retour des séries au bac' },
     ],
-    decode: 'Vous entrez sur le terrain du « niveau », celui où campent Attal, Philippe et Lisnard, avec chacun un chemin incompatible avec les deux autres.',
+    decode: 'Vous entrez sur le terrain du « niveau », celui où campent Attal, Philippe et Le Pen, avec chacun un chemin incompatible avec les deux autres.',
   },
   egalite: {
     sousTitre: 'Le poids de l’origine sociale sur les résultats, le point le plus faible de la France dans les comparaisons.',
     porteurs: [
-      { qui: 'Jean-Luc Mélenchon', quoi: '19 élèves par classe maximum, abrogation de la loi Carle' },
-      { qui: 'Raphaël Glucksmann', quoi: 'le privé sous contrat intégré à la carte scolaire' },
-      { qui: 'le NFP', quoi: 'financement du privé conditionné à la mixité sociale' },
+      { qui: 'Jean-Luc Mélenchon (LFI)', quoi: '19 élèves par classe en moyenne, gratuité réelle, abrogation de la loi Carle' },
+      { qui: 'Raphaël Glucksmann (PS, Place publique)', quoi: 'aides au privé sous contrat conditionnées à la mixité sociale' },
+      { qui: 'Marine Tondelier (Écologistes)', quoi: '12 élèves par classe en éducation prioritaire, 19 ailleurs en primaire' },
     ],
-    decode: 'Priorité revendiquée par toute la gauche (Mélenchon, Glucksmann, le NFP) avec le privé sous contrat en ligne de mire. Le mot « Savary » n’est jamais loin.',
+    decode: 'Priorité revendiquée par toute la gauche (Mélenchon, Glucksmann, Tondelier) avec le privé sous contrat en ligne de mire. Le mot « Savary » n’est jamais loin.',
   },
   sante: {
-    sousTitre: 'Attractivité du métier, remplacement, moral : la capacité du système à fonctionner.',
+    sousTitre: 'Attirer et garder des professeurs, remplacer les absents : la capacité de l’école à fonctionner.',
     porteurs: [
-      { qui: 'le PS', quoi: 'salaires alignés sur la moyenne de l’OCDE' },
-      { qui: 'Raphaël Glucksmann', quoi: 'une loi de programmation de revalorisation pluriannuelle' },
-      { qui: 'Gabriel Attal', quoi: '+200 à +500 € par mois (chiffré à 2,5 Md€)' },
+      { qui: 'Édouard Philippe (Horizons)', quoi: '+20 % de salaire moyen en cinq ans, « vers la moyenne européenne »' },
+      { qui: 'Gabriel Attal (Renaissance)', quoi: '+200 à +500 € net par mois, dans une loi de programmation' },
+      { qui: 'Raphaël Glucksmann (PS, Place publique)', quoi: 'un plan de sauvetage sur cinq ans : salaires, bâti, effectifs en primaire' },
+      { qui: 'Bruno Retailleau (LR)', quoi: 'salaires rapprochés de la moyenne européenne, carrière au mérite plutôt qu’à l’ancienneté' },
     ],
-    decode: 'La revalorisation traverse tout le spectre (du PS à Attal) mais chacun paie différemment : sans condition, contre missions, ou contre évaluation. Le diable est dans la contrepartie.',
+    decode: 'La revalorisation traverse tout le spectre (de Glucksmann à Retailleau) mais chacun paie différemment : sans condition, dans une loi de programmation, ou contre une réforme de la carrière. Le diable est dans la contrepartie.',
   },
   paix: {
-    sousTitre: 'Grèves, mobilisations, climat social : l’histoire du mandat, qui ne s’efface pas.',
+    sousTitre: 'Grèves, blocus, climat social : l’histoire du mandat, qui ne s’efface pas.',
     porteurs: [
-      { qui: 'Michel Barnier', quoi: 'le pacte pluriannuel : de la visibilité contre du calme' },
-      { qui: 'aucun programme', quoi: 'ne la revendique, mais tous la supposent acquise' },
+      { qui: 'les organisations lycéennes (USL, Union étudiante)', quoi: '10 milliards pour les lycées, dix mesures d’urgence, et la rue tant que rien ne vient' },
+      { qui: 'aucun programme', quoi: 'ne revendique la paix scolaire, mais tous la supposent acquise' },
     ],
-    decode: 'Aucun candidat ne fait campagne sur la paix scolaire : elle ne rapporte des voix que quand elle manque. Vous venez d’en faire une priorité, c’est original, et invérifiable en meeting.',
+    decode: 'Aucun candidat ne fait campagne sur la paix scolaire : elle ne rapporte des voix que quand elle manque. Les lycéens, eux, ont montré à l’automne 2026 ce qu’elle coûte quand elle part.',
   },
   budget: {
-    sousTitre: 'Tenir la lettre plafond ET rattraper les salaires : la quadrature du premier budget de l’État.',
+    sousTitre: 'Tenir le budget ET rattraper les salaires : la quadrature du premier budget de l’État.',
     porteurs: [
-      { qui: 'Édouard Philippe', quoi: '+20 % en 5 ans, financés par la baisse démographique' },
-      { qui: 'David Lisnard', quoi: 'la même somme, conditionnée à l’autonomie et à la présence' },
+      { qui: 'Édouard Philippe (Horizons)', quoi: '+20 % en 5 ans, financés par la baisse du nombre d’élèves' },
+      { qui: 'Marine Le Pen (RN)', quoi: '+3 % par an pendant le quinquennat, et la fin du Pacte enseignant' },
       { qui: 'la FSU', quoi: '(côté personnels) un rattrapage de +20 % du point, chiffré à 10 Md€' },
     ],
-    decode: 'Le sérieux budgétaire appliqué à l’école : c’est la ligne Philippe-Lisnard. Bercy vous adore déjà ; la salle des professeurs a un doute.',
+    decode: 'Le sérieux budgétaire appliqué à l’école : c’est la ligne Philippe. Bercy vous adore déjà ; la salle des professeurs a un doute.',
   },
 };
 

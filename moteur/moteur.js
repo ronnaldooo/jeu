@@ -4,14 +4,15 @@
    Moteur pur, sans aucune dépendance d'interface : il se joue en Node (pour les
    simulations d'équilibrage) exactement comme il se jouera dans le navigateur.
 
-   Boucle : 5 années de mandat, de juin 2027 à mai 2032, 12 mois chacune.
+   Boucle : K.DUREE_MANDAT années de mandat à partir de juin 2027 (trois dans
+   la version grand public : 2027, 2028, 2029), 12 mois chacune.
    Le joueur est représenté par une `politique` — un objet de fonctions de
    décision. Les stratégies-types des simulations et l'interface React
    implémentent la même interface.
    ========================================================================== */
 
 import * as K from './constantes.js';
-import { CATALOGUE, PAR_ID, AFFAIRES, AFFAIRE_PAR_ID, POLEMIQUES_RENTREE, LIVRAISON_PISA, PLATEAU, REVALORISATION, chiffrerRevalorisation, FINANCEMENT_19, DOSSIERS_ETE, AUDIENCES, RECEPTION, argumentaireSyndical, porteursSyndicaux, estContestable, bordsDeCarte } from './catalogue.js';
+import { CATALOGUE, PAR_ID, AFFAIRES, AFFAIRE_PAR_ID, POLEMIQUES_RENTREE, LIVRAISON_PISA, PLATEAU, REVALORISATION, chiffrerRevalorisation, FINANCEMENT_19, DOSSIERS_ETE, AUDIENCES, RECEPTION, BLOCUS_LYCEEN, argumentaireSyndical, porteursSyndicaux, estContestable, bordsDeCarte } from './catalogue.js';
 
 /* ---------------------------------------------------------------- ALÉA --- */
 export function rngDepuis(graine) {
@@ -84,6 +85,10 @@ export function creerPartie({ graine = 1, politique }) {
     syndicats: K.SYNDICATS.map((o) => ({ ...o })),
     greves: [], pointsGreveCumules: 0,
     convocations: 0, guerreScolaireArmee: false,
+
+    /* L'héritage de l'automne 2026 : une colère lycéenne (0-100), des
+       promesses datées, et le compte des rentrées bloquées. */
+    lyceens: { colere: K.LYCEENS.colereInitiale, blocus: 0, rompues: [], tenues: [], reponses: [] },
 
     attractiviteCible: 0,
     couvertureAnnoncee: K.PHYSIQUE_INITIALE.couvertureConcours,
@@ -276,24 +281,99 @@ function* etapeDoctrine(s) {
   s.doctrine = [...ordre];
   s.poids = {};
   s.doctrine.forEach((c, i) => { s.poids[c] = K.POIDS_DOCTRINE[i]; });
-  note(s, `Feuille de route déclarée : ${s.doctrine.join(' > ')}. La presse garde une copie.`, 'doctrine');
+  note(s, `Feuille de route déclarée : ${s.doctrine.map((c) => (K.COMPTEURS_META[c] || { court: c }).court.toLowerCase()).join(' > ')}. La presse garde une copie.`, 'doctrine');
 }
 
 /* --- L'ÉTÉ DES CENT JOURS (an 1) : deux crises avant la première rentrée --- */
 function* etapeEte(s) {
-  const dec = s.graine % DOSSIERS_ETE.length;
-  for (let k = 0; k < 2; k++) {
-    const dossier = DOSSIERS_ETE[(dec + k) % DOSSIERS_ETE.length];
+  /* Le premier dossier est toujours l'héritage lycéen ; le second tourne
+     parmi les autres selon la graine. */
+  const autres = DOSSIERS_ETE.slice(1);
+  const liste = [DOSSIERS_ETE[0], autres[s.graine % autres.length]];
+  for (const dossier of liste) {
     const idx = yield { type: 'dossier', dossier };
     const opt = dossier.options[Math.max(0, Math.min(dossier.options.length - 1, idx | 0))];
     const e = opt.effets || {};
     if (e.parents) s.phys.parents = borne(s.phys.parents + e.parents, 0, 100);
     if (e.adhesion) s.phys.adhesion = borne(s.phys.adhesion + e.adhesion, 0, 100);
     if (e.capital) s.capital = Math.min(K.CAPITAL.plafond, s.capital + e.capital);
+    if (e.credibilite) s.credibilite = borne(s.credibilite + e.credibilite, 0, 100);
+    if (e.colere) apaiserLyceens(s, -e.colere, dossier.titre);
     if (e.collectivitesBonus) s.capital += 2;                    // les élus s'en souviendront en janvier
     if (e.bercyMalus) s.creditBercy = borne(s.creditBercy - 4, 0, 100);
     note(s, `Été 2027 — ${dossier.titre} : « ${opt.titre} »`, 'ete');
   }
+}
+
+/* ============================================================================
+   LES LYCÉENS : la colère, les promesses, le blocus
+   ----------------------------------------------------------------------------
+   Une seule jauge cachée, qui ne s'affiche jamais en nombre : à l'écran, elle
+   se dit en mots. Elle baisse quand une mesure répond à une revendication
+   (`lyceens` sur la carte), elle remonte à chaque rentrée sans réponse, et
+   quand elle dépasse le seuil en septembre, les lycées se bloquent.
+   ========================================================================== */
+export function apaiserLyceens(s, delta, cause) {
+  if (!s.lyceens || !delta) return;
+  s.lyceens.colere = borne(s.lyceens.colere - delta, 0, 100);
+  if (cause && delta > 0) s.lyceens.reponses.push(cause);
+}
+
+/* Les promesses héritées de l'automne 2026 : à la première rentrée, celles
+   qu'aucune mesure n'a touchées font remonter la colère. */
+function verifierPromesses(s) {
+  const L = s.lyceens;
+  for (const p of K.LYCEENS.promesses) {
+    const tenue = p.themes.some((t) => s.themes.has(t));
+    if (tenue) L.tenues.push(p.id);
+    else { L.rompues.push(p.id); L.colere = borne(L.colere + p.colere, 0, 100); }
+  }
+  if (L.rompues.length) {
+    note(s, `Rentrée : ${L.rompues.length} des cinq promesses de l’automne 2026 n’ont pas trouvé de réponse. Les lycéens les ont comptées.`, 'lyceens');
+  } else {
+    note(s, 'Rentrée : les cinq chantiers de l’automne 2026 ont tous une réponse. Les organisations lycéennes « jugeront sur pièces ».', 'lyceens');
+  }
+}
+
+/* En mots, pour l'interface et le journal : jamais un nombre. */
+export function humeurLyceenne(colere) {
+  if (colere >= 75) return 'au bord du blocus';
+  if (colere >= K.LYCEENS.seuilBlocus) return 'en colère';
+  if (colere >= 45) return 'méfiants';
+  if (colere >= 30) return 'attentifs';
+  return 'apaisés';
+}
+
+function* etapeBlocus(s) {
+  const L = s.lyceens;
+  if (s.annee === 1) verifierPromesses(s);
+  if (L.colere < K.LYCEENS.seuilBlocus || L.blocus >= K.LYCEENS.maxBlocus) return false;
+  L.blocus += 1;
+  if (L.blocus >= 2 && K.LYCEENS.convocationAuDeuxieme) {
+    s.convocations += 1;
+    note(s, `Convocation à Matignon (${s.convocations}/3) : « les lycées, c’était le dossier de l’automne 2026. Il est encore ouvert. »`, 'matignon');
+  }
+  /* Le blocus coûte avant même la réponse : des journées perdues, des
+     parents inquiets, et une histoire sociale qui s'écrit. */
+  s.pointsGreveCumules += K.LYCEENS.pointsGreveParBlocus * (L.colere / 60);
+  s.phys.parents = borne(s.phys.parents + K.LYCEENS.parentsParBlocus, 0, 100);
+  const nonTenues = K.LYCEENS.promesses.filter((p) => !p.themes.some((t) => s.themes.has(t)));
+  const idx = yield { type: 'blocus', blocus: BLOCUS_LYCEEN, humeur: humeurLyceenne(L.colere), nonTenues, n: L.blocus };
+  const r = BLOCUS_LYCEEN.reponses[Math.max(0, Math.min(BLOCUS_LYCEEN.reponses.length - 1, idx | 0))];
+  s.phys.parents = borne(s.phys.parents + r.parents, 0, 100);
+  s.phys.adhesion = borne(s.phys.adhesion + r.adhesion, 0, s.plafondAdhesion);
+  s.credibilite = borne(s.credibilite + r.credibilite, 0, 100);
+  s.capital = borne(s.capital + r.capital, 0, K.CAPITAL.plafond);
+  s.vitrine.paix += r.presse * 0.25;
+  s.agendaConfisque = (s.agendaConfisque || 0) + r.agenda;
+  L.colere = borne(L.colere + r.colere, 0, 100);
+  if (r.greve) {
+    (s.grevesEnAttente = s.grevesEnAttente || []).push({ intensite: 2, theme: 'moyens', segment: 'lycee', cause: 'soutien aux lycéens' });
+  }
+  /* La circulaire de rentrée ne parlera que d'eux. */
+  s.cadrage = BLOCUS_LYCEEN.cadrage;
+  note(s, `Blocus des lycées (${L.blocus === 1 ? 'première' : 'deuxième'} fois) : réponse ${r.type === 'ferme' ? 'de fermeté' : r.type === 'methode' ? 'de méthode' : 'd’esquive'}. ${r.agenda} semaines d’agenda consommées.`, 'blocus');
+  return true;
 }
 
 /* --- JUILLET : lettre plafond de Bercy + résultats des concours ------------ */
@@ -814,7 +894,7 @@ function* etapeMesures(s, opts) {
      lui seul : on le consomme. */
   const cadrage = opts.cadrage || s.cadrage || null;
   s.cadrage = null;
-  const dispo = mesuresDisponibles(s, opts.taille, cadrage);
+  const dispo = mesuresDisponibles(s, opts.taille, cadrage, opts.priorite);
   const cadre = cadrage && dispo.every((c) => passeLeCadrage(c, cadrage));
   const maxAnnonces = (K.MENUS === 'classique' ? K.ANNONCES_MAX_CLASSIQUE : K.ANNONCES_MAX)[opts.moment] || 3;
   /* On n'arrache un arbitrage interministériel qu'au moment du budget. Une
@@ -879,6 +959,11 @@ function etapeCloture(s) {
      passé l'année à se dédire. */
   s.credibilite = borne(s.credibilite + K.CREDIBILITE.parAn, 0, 100);
   s.fragilite = Math.max(0, (s.fragilite || 0) - 1);
+
+  /* Les lycéens : une promesse vieillit mal, et les professeurs absents se
+     comptent dans chaque classe. */
+  s.lyceens.colere = borne(s.lyceens.colere + K.LYCEENS.derive
+    + Math.max(0, p.heuresNonAssurees - 9.8) * K.LYCEENS.deriveHNA, 0, 100);
 
   /* Tendanciels : ce qui se dégrade tout seul si l'on ne fait rien. */
   p.heuresNonAssurees += K.TENDANCIEL.heuresNonAssurees;
@@ -975,7 +1060,7 @@ function etapeCloture(s) {
     note(s, `Convocation à Matignon (${s.convocations}/3) : le pays enseignant est bloqué.`, 'matignon');
   }
   /* Remaniement : indépendant de vos mérites, modulé par votre solidité. */
-  if (!s.fini && s.annee < 5) {
+  if (!s.fini && s.annee < K.DUREE_MANDAT) {
     const pRem = borne(K.RENVOI.remaniementBase
       - s.capital / K.RENVOI.remaniementParCapital
       - (p.parents - 45) / K.RENVOI.remaniementParParents,
@@ -1018,6 +1103,7 @@ const DECLENCHEURS = {
   segregation_haute:      (s) => s.phys.segregation >= 18.6,
   maires_en_colere:       (s) => (s.historiqueRestitution || []).some((h) => h.pct > 55),
   apres_pause_numerique:  (s) => s.joue.has('pause_numerique'),
+  colere_lyceenne:        (s) => s.lyceens && s.lyceens.colere >= K.LYCEENS.seuilBlocus,
 };
 
 export function estDecouverte(s, c) {
@@ -1097,7 +1183,7 @@ function passeLeCadrage(c, cadrage) {
   return true;
 }
 
-export function mesuresDisponibles(s, tailleVoulue, cadrage) {
+export function mesuresDisponibles(s, tailleVoulue, cadrage, priorite) {
   const classique = K.MENUS === 'classique';
   const tailles = classique ? K.TAILLES_MENU_CLASSIQUE : K.TAILLES_MENU;
   let TAILLE_MENU = tailleVoulue || tailles[Math.min(4, s.annee - 1)];
@@ -1116,6 +1202,14 @@ export function mesuresDisponibles(s, tailleVoulue, cadrage) {
   };
   const reste = () => pool.filter((c) => !menu.includes(c));
 
+  /* Une famille prioritaire (le lycée, à la prise de fonction) ouvre le menu
+     avec ses deux mesures les mieux étayées, avant même la revalorisation :
+     l'héritage se voit à la première place. */
+  if (priorite && !cadrage) {
+    const pr = pool.filter((c) => c.famille === priorite)
+      .sort((x, y) => Math.max(0, ...(y.reel || []).map((e) => e.cadenas)) - Math.max(0, ...(x.reel || []).map((e) => e.cadenas)));
+    for (const c of tourner(pr, 3).slice(0, 2)) pousse(c);
+  }
   pousse(pool.find((c) => c.id === 'revalorisation'));
 
   /* --- position « classique » : le menu d'avant, long et doctrinal -------- */
@@ -1137,7 +1231,7 @@ export function mesuresDisponibles(s, tailleVoulue, cadrage) {
      retrouve sa feuille de route sans qu'on la lui rappelle. */
   if (!cadrage) {
     /* On tourne sur les FAMILLES — moyens, autonomie, parcours, autorité,
-       mixité — parce que c'est le thème que le joueur voit sur la carte, et
+       mixité, lycée — parce que c'est le thème que le joueur voit sur la carte, et
        que « varié » veut dire varié à l'écran. L'ordre des familles est donné
        par le classement des priorités : la famille qui sert le plus la
        première priorité déclarée ouvre le menu. */
@@ -1283,6 +1377,7 @@ function appliquerMesures(s, choix, maxAnnonces = 3, depassementAutorise = true,
     if (ph.attractivite) s.bonusAttractivite = (s.bonusAttractivite || 0) + ph.attractivite;
     if (carte.bercy) s.creditBercy = borne(s.creditBercy + carte.bercy, 0, 100);
     if (carte.coutETP) s.ratioED -= carte.coutETP / 35000;   // les ETP créés desserrent l'encadrement
+    if (carte.lyceens) apaiserLyceens(s, carte.lyceens, carte.label);
 
     /* Effets réels, curseurs compris. Une mesure partie en retard produit peu :
        le texte sort en cours d'année, le terrain la reçoit sans y être préparé. */
@@ -1362,15 +1457,21 @@ export function* derouler(s) {
      n'ont pas de note du tout : ils arrivent avec PISA, quand la presse en
      parle, et pas avant. */
   crediter(s, K.ENVELOPPE_PRISE_FONCTION);
+  /* L'héritage d'abord : ce que les lycéens ont obtenu à l'automne 2026 et
+     ce qu'on leur a promis. Puis le budget, parce que la première chose qu'un
+     ministre demande est une rallonge. */
+  yield { type: 'reperes', note: 'lyceens' };
   yield { type: 'reperes', note: 'budget' };
   yield* etapeAvance(s);
-  yield* etapeMesures(s, { moment: 'prise_fonction', taille: K.TAILLE_MENU_CALENDRIER });
+  /* Le premier menu est un menu de calendrier (plusieurs thèmes), mais il
+     ouvre sur le lycée : deux réponses aux lycéens en tête, le reste ensuite. */
+  yield* etapeMesures(s, { moment: 'prise_fonction', taille: K.TAILLE_MENU_CALENDRIER, priorite: 'lycee' });
   rafraichir(s);
   yield { type: 'etape', etape: 'ouverture' };
   yield* etapeEte(s);
   rafraichir(s);
 
-  for (s.annee = 1; s.annee <= 5 && !s.fini; s.annee++) {
+  for (s.annee = 1; s.annee <= K.DUREE_MANDAT && !s.fini; s.annee++) {
     s.anneeCiv = 2026 + s.annee;                 // année civile de la carte scolaire
     yield* etapeJuillet(s);   s.mois = 6;
     /* Bercy vient d'exiger un schéma d'emplois : c'est le moment où la note
@@ -1378,7 +1479,10 @@ export function* derouler(s) {
     if (s.annee === 1) { yield { type: 'reperes', note: 'demographie' }; yield* etapeIntention(s); }
     yield { type: 'etape', etape: 'juillet' };
     yield* etapeRentree(s);   s.mois = 8;
-    if (s.annee >= 2 && !s.polemiqueFaite) { s.polemiqueFaite = true; yield* etapePolemique(s); }
+    /* Les lycéens d'abord : si la rentrée commence par des blocus, la
+       polémique de rentrée attend l'année suivante, l'antenne est prise. */
+    const bloque = yield* etapeBlocus(s);
+    if (!bloque && s.annee >= 2 && !s.polemiqueFaite) { s.polemiqueFaite = true; yield* etapePolemique(s); }
     yield* etapeCirculaireRentree(s);        yield { type: 'etape', etape: 'rentree' };
     /* La livraison internationale de l'automne : elle tombe une fois, et elle
        oblige. Le joueur ne choisit pas d'annoncer, il choisit quoi. */
@@ -1399,8 +1503,8 @@ export function* derouler(s) {
     rafraichir(s);
     yield { type: 'etape', etape: 'cloture' };
   }
-  if (!s.fini) { s.fini = true; s.fin = { type: 'mandat_complet', annee: 5, texte: 'Cinq rentrées. Vous partez debout — ce qui, rue de Grenelle, est déjà un résultat.' }; }
-  s.annee = Math.min(5, s.annee);
+  if (!s.fini) { s.fini = true; s.fin = { type: 'mandat_complet', annee: K.DUREE_MANDAT, texte: `${K.DUREE_MANDAT === 3 ? 'Trois' : K.DUREE_MANDAT} rentrées. Vous partez debout — ce qui, rue de Grenelle, est déjà un résultat.` }; }
+  s.annee = Math.min(K.DUREE_MANDAT, s.annee);
 }
 
 /* Pilote synchrone : joue un mandat entier avec une `politique` (objet de
@@ -1420,6 +1524,7 @@ export function jouerMandat({ graine = 1, politique }) {
     else if (q.type === 'intention') rep = politique.intention ? politique.intention(s, q) : 1;
     else if (q.type === 'affaire') rep = politique.affaire ? politique.affaire(s, q) : 0;
     else if (q.type === 'polemique') rep = politique.polemique ? politique.polemique(s, q) : 1;
+    else if (q.type === 'blocus') rep = politique.blocus ? politique.blocus(s, q) : 0;
     else if (q.type === 'livraison') rep = null;
     /* Défaut délibérément médiocre : le plateau ne doit rien offrir à qui ne
        s'y prépare pas — sinon l'immobilisme paie, ce qui serait faux. */
@@ -1532,7 +1637,7 @@ export function bilan(s) {
      quinquennat entier (les années non servies comptent pour zéro). */
   const noteMandat = s.histoire.reduce((acc, h) => {
     return acc + s.doctrine.reduce((a, c, i) => a + (K.POIDS_DOCTRINE[i] * h.affiche[c]) / 100, 0);
-  }, 0) / 5;   // rapporté au quinquennat entier : les années non servies comptent pour zéro
+  }, 0) / K.DUREE_MANDAT;   // rapporté au mandat entier : les années non servies comptent pour zéro
 
   /* Score de bilan : la vérité, pondérée par la doctrine que le joueur a déclarée. */
   const scoreBilan = s.doctrine.reduce((a, c, i) => a + (K.POIDS_DOCTRINE[i] * s.vrai[c]) / 100, 0);
@@ -1566,6 +1671,7 @@ export function bilan(s) {
     compteursVertsProjection: auVert(proj),
     greves: s.greves.length,
     pointsGreve: +s.pointsGreveCumules.toFixed(1),
+    lyceens: { ...s.lyceens, humeur: humeurLyceenne(s.lyceens.colere) },
     fatigue: s.fatigue, abandons: s.abandons,
     mesures: s.mesuresParAnnee.flat().map((m) => m.id),
     histoire: s.histoire,

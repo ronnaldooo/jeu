@@ -7,6 +7,7 @@
    ========================================================================== */
 
 import { coutDe } from '../moteur/moteur.js';
+import * as K from '../moteur/constantes.js';
 import { REVALORISATION, FINANCEMENT_19 } from '../moteur/catalogue.js';
 
 /* Valeur « vitrine » d'une carte : ce que le joueur voit immédiatement. */
@@ -215,7 +216,7 @@ export const MIXTE = {
   rentree: () => 'assumer',
   mesures: (s, dispo, ctx) => selectionner(s, dispo, ctx, (c) => {
     const adhBasse = s.phys.adhesion < 32;
-    const restantes = 5 - s.annee;
+    const restantes = K.DUREE_MANDAT - s.annee;
     /* L'adhésion est le multiplicateur de tout le reste : tant qu'elle est
        basse, un point d'adhésion vaut mieux qu'un point d'effet annoncé. */
     return valeurReelle(c, null, restantes) * 1.25
@@ -224,6 +225,9 @@ export const MIXTE = {
          + (c.physique?.adhesion || 0) * 1.2
          + (c.vitrine?.enseignants || 0) * (adhBasse ? 1.3 : 0.4)
          + (c.parametrique === 'revalorisation' && adhBasse ? 9 : 0)
+         /* Le joueur attentif a lu la note d'héritage : tant que les lycéens
+            sont en colère, une réponse qui les apaise vaut quelque chose. */
+         + (c.lyceens || 0) * (s.lyceens.colere >= 50 ? 0.9 : 0.2)
         ;
   }, {
     toleranceDepassement: s.creditBercy > 45 ? 0.5 : 0.2,
