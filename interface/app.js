@@ -34,6 +34,7 @@ const FAMILLES = {
   mixite: ['Mixité & carte scolaire', 'var(--c-egalite)'],
   lycee: ['Lycée & lycéens', 'var(--c-violet)'],
   vie_lyceenne: ['Dans le lycée : la parole des élèves', 'var(--or)'],
+  territoires: ['Territoires : qui reçoit quoi', 'var(--c-egalite)'],
 };
 const MOIS_L = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'];
 
@@ -149,9 +150,13 @@ function unesPossibles(etape) {
   ]);
   pousser(a('colere') && etape === 'automne', [
     ['Lycées : le nouveau ministre répond, colère par colère',
-     'Huit sujets, autant de décisions, et des organisations lycéennes qui « jugeront sur pièces ». Les pièces sont attendues à la rentrée.'],
+     'Neuf sujets, autant de décisions, et des organisations lycéennes qui « jugeront sur pièces ». Les pièces sont attendues à la rentrée.'],
     ['Automne de crise rue de Grenelle : des annonces, et une question',
      'La question est celle de tous les automnes : qui paiera, et quand. Le ministère répond « le budget 2027 ». Le budget 2027 n’a pas encore été voté.'],
+  ]);
+  pousser(a('colere') && etape === 'rentree', [
+    ['« Chez nous et pas ailleurs » : la colère lycéenne change de forme',
+     'Un an après l’automne 2026, les lycéens comparent. Les régions publient leurs plans bâti, les magazines leurs palmarès, le ministère rien du tout : la dépense de l’État par élève et par territoire n’existe dans aucun tableau.'],
   ]);
   pousser(etape === 'election', [
     ['Présidentielle : un nouveau gouvernement, et le même ministre de l’Éducation',
@@ -891,7 +896,7 @@ function ecranPolemique(q) {
 /* --- l'automne 2026 : une colère, votre avis ---------------------------------- */
 function ecranColere(q) {
   const c = q.colere;
-  const d = docu('Automne 2026, ce que disent les lycéens', fr(c.cri));
+  const d = docu(`${q.quand && /^Rentrée/.test(q.quand) ? q.quand : 'Automne 2026'}, ce que disent les lycéens`, fr(c.cri));
   d.classList.add('papier');
   d.appendChild(el('p', 'qui-dit', fr(c.qui)));
   d.appendChild(el('p', 'chapo', fr(c.contexte)));
@@ -923,8 +928,19 @@ function miroirAvis(avis, verdict) {
 }
 function ecranFaits(q) {
   const c = q.colere, S = ETAT.s;
-  const d = docu('Automne 2026, les faits', 'Ce que disent les chiffres');
+  const rentree = !!(q.quand && /^Rentrée/.test(q.quand));
+  const d = docu(`${rentree ? q.quand : 'Automne 2026'}, les faits`, 'Ce que disent les chiffres');
   d.appendChild(el('p', 'rappel-cri', fr(c.cri)));
+  /* La colère des territoires parle du département du joueur, quand il l'a dit. */
+  if (c.id === 'territoires' && S.territoire) {
+    const f = ficheTerritoire(S.territoire.code);
+    if (f) {
+      const R = f.region || {};
+      const inv = R.invest && R.invest.v ? `${fmt0(R.invest.v)} € par lycéen et par an d’investissement (${R.invest.rang})` : R.invest && R.invest.rang ? `une région ${R.invest.rang} pour l’investissement par lycéen` : 'un investissement par lycéen que la presse n’a pas relevé, quelque part entre 885 et 1 978 €';
+      const ips = f.ips != null ? `IPS moyen des lycées de ${f.ips} (moyenne 109)` : f.sous100 ? 'IPS moyen des lycées sous 100 (moyenne 109)' : 'IPS moyen des lycées non relevé dans ce dossier';
+      d.appendChild(el('p', 'chez-vous', `<b>Chez vous, ${esc(f.nom)} (${esc(f.regionNom)}) :</b> ${inv} ; ${ips}.${citer(R.invest ? R.invest.src : 'gazette_invest')}`));
+    }
+  }
   d.appendChild(el('ul', 'rep-liste faits', c.faits.map((x) =>
     `<li><span class="v">${fr(x.v)}</span><span class="l">${fr(x.l)}.${citer(x.src)}</span></li>`).join('')));
   const V = VERDICTS[c.verdict] || VERDICTS.ouverte;
@@ -944,7 +960,7 @@ function ecranFaits(q) {
       opts.appendChild(b);
     });
   } else {
-    d.appendChild(el('p', 'enveloppe-ligne', `Il vous reste <b>${fmt0(Math.max(0, q.tresor) * 1000)} millions d’euros</b> à redéployer cet automne, et ${fmt0(q.capital)} points de soutien du gouvernement.`));
+    d.appendChild(el('p', 'enveloppe-ligne', `Il vous reste <b>${fmt0(Math.max(0, q.tresor) * 1000)} millions d’euros</b> à redéployer ${rentree ? 'cette année' : 'cet automne'}, et ${fmt0(q.capital)} points de soutien du gouvernement.`));
     q.dispo.forEach((carte) => {
       const k = coutDe(carte, {});
       const cadMax = Math.max(0, ...(carte.reel || []).map((e) => e.cadenas));
@@ -956,7 +972,7 @@ function ecranFaits(q) {
         <span class="mots"><span class="${tropCher ? 'neg' : ''}">${fmt0(k.cout * 1000)} M€ par an</span><span class="preuve p${Math.min(5, Math.max(1, cadMax))}">ce qu’on sait : ${motPreuve}</span>${motProfs ? `<span class="${vit.enseignants >= 3 ? 'pos' : 'neg'}">${motProfs}</span>` : ''}${carte.greve ? `<span class="neg">risque de grève ${carte.greve.intensite}/5</span>` : ''}${carte.lyceens >= 12 ? '<span class="lyc">répond aux lycéens</span>' : carte.lyceens ? '<span class="lyc">apaise un peu</span>' : ''}</span>
         <span class="det">Qui la défend : ${carte.porteurs.map(esc).join(' · ')}</span>
         ${carte.contre ? `<span class="det">Qui est contre : ${carte.contre.map(esc).join(' · ')}</span>` : ''}
-        ${tropCher ? '<span class="det neg-l">Trop cher pour ce qu’il vous reste cet automne.</span>' : tropCapital ? '<span class="det neg-l">Le gouvernement ne vous suivra pas sur celle-là, pas encore.</span>' : ''}`);
+        ${tropCher ? `<span class="det neg-l">Trop cher pour ce qu’il vous reste ${rentree ? 'cette année' : 'cet automne'}.</span>` : tropCapital ? '<span class="det neg-l">Le gouvernement ne vous suivra pas sur celle-là, pas encore.</span>' : ''}`);
       /* Ce que disent les études, à la demande, sans quitter la page. */
       const etudes = el('div', 'comprendre');
       etudes.innerHTML = `<div class="titre-d">Ce que disent les études</div><p>${esc(carte.preuve || '')}</p>${carte.ideeRecue ? `<div class="idee"><div class="titre-d">L’idée reçue</div><p>${esc(carte.ideeRecue)}</p></div>` : ''}<p class="mot-carte">${esc(carte.mot)}</p>`;
@@ -978,12 +994,198 @@ function ecranFaits(q) {
     box.innerHTML = `<div class="titre-d">Ce qui suit</div><p>${fr(suite)}</p>`;
     d.appendChild(box);
     const act = el('div', 'actions');
-    const ok = el('button', 'btn', 'Colère suivante');
+    const ok = el('button', 'btn', rentree ? 'Continuer' : 'Colère suivante');
     ok.onclick = () => suivant(rep);
     act.appendChild(ok); d.appendChild(act);
     box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }
   scene(d);
+}
+
+
+/* --- « Mon lycée, mon département » ------------------------------------------ */
+/* Le joueur dit d'où il regarde. Le jeu lui montre ce qu'il sait de son
+   département et de sa région, chiffre par chiffre, avec la source ; ce
+   qu'il ne sait pas, il le dit ; et, si le téléphone a du réseau, il va
+   chercher les lycées du département dans les données ouvertes du ministère.
+   Rien de tout cela ne change les règles : cela change ce que le bilan
+   pourra dire de « chez vous ». */
+function ecranTerritoire(q) {
+  const d = docu('Avant de commencer : votre lycée', 'D’où regardez-vous l’école ?');
+  d.classList.add('territoire');
+  d.appendChild(el('p', 'chapo', 'Un ministre arrive toujours avec un lycée en tête : celui où il a été élève, celui de ses enfants, celui de sa circonscription. Un lycéen aussi. Choisissez le département du lycée que vous connaissez le mieux : le jeu vous dira ce qu’on y reçoit, et ce qu’on n’en sait pas.'));
+
+  const parRegion = {};
+  for (const dep of q.departements) (parRegion[dep.region] = parRegion[dep.region] || []).push(dep);
+  const sel = el('select', 'choix-dep');
+  sel.id = 'dep';
+  sel.setAttribute('aria-label', 'Votre département');
+  sel.innerHTML = '<option value="">Choisir un département…</option>' + Object.keys(parRegion).map((r) =>
+    `<optgroup label="${esc(REGIONS[r])}">${parRegion[r].map((dep) => `<option value="${dep.code}">${esc(dep.code)} · ${esc(dep.nom)}</option>`).join('')}</optgroup>`).join('');
+  const ligne = el('div', 'ligne-dep');
+  ligne.appendChild(sel);
+  d.appendChild(ligne);
+
+  const fiche = el('div', 'fiche-terr');
+  d.appendChild(fiche);
+
+  const decision = el('div', 'decision-terr');
+  d.appendChild(decision);
+
+  const passer = el('button', 'btn-mini passer', 'Je préfère ne pas choisir');
+  passer.onclick = () => suivant(null);
+  d.appendChild(el('div', 'actions discret')).appendChild(passer);
+
+  sel.onchange = () => { afficherFiche(sel.value); };
+  function afficherFiche(code) {
+    fiche.innerHTML = ''; decision.innerHTML = '';
+    const f = ficheTerritoire(code);
+    if (!f) return;
+    const R = f.region || {};
+    const lignes = [];
+    /* La région : ce qu'elle met, quand on le sait. */
+    if (R.invest && R.invest.v) lignes.push({ v: `${fmt0(R.invest.v)} €`, l: `par lycéen et par an : l’investissement de la région ${f.regionNom} dans ses lycées publics (2022-2025), ${R.invest.rang} ; de 885 à 1 978 € selon les régions`, src: R.invest.src });
+    else if (R.invest && R.invest.rang) lignes.push({ v: 'dans le haut du tableau', l: `l’investissement par lycéen de la région ${f.regionNom} la place ${R.invest.rang} (2022-2025) ; la valeur exacte n’a pas été relevée, l’écart va de 885 à 1 978 € selon les régions`, src: R.invest.src });
+    else lignes.push({ v: 'non relevé', l: `l’investissement par lycéen de la région ${f.regionNom} n’a pas été relevé dans le dossier du jeu ; il se situe entre 885 € (Hauts-de-France) et 1 978 € (Bretagne) par an. Il n’existe aucun tableau officiel : la presse le reconstitue à partir des comptes des régions`, src: 'gazette_invest' });
+    if (R.fonctionnement) lignes.push({ v: 'fonctionnement', l: R.fonctionnement.v, src: R.fonctionnement.src });
+    if (R.prive) lignes.push({ v: 'au privé', l: R.prive.v, src: R.prive.src });
+    if (R.cantine) lignes.push({ v: 'la cantine', l: R.cantine.v, src: R.cantine.src });
+    if (R.participation) lignes.push({ v: 'les élèves décident', l: R.participation.v, src: R.participation.src });
+    /* Le département : son profil social, quand on le sait. */
+    if (f.ips != null) lignes.push({ v: `IPS ${f.ips}`, l: `l’indice de position sociale moyen des lycées de ${f.nom} à la rentrée 2024, pour une moyenne nationale de 109 (de 71 à Mayotte à 129 à Paris). ${f.ips >= 118 ? 'Parmi les plus favorisés de France.' : f.ips <= 95 ? 'Parmi les plus défavorisés de France.' : 'Dans la moyenne.'}`, src: 'depp_ips_lycees' });
+    else if (f.sous100) lignes.push({ v: 'IPS sous 100', l: `${f.nom} fait partie des départements où l’indice de position sociale moyen des lycées est sous 100, pour une moyenne nationale de 109 : parmi les plus défavorisés`, src: 'depp_ips_lycees' });
+    else lignes.push({ v: 'IPS : à chercher', l: `l’indice de position sociale moyen des lycées de ${f.nom} n’a pas été relevé dans le dossier du jeu (moyenne nationale 109). Il se calcule à partir de l’IPS de chaque lycée, publié en données ouvertes : le bouton ci-dessous va le chercher`, src: 'ods_ips' });
+    for (const x of f.locaux) lignes.push(x);
+    fiche.appendChild(el('div', 'titre-d', `${esc(f.nom)}, ${esc(f.regionNom)} : ce que le jeu sait`));
+    fiche.appendChild(el('ul', 'rep-liste faits', lignes.map((x) => `<li><span class="v">${fr(x.v)}</span><span class="l">${fr(x.l)}.${citer(x.src)}${x.src2 ? citer(x.src2) : ''}</span></li>`).join('')));
+
+    /* En direct, si le réseau le permet. */
+    const direct = el('div', 'direct');
+    direct.innerHTML = `<div class="titre-d">Les lycées de ${esc(f.nom)}, en direct</div><p class="exp">Le ministère publie l’indice de position sociale de chaque lycée en données ouvertes. Si votre appareil a du réseau, le jeu peut aller les chercher : combien de lycées, l’IPS moyen, le plus favorisé et le moins favorisé, et le vôtre.</p>`;
+    const go = el('button', 'btn-mini', 'Chercher mes lycées');
+    const res = el('div', 'direct-res');
+    go.onclick = () => { go.disabled = true; go.textContent = 'Recherche…'; chercherLycees(f.code).then((r) => afficherDirect(r, f)).catch((e) => afficherDirect({ erreur: e }, f)); };
+    direct.appendChild(go); direct.appendChild(res);
+    fiche.appendChild(direct);
+    function afficherDirect(r, f) {
+      go.hidden = true;
+      if (!r || r.erreur || !r.lycees || !r.lycees.length) {
+        res.innerHTML = `<p class="exp">Pas de réseau, ou le service ne répond pas d’ici. Voici où chercher vous-même :</p><ul class="liens">${OU_CHERCHER.map((o) => `<li>${esc(o.quoi)}${citer(o.src)}</li>`).join('')}</ul>`;
+        return;
+      }
+      const L = r.lycees;
+      const pub = L.filter((x) => x.secteur === 'public'), pri = L.filter((x) => x.secteur === 'prive');
+      const moy = (arr) => arr.length ? arr.reduce((a, x) => a + x.ips, 0) / arr.length : null;
+      const tri = [...L].sort((a, b) => a.ips - b.ips);
+      res.innerHTML = `<ul class="rep-liste faits"><li><span class="v">${L.length} lycées</span><span class="l">dans le département à la rentrée ${esc(r.rentree || '')}${pub.length || pri.length ? ` : ${pub.length} publics, ${pri.length} privés sous contrat` : ''}${moy(L) != null ? ` ; IPS moyen ${fmt0(moy(L))}${pub.length && pri.length ? ` (public ${fmt0(moy(pub))}, privé ${fmt0(moy(pri))})` : ''}` : ''}</span></li>
+        <li><span class="v">${fmt0(tri[0].ips)}</span><span class="l">le lycée le moins favorisé : ${esc(tri[0].nom)}${tri[0].commune ? `, ${esc(tri[0].commune)}` : ''}</span></li>
+        <li><span class="v">${fmt0(tri[tri.length - 1].ips)}</span><span class="l">le plus favorisé : ${esc(tri[tri.length - 1].nom)}${tri[tri.length - 1].commune ? `, ${esc(tri[tri.length - 1].commune)}` : ''}</span></li></ul>
+        <p class="exp">Un IPS de 100 est la moyenne des élèves de France ; les lycées vont de 59 à 162.${citer('ods_ips')}</p>`;
+      const cherche = el('input', 'cherche-lycee');
+      cherche.type = 'search'; cherche.placeholder = 'Le nom de votre lycée…'; cherche.setAttribute('aria-label', 'Votre lycée');
+      const liste = el('ul', 'lycee-liste');
+      cherche.oninput = () => {
+        const v = cherche.value.trim().toLowerCase();
+        liste.innerHTML = '';
+        if (v.length < 2) return;
+        const norm = (t) => String(t).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+        L.filter((x) => norm(x.nom).includes(norm(v)) || (x.commune && norm(x.commune).includes(norm(v)))).slice(0, 8).forEach((x) => {
+          const rang = tri.indexOf(x) + 1;
+          liste.appendChild(el('li', '', `<b>${esc(x.nom)}</b>${x.commune ? ` <span class="c">${esc(x.commune)}</span>` : ''} <span class="i">IPS ${fmt0(x.ips)}</span> <span class="c">${rang <= L.length / 3 ? 'parmi le tiers le moins favorisé du département' : rang > (2 * L.length) / 3 ? 'parmi le tiers le plus favorisé' : 'dans le tiers médian'}</span>`));
+        });
+      };
+      res.appendChild(cherche); res.appendChild(liste);
+    }
+
+    /* Ce qui est vrai partout. */
+    const nat = el('details', 'nat');
+    nat.innerHTML = `<summary>Et partout en France : sept chiffres</summary>`;
+    nat.appendChild(el('ul', 'rep-liste', FAITS_NATIONAUX.map((x) => `<li><span class="v">${fr(x.v)}</span><span class="l">${fr(x.l)}.${citer(x.src)}</span></li>`).join('')));
+    fiche.appendChild(nat);
+
+    /* La décision : ce que ce choix fera de votre politique. */
+    decision.appendChild(el('h3', 'decider', 'Et votre politique ?'));
+    const opts = groupeOptions();
+    [
+      ['territoires', 'Les territoires d’abord', 'Là où l’on reçoit moins, on donnera plus. Le bilan vérifiera si vous l’avez fait.'],
+      ['national', 'Les mêmes règles partout', 'Le service public est national : pas de barème au profil social. Le bilan vérifiera aussi.'],
+      ['verra', 'Je verrai sur pièces', 'Vous ne promettez rien avant d’avoir vu les chiffres de l’automne.'],
+    ].forEach(([id, t, det]) => {
+      const b = el('button', 'opt', `<b>${esc(t)}</b><span class="det">${esc(det)}</span>`);
+      b.onclick = () => suivant({ code: f.code, priorite: id });
+      opts.appendChild(b);
+    });
+    decision.appendChild(opts);
+    fiche.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+  scene(d);
+}
+
+/* Les lycées d'un département, lus dans les données ouvertes du ministère
+   (jeu « IPS des lycées à partir de 2023 »). Les noms des colonnes sont
+   découverts sur un premier enregistrement, pour ne pas dépendre d'une
+   version précise du jeu de données ; tout échec rend `null`. */
+async function chercherLycees(code) {
+  const base = 'https://data.education.gouv.fr/api/explore/v2.1/catalog/datasets/fr-en-ips-lycees-ap2023';
+  const ctrl = new AbortController();
+  const t = setTimeout(() => ctrl.abort(), 8000);
+  try {
+    const un = await (await fetch(base + '/records?limit=1', { signal: ctrl.signal })).json();
+    const rec = (un.results || [])[0];
+    if (!rec) return null;
+    const cles = Object.keys(rec);
+    const trouve = (...motifs) => cles.find((k) => motifs.every((m) => m.test(k)));
+    const fDep = trouve(/departement/, /code/) || trouve(/departement/);
+    const fIps = trouve(/^ips/, /ensemble/) || trouve(/^ips/, /gt/) || trouve(/^ips/);
+    const fRentree = trouve(/rentree/);
+    const fNom = trouve(/nom/, /etab/) || trouve(/nom/);
+    const fSecteur = trouve(/secteur/);
+    const fCommune = trouve(/nom/, /commune/);
+    if (!fDep || !fIps) return null;
+    const where = codesPossibles(code).map((c) => `${fDep}="${c}"`).join(' or ');
+    const url = `${base}/exports/json?where=${encodeURIComponent(where)}&limit=-1`;
+    const rows = await (await fetch(url, { signal: ctrl.signal })).json();
+    if (!Array.isArray(rows) || !rows.length) return null;
+    const rentrees = [...new Set(rows.map((r) => String(r[fRentree] || '')))].sort();
+    const derniere = rentrees[rentrees.length - 1];
+    const lycees = rows.filter((r) => String(r[fRentree] || '') === derniere && r[fIps] != null && !isNaN(+r[fIps]))
+      .map((r) => ({ nom: r[fNom] || '', commune: fCommune ? r[fCommune] : '', ips: +r[fIps], secteur: /priv/i.test(String(r[fSecteur] || '')) ? 'prive' : /publ/i.test(String(r[fSecteur] || '')) ? 'public' : '' }));
+    return { rentree: derniere, lycees };
+  } finally { clearTimeout(t); }
+}
+
+/* Le bilan, vu de votre lycée : ce que vos décisions ont changé là où vous
+   regardiez. Pas une note : une liste de ce qui y arrive, et de ce qui n'y
+   arrive pas. */
+function blocTerritoire(S) {
+  const f = ficheTerritoire(S.territoire.code);
+  if (!f) return el('div');
+  const d = el('div', 'terr-bloc');
+  d.appendChild(el('div', 'titre-d', `Vu de ${esc(f.nom)}`));
+  const J = (id) => S.joue.has(id);
+  const defav = f.ips != null ? f.ips < 95 : f.sous100;
+  const fav = f.ips != null && f.ips >= 118;
+  const l = [];
+  if (J('ep_lycee')) l.push(defav ? ['ok', `Les lycées de ${f.nom} reçoivent des heures en plus : avec un IPS moyen ${f.ips != null ? 'de ' + f.ips : 'sous 100'}, ils sont dans la cible de l’éducation prioritaire au lycée.`]
+    : fav ? ['non', `Les lycées de ${f.nom} (IPS moyen ${f.ips}) financent une part de l’éducation prioritaire au lycée : un peu moins d’heures chez vous, davantage sous 95. C’est ce que vous avez choisi.`]
+    : ['neutre', `L’éducation prioritaire au lycée ne change rien pour ${f.nom}${f.ips != null ? ` (IPS moyen ${f.ips}, dans la moyenne)` : ' : son IPS moyen n’est pas connu du jeu, les lycées sous 95 y sont servis un par un'}.`]);
+  if (J('bulletin_lycee')) l.push(['ok', `Chaque lycée de ${f.nom} publie désormais sa dépense par élève, ses heures perdues, son IPS et sa valeur ajoutée. Ce que ce dossier n’avait pas pu trouver, un élève peut le lire sur la porte.`]);
+  if (J('open_data_lycee')) l.push(['ok', 'Les heures de cours non assurées sont affichées chaque mois à l’entrée de chaque lycée.']);
+  if (J('plan_chaleur')) l.push(['ok', `Le diagnostic thermique de chaque lycée de ${f.nom} est publié ; au-dessus de 30 °C, les cours s’adaptent ; les travaux vont d’abord aux lycées les plus chauds et les plus défavorisés.`]);
+  if (J('garantie_trajet')) l.push(['ok', 'Aucun lycéen à plus de quarante-cinq minutes de son lycée sans internat gratuit ou aide au transport : la garantie vaut surtout pour les communes rurales du département.']);
+  if (J('eleve_vote_region')) l.push(['ok', `Deux lycéens votent à la commission lycées de la région ${f.regionNom}.`]);
+  if (J('bp_regional')) l.push(['ok', f.region.participation ? `La région ${f.regionNom} avait déjà un budget participatif lycéen ; il passe à 1 % du budget des lycées, voté par les élèves.` : `La région ${f.regionNom} n’avait pas de budget participatif lycéen ; elle a désormais 1 % de son budget des lycées à faire voter par les élèves.`]);
+  if (J('budget_participatif')) l.push(['ok', 'Deux euros par élève, dépensés sur un vote des élèves, dans chaque lycée.']);
+  if (J('enquete_climat')) l.push(['ok', 'Tous les deux ans, les élèves de chaque lycée répondent à l’enquête de climat scolaire et en voient les résultats.']);
+  if (J('droit_reponse')) l.push(['ok', 'Toute question du conseil de la vie lycéenne reçoit une réponse écrite sous un mois.']);
+  if (J('charte_sanitaires')) l.push(['ok', 'Les toilettes sont ouvertes, équipées et visitées deux fois par an par les élèves.']);
+  if (J('cantine_lycee')) l.push(['ok', f.region.cantine ? `Le repas à un euro pour les boursiers s’ajoute à la tarification de la région (${f.region.cantine.v}).` : 'Le repas à un euro pour les boursiers, dans tous les lycées.']);
+  if (!l.length) l.push(['non', `Aucune de vos décisions ne change quelque chose de visible dans un lycée de ${f.nom} : ni les murs, ni la parole des élèves, ni ce qu’on sait de chaque établissement. Les professeurs et les programmes, peut-être ; de loin.`]);
+  const pr = S.territoire.priorite;
+  if (pr === 'territoires') l.push([J('ep_lycee') || J('garantie_trajet') || J('plan_chaleur') ? 'ok' : 'non', J('ep_lycee') || J('garantie_trajet') || J('plan_chaleur') ? 'Vous aviez dit « les territoires d’abord » : vous avez déplacé des moyens vers ceux qui en ont le moins.' : 'Vous aviez dit « les territoires d’abord ». Aucune de vos mesures n’a déplacé de moyens d’un territoire vers un autre.']);
+  if (pr === 'national') l.push([J('ep_lycee') ? 'non' : 'ok', J('ep_lycee') ? 'Vous aviez dit « les mêmes règles partout », puis vous avez créé un barème au profil social. Les lycéens appellent cela changer d’avis ; vous, apprendre.' : 'Vous aviez dit « les mêmes règles partout » : vous vous y êtes tenu.']);
+  d.appendChild(el('ul', 'terr-liste', l.map(([k, t]) => `<li class="${k}">${k === 'ok' ? '✓' : k === 'non' ? '✗' : '–'} ${fr(t)}</li>`).join('')));
+  return d;
 }
 
 /* Le miroir de l'automne : ce que vous pensiez, ce que disent les faits.
@@ -2099,6 +2301,7 @@ function ecranBilan(B) {
   d.appendChild(blocBoussole(S, true));
   /* --- et les lycéens --- */
   if (S.lyceens) d.appendChild(blocLyceens(S, true));
+  if (S.territoire) d.appendChild(blocTerritoire(S));
   if (S.coleres && Object.keys(S.coleres.avis).length) d.appendChild(blocMiroir(S));
 
   const det = el('details', 'bilan-detail');
@@ -2391,7 +2594,8 @@ function dateDe(q) {
   if (q.type === 'avance') return 'novembre 2026';
   if (q.type === 'entretien') return 'novembre 2026';
   if (q.type === 'profil') return 'novembre 2026';
-  if (q.type === 'colere' || q.type === 'faits') return 'novembre 2026';
+  if (q.type === 'colere' || q.type === 'faits') return q.quand && /^Rentrée/.test(q.quand) ? `septembre ${an}` : 'novembre 2026';
+  if (q.type === 'territoire') return 'novembre 2026';
   if (q.type === 'intention') return `juillet ${an}`;
   if (q.type === 'affaire') return `décembre ${an}`;
   if (q.type === 'polemique') return `septembre ${an}`;
@@ -2434,7 +2638,8 @@ function situer(q) {
   if (t === 'doctrine') return ['novembre', 'pupitre'];
   if (t === 'reperes') return [q.note === 'demographie' ? 'ete' : 'novembre', q.note === 'budget' ? 'pieces' : q.note === 'lyceens' ? 'megaphone' : 'courbe'];
   if (t === 'avance') return ['novembre', 'pieces'];
-  if (t === 'colere' || t === 'faits') return ['novembre', 'megaphone'];
+  if (t === 'colere' || t === 'faits') return [q.quand && /^Rentrée/.test(q.quand) ? 'septembre' : 'novembre', 'megaphone'];
+  if (t === 'territoire') return ['novembre', 'carte'];
   if (t === 'intention') return ['ete', 'courbe'];
   if (t === 'dossier') return ['ete', 'soleil'];
   if (t === 'lettrePlafond') return ['ete', 'lettre'];
@@ -2501,6 +2706,7 @@ function rendre(q) {
   else if (q.type === 'blocus') ecranBlocus(q);
   else if (q.type === 'colere') ecranColere(q);
   else if (q.type === 'faits') ecranFaits(q);
+  else if (q.type === 'territoire') ecranTerritoire(q);
   else if (q.type === 'livraison') ecranLivraison(q);
   else if (q.type === 'plateau') ecranPlateau(q);
   else if (q.type === 'retrait') ecranRetrait(q);

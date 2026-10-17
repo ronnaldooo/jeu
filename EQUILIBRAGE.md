@@ -1893,8 +1893,93 @@ Les cartes sont trop peu coûteuses et trop peu puissantes pour déplacer les
 cibles ; elles changent ce que le joueur peut dire aux lycéens, pas ce qu'il
 peut gagner.
 
+## 3 duotricies. Mon lycée, mon département : les territoires entrent dans le jeu
+
+Commande : chercher ce qui est investi par lycéen selon les régions, comparer
+avec l'étranger, permettre à un élève de retrouver les données de son
+département, se mettre à sa place. Le dossier est `RECHERCHE-TERRITOIRES.md`
+; voici ce qui en est passé dans le jeu, et comment l'équilibre a tenu.
+
+**Un écran « Mon lycée » au prologue (`etapeTerritoire`, type
+`territoire`).** Après la note d'héritage, le joueur choisit un département
+(les 101, groupés par région, dans `moteur/territoires.js`). Le jeu affiche
+ce qu'il sait, et seulement cela : l'investissement régional par lycéen
+quand la Gazette des communes l'a relevé (trois valeurs, l'ordre des quatre
+premières), la dépense de fonctionnement et les subventions au privé pour
+l'Île-de-France, la cantine pour deux régions, le budget participatif pour
+quatre, l'IPS moyen des lycées pour huit départements et « sous 100 » pour
+cinq autres (note DEPP 25-21), trois faits d'académie (IPP sur Créteil,
+Versailles et Paris ; participation CVL à Orléans-Tours), la chaleur dans
+l'Hérault, Mayotte et la Guyane. Là où rien n'a été relevé, l'écran le dit
+et donne la fourchette nationale. Un bouton « Chercher mes lycées » appelle
+l'interface de programmation des données ouvertes du ministère (jeu
+`fr-en-ips-lycees-ap2023`) : les noms de colonnes sont découverts sur un
+premier enregistrement, les lycées du département sont filtrés sur la
+dernière rentrée, et le joueur peut taper le nom de son lycée pour lire son
+IPS et son tiers dans le département. En l'absence de réseau (le cas de la
+session de développement, qui n'a pas pu tester l'appel réel ni les en-têtes
+d'autorisation inter-origines du serveur), le repli affiche les cinq
+adresses où chercher soi-même. Le joueur déclare ensuite une intention
+(« les territoires d'abord », « les mêmes règles partout », « je verrai »),
+que le bilan vérifie. Rien de tout cela ne change les règles du moteur : le
+choix n'a pas d'effet sur les compteurs, par honnêteté, puisqu'aucune donnée
+ne permettrait de dire qu'un ministre venu du Cantal gouverne autrement.
+
+**Une dixième colère, à la première rentrée (`etapeColereRentree`).** Le
+corps des colères est factorisé (`traiterColere(s, col, quand)`) ; le
+prologue sert celles sans `moment`, la rentrée 2027 sert `territoires`
+(« À Paris, ils ont des agrégés et la clim. Chez nous, des contractuels et
+32 °C »). Quatre faits (885 à 1 978 € ; IPS 71 à 129 et sortie des lycées
+de l'éducation prioritaire en 2015 ; dépense d'État par territoire non
+publiée, IPP ; −10 points en seconde GT en rural), verdict *en partie* :
+« fondée, mais pas là où elle se cherche ». L'écran des faits rappelle au
+joueur ce que le jeu sait de son propre département. La réponse se prend sur
+l'enveloppe de l'année, une carte au plus, comme à l'automne.
+
+**Sept cartes, famille `territoires`.**
+
+| Carte | Coût (Md€) | D'où vient l'idée | Preuve |
+|---|---|---|---|
+| `bulletin_lycee` : dépense par élève, heures perdues, IPS, valeur ajoutée publiés par lycée | 0,01 | loi ESSA (États-Unis), My School (Australie) ; proposition du jeu | 2 |
+| `ep_lycee` : dotation horaire bonifiée sous IPS 95, financée pour un tiers au-dessus de 125 | 0,22 (2 400 ETP) | Cour des comptes 2018 (allocation progressive) ; sortie des lycées de l'EP en 2015 | 3 |
+| `eleve_vote_region` : deux lycéens avec droit de vote à la commission lycées de la région | 0 | student trustees de l'Ontario, poussés d'un cran ; proposition du jeu | 1 |
+| `bp_regional` : 1 % du budget lycées de chaque région voté par les élèves, 20 M€ d'amorçage | 0,02 | Occitanie, Bretagne, Centre-Val de Loire ; Portugal | 2 |
+| `enquete_climat` : l'ELCS obligatoire tous les deux ans, restituée aux élèves | 0,005 | dispositif DEPP existant ; proposition du jeu | 2 |
+| `plan_chaleur` : diagnostic thermique publié, protocole au-dessus de 30 °C, 200 M€/an État-région | 0,20 | relevés SNES 2026, question écrite 17103, Park et al. (2020) | 3 |
+| `garantie_trajet` : à plus de 45 minutes, internat gratuit ou aide au transport | 0,10 | réponse ministérielle (−10 points), Insee, Behaghel et al. (2017) | 2 |
+
+**Équilibre.** À la première passe, la cible 3 manquait de 0,1 point : la
+stratégie vitrine répondait à la nouvelle colère par le plan chaleur (vitrine
++5/+5/+3, effets réels à 3 cadenas), ce qui relevait son bilan réel. Deux
+retouches, toutes deux défendables sur le fond : la vitrine du plan chaleur
+ramenée à +3/+2/+3 (un diagnostic publié fait moins de bruit qu'une annonce
+de travaux), et l'effet réel du bulletin de chaque lycée ramené de 2 à 1 sur
+l'égalité (« seul, un chiffre ne change rien », dit sa propre justification).
+La stratégie vitrine choisit alors le bulletin, la stratégie réel le plan
+chaleur, le joueur attentif la garantie trajet. Le joueur attentif
+(`MIXTE.faits`) accepte une sixième réponse pour la colère de rentrée, au
+lieu de s'arrêter à cinq. Résultat : 4/4 sur les graines 5 (400 parties),
+11 et 23 (700 parties) ; mixte 54 %, passif 47 % sur la graine 5.
+
+**Bilan « vu de votre département » (`blocTerritoire`).** Une liste, pas une
+note : ce que chaque décision change de visible dans un lycée du
+département choisi (l'éducation prioritaire selon son IPS, le bulletin, la
+chaleur, le trajet, le vote à la région, le budget participatif selon que la
+région en avait déjà un, les toilettes, la cantine selon le tarif régional),
+puis le rappel de l'intention déclarée et de ce qu'elle a donné. Quand rien
+n'a changé de visible, le bilan le dit aussi.
+
+**Fiches et sources.** Deux fiches de référence (« Mon lycée, mon
+département », dix chiffres ; « Le mode d'emploi du lycéen », sept étapes),
+quarante sources ajoutées (105 au total), dont les comparaisons allemande,
+espagnole, américaine, italienne et canadienne, et les trois modèles de
+transparence par établissement. Le robot parcourt le nouvel écran (choix
+d'un département, appel réseau refusé, repli) et le bilan sur les deux
+largeurs sans erreur.
+
 ## 5. Paramètres à réexaminer après tests humains
 
+- **Appel en direct aux données ouvertes.** L'écran « Mon lycée » appelle data.education.gouv.fr depuis le navigateur du joueur ; l'appel n'a pas pu être testé depuis la session de développement (réseau fermé). À vérifier sur un téléphone : en-têtes inter-origines, noms de colonnes découverts, délai de 8 secondes. Si le service refuse, le repli (adresses) s'affiche et rien ne casse.
 - **Version grand public.** Le passif survit presque autant que le mixte (47-53 % contre 52-59 %). Si les premiers joueurs trouvent qu'on peut gagner en ne faisant rien, relever `IMMOBILISME` ou faire peser davantage la colère lycéenne sur les convocations. Et vérifier que la colère initiale (90, les lycées sont bloqués le jour de la nomination) et le seuil (62) laissent une chance d'éviter le blocus de la première rentrée à un joueur qui répond à trois colères à l'automne.
 
 | Paramètre | Valeur | Ce qu'il faut regarder |

@@ -1,7 +1,7 @@
 # Rue de Grenelle
 
 **Automne 2026. Les lycées sont bloqués depuis six semaines, le ministre
-démissionne, on vous nomme. Neuf colères lycéennes à examiner, un budget en
+démissionne, on vous nomme. Dix colères lycéennes à examiner, un budget en
 discussion, trois rentrées à tenir, et une question : sur quoi serez-vous
 jugé ?**
 
@@ -87,6 +87,26 @@ appliqués) ; la preuve est notée en conséquence, basse. Une fiche « Comment
 marche un lycée » explique qui décide de quoi entre le proviseur, le conseil
 d'administration, la région et le ministre.
 
+**Mon lycée, mon département.** Avant les colères, le joueur dit d'où il
+regarde l'école : il choisit le département du lycée qu'il connaît. Le jeu
+lui montre ce qu'il en sait, chiffre par chiffre et avec la source : ce que
+sa région investit par lycéen (de 885 à 1 978 € par an selon les régions,
+quand la presse l'a relevé), le profil social moyen des lycées du département
+quand la DEPP l'a publié, le prix de la cantine, le budget participatif s'il
+existe, et ce que personne ne publie : les heures de cours perdues et la
+dépense par lycée. Si l'appareil a du réseau, un bouton va chercher les
+lycées du département dans les données ouvertes du ministère (nombre, IPS
+moyen, le plus et le moins favorisé, et le sien par son nom) ; sinon, le jeu
+donne les adresses où chercher soi-même. Le joueur dit alors si sa politique
+tiendra compte des territoires, et le bilan le lui rappelle. À la première
+rentrée, une dixième colère monte, « chez nous et pas ailleurs », avec sept
+cartes « territoires » : le bulletin annuel de chaque lycée, l'éducation
+prioritaire au lycée, deux lycéens qui votent à la région, le budget
+participatif régional, l'enquête de climat scolaire obligatoire, le plan
+chaleur, la garantie trajet. Le bilan se termine par « vu de votre
+département » : ce que vos décisions y ont changé, et ce qu'elles n'y ont pas
+changé.
+
 **Puis les rentrées.** Une jauge cachée, la colère lycéenne, se lit en mots
 dans le bandeau. Si les réponses de l'automne manquent, les lycées se bloquent
 à la rentrée suivante et la circulaire de rentrée ne peut plus parler que
@@ -134,11 +154,12 @@ petit mot. Plus des unes de journal, un fil social de circonstance, et un bilan
 qui révèle, enfin, ce que vous avez vraiment produit.
 
 **Un bouton « Comprendre le jeu » est disponible en bas à gauche de chaque
-écran.** Il ouvre treize fiches de référence — budget, démographie, niveaux, inégalités,
+écran.** Il ouvre quinze fiches de référence — budget, démographie, niveaux, inégalités,
 métier enseignant, remplacement, organisation du temps, climat scolaire, ce qui
-a marché ailleurs, pourquoi le niveau baisse, comment marche un lycée, l'automne
-2026 des lycéens, et la mécanique du jeu elle-même — soit près de 100 chiffres,
-chacun suivi de sa source, cliquable.
+a marché ailleurs, pourquoi le niveau baisse, comment marche un lycée, mon
+lycée et mon département, le mode d'emploi du lycéen, l'automne 2026 des
+lycéens, et la mécanique du jeu elle-même — soit plus de 110 chiffres, chacun
+suivi de sa source, cliquable.
 
 ## L'équilibrage
 
@@ -180,10 +201,11 @@ jouer.
 
 ```
 index.html                   LE JEU — fichier unique autonome
-moteur/                      constantes sourcées, catalogue de 84 cartes et 9 colères, repères sourcés, moteur en générateur
-moteur/reperes.js            les 13 fiches de référence et leurs 63 sources
+moteur/                      constantes sourcées, catalogue de 91 cartes et 10 colères, repères et territoires sourcés, moteur en générateur
+moteur/reperes.js            les 15 fiches de référence et leurs 105 sources
 RECHERCHE-GRAND-PUBLIC.md    le dossier de recherche d'octobre 2026 : mouvement lycéen, projets des partis
-RECHERCHE-TERRITOIRES.md     coût par lycéen selon les régions, comparaisons internationales, données par département, idées (non encore codées)
+RECHERCHE-TERRITOIRES.md     coût par lycéen selon les régions, comparaisons internationales, données par département, et ce qui en a été fait
+moteur/territoires.js        les 101 départements et ce que le jeu sait de chacun, chiffre par chiffre
 simulations/                 stratégies-types et bancs d'essai
 interface/                   gabarit (styles) + application (écrans, presse, bilan)
 outil/construire.js          assemblage

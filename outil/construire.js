@@ -25,6 +25,7 @@ function nomsExportes(src) {
 const constantes = lire('moteur/constantes.js');
 const catalogue = lire('moteur/catalogue.js');
 const reperes = lire('moteur/reperes.js');
+const territoires = lire('moteur/territoires.js');
 const moteur = lire('moteur/moteur.js');
 const app = lire('interface/app.js');
 const gabarit = lire('interface/gabarit.html');
@@ -38,6 +39,8 @@ const bundle = [
   aplatir(catalogue),
   '/* ===== moteur/reperes.js ===== */',
   aplatir(reperes),
+  '/* ===== moteur/territoires.js ===== */',
+  aplatir(territoires),
   '/* ===== moteur/moteur.js ===== */',
   aplatir(moteur),
 ].join('\n');

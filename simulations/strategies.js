@@ -222,7 +222,7 @@ export const MIXTE = {
   faits: (s, q) => {
     if (q.postures) return 0;
     const prises = Object.values(s.coleres.decisions).filter((d) => d && !String(d).startsWith('posture')).length;
-    if (prises >= 5) return null;
+    if (prises >= (q.colere && q.colere.moment ? 6 : 5)) return null;   // une réponse de plus pour la colère de rentrée
     const actives = s.reformesActives.length;
     const preuve = (c) => Math.max(0, ...(c.reel || []).map((e) => e.cadenas));
     const dispo = q.dispo.filter((c) => !(c.reforme && actives >= 3) && !(c.greve && c.greve.intensite >= 4)

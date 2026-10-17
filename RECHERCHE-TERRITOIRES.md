@@ -539,3 +539,35 @@ Participation lycéenne en France
 - Académie d'Orléans-Tours, participation CVL 2025 : https://www.ac-orleans-tours.fr/media/33744/download
 - IH2EF, le conseil de la vie lycéenne : https://www.ih2ef.gouv.fr/conseil-de-la-vie-lyceenne-cvl
 - Éduscol, enquête locale de climat scolaire : https://eduscol.education.gouv.fr/5016/une-ecole-engagee-en-faveur-du-climat-scolaire
+
+---
+
+## 10. Ce qui a été fait (même jour, après « fais les choix que tu veux »)
+
+Décisions prises, par rapport à la partie 7 :
+
+1. **L'écran « Mon lycée, mon département »** existe, au prologue, avec les
+   données embarquées **et** l'appel en direct, parce que le second coûte
+   peu et rend beaucoup quand il marche : les noms de colonnes sont
+   découverts à la volée, l'échec rend la liste des adresses. Il n'a pas pu
+   être testé depuis cette session (réseau fermé) ; c'est le premier point à
+   vérifier sur un téléphone. Les données embarquées sont strictement celles
+   relevées dans ce dossier : trois régions chiffrées sur treize pour
+   l'investissement, huit départements sur 101 pour l'IPS. Le jeu dit « non
+   relevé » partout ailleurs plutôt que d'inventer, et montre la fourchette.
+2. **La dixième colère** arrive à la première rentrée, pas au prologue, qui
+   est déjà long. Elle est personnalisée par le département choisi.
+3. **Sept cartes** sur les neuf proposées : le repas plancher a été écarté
+   (la carte « repas à un euro pour les boursiers » existait déjà) et la
+   péréquation des régions aussi (elle recoupe l'éducation prioritaire au
+   lycée, qui est la seule à déplacer réellement des moyens). Les sept sont
+   écrites avec la règle du dossier précédent : porteurs réels quand il y en
+   a, « proposition du jeu » sinon, preuve basse.
+4. **Le bilan « vu de votre département »** existe, en liste, et il
+   vérifie l'intention déclarée au début.
+
+Ce qui n'a pas été fait, et pourquoi : l'agrégation de l'IPS par département
+pour les 101 (il faut télécharger l'export, impossible d'ici ; l'appel en
+direct la remplace quand il y a du réseau) ; le tableau complet des treize
+régions (non lu) ; toute donnée par établissement sur l'argent et les heures,
+qui n'existe pas, et dont le jeu fait précisément une carte.

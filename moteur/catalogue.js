@@ -1847,7 +1847,153 @@ export const CATALOGUE = [
     ideeRecue: '« Les chiffres existent déjà. » Ils existent au ministère, en moyenne nationale, un an après. Un chiffre qu’on ne peut pas lire sur la porte de son lycée n’est pas un chiffre, c’est une statistique.',
     mot: "La transparence est une pression, et la pression ne tombe jamais sur ceux qui décident du remplacement. Enfin, presque jamais : c’est tout l’intérêt.",
   },
+  /* ====================================================================
+     TERRITOIRES — ce qu'un lycéen reçoit dépend de l'endroit où il vit.
+     Sept cartes nées du dossier RECHERCHE-TERRITOIRES.md : la transparence
+     par établissement, l'éducation prioritaire au lycée, la voix des élèves
+     à la région, la chaleur, le trajet. Celles que le jeu invente le disent.
+     ==================================================================== */
+  {
+    id: 'bulletin_lycee',
+    label: 'Le bulletin de chaque lycée : dépense par élève, heures perdues, profil social et valeur ajoutée, publiés chaque année sur une page',
+    famille: 'territoires',
+    porteurs: ['proposition du jeu, d’après la loi fédérale américaine ESSA (dépense par élève de chaque école publiée) et le site My School australien', 'Cour des comptes (mesurer le temps d’enseignement perdu)', 'fédérations de parents'],
+    contre: ['les syndicats enseignants, qui redoutent un palmarès', 'Régions de France, qui n’a pas envie de voir sa dotation comparée lycée par lycée'],
+    perimetre: 'ministeriel',
+    cout: 0.01, coutETP: 0, pol: 4,
+    theme: 'bulletin_lycee', once: true, reforme: false,
+    lyceens: 6,
+    vitrine: { parents: +5, enseignants: -3, presse: +6, compteurs: { egalite: +1 } },
+    reel: [
+      { compteur: 'egalite', central: 1, delai: 3, cadenas: 2, source: 'rendre visible la dépense par élève lycée par lycée est la condition d’une allocation différenciée ; aux États-Unis, la publication a surtout révélé les écarts à l’intérieur d’un même district' },
+      { compteur: 'sante',   central: 1, delai: 2, cadenas: 2, source: 'la pression sur le remplacement se déplace vers le rectorat quand les heures perdues sont affichées établissement par établissement ; non évalué en France' },
+    ],
+    physique: { adhesion: -2 },
+    preuve: 'La France publie déjà, pour chaque lycée, l’indice de position sociale et la valeur ajoutée au bac. Elle ne publie ni la dépense par élève ni les heures de cours perdues. L’Australie (My School) et les États-Unis (loi ESSA, depuis 2018-2019) publient la dépense par élève de chaque école ; l’Angleterre publie les comptes de chaque établissement. La mesure réunit sur une page par lycée quatre chiffres : la dépense par élève (État et région, calculée par la DEPP), les heures non assurées de l’année, l’IPS et la valeur ajoutée, avec la comparaison aux lycées de profil semblable, comme l’Australie, pour éviter le palmarès brut. Le coût est celui d’un calcul que l’administration sait faire et ne fait pas. L’effet dépend de ce qu’on en fera : seul, un chiffre ne change rien ; il rend possible la discussion sur les moyens.',
+    ideeRecue: '« Ça fera un palmarès. » Le palmarès existe déjà, dans les magazines, à partir des seuls taux de réussite, qui sont les chiffres les plus trompeurs. Publier la dépense et la valeur ajoutée, c’est donner aux lycées modestes de quoi répondre au palmarès.',
+    mot: "Un lycéen australien peut lire ce que coûte son école. Un lycéen français peut lire son IPS, ce qui revient à savoir ce qu’il vaut sans savoir ce qu’on lui donne.",
+  },
+  {
+    id: 'ep_lycee',
+    label: 'L’éducation prioritaire au lycée : des heures en plus pour les lycées au profil social le plus défavorisé, financées en partie par les plus favorisés',
+    famille: 'territoires',
+    porteurs: ['Cour des comptes (allocation progressive des moyens selon le profil social de chaque établissement)', 'les organisations lycéennes (« inégalités entre lycées »)', 'FSU et SNES-FSU (retour des lycées dans l’éducation prioritaire)'],
+    contre: ['les fédérations de parents des lycées favorisés', 'SNALC (contre toute dotation « au profil social »)', 'une partie des recteurs, qui redoutent une bataille de dotation horaire dans chaque académie'],
+    perimetre: 'ministeriel',
+    cout: 0.22, coutETP: 2400, pol: 6,
+    theme: 'ep_lycee', once: true, reforme: false,
+    lyceens: 7,
+    greve: { intensite: 1, theme: 'moyens', segment: 'lycee' },
+    vitrine: { parents: -2, enseignants: +3, presse: +4, compteurs: { egalite: +3 } },
+    reel: [
+      { compteur: 'egalite',  central: 3, delai: 3, cadenas: 3, source: 'au collège, l’allocation progressive des moyens et les classes réduites en éducation prioritaire ont des effets mesurés sur les résultats des élèves défavorisés ; au lycée, l’éducation prioritaire a disparu en 2015 sans évaluation de sa suppression' },
+      { compteur: 'reussite', central: 1, delai: 4, cadenas: 2, source: 'effet attendu sur l’accès au bac et la poursuite d’études des lycées à IPS bas ; non évalué au lycée' },
+      { compteur: 'paix',     central: -1, delai: 1, cadenas: 2, source: 'les lycées qui perdent des heures le font savoir ; la bataille de la dotation horaire est annuelle' },
+    ],
+    physique: { adhesion: +1 },
+    preuve: 'Depuis la réforme de 2014-2015, l’éducation prioritaire ne couvre plus que les écoles et les collèges : les lycées en sont sortis, avec une clause de sauvegarde qui s’est éteinte, et la Cour des comptes recommandait dès 2018 une allocation progressive des moyens à tous les établissements selon leur profil social. L’indice de position sociale des lycées va de 59 à 162 ; la mesure donne aux lycées sous 95 une dotation horaire bonifiée (environ 6 % d’heures en plus, soit 2 400 postes), et la finance pour un tiers par une bonification moindre au-dessus de 125, où la dépense d’État par élève est déjà la plus élevée sans être publiée. Les effets des moyens supplémentaires sont mesurés au collège (classes réduites, dédoublements) ; au lycée, ils sont plausibles et non évalués. C’est la carte la plus coûteuse de la famille, et la seule qui déplace réellement des moyens.',
+    ideeRecue: '« Les lycées défavorisés ont déjà plus de moyens. » C’était vrai avant 2015. Depuis, un lycée à IPS 80 et un lycée à IPS 130 reçoivent leurs heures selon le même barème, et le second a les professeurs les plus expérimentés.',
+    mot: "Donner plus à ceux qui ont moins est une phrase que tout le monde applaudit, jusqu’à ce qu’on dise à qui l’on prend.",
+  },
+  {
+    id: 'eleve_vote_region',
+    label: 'Deux lycéens élus siègent avec droit de vote à la commission lycées de chaque conseil régional',
+    famille: 'territoires',
+    porteurs: ['proposition du jeu, d’après les « student trustees » de l’Ontario, qui siègent sans vote, poussés d’un cran', 'les organisations lycéennes (« refonte de la démocratie lycéenne »)'],
+    contre: ['Régions de France (une ingérence de l’État dans la composition des assemblées régionales)', 'une partie des élus régionaux, qui rappellent que l’on vote à dix-huit ans'],
+    perimetre: 'matignon',
+    cout: 0, coutETP: 0, pol: 3,
+    theme: 'eleve_vote_region', once: true, reforme: false,
+    lyceens: 6,
+    vitrine: { parents: +1, enseignants: 0, presse: +4, compteurs: { paix: +1 } },
+    reel: [
+      { compteur: 'paix', central: 2, delai: 2, cadenas: 1, source: 'la participation réelle des élèves aux décisions produit des effets civiques modérés ; aucun pays n’a donné de vote à des élèves dans une assemblée régionale, l’effet est inconnu' },
+    ],
+    physique: {},
+    preuve: 'La région vote chaque automne la dotation de chaque lycée, décide des travaux, du prix de la cantine et de l’internat. Les lycéens n’y siègent nulle part. En Ontario, des élèves élus (« student trustees ») siègent aux conseils scolaires avec voix mais sans vote contraignant ; en Irlande, le syndicat lycéen siège de droit au Conseil national des programmes ; en Allemagne, plusieurs Länder ont des conférences d’établissement à trois tiers. La mesure demande une loi : deux lycéens élus par le conseil académique de la vie lycéenne siègent, avec droit de vote, à la commission des lycées de chaque conseil régional. Elle ne coûte rien et change qui est dans la pièce quand on décide des murs. La recherche sur la participation des élèves distingue nettement la participation qui décide, qui produit des effets civiques, de la participation de façade, qui produit du cynisme ; celle-ci décide.',
+    ideeRecue: '« Des mineurs qui votent un budget, ce n’est pas sérieux. » Deux voix sur une commission de trente ne renversent aucun vote ; elles obligent à expliquer, devant ceux qui vivent dans les lycées, pourquoi on fait ce que l’on fait.',
+    mot: "La démocratie lycéenne a toujours eu des sièges. Elle n’a jamais eu de bulletin.",
+  },
+  {
+    id: 'bp_regional',
+    label: 'Le budget participatif lycéen dans toutes les régions : un pour cent du budget des lycées voté par les élèves, l’État abonde',
+    famille: 'territoires',
+    porteurs: ['les régions qui l’ont déjà fait : Occitanie (depuis 2017, jusqu’à 10 000 € par projet), Bretagne (neuf lycées pilotes), Centre-Val de Loire (2026)', 'proposition du jeu pour la généralisation', 'les organisations lycéennes (un budget que les élèves votent)'],
+    contre: ['une partie des conseils régionaux, qui n’aiment pas qu’on leur dise comment dépenser', 'des chefs d’établissement, qui redoutent un chantier de plus'],
+    perimetre: 'ministeriel',
+    cout: 0.02, coutETP: 0, pol: 2,
+    theme: 'bp_regional', once: true, reforme: false,
+    lyceens: 6,
+    vitrine: { parents: +3, enseignants: +1, presse: +4, compteurs: { paix: +1 } },
+    reel: [
+      { compteur: 'paix', central: 2, delai: 2, cadenas: 2, source: 'les budgets participatifs lycéens existants portent sur le bien-être et la vie commune (foyers, espaces extérieurs) ; effets civiques plausibles, pas d’évaluation d’impact' },
+    ],
+    physique: {},
+    preuve: 'L’Occitanie a lancé en 2017 un budget participatif lycéen : une trentaine de lycées, les élèves proposent et votent, jusqu’à 10 000 € par projet ; la Bretagne a suivi dans neuf lycées pilotes, le Centre-Val de Loire l’annonce pour 2026. Ailleurs, rien, ou un conseil régional des jeunes sans budget. La mesure propose à chaque région une convention : 1 % de son budget lycées, environ 70 M€ pour toutes les régions, soumis au vote des élèves de chaque établissement, et l’État apporte 20 M€ d’amorçage aux régions qui signent. Le Portugal a fait la même chose pour tous ses établissements secondaires en 2017 avec un euro par élève. Les projets votés portent presque toujours sur ce que les adultes ne voient pas : les toilettes, le foyer, les bancs, l’ombre dans la cour.',
+    ideeRecue: '« Les lycéens voteront n’importe quoi. » En Occitanie comme au Portugal, les projets votés sont des foyers, des espaces extérieurs, des casiers. Ce sont les choses que les budgets d’adultes oublient le plus régulièrement.',
+    mot: "Un pour cent, c’est le prix auquel une région achète le droit de dire qu’elle écoute les lycéens. C’est peu cher, et ça marche mieux que la demi-journée de « temps lycéen ».",
+  },
+  {
+    id: 'enquete_climat',
+    label: 'L’enquête de climat scolaire obligatoire dans chaque lycée tous les deux ans, résultats présentés aux élèves et au conseil d’administration',
+    famille: 'territoires',
+    porteurs: ['la DEPP, dont l’enquête locale de climat scolaire existe déjà et attend qu’on s’en serve', 'proposition du jeu pour l’obligation et la restitution aux élèves', 'fédérations de parents'],
+    contre: ['une partie des chefs d’établissement, qui redoutent la comparaison entre lycées', 'les syndicats enseignants si les résultats servent à évaluer les équipes'],
+    perimetre: 'ministeriel',
+    cout: 0.005, coutETP: 0, pol: 1,
+    theme: 'enquete_climat', once: true, reforme: false,
+    lyceens: 4,
+    vitrine: { parents: +3, enseignants: -1, presse: +1, compteurs: { paix: +1 } },
+    reel: [
+      { compteur: 'paix',  central: 2, delai: 2, cadenas: 2, source: 'mesurer le climat scolaire est le préalable des programmes qui l’améliorent ; la mesure seule a un effet faible, régulier quand elle est restituée et suivie' },
+      { compteur: 'sante', central: 1, delai: 3, cadenas: 2, source: 'les enquêtes de climat incluent les personnels : elles rendent visibles les établissements où le métier s’use' },
+    ],
+    physique: {},
+    preuve: 'La DEPP mène tous les quatre ou cinq ans une enquête nationale auprès des lycéens (91 % se sentent bien dans leur lycée en 2022-2023, 40 % des filles très stressées par les évaluations) et propose à chaque établissement une enquête locale, l’ELCS, comparable au national. Presque aucun élève ne sait qu’elle existe, et rien n’oblige à la passer ni à en montrer les résultats. La mesure la rend obligatoire tous les deux ans dans chaque lycée, avec restitution au conseil de la vie lycéenne et au conseil d’administration, et comparaison aux lycées de profil semblable. Les programmes de climat scolaire qui marchent commencent tous par une mesure ; la mesure seule produit peu, mais elle donne aux élèves un chiffre à opposer à « tout va bien ».',
+    ideeRecue: '« On sait déjà comment vont les élèves. » On le sait au niveau national, tous les quatre ans. Aucun proviseur n’est obligé de savoir, cette année, combien d’élèves de son lycée évitent les toilettes ou ont peur dans les transports.',
+    mot: "Un questionnaire anonyme, c’est le seul endroit du lycée où un élève de seconde a exactement le même poids que le proviseur.",
+  },
+  {
+    id: 'plan_chaleur',
+    label: 'Le plan chaleur : diagnostic thermique publié pour chaque lycée, cours adaptés au-dessus de 30 °C, travaux cofinancés État-région',
+    famille: 'territoires',
+    porteurs: ['SNES-FSU (« météo des classes » 2026)', 'des parlementaires de plusieurs groupes (question écrite n° 17103)', 'proposition du jeu pour le seuil et le cofinancement', 'les lycéens de l’Hérault, renvoyés chez eux le 7 septembre 2026'],
+    contre: ['Bercy (les murs sont aux régions)', 'Régions de France, qui demande de l’argent sans le seuil'],
+    perimetre: 'matignon',
+    cout: 0.20, coutETP: 0, pol: 4,
+    theme: 'chaleur', once: true, reforme: false,
+    lyceens: 6,
+    vitrine: { parents: +3, enseignants: +2, presse: +3, compteurs: { sante: +1 } },
+    reel: [
+      { compteur: 'reussite', central: 1, delai: 3, cadenas: 3, source: 'Park et al. (2020) : chaque année scolaire plus chaude réduit les apprentissages mesurés, et la climatisation annule l’essentiel de l’effet ; transposition au climat français incertaine' },
+      { compteur: 'sante',    central: 1, delai: 2, cadenas: 2, source: 'les personnels sont dans les mêmes salles ; effet sur les conditions de travail plausible, non mesuré' },
+    ],
+    physique: {},
+    preuve: 'Pendant les vagues de chaleur de mai et juin 2026, plus de 30 °C ont été relevés dans 78 % puis 88 % des collèges et lycées ayant répondu au relevé du SNES-FSU, et 87 % n’avaient aucune mesure d’adaptation ; le 7 septembre 2026, deux lycées de l’Hérault ont renvoyé leurs élèves. Les murs sont aux régions, dont les plans de rénovation thermique ne suivent pas. Sur dix millions d’élèves américains, une étude de référence trouve qu’une année scolaire plus chaude d’un degré Fahrenheit réduit les apprentissages d’environ 1 %, et que la climatisation des écoles efface l’essentiel de l’effet. La mesure impose un diagnostic thermique publié pour chaque lycée, un protocole national au-dessus de 30 °C mesurés en classe, et un fonds État-région de 200 M€ par an pendant cinq ans pour les travaux, qui va d’abord aux lycées les plus chauds et les plus défavorisés.',
+    ideeRecue: '« Il a toujours fait chaud en juin. » Pas comme ça, pas en mai, et pas en septembre. Et les cours ne s’arrêtaient pas en juin 1990 parce que l’année était finie, pas parce qu’il faisait 32 °C dans la salle.',
+    mot: "Un ministre qui parle de climat scolaire quand il fait 34 °C dans la salle de physique devrait d’abord régler le second.",
+  },
+  {
+    id: 'garantie_trajet',
+    label: 'La garantie trajet : aucun lycéen à plus de quarante-cinq minutes de son lycée sans place d’internat gratuite ou aide au transport',
+    famille: 'territoires',
+    porteurs: ['proposition du jeu', 'les élus des territoires ruraux (passage en seconde générale inférieur de dix points)', 'les régions rurales, qui ont les internats'],
+    contre: ['Bercy', 'une partie des régions, qui organisent déjà le transport scolaire et n’ont pas envie d’une norme nationale'],
+    perimetre: 'matignon',
+    cout: 0.10, coutETP: 0, pol: 3,
+    theme: 'trajet', once: true, reforme: false,
+    lyceens: 4,
+    vitrine: { parents: +4, enseignants: 0, presse: +2, compteurs: { egalite: +2 } },
+    reel: [
+      { compteur: 'egalite', central: 2, delai: 4, cadenas: 2, source: 'l’éloignement de l’offre explique une partie des dix points de passage en seconde générale en moins en rural ; l’internat d’excellence de Sourdun a produit des gains importants la deuxième année (Behaghel et al., 2017)' },
+    ],
+    physique: {},
+    preuve: 'La quasi-totalité des lycéens des communes rurales changent de commune pour aller au lycée, contre la moitié des urbains, et ils mettent nettement plus longtemps. À la sortie du collège, les élèves ruraux entrent en seconde générale et technologique dix points de moins que les urbains, écart que le ministère attribue lui-même à l’éloignement de l’offre. 57 % des lycées ont un internat, bien plus en zone rurale qu’en Île-de-France, et ils sont loin d’être pleins. La mesure fixe une garantie : au-delà de quarante-cinq minutes de trajet, une place d’internat gratuite pour les boursiers ou une aide au transport, cofinancée avec la région. L’évaluation par tirage au sort de l’internat de Sourdun a trouvé un effet nul la première année puis important la deuxième, surtout pour les élèves les plus forts : l’internat aide, mais pas tout de suite et pas tout le monde.',
+    ideeRecue: '« Les ruraux ont moins d’ambition. » Ils ont moins de lycées à moins d’une heure, et ceux qu’ils ont offrent moins de spécialités. L’ambition suit l’offre, à dix points près.',
+    mot: "Quarante-cinq minutes de car le matin, quarante-cinq le soir : c’est une spécialité de moins par jour, et personne ne l’a choisie.",
+  },
 ];
+
 
 
 
@@ -2523,6 +2669,7 @@ const PRINCIPES_FAMILLE = {
   mixite: 'La carte scolaire est un outil d’égalité, pas une contrainte administrative à négocier établissement par établissement. On ne construit pas la mixité en demandant leur avis à ceux qui la fuient.',
   lycee: 'Les lycéens ont dit ce qui manquait : des professeurs, des murs qui tiennent, des journées vivables. Leur répondre par une mesure d’organisation qui se paie sur nos emplois du temps, sans un poste de plus, c’est leur dire qu’on les a entendus et qu’on ne les a pas écoutés.',
   vie_lyceenne: 'La démocratie lycéenne ne se décrète pas depuis Paris. Donner des droits aux élèves sans donner du temps aux adultes qui les accompagnent, c’est organiser la déception des uns et l’épuisement des autres.',
+  territoires: 'Un lycéen de la Creuse et un lycéen de Neuilly ont droit au même service public. Les régions n’y arrivent pas seules, l’État ne publie pas ce qu’il donne à chacun, et l’on nous demande d’appliquer dans nos classes une égalité que personne ne mesure.',
 };
 
 /* Les profils les plus durs ajoutent une phrase qui, elle, est franchement une
@@ -2780,6 +2927,22 @@ export const COLERES = [
     verdict: 'ouverte',
     postures: true,
   },
+  {
+    id: 'territoires',
+    moment: 'rentree',
+    cri: '« À Paris, ils ont des agrégés et la clim. Chez nous, des contractuels et 32 °C. »',
+    qui: 'Les lycéens de Seine-Saint-Denis et de l’Hérault, à la rentrée 2027 ; l’Institut des politiques publiques, qui a essayé de mesurer ce « sentiment d’inégalité territoriale » un an plus tôt.',
+    contexte: 'Un an après l’automne 2026, la colère a changé de forme. Elle ne dit plus « il manque des professeurs », elle dit « il en manque chez nous et pas ailleurs ». Les régions ont publié leurs plans bâti, les magazines leurs palmarès, et chaque lycée a comparé. Ce que la comparaison montre dépend de ce qu’on regarde.',
+    faits: [
+      { v: '885 à 1 978 €', l: 'par lycéen et par an : l’investissement des régions dans leurs lycées publics, du simple au double entre les Hauts-de-France et la Bretagne ; mais la région ne paie qu’un quart du coût d’un lycéen, l’État paie les professeurs partout', src: 'gazette_invest' },
+      { v: '71 à 129', l: 'l’indice de position sociale moyen des lycées selon le département, de Mayotte à Paris ; depuis 2015, les lycées ne sont plus dans l’éducation prioritaire, et un lycée à 80 reçoit ses heures au même barème qu’un lycée à 130', src: 'depp_ips_lycees' },
+      { v: 'non publiée', l: 'la dépense de l’État par élève et par territoire. On sait qu’à Créteil et Versailles les effectifs d’enseignants n’ont pas suivi ceux des élèves depuis 2005, et qu’à Paris les professeurs sont plus âgés, plus souvent agrégés et moins souvent contractuels', src: 'ipp_territoires' },
+      { v: '−10 points', l: 'de passage en seconde générale et technologique pour les élèves des communes rurales, écart que le ministère attribue à l’éloignement de l’offre', src: 'senat_ruraux' },
+    ],
+    lecture: 'La colère est fondée, mais pas là où elle se cherche. L’écart entre régions est réel et du simple au double ; il porte sur le quart régional du coût, les murs et la cantine. L’écart le plus lourd est celui de l’État : qui enseigne dans quel lycée, avec quelle expérience, combien d’heures sont vraiment faites. Celui-là n’est publié nulle part, et c’est le ministre qui pourrait le publier. Quant à la clim, elle n’existe presque nulle part : à Paris non plus.',
+    verdict: 'partielle',
+    mesures: ['ep_lycee', 'bulletin_lycee', 'plan_chaleur', 'garantie_trajet', 'eleve_vote_region'],
+  },
 ];
 
 /* LE BLOCUS LYCÉEN. Quand la colère lycéenne (jauge cachée) dépasse le seuil
@@ -2793,7 +2956,7 @@ export const COLERES = [
 export const BLOCUS_LYCEEN = {
   titre: 'Les lycées se bloquent à nouveau',
   recit: 'Des poubelles devant les grilles, des vidéos sur les réseaux, et le décompte des lycées « perturbés » qui tourne sur les chaînes d’information. Les lycéens reprennent les mots de l’automne 2026 : professeurs absents, journées trop longues, bâtiments dégradés, Parcoursup. Ils ajoutent les vôtres, ceux de l’automne dernier, qu’ils ont gardés.',
-  cadrage: { familles: ['lycee', 'vie_lyceenne'],
+  cadrage: { familles: ['lycee', 'vie_lyceenne', 'territoires'],
     titre: 'La circulaire de rentrée ne parlera que des lycées',
     cause: 'Les lycées sont bloqués : personne n’attend de vous une circulaire sur l’école maternelle. Le menu ne contient que des réponses aux revendications lycéennes, et elles ne viennent pas du même endroit.' },
   reponses: [

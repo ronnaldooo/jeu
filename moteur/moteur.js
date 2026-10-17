@@ -13,6 +13,7 @@
 
 import * as K from './constantes.js';
 import { CATALOGUE, PAR_ID, AFFAIRES, AFFAIRE_PAR_ID, POLEMIQUES_RENTREE, LIVRAISON_PISA, PLATEAU, REVALORISATION, chiffrerRevalorisation, FINANCEMENT_19, DOSSIERS_ETE, AUDIENCES, RECEPTION, BLOCUS_LYCEEN, COLERES, AVIS, argumentaireSyndical, porteursSyndicaux, estContestable, bordsDeCarte } from './catalogue.js';
+import { DEPARTEMENTS, ficheTerritoire } from './territoires.js';
 
 /* ---------------------------------------------------------------- ALÉA --- */
 export function rngDepuis(graine) {
@@ -91,6 +92,7 @@ export function creerPartie({ graine = 1, politique }) {
     lyceens: { colere: K.LYCEENS.colereInitiale, blocus: 0, rompues: [], tenues: [], reponses: [] },
     /* Les colères de l'automne 2026 : l'avis donné, la décision prise. */
     coleres: { avis: {}, decisions: {} },
+    territoire: null,                          // le département que le joueur connaît (écran « Mon lycée »)
     margeAnnee: 0,
 
     attractiviteCible: 0,
@@ -374,40 +376,69 @@ function appliquerPosture(s, idx) {
    ordinaires : elles coûtent sur l'enveloppe des amendements, elles occupent
    la capacité d'absorption, et elles apaisent les lycéens.
    ========================================================================== */
+/* Une colère, en deux écrans : ce qu'ils disent (et votre avis), puis les
+   faits et votre réponse. Servie au prologue de l'automne 2026 et, pour la
+   colère des territoires, à la première rentrée. */
+function* traiterColere(s, col, quand) {
+  const ia = yield { type: 'colere', colere: col, avis: AVIS, quand };
+  const avis = AVIS[Math.max(0, Math.min(AVIS.length - 1, ia | 0))];
+  s.coleres.avis[col.id] = avis.id;
+  if (col.postures) {
+    const ip = yield { type: 'faits', colere: col, avis: avis.id, postures: BLOCUS_LYCEEN.reponses, tresor: s.tresor, capital: s.capital, quand };
+    const r = appliquerPosture(s, ip);
+    s.coleres.decisions[col.id] = 'posture:' + r.type;
+    note(s, `${quand} — « ${col.cri} » : ${r.label}.`, 'colere');
+    return;
+  }
+  /* Les mesures proposées sont sur la table, quel que soit leur calendrier
+     de découverte habituel : la crise les a remontées. */
+  for (const id of col.mesures) if (PAR_ID[id]) s.decouvertes.add(id);
+  const dispo = col.mesures.map((id) => PAR_ID[id]).filter((c) => c && estJouable(s, c));
+  const rep = yield { type: 'faits', colere: col, avis: avis.id, dispo, tresor: s.tresor, capital: s.capital, quand, territoire: s.territoire };
+  if (rep && rep.id && dispo.some((c) => c.id === rep.id)) {
+    const avant = s.joue.size;
+    appliquerMesures(s, [rep], 1, false, 'prologue', false);
+    s.coleres.decisions[col.id] = s.joue.size > avant ? rep.id : null;
+  } else {
+    s.coleres.decisions[col.id] = null;
+  }
+  const d = s.coleres.decisions[col.id];
+  note(s, `${quand} — « ${col.cri} » : ${d ? '« ' + PAR_ID[d].label + ' »' : 'pas de réponse pour l’instant'}.`, 'colere');
+}
+
 function* etapePrologue(s) {
   crediter(s, K.ENVELOPPE_PROLOGUE);
   /* Le PLF 2027 en discussion demande déjà 1 588 postes : c'est le schéma
      d'emplois que Bercy comparera à la carte scolaire de janvier 2027. */
   s.schemaEmploisDemande = -1588;
   s.decouvertes = s.decouvertes || new Set();
-  for (const col of COLERES.slice(0, K.COLERES_MAX)) {
-    const ia = yield { type: 'colere', colere: col, avis: AVIS };
-    const avis = AVIS[Math.max(0, Math.min(AVIS.length - 1, ia | 0))];
-    s.coleres.avis[col.id] = avis.id;
-    if (col.postures) {
-      const ip = yield { type: 'faits', colere: col, avis: avis.id, postures: BLOCUS_LYCEEN.reponses, tresor: s.tresor, capital: s.capital };
-      const r = appliquerPosture(s, ip);
-      s.coleres.decisions[col.id] = 'posture:' + r.type;
-      note(s, `Automne 2026 — « ${col.cri} » : ${r.label}.`, 'colere');
-      continue;
-    }
-    /* Les mesures proposées sont sur la table, quel que soit leur calendrier
-       de découverte habituel : la crise les a remontées. */
-    for (const id of col.mesures) if (PAR_ID[id]) s.decouvertes.add(id);
-    const dispo = col.mesures.map((id) => PAR_ID[id]).filter((c) => c && estJouable(s, c));
-    const rep = yield { type: 'faits', colere: col, avis: avis.id, dispo, tresor: s.tresor, capital: s.capital };
-    if (rep && rep.id && dispo.some((c) => c.id === rep.id)) {
-      const avant = s.joue.size;
-      appliquerMesures(s, [rep], 1, false, 'prologue', false);
-      s.coleres.decisions[col.id] = s.joue.size > avant ? rep.id : null;
-    } else {
-      s.coleres.decisions[col.id] = null;
-    }
-    const d = s.coleres.decisions[col.id];
-    note(s, `Automne 2026 — « ${col.cri} » : ${d ? '« ' + PAR_ID[d].label + ' »' : 'pas de réponse pour l’instant'}.`, 'colere');
+  for (const col of COLERES.filter((c) => !c.moment).slice(0, K.COLERES_MAX)) {
+    yield* traiterColere(s, col, 'Automne 2026');
   }
   const n = Object.values(s.coleres.decisions).filter((d) => d && !String(d).startsWith('posture:')).length;
   note(s, `Automne 2026 : ${n} mesure${n > 1 ? 's' : ''} annoncée${n > 1 ? 's' : ''} en réponse aux lycéens. Les lycéens sont ${humeurLyceenne(s.lyceens.colere)}.`, 'lyceens');
+}
+
+/* La colère qui monte à la première rentrée : « chez nous et pas ailleurs ».
+   Elle se joue comme celles de l'automne, sur l'enveloppe du moment. */
+function* etapeColereRentree(s) {
+  const col = COLERES.find((c) => c.moment === 'rentree');
+  if (!col || s.coleres.avis[col.id]) return;
+  s.decouvertes = s.decouvertes || new Set();
+  yield* traiterColere(s, col, `Rentrée ${s.anneeCiv}`);
+}
+
+/* « Mon lycée » : avant les colères, le joueur dit d'où il regarde. Un
+   ministre arrive toujours avec un lycée en tête ; un lycéen aussi. Le choix
+   ne change pas les règles : il change ce que le jeu lui montre, et ce que
+   le bilan lui dira de son propre territoire. */
+function* etapeTerritoire(s) {
+  const rep = yield { type: 'territoire', departements: DEPARTEMENTS };
+  if (rep && rep.code && ficheTerritoire(rep.code)) {
+    s.territoire = { code: String(rep.code), priorite: rep.priorite || null };
+    const f = ficheTerritoire(rep.code);
+    note(s, `Le lycée que vous connaissez : ${f.nom} (${f.regionNom}). ${rep.priorite === 'territoires' ? 'Vous avez dit que votre politique tiendrait compte des territoires : le bilan s’en souviendra.' : rep.priorite === 'national' ? 'Vous avez dit que les règles seraient les mêmes partout : le bilan s’en souviendra aussi.' : ''}`, 'territoire');
+  }
 }
 
 function* etapeBlocus(s) {
@@ -1517,6 +1548,7 @@ export function* derouler(s) {
   yield* etapeDoctrine(s);
   rafraichir(s);
   yield { type: 'reperes', note: 'lyceens' };
+  yield* etapeTerritoire(s);
   yield { type: 'reperes', note: 'budget' };
   yield* etapeAvance(s);
   yield* etapePrologue(s);
@@ -1552,6 +1584,9 @@ export function* derouler(s) {
     if (s.annee === 1) { yield { type: 'reperes', note: 'demographie' }; yield* etapeIntention(s); }
     yield { type: 'etape', etape: 'juillet' };
     yield* etapeRentree(s);   s.mois = 8;
+    /* La colère des territoires monte à la première rentrée : « chez nous et
+       pas ailleurs ». Elle se traite avant un éventuel blocus. */
+    if (s.annee === 1) yield* etapeColereRentree(s);
     /* Les lycéens d'abord : si la rentrée commence par des blocus, la
        polémique de rentrée attend l'année suivante, l'antenne est prise. */
     const bloque = yield* etapeBlocus(s);
@@ -1591,6 +1626,7 @@ export function jouerMandat({ graine = 1, politique }) {
     let rep;
     if (q.type === 'nomination') rep = 'accepter';
     else if (q.type === 'reperes') rep = null;   // la note de cadrage se lit, elle ne se décide pas
+    else if (q.type === 'territoire') rep = politique.territoire ? politique.territoire(s, q) : null;
     else if (q.type === 'entretien') rep = politique.entretien ? politique.entretien(s, q) : [0, 0, 0];
     else if (q.type === 'profil') rep = politique.profil ? politique.profil(s, q) : 0;
     else if (q.type === 'avance') rep = politique.avance ? politique.avance(s, q) : 1;
@@ -1755,6 +1791,7 @@ export function bilan(s) {
     pointsGreve: +s.pointsGreveCumules.toFixed(1),
     lyceens: { ...s.lyceens, humeur: humeurLyceenne(s.lyceens.colere) },
     coleres: s.coleres,
+    territoire: s.territoire ? { ...s.territoire, fiche: ficheTerritoire(s.territoire.code) } : null,
     fatigue: s.fatigue, abandons: s.abandons,
     mesures: s.mesuresParAnnee.flat().map((m) => m.id),
     histoire: s.histoire,

@@ -631,6 +631,42 @@ table.bilan tr.cache td{background:var(--fiche-2)}
   .rep-liste .v{min-width:0}
   #comprendre-btn{left:8px; bottom:8px}
 }
+/* ---------- mon lycée, mon département ---------- */
+.territoire .ligne-dep{margin:14px 0 6px}
+.choix-dep{width:100%; max-width:30rem; font:inherit; font-size:1rem; padding:10px 12px; background:var(--fiche-2); color:var(--encre); border:1px solid var(--filet-fort); border-radius:4px}
+.choix-dep:focus{outline:2px solid var(--bleu-rf); outline-offset:1px}
+.fiche-terr{margin-top:14px}
+.fiche-terr > .titre-d{font-size:.68rem; letter-spacing:.12em; text-transform:uppercase; font-weight:700; color:var(--c-egalite); margin:8px 0 0}
+.fiche-terr .rep-liste.faits .v{color:var(--c-egalite)}
+.direct{background:var(--fiche-2); border-left:3px solid var(--c-egalite); padding:12px 16px; margin:16px 0}
+.direct .titre-d{font-size:.68rem; letter-spacing:.12em; text-transform:uppercase; font-weight:700; color:var(--c-egalite)}
+.direct .exp{font-size:.86rem; color:var(--encre-2); margin:6px 0 10px; max-width:70ch}
+.direct .btn-mini{cursor:pointer; font-size:.8rem; font-weight:600; padding:8px 12px; border:1px solid var(--c-egalite); background:var(--fiche); color:var(--c-egalite); border-radius:3px}
+.direct .btn-mini[disabled]{opacity:.6; cursor:wait}
+.direct .liens{margin:6px 0 0; padding-left:18px; font-size:.86rem}
+.direct .liens li{margin:6px 0}
+.direct .liens cite{display:block; font-style:normal; font-size:.72rem; color:var(--encre-3); margin-top:2px}
+.direct .liens cite a{color:inherit}
+.cherche-lycee{display:block; width:100%; max-width:26rem; margin-top:10px; font:inherit; font-size:.95rem; padding:8px 10px; background:var(--fiche); color:var(--encre); border:1px solid var(--filet-fort); border-radius:4px}
+.lycee-liste{list-style:none; margin:8px 0 0; padding:0}
+.lycee-liste li{padding:6px 0; border-bottom:1px dotted var(--filet); font-size:.88rem}
+.lycee-liste .c{color:var(--encre-3); font-size:.78rem}
+.lycee-liste .i{font-family:"IBM Plex Mono",monospace; font-weight:700; color:var(--c-egalite); margin-left:6px}
+.territoire details.nat{margin:12px 0 0}
+.territoire details.nat summary{cursor:pointer; font-size:.88rem; font-weight:600; color:var(--encre-2)}
+.decision-terr{margin-top:6px}
+.actions.discret{justify-content:flex-start; margin-top:10px}
+.actions.discret .btn-mini{cursor:pointer; font-size:.78rem; padding:6px 10px; border:1px solid var(--filet-fort); background:transparent; color:var(--encre-3); border-radius:3px}
+.chez-vous{background:var(--fiche-2); border-left:3px solid var(--c-egalite); padding:10px 14px; margin:8px 0 12px; font-size:.9rem}
+.chez-vous cite{display:block; font-style:normal; font-size:.7rem; color:var(--encre-3); margin-top:3px}
+.chez-vous cite a{color:inherit}
+.terr-bloc{background:var(--fiche-2); border-left:3px solid var(--c-egalite); padding:12px 16px; margin:14px 0}
+.terr-bloc .titre-d{font-size:.68rem; letter-spacing:.12em; text-transform:uppercase; font-weight:700; color:var(--c-egalite)}
+.terr-liste{list-style:none; margin:8px 0 0; padding:0}
+.terr-liste li{padding:5px 0; font-size:.9rem; line-height:1.5}
+.terr-liste li.ok{color:var(--encre)}
+.terr-liste li.non{color:var(--encre-2)}
+.terr-liste li.neutre{color:var(--encre-3)}
 /* ---------- version grand public : mots, choix préréglés, lycéens ---------- */
 .qui-dit{font-size:.8rem; color:var(--encre-3); margin:-6px 0 10px; font-style:italic}
 .consigne{font-size:.9rem; color:var(--encre-2); max-width:62ch}
@@ -3327,7 +3363,153 @@ const CATALOGUE = [
     ideeRecue: '« Les chiffres existent déjà. » Ils existent au ministère, en moyenne nationale, un an après. Un chiffre qu’on ne peut pas lire sur la porte de son lycée n’est pas un chiffre, c’est une statistique.',
     mot: "La transparence est une pression, et la pression ne tombe jamais sur ceux qui décident du remplacement. Enfin, presque jamais : c’est tout l’intérêt.",
   },
+  /* ====================================================================
+     TERRITOIRES — ce qu'un lycéen reçoit dépend de l'endroit où il vit.
+     Sept cartes nées du dossier RECHERCHE-TERRITOIRES.md : la transparence
+     par établissement, l'éducation prioritaire au lycée, la voix des élèves
+     à la région, la chaleur, le trajet. Celles que le jeu invente le disent.
+     ==================================================================== */
+  {
+    id: 'bulletin_lycee',
+    label: 'Le bulletin de chaque lycée : dépense par élève, heures perdues, profil social et valeur ajoutée, publiés chaque année sur une page',
+    famille: 'territoires',
+    porteurs: ['proposition du jeu, d’après la loi fédérale américaine ESSA (dépense par élève de chaque école publiée) et le site My School australien', 'Cour des comptes (mesurer le temps d’enseignement perdu)', 'fédérations de parents'],
+    contre: ['les syndicats enseignants, qui redoutent un palmarès', 'Régions de France, qui n’a pas envie de voir sa dotation comparée lycée par lycée'],
+    perimetre: 'ministeriel',
+    cout: 0.01, coutETP: 0, pol: 4,
+    theme: 'bulletin_lycee', once: true, reforme: false,
+    lyceens: 6,
+    vitrine: { parents: +5, enseignants: -3, presse: +6, compteurs: { egalite: +1 } },
+    reel: [
+      { compteur: 'egalite', central: 1, delai: 3, cadenas: 2, source: 'rendre visible la dépense par élève lycée par lycée est la condition d’une allocation différenciée ; aux États-Unis, la publication a surtout révélé les écarts à l’intérieur d’un même district' },
+      { compteur: 'sante',   central: 1, delai: 2, cadenas: 2, source: 'la pression sur le remplacement se déplace vers le rectorat quand les heures perdues sont affichées établissement par établissement ; non évalué en France' },
+    ],
+    physique: { adhesion: -2 },
+    preuve: 'La France publie déjà, pour chaque lycée, l’indice de position sociale et la valeur ajoutée au bac. Elle ne publie ni la dépense par élève ni les heures de cours perdues. L’Australie (My School) et les États-Unis (loi ESSA, depuis 2018-2019) publient la dépense par élève de chaque école ; l’Angleterre publie les comptes de chaque établissement. La mesure réunit sur une page par lycée quatre chiffres : la dépense par élève (État et région, calculée par la DEPP), les heures non assurées de l’année, l’IPS et la valeur ajoutée, avec la comparaison aux lycées de profil semblable, comme l’Australie, pour éviter le palmarès brut. Le coût est celui d’un calcul que l’administration sait faire et ne fait pas. L’effet dépend de ce qu’on en fera : seul, un chiffre ne change rien ; il rend possible la discussion sur les moyens.',
+    ideeRecue: '« Ça fera un palmarès. » Le palmarès existe déjà, dans les magazines, à partir des seuls taux de réussite, qui sont les chiffres les plus trompeurs. Publier la dépense et la valeur ajoutée, c’est donner aux lycées modestes de quoi répondre au palmarès.',
+    mot: "Un lycéen australien peut lire ce que coûte son école. Un lycéen français peut lire son IPS, ce qui revient à savoir ce qu’il vaut sans savoir ce qu’on lui donne.",
+  },
+  {
+    id: 'ep_lycee',
+    label: 'L’éducation prioritaire au lycée : des heures en plus pour les lycées au profil social le plus défavorisé, financées en partie par les plus favorisés',
+    famille: 'territoires',
+    porteurs: ['Cour des comptes (allocation progressive des moyens selon le profil social de chaque établissement)', 'les organisations lycéennes (« inégalités entre lycées »)', 'FSU et SNES-FSU (retour des lycées dans l’éducation prioritaire)'],
+    contre: ['les fédérations de parents des lycées favorisés', 'SNALC (contre toute dotation « au profil social »)', 'une partie des recteurs, qui redoutent une bataille de dotation horaire dans chaque académie'],
+    perimetre: 'ministeriel',
+    cout: 0.22, coutETP: 2400, pol: 6,
+    theme: 'ep_lycee', once: true, reforme: false,
+    lyceens: 7,
+    greve: { intensite: 1, theme: 'moyens', segment: 'lycee' },
+    vitrine: { parents: -2, enseignants: +3, presse: +4, compteurs: { egalite: +3 } },
+    reel: [
+      { compteur: 'egalite',  central: 3, delai: 3, cadenas: 3, source: 'au collège, l’allocation progressive des moyens et les classes réduites en éducation prioritaire ont des effets mesurés sur les résultats des élèves défavorisés ; au lycée, l’éducation prioritaire a disparu en 2015 sans évaluation de sa suppression' },
+      { compteur: 'reussite', central: 1, delai: 4, cadenas: 2, source: 'effet attendu sur l’accès au bac et la poursuite d’études des lycées à IPS bas ; non évalué au lycée' },
+      { compteur: 'paix',     central: -1, delai: 1, cadenas: 2, source: 'les lycées qui perdent des heures le font savoir ; la bataille de la dotation horaire est annuelle' },
+    ],
+    physique: { adhesion: +1 },
+    preuve: 'Depuis la réforme de 2014-2015, l’éducation prioritaire ne couvre plus que les écoles et les collèges : les lycées en sont sortis, avec une clause de sauvegarde qui s’est éteinte, et la Cour des comptes recommandait dès 2018 une allocation progressive des moyens à tous les établissements selon leur profil social. L’indice de position sociale des lycées va de 59 à 162 ; la mesure donne aux lycées sous 95 une dotation horaire bonifiée (environ 6 % d’heures en plus, soit 2 400 postes), et la finance pour un tiers par une bonification moindre au-dessus de 125, où la dépense d’État par élève est déjà la plus élevée sans être publiée. Les effets des moyens supplémentaires sont mesurés au collège (classes réduites, dédoublements) ; au lycée, ils sont plausibles et non évalués. C’est la carte la plus coûteuse de la famille, et la seule qui déplace réellement des moyens.',
+    ideeRecue: '« Les lycées défavorisés ont déjà plus de moyens. » C’était vrai avant 2015. Depuis, un lycée à IPS 80 et un lycée à IPS 130 reçoivent leurs heures selon le même barème, et le second a les professeurs les plus expérimentés.',
+    mot: "Donner plus à ceux qui ont moins est une phrase que tout le monde applaudit, jusqu’à ce qu’on dise à qui l’on prend.",
+  },
+  {
+    id: 'eleve_vote_region',
+    label: 'Deux lycéens élus siègent avec droit de vote à la commission lycées de chaque conseil régional',
+    famille: 'territoires',
+    porteurs: ['proposition du jeu, d’après les « student trustees » de l’Ontario, qui siègent sans vote, poussés d’un cran', 'les organisations lycéennes (« refonte de la démocratie lycéenne »)'],
+    contre: ['Régions de France (une ingérence de l’État dans la composition des assemblées régionales)', 'une partie des élus régionaux, qui rappellent que l’on vote à dix-huit ans'],
+    perimetre: 'matignon',
+    cout: 0, coutETP: 0, pol: 3,
+    theme: 'eleve_vote_region', once: true, reforme: false,
+    lyceens: 6,
+    vitrine: { parents: +1, enseignants: 0, presse: +4, compteurs: { paix: +1 } },
+    reel: [
+      { compteur: 'paix', central: 2, delai: 2, cadenas: 1, source: 'la participation réelle des élèves aux décisions produit des effets civiques modérés ; aucun pays n’a donné de vote à des élèves dans une assemblée régionale, l’effet est inconnu' },
+    ],
+    physique: {},
+    preuve: 'La région vote chaque automne la dotation de chaque lycée, décide des travaux, du prix de la cantine et de l’internat. Les lycéens n’y siègent nulle part. En Ontario, des élèves élus (« student trustees ») siègent aux conseils scolaires avec voix mais sans vote contraignant ; en Irlande, le syndicat lycéen siège de droit au Conseil national des programmes ; en Allemagne, plusieurs Länder ont des conférences d’établissement à trois tiers. La mesure demande une loi : deux lycéens élus par le conseil académique de la vie lycéenne siègent, avec droit de vote, à la commission des lycées de chaque conseil régional. Elle ne coûte rien et change qui est dans la pièce quand on décide des murs. La recherche sur la participation des élèves distingue nettement la participation qui décide, qui produit des effets civiques, de la participation de façade, qui produit du cynisme ; celle-ci décide.',
+    ideeRecue: '« Des mineurs qui votent un budget, ce n’est pas sérieux. » Deux voix sur une commission de trente ne renversent aucun vote ; elles obligent à expliquer, devant ceux qui vivent dans les lycées, pourquoi on fait ce que l’on fait.',
+    mot: "La démocratie lycéenne a toujours eu des sièges. Elle n’a jamais eu de bulletin.",
+  },
+  {
+    id: 'bp_regional',
+    label: 'Le budget participatif lycéen dans toutes les régions : un pour cent du budget des lycées voté par les élèves, l’État abonde',
+    famille: 'territoires',
+    porteurs: ['les régions qui l’ont déjà fait : Occitanie (depuis 2017, jusqu’à 10 000 € par projet), Bretagne (neuf lycées pilotes), Centre-Val de Loire (2026)', 'proposition du jeu pour la généralisation', 'les organisations lycéennes (un budget que les élèves votent)'],
+    contre: ['une partie des conseils régionaux, qui n’aiment pas qu’on leur dise comment dépenser', 'des chefs d’établissement, qui redoutent un chantier de plus'],
+    perimetre: 'ministeriel',
+    cout: 0.02, coutETP: 0, pol: 2,
+    theme: 'bp_regional', once: true, reforme: false,
+    lyceens: 6,
+    vitrine: { parents: +3, enseignants: +1, presse: +4, compteurs: { paix: +1 } },
+    reel: [
+      { compteur: 'paix', central: 2, delai: 2, cadenas: 2, source: 'les budgets participatifs lycéens existants portent sur le bien-être et la vie commune (foyers, espaces extérieurs) ; effets civiques plausibles, pas d’évaluation d’impact' },
+    ],
+    physique: {},
+    preuve: 'L’Occitanie a lancé en 2017 un budget participatif lycéen : une trentaine de lycées, les élèves proposent et votent, jusqu’à 10 000 € par projet ; la Bretagne a suivi dans neuf lycées pilotes, le Centre-Val de Loire l’annonce pour 2026. Ailleurs, rien, ou un conseil régional des jeunes sans budget. La mesure propose à chaque région une convention : 1 % de son budget lycées, environ 70 M€ pour toutes les régions, soumis au vote des élèves de chaque établissement, et l’État apporte 20 M€ d’amorçage aux régions qui signent. Le Portugal a fait la même chose pour tous ses établissements secondaires en 2017 avec un euro par élève. Les projets votés portent presque toujours sur ce que les adultes ne voient pas : les toilettes, le foyer, les bancs, l’ombre dans la cour.',
+    ideeRecue: '« Les lycéens voteront n’importe quoi. » En Occitanie comme au Portugal, les projets votés sont des foyers, des espaces extérieurs, des casiers. Ce sont les choses que les budgets d’adultes oublient le plus régulièrement.',
+    mot: "Un pour cent, c’est le prix auquel une région achète le droit de dire qu’elle écoute les lycéens. C’est peu cher, et ça marche mieux que la demi-journée de « temps lycéen ».",
+  },
+  {
+    id: 'enquete_climat',
+    label: 'L’enquête de climat scolaire obligatoire dans chaque lycée tous les deux ans, résultats présentés aux élèves et au conseil d’administration',
+    famille: 'territoires',
+    porteurs: ['la DEPP, dont l’enquête locale de climat scolaire existe déjà et attend qu’on s’en serve', 'proposition du jeu pour l’obligation et la restitution aux élèves', 'fédérations de parents'],
+    contre: ['une partie des chefs d’établissement, qui redoutent la comparaison entre lycées', 'les syndicats enseignants si les résultats servent à évaluer les équipes'],
+    perimetre: 'ministeriel',
+    cout: 0.005, coutETP: 0, pol: 1,
+    theme: 'enquete_climat', once: true, reforme: false,
+    lyceens: 4,
+    vitrine: { parents: +3, enseignants: -1, presse: +1, compteurs: { paix: +1 } },
+    reel: [
+      { compteur: 'paix',  central: 2, delai: 2, cadenas: 2, source: 'mesurer le climat scolaire est le préalable des programmes qui l’améliorent ; la mesure seule a un effet faible, régulier quand elle est restituée et suivie' },
+      { compteur: 'sante', central: 1, delai: 3, cadenas: 2, source: 'les enquêtes de climat incluent les personnels : elles rendent visibles les établissements où le métier s’use' },
+    ],
+    physique: {},
+    preuve: 'La DEPP mène tous les quatre ou cinq ans une enquête nationale auprès des lycéens (91 % se sentent bien dans leur lycée en 2022-2023, 40 % des filles très stressées par les évaluations) et propose à chaque établissement une enquête locale, l’ELCS, comparable au national. Presque aucun élève ne sait qu’elle existe, et rien n’oblige à la passer ni à en montrer les résultats. La mesure la rend obligatoire tous les deux ans dans chaque lycée, avec restitution au conseil de la vie lycéenne et au conseil d’administration, et comparaison aux lycées de profil semblable. Les programmes de climat scolaire qui marchent commencent tous par une mesure ; la mesure seule produit peu, mais elle donne aux élèves un chiffre à opposer à « tout va bien ».',
+    ideeRecue: '« On sait déjà comment vont les élèves. » On le sait au niveau national, tous les quatre ans. Aucun proviseur n’est obligé de savoir, cette année, combien d’élèves de son lycée évitent les toilettes ou ont peur dans les transports.',
+    mot: "Un questionnaire anonyme, c’est le seul endroit du lycée où un élève de seconde a exactement le même poids que le proviseur.",
+  },
+  {
+    id: 'plan_chaleur',
+    label: 'Le plan chaleur : diagnostic thermique publié pour chaque lycée, cours adaptés au-dessus de 30 °C, travaux cofinancés État-région',
+    famille: 'territoires',
+    porteurs: ['SNES-FSU (« météo des classes » 2026)', 'des parlementaires de plusieurs groupes (question écrite n° 17103)', 'proposition du jeu pour le seuil et le cofinancement', 'les lycéens de l’Hérault, renvoyés chez eux le 7 septembre 2026'],
+    contre: ['Bercy (les murs sont aux régions)', 'Régions de France, qui demande de l’argent sans le seuil'],
+    perimetre: 'matignon',
+    cout: 0.20, coutETP: 0, pol: 4,
+    theme: 'chaleur', once: true, reforme: false,
+    lyceens: 6,
+    vitrine: { parents: +3, enseignants: +2, presse: +3, compteurs: { sante: +1 } },
+    reel: [
+      { compteur: 'reussite', central: 1, delai: 3, cadenas: 3, source: 'Park et al. (2020) : chaque année scolaire plus chaude réduit les apprentissages mesurés, et la climatisation annule l’essentiel de l’effet ; transposition au climat français incertaine' },
+      { compteur: 'sante',    central: 1, delai: 2, cadenas: 2, source: 'les personnels sont dans les mêmes salles ; effet sur les conditions de travail plausible, non mesuré' },
+    ],
+    physique: {},
+    preuve: 'Pendant les vagues de chaleur de mai et juin 2026, plus de 30 °C ont été relevés dans 78 % puis 88 % des collèges et lycées ayant répondu au relevé du SNES-FSU, et 87 % n’avaient aucune mesure d’adaptation ; le 7 septembre 2026, deux lycées de l’Hérault ont renvoyé leurs élèves. Les murs sont aux régions, dont les plans de rénovation thermique ne suivent pas. Sur dix millions d’élèves américains, une étude de référence trouve qu’une année scolaire plus chaude d’un degré Fahrenheit réduit les apprentissages d’environ 1 %, et que la climatisation des écoles efface l’essentiel de l’effet. La mesure impose un diagnostic thermique publié pour chaque lycée, un protocole national au-dessus de 30 °C mesurés en classe, et un fonds État-région de 200 M€ par an pendant cinq ans pour les travaux, qui va d’abord aux lycées les plus chauds et les plus défavorisés.',
+    ideeRecue: '« Il a toujours fait chaud en juin. » Pas comme ça, pas en mai, et pas en septembre. Et les cours ne s’arrêtaient pas en juin 1990 parce que l’année était finie, pas parce qu’il faisait 32 °C dans la salle.',
+    mot: "Un ministre qui parle de climat scolaire quand il fait 34 °C dans la salle de physique devrait d’abord régler le second.",
+  },
+  {
+    id: 'garantie_trajet',
+    label: 'La garantie trajet : aucun lycéen à plus de quarante-cinq minutes de son lycée sans place d’internat gratuite ou aide au transport',
+    famille: 'territoires',
+    porteurs: ['proposition du jeu', 'les élus des territoires ruraux (passage en seconde générale inférieur de dix points)', 'les régions rurales, qui ont les internats'],
+    contre: ['Bercy', 'une partie des régions, qui organisent déjà le transport scolaire et n’ont pas envie d’une norme nationale'],
+    perimetre: 'matignon',
+    cout: 0.10, coutETP: 0, pol: 3,
+    theme: 'trajet', once: true, reforme: false,
+    lyceens: 4,
+    vitrine: { parents: +4, enseignants: 0, presse: +2, compteurs: { egalite: +2 } },
+    reel: [
+      { compteur: 'egalite', central: 2, delai: 4, cadenas: 2, source: 'l’éloignement de l’offre explique une partie des dix points de passage en seconde générale en moins en rural ; l’internat d’excellence de Sourdun a produit des gains importants la deuxième année (Behaghel et al., 2017)' },
+    ],
+    physique: {},
+    preuve: 'La quasi-totalité des lycéens des communes rurales changent de commune pour aller au lycée, contre la moitié des urbains, et ils mettent nettement plus longtemps. À la sortie du collège, les élèves ruraux entrent en seconde générale et technologique dix points de moins que les urbains, écart que le ministère attribue lui-même à l’éloignement de l’offre. 57 % des lycées ont un internat, bien plus en zone rurale qu’en Île-de-France, et ils sont loin d’être pleins. La mesure fixe une garantie : au-delà de quarante-cinq minutes de trajet, une place d’internat gratuite pour les boursiers ou une aide au transport, cofinancée avec la région. L’évaluation par tirage au sort de l’internat de Sourdun a trouvé un effet nul la première année puis important la deuxième, surtout pour les élèves les plus forts : l’internat aide, mais pas tout de suite et pas tout le monde.',
+    ideeRecue: '« Les ruraux ont moins d’ambition. » Ils ont moins de lycées à moins d’une heure, et ceux qu’ils ont offrent moins de spécialités. L’ambition suit l’offre, à dix points près.',
+    mot: "Quarante-cinq minutes de car le matin, quarante-cinq le soir : c’est une spécialité de moins par jour, et personne ne l’a choisie.",
+  },
 ];
+
 
 
 
@@ -4003,6 +4185,7 @@ const PRINCIPES_FAMILLE = {
   mixite: 'La carte scolaire est un outil d’égalité, pas une contrainte administrative à négocier établissement par établissement. On ne construit pas la mixité en demandant leur avis à ceux qui la fuient.',
   lycee: 'Les lycéens ont dit ce qui manquait : des professeurs, des murs qui tiennent, des journées vivables. Leur répondre par une mesure d’organisation qui se paie sur nos emplois du temps, sans un poste de plus, c’est leur dire qu’on les a entendus et qu’on ne les a pas écoutés.',
   vie_lyceenne: 'La démocratie lycéenne ne se décrète pas depuis Paris. Donner des droits aux élèves sans donner du temps aux adultes qui les accompagnent, c’est organiser la déception des uns et l’épuisement des autres.',
+  territoires: 'Un lycéen de la Creuse et un lycéen de Neuilly ont droit au même service public. Les régions n’y arrivent pas seules, l’État ne publie pas ce qu’il donne à chacun, et l’on nous demande d’appliquer dans nos classes une égalité que personne ne mesure.',
 };
 
 /* Les profils les plus durs ajoutent une phrase qui, elle, est franchement une
@@ -4260,6 +4443,22 @@ const COLERES = [
     verdict: 'ouverte',
     postures: true,
   },
+  {
+    id: 'territoires',
+    moment: 'rentree',
+    cri: '« À Paris, ils ont des agrégés et la clim. Chez nous, des contractuels et 32 °C. »',
+    qui: 'Les lycéens de Seine-Saint-Denis et de l’Hérault, à la rentrée 2027 ; l’Institut des politiques publiques, qui a essayé de mesurer ce « sentiment d’inégalité territoriale » un an plus tôt.',
+    contexte: 'Un an après l’automne 2026, la colère a changé de forme. Elle ne dit plus « il manque des professeurs », elle dit « il en manque chez nous et pas ailleurs ». Les régions ont publié leurs plans bâti, les magazines leurs palmarès, et chaque lycée a comparé. Ce que la comparaison montre dépend de ce qu’on regarde.',
+    faits: [
+      { v: '885 à 1 978 €', l: 'par lycéen et par an : l’investissement des régions dans leurs lycées publics, du simple au double entre les Hauts-de-France et la Bretagne ; mais la région ne paie qu’un quart du coût d’un lycéen, l’État paie les professeurs partout', src: 'gazette_invest' },
+      { v: '71 à 129', l: 'l’indice de position sociale moyen des lycées selon le département, de Mayotte à Paris ; depuis 2015, les lycées ne sont plus dans l’éducation prioritaire, et un lycée à 80 reçoit ses heures au même barème qu’un lycée à 130', src: 'depp_ips_lycees' },
+      { v: 'non publiée', l: 'la dépense de l’État par élève et par territoire. On sait qu’à Créteil et Versailles les effectifs d’enseignants n’ont pas suivi ceux des élèves depuis 2005, et qu’à Paris les professeurs sont plus âgés, plus souvent agrégés et moins souvent contractuels', src: 'ipp_territoires' },
+      { v: '−10 points', l: 'de passage en seconde générale et technologique pour les élèves des communes rurales, écart que le ministère attribue à l’éloignement de l’offre', src: 'senat_ruraux' },
+    ],
+    lecture: 'La colère est fondée, mais pas là où elle se cherche. L’écart entre régions est réel et du simple au double ; il porte sur le quart régional du coût, les murs et la cantine. L’écart le plus lourd est celui de l’État : qui enseigne dans quel lycée, avec quelle expérience, combien d’heures sont vraiment faites. Celui-là n’est publié nulle part, et c’est le ministre qui pourrait le publier. Quant à la clim, elle n’existe presque nulle part : à Paris non plus.',
+    verdict: 'partielle',
+    mesures: ['ep_lycee', 'bulletin_lycee', 'plan_chaleur', 'garantie_trajet', 'eleve_vote_region'],
+  },
 ];
 
 /* LE BLOCUS LYCÉEN. Quand la colère lycéenne (jauge cachée) dépasse le seuil
@@ -4273,7 +4472,7 @@ const COLERES = [
 const BLOCUS_LYCEEN = {
   titre: 'Les lycées se bloquent à nouveau',
   recit: 'Des poubelles devant les grilles, des vidéos sur les réseaux, et le décompte des lycées « perturbés » qui tourne sur les chaînes d’information. Les lycéens reprennent les mots de l’automne 2026 : professeurs absents, journées trop longues, bâtiments dégradés, Parcoursup. Ils ajoutent les vôtres, ceux de l’automne dernier, qu’ils ont gardés.',
-  cadrage: { familles: ['lycee', 'vie_lyceenne'],
+  cadrage: { familles: ['lycee', 'vie_lyceenne', 'territoires'],
     titre: 'La circulaire de rentrée ne parlera que des lycées',
     cause: 'Les lycées sont bloqués : personne n’attend de vous une circulaire sur l’école maternelle. Le menu ne contient que des réponses aux revendications lycéennes, et elles ne viennent pas du même endroit.' },
   reponses: [
@@ -4746,6 +4945,259 @@ const SOURCES = {
     date: 'juillet 2026',
     url: 'https://www.education.gouv.fr/sites/default/files/document/chiffres-cl-s-2025-de-la-m-diation-de-l-ducation-nationale-et-de-l-enseignement-sup-rieur-518885.pdf',
   },
+  /* --- territoires : ce que coûte un lycéen selon l'endroit (dossier RECHERCHE-TERRITOIRES.md) --- */
+  insee_die2024: {
+    org: 'Insee, Dépenses d’éducation (compte de l’éducation, DEPP)',
+    titre: 'Dépense intérieure d’éducation 2024 : 197,1 Md€ ; 11 660 € par élève du second degré, 9 080 € au premier degré, 10 920 € en moyenne',
+    date: '2025',
+    url: 'https://www.insee.fr/fr/statistiques/8612572',
+  },
+  ocde_rse2025: {
+    org: 'OCDE, Regards sur l’éducation 2025, note pays France',
+    titre: '18 127 dollars PPA par élève du second cycle du secondaire en France contre 14 562 en moyenne OCDE (+24 %) ; −13 % au préélémentaire et à l’élémentaire, −5 % au collège',
+    date: '2025',
+    url: 'https://www.oecd.org/content/dam/oecd/fr/publications/reports/2025/09/education-at-a-glance-2025-country-notes_9749f4ff/france_0639c7fb/aca6dceb-fr.pdf',
+  },
+  ofgl_regions: {
+    org: 'Observatoire des finances et de la gestion publique locales, relayé par Public Sénat',
+    titre: 'Les régions ont consacré 6,8 Md€ aux établissements du second degré en 2025, dont 4,3 Md€ de fonctionnement et 2,5 Md€ d’investissement',
+    date: '2026',
+    url: 'https://www.publicsenat.fr/actualites/economie/blocage-des-lycees-que-payent-les-regions-pour-la-construction-et-lentretien-des-etablissements',
+  },
+  gazette_invest: {
+    org: 'La Gazette des communes, à partir des comptes administratifs des régions',
+    titre: 'Investissement des régions dans les lycées publics, 2022-2025 : de 885 € par lycéen et par an (Hauts-de-France) à 1 978 € (Bretagne) ; Île-de-France 1 206 € ; 22 Md€ investis en dix ans',
+    date: '2026',
+    url: 'https://www.lagazettedescommunes.com/club-education-et-vie-scolaire/politiques-educatives/lycees/lycees-derriere-les-milliards-investis-un-parc-toujours-vieillissant.HCECLCFIQFAOLBNGRE724K63JU.html',
+  },
+  gazette_prive: {
+    org: 'La Gazette des communes, enquête sur les subventions régionales aux lycées privés',
+    titre: '1,05 Md€ de subventions facultatives aux lycées privés entre 2016 et 2023 : 3 884 € par lycéen du privé en Pays de la Loire, 3 059 € en Bretagne, 405 € en Île-de-France',
+    date: '2025',
+    url: 'https://www.lagazettedescommunes.com/973132/depuis-2016-105-milliard-deuros-de-subventions-regionales-un-choix-politique-assume/',
+  },
+  gazette_accueil: {
+    org: 'La Gazette des communes, comptes administratifs des régions 2023',
+    titre: 'Dépenses de fonctionnement par élève dans les lycées publics en 2023 : 1 500 € en Île-de-France, le plus faible niveau, contre plus de 2 000 € en moyenne',
+    date: '2026',
+    url: 'https://www.lagazettedescommunes.com/club-education-et-vie-scolaire/equipements-scolaires/lycees-derriere-les-blocus-la-question-des-conditions-daccueil.Y4JOGJFZUJD53KRDN5KQLF4SN4.html',
+  },
+  idf_dotation: {
+    org: 'Région Île-de-France, communiqué',
+    titre: 'Dotation globale de fonctionnement des lycées publics : 210 M€ en 2026, doublée en dix ans à périmètre constant ; « près de 4 000 € par lycéen public »',
+    date: '2025',
+    url: 'https://www.iledefrance.fr/presse/la-region-ile-de-france-double-les-moyens-de-fonctionnement-des-lycees-publics-en-dix-ans',
+  },
+  idf_cantine: {
+    org: 'Lycée public francilien, grille régionale de tarification 2026-2027',
+    titre: 'Prix du repas au lycée en Île-de-France selon le quotient familial : de 0,50 € à 4,66 € au ticket ; la Région finance de 53 à 98 % du coût',
+    date: '2026',
+    url: 'https://lyc-ferry-versailles.ac-versailles.fr/IMG/pdf/tarifs_2026-2027_-_famille_mode_d_emploi_-_equitables.pdf',
+  },
+  na_cantine: {
+    org: 'Région Nouvelle-Aquitaine, tarification solidaire des cantines, questions des familles 2026',
+    titre: 'Tarification solidaire dans la totalité des lycées publics à la rentrée 2026 ; les familles les plus modestes paient 2,30 € (le prix des denrées) pour un repas qui coûte 9,50 € à produire',
+    date: '2026',
+    url: 'https://jeunes.nouvelle-aquitaine.fr/sites/default/files/2026-05/Tarification%20solidaire%20cantines%20-%20FAQ%20familles%202026.pdf',
+  },
+  ipp_territoires: {
+    org: 'Institut des politiques publiques, « Mobilisation des lycéens : le sentiment d’inégalité territoriale peut-il être objectivé ? »',
+    titre: 'Entre 2005 et 2025, à Créteil et Versailles, les effectifs d’enseignants n’ont pas suivi ceux des élèves ; à Paris, l’inverse, avec des enseignants plus âgés, plus souvent agrégés, moins souvent contractuels. La dépense d’État par élève et par territoire n’est pas mesurable',
+    date: '2026',
+    url: 'https://www.ipp.eu/mobilisation-des-lyceens-le-sentiment-dinegalite-territoriale-peut-il-etre-objective/',
+  },
+  depp_ips_lycees: {
+    org: 'DEPP, note d’information 25-21, « Quel est le profil social des lycées ? »',
+    titre: 'IPS moyen des lycées à la rentrée 2024 : 109 (de 59 à 162) ; 125 dans le privé sous contrat, 105 dans le public ; 92 en lycée professionnel, 121 en général et technologique ; par département, de 71 (Mayotte) à 129 (Paris)',
+    date: '2025',
+    url: 'https://www.education.gouv.fr/depp/quel-est-le-profil-social-des-lycees-452742',
+  },
+  ods_ips: {
+    org: 'Ministère de l’Éducation nationale, données ouvertes : « Indices de position sociale des lycées (à partir de 2023) »',
+    titre: 'Une ligne par lycée et par rentrée, public et privé sous contrat, avec l’IPS par voie ; export CSV et JSON, interface de programmation ouverte (5 000 appels par jour sans compte)',
+    date: '2025',
+    url: 'https://data.education.gouv.fr/explore/dataset/fr-en-ips-lycees-ap2023/',
+  },
+  ival_guide: {
+    org: 'DEPP, indicateurs de résultats des lycées (IVAL), guide méthodologique 2025',
+    titre: 'Pour chaque lycée, le taux de réussite au bac et le taux d’accès de la seconde au bac, comparés à ce que le profil des élèves laissait attendre : la « valeur ajoutée »',
+    date: '2025',
+    url: 'https://www.education.gouv.fr/indicateurs-resultats-lycees',
+  },
+  datagouv_bac: {
+    org: 'data.gouv.fr, DEPP, « Réussite au baccalauréat par département »',
+    titre: 'Admis et taux de réussite par département et par voie, sessions 2023 et 2024 (notes DEPP 24-07 et 25-05)',
+    date: '2025',
+    url: 'https://www.data.gouv.fr/datasets/67ac1cead25c6f09c2c6a495',
+  },
+  geo_education: {
+    org: 'DEPP, Géo-éducation, l’observatoire territorial sur l’éducation',
+    titre: 'Cartes interactives d’indicateurs scolaires par commune, département, académie, bassin de vie et aire d’éducation : élèves, établissements, résultats, contexte social',
+    date: '2026',
+    url: 'https://www.education.gouv.fr/geo-education-l-observatoire-territorial-sur-l-education-343981',
+  },
+  geo_ecole2026: {
+    org: 'DEPP, Géographie de l’École 2026',
+    titre: '38 fiches cartographiées (environnement social, contexte scolaire, moyens, parcours et résultats), avec les fichiers de données par département, académie ou région',
+    date: '2026',
+    url: 'https://www.education.gouv.fr/sites/default/files/document/g-ographie-de-l-cole-2026-519114.pdf',
+  },
+  senat_ruraux: {
+    org: 'Sénat, réponse du ministère de l’Éducation nationale à une question écrite',
+    titre: 'Les élèves des communes rurales ont, à l’issue du collège, un taux de passage en seconde générale et technologique inférieur de 10 points à ceux des communes urbaines, écart attribué à l’éloignement de l’offre de formation',
+    date: '2025',
+    url: 'https://www.senat.fr/questions/base/2025/qSEQ250203074.html',
+  },
+  letudiant_heures: {
+    org: 'L’Étudiant, chiffres du ministère de l’Éducation nationale',
+    titre: '7,5 % des heures d’enseignement perdues en 2024-2025 dans les collèges et lycées pour absence d’un professeur, jusqu’à 14 % dans les établissements les plus touchés ; les absences longues non remplacées ont presque doublé en six ans',
+    date: '2026',
+    url: 'https://www.letudiant.fr/lycee/filiere-generale-et-technologique/article/mouvement-lyceen-le-nombre-d-heures-de-cours-non-remplacees-a-presque-double-en-six-ans.html',
+  },
+  an_remplacement: {
+    org: 'Assemblée nationale, rapport d’information sur le remplacement des enseignants (17e législature)',
+    titre: 'Environ 20 millions d’heures non assurées en 2024-2025, près de 10 % du total des heures d’enseignement du second degré',
+    date: '2026',
+    url: 'https://www.assemblee-nationale.fr/dyn/docs/RINFANR5L17B3198.pdf',
+  },
+  depp_climat_lyceens: {
+    org: 'DEPP, enquête nationale de climat scolaire et de victimation auprès des lycéens 2022-2023',
+    titre: '91 % des lycéens se sentent bien ou tout à fait bien dans leur lycée ; 40 % des filles et 12 % des garçons se disent très stressés par les évaluations ; pas de résultats par académie, prochaine enquête en 2027',
+    date: '2024',
+    url: 'https://www.education.gouv.fr/depp/91-des-eleves-declarent-se-sentir-bien-ou-tout-fait-bien-dans-leur-lycee-resultats-de-l-enquete-452505',
+  },
+  eduscol_elcs: {
+    org: 'Éduscol, ministère de l’Éducation nationale, enquête locale de climat scolaire',
+    titre: 'L’application ELCS permet à chaque école, collège ou lycée d’établir sa propre photographie du climat scolaire et de la comparer aux résultats nationaux',
+    date: '2025',
+    url: 'https://eduscol.education.gouv.fr/5016/une-ecole-engagee-en-faveur-du-climat-scolaire',
+  },
+  snes_chaleur: {
+    org: 'SNES-FSU, « météo des classes », relevé déclaratif des 18 et 19 juin 2026',
+    titre: 'Plus de 30 °C relevés dans 88 % des 669 collèges et lycées répondants en juin 2026 (78 % en mai), 87 % sans mesure d’adaptation ; relevés volontaires, non représentatifs',
+    date: '2026',
+    url: 'https://www.snes.edu/article/vague-de-chaleur-le-retour-de-la-meteo-des-classes/',
+  },
+  an_chaleur: {
+    org: 'Assemblée nationale, question écrite n° 17103 (17e législature)',
+    titre: 'Chaleur dans les établissements scolaires : des budgets des collectivités jugés insuffisants pour adapter les bâtiments ; un plan canicule départemental de 100 M€ pour les collèges arrêté en 2025',
+    date: '2026',
+    url: 'https://www.assemblee-nationale.fr/dyn/17/questions/QANR5L17QE17103',
+  },
+  f3_rentree2026: {
+    org: 'France 3 Régions, rentrée scolaire 2026',
+    titre: 'Cours interrompus l’après-midi du 7 septembre 2026 dans deux lycées de l’Hérault en raison de températures excessives dans les salles',
+    date: '2026',
+    url: 'https://france3-regions.franceinfo.fr/societe/education/rentree-scolaire',
+  },
+  park_chaleur: {
+    org: 'Park, Goodman, Hurwitz et Smith, « Heat and Learning », American Economic Journal: Economic Policy',
+    titre: 'Sur dix millions d’élèves américains, chaque année scolaire plus chaude de 1 °F réduit les apprentissages mesurés d’environ 1 % ; la climatisation des écoles annule l’essentiel de l’effet',
+    date: '2020',
+    url: 'https://www.aeaweb.org/articles?id=10.1257/pol.20180612',
+  },
+  behaghel_internat: {
+    org: 'Behaghel, de Chaisemartin et Gurgand, « Ready for Boarding? », American Economic Journal: Applied Economics',
+    titre: 'Internat d’excellence de Sourdun, évaluation par tirage au sort : pas d’effet la première année, puis des gains importants en mathématiques la deuxième, surtout pour les élèves initialement les plus forts',
+    date: '2017',
+    url: 'https://www.aeaweb.org/articles?id=10.1257/app.20150090',
+  },
+  cdc_ep: {
+    org: 'Cour des comptes, « L’éducation prioritaire », rapport d’évaluation d’une politique publique',
+    titre: 'Depuis la réforme de 2014-2015, l’éducation prioritaire ne couvre plus que les écoles et les collèges ; les lycées en sont sortis, et la Cour recommande une allocation progressive des moyens à tous les établissements selon leur profil social',
+    date: '2018',
+    url: 'https://www.ccomptes.fr/fr/publications/leducation-prioritaire',
+  },
+  occitanie_bp: {
+    org: 'Le Journal Toulousain, budget participatif lycéen de la Région Occitanie',
+    titre: 'Lancé à la rentrée 2017-2018 : une trentaine de lycées, les élèves proposent (foyer, internat, espaces extérieurs) et votent le projet financé, jusqu’à 10 000 € par projet',
+    date: '2018',
+    url: 'https://www.lejournaltoulousain.fr/politique/les-budgets-participatifs-a-quoi-ca-sert-59839/',
+  },
+  bretagne_bp: {
+    org: 'Région Bretagne, dossier de presse de rentrée 2024',
+    titre: 'Budget participatif lycéen : des projets entièrement à la main des élèves, concrétisés dans neuf lycées pilotes',
+    date: '2024',
+    url: 'https://bretagne.bzh/app/uploads/272-DP-Rentree-Lycees-Region-Bretagne-2024.pdf',
+  },
+  cvl_bp: {
+    org: 'Région Centre-Val de Loire, « Ma Région Ô Lycées »',
+    titre: 'Un budget participatif des lycées, projets initiés par les lycéennes et lycéens, prévu à partir de la rentrée 2026',
+    date: '2026',
+    url: 'https://www.centre-valdeloire.fr/vivre/accompagner-la-formation/lyceens/ma-region-o-lycees',
+  },
+  paca_prj: {
+    org: 'L’Écho du Mardi, Parlement régional de la jeunesse de Provence-Alpes-Côte d’Azur',
+    titre: 'Le Parlement régional de la jeunesse clôture son mandat 2024-2025 ; il dispose d’un budget de 50 000 €',
+    date: '2025',
+    url: 'https://www.echodumardi.com/politiqueetterritoire/le-parlement-regional-de-la-jeunesse-cloture-son-mandat-2024-2025/',
+  },
+  orleans_cvl: {
+    org: 'Académie d’Orléans-Tours, bilan des élections au conseil de la vie lycéenne 2025',
+    titre: '65 % de participation aux élections CVL dans l’académie en 2025 (72,3 % dans le Cher), « très supérieure à une moyenne nationale estimée à moins de 50 % »',
+    date: '2025',
+    url: 'https://www.ac-orleans-tours.fr/media/33744/download',
+  },
+  bmbf_laender: {
+    org: 'Portail de données du ministère fédéral allemand de l’éducation (Destatis), tableau 2.1.14',
+    titre: 'Dépense publique par élève de Gymnasium en 2023 : 9 700 € en Rhénanie-du-Nord-Westphalie, 11 200 € au Bade-Wurtemberg, 14 000 € en Bavière, 14 200 € à Berlin',
+    date: '2025',
+    url: 'https://www.datenportal.bmbf.de/portal/de/Tabelle-2.1.14.pdf',
+  },
+  census_states: {
+    org: 'United States Census Bureau, Annual Survey of School System Finances 2023',
+    titre: 'Dépense courante par élève selon l’État : 10 203 $ dans l’Idaho, 10 333 $ dans l’Utah, 30 012 $ dans l’État de New York',
+    date: '2025',
+    url: 'https://www.census.gov/newsroom/press-releases/2025/2023-annual-survey-of-school-system-finances.html',
+  },
+  mec_espagne: {
+    org: 'Ministère espagnol de l’Éducation, Eurydice, dépense publique par élève',
+    titre: '7 384 € par élève des centres publics non universitaires en 2022 ; le Pays basque, la Navarre, la Cantabrie, les Asturies et La Rioja dépensent le plus, Madrid parmi les moins (de 5 534 € à 8 946 € selon une étude des fondations Areces et Europea)',
+    date: '2025',
+    url: 'https://www.educacionfpydeportes.gob.es/eu/mc/redie-eurydice/sistemas-educativos/organizacion-y-administracion/gasto-publico-conciertos.html',
+  },
+  elcano_pisa: {
+    org: 'Real Instituto Elcano, résultats régionaux de PISA 2022 en Espagne',
+    titre: '52 points d’écart en mathématiques entre Castille-et-León et les Canaries ; 30 à 40 points valent à peu près une année scolaire',
+    date: '2024',
+    url: 'https://www.realinstitutoelcano.org/en/commentaries/mixed-education-results-in-pisa-international-tests/',
+  },
+  cmec_pisa: {
+    org: 'Conseil des ministres de l’Éducation du Canada, PISA 2022, faits saillants',
+    titre: 'Part d’élèves atteignant le niveau de base en mathématiques : de 66 % à Terre-Neuve-et-Labrador à 83 % au Québec',
+    date: '2023',
+    url: 'https://cmec.ca/docs/pisa2022/PISA-2022_Highlights_FINAL_EN.pdf',
+  },
+  acara_myschool: {
+    org: 'ACARA, My School (Australie)',
+    titre: 'Pour chaque école du pays : profil des élèves, résultats aux tests nationaux et financement, avec une comparaison limitée aux « écoles semblables » (indice ICSEA) pour éviter les palmarès',
+    date: '2025',
+    url: 'https://myschool.edu.au/about-my-school',
+  },
+  govuk_compare: {
+    org: 'GOV.UK, Compare school and college performance (Angleterre)',
+    titre: 'Résultats, rapports d’inspection et informations financières de chaque établissement, séries depuis 1991-1992',
+    date: '2026',
+    url: 'https://www.gov.uk/school-performance-tables',
+  },
+  essa_k12dive: {
+    org: 'K-12 Dive, obligations de la loi fédérale américaine ESSA',
+    titre: 'Depuis 2018-2019, chaque État doit publier sur son bulletin annuel la dépense par élève de chaque école, par source de financement',
+    date: '2017',
+    url: 'https://www.k12dive.com/news/essa-reporting-requirements-will-reveal-spending-disparities-within-distric/429504/',
+  },
+  issu_ncca: {
+    org: 'Gouvernement irlandais, ministère de l’Éducation',
+    titre: 'Le président du syndicat lycéen (ISSU) siège de droit au Conseil national des programmes et de l’évaluation (NCCA) par arrêté ministériel ; une unité « participation des élèves » créée au ministère en 2023',
+    date: '2023',
+    url: 'https://www.gov.ie/en/department-of-education/press-releases/minister-foley-announces-addition-of-the-irish-second-level-students-union-to-the-national-council-for-curriculum-and-assessment/',
+  },
+  osta_ontario: {
+    org: 'Ontario Student Trustees’ Association',
+    titre: 'Des élèves élus (« student trustees ») siègent aux conseils scolaires de l’Ontario avec voix mais sans vote contraignant ; ils peuvent demander un vote indicatif et réclament le droit de déposer des motions',
+    date: '2024',
+    url: 'https://osta-aeco.org/our-work/the-students-vision-for-education/school-board-governance/',
+  },
   an_toilettes: {
     org: 'Assemblée nationale, question écrite au Gouvernement (16e législature)',
     titre: 'État des sanitaires dans les établissements : ni papier ni savon dans de très nombreux établissements, nombre de sanitaires parfois insuffisant ; un tiers des élèves renoncent à y aller (Observatoire national de la sécurité, 2014)',
@@ -4986,6 +5438,39 @@ const REPERES = [
     aRetenir: 'Le mouvement de 2026 a été le plus large depuis 2005, et il a obtenu des promesses datées plutôt que des moyens. C’est ce qu’un ministre hérite le plus souvent : non pas une crise, mais la facture d’une crise que d’autres ont apaisée avec sa signature.',
   },
   {
+    cle: 'territoires',
+    titre: 'Mon lycée, mon département',
+    resume: 'Ce que coûte un lycéen, qui paie, et pourquoi ce n’est pas pareil partout.',
+    chiffres: [
+      { v: '11 660 €', l: 'par an et par élève du second degré en 2024 : trois ans de lycée coûtent de l’ordre de 35 000 € à la collectivité, une classe de trente environ 350 000 € par an', src: 'insee_die2024' },
+      { v: 'un quart', l: 'de ce coût est payé par la région (murs, cantine, internat, agents, ordinateurs) : 6,8 Md€ en 2025, soit 3 000 à 3 900 € par lycéen. L’État paie le reste, d’abord les professeurs', src: 'ofgl_regions' },
+      { v: '+24 %', l: 'par rapport à la moyenne de l’OCDE pour un élève de lycée (18 127 dollars contre 14 562), mais −13 % pour un élève de primaire : la France dépense beaucoup en haut, peu en bas', src: 'ocde_rse2025' },
+      { v: '885 à 1 978 €', l: 'par lycéen et par an d’investissement selon la région, des Hauts-de-France à la Bretagne, Île-de-France en queue : du simple au double, sur le quart régional du coût', src: 'gazette_invest' },
+      { v: '405 à 3 884 €', l: 'par lycéen du privé en huit ans : ce que les régions choisissent de donner aux lycées privés, de l’Île-de-France aux Pays de la Loire', src: 'gazette_prive' },
+      { v: 'non publiée', l: 'la dépense de l’État par élève et par territoire. On sait seulement qu’à Paris les professeurs sont plus âgés, plus souvent agrégés et moins souvent contractuels, et qu’à Créteil et Versailles leurs effectifs n’ont pas suivi les élèves depuis 2005', src: 'ipp_territoires' },
+      { v: '71 à 129', l: 'l’indice de position sociale moyen des lycées selon le département (Mayotte, Paris), 109 en moyenne, et de 59 à 162 selon le lycée. Celui de chaque lycée est en données ouvertes', src: 'depp_ips_lycees' },
+      { v: '9 700 à 14 200 €', l: 'par élève de Gymnasium selon le Land allemand ; 10 203 à 30 012 dollars selon l’État américain : dans les pays fédéraux, l’écart porte sur tout le coût, en France sur la part régionale', src: 'bmbf_laender' },
+      { v: 'Madrid', l: 'dépense le moins par élève des régions espagnoles et réussit parmi les mieux à PISA ; le Mezzogiorno dépense plus par habitant et réussit moins : l’argent compte, mais pas tout seul', src: 'elcano_pisa' },
+      { v: 'nulle part', l: 'les heures de cours perdues et la dépense par élève de chaque lycée. L’Australie, l’Angleterre et les États-Unis publient la seconde pour chaque école', src: 'acara_myschool' },
+    ],
+    aRetenir: 'Un lycéen coûte à peu près la même chose partout en France, parce que l’État paie les professeurs partout. Ce qui change d’une région à l’autre, c’est le quart régional : les murs, la cantine, les travaux, du simple au double. Et ce qui change d’un lycée à l’autre, qui enseigne et combien d’heures sont vraiment faites, personne ne le publie.',
+  },
+  {
+    cle: 'agir',
+    titre: 'Le mode d’emploi du lycéen',
+    resume: 'Sept choses qu’un élève peut faire, dans l’ordre où elles servent.',
+    chiffres: [
+      { v: '1. Lire', l: 'l’IPS de son lycée et sa valeur ajoutée au bac : ils sont publics, lycée par lycée. En dix minutes on sait si son lycée fait mieux ou moins bien que ce que son public laissait attendre. Ce chiffre vaut plus que les palmarès des magazines', src: 'ods_ips' },
+      { v: '2. Demander', l: 'au conseil de la vie lycéenne les deux chiffres que personne ne publie : les heures de cours perdues cette année dans l’établissement (le proviseur les a) et la dotation de fonctionnement reçue de la région (le conseil d’administration la vote)', src: 'letudiant_heures' },
+      { v: '3. Viser les deux moments', l: 'où quelque chose se décide : à l’automne, le conseil régional vote la dotation de chaque lycée ; en janvier, le rectorat attribue les heures d’enseignement, et en février ou mars le conseil d’administration vote leur répartition. Les élus élèves y siègent', src: 'dhg_qe' },
+      { v: '4. Le budget participatif', l: 'quand la région en a un (Occitanie depuis 2017, Bretagne, Centre-Val de Loire) : jusqu’à 10 000 € sur un vote des élèves. Quand elle n’en a pas, c’est une demande simple à porter au conseil régional', src: 'occitanie_bp' },
+      { v: '5. L’enquête de climat scolaire', l: 'locale (ELCS) : chaque lycée peut la passer et comparer ses résultats au national. Un résultat chiffré est un argument plus fort qu’une pétition', src: 'eduscol_elcs' },
+      { v: '6. Les élections du CVL', l: 'réunissent moins d’un électeur sur deux au niveau national. Une liste qui fait campagne sur deux chiffres et trois demandes datées change le rapport de force sans bloquer quoi que ce soit', src: 'orleans_cvl' },
+      { v: '7. La médiatrice', l: 'de l’Éducation nationale : 28 450 saisines en 2025, 78 % de succès au moins partiel, et presque aucun élève ne la saisit. C’est le recours quand l’établissement ne répond pas', src: 'mediatrice25' },
+    ],
+    aRetenir: 'Les murs, c’est la région ; les professeurs, c’est l’État ; l’organisation, c’est le conseil d’administration. Un lycéen qui sait lequel des trois décide de ce qu’il demande a déjà gagné la moitié de la discussion. Ce que ni lui ni le ministre ne peuvent faire seuls : obliger à publier les chiffres par lycée, donner un vote aux élèves, compenser les écarts entre territoires.',
+  },
+  {
     cle: 'preuve',
     titre: 'Comment le jeu note les mesures',
     resume: 'Les cadenas, l’écart vitrine/réel, et pourquoi tout cela n’est pas arbitraire.',
@@ -5101,6 +5586,152 @@ const COMPARAISONS_NIVEAUX = [
 
 const PAR_CLE = Object.fromEntries(REPERES.map((r) => [r.cle, r]));
 
+/* ===== moteur/territoires.js ===== */
+/* ============================================================================
+   TERRITOIRES — « Mon lycée, mon département »
+   ----------------------------------------------------------------------------
+   Les 101 départements et leur région, et ce que l'on sait, chiffre par
+   chiffre, de ce qu'un lycéen reçoit selon l'endroit où il vit. Règle du
+   jeu : un chiffre n'est écrit ici que s'il a une source (`src` renvoie à
+   SOURCES dans reperes.js). Là où le dossier de recherche n'a pas trouvé de
+   chiffre pour une région ou un département, le jeu le dit, il n'invente
+   pas. Voir RECHERCHE-TERRITOIRES.md.
+   ========================================================================== */
+
+const REGIONS = {
+  ara: 'Auvergne-Rhône-Alpes', bfc: 'Bourgogne-Franche-Comté', bre: 'Bretagne', cvl: 'Centre-Val de Loire',
+  cor: 'Corse', ges: 'Grand Est', hdf: 'Hauts-de-France', idf: 'Île-de-France', nor: 'Normandie',
+  naq: 'Nouvelle-Aquitaine', occ: 'Occitanie', pdl: 'Pays de la Loire', pac: 'Provence-Alpes-Côte d’Azur',
+  gua: 'Guadeloupe', mar: 'Martinique', guy: 'Guyane', reu: 'La Réunion', may: 'Mayotte',
+};
+
+/* code, nom, région, académie (pour les faits connus par académie) */
+const D = (code, nom, region, academie) => ({ code, nom, region, academie });
+const DEPARTEMENTS = [
+  D('01', 'Ain', 'ara', 'Lyon'), D('03', 'Allier', 'ara', 'Clermont-Ferrand'), D('07', 'Ardèche', 'ara', 'Grenoble'), D('15', 'Cantal', 'ara', 'Clermont-Ferrand'),
+  D('26', 'Drôme', 'ara', 'Grenoble'), D('38', 'Isère', 'ara', 'Grenoble'), D('42', 'Loire', 'ara', 'Lyon'), D('43', 'Haute-Loire', 'ara', 'Clermont-Ferrand'),
+  D('63', 'Puy-de-Dôme', 'ara', 'Clermont-Ferrand'), D('69', 'Rhône', 'ara', 'Lyon'), D('73', 'Savoie', 'ara', 'Grenoble'), D('74', 'Haute-Savoie', 'ara', 'Grenoble'),
+  D('21', 'Côte-d’Or', 'bfc', 'Dijon'), D('25', 'Doubs', 'bfc', 'Besançon'), D('39', 'Jura', 'bfc', 'Besançon'), D('58', 'Nièvre', 'bfc', 'Dijon'),
+  D('70', 'Haute-Saône', 'bfc', 'Besançon'), D('71', 'Saône-et-Loire', 'bfc', 'Dijon'), D('89', 'Yonne', 'bfc', 'Dijon'), D('90', 'Territoire de Belfort', 'bfc', 'Besançon'),
+  D('22', 'Côtes-d’Armor', 'bre', 'Rennes'), D('29', 'Finistère', 'bre', 'Rennes'), D('35', 'Ille-et-Vilaine', 'bre', 'Rennes'), D('56', 'Morbihan', 'bre', 'Rennes'),
+  D('18', 'Cher', 'cvl', 'Orléans-Tours'), D('28', 'Eure-et-Loir', 'cvl', 'Orléans-Tours'), D('36', 'Indre', 'cvl', 'Orléans-Tours'),
+  D('37', 'Indre-et-Loire', 'cvl', 'Orléans-Tours'), D('41', 'Loir-et-Cher', 'cvl', 'Orléans-Tours'), D('45', 'Loiret', 'cvl', 'Orléans-Tours'),
+  D('2A', 'Corse-du-Sud', 'cor', 'Corse'), D('2B', 'Haute-Corse', 'cor', 'Corse'),
+  D('08', 'Ardennes', 'ges', 'Reims'), D('10', 'Aube', 'ges', 'Reims'), D('51', 'Marne', 'ges', 'Reims'), D('52', 'Haute-Marne', 'ges', 'Reims'),
+  D('54', 'Meurthe-et-Moselle', 'ges', 'Nancy-Metz'), D('55', 'Meuse', 'ges', 'Nancy-Metz'), D('57', 'Moselle', 'ges', 'Nancy-Metz'),
+  D('67', 'Bas-Rhin', 'ges', 'Strasbourg'), D('68', 'Haut-Rhin', 'ges', 'Strasbourg'), D('88', 'Vosges', 'ges', 'Nancy-Metz'),
+  D('02', 'Aisne', 'hdf', 'Amiens'), D('59', 'Nord', 'hdf', 'Lille'), D('60', 'Oise', 'hdf', 'Amiens'), D('62', 'Pas-de-Calais', 'hdf', 'Lille'), D('80', 'Somme', 'hdf', 'Amiens'),
+  D('75', 'Paris', 'idf', 'Paris'), D('77', 'Seine-et-Marne', 'idf', 'Créteil'), D('78', 'Yvelines', 'idf', 'Versailles'), D('91', 'Essonne', 'idf', 'Versailles'),
+  D('92', 'Hauts-de-Seine', 'idf', 'Versailles'), D('93', 'Seine-Saint-Denis', 'idf', 'Créteil'), D('94', 'Val-de-Marne', 'idf', 'Créteil'), D('95', 'Val-d’Oise', 'idf', 'Versailles'),
+  D('14', 'Calvados', 'nor', 'Normandie'), D('27', 'Eure', 'nor', 'Normandie'), D('50', 'Manche', 'nor', 'Normandie'), D('61', 'Orne', 'nor', 'Normandie'), D('76', 'Seine-Maritime', 'nor', 'Normandie'),
+  D('16', 'Charente', 'naq', 'Poitiers'), D('17', 'Charente-Maritime', 'naq', 'Poitiers'), D('19', 'Corrèze', 'naq', 'Limoges'), D('23', 'Creuse', 'naq', 'Limoges'),
+  D('24', 'Dordogne', 'naq', 'Bordeaux'), D('33', 'Gironde', 'naq', 'Bordeaux'), D('40', 'Landes', 'naq', 'Bordeaux'), D('47', 'Lot-et-Garonne', 'naq', 'Bordeaux'),
+  D('64', 'Pyrénées-Atlantiques', 'naq', 'Bordeaux'), D('79', 'Deux-Sèvres', 'naq', 'Poitiers'), D('86', 'Vienne', 'naq', 'Poitiers'), D('87', 'Haute-Vienne', 'naq', 'Limoges'),
+  D('09', 'Ariège', 'occ', 'Toulouse'), D('11', 'Aude', 'occ', 'Montpellier'), D('12', 'Aveyron', 'occ', 'Toulouse'), D('30', 'Gard', 'occ', 'Montpellier'),
+  D('31', 'Haute-Garonne', 'occ', 'Toulouse'), D('32', 'Gers', 'occ', 'Toulouse'), D('34', 'Hérault', 'occ', 'Montpellier'), D('46', 'Lot', 'occ', 'Toulouse'),
+  D('48', 'Lozère', 'occ', 'Montpellier'), D('65', 'Hautes-Pyrénées', 'occ', 'Toulouse'), D('66', 'Pyrénées-Orientales', 'occ', 'Montpellier'),
+  D('81', 'Tarn', 'occ', 'Toulouse'), D('82', 'Tarn-et-Garonne', 'occ', 'Toulouse'),
+  D('44', 'Loire-Atlantique', 'pdl', 'Nantes'), D('49', 'Maine-et-Loire', 'pdl', 'Nantes'), D('53', 'Mayenne', 'pdl', 'Nantes'), D('72', 'Sarthe', 'pdl', 'Nantes'), D('85', 'Vendée', 'pdl', 'Nantes'),
+  D('04', 'Alpes-de-Haute-Provence', 'pac', 'Aix-Marseille'), D('05', 'Hautes-Alpes', 'pac', 'Aix-Marseille'), D('06', 'Alpes-Maritimes', 'pac', 'Nice'),
+  D('13', 'Bouches-du-Rhône', 'pac', 'Aix-Marseille'), D('83', 'Var', 'pac', 'Nice'), D('84', 'Vaucluse', 'pac', 'Aix-Marseille'),
+  D('971', 'Guadeloupe', 'gua', 'Guadeloupe'), D('972', 'Martinique', 'mar', 'Martinique'), D('973', 'Guyane', 'guy', 'Guyane'),
+  D('974', 'La Réunion', 'reu', 'La Réunion'), D('976', 'Mayotte', 'may', 'Mayotte'),
+];
+
+/* Ce que l'on sait par région. `invest` : investissement de la région dans
+   ses lycées publics, par lycéen et par an, 2022-2025 (reconstitution de la
+   Gazette des communes à partir des comptes administratifs ; seules trois
+   valeurs et l'ordre des quatre premières ont pu être relevés). */
+const FAITS_REGION = {
+  bre: { invest: { v: 1978, rang: 'première des treize régions', src: 'gazette_invest' },
+         prive: { v: '3 059 € par lycéen du privé en huit ans (2016-2023)', src: 'gazette_prive' },
+         participation: { v: 'un budget participatif lycéen dans neuf lycées pilotes depuis 2024, à la main des élèves', src: 'bretagne_bp' } },
+  bfc: { invest: { rang: 'dans les quatre premières régions, derrière la Bretagne', src: 'gazette_invest' } },
+  pdl: { invest: { rang: 'dans les quatre premières régions', src: 'gazette_invest' },
+         prive: { v: '3 884 € par lycéen du privé en huit ans (2016-2023), le plus haut niveau de France', src: 'gazette_prive' } },
+  nor: { invest: { rang: 'dans les quatre premières régions', src: 'gazette_invest' } },
+  idf: { invest: { v: 1206, rang: 'en queue de classement', src: 'gazette_invest' },
+         fonctionnement: { v: '1 500 € par élève en 2023, le plus faible niveau des régions (plus de 2 000 € en moyenne) ; la Région répond que sa dotation a doublé en dix ans et atteint 210 M€ en 2026', src: 'gazette_accueil', src2: 'idf_dotation' },
+         prive: { v: '405 € par lycéen du privé en huit ans (2016-2023), le plus bas de France', src: 'gazette_prive' },
+         cantine: { v: 'de 0,50 € à 4,66 € le repas selon le quotient familial (2026-2027)', src: 'idf_cantine' } },
+  hdf: { invest: { v: 885, rang: 'dernière des treize régions', src: 'gazette_invest' } },
+  naq: { cantine: { v: 'tarification solidaire dans tous les lycées publics à la rentrée 2026 : les familles les plus modestes paient 2,30 €, le prix des denrées, pour un repas qui coûte 9,50 € à produire', src: 'na_cantine' } },
+  occ: { participation: { v: 'un budget participatif lycéen depuis 2017 : une trentaine de lycées, les élèves proposent et votent, jusqu’à 10 000 € par projet', src: 'occitanie_bp' } },
+  cvl: { participation: { v: 'un budget participatif des lycées annoncé pour la rentrée 2026 dans « Ma Région Ô Lycées »', src: 'cvl_bp' } },
+  pac: { participation: { v: 'un Parlement régional de la jeunesse doté de 50 000 €', src: 'paca_prj' } },
+};
+
+/* Ce que l'on sait par département : l'indice de position sociale moyen des
+   lycées à la rentrée 2024 (DEPP, note 25-21 ; moyenne nationale 109, de 59
+   à 162 selon le lycée). Seules les valeurs publiées dans la note ou ses
+   relais ont été relevées ; « sous 100 » quand la note cite le département
+   sans donner la valeur. */
+const IPS_DEPARTEMENT = {
+  75: 129, 92: 125, 78: 125, 44: 120, 93: 93, 974: 90, 973: 83, 976: 71,
+};
+const IPS_SOUS_100 = ['02', '08', '52', '62', '971'];
+const IPS_NATIONAL = { moyenne: 109, min: 59, max: 162, prive: 125, public: 105, pro: 92, gt: 121 };
+
+/* Faits connus par académie ou par département, hors IPS. */
+const FAITS_LOCAUX = [
+  { academies: ['Créteil', 'Versailles'], v: 'des élèves en plus, pas de professeurs en plus',
+    l: 'entre 2005 et 2025, dans les académies de Créteil et de Versailles, les effectifs d’enseignants n’ont pas suivi ceux des élèves ; à Paris, c’est l’inverse, avec des professeurs plus âgés, plus souvent agrégés et moins souvent contractuels', src: 'ipp_territoires' },
+  { academies: ['Paris'], v: 'plus d’agrégés, moins de contractuels',
+    l: 'les enseignants des collèges et lycées de Paris sont plus âgés, plus souvent agrégés et moins souvent contractuels que la moyenne, ce qui rend probablement la dépense d’État par élève plus élevée, sans qu’elle soit publiée', src: 'ipp_territoires' },
+  { academies: ['Orléans-Tours'], v: '65 % de participation',
+    l: 'aux élections du conseil de la vie lycéenne en 2025 dans l’académie (72 % dans le Cher), contre moins de 50 % au niveau national selon l’académie', src: 'orleans_cvl' },
+  { departements: ['34'], v: '7 septembre 2026',
+    l: 'cours interrompus l’après-midi dans deux lycées de l’Hérault à cause de la température dans les salles', src: 'f3_rentree2026' },
+  { departements: ['976', '973'], v: 'les écarts les plus élevés du système',
+    l: 'Mayotte et la Guyane cumulent rotations scolaires faute de salles, non-scolarisation, part de contractuels très supérieure à la moyenne, et sont les seuls territoires où le nombre d’élèves augmente', src: 'outremer26' },
+];
+
+/* Ce qui est vrai partout, et que l'écran rappelle sous les chiffres locaux. */
+const FAITS_NATIONAUX = [
+  { v: '11 660 €', l: 'par an : ce que coûte un élève du second degré à la collectivité en 2024 (9 080 € au premier degré). Trois ans de lycée, c’est de l’ordre de 35 000 €', src: 'insee_die2024' },
+  { v: 'un quart', l: 'c’est à peu près la part de ce coût que paie la région : 6,8 Md€ en 2025 pour les lycées (murs, cantine, internat, agents, ordinateurs), soit 3 000 à 3 900 € par lycéen selon qu’on compte ou non le privé. L’État paie le reste, d’abord les professeurs', src: 'ofgl_regions' },
+  { v: '+24 %', l: 'la France dépense 18 127 dollars par élève de lycée contre 14 562 en moyenne dans l’OCDE ; et 13 % de moins que la moyenne au primaire', src: 'ocde_rse2025' },
+  { v: '885 à 1 978 €', l: 'par lycéen et par an : l’investissement des régions dans leurs lycées publics, du simple au double entre les Hauts-de-France et la Bretagne (2022-2025)', src: 'gazette_invest' },
+  { v: '71 à 129', l: 'l’indice de position sociale moyen des lycées selon le département, de Mayotte à Paris, pour une moyenne de 109', src: 'depp_ips_lycees' },
+  { v: '−10 points', l: 'les élèves des communes rurales entrent en seconde générale et technologique dix points de moins que ceux des villes ; le ministère l’attribue à l’éloignement de l’offre', src: 'senat_ruraux' },
+  { v: '7,5 %', l: 'des heures de cours perdues en 2024-2025 pour absence d’un professeur, jusqu’à 14 % dans les établissements les plus touchés. Le chiffre de votre lycée n’est publié nulle part', src: 'letudiant_heures' },
+];
+
+/* Où un élève peut chercher lui-même. Les liens vont vers les jeux de
+   données, pas vers des articles. */
+const OU_CHERCHER = [
+  { quoi: 'L’IPS de chaque lycée (le vôtre, et ceux d’à côté)', src: 'ods_ips' },
+  { quoi: 'La valeur ajoutée de chaque lycée au bac : ce qu’il obtient, comparé à ce que son public laissait attendre', src: 'ival_guide' },
+  { quoi: 'Le taux de réussite au bac de chaque département', src: 'datagouv_bac' },
+  { quoi: 'Des cartes par commune, département et académie (Géo-éducation, DEPP)', src: 'geo_education' },
+  { quoi: 'Les 38 fiches de « Géographie de l’École 2026 », avec les fichiers par département', src: 'geo_ecole2026' },
+];
+
+function departement(code) {
+  return DEPARTEMENTS.find((d) => d.code === String(code)) || null;
+}
+
+/* La fiche d'un département : tout ce que le jeu sait, prêt à afficher. */
+function ficheTerritoire(code) {
+  const d = departement(code);
+  if (!d) return null;
+  const R = FAITS_REGION[d.region] || {};
+  const ips = IPS_DEPARTEMENT[d.code] != null ? IPS_DEPARTEMENT[d.code] : null;
+  const sous100 = IPS_SOUS_100.includes(d.code);
+  const locaux = FAITS_LOCAUX.filter((f) => (f.academies && f.academies.includes(d.academie)) || (f.departements && f.departements.includes(d.code)));
+  return { ...d, regionNom: REGIONS[d.region], region: R, ips, sous100, locaux };
+}
+
+/* Pour la recherche en direct : les codes que les jeux de données du
+   ministère utilisent (« 093 » ou « 93 », « 2A », « 974 »). */
+function codesPossibles(code) {
+  const c = String(code);
+  const set = new Set([c]);
+  if (/^\d$/.test(c)) set.add('0' + c).add('00' + c);
+  if (/^\d{2}$/.test(c)) set.add('0' + c).add(String(+c));
+  return [...set];
+}
+
 /* ===== moteur/moteur.js ===== */
 /* ============================================================================
    RUE DE GRENELLE — MOTEUR DE SIMULATION
@@ -5114,6 +5745,7 @@ const PAR_CLE = Object.fromEntries(REPERES.map((r) => [r.cle, r]));
    décision. Les stratégies-types des simulations et l'interface React
    implémentent la même interface.
    ========================================================================== */
+
 
 
 
@@ -5195,6 +5827,7 @@ function creerPartie({ graine = 1, politique }) {
     lyceens: { colere: K.LYCEENS.colereInitiale, blocus: 0, rompues: [], tenues: [], reponses: [] },
     /* Les colères de l'automne 2026 : l'avis donné, la décision prise. */
     coleres: { avis: {}, decisions: {} },
+    territoire: null,                          // le département que le joueur connaît (écran « Mon lycée »)
     margeAnnee: 0,
 
     attractiviteCible: 0,
@@ -5478,40 +6111,69 @@ function appliquerPosture(s, idx) {
    ordinaires : elles coûtent sur l'enveloppe des amendements, elles occupent
    la capacité d'absorption, et elles apaisent les lycéens.
    ========================================================================== */
+/* Une colère, en deux écrans : ce qu'ils disent (et votre avis), puis les
+   faits et votre réponse. Servie au prologue de l'automne 2026 et, pour la
+   colère des territoires, à la première rentrée. */
+function* traiterColere(s, col, quand) {
+  const ia = yield { type: 'colere', colere: col, avis: AVIS, quand };
+  const avis = AVIS[Math.max(0, Math.min(AVIS.length - 1, ia | 0))];
+  s.coleres.avis[col.id] = avis.id;
+  if (col.postures) {
+    const ip = yield { type: 'faits', colere: col, avis: avis.id, postures: BLOCUS_LYCEEN.reponses, tresor: s.tresor, capital: s.capital, quand };
+    const r = appliquerPosture(s, ip);
+    s.coleres.decisions[col.id] = 'posture:' + r.type;
+    note(s, `${quand} — « ${col.cri} » : ${r.label}.`, 'colere');
+    return;
+  }
+  /* Les mesures proposées sont sur la table, quel que soit leur calendrier
+     de découverte habituel : la crise les a remontées. */
+  for (const id of col.mesures) if (PAR_ID[id]) s.decouvertes.add(id);
+  const dispo = col.mesures.map((id) => PAR_ID[id]).filter((c) => c && estJouable(s, c));
+  const rep = yield { type: 'faits', colere: col, avis: avis.id, dispo, tresor: s.tresor, capital: s.capital, quand, territoire: s.territoire };
+  if (rep && rep.id && dispo.some((c) => c.id === rep.id)) {
+    const avant = s.joue.size;
+    appliquerMesures(s, [rep], 1, false, 'prologue', false);
+    s.coleres.decisions[col.id] = s.joue.size > avant ? rep.id : null;
+  } else {
+    s.coleres.decisions[col.id] = null;
+  }
+  const d = s.coleres.decisions[col.id];
+  note(s, `${quand} — « ${col.cri} » : ${d ? '« ' + PAR_ID[d].label + ' »' : 'pas de réponse pour l’instant'}.`, 'colere');
+}
+
 function* etapePrologue(s) {
   crediter(s, K.ENVELOPPE_PROLOGUE);
   /* Le PLF 2027 en discussion demande déjà 1 588 postes : c'est le schéma
      d'emplois que Bercy comparera à la carte scolaire de janvier 2027. */
   s.schemaEmploisDemande = -1588;
   s.decouvertes = s.decouvertes || new Set();
-  for (const col of COLERES.slice(0, K.COLERES_MAX)) {
-    const ia = yield { type: 'colere', colere: col, avis: AVIS };
-    const avis = AVIS[Math.max(0, Math.min(AVIS.length - 1, ia | 0))];
-    s.coleres.avis[col.id] = avis.id;
-    if (col.postures) {
-      const ip = yield { type: 'faits', colere: col, avis: avis.id, postures: BLOCUS_LYCEEN.reponses, tresor: s.tresor, capital: s.capital };
-      const r = appliquerPosture(s, ip);
-      s.coleres.decisions[col.id] = 'posture:' + r.type;
-      note(s, `Automne 2026 — « ${col.cri} » : ${r.label}.`, 'colere');
-      continue;
-    }
-    /* Les mesures proposées sont sur la table, quel que soit leur calendrier
-       de découverte habituel : la crise les a remontées. */
-    for (const id of col.mesures) if (PAR_ID[id]) s.decouvertes.add(id);
-    const dispo = col.mesures.map((id) => PAR_ID[id]).filter((c) => c && estJouable(s, c));
-    const rep = yield { type: 'faits', colere: col, avis: avis.id, dispo, tresor: s.tresor, capital: s.capital };
-    if (rep && rep.id && dispo.some((c) => c.id === rep.id)) {
-      const avant = s.joue.size;
-      appliquerMesures(s, [rep], 1, false, 'prologue', false);
-      s.coleres.decisions[col.id] = s.joue.size > avant ? rep.id : null;
-    } else {
-      s.coleres.decisions[col.id] = null;
-    }
-    const d = s.coleres.decisions[col.id];
-    note(s, `Automne 2026 — « ${col.cri} » : ${d ? '« ' + PAR_ID[d].label + ' »' : 'pas de réponse pour l’instant'}.`, 'colere');
+  for (const col of COLERES.filter((c) => !c.moment).slice(0, K.COLERES_MAX)) {
+    yield* traiterColere(s, col, 'Automne 2026');
   }
   const n = Object.values(s.coleres.decisions).filter((d) => d && !String(d).startsWith('posture:')).length;
   note(s, `Automne 2026 : ${n} mesure${n > 1 ? 's' : ''} annoncée${n > 1 ? 's' : ''} en réponse aux lycéens. Les lycéens sont ${humeurLyceenne(s.lyceens.colere)}.`, 'lyceens');
+}
+
+/* La colère qui monte à la première rentrée : « chez nous et pas ailleurs ».
+   Elle se joue comme celles de l'automne, sur l'enveloppe du moment. */
+function* etapeColereRentree(s) {
+  const col = COLERES.find((c) => c.moment === 'rentree');
+  if (!col || s.coleres.avis[col.id]) return;
+  s.decouvertes = s.decouvertes || new Set();
+  yield* traiterColere(s, col, `Rentrée ${s.anneeCiv}`);
+}
+
+/* « Mon lycée » : avant les colères, le joueur dit d'où il regarde. Un
+   ministre arrive toujours avec un lycée en tête ; un lycéen aussi. Le choix
+   ne change pas les règles : il change ce que le jeu lui montre, et ce que
+   le bilan lui dira de son propre territoire. */
+function* etapeTerritoire(s) {
+  const rep = yield { type: 'territoire', departements: DEPARTEMENTS };
+  if (rep && rep.code && ficheTerritoire(rep.code)) {
+    s.territoire = { code: String(rep.code), priorite: rep.priorite || null };
+    const f = ficheTerritoire(rep.code);
+    note(s, `Le lycée que vous connaissez : ${f.nom} (${f.regionNom}). ${rep.priorite === 'territoires' ? 'Vous avez dit que votre politique tiendrait compte des territoires : le bilan s’en souviendra.' : rep.priorite === 'national' ? 'Vous avez dit que les règles seraient les mêmes partout : le bilan s’en souviendra aussi.' : ''}`, 'territoire');
+  }
 }
 
 function* etapeBlocus(s) {
@@ -6621,6 +7283,7 @@ function* derouler(s) {
   yield* etapeDoctrine(s);
   rafraichir(s);
   yield { type: 'reperes', note: 'lyceens' };
+  yield* etapeTerritoire(s);
   yield { type: 'reperes', note: 'budget' };
   yield* etapeAvance(s);
   yield* etapePrologue(s);
@@ -6656,6 +7319,9 @@ function* derouler(s) {
     if (s.annee === 1) { yield { type: 'reperes', note: 'demographie' }; yield* etapeIntention(s); }
     yield { type: 'etape', etape: 'juillet' };
     yield* etapeRentree(s);   s.mois = 8;
+    /* La colère des territoires monte à la première rentrée : « chez nous et
+       pas ailleurs ». Elle se traite avant un éventuel blocus. */
+    if (s.annee === 1) yield* etapeColereRentree(s);
     /* Les lycéens d'abord : si la rentrée commence par des blocus, la
        polémique de rentrée attend l'année suivante, l'antenne est prise. */
     const bloque = yield* etapeBlocus(s);
@@ -6695,6 +7361,7 @@ function jouerMandat({ graine = 1, politique }) {
     let rep;
     if (q.type === 'nomination') rep = 'accepter';
     else if (q.type === 'reperes') rep = null;   // la note de cadrage se lit, elle ne se décide pas
+    else if (q.type === 'territoire') rep = politique.territoire ? politique.territoire(s, q) : null;
     else if (q.type === 'entretien') rep = politique.entretien ? politique.entretien(s, q) : [0, 0, 0];
     else if (q.type === 'profil') rep = politique.profil ? politique.profil(s, q) : 0;
     else if (q.type === 'avance') rep = politique.avance ? politique.avance(s, q) : 1;
@@ -6859,6 +7526,7 @@ function bilan(s) {
     pointsGreve: +s.pointsGreveCumules.toFixed(1),
     lyceens: { ...s.lyceens, humeur: humeurLyceenne(s.lyceens.colere) },
     coleres: s.coleres,
+    territoire: s.territoire ? { ...s.territoire, fiche: ficheTerritoire(s.territoire.code) } : null,
     fatigue: s.fatigue, abandons: s.abandons,
     mesures: s.mesuresParAnnee.flat().map((m) => m.id),
     histoire: s.histoire,
@@ -6902,6 +7570,7 @@ const FAMILLES = {
   mixite: ['Mixité & carte scolaire', 'var(--c-egalite)'],
   lycee: ['Lycée & lycéens', 'var(--c-violet)'],
   vie_lyceenne: ['Dans le lycée : la parole des élèves', 'var(--or)'],
+  territoires: ['Territoires : qui reçoit quoi', 'var(--c-egalite)'],
 };
 const MOIS_L = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'];
 
@@ -7017,9 +7686,13 @@ function unesPossibles(etape) {
   ]);
   pousser(a('colere') && etape === 'automne', [
     ['Lycées : le nouveau ministre répond, colère par colère',
-     'Huit sujets, autant de décisions, et des organisations lycéennes qui « jugeront sur pièces ». Les pièces sont attendues à la rentrée.'],
+     'Neuf sujets, autant de décisions, et des organisations lycéennes qui « jugeront sur pièces ». Les pièces sont attendues à la rentrée.'],
     ['Automne de crise rue de Grenelle : des annonces, et une question',
      'La question est celle de tous les automnes : qui paiera, et quand. Le ministère répond « le budget 2027 ». Le budget 2027 n’a pas encore été voté.'],
+  ]);
+  pousser(a('colere') && etape === 'rentree', [
+    ['« Chez nous et pas ailleurs » : la colère lycéenne change de forme',
+     'Un an après l’automne 2026, les lycéens comparent. Les régions publient leurs plans bâti, les magazines leurs palmarès, le ministère rien du tout : la dépense de l’État par élève et par territoire n’existe dans aucun tableau.'],
   ]);
   pousser(etape === 'election', [
     ['Présidentielle : un nouveau gouvernement, et le même ministre de l’Éducation',
@@ -7759,7 +8432,7 @@ function ecranPolemique(q) {
 /* --- l'automne 2026 : une colère, votre avis ---------------------------------- */
 function ecranColere(q) {
   const c = q.colere;
-  const d = docu('Automne 2026, ce que disent les lycéens', fr(c.cri));
+  const d = docu(`${q.quand && /^Rentrée/.test(q.quand) ? q.quand : 'Automne 2026'}, ce que disent les lycéens`, fr(c.cri));
   d.classList.add('papier');
   d.appendChild(el('p', 'qui-dit', fr(c.qui)));
   d.appendChild(el('p', 'chapo', fr(c.contexte)));
@@ -7791,8 +8464,19 @@ function miroirAvis(avis, verdict) {
 }
 function ecranFaits(q) {
   const c = q.colere, S = ETAT.s;
-  const d = docu('Automne 2026, les faits', 'Ce que disent les chiffres');
+  const rentree = !!(q.quand && /^Rentrée/.test(q.quand));
+  const d = docu(`${rentree ? q.quand : 'Automne 2026'}, les faits`, 'Ce que disent les chiffres');
   d.appendChild(el('p', 'rappel-cri', fr(c.cri)));
+  /* La colère des territoires parle du département du joueur, quand il l'a dit. */
+  if (c.id === 'territoires' && S.territoire) {
+    const f = ficheTerritoire(S.territoire.code);
+    if (f) {
+      const R = f.region || {};
+      const inv = R.invest && R.invest.v ? `${fmt0(R.invest.v)} € par lycéen et par an d’investissement (${R.invest.rang})` : R.invest && R.invest.rang ? `une région ${R.invest.rang} pour l’investissement par lycéen` : 'un investissement par lycéen que la presse n’a pas relevé, quelque part entre 885 et 1 978 €';
+      const ips = f.ips != null ? `IPS moyen des lycées de ${f.ips} (moyenne 109)` : f.sous100 ? 'IPS moyen des lycées sous 100 (moyenne 109)' : 'IPS moyen des lycées non relevé dans ce dossier';
+      d.appendChild(el('p', 'chez-vous', `<b>Chez vous, ${esc(f.nom)} (${esc(f.regionNom)}) :</b> ${inv} ; ${ips}.${citer(R.invest ? R.invest.src : 'gazette_invest')}`));
+    }
+  }
   d.appendChild(el('ul', 'rep-liste faits', c.faits.map((x) =>
     `<li><span class="v">${fr(x.v)}</span><span class="l">${fr(x.l)}.${citer(x.src)}</span></li>`).join('')));
   const V = VERDICTS[c.verdict] || VERDICTS.ouverte;
@@ -7812,7 +8496,7 @@ function ecranFaits(q) {
       opts.appendChild(b);
     });
   } else {
-    d.appendChild(el('p', 'enveloppe-ligne', `Il vous reste <b>${fmt0(Math.max(0, q.tresor) * 1000)} millions d’euros</b> à redéployer cet automne, et ${fmt0(q.capital)} points de soutien du gouvernement.`));
+    d.appendChild(el('p', 'enveloppe-ligne', `Il vous reste <b>${fmt0(Math.max(0, q.tresor) * 1000)} millions d’euros</b> à redéployer ${rentree ? 'cette année' : 'cet automne'}, et ${fmt0(q.capital)} points de soutien du gouvernement.`));
     q.dispo.forEach((carte) => {
       const k = coutDe(carte, {});
       const cadMax = Math.max(0, ...(carte.reel || []).map((e) => e.cadenas));
@@ -7824,7 +8508,7 @@ function ecranFaits(q) {
         <span class="mots"><span class="${tropCher ? 'neg' : ''}">${fmt0(k.cout * 1000)} M€ par an</span><span class="preuve p${Math.min(5, Math.max(1, cadMax))}">ce qu’on sait : ${motPreuve}</span>${motProfs ? `<span class="${vit.enseignants >= 3 ? 'pos' : 'neg'}">${motProfs}</span>` : ''}${carte.greve ? `<span class="neg">risque de grève ${carte.greve.intensite}/5</span>` : ''}${carte.lyceens >= 12 ? '<span class="lyc">répond aux lycéens</span>' : carte.lyceens ? '<span class="lyc">apaise un peu</span>' : ''}</span>
         <span class="det">Qui la défend : ${carte.porteurs.map(esc).join(' · ')}</span>
         ${carte.contre ? `<span class="det">Qui est contre : ${carte.contre.map(esc).join(' · ')}</span>` : ''}
-        ${tropCher ? '<span class="det neg-l">Trop cher pour ce qu’il vous reste cet automne.</span>' : tropCapital ? '<span class="det neg-l">Le gouvernement ne vous suivra pas sur celle-là, pas encore.</span>' : ''}`);
+        ${tropCher ? `<span class="det neg-l">Trop cher pour ce qu’il vous reste ${rentree ? 'cette année' : 'cet automne'}.</span>` : tropCapital ? '<span class="det neg-l">Le gouvernement ne vous suivra pas sur celle-là, pas encore.</span>' : ''}`);
       /* Ce que disent les études, à la demande, sans quitter la page. */
       const etudes = el('div', 'comprendre');
       etudes.innerHTML = `<div class="titre-d">Ce que disent les études</div><p>${esc(carte.preuve || '')}</p>${carte.ideeRecue ? `<div class="idee"><div class="titre-d">L’idée reçue</div><p>${esc(carte.ideeRecue)}</p></div>` : ''}<p class="mot-carte">${esc(carte.mot)}</p>`;
@@ -7846,12 +8530,198 @@ function ecranFaits(q) {
     box.innerHTML = `<div class="titre-d">Ce qui suit</div><p>${fr(suite)}</p>`;
     d.appendChild(box);
     const act = el('div', 'actions');
-    const ok = el('button', 'btn', 'Colère suivante');
+    const ok = el('button', 'btn', rentree ? 'Continuer' : 'Colère suivante');
     ok.onclick = () => suivant(rep);
     act.appendChild(ok); d.appendChild(act);
     box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }
   scene(d);
+}
+
+
+/* --- « Mon lycée, mon département » ------------------------------------------ */
+/* Le joueur dit d'où il regarde. Le jeu lui montre ce qu'il sait de son
+   département et de sa région, chiffre par chiffre, avec la source ; ce
+   qu'il ne sait pas, il le dit ; et, si le téléphone a du réseau, il va
+   chercher les lycées du département dans les données ouvertes du ministère.
+   Rien de tout cela ne change les règles : cela change ce que le bilan
+   pourra dire de « chez vous ». */
+function ecranTerritoire(q) {
+  const d = docu('Avant de commencer : votre lycée', 'D’où regardez-vous l’école ?');
+  d.classList.add('territoire');
+  d.appendChild(el('p', 'chapo', 'Un ministre arrive toujours avec un lycée en tête : celui où il a été élève, celui de ses enfants, celui de sa circonscription. Un lycéen aussi. Choisissez le département du lycée que vous connaissez le mieux : le jeu vous dira ce qu’on y reçoit, et ce qu’on n’en sait pas.'));
+
+  const parRegion = {};
+  for (const dep of q.departements) (parRegion[dep.region] = parRegion[dep.region] || []).push(dep);
+  const sel = el('select', 'choix-dep');
+  sel.id = 'dep';
+  sel.setAttribute('aria-label', 'Votre département');
+  sel.innerHTML = '<option value="">Choisir un département…</option>' + Object.keys(parRegion).map((r) =>
+    `<optgroup label="${esc(REGIONS[r])}">${parRegion[r].map((dep) => `<option value="${dep.code}">${esc(dep.code)} · ${esc(dep.nom)}</option>`).join('')}</optgroup>`).join('');
+  const ligne = el('div', 'ligne-dep');
+  ligne.appendChild(sel);
+  d.appendChild(ligne);
+
+  const fiche = el('div', 'fiche-terr');
+  d.appendChild(fiche);
+
+  const decision = el('div', 'decision-terr');
+  d.appendChild(decision);
+
+  const passer = el('button', 'btn-mini passer', 'Je préfère ne pas choisir');
+  passer.onclick = () => suivant(null);
+  d.appendChild(el('div', 'actions discret')).appendChild(passer);
+
+  sel.onchange = () => { afficherFiche(sel.value); };
+  function afficherFiche(code) {
+    fiche.innerHTML = ''; decision.innerHTML = '';
+    const f = ficheTerritoire(code);
+    if (!f) return;
+    const R = f.region || {};
+    const lignes = [];
+    /* La région : ce qu'elle met, quand on le sait. */
+    if (R.invest && R.invest.v) lignes.push({ v: `${fmt0(R.invest.v)} €`, l: `par lycéen et par an : l’investissement de la région ${f.regionNom} dans ses lycées publics (2022-2025), ${R.invest.rang} ; de 885 à 1 978 € selon les régions`, src: R.invest.src });
+    else if (R.invest && R.invest.rang) lignes.push({ v: 'dans le haut du tableau', l: `l’investissement par lycéen de la région ${f.regionNom} la place ${R.invest.rang} (2022-2025) ; la valeur exacte n’a pas été relevée, l’écart va de 885 à 1 978 € selon les régions`, src: R.invest.src });
+    else lignes.push({ v: 'non relevé', l: `l’investissement par lycéen de la région ${f.regionNom} n’a pas été relevé dans le dossier du jeu ; il se situe entre 885 € (Hauts-de-France) et 1 978 € (Bretagne) par an. Il n’existe aucun tableau officiel : la presse le reconstitue à partir des comptes des régions`, src: 'gazette_invest' });
+    if (R.fonctionnement) lignes.push({ v: 'fonctionnement', l: R.fonctionnement.v, src: R.fonctionnement.src });
+    if (R.prive) lignes.push({ v: 'au privé', l: R.prive.v, src: R.prive.src });
+    if (R.cantine) lignes.push({ v: 'la cantine', l: R.cantine.v, src: R.cantine.src });
+    if (R.participation) lignes.push({ v: 'les élèves décident', l: R.participation.v, src: R.participation.src });
+    /* Le département : son profil social, quand on le sait. */
+    if (f.ips != null) lignes.push({ v: `IPS ${f.ips}`, l: `l’indice de position sociale moyen des lycées de ${f.nom} à la rentrée 2024, pour une moyenne nationale de 109 (de 71 à Mayotte à 129 à Paris). ${f.ips >= 118 ? 'Parmi les plus favorisés de France.' : f.ips <= 95 ? 'Parmi les plus défavorisés de France.' : 'Dans la moyenne.'}`, src: 'depp_ips_lycees' });
+    else if (f.sous100) lignes.push({ v: 'IPS sous 100', l: `${f.nom} fait partie des départements où l’indice de position sociale moyen des lycées est sous 100, pour une moyenne nationale de 109 : parmi les plus défavorisés`, src: 'depp_ips_lycees' });
+    else lignes.push({ v: 'IPS : à chercher', l: `l’indice de position sociale moyen des lycées de ${f.nom} n’a pas été relevé dans le dossier du jeu (moyenne nationale 109). Il se calcule à partir de l’IPS de chaque lycée, publié en données ouvertes : le bouton ci-dessous va le chercher`, src: 'ods_ips' });
+    for (const x of f.locaux) lignes.push(x);
+    fiche.appendChild(el('div', 'titre-d', `${esc(f.nom)}, ${esc(f.regionNom)} : ce que le jeu sait`));
+    fiche.appendChild(el('ul', 'rep-liste faits', lignes.map((x) => `<li><span class="v">${fr(x.v)}</span><span class="l">${fr(x.l)}.${citer(x.src)}${x.src2 ? citer(x.src2) : ''}</span></li>`).join('')));
+
+    /* En direct, si le réseau le permet. */
+    const direct = el('div', 'direct');
+    direct.innerHTML = `<div class="titre-d">Les lycées de ${esc(f.nom)}, en direct</div><p class="exp">Le ministère publie l’indice de position sociale de chaque lycée en données ouvertes. Si votre appareil a du réseau, le jeu peut aller les chercher : combien de lycées, l’IPS moyen, le plus favorisé et le moins favorisé, et le vôtre.</p>`;
+    const go = el('button', 'btn-mini', 'Chercher mes lycées');
+    const res = el('div', 'direct-res');
+    go.onclick = () => { go.disabled = true; go.textContent = 'Recherche…'; chercherLycees(f.code).then((r) => afficherDirect(r, f)).catch((e) => afficherDirect({ erreur: e }, f)); };
+    direct.appendChild(go); direct.appendChild(res);
+    fiche.appendChild(direct);
+    function afficherDirect(r, f) {
+      go.hidden = true;
+      if (!r || r.erreur || !r.lycees || !r.lycees.length) {
+        res.innerHTML = `<p class="exp">Pas de réseau, ou le service ne répond pas d’ici. Voici où chercher vous-même :</p><ul class="liens">${OU_CHERCHER.map((o) => `<li>${esc(o.quoi)}${citer(o.src)}</li>`).join('')}</ul>`;
+        return;
+      }
+      const L = r.lycees;
+      const pub = L.filter((x) => x.secteur === 'public'), pri = L.filter((x) => x.secteur === 'prive');
+      const moy = (arr) => arr.length ? arr.reduce((a, x) => a + x.ips, 0) / arr.length : null;
+      const tri = [...L].sort((a, b) => a.ips - b.ips);
+      res.innerHTML = `<ul class="rep-liste faits"><li><span class="v">${L.length} lycées</span><span class="l">dans le département à la rentrée ${esc(r.rentree || '')}${pub.length || pri.length ? ` : ${pub.length} publics, ${pri.length} privés sous contrat` : ''}${moy(L) != null ? ` ; IPS moyen ${fmt0(moy(L))}${pub.length && pri.length ? ` (public ${fmt0(moy(pub))}, privé ${fmt0(moy(pri))})` : ''}` : ''}</span></li>
+        <li><span class="v">${fmt0(tri[0].ips)}</span><span class="l">le lycée le moins favorisé : ${esc(tri[0].nom)}${tri[0].commune ? `, ${esc(tri[0].commune)}` : ''}</span></li>
+        <li><span class="v">${fmt0(tri[tri.length - 1].ips)}</span><span class="l">le plus favorisé : ${esc(tri[tri.length - 1].nom)}${tri[tri.length - 1].commune ? `, ${esc(tri[tri.length - 1].commune)}` : ''}</span></li></ul>
+        <p class="exp">Un IPS de 100 est la moyenne des élèves de France ; les lycées vont de 59 à 162.${citer('ods_ips')}</p>`;
+      const cherche = el('input', 'cherche-lycee');
+      cherche.type = 'search'; cherche.placeholder = 'Le nom de votre lycée…'; cherche.setAttribute('aria-label', 'Votre lycée');
+      const liste = el('ul', 'lycee-liste');
+      cherche.oninput = () => {
+        const v = cherche.value.trim().toLowerCase();
+        liste.innerHTML = '';
+        if (v.length < 2) return;
+        const norm = (t) => String(t).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+        L.filter((x) => norm(x.nom).includes(norm(v)) || (x.commune && norm(x.commune).includes(norm(v)))).slice(0, 8).forEach((x) => {
+          const rang = tri.indexOf(x) + 1;
+          liste.appendChild(el('li', '', `<b>${esc(x.nom)}</b>${x.commune ? ` <span class="c">${esc(x.commune)}</span>` : ''} <span class="i">IPS ${fmt0(x.ips)}</span> <span class="c">${rang <= L.length / 3 ? 'parmi le tiers le moins favorisé du département' : rang > (2 * L.length) / 3 ? 'parmi le tiers le plus favorisé' : 'dans le tiers médian'}</span>`));
+        });
+      };
+      res.appendChild(cherche); res.appendChild(liste);
+    }
+
+    /* Ce qui est vrai partout. */
+    const nat = el('details', 'nat');
+    nat.innerHTML = `<summary>Et partout en France : sept chiffres</summary>`;
+    nat.appendChild(el('ul', 'rep-liste', FAITS_NATIONAUX.map((x) => `<li><span class="v">${fr(x.v)}</span><span class="l">${fr(x.l)}.${citer(x.src)}</span></li>`).join('')));
+    fiche.appendChild(nat);
+
+    /* La décision : ce que ce choix fera de votre politique. */
+    decision.appendChild(el('h3', 'decider', 'Et votre politique ?'));
+    const opts = groupeOptions();
+    [
+      ['territoires', 'Les territoires d’abord', 'Là où l’on reçoit moins, on donnera plus. Le bilan vérifiera si vous l’avez fait.'],
+      ['national', 'Les mêmes règles partout', 'Le service public est national : pas de barème au profil social. Le bilan vérifiera aussi.'],
+      ['verra', 'Je verrai sur pièces', 'Vous ne promettez rien avant d’avoir vu les chiffres de l’automne.'],
+    ].forEach(([id, t, det]) => {
+      const b = el('button', 'opt', `<b>${esc(t)}</b><span class="det">${esc(det)}</span>`);
+      b.onclick = () => suivant({ code: f.code, priorite: id });
+      opts.appendChild(b);
+    });
+    decision.appendChild(opts);
+    fiche.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+  scene(d);
+}
+
+/* Les lycées d'un département, lus dans les données ouvertes du ministère
+   (jeu « IPS des lycées à partir de 2023 »). Les noms des colonnes sont
+   découverts sur un premier enregistrement, pour ne pas dépendre d'une
+   version précise du jeu de données ; tout échec rend `null`. */
+async function chercherLycees(code) {
+  const base = 'https://data.education.gouv.fr/api/explore/v2.1/catalog/datasets/fr-en-ips-lycees-ap2023';
+  const ctrl = new AbortController();
+  const t = setTimeout(() => ctrl.abort(), 8000);
+  try {
+    const un = await (await fetch(base + '/records?limit=1', { signal: ctrl.signal })).json();
+    const rec = (un.results || [])[0];
+    if (!rec) return null;
+    const cles = Object.keys(rec);
+    const trouve = (...motifs) => cles.find((k) => motifs.every((m) => m.test(k)));
+    const fDep = trouve(/departement/, /code/) || trouve(/departement/);
+    const fIps = trouve(/^ips/, /ensemble/) || trouve(/^ips/, /gt/) || trouve(/^ips/);
+    const fRentree = trouve(/rentree/);
+    const fNom = trouve(/nom/, /etab/) || trouve(/nom/);
+    const fSecteur = trouve(/secteur/);
+    const fCommune = trouve(/nom/, /commune/);
+    if (!fDep || !fIps) return null;
+    const where = codesPossibles(code).map((c) => `${fDep}="${c}"`).join(' or ');
+    const url = `${base}/exports/json?where=${encodeURIComponent(where)}&limit=-1`;
+    const rows = await (await fetch(url, { signal: ctrl.signal })).json();
+    if (!Array.isArray(rows) || !rows.length) return null;
+    const rentrees = [...new Set(rows.map((r) => String(r[fRentree] || '')))].sort();
+    const derniere = rentrees[rentrees.length - 1];
+    const lycees = rows.filter((r) => String(r[fRentree] || '') === derniere && r[fIps] != null && !isNaN(+r[fIps]))
+      .map((r) => ({ nom: r[fNom] || '', commune: fCommune ? r[fCommune] : '', ips: +r[fIps], secteur: /priv/i.test(String(r[fSecteur] || '')) ? 'prive' : /publ/i.test(String(r[fSecteur] || '')) ? 'public' : '' }));
+    return { rentree: derniere, lycees };
+  } finally { clearTimeout(t); }
+}
+
+/* Le bilan, vu de votre lycée : ce que vos décisions ont changé là où vous
+   regardiez. Pas une note : une liste de ce qui y arrive, et de ce qui n'y
+   arrive pas. */
+function blocTerritoire(S) {
+  const f = ficheTerritoire(S.territoire.code);
+  if (!f) return el('div');
+  const d = el('div', 'terr-bloc');
+  d.appendChild(el('div', 'titre-d', `Vu de ${esc(f.nom)}`));
+  const J = (id) => S.joue.has(id);
+  const defav = f.ips != null ? f.ips < 95 : f.sous100;
+  const fav = f.ips != null && f.ips >= 118;
+  const l = [];
+  if (J('ep_lycee')) l.push(defav ? ['ok', `Les lycées de ${f.nom} reçoivent des heures en plus : avec un IPS moyen ${f.ips != null ? 'de ' + f.ips : 'sous 100'}, ils sont dans la cible de l’éducation prioritaire au lycée.`]
+    : fav ? ['non', `Les lycées de ${f.nom} (IPS moyen ${f.ips}) financent une part de l’éducation prioritaire au lycée : un peu moins d’heures chez vous, davantage sous 95. C’est ce que vous avez choisi.`]
+    : ['neutre', `L’éducation prioritaire au lycée ne change rien pour ${f.nom}${f.ips != null ? ` (IPS moyen ${f.ips}, dans la moyenne)` : ' : son IPS moyen n’est pas connu du jeu, les lycées sous 95 y sont servis un par un'}.`]);
+  if (J('bulletin_lycee')) l.push(['ok', `Chaque lycée de ${f.nom} publie désormais sa dépense par élève, ses heures perdues, son IPS et sa valeur ajoutée. Ce que ce dossier n’avait pas pu trouver, un élève peut le lire sur la porte.`]);
+  if (J('open_data_lycee')) l.push(['ok', 'Les heures de cours non assurées sont affichées chaque mois à l’entrée de chaque lycée.']);
+  if (J('plan_chaleur')) l.push(['ok', `Le diagnostic thermique de chaque lycée de ${f.nom} est publié ; au-dessus de 30 °C, les cours s’adaptent ; les travaux vont d’abord aux lycées les plus chauds et les plus défavorisés.`]);
+  if (J('garantie_trajet')) l.push(['ok', 'Aucun lycéen à plus de quarante-cinq minutes de son lycée sans internat gratuit ou aide au transport : la garantie vaut surtout pour les communes rurales du département.']);
+  if (J('eleve_vote_region')) l.push(['ok', `Deux lycéens votent à la commission lycées de la région ${f.regionNom}.`]);
+  if (J('bp_regional')) l.push(['ok', f.region.participation ? `La région ${f.regionNom} avait déjà un budget participatif lycéen ; il passe à 1 % du budget des lycées, voté par les élèves.` : `La région ${f.regionNom} n’avait pas de budget participatif lycéen ; elle a désormais 1 % de son budget des lycées à faire voter par les élèves.`]);
+  if (J('budget_participatif')) l.push(['ok', 'Deux euros par élève, dépensés sur un vote des élèves, dans chaque lycée.']);
+  if (J('enquete_climat')) l.push(['ok', 'Tous les deux ans, les élèves de chaque lycée répondent à l’enquête de climat scolaire et en voient les résultats.']);
+  if (J('droit_reponse')) l.push(['ok', 'Toute question du conseil de la vie lycéenne reçoit une réponse écrite sous un mois.']);
+  if (J('charte_sanitaires')) l.push(['ok', 'Les toilettes sont ouvertes, équipées et visitées deux fois par an par les élèves.']);
+  if (J('cantine_lycee')) l.push(['ok', f.region.cantine ? `Le repas à un euro pour les boursiers s’ajoute à la tarification de la région (${f.region.cantine.v}).` : 'Le repas à un euro pour les boursiers, dans tous les lycées.']);
+  if (!l.length) l.push(['non', `Aucune de vos décisions ne change quelque chose de visible dans un lycée de ${f.nom} : ni les murs, ni la parole des élèves, ni ce qu’on sait de chaque établissement. Les professeurs et les programmes, peut-être ; de loin.`]);
+  const pr = S.territoire.priorite;
+  if (pr === 'territoires') l.push([J('ep_lycee') || J('garantie_trajet') || J('plan_chaleur') ? 'ok' : 'non', J('ep_lycee') || J('garantie_trajet') || J('plan_chaleur') ? 'Vous aviez dit « les territoires d’abord » : vous avez déplacé des moyens vers ceux qui en ont le moins.' : 'Vous aviez dit « les territoires d’abord ». Aucune de vos mesures n’a déplacé de moyens d’un territoire vers un autre.']);
+  if (pr === 'national') l.push([J('ep_lycee') ? 'non' : 'ok', J('ep_lycee') ? 'Vous aviez dit « les mêmes règles partout », puis vous avez créé un barème au profil social. Les lycéens appellent cela changer d’avis ; vous, apprendre.' : 'Vous aviez dit « les mêmes règles partout » : vous vous y êtes tenu.']);
+  d.appendChild(el('ul', 'terr-liste', l.map(([k, t]) => `<li class="${k}">${k === 'ok' ? '✓' : k === 'non' ? '✗' : '–'} ${fr(t)}</li>`).join('')));
+  return d;
 }
 
 /* Le miroir de l'automne : ce que vous pensiez, ce que disent les faits.
@@ -8967,6 +9837,7 @@ function ecranBilan(B) {
   d.appendChild(blocBoussole(S, true));
   /* --- et les lycéens --- */
   if (S.lyceens) d.appendChild(blocLyceens(S, true));
+  if (S.territoire) d.appendChild(blocTerritoire(S));
   if (S.coleres && Object.keys(S.coleres.avis).length) d.appendChild(blocMiroir(S));
 
   const det = el('details', 'bilan-detail');
@@ -9259,7 +10130,8 @@ function dateDe(q) {
   if (q.type === 'avance') return 'novembre 2026';
   if (q.type === 'entretien') return 'novembre 2026';
   if (q.type === 'profil') return 'novembre 2026';
-  if (q.type === 'colere' || q.type === 'faits') return 'novembre 2026';
+  if (q.type === 'colere' || q.type === 'faits') return q.quand && /^Rentrée/.test(q.quand) ? `septembre ${an}` : 'novembre 2026';
+  if (q.type === 'territoire') return 'novembre 2026';
   if (q.type === 'intention') return `juillet ${an}`;
   if (q.type === 'affaire') return `décembre ${an}`;
   if (q.type === 'polemique') return `septembre ${an}`;
@@ -9302,7 +10174,8 @@ function situer(q) {
   if (t === 'doctrine') return ['novembre', 'pupitre'];
   if (t === 'reperes') return [q.note === 'demographie' ? 'ete' : 'novembre', q.note === 'budget' ? 'pieces' : q.note === 'lyceens' ? 'megaphone' : 'courbe'];
   if (t === 'avance') return ['novembre', 'pieces'];
-  if (t === 'colere' || t === 'faits') return ['novembre', 'megaphone'];
+  if (t === 'colere' || t === 'faits') return [q.quand && /^Rentrée/.test(q.quand) ? 'septembre' : 'novembre', 'megaphone'];
+  if (t === 'territoire') return ['novembre', 'carte'];
   if (t === 'intention') return ['ete', 'courbe'];
   if (t === 'dossier') return ['ete', 'soleil'];
   if (t === 'lettrePlafond') return ['ete', 'lettre'];
@@ -9369,6 +10242,7 @@ function rendre(q) {
   else if (q.type === 'blocus') ecranBlocus(q);
   else if (q.type === 'colere') ecranColere(q);
   else if (q.type === 'faits') ecranFaits(q);
+  else if (q.type === 'territoire') ecranTerritoire(q);
   else if (q.type === 'livraison') ecranLivraison(q);
   else if (q.type === 'plateau') ecranPlateau(q);
   else if (q.type === 'retrait') ecranRetrait(q);
