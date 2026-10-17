@@ -183,6 +183,7 @@ index.html                   LE JEU — fichier unique autonome
 moteur/                      constantes sourcées, catalogue de 84 cartes et 9 colères, repères sourcés, moteur en générateur
 moteur/reperes.js            les 13 fiches de référence et leurs 63 sources
 RECHERCHE-GRAND-PUBLIC.md    le dossier de recherche d'octobre 2026 : mouvement lycéen, projets des partis
+RECHERCHE-TERRITOIRES.md     coût par lycéen selon les régions, comparaisons internationales, données par département, idées (non encore codées)
 simulations/                 stratégies-types et bancs d'essai
 interface/                   gabarit (styles) + application (écrans, presse, bilan)
 outil/construire.js          assemblage
