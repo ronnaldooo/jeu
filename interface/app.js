@@ -33,6 +33,7 @@ const FAMILLES = {
   autorite: ['Autorité & familles', 'var(--c-paix)'],
   mixite: ['Mixité & carte scolaire', 'var(--c-egalite)'],
   lycee: ['Lycée & lycéens', 'var(--c-violet)'],
+  vie_lyceenne: ['Dans le lycée : la parole des élèves', 'var(--or)'],
 };
 const MOIS_L = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'];
 

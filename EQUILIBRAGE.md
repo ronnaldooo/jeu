@@ -1819,13 +1819,87 @@ la fin de l'automne et au bilan, un bloc « ce que vous pensiez, ce que disent
 les faits » reprend les huit colères. La frise commence par une année
 2026‑27 (novembre, janvier, mai).
 
+## 3 untricies. La vie lycéenne : ce qu'on peut changer dans un établissement
+
+La commande suivante : inventer, poser la question de la démocratie scolaire,
+et chercher ce qui peut être amélioré pour les élèves **au sein d'un
+établissement**, même quand cela ne relève pas directement du ministre.
+
+**Ce qu'il fallait comprendre d'abord.** Un lycée est gouverné à trois. L'État
+paie les professeurs, fixe les programmes et nomme le proviseur ; la région
+possède les murs, la cantine, l'internat et les agents ; le conseil
+d'administration (30 membres en lycée, un tiers de personnels, un tiers de
+parents et d'élèves) vote le budget, le règlement intérieur et la répartition
+de la dotation horaire que l'académie lui attribue. Les élèves ont des sièges
+partout (conseil d'administration, conseil de la vie lycéenne à dix élus,
+conseil de discipline à trois élus) et ne décident presque rien : le CVL est
+consulté et propose, le fonds de vie lycéenne voté par les CA est de 771 € par
+lycée en moyenne (de 0 à 64 158 €), les dix heures de vie de classe prévues
+depuis 2002 dépendent du professeur principal. La recherche (revue Mager et
+Nowak, 32 études) trouve à la participation des élèves des effets positifs
+modérés sur les connaissances et valeurs civiques, et presque rien de solide
+sur les résultats scolaires. C'est la fiche « Comment marche un lycée »
+(`REPERES`, clé `etablissement`, 8 chiffres, 8 sources nouvelles).
+
+**Neuf cartes, famille `vie_lyceenne`.** Le principe : le ministre ne peut pas
+diriger 3 700 lycées, mais il peut écrire les règles de ce qui s'y décide, et
+rendre visible ce qui ne s'y fait pas.
+
+| Carte | Coût (Md€) | D'où vient l'idée | Preuve |
+|---|---|---|---|
+| `budget_participatif` : 2 €/élève votés par les élèves | 0,005 | budget participatif des écoles portugaises (2017, 1 €/élève) ; organisations lycéennes | 2 |
+| `droit_reponse` : réponse écrite sous un mois à toute question du CVL, sinon rectorat | 0,01 | proposition du jeu ; médiatrice (28 450 saisines en 2025, 78 % de succès) | 1 |
+| `charte_sanitaires` : toilettes ouvertes, papier, savon, visite semestrielle des élèves, résultats affichés | 0,02 | lycéens de Cayenne et de Saint-Denis ; Observatoire national de la sécurité (un tiers des élèves renoncent à y aller) | 2 |
+| `adulte_referent` : un entretien par trimestre, en dehors des notes | 0,10 | tuteurs des lycées finlandais, « advisories » américaines ; EEF (mentorat : effet faible à modéré) | 3 |
+| `conseil_classe_eleve` : l'élève présent à son conseil de classe avec ses parents | 0 | rencontres élève-parents-enseignants du Québec et des pays nordiques | 1 |
+| `mediation_pairs` : médiateurs élèves formés, responsabilisation avant exclusion | 0,03 | revue Tabin (2019) ; dispositif « Médiateur à l'École » | 2 |
+| `referendum_lycee` : élèves et adultes votent sur le téléphone, la tenue, la pause de midi ; le CA délibère | 0 | proposition du jeu ; « refonte de la démocratie lycéenne » | 1 |
+| `heures_vie_classe` : les dix heures garanties, deux jours de formation par délégué | 0,06 | textes de 2002 ; SNES-FSU | 2 |
+| `open_data_lycee` : chaque lycée publie ses heures perdues, ses remplacements, ses réponses au CVL | 0,01 | Cour des comptes (mesurer le temps perdu) | 2 |
+
+Les cartes que le jeu invente portent « proposition du jeu » en tête de leurs
+porteurs et une preuve à 1 ou 2 cadenas (3 pour l'adulte référent, adossé
+aux méta-analyses sur le mentorat) : l'effet réel tiré est donc très
+incertain, dans les deux sens, ce qui est la vérité d'une mesure jamais
+évaluée. Leurs effets centraux sont petits (le climat surtout, un peu de
+métier et de niveau), leur apaisement des lycéens notable
+(6 à 9 points) : ce sont des cartes qui achètent de la confiance, pas du
+niveau. Deux coûtent zéro et une (le conseil de classe) fait grincer les
+professeurs : c'est voulu, pour que « gratuit » ne veuille pas dire « sans
+friction ».
+
+**La colère « écoute » coupée en deux.** La huitième colère mêlait la santé
+scolaire et la démocratie lycéenne ; elles n'ont ni les mêmes faits ni les
+mêmes réponses. Désormais `sante` (900 médecins scolaires pour 12 millions
+d'élèves, 2 % de lycéens harcelés, 28 450 saisines de la médiatrice ; verdict
+*fondée* ; réponses : plan santé scolaire, conventions santé mentale, adulte
+référent, médiation par les pairs) et `democratie` (10 élus à voix
+consultative, 771 € de fonds de vie lycéenne, les 32 études ; verdict *en
+partie* : les instances existent, elles ne décident de rien ; réponses :
+refonte des instances, budget participatif, droit de réponse, référendum).
+`COLERES_MAX` passe à 9. La médiation par les pairs a été ajoutée aux réponses
+de la colère santé après une partie-robot où les trois autres dépassaient ce
+qu'il restait d'enveloppe : il faut toujours au moins une réponse abordable.
+
+**Ailleurs.** Les nouvelles cartes alimentent aussi les promesses du
+mouvement (`LYCEENS.promesses` : la promesse « démocratie » est tenue par
+l'une des quatre cartes de ce thème), les menus de rentrée après un blocus
+(cadrage `['lycee', 'vie_lyceenne']`), et la boussole politique (famille
+`vie_lyceenne`, principe « ce qui se décide dans l'établissement »).
+
+**Équilibre.** Le banc d'essai n'a pas bougé : 4/4 sur les graines 5 (400
+parties), 11 et 23 (700 parties) ; mixte 58 %, passif 47 % sur la graine 5.
+Les cartes sont trop peu coûteuses et trop peu puissantes pour déplacer les
+cibles ; elles changent ce que le joueur peut dire aux lycéens, pas ce qu'il
+peut gagner.
+
 ## 5. Paramètres à réexaminer après tests humains
 
-- **Version grand public.** Le passif survit presque autant que le mixte (47-53 % contre 52-59 %). Si les premiers joueurs trouvent qu'on peut gagner en ne faisant rien, relever `IMMOBILISME` ou faire peser davantage la colère lycéenne sur les convocations. Et vérifier que la colère initiale (52) et le seuil (62) laissent une chance d'éviter le premier blocus à un joueur qui répond à deux chantiers en juin.
+- **Version grand public.** Le passif survit presque autant que le mixte (47-53 % contre 52-59 %). Si les premiers joueurs trouvent qu'on peut gagner en ne faisant rien, relever `IMMOBILISME` ou faire peser davantage la colère lycéenne sur les convocations. Et vérifier que la colère initiale (90, les lycées sont bloqués le jour de la nomination) et le seuil (62) laissent une chance d'éviter le blocus de la première rentrée à un joueur qui répond à trois colères à l'automne.
 
 | Paramètre | Valeur | Ce qu'il faut regarder |
 |---|---|---|
-| `RENVOI.remaniementBase` | 0,205 | Une fin subie par tirage peut frustrer. Si les testeurs la trouvent arbitraire, 0,15 et compenser par les convocations (qui, elles, se méritent). |
+| `RENVOI.remaniementBase` | 0,33 | Relevé pour un mandat de trois rentrées. Une fin subie par tirage peut frustrer : si les testeurs la trouvent arbitraire, 0,25 et compenser par les convocations (qui, elles, se méritent). |
 | Rotation du menu | 16/70 | Vérifier qu'un joueur qui vise une doctrine trouve ses cartes assez souvent ; sinon, garantir 1 carte de chaque famille par menu. |
 | `PALIERS_BERCY[0].marge` | 1,80 Md€ | Contrôle l'ambition possible sur cinq ans. Desserré en phase « sources » ; à resserrer si les testeurs trouvent le mandat trop confortable en fin de course. |
 | Seuils de `DECLENCHEURS` | HNA 10,6 · IPS 18,6 · réussite 46 | Vérifier que les dossiers remontent au moment où le joueur ressent le problème, pas avant ni longtemps après. |

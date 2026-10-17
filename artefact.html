@@ -947,7 +947,7 @@ const DUREE_MANDAT = 3;
 const ENVELOPPE_PROLOGUE = 0.45;   // Md€, amendements au budget 2027 en discussion
 /* Les colères examinées à l'automne 2026 : chacune donne lieu à un avis du
    joueur, puis aux faits, puis à une décision. */
-const COLERES_MAX = 8;
+const COLERES_MAX = 9;
 
 /* ---------------------------------------------------------------------------
    LES LYCÉENS, l'héritage de l'automne 2026                       [source D]
@@ -974,10 +974,10 @@ const LYCEENS = {
      rentrée 2027 à ce qu'on leur a dit à l'automne 2026. */
   promesses: [
     { id: 'remplacement', libelle: 'un professeur devant chaque classe à la rentrée', themes: ['remplacement', 'remplacement_lycee', 'ors_service'], colere: 8 },
-    { id: 'bati',         libelle: 'des travaux dans les lycées dégradés avant l’été 2027', themes: ['bati_lycee', 'bati'], colere: 7 },
+    { id: 'bati',         libelle: 'des travaux dans les lycées dégradés avant l’été 2027', themes: ['bati_lycee', 'bati', 'sanitaires'], colere: 7 },
     { id: 'parcoursup',   libelle: 'des règles de Parcoursup lisibles', themes: ['parcoursup'], colere: 6 },
     { id: 'temps',        libelle: 'des journées de lycée moins longues', themes: ['temps_lycee'], colere: 7 },
-    { id: 'democratie',   libelle: 'une place pour les élèves dans les décisions', themes: ['democratie_lyceenne'], colere: 4 },
+    { id: 'democratie',   libelle: 'une place pour les élèves dans les décisions', themes: ['democratie_lyceenne', 'budget_participatif', 'droit_reponse', 'referendum', 'vie_classe'], colere: 4 },
   ],
   seuilBlocus: 62,        // au-dessus, la rentrée commence par des blocus
   derive: +5,             // par an, sans réponse : une promesse vieillit mal
@@ -3116,7 +3116,212 @@ const CATALOGUE = [
     ideeRecue: '« Moins d’élèves, donc moins de profs, c’est logique. » C’est logique en moyenne nationale. Dans un lycée donné, une classe de 35 ne devient pas une classe de 30 parce qu’un collège de l’autre bout du pays a perdu trois élèves par niveau.',
     mot: "Cent vingt millions d’euros, le prix le plus bas du catalogue pour la colère la plus précise. Bercy, lui, retiendra que vous avez commencé par défaire son budget.",
   },
+  /* =====================================================================
+     DANS LE LYCÉE : LA PAROLE DES ÉLÈVES (version grand public)
+     ---------------------------------------------------------------------
+     Des mesures qui ne coûtent presque rien au budget de l'État et tout
+     aux habitudes : elles changent qui décide de quoi dans un lycée. La
+     plupart sont des PROPOSITIONS DU JEU, inventées à partir de ce qui
+     existe (CVL, fonds de vie lycéenne, heures de vie de classe, conseil
+     de discipline, médiatrice) et de précédents étrangers. Le niveau de
+     preuve est bas, et il est affiché : la recherche sur la participation
+     des élèves (Mager et Nowak, 2012) trouve des effets civiques modérés
+     et presque rien de solide sur les résultats scolaires.
+     ===================================================================== */
+
+  /* ------------------------------ V1 · le budget ------------------- */
+  {
+    id: 'budget_participatif',
+    label: 'Un budget participatif dans chaque lycée : deux euros par élève, dépensés sur un vote des élèves',
+    famille: 'vie_lyceenne',
+    porteurs: ['proposition du jeu, d’après le précédent portugais (Orçamento Participativo das Escolas, 2017)', 'les organisations lycéennes (un budget que les élèves votent)'],
+    perimetre: 'ministeriel',
+    cout: 0.005, coutETP: 0, pol: 2,
+    theme: 'budget_participatif', once: true, reforme: false,
+    lyceens: 7,
+    vitrine: { parents: +2, enseignants: 0, presse: +3, compteurs: { paix: +1 } },
+    reel: [
+      { compteur: 'paix',     central: 2, delai: 1, cadenas: 2, source: 'Mager et Nowak (2012) : effets positifs modérés de la participation aux décisions sur les attitudes civiques ; au Portugal, pas d’évaluation nationale d’impact' },
+      { compteur: 'reussite', central: 0, delai: 3, cadenas: 1, source: 'aucun effet documenté sur les résultats scolaires' },
+    ],
+    physique: {},
+    preuve: 'Le Portugal a créé en 2017 un budget participatif dans tous ses collèges et lycées : un euro par élève, des propositions déposées et votées par les élèves, un projet gagnant réalisé dans l’année. Des centaines d’établissements y participent ; les propositions portent surtout sur le bien-être et la vie commune, et les chefs d’établissement interrogés y voient un apprentissage civique. Il n’existe pas d’évaluation nationale de ses effets. En France, le fonds de vie lycéenne existe depuis 2001, mais le conseil d’administration en vote le montant : 771 € par lycée en moyenne, de zéro à 64 000 €. Deux euros par élève, c’est 4,5 millions d’euros pour tous les lycées de France, et, pour un lycée de 1 000 élèves, deux fois et demie la moyenne actuelle.',
+    ideeRecue: '« Deux euros par élève, c’est symbolique. » C’est six fois plus que la moyenne de ce que les lycées votent aujourd’hui pour les projets de leurs élèves, et c’est surtout la première fois que ce sont eux qui décident de la dépense.',
+    mot: "Au Portugal, les élèves ont surtout voté pour des bancs, des micro-ondes et des toilettes. Ce qu’on vote dit ce qui manque.",
+  },
+
+  /* ------------------------------ V2 · le droit de réponse ---------- */
+  {
+    id: 'droit_reponse',
+    label: 'Le droit de réponse : toute question du conseil de la vie lycéenne reçoit une réponse écrite sous un mois, sinon le rectorat est saisi',
+    famille: 'vie_lyceenne',
+    porteurs: ['proposition du jeu', 'la médiatrice de l’Éducation nationale (28 450 saisines en 2025, 78 % de succès)', 'les organisations lycéennes (« personne ne nous écoute »)'],
+    contre: ['une partie des chefs d’établissement, qui y voient une procédure de plus'],
+    perimetre: 'ministeriel',
+    cout: 0.01, coutETP: 0, pol: 2,
+    theme: 'droit_reponse', once: true, reforme: false,
+    lyceens: 8,
+    vitrine: { parents: +2, enseignants: -1, presse: +2, compteurs: { paix: +2 } },
+    reel: [
+      { compteur: 'paix', central: 2, delai: 1, cadenas: 1, source: 'aucun précédent évalué : une obligation de réponse n’a jamais été testée à l’échelle d’un système scolaire' },
+    ],
+    physique: {},
+    preuve: 'Le conseil de la vie lycéenne est consulté et propose ; rien n’oblige qui que ce soit à lui répondre. La voie de recours existe, c’est la médiatrice de l’Éducation nationale : 28 450 saisines en 2025, en hausse de 57 % en cinq ans, et 78 % d’interventions qui aboutissent au moins en partie, mais les élèves la connaissent peu. Cette mesure crée une obligation simple : une question posée par le CVL reçoit une réponse écrite et motivée dans le mois ; sans réponse, le rectorat est saisi et le médiateur académique peut l’être par les élèves eux-mêmes. Elle ne coûte presque rien ; elle change la nature du silence.',
+    ideeRecue: '« Les élèves ont déjà le CVL pour s’exprimer. » S’exprimer, oui. Obtenir une réponse, non : c’est précisément la différence entre une instance et un droit.',
+    mot: "Une question sans réponse est une pancarte en devenir.",
+  },
+
+  /* ------------------------------ V3 · les toilettes ---------------- */
+  {
+    id: 'charte_sanitaires',
+    label: 'La charte des toilettes : ouvertes toute la journée, papier et savon, visite deux fois par an par les élèves du CVL, résultats affichés',
+    famille: 'vie_lyceenne',
+    porteurs: ['proposition du jeu', 'les lycéens de Cayenne, de Saint-Denis et de la consultation nationale', 'Observatoire national de la sécurité (un tiers des élèves renoncent à y aller)'],
+    perimetre: 'ministeriel',
+    cout: 0.02, coutETP: 0, pol: 1,
+    theme: 'sanitaires', once: true, reforme: false,
+    lyceens: 9,
+    vitrine: { parents: +5, enseignants: +1, presse: +5, compteurs: { paix: +2 } },
+    reel: [
+      { compteur: 'sante', central: 1, delai: 1, cadenas: 2, source: 'se retenir toute la journée augmente infections urinaires et douleurs abdominales ; l’effet d’une charte sur l’état réel des sanitaires n’est pas évalué' },
+      { compteur: 'paix',  central: 2, delai: 1, cadenas: 1, source: 'aucune évaluation : c’est la revendication la plus concrète et la moins étudiée du mouvement' },
+    ],
+    physique: {},
+    preuve: 'Les murs sont à la région, mais l’ouverture des toilettes, le papier, le savon et la surveillance relèvent de l’établissement, et donc du règlement intérieur que vote son conseil d’administration. Une question parlementaire de 2023 décrit des établissements sans papier ni savon et un lycée de 1 200 élèves pour une trentaine de cabinets ; l’Observatoire national de la sécurité estimait en 2014 qu’un tiers des collégiens et lycéens renonçaient à y aller. La charte fixe un minimum national, confie la visite à une commission d’élèves du CVL et impose l’affichage du résultat. Rien de tout cela ne demande un décret long : une circulaire et un formulaire.',
+    ideeRecue: '« Ce n’est pas le travail d’un ministre. » Le ministre ne débouchera rien. Mais fixer une norme que chaque élève peut vérifier trois fois par jour est exactement ce qu’un ministère sait faire, et presque jamais sur ce sujet-là.',
+    mot: "La mesure la moins noble du catalogue, et la seule dont chaque élève vérifie l’application trois fois par jour.",
+  },
+
+  /* ------------------------------ V4 · un adulte pour chacun -------- */
+  {
+    id: 'adulte_referent',
+    label: 'Un adulte référent pour chaque lycéen : un entretien par trimestre, en dehors des notes',
+    famille: 'vie_lyceenne',
+    porteurs: ['proposition du jeu, d’après les tuteurs des lycées finlandais et les « advisories » américaines', 'Education Endowment Foundation (mentorat : effet faible à modéré)', 'fédérations de parents'],
+    perimetre: 'ministeriel',
+    cout: 0.10, coutETP: 0, pol: 3,
+    theme: 'adulte_referent', once: true, reforme: true,
+    lyceens: 6,
+    vitrine: { parents: +4, enseignants: -3, presse: +2, compteurs: { sante: +2 } },
+    reel: [
+      { compteur: 'sante',    central: 2, delai: 2, cadenas: 3, source: 'EEF : le mentorat par un adulte produit un effet faible mais régulier sur l’engagement et l’assiduité, plus fort pour les élèves en difficulté' },
+      { compteur: 'reussite', central: 2, delai: 2, cadenas: 3, source: 'EEF : environ deux mois de progrès en moyenne, davantage quand le mentorat est structuré et durable' },
+    ],
+    physique: {},
+    preuve: 'Dans beaucoup de lycées, un élève peut passer une année sans qu’un adulte lui parle de lui autrement que par ses notes. La mesure donne à chaque lycéen un adulte référent (professeur, conseiller principal d’éducation, documentaliste) et trois entretiens de vingt minutes par an, payés en heures supplémentaires : un peu plus d’une heure par élève et par an, soit une centaine de millions d’euros pour 2,26 millions de lycéens. L’Education Endowment Foundation classe le mentorat parmi les interventions à effet faible mais régulier, meilleur pour les élèves fragiles et quand il dure.',
+    ideeRecue: '« Les profs principaux font déjà ça. » Pour trente-cinq élèves, en plus de leurs cours, sans heure prévue : ils le font quand ils peuvent, c’est-à-dire pour ceux qui le demandent, c’est-à-dire rarement pour ceux qui en auraient le plus besoin.',
+    mot: "Vingt minutes trois fois par an. La mesure la plus humaine du catalogue coûte le prix d’une heure supplémentaire par élève, et personne n’en parlera au 20 heures.",
+  },
+
+  /* ------------------------------ V5 · le conseil de classe --------- */
+  {
+    id: 'conseil_classe_eleve',
+    label: 'L’élève présent à son propre conseil de classe, avec ses parents : le bilan se dit devant lui, pas sur lui',
+    famille: 'vie_lyceenne',
+    porteurs: ['proposition du jeu, d’après les rencontres élève-parents-enseignants du Québec et des pays nordiques', 'une partie des chefs d’établissement'],
+    contre: ['une majorité d’enseignants, qui y voient du temps en plus et une parole moins libre'],
+    perimetre: 'ministeriel',
+    cout: 0.0, coutETP: 0, pol: 4,
+    theme: 'conseil_classe', once: true, reforme: true,
+    lyceens: 6,
+    vitrine: { parents: +5, enseignants: -6, presse: +3, compteurs: {} },
+    reel: [
+      { compteur: 'reussite', central: 1, delai: 3, cadenas: 2, source: 'EEF : le retour d’information direct à l’élève est l’une des interventions les mieux établies ; son effet dépend entièrement de la manière dont il est fait' },
+      { compteur: 'sante',    central: -1, delai: 1, cadenas: 1, source: 'du temps enseignant en plus, sans évaluation du format' },
+    ],
+    physique: {},
+    greve: { intensite: 2, theme: 'statut', segment: 'lycee' },
+    preuve: 'Le conseil de classe français réunit les professeurs, deux délégués et deux parents, et parle de chaque élève en son absence ; l’élève découvre le résultat sur un bulletin. Au Québec et dans les pays nordiques, le bilan se fait en rencontre à trois, élève, parents, enseignant. La recherche sur le retour d’information à l’élève est parmi les plus solides en éducation ; elle dit aussi que son effet dépend de la façon dont il est donné. Cette mesure remplace le passage de chaque élève au conseil par un entretien de dix minutes en sa présence : zéro euro, et une profession qui devra parler aux élèves de ce qu’elle écrit sur eux.',
+    ideeRecue: '« Les élèves ne peuvent pas assister à un conseil où l’on parle d’eux. » C’est l’argument qui a été opposé, autrefois, à la présence des parents et des délégués. Ils y sont.',
+    mot: "Dire à quelqu’un ce qu’on pense de lui en sa présence : la réforme la plus simple et la plus redoutée du catalogue.",
+  },
+
+  /* ------------------------------ V6 · la médiation ----------------- */
+  {
+    id: 'mediation_pairs',
+    label: 'Des médiateurs élèves formés dans chaque lycée, et la mesure de responsabilisation avant l’exclusion',
+    famille: 'vie_lyceenne',
+    porteurs: ['programmes de médiation par les pairs évalués (revue Tabin, 2019)', 'le dispositif « Médiateur à l’École » (évaluation LIEPP citée par ses promoteurs)', 'proposition du jeu pour la généralisation'],
+    perimetre: 'ministeriel',
+    cout: 0.03, coutETP: 0, pol: 2,
+    theme: 'mediation', once: true, reforme: false,
+    lyceens: 5,
+    vitrine: { parents: +3, enseignants: +1, presse: +2, compteurs: { paix: +1 } },
+    reel: [
+      { compteur: 'paix',  central: 2, delai: 2, cadenas: 2, source: 'Tabin (2019) : des programmes efficaces existent sur les conflits entre élèves ; les preuves contre le harcèlement restent minces' },
+      { compteur: 'sante', central: 1, delai: 2, cadenas: 2, source: 'moins de conflits portés aux adultes ; effet non mesuré sur les personnels' },
+    ],
+    physique: {},
+    preuve: 'La médiation par les pairs forme des élèves volontaires à aider deux camarades en conflit à trouver eux-mêmes une issue. Une revue systématique de 2019 recense onze programmes évalués : plusieurs réduisent les conflits et améliorent le climat déclaré, mais les preuves d’un effet sur le harcèlement sont minces, et peu de programmes existent en français. Le dispositif français « Médiateur à l’École » cite une évaluation du LIEPP (−11 % de sentiment de harcèlement au collège), à confirmer par une publication indépendante. La mesure finance deux jours de formation par lycée et par an et rappelle que la mesure de responsabilisation, prévue par les textes depuis 2011, doit être proposée avant toute exclusion temporaire.',
+    ideeRecue: '« Confier les conflits aux élèves, c’est démissionner. » Les adultes restent responsables ; ce qui change, c’est que les élèves apprennent à régler un conflit avant qu’il arrive aux adultes. Là où c’est fait sérieusement, ce sont les surveillants qui le réclament.',
+    mot: "Deux jours de formation par lycée. Moins cher qu’une caméra, et la caméra n’a jamais réconcilié personne.",
+  },
+
+  /* ------------------------------ V7 · le référendum ---------------- */
+  {
+    id: 'referendum_lycee',
+    label: 'Le référendum d’établissement : sur le téléphone, la tenue ou la pause de midi, élèves et adultes votent, et le conseil d’administration doit en délibérer',
+    famille: 'vie_lyceenne',
+    porteurs: ['proposition du jeu', 'les organisations lycéennes (« refonte de la démocratie lycéenne »)'],
+    contre: ['une partie des chefs d’établissement et des professeurs : on ne vote pas le règlement'],
+    perimetre: 'ministeriel',
+    cout: 0.0, coutETP: 0, pol: 3,
+    theme: 'referendum', once: true, reforme: false,
+    lyceens: 7,
+    vitrine: { parents: 0, enseignants: -2, presse: +4, compteurs: { paix: +1 } },
+    reel: [
+      { compteur: 'paix', central: 2, delai: 1, cadenas: 1, source: 'aucun précédent français ; Mager et Nowak (2012) : la participation réelle aux décisions a des effets civiques, la participation de façade n’en a pas' },
+    ],
+    physique: {},
+    preuve: 'Le règlement intérieur d’un lycée est voté par son conseil d’administration, où les élèves sont une poignée de sièges sur trente. La mesure permet au CVL, ou à un dixième des élèves, de demander un vote de tout l’établissement, élèves et personnels, sur une question du règlement : usage du téléphone, tenue, organisation de la pause de midi, horaires du CDI. Le vote ne décide pas : il oblige le conseil d’administration à délibérer et à motiver sa décision. La recherche distingue nettement la participation réelle, qui produit des effets civiques, de la participation de façade, qui produit du cynisme ; tout dépend de ce que les conseils d’administration feront des résultats.',
+    ideeRecue: '« On ne vote pas le règlement d’un lycée. » Le conseil d’administration le vote déjà. La question est seulement de savoir qui a le droit de lui poser une question.',
+    mot: "Le vote ne décide pas ; il oblige à répondre. Dans un lycée, c’est déjà une révolution.",
+  },
+
+  /* ------------------------------ V8 · les heures de vie de classe -- */
+  {
+    id: 'heures_vie_classe',
+    label: 'Les dix heures de vie de classe garanties à l’emploi du temps, et deux jours de formation pour chaque délégué',
+    famille: 'vie_lyceenne',
+    porteurs: ['les textes de 2002 (dix heures annuelles), inégalement appliqués', 'les organisations lycéennes', 'SNES-FSU (reconnaissance de l’heure dans le service)'],
+    perimetre: 'ministeriel',
+    cout: 0.06, coutETP: 0, pol: 2,
+    theme: 'vie_classe', once: true, reforme: false,
+    lyceens: 6,
+    vitrine: { parents: +2, enseignants: +2, presse: +1, compteurs: { paix: +1 } },
+    reel: [
+      { compteur: 'paix',  central: 2, delai: 1, cadenas: 2, source: 'les heures de vie de classe sont le seul temps institué de parole collective des élèves ; leur effet dépend de leur tenue réelle, qui n’est pas mesurée' },
+      { compteur: 'sante', central: 1, delai: 2, cadenas: 2, source: 'des délégués formés déchargent les professeurs principaux d’une partie de la régulation de classe' },
+    ],
+    physique: {},
+    preuve: 'Depuis la rentrée 2002, dix heures annuelles de vie de classe sont prévues à l’emploi du temps, environ une par mois, animées par le professeur principal. Leur tenue dépend de chaque établissement et personne ne la mesure ; les professeurs qui les assurent ne sont pas toujours payés pour cela. La mesure les inscrit en dur dans l’emploi du temps, paie l’heure, et finance deux jours de formation par an pour les délégués de classe, qui animent la moitié des séances. Cent cinquante mille délégués, deux jours, un formateur pour vingt : une soixantaine de millions d’euros.',
+    ideeRecue: '« Une heure de bavardage par mois. » C’est aussi la seule heure où une classe peut parler de son emploi du temps, de ses toilettes ou d’un camarade harcelé, avec un adulte, sans note au bout. La supprimer, personne ne l’a proposé ; la tenir, presque personne ne le fait.',
+    mot: "Tenir une promesse de 2002 : la mesure la moins neuve du catalogue, et l’une des rares que tout le monde approuve sans l’appliquer.",
+  },
+
+  /* ------------------------------ V9 · la transparence -------------- */
+  {
+    id: 'open_data_lycee',
+    label: 'Chaque lycée publie chaque mois ses heures de cours non assurées, ses remplacements et ses réponses au CVL',
+    famille: 'vie_lyceenne',
+    porteurs: ['Cour des comptes (mesurer le temps d’enseignement perdu)', 'proposition du jeu', 'fédérations de parents'],
+    contre: ['les syndicats enseignants, qui redoutent le palmarès et la mise en cause des absents', 'une partie des chefs d’établissement'],
+    perimetre: 'ministeriel',
+    cout: 0.01, coutETP: 0, pol: 4,
+    theme: 'transparence_lycee', once: true, reforme: false,
+    lyceens: 5,
+    vitrine: { parents: +4, enseignants: -6, presse: +5, compteurs: { sante: +1 } },
+    reel: [
+      { compteur: 'sante',   central: 2, delai: 2, cadenas: 2, source: 'rendre visible le non-remplacement établissement par établissement met le rectorat sous pression ; effet non évalué en France' },
+      { compteur: 'egalite', central: -1, delai: 3, cadenas: 1, source: 'risque de palmarès : les lycées déjà en difficulté sont ceux où les heures manquent le plus' },
+    ],
+    physique: { adhesion: -2 },
+    preuve: 'La Cour des comptes mesure le temps d’enseignement perdu au niveau national, 9 % au collège public en 2023-2024 ; aucun lycéen ne connaît le chiffre de son lycée. La mesure impose à chaque établissement de publier chaque mois, à l’entrée et sur son site, trois chiffres : les heures de cours non assurées, la part remplacée, et le nombre de questions du CVL restées sans réponse. C’est la transparence que les lycéens ont demandée pour Parcoursup, appliquée à leur quotidien. Elle met la pression là où se décide le remplacement, au rectorat ; elle fait aussi courir un risque de palmarès entre lycées, et les professeurs absents pour cause institutionnelle (examens, formations) y verront une mise en cause.',
+    ideeRecue: '« Les chiffres existent déjà. » Ils existent au ministère, en moyenne nationale, un an après. Un chiffre qu’on ne peut pas lire sur la porte de son lycée n’est pas un chiffre, c’est une statistique.',
+    mot: "La transparence est une pression, et la pression ne tombe jamais sur ceux qui décident du remplacement. Enfin, presque jamais : c’est tout l’intérêt.",
+  },
 ];
+
 
 
 
@@ -3790,6 +3995,7 @@ const PRINCIPES_FAMILLE = {
   autorite: 'L’école n’est pas d’abord un lieu d’ordre, c’est un lieu d’émancipation. Chaque fois qu’on a répondu à une difficulté éducative par un règlement, on a déplacé le problème et fabriqué du décrochage.',
   mixite: 'La carte scolaire est un outil d’égalité, pas une contrainte administrative à négocier établissement par établissement. On ne construit pas la mixité en demandant leur avis à ceux qui la fuient.',
   lycee: 'Les lycéens ont dit ce qui manquait : des professeurs, des murs qui tiennent, des journées vivables. Leur répondre par une mesure d’organisation qui se paie sur nos emplois du temps, sans un poste de plus, c’est leur dire qu’on les a entendus et qu’on ne les a pas écoutés.',
+  vie_lyceenne: 'La démocratie lycéenne ne se décrète pas depuis Paris. Donner des droits aux élèves sans donner du temps aux adultes qui les accompagnent, c’est organiser la déception des uns et l’épuisement des autres.',
 };
 
 /* Les profils les plus durs ajoutent une phrase qui, elle, est franchement une
@@ -3933,7 +4139,7 @@ const COLERES = [
     ],
     lecture: 'Deux chiffres s’opposent, « 53 % des établissements » et « des volumes d’heures » : ils ne comptent pas la même chose, et les deux sont vrais. Ce qui est sûr : un élève perd environ une heure de cours sur onze, et ce sont les absences courtes, celles qu’aucune brigade ne couvre, qui pèsent le plus.',
     verdict: 'fondee',
-    mesures: ['remplacement_lycee', 'brigades', 'ors_remplacement'],
+    mesures: ['remplacement_lycee', 'brigades', 'ors_remplacement', 'open_data_lycee'],
   },
   {
     id: 'journees',
@@ -3947,7 +4153,7 @@ const COLERES = [
     ],
     lecture: 'La colère est fondée sur les chiffres : les lycéens français passent 260 heures de plus en classe que leurs voisins européens. Et l’argument « plus d’heures, meilleur niveau » ne tient pas : le rapport officiel d’août 2026 l’écarte. Ce qui reste ouvert, c’est comment raccourcir sans appauvrir.',
     verdict: 'fondee',
-    mesures: ['journee_lycee', 'matinees'],
+    mesures: ['journee_lycee', 'matinees', 'heures_vie_classe'],
   },
   {
     id: 'bati',
@@ -3961,7 +4167,7 @@ const COLERES = [
     ],
     lecture: 'La colère est fondée ; l’adresse est à moitié fausse. Le ministre de l’Éducation ne possède aucun lycée : ce sont les régions, et c’est ce que le Premier ministre a rappelé le 4 octobre. Un ministre peut payer une partie des travaux et convaincre ; il ne peut pas signer le devis. Dire « ce n’est pas moi » est exact, et c’est la phrase la plus chère du répertoire.',
     verdict: 'partielle',
-    mesures: ['bati_lycee', 'bati', 'outremer'],
+    mesures: ['bati_lycee', 'charte_sanitaires', 'outremer'],
   },
   {
     id: 'parcoursup',
@@ -4006,18 +4212,32 @@ const COLERES = [
     mesures: ['annuler_suppressions', 'titularisation'],
   },
   {
-    id: 'ecoute',
-    cri: '« On n’a ni infirmière ni psy, et personne ne nous écoute. »',
-    qui: 'Les organisations lycéennes (« refonte de la démocratie lycéenne ») ; la pancarte « ni prof ni infirmière » des premiers blocus.',
-    contexte: 'Le gouvernement a répondu par une demi-journée de « temps lycéen » et une consultation en ligne. Les chefs d’établissement ont jugé la demi-journée improvisée. Les lycéens ont rempli la consultation, et demandent ce qu’on en fait.',
+    id: 'sante',
+    cri: '« On n’a ni infirmière ni psy. Quand ça va mal, il n’y a personne. »',
+    qui: 'La pancarte « ni prof ni infirmière » des premiers blocus ; la médiatrice de l’Éducation nationale, dont le rapport 2025 porte sur la santé mentale.',
+    contexte: 'Une infirmière pour deux ou trois établissements, un psychologue de l’éducation qu’on voit pour l’orientation et presque jamais pour le reste, des rendez-vous à trois mois. Les lycéens disent que personne n’a le temps de leur parler autrement que par leurs notes.',
     faits: [
       { v: '≈ 900', l: 'médecins scolaires pour 12 millions d’élèves : 1 143 en 2013, 818 en 2022 ; 28 postes seulement ouverts au concours 2025', src: 'an_medecine' },
       { v: '2 %', l: 'des lycéens se déclarent victimes de harcèlement (enquête de climat scolaire de novembre 2025) ; 3 % à l’école, 4 % au collège', src: 'depp_climat' },
-      { v: '76 500', l: 'contributions en deux semaines à la consultation nationale, anonyme et en ligne, dont le gouvernement a promis une synthèse publique', src: 'agora26' },
+      { v: '28 450', l: 'saisines de la médiatrice de l’Éducation nationale en 2025, en hausse de 57 % en cinq ans ; son rapport est consacré à la santé mentale des élèves, des étudiants et des personnels', src: 'mediatrice25' },
     ],
-    lecture: 'La partie « santé » est fondée et ancienne : la médecine scolaire s’effondre depuis dix ans, les infirmières et psychologues manquent. La partie « personne ne nous écoute » est plus difficile à juger : la consultation a eu lieu, 76 500 lycéens ont écrit, et c’est ce qu’on en fera qui dira si elle était une écoute ou une diversion. Vous êtes la personne qui en décide.',
+    lecture: 'La colère est fondée et ancienne : la médecine scolaire s’effondre depuis dix ans, les infirmières et les psychologues manquent, et la médiatrice elle-même en fait le sujet de son rapport. Ce que les chiffres ne disent pas, c’est ce qui marche le mieux : recruter des soignants, ouvrir l’école aux maisons des adolescents, ou donner à chaque élève un adulte qui le connaît. Les trois sont sur la table.',
     verdict: 'fondee',
-    mesures: ['sante_scolaire', 'democratie_lyceenne', 'vie_scolaire'],
+    mesures: ['sante_scolaire', 'sante_mentale', 'adulte_referent', 'mediation_pairs'],
+  },
+  {
+    id: 'democratie',
+    cri: '« Nos délégués ne servent à rien, et le CVL, c’est pour la photo. »',
+    qui: 'Les organisations lycéennes (« refonte de la démocratie lycéenne », cinquième des dix mesures) ; une partie des 76 500 contributions.',
+    contexte: 'Le gouvernement a répondu à l’automne par une demi-journée de « temps lycéen » et une consultation en ligne. Les chefs d’établissement ont jugé la demi-journée improvisée ; les lycéens ont rempli la consultation, puis ont demandé ce qu’on en ferait. Dans les lycées, les instances existent depuis trente ans. Les lycéens disent qu’elles ne décident de rien.',
+    faits: [
+      { v: '10 élus, 0 voix', l: 'le conseil de la vie lycéenne compte dix lycéens élus pour deux ans, il est présidé par le proviseur, il est consulté et il propose ; il ne décide pas. Au conseil d’administration, qui vote le règlement et la répartition des heures, les élèves sont une poignée de sièges sur trente', src: 'cvl_bo' },
+      { v: '771 €', l: 'par lycée en moyenne : le fonds de vie lycéenne voté par les conseils d’administration pour les projets des élèves, de zéro à 64 158 € selon l’établissement', src: 'fvl_enquete' },
+      { v: 'effets civiques, pas scolaires', l: 'la revue systématique de référence (32 études) trouve des effets positifs modérés de la participation des élèves sur leurs connaissances et valeurs civiques, et trop peu d’études solides pour conclure sur les résultats scolaires', src: 'mager_nowak' },
+    ],
+    lecture: 'Le constat est juste : les instances existent, elles ont peu de pouvoir et presque pas d’argent, et la participation qui ne décide de rien produit surtout du cynisme. L’exagération est dans le « ne servent à rien » : là où la participation est réelle, la recherche trouve des effets sur ce que les élèves comprennent de la décision collective. Sur les notes, rien de prouvé. La question est donc moins « plus de sièges » que « sièges pour décider quoi ».',
+    verdict: 'partielle',
+    mesures: ['democratie_lyceenne', 'budget_participatif', 'droit_reponse', 'referendum_lycee'],
   },
   {
     id: 'repression',
@@ -4046,7 +4266,7 @@ const COLERES = [
 const BLOCUS_LYCEEN = {
   titre: 'Les lycées se bloquent à nouveau',
   recit: 'Des poubelles devant les grilles, des vidéos sur les réseaux, et le décompte des lycées « perturbés » qui tourne sur les chaînes d’information. Les lycéens reprennent les mots de l’automne 2026 : professeurs absents, journées trop longues, bâtiments dégradés, Parcoursup. Ils ajoutent les vôtres, ceux de l’automne dernier, qu’ils ont gardés.',
-  cadrage: { familles: ['lycee'],
+  cadrage: { familles: ['lycee', 'vie_lyceenne'],
     titre: 'La circulaire de rentrée ne parlera que des lycées',
     cause: 'Les lycées sont bloqués : personne n’attend de vous une circulaire sur l’école maternelle. Le menu ne contient que des réponses aux revendications lycéennes, et elles ne viennent pas du même endroit.' },
   reponses: [
@@ -4453,6 +4673,78 @@ const SOURCES = {
     date: 'octobre 2026',
     url: 'https://www.assemblee-nationale.fr/dyn/17/textes/l17b3292_proposition-resolution.pdf',
   },
+  concertation_men: {
+    org: 'Ministère de l’Éducation nationale',
+    titre: 'Les structures de concertation dans les établissements : conseil d’administration (30 membres en lycée), conseil pédagogique, conseil de la vie lycéenne',
+    date: 'page de référence',
+    url: 'https://www.education.gouv.fr/les-structures-de-concertation-9242',
+  },
+  cvl_bo: {
+    org: 'Bulletin officiel de l’Éducation nationale (numéro hors-série 4, 2000) et décret EPLE',
+    titre: 'Le conseil de la vie lycéenne : dix lycéens élus pour deux ans, présidé par le chef d’établissement, adultes à voix consultative',
+    date: '2000, modifié 2016',
+    url: 'https://www.education.gouv.fr/bo/2000/hs4/cvl.htm',
+  },
+  fvl_circ: {
+    org: 'Circulaire n° 2014-092 du 16 juillet 2014, « Favoriser l’engagement des élèves »',
+    titre: 'Le fonds de vie lycéenne : appel à projets, représentants lycéens associés aux critères de répartition',
+    date: 'juillet 2014',
+    url: 'https://www.education.gouv.fr/bo/14/Hebdo29/MENE1416441C.htm',
+  },
+  fvl_enquete: {
+    org: 'Rectorat d’Orléans-Tours, enquête nationale sur la vie lycéenne (synthèse académique)',
+    titre: 'Fonds de vie lycéenne voté par les conseils d’administration : 771 € en moyenne par lycée, de 0 à 64 158 €',
+    date: 'vers 2016',
+    url: 'https://ac-orleans-tours.fr/media/23960/download',
+  },
+  dhg_qe: {
+    org: 'Assemblée nationale, réponse ministérielle à une question écrite (17e législature)',
+    titre: 'Dotation horaire globale : le volume est fixé par l’académie, le conseil d’administration délibère sur la répartition (articles L. 421-4 et R. 421-9 du code de l’éducation)',
+    date: '2025',
+    url: 'https://www.assemblee-nationale.fr/dyn/17/questions/QANR5L17QE9236.pdf',
+  },
+  discipline_eduscol: {
+    org: 'Éduscol, ministère de l’Éducation nationale',
+    titre: 'Le conseil de discipline : trois représentants des élèves dans les lycées, élus par les délégués de classe',
+    date: 'document de référence',
+    url: 'https://eduscol.education.fr/document/31078/download',
+  },
+  hvc_snes: {
+    org: 'SNES-FSU, fiche réglementaire',
+    titre: 'L’heure de vie de classe : dix heures annuelles inscrites à l’emploi du temps depuis la rentrée 2002',
+    date: 'fiche mise à jour',
+    url: 'https://www.snes.edu/ma-carriere/obligations-reglementaires/l-heure-de-vie-de-classe/',
+  },
+  ope_portugal: {
+    org: 'Revue Educação, Sociedade & Culturas (université de Porto), étude sur l’Orçamento Participativo das Escolas',
+    titre: 'Le budget participatif des écoles au Portugal (créé en 2017, 1 € par élève) : des centaines d’écoles, des propositions surtout tournées vers le bien-être, pas d’évaluation nationale d’impact',
+    date: '2023',
+    url: 'https://ojs.up.pt/index.php/esc-ciie/article/download/610/447/1929',
+  },
+  mager_nowak: {
+    org: 'Mager et Nowak, Educational Research Review (revue systématique de 32 études)',
+    titre: 'Effets de la participation des élèves aux décisions de l’établissement : effets positifs modérés sur les connaissances et valeurs civiques, trop peu d’études solides sur les résultats scolaires',
+    date: '2012',
+    url: 'https://eric.ed.gov/?id=EJ955284',
+  },
+  tabin_mediation: {
+    org: 'Tabin, Revue suisse des sciences de l’éducation (revue systématique de onze programmes)',
+    titre: 'La médiation par les pairs en milieu scolaire : des programmes efficaces existent, les preuves contre le harcèlement restent minces',
+    date: '2019',
+    url: 'https://www.pedocs.de/volltexte/2019/17745/pdf/SZBW_2019_1_Tabin_La_mediation_par_les_pairs.pdf',
+  },
+  mediatrice25: {
+    org: 'Médiatrice de l’Éducation nationale et de l’Enseignement supérieur, chiffres clés 2025',
+    titre: '28 450 saisines traitées en 2025 (+22 % en un an, +57 % en cinq ans), 78 % d’interventions avec succès total ou partiel ; rapport consacré à la santé mentale',
+    date: 'juillet 2026',
+    url: 'https://www.education.gouv.fr/sites/default/files/document/chiffres-cl-s-2025-de-la-m-diation-de-l-ducation-nationale-et-de-l-enseignement-sup-rieur-518885.pdf',
+  },
+  an_toilettes: {
+    org: 'Assemblée nationale, question écrite au Gouvernement (16e législature)',
+    titre: 'État des sanitaires dans les établissements : ni papier ni savon dans de très nombreux établissements, nombre de sanitaires parfois insuffisant ; un tiers des élèves renoncent à y aller (Observatoire national de la sécurité, 2014)',
+    date: '2023',
+    url: 'https://questions.assemblee-nationale.fr/dyn/16/questions/QANR5L16QE14330.pdf',
+  },
   odoxa26: {
     org: 'Odoxa pour Le Figaro et Backbone Consulting',
     titre: 'Les Français soutiennent les lycéens mais réprouvent l’implication de LFI (62 % jugent la mobilisation justifiée)',
@@ -4650,6 +4942,22 @@ const REPERES = [
       { v: '11 recommandations', l: 'du rendre-évaluable-et-publier au retour à la semaine de quatre jours et demi, en passant par la formation centrée sur l’observation en classe, la coordination pédagogique reconnue et l’évaluation des manuels. Plusieurs sont jouables dans le catalogue', src: 'hcsp26' },
     ],
     aRetenir: 'Ce rapport est le contraire d’un pamphlet : il écarte méthodiquement les explications les plus commodes (le nombre d’heures, les élèves étrangers, l’argent seul) pour désigner ce qui est plus difficile à changer : la formation des maîtres, l’accompagnement de proximité, les méthodes d’apprentissage de la lecture, l’organisation du temps. Aucune de ces réponses ne se décrète en une rentrée, et c’est exactement ce que le jeu vous fait éprouver.',
+  },
+  {
+    cle: 'etablissement',
+    titre: 'Comment marche un lycée',
+    resume: 'Qui décide de quoi entre le proviseur, le conseil d’administration, les élèves, la région et le ministre.',
+    chiffres: [
+      { v: '30 membres', l: 'au conseil d’administration d’un lycée : un tiers d’administration et d’élus locaux, un tiers de personnels, un tiers de parents et d’élèves. Les élèves y sont une poignée de sièges. Il vote le budget, le règlement intérieur et la répartition des heures d’enseignement', src: 'concertation_men' },
+      { v: '10 élèves', l: 'élus pour deux ans au conseil de la vie lycéenne, présidé par le proviseur, avec un vice-président élève ; les adultes y ont voix consultative. Il est consulté, il propose, il ne décide pas', src: 'cvl_bo' },
+      { v: 'le rectorat fixe, le CA répartit', l: 'les heures d’enseignement d’un lycée (la dotation horaire) sont attribuées par l’académie ; le conseil d’administration en vote la répartition entre classes et options. S’il la refuse deux fois, le proviseur décide seul', src: 'dhg_qe' },
+      { v: '3 élèves', l: 'siègent au conseil de discipline d’un lycée, élus par les délégués de classe', src: 'discipline_eduscol' },
+      { v: '10 heures', l: 'de vie de classe par an sont prévues à l’emploi du temps depuis 2002. Leur tenue réelle dépend de chaque professeur principal', src: 'hvc_snes' },
+      { v: '771 €', l: 'par lycée en moyenne : le fonds de vie lycéenne voté par les conseils d’administration pour les projets des élèves, de 0 à 64 158 € selon l’établissement (enquête nationale, vers 2016)', src: 'fvl_enquete' },
+      { v: 'la région', l: 'possède les bâtiments, paie la cantine, l’internat, les agents d’entretien et les ordinateurs. Le ministre, lui, paie les professeurs, fixe les programmes et les examens, et nomme le proviseur', src: 'regions_lycees' },
+      { v: '28 450', l: 'saisines de la médiatrice de l’Éducation nationale en 2025, en hausse de 57 % en cinq ans : la voie de recours quand l’établissement ne répond pas, encore peu connue des élèves', src: 'mediatrice25' },
+    ],
+    aRetenir: 'Un lycée est gouverné à trois : l’État pour les personnels et les programmes, la région pour les murs et les repas, le conseil d’administration pour l’organisation. Les élèves ont des sièges partout, et presque nulle part la majorité. C’est là que se joue une partie de ce que les lycéens appellent « personne ne nous écoute ».',
   },
   {
     cle: 'lyceens',
@@ -6586,6 +6894,7 @@ const FAMILLES = {
   autorite: ['Autorité & familles', 'var(--c-paix)'],
   mixite: ['Mixité & carte scolaire', 'var(--c-egalite)'],
   lycee: ['Lycée & lycéens', 'var(--c-violet)'],
+  vie_lyceenne: ['Dans le lycée : la parole des élèves', 'var(--or)'],
 };
 const MOIS_L = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'];
 

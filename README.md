@@ -1,7 +1,7 @@
 # Rue de Grenelle
 
 **Automne 2026. Les lycées sont bloqués depuis six semaines, le ministre
-démissionne, on vous nomme. Huit colères lycéennes à examiner, un budget en
+démissionne, on vous nomme. Neuf colères lycéennes à examiner, un budget en
 discussion, trois rentrées à tenir, et une question : sur quoi serez-vous
 jugé ?**
 
@@ -58,9 +58,10 @@ politique éducative.
 lycées aux cours suspendus le même jour un mois plus tôt, 76 500 contributions
 à la consultation nationale, cinq chantiers ouverts par le Premier ministre, et
 un ministre qui vient de démissionner (c'est la fiction du jeu ; personne n'est
-nommé). Huit colères sont examinées dans l'ordre : les professeurs absents, les
+nommé). Neuf colères sont examinées dans l'ordre : les professeurs absents, les
 journées de dix heures, les bâtiments, Parcoursup, les effectifs, les 1 588
-postes supprimés au budget 2027, la santé scolaire et l'écoute, la répression.
+postes supprimés au budget 2027, la santé scolaire, la démocratie lycéenne
+(« nos délégués ne servent à rien »), la répression.
 Pour chacune, le joueur dit d'abord s'il la trouve fondée, puis lit les faits,
 et le jeu dit si les chiffres vont dans son sens : « les chiffres confirment »,
 « vrai, mais pas tout à fait comme ils le disent », ou « les chiffres ne
@@ -70,6 +71,21 @@ les organisations lycéennes, ou il attend. Onze cartes « lycée » traduisent
 les revendications en décisions : remplaçants, journée plafonnée, bâti,
 Parcoursup (le rendre lisible, ou le supprimer), trente par classe, démocratie
 lycéenne, bac, cantine à un euro, annulation des suppressions de postes.
+
+**Ce qu'on peut changer dans un lycée.** Neuf cartes « vie lycéenne » vont
+au-delà des revendications et des programmes : elles proposent ce qu'un
+ministre peut décider pour que la vie d'un établissement change pour les
+élèves, à budget presque nul. Un budget participatif de deux euros par élève,
+un droit de réponse au conseil de la vie lycéenne, une charte des toilettes
+vérifiée par les élèves, un adulte référent par lycéen, l'élève présent à son
+propre conseil de classe, des médiateurs élèves, le référendum d'établissement,
+les dix heures de vie de classe réellement tenues, la publication mensuelle
+des heures de cours perdues. Les cartes que le jeu invente sont marquées
+« proposition du jeu » et disent d'où vient l'idée (le budget participatif des
+écoles portugaises, les tuteurs finlandais, les textes de 2002 jamais
+appliqués) ; la preuve est notée en conséquence, basse. Une fiche « Comment
+marche un lycée » explique qui décide de quoi entre le proviseur, le conseil
+d'administration, la région et le ministre.
 
 **Puis les rentrées.** Une jauge cachée, la colère lycéenne, se lit en mots
 dans le bandeau. Si les réponses de l'automne manquent, les lycées se bloquent
@@ -118,11 +134,11 @@ petit mot. Plus des unes de journal, un fil social de circonstance, et un bilan
 qui révèle, enfin, ce que vous avez vraiment produit.
 
 **Un bouton « Comprendre le jeu » est disponible en bas à gauche de chaque
-écran.** Il ouvre douze fiches de référence — budget, démographie, niveaux, inégalités,
+écran.** Il ouvre treize fiches de référence — budget, démographie, niveaux, inégalités,
 métier enseignant, remplacement, organisation du temps, climat scolaire, ce qui
-a marché ailleurs, pourquoi le niveau baisse, l'automne 2026 des lycéens, et la
-mécanique du jeu elle-même — soit plus de 90 chiffres, chacun suivi de sa
-source, cliquable.
+a marché ailleurs, pourquoi le niveau baisse, comment marche un lycée, l'automne
+2026 des lycéens, et la mécanique du jeu elle-même — soit près de 100 chiffres,
+chacun suivi de sa source, cliquable.
 
 ## L'équilibrage
 
@@ -164,8 +180,8 @@ jouer.
 
 ```
 index.html                   LE JEU — fichier unique autonome
-moteur/                      constantes sourcées, catalogue de 75 cartes et 8 colères, repères sourcés, moteur en générateur
-moteur/reperes.js            les 12 fiches de référence et leurs 51 sources
+moteur/                      constantes sourcées, catalogue de 84 cartes et 9 colères, repères sourcés, moteur en générateur
+moteur/reperes.js            les 13 fiches de référence et leurs 63 sources
 RECHERCHE-GRAND-PUBLIC.md    le dossier de recherche d'octobre 2026 : mouvement lycéen, projets des partis
 simulations/                 stratégies-types et bancs d'essai
 interface/                   gabarit (styles) + application (écrans, presse, bilan)

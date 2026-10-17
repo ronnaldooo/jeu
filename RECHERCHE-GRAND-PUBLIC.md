@@ -465,3 +465,88 @@ précautions supplémentaires ont été prises dans les colères : le bilan
 judiciaire de 5 060 gardes à vue n'est pas utilisé (seul le chiffre AFP du
 2 octobre l'est), et la colère sur la répression est présentée comme
 indécidable par les chiffres, avec les deux séries de faits.
+
+---
+
+## 8. Troisième cadrage (même jour) : inventer, et regarder dans l'établissement
+
+Nouvelle commande : ne pas s'en tenir aux revendications et aux programmes,
+poser la question de la démocratie scolaire, et chercher ce qui peut être
+amélioré pour les élèves au sein d'un établissement, même quand cela ne
+relève pas du ministre.
+
+### 8.1 Ce qu'il fallait comprendre
+
+Les recherches ont porté sur le fonctionnement réel d'un lycée : qui décide
+de quoi, et où les élèves ont une prise. Ce que disent les textes et les
+quelques données disponibles :
+
+- Le conseil d'administration d'un lycée compte 30 membres, par tiers
+  (administration et collectivités, personnels, parents et élèves) ; il vote
+  le budget, le règlement intérieur et la répartition de la dotation horaire
+  que l'académie fixe (code de l'éducation, art. L. 421-4 et R. 421-9).
+- Le conseil de la vie lycéenne : dix élèves élus pour deux ans, présidé par
+  le chef d'établissement, adultes à voix consultative ; il est consulté et
+  propose. Le conseil de discipline compte trois élèves élus par les délégués.
+- Le fonds de vie lycéenne, créé en 2001, est voté par chaque conseil
+  d'administration : 771 € par lycée en moyenne, de 0 à 64 158 €, selon la
+  seule enquête nationale trouvée (synthèse du rectorat d'Orléans-Tours).
+- Les dix heures annuelles de vie de classe existent depuis 2002 ; leur tenue
+  n'est mesurée nulle part.
+- La médiatrice de l'Éducation nationale a traité 28 450 saisines en 2025
+  (+57 % en cinq ans, 78 % de succès au moins partiel) et a consacré son
+  rapport à la santé mentale.
+- La recherche internationale (Mager et Nowak, revue de 32 études) trouve à
+  la participation des élèves aux décisions des effets positifs modérés sur
+  les connaissances et valeurs civiques, et distingue participation réelle et
+  participation de façade ; sur les résultats scolaires, trop peu d'études.
+- Le Portugal a créé en 2017 un budget participatif dans tous ses
+  établissements secondaires (1 € par élève, vote des élèves) ; il n'existe
+  pas d'évaluation nationale de ses effets.
+- La médiation par les pairs : onze programmes évalués recensés par Tabin
+  (2019), des effets sur les conflits et le climat déclaré, des preuves
+  minces contre le harcèlement.
+
+### 8.2 Ce qui a été construit
+
+- Une fiche « Comment marche un lycée » (8 chiffres), et douze sources
+  ajoutées (le total passe à 63) : page ministérielle sur les structures de
+  concertation, BO hors-série n° 4 de 2000 (CVL), circulaire 2014-092 (fonds
+  de vie lycéenne), enquête nationale vie lycéenne, réponse ministérielle sur
+  la dotation horaire, fiche Éduscol sur le conseil de discipline, fiche
+  SNES-FSU sur l'heure de vie de classe, étude de l'université de Porto sur
+  l'Orçamento Participativo das Escolas, Mager et Nowak (ERIC), Tabin
+  (pedocs), chiffres clés 2025 de la médiatrice, question écrite sur les
+  sanitaires (16e législature).
+- Neuf cartes « vie lycéenne » : budget participatif (2 € par élève), droit de
+  réponse au CVL, charte des toilettes vérifiée par les élèves, adulte
+  référent, élève présent à son conseil de classe, médiateurs élèves,
+  référendum d'établissement, dix heures de vie de classe garanties et
+  délégués formés, publication mensuelle des heures de cours perdues.
+- La colère « écoute » coupée en deux : santé scolaire d'un côté, démocratie
+  lycéenne de l'autre, avec leurs faits et leurs réponses propres (neuf
+  colères au total).
+
+### 8.3 La règle pour ce qui est inventé
+
+Quand une mesure ne figure dans aucun programme ni aucune revendication, la
+carte le dit : « proposition du jeu » apparaît en tête de ses porteurs, suivi
+de ce qui a inspiré l'idée (précédent étranger, texte existant mal appliqué,
+rapport). Sa preuve est notée bas (1 ou 2 cadenas), de sorte que l'effet
+réel tiré par le jeu soit très incertain : c'est le prix honnête d'une mesure
+jamais évaluée. Les chiffres cités dans sa justification restent sourcés.
+Aucune carte inventée n'est attribuée à un parti, un syndicat ou une
+organisation lycéenne.
+
+### 8.4 Points de sourçage ouverts, en plus de ceux de la partie 6
+
+9. L'enquête nationale sur la vie lycéenne (771 € de fonds moyen) : la
+   synthèse trouvée est académique et non datée précisément (« vers 2016 ») ;
+   une publication nationale serait préférable.
+10. L'évaluation du dispositif « Médiateur à l'École » par le LIEPP (−11 % de
+    sentiment de harcèlement), citée par ses promoteurs et non lue.
+11. Le budget participatif portugais : une étude universitaire, pas de
+    bilan officiel du ministère portugais.
+12. Les « advisories » américaines et les tuteurs finlandais sont cités comme
+    inspiration, sans chiffre : la carte s'appuie sur la méta-analyse EEF du
+    mentorat, non sur ces dispositifs.

@@ -208,7 +208,7 @@ export const DUREE_MANDAT = 3;
 export const ENVELOPPE_PROLOGUE = 0.45;   // Md€, amendements au budget 2027 en discussion
 /* Les colères examinées à l'automne 2026 : chacune donne lieu à un avis du
    joueur, puis aux faits, puis à une décision. */
-export const COLERES_MAX = 8;
+export const COLERES_MAX = 9;
 
 /* ---------------------------------------------------------------------------
    LES LYCÉENS, l'héritage de l'automne 2026                       [source D]
@@ -235,10 +235,10 @@ export const LYCEENS = {
      rentrée 2027 à ce qu'on leur a dit à l'automne 2026. */
   promesses: [
     { id: 'remplacement', libelle: 'un professeur devant chaque classe à la rentrée', themes: ['remplacement', 'remplacement_lycee', 'ors_service'], colere: 8 },
-    { id: 'bati',         libelle: 'des travaux dans les lycées dégradés avant l’été 2027', themes: ['bati_lycee', 'bati'], colere: 7 },
+    { id: 'bati',         libelle: 'des travaux dans les lycées dégradés avant l’été 2027', themes: ['bati_lycee', 'bati', 'sanitaires'], colere: 7 },
     { id: 'parcoursup',   libelle: 'des règles de Parcoursup lisibles', themes: ['parcoursup'], colere: 6 },
     { id: 'temps',        libelle: 'des journées de lycée moins longues', themes: ['temps_lycee'], colere: 7 },
-    { id: 'democratie',   libelle: 'une place pour les élèves dans les décisions', themes: ['democratie_lyceenne'], colere: 4 },
+    { id: 'democratie',   libelle: 'une place pour les élèves dans les décisions', themes: ['democratie_lyceenne', 'budget_participatif', 'droit_reponse', 'referendum', 'vie_classe'], colere: 4 },
   ],
   seuilBlocus: 62,        // au-dessus, la rentrée commence par des blocus
   derive: +5,             // par an, sans réponse : une promesse vieillit mal
