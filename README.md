@@ -1,14 +1,23 @@
 # Rue de Grenelle
 
 **Un jeu de gestion politique où vous êtes ministre de l'Éducation nationale,
-de juin 2027 à mai 2032. Cinq rentrées, cinq budgets, et une question : sur
-quoi serez-vous jugé ?**
+de juin 2027 à mai 2030. Trois rentrées, trois budgets, des lycéens qui
+attendent les réponses promises à l'automne 2026, et une question : sur quoi
+serez-vous jugé ?**
 
-Le jeu s'adresse au grand public, et d'abord aux personnels du système
-éducatif — enseignants, cadres, parents informés. Il ne cherche pas à
-convaincre : chaque mesure du catalogue cite ses porteurs politiques réels et
-le niveau de preuve de son effet. Il cherche à faire comprendre pourquoi les
-politiques éducatives ressemblent si souvent à ce qu'elles sont.
+> **Version grand public.** Cette branche (`claude/jeu-grand-public`) est la
+> version courte et sans jargon du jeu : un mandat de trois rentrées joué en
+> vingt à trente minutes, des jauges qui se lisent en mots, des choix
+> préréglés au lieu de curseurs, et le mouvement lycéen de l'automne 2026 au
+> cœur de la première année. La version complète (cinq rentrées, réglages
+> fins) reste sur la branche principale. Le dossier de recherche qui a
+> précédé cette version est dans `RECHERCHE-GRAND-PUBLIC.md`.
+
+Le jeu s'adresse au grand public. Il ne cherche pas à convaincre : chaque
+mesure du catalogue cite ceux qui la défendent réellement (gouvernement,
+candidats à la présidentielle de 2027, organisations lycéennes) et ce qu'on
+sait de son effet. Il cherche à faire comprendre pourquoi les politiques
+éducatives ressemblent si souvent à ce qu'elles sont.
 
 ## Ce que le jeu met en scène
 
@@ -41,6 +50,19 @@ venez de faire. Aucune ne touche un compteur éducatif : elles attaquent votre
 documentées de chute d'un ministre de l'Éducation, une seule relève de la
 politique éducative.
 
+**Les lycéens n'ont pas oublié.** Le mandat commence huit mois après le
+mouvement lycéen de l'automne 2026 : 891 lycées aux cours suspendus le même
+jour, 76 500 contributions à la consultation nationale, cinq chantiers ouverts
+par le Premier ministre avec des promesses datées. Vous héritez des promesses.
+Une jauge cachée, la colère lycéenne, se lit en mots dans le bandeau ; si elle
+dépasse le seuil à la rentrée, les lycées se bloquent à nouveau, et la
+circulaire de rentrée ne peut plus parler que d'eux : le menu propose alors la
+réponse de chaque camp à la même revendication, et le bilan dit à qui vous
+aurez donné raison. Dix cartes « lycée » traduisent les revendications de 2026
+en décisions : remplaçants, journée plafonnée, bâti, Parcoursup (le rendre
+lisible, ou le supprimer), trente par classe, démocratie lycéenne, bac,
+cantine à un euro.
+
 **Le temps ne joue pas pour vous.** PISA tombe en septembre de votre première
 année et mesure des élèves scolarisés depuis dix ans : vous répondez de ce que
 vous n'avez pas fait. Vos propres décisions, elles, produiront leurs effets
@@ -58,7 +80,9 @@ part : tout se passe sur votre appareil.
 
 Vous pouvez aussi **[télécharger `index.html`](index.html)** et l'ouvrir hors
 ligne — le jeu tient dans ce seul fichier, y compris pour une salle de classe
-sans connexion, ou pour le déposer sur un ENT.
+sans connexion, ou pour le déposer sur un ENT. La version grand public et la
+version complète ont chacune leur sauvegarde : on peut jouer l'une sans perdre
+l'autre.
 
 Au menu : une nomination qu'on peut refuser, la feuille de route que vous
 déclarez vous-même devant la presse, une note de cadrage sourcée avant votre
@@ -67,8 +91,8 @@ rentrée en septembre, l'arbitrage de janvier), un été des cent jours à
 traverser avant la première rentrée, la carte scolaire de janvier et ses deux
 curseurs, la lettre plafond de Bercy, les face-à-face syndicaux où l'on peut
 céder ou tenir, une revalorisation entièrement paramétrable (montant,
-instrument, cible), et un menu progressif de mesures — 8 cartes en première
-année, 16 en fin de mandat, tirées d'un catalogue de **67**, dont vingt-sept qu'on
+instrument, cible), et un menu de mesures — six à huit cartes par fenêtre,
+tirées d'un catalogue de **74**, dont vingt-sept qu'on
 ne découvre qu'en jouant, quand un rapport tombe ou qu'un indicateur se
 dégrade. Chaque carte porte ses porteurs politiques réels, son niveau de
 preuve, un panneau « Comprendre l'effet » qui dit ce que montrent vraiment les
@@ -77,21 +101,22 @@ petit mot. Plus des unes de journal, un fil social de circonstance, et un bilan
 qui révèle, enfin, ce que vous avez vraiment produit.
 
 **Un bouton « Comprendre le jeu » est disponible en bas à gauche de chaque
-écran.** Il ouvre onze fiches de référence — budget, démographie, niveaux, inégalités,
+écran.** Il ouvre douze fiches de référence — budget, démographie, niveaux, inégalités,
 métier enseignant, remplacement, organisation du temps, climat scolaire, ce qui
-a marché ailleurs, pourquoi le niveau baisse, et la mécanique du jeu elle-même —
-soit 80 chiffres, chacun suivi de sa source officielle, cliquable.
+a marché ailleurs, pourquoi le niveau baisse, l'automne 2026 des lycéens, et la
+mécanique du jeu elle-même — soit plus de 90 chiffres, chacun suivi de sa
+source, cliquable.
 
 ## L'équilibrage
 
-Le jeu est équilibré par simulation (700 mandats par stratégie-type, quatre
+Le jeu est équilibré par simulation (700 mandats par stratégie-type, trois
 jeux de graines) et l'interface pilote exactement le même moteur que les
 simulations. Les quatre cibles du cahier des charges sont tenues : survivre
-cinq ans réussit à **45-50 %** pour un joueur attentif ; aucun des cinq compteurs
-n'est maximisable sans en sacrifier d'autres ; « tout vitrine » fait un bon
-mandat et un mauvais bilan, « tout réel » l'inverse, et les deux perdent contre
-le jeu mixte ; mettre les cinq compteurs au vert en cinq ans est impossible —
-en dix ans, presque.
+aux trois rentrées réussit à **55-59 %** pour un joueur attentif ; aucun des
+cinq compteurs n'est maximisable sans en sacrifier d'autres ; « tout vitrine »
+fait un bon mandat et un mauvais bilan, « tout réel » l'inverse, et les deux
+perdent contre le jeu mixte ; mettre les cinq compteurs au vert en trois ans
+est impossible — en dix ans, presque.
 
 ### Pour les collègues qui veulent l'utiliser en formation
 
@@ -122,8 +147,9 @@ jouer.
 
 ```
 index.html                   LE JEU — fichier unique autonome
-moteur/                      constantes sourcées, catalogue de 67 cartes, repères sourcés, moteur en générateur
-moteur/reperes.js            les 11 fiches de référence et leurs 34 sources officielles
+moteur/                      constantes sourcées, catalogue de 74 cartes, repères sourcés, moteur en générateur
+moteur/reperes.js            les 12 fiches de référence et leurs 47 sources
+RECHERCHE-GRAND-PUBLIC.md    le dossier de recherche d'octobre 2026 : mouvement lycéen, projets des partis
 simulations/                 stratégies-types et bancs d'essai
 interface/                   gabarit (styles) + application (écrans, presse, bilan)
 outil/construire.js          assemblage
@@ -134,7 +160,8 @@ les trajectoires simulées et les paramètres à revoir après tests humains.
 
 ## Sources et précautions
 
-Les paramètres viennent de sources publiques datées d'août 2026 : DEPP
+Les paramètres viennent de sources publiques datées d'août 2026, complétées
+en octobre 2026 pour le mouvement lycéen et les projets des candidats : DEPP
 (évaluations nationales, TIMSS et PIRLS, heures non assurées, projections
 démographiques à l'horizon 2035, indice de position sociale), documents
 budgétaires du PLF et rapports du Sénat, plafonds prévisionnels du PLF 2027,
@@ -149,6 +176,12 @@ proportions et des arbitrages, pas à documenter une année précise.
 Toutes les données affichées dans le jeu portent leur source, avec l'organisme,
 la date et un lien vers le document : elles sont rassemblées dans
 `moteur/reperes.js` et consultables en jeu par le bouton « Comprendre le jeu ».
+Pour l'automne 2026, plusieurs chiffres officiels (consultation lycéenne,
+chiffres du 6 octobre, bilan de Parcoursup, dépenses des régions) n'ont pu
+être lus que dans leur relais de presse ; la fiche de source le dit alors
+explicitement (« relayé par… ») : c'est une source de second rang, et le jeu
+ne le cache pas. La liste des points restant à vérifier sur pièces est dans
+`RECHERCHE-GRAND-PUBLIC.md`.
 Quand deux sources officielles publient des chiffres différents — le
 remplacement, mesuré à 4,3 % du temps scolaire par le Sénat en juin 2025 et à
 9,3 % au collège-lycée par la Cour des comptes en décembre 2025 — le jeu

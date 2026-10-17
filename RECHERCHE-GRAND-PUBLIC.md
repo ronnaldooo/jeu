@@ -412,3 +412,31 @@ Syndicats et associations
 - SUD éducation, budget 2027 — https://www.sudeducation.org/communiques/budget-2027-une-ecole-sans-les-personnels-necessaires-est-une-ecole-qui-ne-repond-pas-aux-besoins-de-ses-eleves/ ; sur les annonces Geffray — https://www.sudeducation.org/communiques/mobilisation-lyceenne-edouard-geffray-clarifie-ses-annonces-mais-ne-rassure-pas/
 - FCPE — https://www.fcpe.asso.fr/actualite/les-revendications-de-la-jeunesse-doivent-etre-entendues
 - CGT Éduc'action Limousin, liste des 10 mesures — https://cgteducactionlimousin.syndicatcgt.fr/2026/10/07/10-mesures-durgence-pour-repondre-a-la-mobilisation-lyceenne-et-etudiante/
+
+---
+
+## 6. Ce qui a été fait (17 octobre 2026, après accord)
+
+Les six décisions de la partie 4 ont été retenues telles quelles. État du
+travail sur la branche `claude/jeu-grand-public` :
+
+| Étape | État |
+|---|---|
+| Vérification sur pièces des quinze points marqués | **Non faite** : le réseau de la session refuse toujours la lecture des pages. Aucune carte n'utilise un point marqué « à vérifier » comme fait établi ; quand un chiffre officiel n'a été lu que dans un relais de presse, la fiche de source le dit (« relayé par… »). |
+| Dix cartes « lycée » | Faites : `remplacement_lycee`, `journee_lycee`, `matinees`, `bati_lycee`, `parcoursup_transparence`, `parcoursup_fin`, `classe30_lycee`, `democratie_lyceenne`, `bac_series`, `cantine_lycee`, chacune avec porteurs, niveau de preuve, texte « ce que disent les études » et idée reçue. |
+| Porteurs réactualisés, `PROJETS_2027`, rattachements | Faits (quatorze cartes existantes, cinq compteurs, quatre blocs renommés). |
+| Note d'héritage de juin 2027, colère lycéenne, blocus | Faits (voir `EQUILIBRAGE.md`, section 3 novemvicies). |
+| Rééquilibrage | 4/4 sur trois graines, 700 parties. |
+| Interface simplifiée | Faite : trois rentrées, jauges en mots, pastilles, choix préréglés, formules salariales, écran du blocus, bloc lycéens. |
+
+**Points de sourçage qui restent ouverts** (à lever dès qu'une lecture des
+pages sera possible, ou à partir de vos propres lectures) :
+
+1. Les notes DEPP de rentrée 2026 (effectifs exacts du second degré).
+2. Le bleu budgétaire du PLF 2027 : périmètre des « 64 Md€ hors pensions » face au plafond de 65,3 Md€ utilisé par le jeu.
+3. Le texte de « L'Avenir en commun » 2027 sur Parcoursup (suppression totale ou pour l'université).
+4. Le programme présidentiel du RN, non publié : la hausse de +3 % par an n'est citée que par CNews.
+5. Le programme des Écologistes sur le collège unique, où deux sources se contredisent.
+6. Le programme de Bruno Retailleau sur l'orientation et les lycées professionnels.
+7. Le texte intégral des « 10 mesures d'urgence » sur 10mesures.fr (pause méridienne d'1 h 30, 800 personnels, bourses +200 €).
+8. Le bilan judiciaire du mouvement (5 060 gardes à vue selon Wikipédia citant la Chancellerie), non utilisé dans le jeu.

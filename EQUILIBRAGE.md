@@ -1662,7 +1662,79 @@ conservés à côté (`TAILLES_MENU_CLASSIQUE`, `TAILLE_MENU_COURT_CLASSIQUE`,
 `ANNONCES_MAX_CLASSIQUE`). **Les deux positions sont vérifiées 4/4** : ce
 n'est pas un interrupteur de secours laissé sans garantie.
 
+## 3 novemvicies. La version grand public : trois rentrées, et les lycéens
+
+Branche `claude/jeu-grand-public`, créée depuis la version classique après le
+dossier de recherche `RECHERCHE-GRAND-PUBLIC.md` (17 octobre 2026).
+
+**Ce qui change dans le moteur.**
+
+- `DUREE_MANDAT = 3` : la boucle, la note de mandat (divisée par la durée), le
+  risque de remaniement et la fin de partie lisent la constante. Les tables
+  indexées par année gardent cinq entrées ; on n'en lit que les premières.
+- une jauge cachée, `s.lyceens.colere` (0-100, initiale 52), et cinq
+  promesses héritées de l'automne 2026 (`K.LYCEENS.promesses`), chacune
+  rattachée aux thèmes de cartes qui y répondent. À la première rentrée, chaque
+  promesse sans réponse fait remonter la colère (+4 à +8). Chaque carte qui
+  porte un champ `lyceens` la fait baisser quand elle est annoncée. Chaque
+  clôture la fait remonter de 5, plus 0,9 par point d'heures non assurées
+  au-dessus de 9,8.
+- le blocus (`etapeBlocus`) : à la rentrée, si la colère dépasse 62 et qu'il
+  n'y a pas déjà eu deux blocus, les lycées se bloquent. Coût immédiat :
+  points de grève et parents. Trois réponses, calquées sur celles d'octobre
+  2026 (recevoir, interdire, renvoyer aux régions), puis la circulaire de
+  rentrée est cadrée sur la famille `lycee` : c'est le menu d'événement de la
+  section précédente, appliqué au sujet du moment. Un second blocus vaut une
+  convocation à Matignon.
+- la polémique de rentrée attend l'année suivante si la rentrée a été bloquée.
+- le premier menu (prise de fonction) ouvre sur deux cartes `lycee` avant la
+  revalorisation (`priorite` dans `mesuresDisponibles`).
+- le premier dossier de l'été est toujours la demande d'audience des
+  organisations lycéennes.
+- dix cartes `lycee`, les porteurs de quatorze cartes existantes réactualisés
+  (Retailleau, Glucksmann, Tondelier, Le Pen, Attal, Philippe ; Barnier,
+  Lisnard et le NFP retirés ou relégués), `PROJETS_2027` réécrit, les
+  rattachements politiques étendus (gouvernement et Premier ministre comptés
+  avec la majorité sortante, UDR avec le RN, organisations lycéennes hors
+  partis).
+
+**Ce qui change dans l'équilibrage.** Sur trois ans, le joueur attentif
+survivait à 69 % et le passif à 71 %. Le risque annuel de remaniement passe
+de 0,205 à 0,30 (bornes 0,05-0,40), le prix de l'immobilisme de 7 à 10 points
+de capital, et le second blocus vaut une convocation. Le joueur attentif tient
+compte des lycéens (`lyceens × 0,9` tant que la colère dépasse 50) : il subit
+1,2 blocus par partie contre 1,8 pour le passif.
+
+```
+                 survie  durée  blocus/partie  colère finale
+passif             55 %   2,3        1,75           83
+tout vitrine       59 %   2,4        1,52           43
+tout réel          52 %   2,3        1,74           82
+mixte              59 %   2,4        1,22           52
+```
+
+Cibles : 4/4 sur les graines 5, 11 et 23 (700 parties), mixte entre 55 et
+59 %, passif entre 53 et 57 %. Le passif survit presque autant que le mixte :
+c'est le point à surveiller en tests humains (section 5).
+
+**Ce qui change dans l'interface.** Compteurs nommés en mots de tous les jours
+(niveau, égalité, métier de prof, climat social, salaires) et lus d'abord en
+mots (« fragile », « correct »), le nombre en petit ; « Lycéens : méfiants » dans
+la sous-ligne du bandeau ; note d'héritage avant la note budget, avec le
+graphique de la consultation ; cartes résumées par quatre pastilles (coût
+rapporté à l'enveloppe, « ce qu'on sait », accueil des profs, réponse aux
+lycéens), les nombres dans le corps ; carte scolaire en deux questions à choix
+préréglés ; revalorisation en cinq formules ; écran du blocus ; bloc « Et les
+lycéens ? » à chaque clôture et au bilan ; boussole dédoublonnée ; frise et
+bilan sur trois ans. La sauvegarde a sa propre clé (`rue-de-grenelle-gp1`).
+
+**Vérification.** Robot Playwright sur une partie complète (ordinateur 1280 px,
+téléphone 390 px) : aucune erreur de script, aucun texte `undefined`, pas de
+défilement horizontal, bilan atteint.
+
 ## 5. Paramètres à réexaminer après tests humains
+
+- **Version grand public.** Le passif survit presque autant que le mixte sur trois ans (55 % contre 59 %). Si les premiers joueurs trouvent qu'on peut gagner en ne faisant rien, relever `IMMOBILISME` ou faire peser davantage la colère lycéenne sur les convocations. Et vérifier que la colère initiale (52) et le seuil (62) laissent une chance d'éviter le premier blocus à un joueur qui répond à deux chantiers en juin.
 
 | Paramètre | Valeur | Ce qu'il faut regarder |
 |---|---|---|
