@@ -1977,10 +1977,32 @@ transparence par établissement. Le robot parcourt le nouvel écran (choix
 d'un département, appel réseau refusé, repli) et le bilan sur les deux
 largeurs sans erreur.
 
+## 3 triduotricies. L'entretien en deux écrans, et le profil supprimé
+
+Deux retouches de parcours demandées par le commanditaire.
+
+**L'écran « D'où venez-vous ? » est supprimé.** Le profil biographique
+(« de la maison », « haute fonction publique », « un politique ») n'est plus
+demandé : `appliquerProfil`, l'écran et l'étape disparaissent, `K.PROFILS`
+reste dans les constantes sans être lu. Ce profil donnait au départ un peu de
+crédibilité, d'adhésion et de capital (de −4 à +7 selon le profil) et
+exposait deux des affaires personnelles (`lieu`, `illegitimite`) : sans lui,
+ces deux affaires ne sortent plus. Le banc d'essai n'a pas bougé :
+4/4 sur les graines 5 (400 parties), 11 et 23 (700 parties) ; le joueur
+attentif survit à 55-56 %, et le passif tombe de 47 % à 33-36 %, ce qui
+est plutôt un progrès, puisque le passif profitait du bonus de départ.
+
+**L'entretien en deux écrans.** `etapeEntretien` pose une question par écran
+(`{type: 'entretien', question, index, total}`) au lieu d'un écran à deux
+questions : le joueur ne défile plus, et un clic sur une réponse suffit. Les
+stratégies gardent leur tableau de réponses ; `jouerMandat` y lit la case de
+la question posée. La clé de sauvegarde passe à `rue-de-grenelle-gp2` : une
+partie enregistrée avant ce changement ne se rejoue plus.
+
 ## 5. Paramètres à réexaminer après tests humains
 
 - **Appel en direct aux données ouvertes.** L'écran « Mon lycée » appelle data.education.gouv.fr depuis le navigateur du joueur ; l'appel n'a pas pu être testé depuis la session de développement (réseau fermé). À vérifier sur un téléphone : en-têtes inter-origines, noms de colonnes découverts, délai de 8 secondes. Si le service refuse, le repli (adresses) s'affiche et rien ne casse.
-- **Version grand public.** Le passif survit presque autant que le mixte (47-53 % contre 52-59 %). Si les premiers joueurs trouvent qu'on peut gagner en ne faisant rien, relever `IMMOBILISME` ou faire peser davantage la colère lycéenne sur les convocations. Et vérifier que la colère initiale (90, les lycées sont bloqués le jour de la nomination) et le seuil (62) laissent une chance d'éviter le blocus de la première rentrée à un joueur qui répond à trois colères à l'automne.
+- **Version grand public.** Le passif survit moins que le mixte (33-36 % contre 55-56 % depuis la suppression du profil, 47-53 % contre 52-59 % avant). Si les premiers joueurs trouvent qu'on peut gagner en ne faisant rien, relever `IMMOBILISME` ou faire peser davantage la colère lycéenne sur les convocations. Et vérifier que la colère initiale (90, les lycées sont bloqués le jour de la nomination) et le seuil (62) laissent une chance d'éviter le blocus de la première rentrée à un joueur qui répond à trois colères à l'automne.
 
 | Paramètre | Valeur | Ce qu'il faut regarder |
 |---|---|---|

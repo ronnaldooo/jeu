@@ -1381,63 +1381,21 @@ function ecranAffaire(q) {
 
 /* --- l'entretien de l'Élysée, avant la nomination ---------------------------- */
 function ecranEntretien(q) {
-  const rep = new Array(q.questions.length).fill(null);
-  const d = docu('Élysée, entretien préalable', 'Deux questions avant votre nomination');
+  const quest = q.question;
+  const d = docu('Élysée, entretien préalable', `Question ${q.index + 1} sur ${q.total}`);
   d.classList.add('papier');
-  d.appendChild(el('p', 'chapo', 'Un conseiller vous reçoit vingt minutes. Il ne s’intéresse ni à votre projet ni à l’école : il vérifie que votre nomination ne coûtera rien au Président. Personne ne contrôlera vos réponses aujourd’hui.'));
-
-  const zone = el('div', '');
-  q.questions.forEach((quest, i) => {
-    const bloc = el('section', 'entretien-q');
-    bloc.appendChild(el('h3', '', esc(quest.question)));
-    bloc.appendChild(el('p', 'aparte', fr(quest.aparte)));
-    const opts = groupeOptions();
-    quest.reponses.forEach((r, k) => {
-      const b = el('button', 'opt', `<b>${esc(r.label)}</b><span class="det">${fr(r.det)}</span>`);
-      b.onclick = () => {
-        rep[i] = k;
-        cocher(opts, b);
-        maj();
-      };
-      opts.appendChild(b);
-    });
-    bloc.appendChild(opts);
-    zone.appendChild(bloc);
-  });
-  d.appendChild(zone);
-
-  const act = el('div', 'actions');
-  const ok = el('button', 'btn tamponner', 'Signer la notice');
-  ok.disabled = true;
-  ok.onclick = () => suivant(rep);
-  act.appendChild(ok); d.appendChild(act);
-  function maj() {
-    const complet = rep.every((x) => x !== null);
-    ok.disabled = !complet;
-    ok.textContent = complet ? 'Signer la notice' : `Répondre aux ${rep.filter((x) => x === null).length} question(s) restantes`;
-  }
-  maj();
-  scene(d);
-}
-
-/* --- le profil déclaré ------------------------------------------------------- */
-function ecranProfil(q) {
-  const d = docu('Notice biographique, service de presse', 'D’où venez-vous ?');
-  d.appendChild(el('p', 'chapo', 'Le service de presse a besoin de deux lignes pour les dépêches de demain. Ce que vous déclarez ne vous rend ni meilleur ni moins bon ministre (<b>aucun profil ne donne d’avantage sur les compteurs</b>) mais décide de ce que le corps enseignant attendra de vous, et de ce qu’on vous reprochera.'));
+  if (q.index === 0) d.appendChild(el('p', 'chapo', 'Un conseiller vous reçoit vingt minutes. Il ne s’intéresse ni à votre projet ni à l’école : il vérifie que votre nomination ne coûtera rien au Président. Personne ne contrôlera vos réponses aujourd’hui.'));
+  const bloc = el('section', 'entretien-q');
+  bloc.appendChild(el('h3', '', esc(quest.question)));
+  bloc.appendChild(el('p', 'aparte', fr(quest.aparte)));
   const opts = groupeOptions();
-  q.profils.forEach((p, i) => {
-    const eff = [
-      p.adhesion ? `adhésion enseignante ${signe(p.adhesion)}` : '',
-      p.capital ? `capital ${signe(p.capital)}` : '',
-      p.credibilite ? `crédibilité ${signe(p.credibilite)}` : '',
-    ].filter(Boolean);
-    const b = el('button', 'opt',
-      `<b>${esc(p.nom)}</b><span class="det">${fr(p.detail)}</span>`
-      + `<span class="chiffres">${eff.map((x) => `<span>${x}</span>`).join('')}</span>`);
-    b.onclick = () => suivant(i);
+  quest.reponses.forEach((r, k) => {
+    const b = el('button', 'opt', `<b>${esc(r.label)}</b><span class="det">${fr(r.det)}</span>`);
+    b.onclick = () => suivant(k);
     opts.appendChild(b);
   });
-  d.appendChild(opts);
+  bloc.appendChild(opts);
+  d.appendChild(bloc);
   scene(d);
 }
 
@@ -2583,7 +2541,7 @@ function fermerComprendre() {
 }
 
 /* -------------------------------------------------------- boucle & sauvegarde */
-const CLE_SAUVE = 'rue-de-grenelle-gp1';  // version grand public : son propre jeu de sauvegarde
+const CLE_SAUVE = 'rue-de-grenelle-gp2';  // version grand public : son propre jeu de sauvegarde
 const ETAT = { s: null, gen: null, journalLu: 0, pas: [], dateLabel: 'novembre 2026', rentreeRatee: false, enAttente: null, rendre: null };
 
 function dateDe(q) {
@@ -2593,7 +2551,6 @@ function dateDe(q) {
   if (q.type === 'reperes') return q.note === 'demographie' ? `juillet ${an}` : 'novembre 2026';
   if (q.type === 'avance') return 'novembre 2026';
   if (q.type === 'entretien') return 'novembre 2026';
-  if (q.type === 'profil') return 'novembre 2026';
   if (q.type === 'colere' || q.type === 'faits') return q.quand && /^Rentrée/.test(q.quand) ? `septembre ${an}` : 'novembre 2026';
   if (q.type === 'territoire') return 'novembre 2026';
   if (q.type === 'intention') return `juillet ${an}`;
@@ -2634,7 +2591,6 @@ function situer(q) {
   const t = q.type, e = q.etape, m = q.moment;
   if (t === 'nomination') return ['novembre', 'telephone'];
   if (t === 'entretien') return ['novembre', 'colonnes'];
-  if (t === 'profil') return ['novembre', 'carte'];
   if (t === 'doctrine') return ['novembre', 'pupitre'];
   if (t === 'reperes') return [q.note === 'demographie' ? 'ete' : 'novembre', q.note === 'budget' ? 'pieces' : q.note === 'lyceens' ? 'megaphone' : 'courbe'];
   if (t === 'avance') return ['novembre', 'pieces'];
@@ -2699,7 +2655,6 @@ function rendre(q) {
   else if (q.type === 'reperes') ecranReperes(q);
   else if (q.type === 'avance') ecranAvance(q);
   else if (q.type === 'entretien') ecranEntretien(q);
-  else if (q.type === 'profil') ecranProfil(q);
   else if (q.type === 'intention') ecranIntention(q);
   else if (q.type === 'affaire') ecranAffaire(q);
   else if (q.type === 'polemique') ecranPolemique(q);

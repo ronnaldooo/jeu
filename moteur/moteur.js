@@ -251,28 +251,22 @@ export function rafraichir(s) { recalculerVrai(s); recalculerAffiche(s); }
    premier jour, c'est de dire devant la presse ce que vous allez chercher.
    Le score final pondérera les cinq compteurs selon VOTRE classement : vous
    serez noté contre votre propre parole, et rien d'autre. */
-/* L'entretien de l'Élysée, puis la déclaration de profil. Le joueur choisit les
-   deux : ce ne sont pas des handicaps tirés au sort mais des déclarations, et
-   ce sont elles qui décident de ce qu'on pourra lui reprocher. Aucun profil
-   n'est meilleur qu'un autre au sens des compteurs éducatifs. */
-function appliquerProfil(s, idx) {
-  s.profil = K.PROFILS[Math.max(0, Math.min(K.PROFILS.length - 1, idx | 0))];
-  s.phys.adhesion = borne(s.phys.adhesion + s.profil.adhesion, 0, 100);
-  s.credibilite = borne(s.credibilite + s.profil.credibilite, 0, 100);
-  s.capital = borne(s.capital + s.profil.capital, 0, K.CAPITAL.plafond);
-  for (const id of s.profil.expose || []) s.expositions.add(id);
-}
-
+/* L'entretien de l'Élysée : ce ne sont pas des handicaps tirés au sort mais des
+   déclarations, et ce sont elles qui décident de ce qu'on pourra reprocher au
+   joueur. Une question par écran, pour que chacune se lise
+   et se réponde sans défiler. */
 function* etapeEntretien(s) {
-  const reps = (yield { type: 'entretien', questions: K.ENTRETIEN }) || [];
-  K.ENTRETIEN.forEach((q, i) => {
-    const r = q.reponses[Math.max(0, Math.min(q.reponses.length - 1, (reps[i] | 0)))];
+  const n = K.ENTRETIEN.length;
+  for (let i = 0; i < n; i++) {
+    const q = K.ENTRETIEN[i];
+    const k = (yield { type: 'entretien', question: q, index: i, total: n }) | 0;
+    const r = q.reponses[Math.max(0, Math.min(q.reponses.length - 1, k))];
     s.entretien[q.id] = r.valeur;
     s.credibilite = borne(s.credibilite + (r.credibilite || 0), 0, 100);
     for (const id of r.expose || []) s.expositions.add(id);
     for (const id of r.ferme || []) s.protections.add(id);
     if (r.mensonge) { s.mensonges.add(q.id); for (const id of r.expose || []) s.mensongesAffaire.add(id); }
-  });
+  }
   if (s.mensonges.size) {
     note(s, `Entretien de l’Élysée : ${s.mensonges.size} réponse${s.mensonges.size > 1 ? 's' : ''} inexacte${s.mensonges.size > 1 ? 's' : ''}. Personne ne vérifie aujourd’hui.`, 'elysee');
   }
@@ -281,7 +275,6 @@ function* etapeEntretien(s) {
 function* etapeDoctrine(s) {
   yield { type: 'nomination' };
   yield* etapeEntretien(s);
-  appliquerProfil(s, yield { type: 'profil', profils: K.PROFILS });
   const ordre = (yield { type: 'doctrine' }) || Object.keys(K.COMPTEURS_INITIAUX);
   s.doctrine = [...ordre];
   s.poids = {};
@@ -1542,7 +1535,7 @@ function appliquerMesures(s, choix, maxAnnonces = 3, depassementAutorise = true,
 export function* derouler(s) {
   /* NOVEMBRE 2026. Dans la fiction du jeu, le ministre a démissionné après
      six semaines de blocus ; le joueur est nommé au retour des vacances de la
-     Toussaint. Nomination, entretien, profil, feuille de route : comme
+     Toussaint. Nomination, entretien, feuille de route : comme
      toujours. Puis la situation (la note lycéens), le budget en discussion,
      et le prologue, colère par colère. */
   yield* etapeDoctrine(s);
@@ -1627,8 +1620,7 @@ export function jouerMandat({ graine = 1, politique }) {
     if (q.type === 'nomination') rep = 'accepter';
     else if (q.type === 'reperes') rep = null;   // la note de cadrage se lit, elle ne se décide pas
     else if (q.type === 'territoire') rep = politique.territoire ? politique.territoire(s, q) : null;
-    else if (q.type === 'entretien') rep = politique.entretien ? politique.entretien(s, q) : [0, 0, 0];
-    else if (q.type === 'profil') rep = politique.profil ? politique.profil(s, q) : 0;
+    else if (q.type === 'entretien') { const a = politique.entretien ? politique.entretien(s, q) : 0; rep = Array.isArray(a) ? (a[q.index] | 0) : (a | 0); }
     else if (q.type === 'avance') rep = politique.avance ? politique.avance(s, q) : 1;
     else if (q.type === 'intention') rep = politique.intention ? politique.intention(s, q) : 1;
     else if (q.type === 'affaire') rep = politique.affaire ? politique.affaire(s, q) : 0;

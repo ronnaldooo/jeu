@@ -5979,28 +5979,22 @@ function rafraichir(s) { recalculerVrai(s); recalculerAffiche(s); }
    premier jour, c'est de dire devant la presse ce que vous allez chercher.
    Le score final pondérera les cinq compteurs selon VOTRE classement : vous
    serez noté contre votre propre parole, et rien d'autre. */
-/* L'entretien de l'Élysée, puis la déclaration de profil. Le joueur choisit les
-   deux : ce ne sont pas des handicaps tirés au sort mais des déclarations, et
-   ce sont elles qui décident de ce qu'on pourra lui reprocher. Aucun profil
-   n'est meilleur qu'un autre au sens des compteurs éducatifs. */
-function appliquerProfil(s, idx) {
-  s.profil = K.PROFILS[Math.max(0, Math.min(K.PROFILS.length - 1, idx | 0))];
-  s.phys.adhesion = borne(s.phys.adhesion + s.profil.adhesion, 0, 100);
-  s.credibilite = borne(s.credibilite + s.profil.credibilite, 0, 100);
-  s.capital = borne(s.capital + s.profil.capital, 0, K.CAPITAL.plafond);
-  for (const id of s.profil.expose || []) s.expositions.add(id);
-}
-
+/* L'entretien de l'Élysée : ce ne sont pas des handicaps tirés au sort mais des
+   déclarations, et ce sont elles qui décident de ce qu'on pourra reprocher au
+   joueur. Une question par écran, pour que chacune se lise
+   et se réponde sans défiler. */
 function* etapeEntretien(s) {
-  const reps = (yield { type: 'entretien', questions: K.ENTRETIEN }) || [];
-  K.ENTRETIEN.forEach((q, i) => {
-    const r = q.reponses[Math.max(0, Math.min(q.reponses.length - 1, (reps[i] | 0)))];
+  const n = K.ENTRETIEN.length;
+  for (let i = 0; i < n; i++) {
+    const q = K.ENTRETIEN[i];
+    const k = (yield { type: 'entretien', question: q, index: i, total: n }) | 0;
+    const r = q.reponses[Math.max(0, Math.min(q.reponses.length - 1, k))];
     s.entretien[q.id] = r.valeur;
     s.credibilite = borne(s.credibilite + (r.credibilite || 0), 0, 100);
     for (const id of r.expose || []) s.expositions.add(id);
     for (const id of r.ferme || []) s.protections.add(id);
     if (r.mensonge) { s.mensonges.add(q.id); for (const id of r.expose || []) s.mensongesAffaire.add(id); }
-  });
+  }
   if (s.mensonges.size) {
     note(s, `Entretien de l’Élysée : ${s.mensonges.size} réponse${s.mensonges.size > 1 ? 's' : ''} inexacte${s.mensonges.size > 1 ? 's' : ''}. Personne ne vérifie aujourd’hui.`, 'elysee');
   }
@@ -6009,7 +6003,6 @@ function* etapeEntretien(s) {
 function* etapeDoctrine(s) {
   yield { type: 'nomination' };
   yield* etapeEntretien(s);
-  appliquerProfil(s, yield { type: 'profil', profils: K.PROFILS });
   const ordre = (yield { type: 'doctrine' }) || Object.keys(K.COMPTEURS_INITIAUX);
   s.doctrine = [...ordre];
   s.poids = {};
@@ -7270,7 +7263,7 @@ function appliquerMesures(s, choix, maxAnnonces = 3, depassementAutorise = true,
 function* derouler(s) {
   /* NOVEMBRE 2026. Dans la fiction du jeu, le ministre a démissionné après
      six semaines de blocus ; le joueur est nommé au retour des vacances de la
-     Toussaint. Nomination, entretien, profil, feuille de route : comme
+     Toussaint. Nomination, entretien, feuille de route : comme
      toujours. Puis la situation (la note lycéens), le budget en discussion,
      et le prologue, colère par colère. */
   yield* etapeDoctrine(s);
@@ -7355,8 +7348,7 @@ function jouerMandat({ graine = 1, politique }) {
     if (q.type === 'nomination') rep = 'accepter';
     else if (q.type === 'reperes') rep = null;   // la note de cadrage se lit, elle ne se décide pas
     else if (q.type === 'territoire') rep = politique.territoire ? politique.territoire(s, q) : null;
-    else if (q.type === 'entretien') rep = politique.entretien ? politique.entretien(s, q) : [0, 0, 0];
-    else if (q.type === 'profil') rep = politique.profil ? politique.profil(s, q) : 0;
+    else if (q.type === 'entretien') { const a = politique.entretien ? politique.entretien(s, q) : 0; rep = Array.isArray(a) ? (a[q.index] | 0) : (a | 0); }
     else if (q.type === 'avance') rep = politique.avance ? politique.avance(s, q) : 1;
     else if (q.type === 'intention') rep = politique.intention ? politique.intention(s, q) : 1;
     else if (q.type === 'affaire') rep = politique.affaire ? politique.affaire(s, q) : 0;
@@ -8910,63 +8902,21 @@ function ecranAffaire(q) {
 
 /* --- l'entretien de l'Élysée, avant la nomination ---------------------------- */
 function ecranEntretien(q) {
-  const rep = new Array(q.questions.length).fill(null);
-  const d = docu('Élysée, entretien préalable', 'Deux questions avant votre nomination');
+  const quest = q.question;
+  const d = docu('Élysée, entretien préalable', `Question ${q.index + 1} sur ${q.total}`);
   d.classList.add('papier');
-  d.appendChild(el('p', 'chapo', 'Un conseiller vous reçoit vingt minutes. Il ne s’intéresse ni à votre projet ni à l’école : il vérifie que votre nomination ne coûtera rien au Président. Personne ne contrôlera vos réponses aujourd’hui.'));
-
-  const zone = el('div', '');
-  q.questions.forEach((quest, i) => {
-    const bloc = el('section', 'entretien-q');
-    bloc.appendChild(el('h3', '', esc(quest.question)));
-    bloc.appendChild(el('p', 'aparte', fr(quest.aparte)));
-    const opts = groupeOptions();
-    quest.reponses.forEach((r, k) => {
-      const b = el('button', 'opt', `<b>${esc(r.label)}</b><span class="det">${fr(r.det)}</span>`);
-      b.onclick = () => {
-        rep[i] = k;
-        cocher(opts, b);
-        maj();
-      };
-      opts.appendChild(b);
-    });
-    bloc.appendChild(opts);
-    zone.appendChild(bloc);
-  });
-  d.appendChild(zone);
-
-  const act = el('div', 'actions');
-  const ok = el('button', 'btn tamponner', 'Signer la notice');
-  ok.disabled = true;
-  ok.onclick = () => suivant(rep);
-  act.appendChild(ok); d.appendChild(act);
-  function maj() {
-    const complet = rep.every((x) => x !== null);
-    ok.disabled = !complet;
-    ok.textContent = complet ? 'Signer la notice' : `Répondre aux ${rep.filter((x) => x === null).length} question(s) restantes`;
-  }
-  maj();
-  scene(d);
-}
-
-/* --- le profil déclaré ------------------------------------------------------- */
-function ecranProfil(q) {
-  const d = docu('Notice biographique, service de presse', 'D’où venez-vous ?');
-  d.appendChild(el('p', 'chapo', 'Le service de presse a besoin de deux lignes pour les dépêches de demain. Ce que vous déclarez ne vous rend ni meilleur ni moins bon ministre (<b>aucun profil ne donne d’avantage sur les compteurs</b>) mais décide de ce que le corps enseignant attendra de vous, et de ce qu’on vous reprochera.'));
+  if (q.index === 0) d.appendChild(el('p', 'chapo', 'Un conseiller vous reçoit vingt minutes. Il ne s’intéresse ni à votre projet ni à l’école : il vérifie que votre nomination ne coûtera rien au Président. Personne ne contrôlera vos réponses aujourd’hui.'));
+  const bloc = el('section', 'entretien-q');
+  bloc.appendChild(el('h3', '', esc(quest.question)));
+  bloc.appendChild(el('p', 'aparte', fr(quest.aparte)));
   const opts = groupeOptions();
-  q.profils.forEach((p, i) => {
-    const eff = [
-      p.adhesion ? `adhésion enseignante ${signe(p.adhesion)}` : '',
-      p.capital ? `capital ${signe(p.capital)}` : '',
-      p.credibilite ? `crédibilité ${signe(p.credibilite)}` : '',
-    ].filter(Boolean);
-    const b = el('button', 'opt',
-      `<b>${esc(p.nom)}</b><span class="det">${fr(p.detail)}</span>`
-      + `<span class="chiffres">${eff.map((x) => `<span>${x}</span>`).join('')}</span>`);
-    b.onclick = () => suivant(i);
+  quest.reponses.forEach((r, k) => {
+    const b = el('button', 'opt', `<b>${esc(r.label)}</b><span class="det">${fr(r.det)}</span>`);
+    b.onclick = () => suivant(k);
     opts.appendChild(b);
   });
-  d.appendChild(opts);
+  bloc.appendChild(opts);
+  d.appendChild(bloc);
   scene(d);
 }
 
@@ -10112,7 +10062,7 @@ function fermerComprendre() {
 }
 
 /* -------------------------------------------------------- boucle & sauvegarde */
-const CLE_SAUVE = 'rue-de-grenelle-gp1';  // version grand public : son propre jeu de sauvegarde
+const CLE_SAUVE = 'rue-de-grenelle-gp2';  // version grand public : son propre jeu de sauvegarde
 const ETAT = { s: null, gen: null, journalLu: 0, pas: [], dateLabel: 'novembre 2026', rentreeRatee: false, enAttente: null, rendre: null };
 
 function dateDe(q) {
@@ -10122,7 +10072,6 @@ function dateDe(q) {
   if (q.type === 'reperes') return q.note === 'demographie' ? `juillet ${an}` : 'novembre 2026';
   if (q.type === 'avance') return 'novembre 2026';
   if (q.type === 'entretien') return 'novembre 2026';
-  if (q.type === 'profil') return 'novembre 2026';
   if (q.type === 'colere' || q.type === 'faits') return q.quand && /^Rentrée/.test(q.quand) ? `septembre ${an}` : 'novembre 2026';
   if (q.type === 'territoire') return 'novembre 2026';
   if (q.type === 'intention') return `juillet ${an}`;
@@ -10163,7 +10112,6 @@ function situer(q) {
   const t = q.type, e = q.etape, m = q.moment;
   if (t === 'nomination') return ['novembre', 'telephone'];
   if (t === 'entretien') return ['novembre', 'colonnes'];
-  if (t === 'profil') return ['novembre', 'carte'];
   if (t === 'doctrine') return ['novembre', 'pupitre'];
   if (t === 'reperes') return [q.note === 'demographie' ? 'ete' : 'novembre', q.note === 'budget' ? 'pieces' : q.note === 'lyceens' ? 'megaphone' : 'courbe'];
   if (t === 'avance') return ['novembre', 'pieces'];
@@ -10228,7 +10176,6 @@ function rendre(q) {
   else if (q.type === 'reperes') ecranReperes(q);
   else if (q.type === 'avance') ecranAvance(q);
   else if (q.type === 'entretien') ecranEntretien(q);
-  else if (q.type === 'profil') ecranProfil(q);
   else if (q.type === 'intention') ecranIntention(q);
   else if (q.type === 'affaire') ecranAffaire(q);
   else if (q.type === 'polemique') ecranPolemique(q);

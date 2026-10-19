@@ -44,9 +44,10 @@ avez semé. Au-delà de trois réformes simultanément actives, elles se dégrad
 toutes. Un programme mal implanté a un effet nul — c'est le résultat le mieux
 établi de la littérature, et c'est la règle centrale du jeu.
 
-**Ce qui vous déstabilise ne se décide pas.** Votre profil et le périmètre de
-votre nomination sont tirés au sort : ils ne vous rendent ni meilleur ni moins
-bon ministre, ils décident de ce sur quoi vous serez attaquable. Et une
+**Ce qui vous déstabilise ne se décide pas.** Vos réponses à l'entretien de
+l'Élysée (deux questions, chacune sur son écran) et le périmètre de votre
+nomination décident de ce sur quoi vous serez attaquable ; ils ne vous rendent
+ni meilleur ni moins bon ministre. Et une
 polémique personnelle peut sortir — dans 60 % des parties environ, jamais deux
 fois la même — d'autant plus probablement qu'elle résonne avec ce que vous
 venez de faire. Aucune ne touche un compteur éducatif : elles attaquent votre
