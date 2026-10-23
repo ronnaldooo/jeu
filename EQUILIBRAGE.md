@@ -1999,6 +1999,59 @@ stratégies gardent leur tableau de réponses ; `jouerMandat` y lit la case de
 la question posée. La clé de sauvegarde passe à `rue-de-grenelle-gp2` : une
 partie enregistrée avant ce changement ne se rejoue plus.
 
+## 3 quattuortricies. Refonte de l'interface : une page, une information, une décision
+
+Commande : « que ce ne soit pas de longues choses à dérouler » ; une page, une
+information, une décision de quatre choix au plus ; des événements qui amènent
+des décisions, des mois sans événement, plus de décisions pendant les cent
+premiers jours ; des informations objectives sur demande (« une note de la
+DGESCO ») ; les choix, eux, politiques ; garder les priorités annoncées à la
+prise de fonction ; et un mot du prédécesseur au tout début, avec un dessin.
+
+**Le moteur n'a presque pas changé.** Trois ajouts : les colères portent leur
+rang (`rang`, `total`) et deux textes courts (`intro`, `resume`, écrits à la
+main à partir des faits sourcés) ; la réponse de Bercy à la demande de rallonge
+devient une page (`{type: 'resultat'}`, sans effet sur le moteur) ; et les
+réponses proposées à chaque colère sont plafonnées à trois cartes (plus « pas
+maintenant »), pour ne jamais dépasser quatre choix. Les cartes retirées des
+colères restent dans les menus ordinaires. Le banc d'essai est resté 4/4 sur
+les graines 5, 11 et 23 (500 parties) ; le joueur attentif survit à 54-56 %.
+
+**L'interface est refaite.** Le noyau (`interface/app.js`, fichier
+`20-noyau`) définit la page : en-tête, titre, une information, un chiffre
+clé, des boutons « note », des choix (étiquettes en mots, bouton « i »), et une
+page de retour (« ce qui suit ») avant « Continuer ». La feuille (bas de
+page) porte tout ce qui est facultatif : notes de la DGESCO, détail d'un
+choix, tableau de bord, alertes du cabinet, sources. Le bandeau tient en deux
+lignes : date, quatre pastilles (trois priorités et lycéens), progression.
+L'écran « profil » et l'écran « territoire » à rallonge ont disparu ; le
+département se choisit sur une page, et ses chiffres sont dans une feuille.
+
+**Des écrans à plusieurs décisions deviennent plusieurs pages.** L'entretien
+(deux pages), les colères (avis, puis faits et réponse), la carte scolaire
+(postes, puis privé, avec « ce que cela donne » en retour), le plateau de
+vingt heures (une question par page), le retrait réclamé par un syndicat
+(l'argument, puis la réponse), les mesures de l'année. Ces dernières se
+proposent par lots de trois cartes, avec « pas celles-là » en quatrième choix :
+l'enveloppe et le soutien du gouvernement sont dans la ligne de l'invite, ce
+qui est trop cher est grisé une fois puis retiré. La revalorisation des salaires
+ouvre une page de quatre formules (prime, milieu de carrière, débuts de
+carrière, pacte) ; la formule « grand plan à 2,5 Md€ » a été retirée du menu :
+elle dépassait toute enveloppe, et se lit dans la note.
+
+**Les bilans passent en sept pages** (verdict, cinq priorités, mesures,
+bords politiques, lycéens, département, cap) avec « Précédent » et
+« Suivant ». Les notes de cadrage du budget et de la démographie ne sont plus
+imposées : elles se demandent depuis la page où elles servent.
+
+**Contrôle automatique de la hauteur.** Le robot mesure, à chaque page, si le
+contenu dépasse la hauteur disponible (390 × 760) et les illustrations cèdent
+la place quand il manque de la hauteur. Sur six parties complètes, sur
+téléphone comme sur ordinateur : aucune page ne déborde, aucune erreur, jamais
+plus de quatre choix. Sur un écran plus petit (360 × 640), les pages les plus
+denses défilent un peu à l'intérieur de leur carte : rien n'est perdu, mais
+c'est l'exception qu'on a choisi de tolérer.
+
 ## 5. Paramètres à réexaminer après tests humains
 
 - **Appel en direct aux données ouvertes.** L'écran « Mon lycée » appelle data.education.gouv.fr depuis le navigateur du joueur ; l'appel n'a pas pu être testé depuis la session de développement (réseau fermé). À vérifier sur un téléphone : en-têtes inter-origines, noms de colonnes découverts, délai de 8 secondes. Si le service refuse, le repli (adresses) s'affiche et rien ne casse.

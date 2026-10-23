@@ -1659,7 +1659,7 @@ export const CATALOGUE = [
   /* ------------------------------ V1 · le budget ------------------- */
   {
     id: 'budget_participatif',
-    label: 'Un budget participatif dans chaque lycée : deux euros par élève, dépensés sur un vote des élèves',
+    label: 'Un budget participatif dans chaque lycée : deux euros par élève, votés par les élèves',
     famille: 'vie_lyceenne',
     porteurs: ['proposition du jeu, d’après le précédent portugais (Orçamento Participativo das Escolas, 2017)', 'les organisations lycéennes (un budget que les élèves votent)'],
     perimetre: 'ministeriel',
@@ -1680,7 +1680,7 @@ export const CATALOGUE = [
   /* ------------------------------ V2 · le droit de réponse ---------- */
   {
     id: 'droit_reponse',
-    label: 'Le droit de réponse : toute question du conseil de la vie lycéenne reçoit une réponse écrite sous un mois, sinon le rectorat est saisi',
+    label: 'Le droit de réponse : toute question du CVL reçoit une réponse écrite sous un mois',
     famille: 'vie_lyceenne',
     porteurs: ['proposition du jeu', 'la médiatrice de l’Éducation nationale (28 450 saisines en 2025, 78 % de succès)', 'les organisations lycéennes (« personne ne nous écoute »)'],
     contre: ['une partie des chefs d’établissement, qui y voient une procédure de plus'],
@@ -1701,7 +1701,7 @@ export const CATALOGUE = [
   /* ------------------------------ V3 · les toilettes ---------------- */
   {
     id: 'charte_sanitaires',
-    label: 'La charte des toilettes : ouvertes toute la journée, papier et savon, visite deux fois par an par les élèves du CVL, résultats affichés',
+    label: 'La charte des toilettes : ouvertes, papier et savon, visitées deux fois par an par les élèves',
     famille: 'vie_lyceenne',
     porteurs: ['proposition du jeu', 'les lycéens de Cayenne, de Saint-Denis et de la consultation nationale', 'Observatoire national de la sécurité (un tiers des élèves renoncent à y aller)'],
     perimetre: 'ministeriel',
@@ -1787,7 +1787,7 @@ export const CATALOGUE = [
   /* ------------------------------ V7 · le référendum ---------------- */
   {
     id: 'referendum_lycee',
-    label: 'Le référendum d’établissement : sur le téléphone, la tenue ou la pause de midi, élèves et adultes votent, et le conseil d’administration doit en délibérer',
+    label: 'Le référendum d’établissement : élèves et adultes votent sur le téléphone, la tenue, la pause de midi',
     famille: 'vie_lyceenne',
     porteurs: ['proposition du jeu', 'les organisations lycéennes (« refonte de la démocratie lycéenne »)'],
     contre: ['une partie des chefs d’établissement et des professeurs : on ne vote pas le règlement'],
@@ -1855,7 +1855,7 @@ export const CATALOGUE = [
      ==================================================================== */
   {
     id: 'bulletin_lycee',
-    label: 'Le bulletin de chaque lycée : dépense par élève, heures perdues, profil social et valeur ajoutée, publiés chaque année sur une page',
+    label: 'Le bulletin de chaque lycée : dépense par élève, heures perdues, profil social, publiés chaque année',
     famille: 'territoires',
     porteurs: ['proposition du jeu, d’après la loi fédérale américaine ESSA (dépense par élève de chaque école publiée) et le site My School australien', 'Cour des comptes (mesurer le temps d’enseignement perdu)', 'fédérations de parents'],
     contre: ['les syndicats enseignants, qui redoutent un palmarès', 'Régions de France, qui n’a pas envie de voir sa dotation comparée lycée par lycée'],
@@ -1875,7 +1875,7 @@ export const CATALOGUE = [
   },
   {
     id: 'ep_lycee',
-    label: 'L’éducation prioritaire au lycée : des heures en plus pour les lycées au profil social le plus défavorisé, financées en partie par les plus favorisés',
+    label: 'L’éducation prioritaire au lycée : plus d’heures pour les lycées les plus défavorisés',
     famille: 'territoires',
     porteurs: ['Cour des comptes (allocation progressive des moyens selon le profil social de chaque établissement)', 'les organisations lycéennes (« inégalités entre lycées »)', 'FSU et SNES-FSU (retour des lycées dans l’éducation prioritaire)'],
     contre: ['les fédérations de parents des lycées favorisés', 'SNALC (contre toute dotation « au profil social »)', 'une partie des recteurs, qui redoutent une bataille de dotation horaire dans chaque académie'],
@@ -1897,7 +1897,7 @@ export const CATALOGUE = [
   },
   {
     id: 'eleve_vote_region',
-    label: 'Deux lycéens élus siègent avec droit de vote à la commission lycées de chaque conseil régional',
+    label: 'Deux lycéens avec droit de vote à la commission lycées de chaque conseil régional',
     famille: 'territoires',
     porteurs: ['proposition du jeu, d’après les « student trustees » de l’Ontario, qui siègent sans vote, poussés d’un cran', 'les organisations lycéennes (« refonte de la démocratie lycéenne »)'],
     contre: ['Régions de France (une ingérence de l’État dans la composition des assemblées régionales)', 'une partie des élus régionaux, qui rappellent que l’on vote à dix-huit ans'],
@@ -1916,7 +1916,7 @@ export const CATALOGUE = [
   },
   {
     id: 'bp_regional',
-    label: 'Le budget participatif lycéen dans toutes les régions : un pour cent du budget des lycées voté par les élèves, l’État abonde',
+    label: 'Un budget participatif lycéen dans chaque région : 1 % du budget des lycées voté par les élèves',
     famille: 'territoires',
     porteurs: ['les régions qui l’ont déjà fait : Occitanie (depuis 2017, jusqu’à 10 000 € par projet), Bretagne (neuf lycées pilotes), Centre-Val de Loire (2026)', 'proposition du jeu pour la généralisation', 'les organisations lycéennes (un budget que les élèves votent)'],
     contre: ['une partie des conseils régionaux, qui n’aiment pas qu’on leur dise comment dépenser', 'des chefs d’établissement, qui redoutent un chantier de plus'],
@@ -1935,7 +1935,7 @@ export const CATALOGUE = [
   },
   {
     id: 'enquete_climat',
-    label: 'L’enquête de climat scolaire obligatoire dans chaque lycée tous les deux ans, résultats présentés aux élèves et au conseil d’administration',
+    label: 'L’enquête de climat scolaire obligatoire tous les deux ans, résultats présentés aux élèves',
     famille: 'territoires',
     porteurs: ['la DEPP, dont l’enquête locale de climat scolaire existe déjà et attend qu’on s’en serve', 'proposition du jeu pour l’obligation et la restitution aux élèves', 'fédérations de parents'],
     contre: ['une partie des chefs d’établissement, qui redoutent la comparaison entre lycées', 'les syndicats enseignants si les résultats servent à évaluer les équipes'],
@@ -1955,7 +1955,7 @@ export const CATALOGUE = [
   },
   {
     id: 'plan_chaleur',
-    label: 'Le plan chaleur : diagnostic thermique publié pour chaque lycée, cours adaptés au-dessus de 30 °C, travaux cofinancés État-région',
+    label: 'Le plan chaleur : diagnostic publié par lycée, cours adaptés au-dessus de 30 °C, travaux cofinancés',
     famille: 'territoires',
     porteurs: ['SNES-FSU (« météo des classes » 2026)', 'des parlementaires de plusieurs groupes (question écrite n° 17103)', 'proposition du jeu pour le seuil et le cofinancement', 'les lycéens de l’Hérault, renvoyés chez eux le 7 septembre 2026'],
     contre: ['Bercy (les murs sont aux régions)', 'Régions de France, qui demande de l’argent sans le seuil'],
@@ -1975,7 +1975,7 @@ export const CATALOGUE = [
   },
   {
     id: 'garantie_trajet',
-    label: 'La garantie trajet : aucun lycéen à plus de quarante-cinq minutes de son lycée sans place d’internat gratuite ou aide au transport',
+    label: 'La garantie trajet : internat gratuit ou aide au transport au-delà de 45 minutes',
     famille: 'territoires',
     porteurs: ['proposition du jeu', 'les élus des territoires ruraux (passage en seconde générale inférieur de dix points)', 'les régions rurales, qui ont les internats'],
     contre: ['Bercy', 'une partie des régions, qui organisent déjà le transport scolaire et n’ont pas envie d’une norme nationale'],
@@ -2803,6 +2803,8 @@ export const AVIS = [
 export const COLERES = [
   {
     id: 'profs',
+    intro: 'Dans un lycée bloqué sur deux, la première revendication est un professeur absent depuis la rentrée. Le rectorat « est saisi ».',
+    resume: 'Un élève perd environ une heure de cours sur onze. Les chiffres du ministère et des syndicats diffèrent, parce qu’ils ne comptent pas la même chose.',
     cri: '« Il nous manque un prof depuis septembre. »',
     qui: 'La pancarte la plus fréquente devant les grilles ; 28,5 % des contributions de la consultation nationale.',
     contexte: 'Dans un lycée bloqué sur deux, la première revendication est un professeur absent depuis la rentrée : en maths, en français, en anglais. Le rectorat « est saisi ».',
@@ -2813,10 +2815,12 @@ export const COLERES = [
     ],
     lecture: 'Deux chiffres s’opposent, « 53 % des établissements » et « des volumes d’heures » : ils ne comptent pas la même chose, et les deux sont vrais. Ce qui est sûr : un élève perd environ une heure de cours sur onze, et ce sont les absences courtes, celles qu’aucune brigade ne couvre, qui pèsent le plus.',
     verdict: 'fondee',
-    mesures: ['remplacement_lycee', 'brigades', 'ors_remplacement', 'open_data_lycee'],
+    mesures: ['remplacement_lycee', 'brigades', 'ors_remplacement'],
   },
   {
     id: 'journees',
+    intro: 'Journées de dix heures, heures de trou, cantine saturée. Les lycéens disent qu’ils n’ont plus le temps ni de dormir, ni de réviser.',
+    resume: '260 heures de classe de plus que chez leurs voisins européens. Mais « plus d’heures, meilleur niveau » ne tient pas. Reste à savoir comment raccourcir.',
     cri: '« On est au lycée de 8 h à 18 h, avec une demi-heure pour manger. »',
     qui: 'Le premier sujet de la consultation nationale : 71 % des contributions.',
     contexte: 'Des journées de dix heures, des heures de trou, une cantine saturée. Les lycéens disent qu’ils n’ont plus le temps de rien, ni de dormir, ni de réviser, ni de vivre.',
@@ -2831,6 +2835,8 @@ export const COLERES = [
   },
   {
     id: 'bati',
+    intro: 'Salles à 35 °C, sanitaires fermés, un lycée de Mayotte prévu pour 900 élèves qui en accueille 2 300. On vous demande un plan national.',
+    resume: 'Juste sur le fond, mal adressée : les lycées appartiennent aux régions. Un ministre peut cofinancer et convaincre ; il ne signe pas le devis.',
     cri: '« Il fait 35 °C en salle 204 et les toilettes sont fermées depuis la rentrée. »',
     qui: 'Deuxième sujet de la consultation (51 %) ; les lycéens de Cayenne, de Mayotte, de Lormont, du Loiret.',
     contexte: 'Des vidéos de salles surchauffées, des sanitaires sans eau ni papier, un lycée de Mayotte conçu pour 900 élèves qui en accueille 2 300. On vous demande « un plan national pour le bâti ».',
@@ -2845,6 +2851,8 @@ export const COLERES = [
   },
   {
     id: 'parcoursup',
+    intro: 'Chaque printemps, des lycéens restent « en attente » sans savoir pourquoi. En 2026, un candidat sur six n’avait rien à l’issue de la phase principale.',
+    resume: 'Opaque, oui : les critères ne sont pas publics. Au hasard, non : des humains classent. Supprimer la plateforme déplace le tri, elle ne le supprime pas.',
     cri: '« Parcoursup nous trie au hasard. »',
     qui: 'La revendication nationale la plus visible : suppression demandée par les organisations lycéennes et étudiantes.',
     contexte: 'Chaque printemps, des lycéens découvrent qu’ils sont « en attente » sans savoir pourquoi, ni de qui. En 2026, un candidat sur six n’avait rien à l’issue de la phase principale.',
@@ -2859,6 +2867,8 @@ export const COLERES = [
   },
   {
     id: 'effectifs',
+    intro: 'Des classes de seconde à 35, des chaises ajoutées, des professeurs qui ne connaissent pas les prénoms avant novembre.',
+    resume: 'Vrai : parmi les classes les plus chargées d’Europe. Mais « moins nombreux, on apprend mieux » est plus solide au CP qu’en seconde.',
     cri: '« On est 35 par classe. »',
     qui: 'Un quart des contributions de la consultation ; les lycées de Loiret, de Guyane, de Seine-Saint-Denis.',
     contexte: 'Des classes de seconde à 35, des salles où l’on ajoute des chaises, des professeurs qui ne connaissent pas les prénoms avant novembre.',
@@ -2873,6 +2883,8 @@ export const COLERES = [
   },
   {
     id: 'postes',
+    intro: 'Le budget 2027 supprime 1 588 postes d’enseignants, en plein mouvement. Les syndicats parlent de manque de profs, le ministère de démographie.',
+    resume: 'Tout est vrai à la fois : postes supprimés, budget en hausse, élèves en moins. La vraie question est le ratio, et où les professeurs manquent.',
     cri: '« Le gouvernement supprime 1 588 postes pendant qu’on manque de profs. »',
     qui: 'L’intersyndicale de l’éducation (grève du 8 octobre 2026) et les organisations lycéennes.',
     contexte: 'Le budget 2027 est présenté le 2 octobre, en plein mouvement : 1 588 postes d’enseignants en moins. Les syndicats appellent à la grève « en soutien aux lycéens » ; le ministère parle de démographie.',
@@ -2887,6 +2899,8 @@ export const COLERES = [
   },
   {
     id: 'sante',
+    intro: 'Une infirmière pour deux ou trois établissements, des psychologues vus pour l’orientation, des rendez-vous à trois mois.',
+    resume: 'Une colère ancienne. Ce que les chiffres ne disent pas : ce qui marche le mieux, recruter, ouvrir aux maisons des adolescents, ou donner un adulte référent.',
     cri: '« On n’a ni infirmière ni psy. Quand ça va mal, il n’y a personne. »',
     qui: 'La pancarte « ni prof ni infirmière » des premiers blocus ; la médiatrice de l’Éducation nationale, dont le rapport 2025 porte sur la santé mentale.',
     contexte: 'Une infirmière pour deux ou trois établissements, un psychologue de l’éducation qu’on voit pour l’orientation et presque jamais pour le reste, des rendez-vous à trois mois. Les lycéens disent que personne n’a le temps de leur parler autrement que par leurs notes.',
@@ -2897,10 +2911,12 @@ export const COLERES = [
     ],
     lecture: 'La colère est fondée et ancienne : la médecine scolaire s’effondre depuis dix ans, les infirmières et les psychologues manquent, et la médiatrice elle-même en fait le sujet de son rapport. Ce que les chiffres ne disent pas, c’est ce qui marche le mieux : recruter des soignants, ouvrir l’école aux maisons des adolescents, ou donner à chaque élève un adulte qui le connaît. Les trois sont sur la table.',
     verdict: 'fondee',
-    mesures: ['sante_scolaire', 'sante_mentale', 'adulte_referent', 'mediation_pairs'],
+    mesures: ['sante_scolaire', 'sante_mentale', 'mediation_pairs'],
   },
   {
     id: 'democratie',
+    intro: 'Les instances existent depuis trente ans. Le gouvernement a répondu par une demi-journée de « temps lycéen » et une consultation en ligne.',
+    resume: 'Constat juste : peu de pouvoir, presque pas d’argent. La participation qui décide a des effets civiques ; sur les notes, rien de prouvé.',
     cri: '« Nos délégués ne servent à rien, et le CVL, c’est pour la photo. »',
     qui: 'Les organisations lycéennes (« refonte de la démocratie lycéenne », cinquième des dix mesures) ; une partie des 76 500 contributions.',
     contexte: 'Le gouvernement a répondu à l’automne par une demi-journée de « temps lycéen » et une consultation en ligne. Les chefs d’établissement ont jugé la demi-journée improvisée ; les lycéens ont rempli la consultation, puis ont demandé ce qu’on en ferait. Dans les lycées, les instances existent depuis trente ans. Les lycéens disent qu’elles ne décident de rien.',
@@ -2911,10 +2927,12 @@ export const COLERES = [
     ],
     lecture: 'Le constat est juste : les instances existent, elles ont peu de pouvoir et presque pas d’argent, et la participation qui ne décide de rien produit surtout du cynisme. L’exagération est dans le « ne servent à rien » : là où la participation est réelle, la recherche trouve des effets sur ce que les élèves comprennent de la décision collective. Sur les notes, rien de prouvé. La question est donc moins « plus de sièges » que « sièges pour décider quoi ».',
     verdict: 'partielle',
-    mesures: ['democratie_lyceenne', 'budget_participatif', 'droit_reponse', 'referendum_lycee'],
+    mesures: ['democratie_lyceenne', 'budget_participatif', 'droit_reponse'],
   },
   {
     id: 'repression',
+    intro: 'Des vidéos d’interpellations de mineurs, et d’autres de poubelles en feu et d’un lycée de Nantes incendié. Chaque camp a sa vidéo.',
+    resume: 'Les chiffres ne tranchent pas, et le jeu non plus : deux colères se font face. Un ministre choisit ici une attitude, pas une mesure.',
     cri: '« Arrêtez de nous gazer. »',
     qui: 'La dixième des « 10 mesures d’urgence » : la fin de la répression. En face : des lycées incendiés.',
     contexte: 'Des vidéos d’interpellations de mineurs tournent sur les réseaux. En face, d’autres vidéos : des poubelles en feu, un lycée de Nantes incendié, des agents qui nettoient. Chaque camp a sa vidéo, et la vôtre est attendue.',
@@ -2929,6 +2947,8 @@ export const COLERES = [
   },
   {
     id: 'territoires',
+    intro: 'Un an après, la colère a changé de forme : « il en manque chez nous et pas ailleurs ». Les régions publient leurs plans, les magazines leurs palmarès.',
+    resume: 'Pas là où on la cherche : l’écart entre régions est réel mais ne porte que sur un quart du coût. Celui de l’État n’est publié nulle part.',
     moment: 'rentree',
     cri: '« À Paris, ils ont des agrégés et la clim. Chez nous, des contractuels et 32 °C. »',
     qui: 'Les lycéens de Seine-Saint-Denis et de l’Hérault, à la rentrée 2027 ; l’Institut des politiques publiques, qui a essayé de mesurer ce « sentiment d’inégalité territoriale » un an plus tôt.',
@@ -2941,7 +2961,7 @@ export const COLERES = [
     ],
     lecture: 'La colère est fondée, mais pas là où elle se cherche. L’écart entre régions est réel et du simple au double ; il porte sur le quart régional du coût, les murs et la cantine. L’écart le plus lourd est celui de l’État : qui enseigne dans quel lycée, avec quelle expérience, combien d’heures sont vraiment faites. Celui-là n’est publié nulle part, et c’est le ministre qui pourrait le publier. Quant à la clim, elle n’existe presque nulle part : à Paris non plus.',
     verdict: 'partielle',
-    mesures: ['ep_lycee', 'bulletin_lycee', 'plan_chaleur', 'garantie_trajet', 'eleve_vote_region'],
+    mesures: ['ep_lycee', 'bulletin_lycee', 'plan_chaleur'],
   },
 ];
 
@@ -2955,7 +2975,7 @@ export const COLERES = [
    ministère de l'Enseignement supérieur (4 octobre). */
 export const BLOCUS_LYCEEN = {
   titre: 'Les lycées se bloquent à nouveau',
-  recit: 'Des poubelles devant les grilles, des vidéos sur les réseaux, et le décompte des lycées « perturbés » qui tourne sur les chaînes d’information. Les lycéens reprennent les mots de l’automne 2026 : professeurs absents, journées trop longues, bâtiments dégradés, Parcoursup. Ils ajoutent les vôtres, ceux de l’automne dernier, qu’ils ont gardés.',
+  recit: 'Des poubelles devant les grilles, des vidéos sur les réseaux, le décompte des lycées « perturbés » sur les chaînes d’information. Les lycéens reprennent les mots de l’automne 2026, et ajoutent les vôtres : ils les ont gardés.',
   cadrage: { familles: ['lycee', 'vie_lyceenne', 'territoires'],
     titre: 'La circulaire de rentrée ne parlera que des lycées',
     cause: 'Les lycées sont bloqués : personne n’attend de vous une circulaire sur l’école maternelle. Le menu ne contient que des réponses aux revendications lycéennes, et elles ne viennent pas du même endroit.' },

@@ -17,6 +17,34 @@ jugé ?**
 > reste sur la branche principale. Le dossier de recherche qui a précédé cette
 > version est dans `RECHERCHE-GRAND-PUBLIC.md`.
 
+## Comment ça se joue : une page, une information, une décision
+
+Rien à dérouler. Chaque page tient dans l'écran d'un téléphone et ne contient
+qu'**une information** et **une décision**, avec quatre choix au plus. Les
+choix sont en bas de l'écran, là où se pose le pouce.
+
+- **📎 « Demander une note à la DGESCO »** ouvre, dans une feuille qui se
+  referme, les éléments objectifs qui éclairent la décision : chiffres, sources
+  cliquables, ce que disent les études. Ces notes sont facultatives : la page
+  se joue sans elles, et mieux avec.
+- **« i »**, à droite d'un choix, en donne le détail : qui le défend, qui est
+  contre, ce que disent les études, l'idée reçue.
+- **Les chiffres disent ce qui est ; les choix sont politiques.** Ils
+  dépendent de valeurs, et le jeu ne dit jamais lequel est le bon.
+- **Un rythme.** Les cent premiers jours (novembre 2026 à mai 2027) enchaînent
+  les décisions : le mot du prédécesseur, l'entretien de l'Élysée, vos cinq
+  priorités annoncées devant la presse, l'appel à Bercy, puis les colères
+  lycéennes, une page pour votre avis et une page pour les faits et votre
+  réponse. Ensuite viennent des mois où il se passe quelque chose
+  (une audience, une affaire, un classement international) et des mois où il
+  ne se passe presque rien : une page de revue de presse le dit.
+- **Une barre en haut** : la date, vos trois priorités et l'humeur des
+  lycéens, en mots ; une fine ligne de progression de novembre 2026 à mai 2030.
+  Touchez-la : le tableau de bord complet.
+- **Le mot du prédécesseur** ouvre le jeu : une note laissée dans le tiroir,
+  avec un dessin. « Les lycéens, c'est comme le dentifrice : une fois sorti du
+  tube, on ne le fait plus rentrer. »
+
 Le jeu s'adresse au grand public. Il ne cherche pas à convaincre : chaque
 mesure du catalogue cite ceux qui la défendent réellement (gouvernement,
 candidats à la présidentielle de 2027, organisations lycéennes) et ce qu'on
@@ -154,8 +182,7 @@ preuve, un panneau « Comprendre l'effet » qui dit ce que montrent vraiment les
 petit mot. Plus des unes de journal, un fil social de circonstance, et un bilan
 qui révèle, enfin, ce que vous avez vraiment produit.
 
-**Un bouton « Comprendre le jeu » est disponible en bas à gauche de chaque
-écran.** Il ouvre quinze fiches de référence — budget, démographie, niveaux, inégalités,
+**Un bouton « ? » est disponible en haut à droite de chaque page.** Il ouvre quinze fiches de référence — budget, démographie, niveaux, inégalités,
 métier enseignant, remplacement, organisation du temps, climat scolaire, ce qui
 a marché ailleurs, pourquoi le niveau baisse, comment marche un lycée, mon
 lycée et mon département, le mode d'emploi du lycéen, l'automne 2026 des

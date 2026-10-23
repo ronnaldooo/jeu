@@ -372,12 +372,12 @@ function appliquerPosture(s, idx) {
 /* Une colère, en deux écrans : ce qu'ils disent (et votre avis), puis les
    faits et votre réponse. Servie au prologue de l'automne 2026 et, pour la
    colère des territoires, à la première rentrée. */
-function* traiterColere(s, col, quand) {
-  const ia = yield { type: 'colere', colere: col, avis: AVIS, quand };
+function* traiterColere(s, col, quand, rang, total) {
+  const ia = yield { type: 'colere', colere: col, avis: AVIS, quand, rang, total };
   const avis = AVIS[Math.max(0, Math.min(AVIS.length - 1, ia | 0))];
   s.coleres.avis[col.id] = avis.id;
   if (col.postures) {
-    const ip = yield { type: 'faits', colere: col, avis: avis.id, postures: BLOCUS_LYCEEN.reponses, tresor: s.tresor, capital: s.capital, quand };
+    const ip = yield { type: 'faits', colere: col, avis: avis.id, postures: BLOCUS_LYCEEN.reponses, tresor: s.tresor, capital: s.capital, quand, rang, total };
     const r = appliquerPosture(s, ip);
     s.coleres.decisions[col.id] = 'posture:' + r.type;
     note(s, `${quand} — « ${col.cri} » : ${r.label}.`, 'colere');
@@ -387,7 +387,7 @@ function* traiterColere(s, col, quand) {
      de découverte habituel : la crise les a remontées. */
   for (const id of col.mesures) if (PAR_ID[id]) s.decouvertes.add(id);
   const dispo = col.mesures.map((id) => PAR_ID[id]).filter((c) => c && estJouable(s, c));
-  const rep = yield { type: 'faits', colere: col, avis: avis.id, dispo, tresor: s.tresor, capital: s.capital, quand, territoire: s.territoire };
+  const rep = yield { type: 'faits', colere: col, avis: avis.id, dispo, tresor: s.tresor, capital: s.capital, quand, territoire: s.territoire, rang, total };
   if (rep && rep.id && dispo.some((c) => c.id === rep.id)) {
     const avant = s.joue.size;
     appliquerMesures(s, [rep], 1, false, 'prologue', false);
@@ -405,8 +405,9 @@ function* etapePrologue(s) {
      d'emplois que Bercy comparera à la carte scolaire de janvier 2027. */
   s.schemaEmploisDemande = -1588;
   s.decouvertes = s.decouvertes || new Set();
-  for (const col of COLERES.filter((c) => !c.moment).slice(0, K.COLERES_MAX)) {
-    yield* traiterColere(s, col, 'Automne 2026');
+  const prologue = COLERES.filter((c) => !c.moment).slice(0, K.COLERES_MAX);
+  for (let i = 0; i < prologue.length; i++) {
+    yield* traiterColere(s, prologue[i], 'Automne 2026', i + 1, prologue.length);
   }
   const n = Object.values(s.coleres.decisions).filter((d) => d && !String(d).startsWith('posture:')).length;
   note(s, `Automne 2026 : ${n} mesure${n > 1 ? 's' : ''} annoncée${n > 1 ? 's' : ''} en réponse aux lycéens. Les lycéens sont ${humeurLyceenne(s.lyceens.colere)}.`, 'lyceens');
@@ -418,7 +419,7 @@ function* etapeColereRentree(s) {
   const col = COLERES.find((c) => c.moment === 'rentree');
   if (!col || s.coleres.avis[col.id]) return;
   s.decouvertes = s.decouvertes || new Set();
-  yield* traiterColere(s, col, `Rentrée ${s.anneeCiv}`);
+  yield* traiterColere(s, col, `Rentrée ${s.anneeCiv}`, 1, 1);
 }
 
 /* « Mon lycée » : avant les colères, le joueur dit d'où il regarde. Un
@@ -944,10 +945,12 @@ function* etapeAvance(s) {
     } else {
       note(s, `Rallonge accordée : ${fmtMd(o.bonus)} Md€ dégelés sur la réserve de précaution.`, 'bercy');
     }
+    yield { type: 'resultat', kicker: 'Réponse de Bercy', picto: 'pieces', ton: 'bien', illus: 'enveloppe', figure: { v: `+${Math.round(o.bonus * 1000)} M€`, l: 'pour vos premières décisions' }, titre: 'Bercy dit oui', texte: `${fmtMd(o.bonus)} milliard${o.bonus >= 2 ? 's' : ''} d’euros de plus pour vos premières décisions. Ce n’est pas un chèque : c’est une avance sur votre bonne conduite, et Bercy a bonne mémoire.`, bouton: 'Passer aux lycéens' };
   } else {
     s.creditBercy = borne(s.creditBercy + K.REFUS_BERCY.creditBercy, 0, 100);
     s.capital = borne(s.capital + K.REFUS_BERCY.capital, 0, K.CAPITAL.plafond);
     note(s, 'Demande refusée par Bercy. « Le cadrage est le cadrage. » Un refus, ça se sait.', 'bercy');
+    yield { type: 'resultat', kicker: 'Réponse de Bercy', picto: 'pieces', ton: 'mal', illus: 'enveloppe', figure: { v: '+0 €', l: 'pour vos premières décisions' }, titre: 'Bercy dit non', texte: '« Le cadrage est le cadrage. » Vous partez avec l’enveloppe de votre prédécesseur, un peu de crédit en moins, et un refus que tout le monde saura avant midi.', bouton: 'Passer aux lycéens' };
   }
 }
 
