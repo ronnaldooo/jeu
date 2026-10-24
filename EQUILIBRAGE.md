@@ -2039,8 +2039,9 @@ ouvre une page de quatre formules (prime, milieu de carrière, débuts de
 carrière, pacte) ; la formule « grand plan à 2,5 Md€ » a été retirée du menu :
 elle dépassait toute enveloppe, et se lit dans la note.
 
-**Les bilans passent en sept pages** (verdict, cinq priorités, mesures,
-bords politiques, lycéens, département, cap) avec « Précédent » et
+**Les bilans passent en pages** (verdict, cinq priorités, mesures,
+bords politiques, lycéens, cap ; la page « département » a disparu dans la
+refonte suivante, voir 3 quinquatricies) avec « Précédent » et
 « Suivant ». Les notes de cadrage du budget et de la démographie ne sont plus
 imposées : elles se demandent depuis la page où elles servent.
 
@@ -2051,6 +2052,60 @@ téléphone comme sur ordinateur : aucune page ne déborde, aucune erreur, jamai
 plus de quatre choix. Sur un écran plus petit (360 × 640), les pages les plus
 denses défilent un peu à l'intérieur de leur carte : rien n'est perdu, mais
 c'est l'exception qu'on a choisi de tolérer.
+
+## 3 quinquatricies. Texte plus grand, pages qui se remplissent, et les régions là où l'on parle d'argent
+
+Retour d'essai : le dessin du dentifrice « très mal fait », le texte trop petit,
+des sources trop longues, un grand vide entre l'information et les choix, des
+formulations implicites, et un écran « choix de l'établissement » qui arrivait
+« comme un cheveu sur la soupe ».
+
+**Le dessin** est refait : un vrai tube (bout serré, épaule, goulot, étiquette
+à la dent, bouchon ôté par terre) tenu la tête en bas, et une brosse à dents
+enfouie sous trois boudins de pâte qui débordent et coulent.
+
+**La mise en page** passe à des tailles de base proportionnelles à la hauteur de
+l'écran (14 à 17 px), avec des textes plus grands partout : information 1,04 rem,
+titres des choix 1,05 rem, étiquettes 0,78 rem. Les choix remplissent la
+hauteur qu'il reste (de 56 à 150 px chacun), le bouton « i » devient une pastille
+en coin, et les étiquettes tiennent sur une ligne pleine largeur. Une
+mesure s'intitule « Nom : en détail » ; le bouton affiche le nom, le détail est
+derrière le « i ». Quand une page ne tient pas, le texte se resserre d'un demi-
+point à la fois, jamais sous 13,5 px. L'illustration occupe la place qui reste,
+et cède s'il n'y en a presque pas. Les sources s'écrivent « Org, année ↗ » ; la
+référence complète est dans l'infobulle.
+
+**La passe de clarté** : un mode d'emploi et un glossaire (DGESCO, Bercy,
+Matignon, soutien du gouvernement, budget en M€, études solides, fragiles ou
+absentes, affiché et réel, colère, carte scolaire, IPS) à l'accueil et derrière
+le « ? » ; des consignes explicites à chaque page (« Touchez d'abord la plus
+importante pour vous », « Quelle part du privé ? », « Acceptez-vous ces
+limites ? ») ; les budgets et le soutien du gouvernement écrits en toutes lettres
+dans l'invite ; « agenda » devient « semaines de polémique » ; « preuves »
+devient « études » ; les chiffres du bilan disent « sur 100 » et « points ».
+
+**Les régions quittent l'écran à part.** L'écran « Mon lycée » et la page de
+bilan « votre département » sont supprimés (`etapeTerritoire` aussi). À leur
+place, sur la page des faits de la colère des territoires (« il y en a pour les
+autres, pas pour nous », première rentrée), un bouton « Comparer les régions,
+chercher mon département » ouvre l'investissement par lycéen des régions
+(885 à 1 978 €), la dotation d'équipement que l'État leur verse (661,8 M€,
+figés depuis 2008) et la recherche par département. La décision suit : une
+nouvelle carte, `perequation_regions` (« Harmoniser entre régions : un fonds de
+200 M€ par an pour les régions qui investissent le moins »), prend la place du
+plan chaleur dans les trois cartes de la colère ; le plan chaleur reste au
+catalogue général. L'enveloppe de 200 M€ est un choix du jeu (30 % de la
+dotation, 3 % des 6,8 Md€ que les régions dépensent), pas une estimation du
+besoin : personne n'a publié la répartition. Sources : `dres_insee` et
+`dres_an`. La clé de sauvegarde passe à `gp4`.
+
+**Équilibrage.** Une première version de la carte, avec une vitrine honnête
+(+2 parents, +1 égalité affichée), faisait choisir à la stratégie « tout vitrine »
+un dispositif discret au détriment d'un autre, et l'écart affiché/réel de cette
+stratégie tombait à +1,8 (cible : plus de 2). La carte est donc *sans effet
+d'image* (vitrine nulle) : une harmonisation entre régions ne se voit pas. Le banc
+d'essai (300 parties, graines 5, 11 et 23) donne 4 cibles sur 4 ; l'écart
+vitrine reste mince (2,0 à 2,3).
 
 ## 5. Paramètres à réexaminer après tests humains
 

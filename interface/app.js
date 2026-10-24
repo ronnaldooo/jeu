@@ -395,22 +395,37 @@ function fermerFeuille() {
 }
 function toucheFeuille(e) { if (e.key === 'Escape') fermerFeuille(); }
 
+/* De combien de pixels la page dépasse-t-elle la scène ? On mesure la page
+   elle-même, pas la scène : la petite animation d'entrée la décale. */
+function debordePage() {
+  const sc = $('#scene');
+  const pg = sc.firstElementChild;
+  if (!pg) return 0;
+  const cs = getComputedStyle(sc);
+  const interieur = sc.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
+  return pg.offsetHeight - interieur;
+}
+/* Si la page ne tient pas, le texte se resserre d'un demi-point à la fois
+   (jamais sous 13,5 px) : on préfère une page un peu plus petite à une page
+   qu'il faut faire défiler. La taille de base repart de zéro à chaque page.
+   L'illustration, elle, occupe la place qui reste ; s'il n'en reste presque
+   pas, elle cède. À rappeler quand on ajoute des boutons après coup. */
+function ajusterPage() {
+  const racine = document.documentElement;
+  racine.style.fontSize = '';
+  let taille = parseFloat(getComputedStyle(racine).fontSize);
+  while (debordePage() > 2 && taille > 13.5) { taille -= 0.5; racine.style.fontSize = taille + 'px'; }
+  for (const ill of document.querySelectorAll('#scene .pg-illus')) { if (ill.offsetHeight < 72) ill.hidden = true; }
+}
+
 /* --- la scène -------------------------------------------------------------- */
 function scene(...blocs) {
   const sc = $('#scene'); sc.innerHTML = '';
   for (const b of blocs) sc.appendChild(b);
   sc.scrollTop = 0;
   ETAT.tScene = performance.now();
-  /* La page déborde-t-elle ? On mesure la page elle-même, pas la scène : la
-     petite animation d'entrée la décale de quelques pixels. */
-  const deborde = () => {
-    const pg = sc.firstElementChild;
-    if (!pg) return 0;
-    const interieur = sc.clientHeight - 24;      // la marge de la scène
-    return pg.offsetHeight - interieur;
-  };
-  /* Les illustrations sont un bonus : si la page ne tient pas, elles cèdent la place. */
-  for (const ill of sc.querySelectorAll('.pg-illus')) { if (deborde() > 2) ill.hidden = true; }
+  const deborde = debordePage;
+  ajusterPage();
   /* Un contrôle pour les développeurs et le robot : une page qui déborde est
      une page à raccourcir. */
   requestAnimationFrame(() => {
@@ -435,7 +450,10 @@ function noeudChoix(c, i, surChoix) {
   const b = el('button', 'ch-main');
   b.type = 'button';
   /* Un choix à étiquettes se lit en une ligne : son commentaire est derrière le « i ». */
-  b.innerHTML = `<span class="ch-t">${c.html ? c.titre : esc(c.titre)}</span>`
+  /* Une mesure s'intitule « Nom : en détail » ; sur le bouton on lit le nom, le
+     détail est dans le « i ». */
+  const court = (aTags && !c.html && String(c.titre).includes(' : ')) ? String(c.titre).split(' : ')[0] : null;
+  b.innerHTML = `<span class="ch-t">${c.html ? c.titre : esc(court || c.titre)}</span>`
     + ((c.det && !aTags && !c.autre) ? `<span class="ch-d">${fr(c.det)}</span>` : '')
     + (aTags ? `<span class="ch-tags">${c.tags.map((t) => (typeof t === 'string' ? tag(t) : tag(t[0], t[1]))).join('')}${c.raison ? tag(c.raison, 'neg') : ''}</span>` : '')
     + ((c.raison && !aTags) ? `<span class="ch-raison">${esc(c.raison)}</span>` : '');
@@ -496,6 +514,7 @@ function page(o) {
   pg.appendChild(zone);
   let fait = false;
   if (o.choix && o.choix.length) {
+    zone.classList.add('decide');
     if (o.choix.length > 4) console.warn('plus de quatre choix sur la page', o.titre);
     if (o.prompt !== false) zone.appendChild(el('p', 'pg-q', esc(o.prompt || 'À vous de décider')));
     const liste = el('div', 'pg-choix');
@@ -516,10 +535,12 @@ function page(o) {
       const b = cta(r.bouton || 'Continuer', () => o.fin(i, c));
       zone.appendChild(b);
       b.focus({ preventScroll: true });
+      ajusterPage();
     };
     o.choix.forEach((c, i) => liste.appendChild(noeudChoix(c, i, surChoix)));
     zone.appendChild(liste);
   } else if (o.bouton) {
+    pg.classList.add('lecture');
     zone.appendChild(cta(o.bouton.label || 'Continuer', () => { if (!fait) { fait = true; o.fin(); } }));
   }
   if (o.secondaire) zone.appendChild(cta(o.secondaire.label, o.secondaire.onClick, 'sec'));
@@ -529,10 +550,25 @@ function page(o) {
 
 /* Une ligne « chiffre + source » compacte pour les pages (la source complète,
    cliquable, est dans la note). */
-function citerCourt(id) {
-  const S = SOURCES[id];
+function citerCourt(id) { return citer(id); }
+
+/* Une source, en deux ou trois mots : « Sénat, 2025 ↗ ». Le clic mène à la
+   publication ; le titre complet est dans l'infobulle. Pas de référence
+   complète sur la page, elle est derrière le lien. */
+function nomCourtSource(org) {
+  let n = String(org).split(/,|\(|«|:| — /)[0].trim();
+  if (n.length > 36) n = n.slice(0, 36).replace(/\s+\S*$/, '') + '…';
+  return n;
+}
+function citer(idSource) {
+  const S = SOURCES[idSource];
   if (!S) return '';
-  return `<cite>${S.url ? `<a href="${S.url}" target="_blank" rel="noopener">${esc(S.org)}</a>` : esc(S.org)} (${esc(S.date)})</cite>`;
+  const an = (String(S.date).match(/\d{4}/) || [''])[0];
+  const lib = `${esc(nomCourtSource(S.org))}${an ? ', ' + an : ''}`;
+  const plein = `${S.org} — ${S.titre} (${S.date})`;
+  return S.url
+    ? `<cite><a href="${S.url}" target="_blank" rel="noopener" title="${esc(plein)}">${lib} ↗</a></cite>`
+    : `<cite title="${esc(plein)}">${lib}</cite>`;
 }
 
 /* Les mots d'une carte-mesure, tels qu'on les lit sur un bouton de choix. */
@@ -542,7 +578,7 @@ function motsCarte(c, enveloppe) {
   const vit = c.vitrine || {};
   const tags = [];
   tags.push([k.cout <= 0.005 ? 'gratuit' : `${fmt0(k.cout * 1000)} M€/an`, enveloppe !== undefined && k.cout > enveloppe + 1e-9 ? 'neg' : '']);
-  tags.push([`preuves : ${cad >= 5 ? 'solides' : cad >= 3 ? 'correctes' : cad >= 2 ? 'fragiles' : 'aucune'}`, cad >= 3 ? 'pos' : '']);
+  tags.push([`études ${cad >= 5 ? 'solides' : cad >= 3 ? 'correctes' : cad >= 2 ? 'fragiles' : 'absentes'}`, cad >= 3 ? 'pos' : '']);
   if (vit.enseignants >= 3) tags.push(['profs pour', 'pos']);
   else if (vit.enseignants <= -5) tags.push(['profs contre', 'neg']);
   else if (vit.enseignants < 0) tags.push(['profs grincent', 'neg']);
@@ -967,24 +1003,45 @@ pupitre: `<svg viewBox="0 0 120 120" fill="none" stroke="currentColor" stroke-wi
 </svg>`,
 
 
-/* La note du prédécesseur : le tube de dentifrice dont la pâte, une fois
-   sortie, ne rentre plus, et la pancarte plantée dedans. */
-dentifrice: `<svg viewBox="0 0 280 120" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-  ${ombre(100, 106, 96, '.06')}
-  ${masse('M24 54h12v34H24z', ' stroke-width="1.5"')}
-  <path d="M27 54v34M30 54v34M33 54v34" stroke-width="1"/>
-  ${masse('M36 52h104q16 0 28 12v14q-12 12-28 12H36z', ' stroke-width="1.9"')}
-  ${trame('M62 52h18v38H62z', '.14')}
-  <path d="M62 52v38M80 52v38" stroke-width="1.1"/>
-  <path d="M92 66h40M92 74h26" stroke-width="1.1"/>
-  ${masse('M168 62h22v20h-22z', ' stroke="' + ACC + '" stroke-width="1.7"')}
-  <path d="M174 62v20M180 62v20" stroke="${ACC}" stroke-width="1"/>
-  <path d="M190 72C208 72 206 46 228 48C250 50 254 78 238 86C224 92 212 84 222 76" stroke-width="9"/>
-  <path d="M190 72C208 72 206 46 228 48C250 50 254 78 238 86C224 92 212 84 222 76" stroke="var(--fond-illus,#fff)" stroke-width="6.4"/>
-  <path d="M232 50V24" stroke-width="1.6"/>
-  ${masse('M220 8h26v16h-26z', ' stroke-width="1.5"')}
-  <path d="M233 12v6M233 21v.6" stroke="${ACC}" stroke-width="1.8"/>
-  <path d="M14 106h252" stroke-width="1.4"/>
+/* La note du prédécesseur : un tube de dentifrice, et une brosse à dents sous
+   beaucoup trop de pâte. Une fois sortie, elle ne rentre plus. */
+dentifrice: `<svg viewBox="0 -22 314 184" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+  ${ombre(150, 152, 138, '.06')}
+  <!-- le tube, bouchon ôté, tenu la tête en bas : bout serré à gauche, épaule, goulot -->
+  <g transform="translate(206 58) rotate(36)">
+    ${masse('M-14 -5h14v10h-14z', ' stroke-width="1.5"')}
+    <path d="M-5 -5v10M-9 -5v10" stroke-width="1.1"/>
+    ${masse('M-14 -5C-22 -6-28 -12-32-18v36c4-6 10-12 18-13z', ' stroke-width="1.8"')}
+    ${masse('M-32-18h-52v36h52z', ' stroke-width="1.9"')}
+    ${trame('M-76-18h18v36h-18z', '.18')}
+    <path d="M-76-18v36M-58-18v36" stroke-width="1.1"/>
+    ${masse('M-84-19l-10-2v42l10-2z', ' stroke-width="1.6"')}
+    <path d="M-87-19v38M-90-20v40M-93-21v42" stroke-width="1"/>
+    ${masse('M-52 8c0-5 3-6 5-5 2-2 5-1 5 3 0 4-2 5-2 9 0 3-2 3-2 0 0-2-1-3-2 0 0 3-2 3-3 0 0-3-1-4-1-7z', ' stroke-width="1.2"')}
+    <path d="M-46-10h8M-46-4h10" stroke-width="1.1"/>
+  </g>
+  <!-- le bouchon, par terre -->
+  ${masse('M16 130h22v20H16z', ' stroke="' + ACC + '" stroke-width="1.7"')}
+  <path d="M21 130v20M27 130v20M33 130v20" stroke="${ACC}" stroke-width="1"/>
+  <!-- la brosse à dents : manche, cou, tête et poils -->
+  ${masse('M60 134h120a7 7 0 0 1 0 14H60a7 7 0 0 1 0-14z', ' stroke-width="1.9"')}
+  ${trame('M60 134h34v14H60z', '.14')}
+  <path d="M72 134v14M80 134v14M88 134v14" stroke-width="1"/>
+  ${masse('M178 138h14l8-6h84a6 6 0 0 1 6 6v6a6 6 0 0 1-6 6h-84l-8-6h-14z', ' stroke-width="1.9"')}
+  <path d="M206 132v-12M213 132v-12M220 132v-12M227 132v-12M234 132v-12M241 132v-12M248 132v-12M255 132v-12M262 132v-12M269 132v-12M276 132v-12M283 132v-12" stroke-width="1.7"/>
+  <!-- beaucoup trop de pâte : le filet qui tombe du tube, puis trois couches de boudins qui débordent et coulent -->
+  <path d="M206 58c10 6 17 14 17 28" stroke-width="12"/>
+  <path d="M206 58c10 6 17 14 17 28" stroke="var(--fond-illus,#fff)" stroke-width="9"/>
+  <path d="M196 122C208 100 222 126 236 106S260 100 272 112S292 114 290 132C290 142 286 148 280 154" stroke-width="20"/>
+  <path d="M196 122C208 100 222 126 236 106S260 100 272 112S292 114 290 132C290 142 286 148 280 154" stroke="var(--fond-illus,#fff)" stroke-width="17"/>
+  <path d="M204 106C216 84 230 110 244 92S264 88 272 98S278 104 276 110" stroke-width="20"/>
+  <path d="M204 106C216 84 230 110 244 92S264 88 272 98S278 104 276 110" stroke="var(--fond-illus,#fff)" stroke-width="17"/>
+  <path d="M214 92C224 74 236 94 246 80S262 74 266 82" stroke-width="18"/>
+  <path d="M214 92C224 74 236 94 246 80S262 74 266 82" stroke="var(--fond-illus,#fff)" stroke-width="15"/>
+  <path d="M212 112c5-3 9-1 12 3M238 98c5-3 9-1 12 3M228 84c4-2 8 0 10 3M258 118c4-1 8 1 10 4" stroke-width="1.2" opacity=".55"/>
+  <path d="M188 128c-6 7-6 17-1 21 4 3 9-1 7-7-2-5-4-9-6-14z" fill="var(--fond-illus,#fff)" stroke-width="1.7"/>
+  <path d="M296 146c2 2 3 6 0 8-4-1-3-6 0-8z" fill="var(--fond-illus,#fff)" stroke-width="1.4"/>
+  <path d="M8 154h300" stroke-width="1.4"/>
 </svg>`,
 };
 
@@ -1006,6 +1063,31 @@ const picto = (nom) => PICTO[nom]
    territoire, Bercy, les colères.
    ========================================================================== */
 
+/* Mode d'emploi et mots du jeu : à l'accueil, et en tête de « Comprendre le jeu ». */
+const MOTS_DU_JEU = [
+  ['DGESCO', 'la direction générale de l’enseignement scolaire : l’administration du ministère. Ses notes donnent les chiffres et leurs sources ; elles ne disent pas quoi décider.'],
+  ['Bercy', 'le ministère de l’Économie et des Comptes publics. Il paie, donc il arbitre : vos demandes d’argent passent par lui.'],
+  ['Matignon', 'le Premier ministre, dont dépend votre ministère. Il peut trancher entre Bercy et vous.'],
+  ['Soutien du gouvernement', 'votre capital politique, sur 100. Chaque mesure en consomme ; s’il est trop bas, le gouvernement ne vous suit plus.'],
+  ['Budget (en M€)', 'ce que vous pouvez dépenser sur vos nouvelles mesures. 1 000 M€ = 1 milliard d’euros.'],
+  ['Études solides, correctes, fragiles, absentes', 'ce que la recherche sait de l’effet réel d’une mesure. Le jeu ne cache pas quand on ne sait pas.'],
+  ['Profs pour, contre', 'l’accueil que les enseignants réservent à la mesure.'],
+  ['Affiché, réel', 'l’affiché, c’est ce que le public voit tout de suite (le bandeau en haut). Le réel, c’est ce que la mesure produit vraiment, souvent des années plus tard : le bilan le révèle.'],
+  ['Colère', 'une revendication des lycéens. Vous donnez d’abord votre avis, puis les chiffres tranchent, puis vous décidez.'],
+  ['Carte scolaire', 'la décision annuelle qui répartit les postes d’enseignants, et donc ouvre ou ferme des classes.'],
+  ['IPS', 'indice de position sociale : le milieu social moyen des élèves d’un lycée (109 en moyenne, de 59 à 162).'],
+];
+function corpsModeEmploi() {
+  const z = el('div', 'fiche-corps');
+  z.innerHTML = `<h3>Comment jouer</h3>
+    <p class="pg-info">Vous êtes ministre de l’Éducation nationale. <b>Chaque page apporte une information, puis vous demande une décision</b> (quatre choix au plus). Touchez un choix pour décider.</p>
+    <p class="pg-info"><b>📎</b> ouvre une note de la DGESCO : les chiffres, avec leurs sources (touchez la source pour la lire). <b>i</b> donne le détail d’un choix : qui le défend, qui s’y oppose, ce que disent les études. <b>?</b>, en haut, ouvre cette page.</p>
+    <p class="pg-info">Les chiffres disent ce qui est. Ce qu’il faut en faire est un choix politique, qui dépend de valeurs : c’est le vôtre. Le jeu ne dit jamais qu’une politique est la bonne.</p>
+    <h3>Les mots du jeu</h3>
+    <dl class="glossaire">${MOTS_DU_JEU.map(([m, d]) => `<dt>${esc(m)}</dt><dd>${esc(d)}</dd>`).join('')}</dl>`;
+  return z;
+}
+
 /* --- accueil --------------------------------------------------------------- */
 function ecranAccueil(sauvegarde) {
   const pg = el('article', 'pg pg-accueil');
@@ -1014,7 +1096,7 @@ function ecranAccueil(sauvegarde) {
     ${ILLUS.facade.replace('<svg ', '<svg class="illustration" ')}
     <h1>Rue de Grenelle</h1>
     <p class="devise">Automne 2026. Les lycées sont bloqués depuis six semaines. Le ministre démissionne. On vous appelle.</p>
-    <p class="chute">Vous allez entendre ce que disent les lycéens, vérifier les chiffres, vous faire un avis, et décider. Vingt à trente minutes.</p>`;
+    <p class="chute">Vous êtes le nouveau ministre de l’Éducation. Sur chaque page : une information, puis une décision à prendre. Une partie dure vingt à trente minutes.</p>`;
   const zone = el('div', 'pg-zone');
   if (sauvegarde) {
     zone.appendChild(cta('Reprendre la partie en cours', () => demarrer(sauvegarde)));
@@ -1022,9 +1104,9 @@ function ecranAccueil(sauvegarde) {
   } else {
     zone.appendChild(cta('Prendre vos fonctions', () => demarrer(null)));
   }
-  const a = cta('À propos du jeu et de ses sources', () => ouvrirFeuille({
-    kicker: 'À propos', titre: 'Un jeu pour comprendre l’école',
-    corps: '<h3>Comment jouer</h3><p class="pg-info">Chaque page apporte <b>une information</b> et demande <b>une décision</b> (quatre choix au plus). <b>📎</b> demande une note à la DGESCO : les chiffres, avec leurs sources. <b>i</b> donne le détail d’un choix. Les chiffres disent ce qui est ; ce qu’il faut en faire est un choix politique, qui dépend de valeurs : c’est le vôtre.</p><h3>À propos</h3><p class="pg-info">Jeu pédagogique indépendant, sans lien avec le ministère de l’Éducation nationale. Les chiffres viennent de sources publiques (DEPP, budget de l’État, OCDE, Cour des comptes), chacune citée et cliquable. Chaque mesure dit qui la défend vraiment (gouvernement, candidats de 2027, organisations lycéennes) et ce qu’on sait de son effet. Les revendications des lycéens sont celles de l’automne 2026.</p><p class="pg-info">Le jeu ne dit jamais qu’une politique est la bonne. Les chiffres disent ce qui est ; ce qu’il faut en faire dépend de valeurs, et c’est vous qui décidez. Les personnages, syndicats et titres de presse sont des pseudonymes transparents.</p>',
+  const a = cta('Comment jouer, et à propos du jeu', () => ouvrirFeuille({
+    kicker: 'Mode d’emploi', titre: 'Un jeu pour comprendre l’école',
+    corps: () => { const z = corpsModeEmploi(); z.appendChild(el('div', '', '<h3>À propos</h3><p class="pg-info">Jeu pédagogique indépendant, sans lien avec le ministère de l’Éducation nationale. Les chiffres viennent de sources publiques (DEPP, budget de l’État, OCDE, Cour des comptes), chacune citée et cliquable. Chaque mesure dit qui la défend vraiment (gouvernement, candidats de 2027, organisations lycéennes) et ce qu’on sait de son effet. Les revendications des lycéens sont celles de l’automne 2026.</p><p class="pg-info">Les personnages, syndicats et titres de presse sont des pseudonymes transparents.</p>')); return z; },
   }), 'sec petit');
   zone.appendChild(a);
   pg.appendChild(zone);
@@ -1041,10 +1123,9 @@ function ecranNomination() {
   page({
     kicker: 'Rue de Grenelle', picto: 'lettre', pas: 'novembre 2026',
     titre: 'Un mot de votre prédécesseur', illus: 'dentifrice', papier: true, classe: 'nomination',
-    info: 'Le ministre a démissionné hier soir, après six semaines de blocus. On vous a appelé : le poste est à vous.',
     extra: note,
-    note: Object.assign(noteFiche('lyceens', 'Où en est-on ? L’automne 2026 des lycéens'), { label: 'Où en est-on ? Demander une note à la DGESCO' }),
-    bouton: { label: 'Accepter le ministère' },
+    note: Object.assign(noteFiche('lyceens', 'Où en est-on ? L’automne 2026 des lycéens'), { label: 'Où en est-on ? Demander une note à votre administration (la DGESCO)' }),
+    bouton: { label: 'Accepter le poste' },
     fin: () => suivant('accepter'),
   });
 }
@@ -1055,8 +1136,8 @@ function ecranEntretien(q) {
   page({
     kicker: 'Élysée, entretien préalable', picto: 'colonnes', pas: `Question ${q.index + 1} sur ${q.total}`, papier: true,
     titre: quest.question,
-    info: (q.index === 0 ? 'Un conseiller vous reçoit vingt minutes. Il ne s’intéresse ni à votre projet ni à l’école : il vérifie que votre nomination ne coûtera rien au Président. Personne ne contrôlera vos réponses aujourd’hui.<br>' : '') + `<i>${fr(quest.aparte)}</i>` + (q.index === 0 ? '<small>Touchez un choix pour décider. Le « i » en donne le détail.</small>' : ''),
-    prompt: 'Que répondez-vous ?',
+    info: (q.index === 0 ? 'Avant de vous nommer, un conseiller de l’Élysée vous reçoit vingt minutes. Il ne s’intéresse ni à votre projet ni à l’école : il veut savoir si votre nomination peut provoquer un scandale. <b>Ce que vous répondez pourra ressortir pendant votre mandat.</b><br>' : '') + `<i>${fr(quest.aparte)}</i>`,
+    prompt: 'Que répondez-vous au conseiller ?',
     choix: quest.reponses.map((r) => ({ titre: r.label, det: r.det })),
     fin: (k) => suivant(k),
   });
@@ -1081,7 +1162,7 @@ function ecranDoctrine() {
     });
     if (ok) {
       ok.disabled = ordre.length < tous.length;
-      ok.textContent = ordre.length < tous.length ? `Touchez la priorité n° ${ordre.length + 1}` : 'Annoncer ces priorités';
+      ok.textContent = ordre.length < tous.length ? `Touchez maintenant la priorité n° ${ordre.length + 1}` : 'Annoncer ces priorités';
     }
   };
   const corps = () => {
@@ -1089,23 +1170,21 @@ function ecranDoctrine() {
     z.appendChild(el('p', 'pg-info', 'Chaque priorité est aussi celle d’un ou plusieurs candidats de 2027 : la presse le remarquera demain. Voici qui défend quoi.'));
     for (const c of tous) {
       const P = K.PROJETS_2027[c];
-      z.appendChild(el('div', 'proj', `<h4><i class="pastille" style="background:${COULEURS_C[c]}"></i>${NOMS_C_LONGS[c]}</h4>${P.porteurs.map((p) => `<p><b>${esc(p.qui)}</b> : ${esc(p.quoi)}</p>`).join('')}`));
+      z.appendChild(el('div', 'proj', `<h4><i class="pastille" style="background:${COULEURS_C[c]}"></i>${NOMS_C_LONGS[c]}</h4><p class="pg-info">${esc(P.sousTitre)}</p>${P.porteurs.map((p) => `<p><b>${esc(p.qui)}</b> : ${esc(p.quoi)}</p>`).join('')}`));
     }
     return z;
   };
   const pg = page({
     kicker: 'Conférence de presse', picto: 'pupitre', pas: 'prise de fonction',
-    titre: 'Vos cinq priorités, devant la presse', illus: null,
-    info: `Touchez-les dans l’ordre : la première compte le plus (35 % du bilan), la dernière presque rien (8 %). <b>Vous serez jugé sur VOTRE classement.</b> Le bandeau n’affichera que les trois premières.${rev ? ' <b>Revanche :</b> classement inversé, modifiable.' : ''}`,
+    titre: 'Classez vos cinq priorités', illus: null,
+    info: `Devant la presse, vous annoncez vos priorités. <b>Touchez d’abord la plus importante pour vous</b>, puis la deuxième, etc. Le bilan final pèsera 35 % sur la première, 8 % sur la dernière. Touchez une ligne classée pour la retirer. Le bandeau affichera vos trois premières.${rev ? ' <b>Revanche :</b> classement inversé, modifiable.' : ''}`,
     extra: liste,
-    note: { label: 'Qui défend quoi en 2027 ? Demander une note', kicker: 'Note de la DGESCO', titre: 'Les priorités des candidats de 2027', corps },
+    note: { label: 'Qui défend quelle priorité en 2027 ? Demander une note', kicker: 'Note de la DGESCO', titre: 'Les priorités des candidats de 2027', corps },
     choix: null,
   });
   ok = cta('', () => suivant([...ordre]));
   ok.disabled = true;
   pg.querySelector('.pg-zone').appendChild(ok);
-  const rec = cta('Recommencer', () => { ordre.length = 0; dessiner(); }, 'sec petit');
-  pg.querySelector('.pg-zone').appendChild(rec);
   dessiner();
 }
 
@@ -1116,52 +1195,41 @@ function ecranReperes(q) {
   suivant(null);
 }
 
-/* --- « Mon lycée, mon département » : deux pages, et la fiche à la demande --- */
-function ecranTerritoire(q) {
+/* --- comparer les régions, chercher son département ------------------------- */
+/* Ce n'est plus un écran à part : c'est la note de la page « territoires »,
+   là où l'on parle de l'argent investi par lycéen. */
+function corpsRegions() {
+  const z = el('div', 'fiche-corps');
+  const barres = [
+    ['Bretagne', FAITS_REGION.bre.invest.v, 'la première des treize régions'],
+    ['Île-de-France', FAITS_REGION.idf.invest.v, 'en queue de classement'],
+    ['Hauts-de-France', FAITS_REGION.hdf.invest.v, 'la dernière des treize'],
+  ];
+  const max = 2000;
+  z.appendChild(el('p', 'pg-info', `Chaque région paie les murs, la cantine, l’internat et les agents de ses lycées : <b>6,8 Md€ en 2025</b>. L’État paie le reste, d’abord les professeurs.${citer('ofgl_regions')}`));
+  z.appendChild(el('h3', '', 'Ce que chaque région investit par lycéen et par an'));
+  z.appendChild(el('div', 'bous', barres.map(([n, v, c]) => `<div class="bous-l"><span class="lib">${esc(n)}<br><small>${esc(c)}</small></span><span class="rail"><i style="width:${Math.round(v / max * 100)}%; background:var(--c-egalite)"></i></span><span class="v">${fmt0(v)} €</span></div>`).join('')));
+  z.appendChild(el('p', 'pg-info', `Du simple au double, entre les Hauts-de-France et la Bretagne. La Bourgogne-Franche-Comté, les Pays de la Loire et la Normandie sont aussi dans les quatre premières ; les neuf autres régions ne sont pas relevées : aucun tableau officiel ne le publie, la presse le reconstitue (2022-2025).${citer('gazette_invest')}`));
+  z.appendChild(el('p', 'pg-info', `Le seul outil national pour corriger ces écarts est la dotation régionale d’équipement scolaire : <b>661,8 M€ par an</b>, figés à leur montant de 2008.${citer('dres_an')}`));
+  /* mon département */
   const parRegion = {};
-  for (const dep of [...q.departements].sort((a, b) => a.code.localeCompare(b.code, 'fr', { numeric: true }))) (parRegion[dep.region] = parRegion[dep.region] || []).push(dep);
+  for (const dep of [...DEPARTEMENTS].sort((a, b) => a.code.localeCompare(b.code, 'fr', { numeric: true }))) (parRegion[dep.region] = parRegion[dep.region] || []).push(dep);
   const sel = el('select', 'choix-dep');
   sel.id = 'dep';
   sel.setAttribute('aria-label', 'Votre département');
-  sel.innerHTML = '<option value="">Choisir un département…</option>' + Object.keys(parRegion).map((r) =>
+  sel.innerHTML = '<option value="">Choisir mon département…</option>' + Object.keys(parRegion).map((r) =>
     `<optgroup label="${esc(REGIONS[r])}">${parRegion[r].map((dep) => `<option value="${dep.code}">${esc(dep.code)} · ${esc(dep.nom)}</option>`).join('')}</optgroup>`).join('');
-  const pg = page({
-    kicker: 'Avant les colères', picto: 'carte', pas: 'un lycée en tête ?',
-    titre: 'Un lycée que vous connaissez ?',
-    info: 'Un ministre arrive toujours avec un lycée en tête : celui où il a été élève, celui de ses enfants. Choisissez son département : le jeu pourra vous dire ce qu’on y reçoit, et ce qu’on n’en sait pas.',
-    extra: sel,
-    bouton: null,
-  });
-  const zone = pg.querySelector('.pg-zone');
-  const go = cta('Voir ce département', () => pageIntention(sel.value));
-  go.disabled = true;
-  sel.onchange = () => { go.disabled = !sel.value; };
-  zone.appendChild(go);
-  zone.appendChild(cta('Je préfère ne pas choisir', () => suivant(null), 'sec petit'));
-
-  function pageIntention(code) {
-    const f = ficheTerritoire(code);
-    if (!f) { suivant(null); return; }
-    const R = f.region || {};
-    let ligne;
-    if (f.ips != null) ligne = `IPS moyen des lycées : ${f.ips}, pour une moyenne nationale de 109 ${f.ips >= 118 ? '(parmi les plus favorisés de France)' : f.ips <= 95 ? '(parmi les plus défavorisés de France)' : '(dans la moyenne)'}.`;
-    else if (f.sous100) ligne = 'IPS moyen des lycées sous 100, pour une moyenne nationale de 109 : parmi les plus défavorisés de France.';
-    else ligne = 'Son profil social moyen n’est pas dans les chiffres du jeu : le bouton ci-dessous va le chercher dans les données ouvertes.';
-    const inv = R.invest && R.invest.v ? ` Votre région investit ${fmt0(R.invest.v)} € par lycéen et par an (${R.invest.rang}).` : R.invest && R.invest.rang ? ` Votre région est ${R.invest.rang} pour l’investissement par lycéen.` : '';
-    page({
-      kicker: 'Avant les colères', picto: 'carte', pas: `${f.nom}, ${f.regionNom}`,
-      titre: `${f.nom} : et votre politique ?`,
-      info: `${esc(ligne)}${esc(inv)} Rien de tout cela ne change les règles du jeu. Cela change ce que le bilan pourra vous dire de « chez vous ».`,
-      note: { label: 'Voir les chiffres de mon département', kicker: 'Mon département', titre: `${f.nom}, ${f.regionNom}`, corps: () => corpsTerritoire(f) },
-      prompt: 'Dans votre politique, les territoires comptent…',
-      choix: [
-        { titre: 'D’abord : donner plus là où l’on reçoit moins', det: 'Le bilan vérifiera si vous l’avez fait.' },
-        { titre: 'Pas plus qu’ailleurs : les mêmes règles partout', det: 'Le service public est national. Le bilan vérifiera aussi.' },
-        { titre: 'Je verrai sur pièces', det: 'Vous ne promettez rien avant d’avoir vu les chiffres.' },
-      ],
-      fin: (i) => suivant({ code: f.code, priorite: ['territoires', 'national', 'verra'][i] }),
-    });
-  }
+  z.appendChild(el('h3', '', 'Et chez moi ?'));
+  z.appendChild(el('p', 'pg-info', 'Choisissez votre département : le jeu affiche ce qu’on sait de votre région, de vos lycées, et où chercher le reste.'));
+  z.appendChild(sel);
+  const fiche = el('div', 'fiche-dep');
+  z.appendChild(fiche);
+  sel.onchange = () => {
+    fiche.innerHTML = '';
+    const f = ficheTerritoire(sel.value);
+    if (f) { fiche.appendChild(el('h3', '', `${f.nom}, ${f.regionNom}`)); fiche.appendChild(corpsTerritoire(f)); }
+  };
+  return z;
 }
 
 /* La fiche d'un département, dans la feuille : ce que le jeu sait, la
@@ -1235,11 +1303,12 @@ function ecranAvance(q) {
   page({
     kicker: 'Premier appel à Bercy', picto: 'pieces', pas: 'novembre 2026',
     titre: 'Demander de l’argent dès votre arrivée ?',
-    info: 'Le budget 2026 est dépensé, le budget 2027 est en discussion. Pour agir tout de suite, un levier : demander à Bercy de débloquer une réserve. <b>Bercy n’est pas obligé de dire oui</b>, et un refus se sait.',
+    info: 'Le budget de 2026 est déjà dépensé, celui de 2027 est en discussion. Pour agir tout de suite, vous pouvez demander à Bercy (le ministère des Comptes publics) de débloquer de l’argent mis en réserve. <b>Bercy peut refuser</b>, et un refus se sait.',
+    prompt: 'Que demandez-vous à Bercy ?',
     note: noteFiche('budget', 'Le budget de l’Éducation nationale'),
     choix: optionsAffichees.map((o) => ({
       titre: o.titre, det: o.detail,
-      tags: [o.bonus ? [`+${fmt0(o.bonus * 1000)} M€`, 'pos'] : 'enveloppe inchangée', o.bonus ? [`${Math.round(o.proba * 100)} % de chances`, o.proba >= 0.75 ? 'pos' : o.proba < 0.6 ? 'neg' : ''] : '', o.exigeMesure ? ['il faut nommer une mesure', 'neg'] : ''].filter(Boolean),
+      tags: [o.bonus ? [`+${fmt0(o.bonus * 1000)} M€ si accord`, 'pos'] : 'budget inchangé', o.bonus ? [`${Math.round(o.proba * 100)} % de chances`, o.proba >= 0.75 ? 'pos' : o.proba < 0.6 ? 'neg' : ''] : '', o.exigeMesure ? ['à fléchir sur une mesure', 'neg'] : ''].filter(Boolean),
       detail: { kicker: 'Demande à Bercy', titre: o.titre, corps: `<p class="pg-info">${fr(o.detail)}</p><p class="pg-info">${o.bonus ? `Si Bercy accepte : +${fmt0(o.bonus * 1000)} M€ pour vos premières décisions. Chances : ${Math.round(o.proba * 100)} %. ` : ''}${o.capital ? `Soutien du gouvernement ${signe(o.capital)}. ` : ''}${o.bercy ? `Crédit auprès de Bercy ${signe(o.bercy)}. ` : ''}</p><p class="dc-mot">« ${fr(o.mot)} »</p>` },
     })),
     fin: (i) => {
@@ -1280,7 +1349,7 @@ function ecranColere(q) {
     titre: c.cri, cri: true, papier: true,
     qui: c.qui,
     info: fr(c.intro || c.contexte),
-    prompt: 'Avant de regarder les chiffres : cette colère est-elle fondée ?',
+    prompt: 'Selon vous, cette colère est-elle fondée ? (les chiffres suivent)',
     choix: q.avis.map((a) => ({ titre: a.label, det: a.det })),
     fin: (i) => suivant(i),
   });
@@ -1305,31 +1374,22 @@ function ecranFaits(q) {
   const avisLabel = (AVIS.find((a) => a.id === q.avis) || {}).label || '';
   const rentree = rentreeColere(q);
   const when = rentree ? 'cette année' : 'cet automne';
-  /* La colère des territoires parle du département du joueur, quand il l'a dit. */
-  let chezVous = '';
-  if (c.id === 'territoires' && S.territoire) {
-    const f = ficheTerritoire(S.territoire.code);
-    if (f) {
-      const R = f.region || {};
-      const inv = R.invest && R.invest.v ? `${fmt0(R.invest.v)} € par lycéen et par an d’investissement (${R.invest.rang})` : R.invest && R.invest.rang ? `une région ${R.invest.rang} pour l’investissement` : '';
-      const ips = f.ips != null ? `IPS moyen des lycées ${f.ips} (moyenne 109)` : f.sous100 ? 'IPS moyen des lycées sous 100' : '';
-      if (inv || ips) chezVous = `<br><b>Chez vous, ${esc(f.nom)} :</b> ${[inv, ips].filter(Boolean).map(esc).join(' ; ')}.`;
-    }
-  }
   const note = noteFaits(`Ce que disent les chiffres`, c.faits, c.lecture);
   const base = {
     kicker: rentree ? `${q.quand}, les faits` : 'Automne 2026, les faits', picto: 'megaphone',
     pas: q.total > 1 ? `Colère ${q.rang} sur ${q.total}` : '',
     titre: c.cri, cri: true, classe: 'faits',
-    note: { label: 'Voir les chiffres : note de la DGESCO', kicker: 'Note de la DGESCO', titre: 'Ce que disent les chiffres', corps: note.corps },
+    note: { label: 'Voir les chiffres (note de la DGESCO)', kicker: 'Note de la DGESCO', titre: 'Ce que disent les chiffres', corps: note.corps },
   };
-  const verdictHtml = `<span class="verdict" style="color:${V.coul}"><b>${V.t}.</b></span> ${fr(c.resume || c.lecture)}${chezVous}`;
+  /* La colère des territoires : c'est ici que l'on compare les régions. */
+  if (c.id === 'territoires') base.notes = [base.note, { label: 'Comparer les régions, chercher mon département', kicker: 'Régions et départements', titre: 'Ce que reçoit un lycéen selon l’endroit où il vit', corps: corpsRegions }];
+  const verdictHtml = `<span class="verdict" style="color:${V.coul}"><b>${V.t}.</b></span> ${fr(c.resume || c.lecture)}`;
   const miroir = `Votre avis : « ${avisLabel} » : ${miroirAvis(q.avis, c.verdict)}`;
 
   if (q.postures) {
     page(Object.assign(base, {
       info: verdictHtml,
-      prompt: 'Votre attitude',
+      prompt: 'Quelle attitude adoptez-vous ?',
       choix: q.postures.map((r) => ({
         titre: r.label, det: r.det,
         tags: [r.colere < 0 ? ['la colère retombe', 'pos'] : ['la colère monte', 'neg'], r.greve ? ['préavis de grève', 'neg'] : ''].filter(Boolean),
@@ -1351,10 +1411,10 @@ function ecranFaits(q) {
       carte,
     };
   });
-  choix.push({ titre: 'Pas maintenant', det: 'Vous notez la question. Un sujet sans réponse à la rentrée fait remonter la colère.', autre: true });
+  choix.push({ titre: 'Ne rien décider pour l’instant', det: 'Vous notez la question. Un sujet sans réponse à la rentrée fait remonter la colère des lycéens.', autre: true });
   page(Object.assign(base, {
     info: verdictHtml,
-    prompt: `Votre réponse · ${fmt0(Math.max(0, q.tresor) * 1000)} M€ · soutien ${fmt0(q.capital)}`,
+    prompt: `Que décidez-vous ? Budget restant : ${fmt0(Math.max(0, q.tresor) * 1000)} M€ · soutien du gouvernement : ${fmt0(q.capital)}`,
     choix,
     retour: (i, ch) => ({ titre: ch.carte ? 'Vous avez décidé' : 'Vous attendez', html: true, texte: `${fr(ch.carte ? ch.carte.mot : 'Rien n’est décidé, et c’est une décision : elle ne coûte rien aujourd’hui, elle se paie en septembre.')}<br><small>${esc(miroir)}</small>` }),
     fin: (i, ch) => suivant(ch.carte ? { id: ch.carte.id } : null),
@@ -1385,16 +1445,16 @@ function ecranBercy(q) {
   page({
     kicker: 'Lettre de Bercy', picto: 'lettre', pas: ETAT.dateLabel,
     titre: 'Ce que Bercy vous laisse pour l’an prochain', papier: true, illus: 'enveloppe',
-    info: `${esc(CAST.bercy)} vous écrit. ${tons[p.ton]} Deux choses : combien de postes rendre, et combien d’argent neuf pour vos mesures. <b>Toute dépense durable engage vos successeurs.</b>`,
+    info: `${esc(CAST.bercy)} (Bercy) vous écrit. ${tons[p.ton]} Il fixe deux limites : <b>combien de postes d’enseignants vous devez rendre</b> (les supprimer), et <b>combien d’argent neuf</b> vous pouvez dépenser. Toute dépense durable engage vos successeurs.`,
     chiffres: [
-      { v: fmt0(Math.abs(p.schemaEmplois)), l: 'postes à rendre' },
-      { v: `${fmt0(p.marge * 1000)} M€`, l: 'argent neuf' },
-      { v: `${fmt0(S.creditBercy)}/100`, l: 'confiance de Bercy' },
+      { v: fmt0(Math.abs(p.schemaEmplois)), l: 'postes à rendre à Bercy' },
+      { v: `${fmt0(p.marge * 1000)} M€`, l: 'argent neuf pour vos mesures' },
+      { v: `${fmt0(S.creditBercy)}/100`, l: 'confiance que Bercy vous accorde' },
     ],
     note: noteFiche('budget', 'Le budget de l’Éducation nationale'),
-    prompt: 'Votre réponse',
+    prompt: 'Acceptez-vous ces limites ?',
     choix: [
-      { titre: 'Accepter', det: 'Vous gardez votre crédit auprès du gouvernement pour janvier. Bercy note votre esprit de responsabilité, ce qui ne lui coûte rien.' },
+      { titre: 'Accepter la lettre', det: 'Vous gardez votre crédit auprès du gouvernement pour janvier. Bercy note votre esprit de responsabilité, ce qui ne lui coûte rien.' },
       { titre: 'Contester, et demander au Premier ministre de trancher', det: `Coût : 12 points de soutien (il vous en reste ${fmt0(S.capital)}). Chances de gagner : moyennes, de plus en plus faibles à chaque fois.${S.annee === 1 ? ' Un ministre qui menace trop souvent finit par être remplacé.' : ''}` },
     ],
     fin: (i) => suivant(['accepter', 'contester'][i]),
@@ -1406,12 +1466,13 @@ function ecranIntention(q) {
   page({
     kicker: 'Préparation de la rentrée', picto: 'courbe', pas: ETAT.dateLabel,
     titre: 'Moins d’élèves : que faites-vous des postes libérés ?',
-    info: 'La baisse du nombre d’élèves libère chaque année environ 6 600 postes. Rendus à Bercy, ou gardés dans les classes ? <b>Bercy comparera votre phrase d’aujourd’hui à ce que vous ferez en janvier.</b>',
+    info: 'Il y a moins d’élèves chaque année : environ 6 600 postes d’enseignants deviennent inutiles. Vous pouvez les rendre à Bercy (une économie) ou les garder dans les classes (moins d’élèves par classe). Vous annoncez votre intention maintenant ; <b>Bercy la comparera à votre décision de janvier</b>.',
+    prompt: 'Que dites-vous publiquement ?',
     figure: { v: '4 % ou 60 %', l: 'des postes libres rendus à Bercy aux rentrées 2025 et 2026', src: 'depp_proj35' },
     note: noteFiche('demographie', 'La baisse démographique'),
     choix: q.options.map((o) => ({
       titre: o.titre, det: o.detail,
-      tags: [[`${Math.round(o.restitution * 100)} % rendus`, ''], o.bercy ? [`crédit Bercy ${signe(o.bercy)}`, o.bercy > 0 ? 'pos' : 'neg'] : ''].filter(Boolean),
+      tags: [[`${Math.round(o.restitution * 100)} % des postes rendus`, ''], o.bercy ? [`crédit Bercy ${signe(o.bercy)}`, o.bercy > 0 ? 'pos' : 'neg'] : ''].filter(Boolean),
       detail: { kicker: 'Votre intention', titre: o.titre, corps: `<p class="pg-info">${fr(o.detail)}</p><p class="dc-mot">« ${fr(o.mot)} »</p>` },
     })),
     fin: (i) => suivant(i),
@@ -1420,12 +1481,12 @@ function ecranIntention(q) {
 
 /* --- la carte scolaire : deux décisions, deux pages --------------------------- */
 const CHOIX_POSTES = [
-  { v: 0.60, titre: 'Rendre la plupart des postes à Bercy', det: 'Six postes sur dix repartent au budget. Bercy est content, des classes ferment, les maires et les syndicats le disent.' },
+  { v: 0.60, titre: 'Rendre la plupart des postes à Bercy (6 sur 10)', det: 'Six postes sur dix repartent au budget. Bercy est content, des classes ferment, les maires et les syndicats le disent.' },
   { v: 0.40, titre: 'Partager', det: 'Quatre sur dix rendus, le reste gardé dans les classes. Personne n’est content : souvent le signe d’un compromis.' },
-  { v: 0.10, titre: 'Garder presque tout dans les classes', det: 'Moins d’élèves par classe, et Bercy s’en souviendra en juillet.' },
+  { v: 0.10, titre: 'Garder presque tous les postes dans les classes', det: 'Moins d’élèves par classe, et Bercy s’en souviendra en juillet.' },
 ];
 const CHOIX_PRIVE = [
-  { v: 0.25, titre: 'Épargner le privé sous contrat', det: 'Les fermetures touchent surtout le public. L’écart social entre les deux se creuse, en silence.' },
+  { v: 0.25, titre: 'Épargner le privé : les fermetures touchent le public', det: 'Les fermetures touchent surtout le public. L’écart social entre les deux se creuse, en silence.' },
   { v: 0.50, titre: 'Même effort pour tous, au prorata des élèves', det: 'Personne ne défile, personne ne remercie.' },
   { v: 0.70, titre: 'Demander un peu plus au privé', det: 'Protestations d’usage, encore contenues.' },
   { v: 0.85, titre: 'Mettre le privé sous contrat à contribution, franchement', det: 'Le mot « Savary » revient. Une fois, ça passe. Deux fois, c’est la guerre scolaire.' },
@@ -1439,16 +1500,17 @@ function ecranCarteScolaire(q) {
   const premiere = () => page({
     kicker: 'La carte scolaire', picto: 'plan', pas: `Rentrée ${S.anneeCiv + 1} · décision 1 sur 2`,
     titre: 'Les postes libres : les rendre ou les garder ?', illus: 'carte',
-    info: `<b>${fmt0(Math.abs(q.baisse) * 1000)} élèves de moins</b> à la rentrée, soit ${fmt0(q.postesLiberables)} postes devenus inutiles. Bercy veut en récupérer ${fmt0(Math.abs(q.schemaDemande))}. Les maires et les syndicats veulent l’inverse. ${precedents}${q.restitutionMax < 1 ? `<br><small>Votre engagement « 19 élèves par classe » vous interdit d’en rendre plus de ${fmt0(q.restitutionMax * 100)} %.</small>` : ''}`,
+    info: `La carte scolaire répartit chaque année les postes d’enseignants. <b>${fmt0(Math.abs(q.baisse) * 1000)} élèves de moins</b> à la rentrée : ${fmt0(q.postesLiberables)} postes deviennent inutiles. Bercy veut en récupérer ${fmt0(Math.abs(q.schemaDemande))}. Les maires et les syndicats veulent les garder. ${precedents}${q.restitutionMax < 1 ? `<br><small>Votre engagement « 19 élèves par classe » vous interdit d’en rendre plus de ${fmt0(q.restitutionMax * 100)} %.</small>` : ''}`,
     note: noteFiche('demographie', 'La baisse démographique'),
+    prompt: 'Que faites-vous de ces postes ?',
     choix: postesDispo.map((c) => ({ titre: c.titre, det: c.det })),
     fin: (i) => seconde(postesDispo[i].v),
   });
   const seconde = (restitution) => page({
     kicker: 'La carte scolaire', picto: 'plan', pas: `Rentrée ${S.anneeCiv + 1} · décision 2 sur 2`,
-    titre: 'Qui porte l’effort ?',
-    info: '17 % des élèves sont dans le privé sous contrat, financé aux trois quarts par l’argent public, avec des familles nettement plus aisées en moyenne.',
-    prompt: 'Votre décision',
+    titre: 'Les fermetures de classes : qui les subit ?',
+    info: 'Rendre des postes, c’est fermer des classes. Elles peuvent être réparties entre l’école publique et le privé sous contrat : 17 % des élèves, financé aux trois quarts par l’argent public, avec des familles nettement plus aisées en moyenne. <b>Quelle part du privé ?</b>',
+    prompt: 'Comment répartissez-vous les fermetures ?',
     choix: CHOIX_PRIVE.map((c) => ({ titre: c.titre, det: c.det })),
     retour: (i) => ({ titre: 'Ce que cela donne', html: true, texte: lectureCarte(q, restitution, CHOIX_PRIVE[i].v), bouton: 'Signer la carte scolaire' }),
     fin: (i) => suivant({ restitution, prive: CHOIX_PRIVE[i].v }),
@@ -1480,10 +1542,10 @@ const FORMULES_SALAIRE = [
     det: 'On paie du travail supplémentaire, pas le travail existant. Un tiers des professeurs le prend ; les autres sont fatigués.' },
 ];
 const MOMENTS_MESURES = {
-  prise_fonction: { type: 'Prise de fonction', titre: 'Vos premières annonces', regle: 'Deux annonces au maximum : au-delà, plus personne ne retient rien.', chapo: 'Les lycéens attendent que les deux premières répondent à l’automne 2026.' },
-  rentree: { type: 'Circulaire de rentrée', titre: 'Que dit-on aux écoles ?', regle: 'Une ou deux mesures, pas davantage.', chapo: 'La circulaire porte un message, pas un programme.' },
-  livraison: { type: 'Après le classement international', titre: 'Vos annonces de ce soir', regle: 'Trois mesures pour le niveau des élèves.', chapo: 'La salle des professeurs applaudira, haussera les épaules, ou déposera un préavis.' },
-  janvier: { type: 'Le budget de l’année', titre: 'Que portez-vous cette année ?', regle: 'Jusqu’à trois annonces. Seul moment où l’on peut dépasser son enveloppe, si le Premier ministre tranche.', chapo: 'L’argent de l’année devient des décisions.' },
+  prise_fonction: { type: 'Prise de fonction', titre: 'Vos premières annonces', regle: 'Vous pouvez en faire deux au maximum : au-delà, plus personne ne retient rien.', chapo: 'Les lycéens attendent que les deux premières répondent à l’automne 2026.' },
+  rentree: { type: 'Circulaire de rentrée', titre: 'Que dit-on aux écoles ?', regle: 'Vous pouvez annoncer une ou deux mesures, pas davantage.', chapo: 'La circulaire est le texte envoyé à tous les établissements à la rentrée : un message, pas un programme.' },
+  livraison: { type: 'Après le classement international', titre: 'Vos annonces de ce soir', regle: 'Vous pouvez annoncer trois mesures pour le niveau des élèves.', chapo: 'La salle des professeurs applaudira, haussera les épaules, ou déposera un préavis.' },
+  janvier: { type: 'Le budget de l’année', titre: 'Que portez-vous cette année ?', regle: 'Vous pouvez faire jusqu’à trois annonces. C’est le seul moment où l’on peut dépasser son budget, si le Premier ministre tranche.', chapo: 'L’argent de l’année devient des décisions.' },
 };
 
 /* Le budget en un coup d'œil et l'échelle de preuve, pour la note. */
@@ -1562,11 +1624,11 @@ function ecranMesures(q) {
     });
     choix.push({ titre: pool.length > lot.length ? 'Pas celles-là, voir d’autres dossiers' : (selection.size ? 'Rien d’autre' : 'Aucune de celles-là'), autre: true });
     page({
-      kicker: MOM.type, picto: 'liste', pas: `Annonce ${selection.size + 1} sur ${q.maxAnnonces}`,
-      titre: premier ? MOM.titre : 'Un autre dossier ?', illus: premier ? 'bureau' : null,
+      kicker: MOM.type, picto: 'liste', pas: `Annonce ${selection.size + 1} sur ${q.maxAnnonces} possibles`,
+      titre: premier ? MOM.titre : 'Annoncez-vous autre chose ?', illus: premier ? 'bureau' : null,
       info: info.join('<br>'), extra,
-      notes: [{ label: 'Budget et niveaux de preuve : demander une note', kicker: 'Note de la DGESCO', titre: 'Le budget et ce qu’on sait d’une mesure', corps: () => corpsBudgetEtPreuve(q) }],
-      prompt: `Laquelle annoncez-vous ? · ${fmt0(Math.max(0, reste) * 1000)} M€ · soutien ${fmt0(capital)}`,
+      notes: [{ label: 'Budget et fiabilité des études : demander une note', kicker: 'Note de la DGESCO', titre: 'Le budget et ce qu’on sait d’une mesure', corps: () => corpsBudgetEtPreuve(q) }],
+      prompt: `Laquelle annoncez-vous ? Budget restant : ${fmt0(Math.max(0, reste) * 1000)} M€ · soutien du gouvernement : ${fmt0(capital)}`,
       choix,
       retour: (i, ch) => (ch.carte ? { titre: 'Vous l’annoncez', texte: ch.carte.mot, bouton: 'Continuer' } : null),
       fin: (i, ch) => {
@@ -1662,10 +1724,10 @@ function ecranPolemique(q) {
     titre: p.titre, papier: true,
     info: fr(p.recit),
     note: noteFiche('climat', 'Le climat scolaire'),
-    prompt: 'Votre réponse',
+    prompt: 'Comment réagissez-vous ?',
     choix: p.reponses.map((r) => ({
       titre: r.label, det: r.det,
-      tags: [[`${r.agenda} semaines d’agenda`, 'neg']],
+      tags: [[`${r.agenda} semaines de polémique`, 'neg']],
       detail: { kicker: 'Votre réponse', titre: r.label, corps: `<p class="pg-info">${fr(r.det)}</p><p class="pg-info">${[r.parents ? `parents ${signe(r.parents)}` : '', r.adhesion ? `enseignants ${signe(r.adhesion)}` : '', r.presse ? `presse ${signe(r.presse)}` : '', r.credibilite ? `parole ${signe(r.credibilite)}` : '', r.capital ? `soutien ${signe(r.capital)}` : ''].filter(Boolean).join(' · ')}</p><p class="pg-info">Aucune de ces réponses ne touche un compteur d’acquis : elles décident de combien de semaines vous parlerez d’autre chose que d’école.</p>` },
     })),
     retour: (i) => ({ titre: 'Ce qui suit', texte: p.reponses[i].suite, bouton: 'Passer à la rentrée' }),
@@ -1699,9 +1761,9 @@ function ecranAudience(q) {
   page({
     kicker: 'Audience, rentrée sociale', picto: 'megaphone', pas: ETAT.dateLabel,
     titre: `Face à face : ${org.nom}`, illus: 'delegation',
-    info: `Le syndicat de professeurs le plus important du moment (${fmt1(org.poids)} % aux élections), ${PROFILS_L[org.profil]}.${premiere ? ' La délégation s’assoit et pose UNE question :' : ''}<br><i>${fr(audience.question(S))}</i>${soutienHtml}`,
+    info: `Un syndicat représente des professeurs. Le plus important du moment, <b>${esc(org.nom)}</b> (${fmt1(org.poids)} % des voix aux élections professionnelles), a une ${PROFILS_L[org.profil]}.${premiere ? ' Sa délégation s’assoit et pose une question :' : ''}<br><i>${fr(audience.question(S))}</i>${premiere ? '<br><small>Trois tons : fermeté, méthode, concession. Aucun n’est le bon en soi.</small>' : ''}${soutienHtml}`,
     note: noteFiche('metier', 'Le métier enseignant'),
-    prompt: premiere ? 'Il n’y a pas de bonne réponse dans l’absolu, seulement une bonne réponse à ce profil-là' : 'Votre réponse',
+    prompt: 'Comment répondez-vous à la délégation ?',
     choix: audience.reponses.map((r) => ({ titre: `${{ ferme: 'Fermeté', methode: 'Méthode', concession: 'Concession' }[r.type]} — ${r.titre}` })),
     retour: (i) => {
       const r = audience.reponses[i];
@@ -1762,8 +1824,8 @@ function ecranLivraison(q) {
   page({
     kicker: 'Livraison internationale, 11 heures', picto: 'globe', pas: ETAT.dateLabel,
     titre: L.titre, illus: 'classe',
-    info: `${fr(L.recit)}<br><b>Ce que le poste exige :</b> ${fr(L.contrainte)}`,
-    figure: b ? { v: b.accroche.v, l: 'perdus en mathématiques par les élèves de 15 ans entre 2018 et 2022 : la plus forte baisse mesurée en France', src: b.accroche.src } : null,
+    info: `${fr(L.recit)}<br><b>${fr(L.contrainte)}</b>`,
+    figure: b ? { v: b.accroche.v, l: 'en mathématiques pour les élèves de 15 ans entre 2018 et 2022 (enquête PISA, OCDE) : la plus forte baisse mesurée en France', src: b.accroche.src } : null,
     note: noteFiche('niveaux', 'Des résultats préoccupants'),
     bouton: { label: 'Préparer les annonces de ce soir' },
     fin: () => suivant(null),
@@ -1780,7 +1842,7 @@ function ecranPlateau(q) {
     page({
       kicker: 'Journal de 20 heures, plateau', picto: 'tele', pas: `Question ${k + 1} sur ${P.questions.length}`,
       titre: qu.q, papier: true, illus: k === 0 ? 'plateau' : null,
-      info: k === 0 ? fr(P.recit) + (qu.aparte ? `<br><i>${fr(qu.aparte)}</i>` : '') : (qu.aparte ? `<i>${fr(qu.aparte)}</i>` : ''),
+      info: k === 0 ? 'Vous êtes invité sur le plateau du journal de 20 heures. ' + fr(P.recit) + (qu.aparte ? `<br><i>${fr(qu.aparte)}</i>` : '') : (qu.aparte ? `<i>${fr(qu.aparte)}</i>` : ''),
       prompt: 'Que répondez-vous ?',
       choix: qu.reponses.map((r) => ({ titre: r.label })),
       retour: (i) => { const r = qu.reponses[i]; return { titre: r.derapage ? 'Dérapage' : 'En plateau', ton: r.derapage ? 'mal' : '', texte: r.suite, bouton: k < P.questions.length - 1 ? 'Question suivante' : 'Quitter le plateau' }; },
@@ -1867,7 +1929,7 @@ function ecranEtape(etape) {
   const notes = [];
   let chiffres = null, info = `${une.sous}`, kicker = 'Revue de presse', picto = 'journal', titre = une.titre, label = 'Continuer';
   const ctx = {
-    automne: 'L’automne est passé. En janvier, la carte scolaire ; en mai, l’élection.',
+    automne: 'L’automne est passé. En janvier, la carte scolaire (la répartition des postes d’enseignants) ; en mai 2027, l’élection présidentielle.',
     election: S.fini ? 'Votre passage rue de Grenelle s’arrête ici. Le bilan, lui, continue.' : 'Vous restez. L’été 2027 commence, avec la lettre de Bercy.',
     ouverture: 'Votre feuille de route est déclarée. L’été, lui, a ses propres plans.',
     juillet: 'La double sanction de juillet est tombée : lettre plafond et concours.',
@@ -1883,8 +1945,8 @@ function ecranEtape(etape) {
     for (const c of COLERES) { const a = S.coleres.avis[c.id]; if (!a) continue; total++; if (c.verdict === 'ouverte' ? a === 'partielle' : a === c.verdict) accord++; }
     chiffres = [
       { v: String(dec), l: dec > 1 ? 'mesures annoncées' : 'mesure annoncée' },
-      { v: humeurLyceenne(S.lyceens.colere), l: 'les lycéens' },
-      { v: `${accord}/${total}`, l: 'avis proches des faits' },
+      { v: humeurLyceenne(S.lyceens.colere), l: 'état d’esprit des lycéens' },
+      { v: `${accord}/${total}`, l: 'de vos avis confirmés par les faits' },
     ];
     notes.push({ label: 'Ce que vous pensiez, ce que disaient les faits', kicker: 'Votre automne', titre: 'Ce que vous pensiez, ce que disaient les faits', corps: () => blocMiroir(S) });
   }
@@ -1981,19 +2043,19 @@ function ecranBilan(B) {
     kicker: 'Le bilan, la vérité, enfin', picto: 'drapeau', titre: fins[0], papier: true, illus: 'demenagement',
     info: `${fr(fins[1] || B.fin.texte)}<br><i>${fr(verdictProse(B))}</i>`,
     chiffres: [
-      { v: fmt0(B.scoreAffiche), l: 'ce que le pays a vu' },
-      { v: fmt0(B.scoreBilan), l: 'ce que vous avez fait' },
-      { v: fmt0(B.scoreProjection), l: B.constance ? 'dans dix ans, cap tenu' : B.fin.type !== 'mandat_complet' ? 'dans dix ans, mandat interrompu' : 'dans dix ans, cap détricoté' },
+      { v: fmt0(B.scoreAffiche), l: 'note vue par le pays (sur 100)' },
+      { v: fmt0(B.scoreBilan), l: 'note réelle (sur 100)' },
+      { v: fmt0(B.scoreProjection), l: B.constance ? 'note dans dix ans : cap tenu' : B.fin.type !== 'mandat_complet' ? 'note dans dix ans : mandat interrompu' : 'note dans dix ans : cap détricoté' },
     ],
   }));
   /* 2. les cinq priorités */
   pages.push(() => {
     const t = el('table', 'bilan court');
-    t.innerHTML = `<tr><th>Priorité</th><th class="num">Départ</th><th class="num">Vu</th><th class="num">Réel</th><th class="num">+10 ans</th></tr>`
+    t.innerHTML = `<tr><th>Priorité</th><th class="num">Début</th><th class="num">Affiché</th><th class="num">Réel</th><th class="num">10 ans</th></tr>`
       + B.doctrine.map((c, i) => `<tr${caches.includes(c) ? ' class="cache"' : ''}><td><span style="color:${COULEURS_C[c]}">●</span> ${NOMS_COURTS[c]} <small>n° ${i + 1}</small></td><td class="num">${fmt0(K.COMPTEURS_INITIAUX[c])}</td><td class="num">${fmt0(B.affiche[c])}</td><td class="num"><b>${fmt0(B.vrai[c])}</b></td><td class="num">${fmt0(B.projection[c])}</td></tr>`).join('');
     return {
       kicker: 'Vos cinq priorités', picto: 'courbe', titre: 'Ce que le pays a vu, et ce qui s’est vraiment passé',
-      info: `Vous n’avez jamais vu ${caches.map((c) => NOMS_C_LONGS[c].toLowerCase()).join(' ni ')} : classés quatrième et cinquième, ils étaient tenus sans être affichés. Ils valent ${K.POIDS_DOCTRINE[3] + K.POIDS_DOCTRINE[4]} % de votre note.`,
+      info: `Chaque ligne est une de vos priorités, notée de 0 à 100 : <b>affiché</b>, ce que le tableau de bord montrait ; <b>réel</b>, ce qui s’est vraiment passé. Vous n’avez jamais vu ${caches.map((c) => NOMS_C_LONGS[c].toLowerCase()).join(' ni ')} : classés quatrième et cinquième, ils étaient tenus sans être affichés. Ils valent ${K.POIDS_DOCTRINE[3] + K.POIDS_DOCTRINE[4]} % de votre note.`,
       extra: t,
     };
   });
@@ -2006,9 +2068,9 @@ function ecranBilan(B) {
       const apres = effets.filter((e) => e.anneeArrivee > B.anneesJouees);
       const somme = apres.reduce((t, e) => t + e.montant, 0);
       info = [
-        `<b>Votre meilleure décision :</b> ${esc(nom(meilleur.carte).split(' : ')[0])}, ${signe(meilleur.montant)} sur ${NOMS_C[meilleur.compteur]}.`,
-        (decu.central - decu.montant) > 0.8 ? `<b>Votre plus grosse déception :</b> ${esc(nom(decu.carte).split(' : ')[0])} : ${signe(decu.central)} promis, ${signe(decu.montant)} obtenu. ${decu.cadenas <= 2 ? 'Preuve mince : c’était un pari.' : 'La mesure était solide ; sa mise en œuvre l’a rabotée.'}` : '',
-        apres.length ? `<b>${apres.length} effet${apres.length > 1 ? 's' : ''} après votre départ</b> (${signe(somme)} au total) : votre successeur les inaugurera.` : 'Aucun de vos effets n’arrive après vous.',
+        `<b>Votre meilleure décision :</b> ${esc(nom(meilleur.carte).split(' : ')[0])} : ${signe(meilleur.montant)} points sur « ${NOMS_C[meilleur.compteur]} ».`,
+        (decu.central - decu.montant) > 0.8 ? `<b>Votre plus grosse déception :</b> ${esc(nom(decu.carte).split(' : ')[0])} : ${signe(decu.central)} points attendus, ${signe(decu.montant)} obtenus. ${decu.cadenas <= 2 ? 'Preuve mince : c’était un pari.' : 'La mesure était solide ; sa mise en œuvre l’a rabotée.'}` : '',
+        apres.length ? `<b>${apres.length} effet${apres.length > 1 ? 's' : ''} n’arrive${apres.length > 1 ? 'nt' : ''} qu’après votre départ</b> (${signe(somme)} points au total) : votre successeur les inaugurera.` : 'Aucun de vos effets n’arrive après vous.',
       ].filter(Boolean).join('<br>');
     } else info = 'Aucune mesure engagée. Le système vous remercie du repos ; l’Histoire, moins.';
     return {
@@ -2043,16 +2105,14 @@ function ecranBilan(B) {
     ch.innerHTML = tenues.map((p) => `<li class="ok">✓ ${esc(p.libelle)}</li>`).join('') + rompues.map((p) => `<li class="non">✗ ${esc(p.libelle)}</li>`).join('');
     return {
       kicker: 'Les lycéens', picto: 'megaphone', titre: 'Et les lycéens ?',
-      info: `Ils sont <b>${humeurLyceenne(L.colere)}</b>. ${L.blocus ? `${L.blocus} rentrée${L.blocus > 1 ? 's' : ''} bloquée${L.blocus > 1 ? 's' : ''} depuis votre arrivée.` : 'Aucune rentrée bloquée depuis votre arrivée.'} Les cinq chantiers de 2026 :`,
+      info: `Ils sont <b>${humeurLyceenne(L.colere)}</b>. ${L.blocus ? `${L.blocus} rentrée${L.blocus > 1 ? 's' : ''} bloquée${L.blocus > 1 ? 's' : ''} depuis votre arrivée.` : 'Aucune rentrée bloquée depuis votre arrivée.'} Les cinq engagements pris envers eux en 2026 (✓ tenu, ✗ non tenu) :`,
       extra: [ch, el('p', 'pg-info', reponses.length
         ? `Vous leur avez répondu par ${reponses.slice(0, 3).map((r) => `« ${esc(r.split(/ : |, /)[0])} »`).join(', ')}${reponses.length > 3 ? ' et d’autres' : ''}. ${L.colere < 45 ? 'Ils ont rangé les pancartes, pas la liste.' : 'Ils ont gardé la liste, et les pancartes.'}`
         : 'Vous ne leur avez rien répondu de précis. Ils ont gardé la liste, les pancartes, et le numéro de votre successeur.')],
       notes: [{ label: 'Ce que vous pensiez, ce que disaient les faits', kicker: 'Les lycéens', titre: 'Ce que vous pensiez, ce que disaient les faits', corps: () => blocMiroir(S) }],
     };
   });
-  /* 6. vu de chez vous */
-  if (S.territoire) pages.push(() => ({ kicker: 'Chez vous', picto: 'carte', titre: 'Votre département', extra: blocTerritoire(S) }));
-  /* 7. doctrine déclarée, doctrine menée */
+  /* 6. doctrine déclarée, doctrine menée */
   pages.push(() => {
     let cmp = null;
     if (rev && rev.precedent && rev.graine === ETAT.graine) {
@@ -2072,7 +2132,7 @@ function ecranBilan(B) {
     }
     return {
       kicker: 'Votre cap', picto: 'pupitre', titre: 'Doctrine déclarée, doctrine menée',
-      info: `<b>${fmt0((B.coherence || 0) * 100)} %</b> de vos effets réels servent vos deux priorités annoncées${B.constance ? ' : cap tenu, vos gains composeront.' : ' : cap non tenu, un successeur détricote.'}<br>${B.greves} journée${B.greves > 1 ? 's' : ''} de grève · fatigue réformatrice ${fmt0(B.fatigue)}/100 · ${B.abandons} mesure${B.abandons > 1 ? 's' : ''} retirée${B.abandons > 1 ? 's' : ''} sous la pression.`,
+      info: `<b>${fmt0((B.coherence || 0) * 100)} %</b> de vos effets réels servent vos deux priorités annoncées${B.constance ? ' : cap tenu, vos gains composeront.' : ' : cap non tenu, un successeur détricote.'}<br>${B.greves} journée${B.greves > 1 ? 's' : ''} de grève · fatigue du système face aux réformes ${fmt0(B.fatigue)}/100 · ${B.abandons} mesure${B.abandons > 1 ? 's' : ''} retirée${B.abandons > 1 ? 's' : ''} sous la pression.`,
       notes: cmp ? [cmp] : [],
       derniere: true,
     };
@@ -2107,6 +2167,7 @@ function ecranBilan(B) {
       }
     }
     if (i > 0) zone.appendChild(cta('‹ Précédent', () => montrer(i - 1), 'sec petit'));
+    ajusterPage();
   };
   montrer(0);
 }
@@ -2174,13 +2235,6 @@ function blocLyceens(S, final) {
 /* --- repères sourcés : rendu partagé ---------------------------------------- */
 /* La même fonction sert la note de cadrage de juin 2027 et l'onglet permanent
    « Comprendre le jeu ». Chaque chiffre porte sa source, cliquable. */
-function citer(idSource) {
-  const S = SOURCES[idSource];
-  if (!S) return '';
-  const lib = `${esc(S.org)} — ${esc(S.titre)} (${esc(S.date)})`;
-  return `<cite>${S.url ? `<a href="${S.url}" target="_blank" rel="noopener">${lib}</a>` : lib}</cite>`;
-}
-
 /* --- graphiques de la note de cadrage ---------------------------------------- */
 /* Deux règles. Les BARRES partent toujours de zéro : un axe tronqué transforme
    une hausse de 1,2 % en mur, et ce jeu passe son temps à dire que les chiffres
@@ -2313,7 +2367,8 @@ function ouvrirComprendre() {
   const c = $('#comprendre-corps');
   c.innerHTML = '';
   const t = el('div', '');
-  t.innerHTML = `<p class="chapo">Les données de référence sur lesquelles le jeu est construit, thème par thème, avec leurs sources. Rien ici n’est simulé : ce sont les chiffres publiés par la DEPP, le Sénat, la Cour des comptes et l’OCDE, tels qu’ils étaient en août 2026. Le moteur du jeu les utilise comme état de départ ; la fiche « Comment le jeu note les mesures » explique le reste.</p>`;
+  c.appendChild(corpsModeEmploi());
+  t.innerHTML = `<h3>Les chiffres du jeu</h3><p class="chapo">Les données de référence sur lesquelles le jeu est construit, thème par thème, avec leurs sources. Rien ici n’est simulé : ce sont les chiffres publiés par la DEPP, le Sénat, la Cour des comptes et l’OCDE, tels qu’ils étaient en août 2026. Le moteur du jeu les utilise comme état de départ ; la fiche « Comment le jeu note les mesures » explique le reste.</p>`;
   c.appendChild(t);
   c.appendChild(blocReperes(null, ['preuve']));
   const src = el('div', '');
@@ -2379,38 +2434,6 @@ async function chercherLycees(code) {
   } finally { clearTimeout(t); }
 }
 
-/* Le bilan, vu de votre lycée */
-function blocTerritoire(S) {
-  const f = ficheTerritoire(S.territoire.code);
-  if (!f) return el('div');
-  const d = el('div', 'terr-bloc');
-  d.appendChild(el('div', 'titre-d', `Dans votre département : ${esc(f.nom)}`));
-  const J = (id) => S.joue.has(id);
-  const defav = f.ips != null ? f.ips < 95 : f.sous100;
-  const fav = f.ips != null && f.ips >= 118;
-  const l = [];
-  if (J('ep_lycee')) l.push(defav ? ['ok', `Les lycées de ${f.nom} reçoivent des heures en plus : avec un IPS moyen ${f.ips != null ? 'de ' + f.ips : 'sous 100'}, ils sont dans la cible de l’éducation prioritaire au lycée.`]
-    : fav ? ['non', `Les lycées de ${f.nom} (IPS moyen ${f.ips}) financent une part de l’éducation prioritaire au lycée : un peu moins d’heures chez vous, davantage sous 95. C’est ce que vous avez choisi.`]
-    : ['neutre', `L’éducation prioritaire au lycée ne change rien pour ${f.nom}${f.ips != null ? ` (IPS moyen ${f.ips}, dans la moyenne)` : ' : son IPS moyen n’est pas connu du jeu, les lycées sous 95 y sont servis un par un'}.`]);
-  if (J('bulletin_lycee')) l.push(['ok', `Chaque lycée de ${f.nom} publie désormais sa dépense par élève, ses heures perdues, son IPS et sa valeur ajoutée. Ce que ce dossier n’avait pas pu trouver, un élève peut le lire sur la porte.`]);
-  if (J('open_data_lycee')) l.push(['ok', 'Les heures de cours non assurées sont affichées chaque mois à l’entrée de chaque lycée.']);
-  if (J('plan_chaleur')) l.push(['ok', `Le diagnostic thermique de chaque lycée de ${f.nom} est publié ; au-dessus de 30 °C, les cours s’adaptent ; les travaux vont d’abord aux lycées les plus chauds et les plus défavorisés.`]);
-  if (J('garantie_trajet')) l.push(['ok', 'Aucun lycéen à plus de quarante-cinq minutes de son lycée sans internat gratuit ou aide au transport : la garantie vaut surtout pour les communes rurales du département.']);
-  if (J('eleve_vote_region')) l.push(['ok', `Deux lycéens votent à la commission lycées de la région ${f.regionNom}.`]);
-  if (J('bp_regional')) l.push(['ok', f.region.participation ? `La région ${f.regionNom} avait déjà un budget participatif lycéen ; il passe à 1 % du budget des lycées, voté par les élèves.` : `La région ${f.regionNom} n’avait pas de budget participatif lycéen ; elle a désormais 1 % de son budget des lycées à faire voter par les élèves.`]);
-  if (J('budget_participatif')) l.push(['ok', 'Deux euros par élève, dépensés sur un vote des élèves, dans chaque lycée.']);
-  if (J('enquete_climat')) l.push(['ok', 'Tous les deux ans, les élèves de chaque lycée répondent à l’enquête de climat scolaire et en voient les résultats.']);
-  if (J('droit_reponse')) l.push(['ok', 'Toute question du conseil de la vie lycéenne reçoit une réponse écrite sous un mois.']);
-  if (J('charte_sanitaires')) l.push(['ok', 'Les toilettes sont ouvertes, équipées et visitées deux fois par an par les élèves.']);
-  if (J('cantine_lycee')) l.push(['ok', f.region.cantine ? `Le repas à un euro pour les boursiers s’ajoute à la tarification de la région (${f.region.cantine.v}).` : 'Le repas à un euro pour les boursiers, dans tous les lycées.']);
-  if (!l.length) l.push(['non', `Aucune de vos décisions ne change quelque chose de visible dans un lycée de ${f.nom} : ni les murs, ni la parole des élèves, ni ce qu’on sait de chaque établissement. Les professeurs et les programmes, peut-être ; de loin.`]);
-  const pr = S.territoire.priorite;
-  if (pr === 'territoires') l.push([J('ep_lycee') || J('garantie_trajet') || J('plan_chaleur') ? 'ok' : 'non', J('ep_lycee') || J('garantie_trajet') || J('plan_chaleur') ? 'Vous aviez dit « les territoires d’abord » : vous avez déplacé des moyens vers ceux qui en ont le moins.' : 'Vous aviez dit « les territoires d’abord ». Aucune de vos mesures n’a déplacé de moyens d’un territoire vers un autre.']);
-  if (pr === 'national') l.push([J('ep_lycee') ? 'non' : 'ok', J('ep_lycee') ? 'Vous aviez dit « les mêmes règles partout », puis vous avez créé un barème au profil social. Les lycéens appellent cela changer d’avis ; vous, apprendre.' : 'Vous aviez dit « les mêmes règles partout » : vous vous y êtes tenu.']);
-  d.appendChild(el('ul', 'terr-liste', l.map(([k, t]) => `<li class="${k}">${k === 'ok' ? '✓' : k === 'non' ? '✗' : '–'} ${fr(t)}</li>`).join('')));
-  return d;
-}
-
 /* Le miroir de l'automne : ce que vous pensiez, ce que disent les faits.
    Pas une note : une liste, colère par colère. */
 function blocMiroir(S) {
@@ -2431,13 +2454,13 @@ function blocMiroir(S) {
 }
 
 /* -------------------------------------------------------- boucle & sauvegarde */
-const CLE_SAUVE = 'rue-de-grenelle-gp3';  // version grand public : son propre jeu de sauvegarde
+const CLE_SAUVE = 'rue-de-grenelle-gp4';  // version grand public : son propre jeu de sauvegarde
 const ETAT = { s: null, gen: null, journalLu: 0, pas: [], dateLabel: 'novembre 2026', rentreeRatee: false, picto: 'journal', typeEcran: '' };
 
 function dateDe(q) {
   const S = ETAT.s, an = S.anneeCiv || 2026;
   const t = q.type;
-  if (['nomination', 'doctrine', 'entretien', 'territoire', 'avance', 'resultat'].includes(t)) return 'novembre 2026';
+  if (['nomination', 'doctrine', 'entretien', 'avance', 'resultat'].includes(t)) return 'novembre 2026';
   if (t === 'reperes') return q.note === 'demographie' ? `juillet ${an}` : 'novembre 2026';
   if (t === 'colere' || t === 'faits') return q.quand && /^Rentrée/.test(q.quand) ? `septembre ${an}` : 'novembre 2026';
   if (t === 'intention') return `juillet ${an}`;
@@ -2462,7 +2485,7 @@ function dateDe(q) {
 
 /* Le pictogramme de chaque type de page : on reconnaît la page avant de la lire. */
 const PICTO_DE = {
-  nomination: 'lettre', entretien: 'colonnes', doctrine: 'pupitre', avance: 'pieces', resultat: 'pieces', territoire: 'carte',
+  nomination: 'lettre', entretien: 'colonnes', doctrine: 'pupitre', avance: 'pieces', resultat: 'pieces',
   colere: 'megaphone', faits: 'megaphone', intention: 'courbe', affaire: 'alerte', polemique: 'tele', blocus: 'megaphone',
   livraison: 'globe', plateau: 'tele', retrait: 'megaphone', dossier: 'dossier', audience: 'megaphone', lettrePlafond: 'lettre',
   rentree: 'ecole', carteScolaire: 'plan', mesures: 'liste',
@@ -2480,7 +2503,6 @@ function rendre(q) {
   else if (q.type === 'avance') ecranAvance(q);
   else if (q.type === 'resultat') ecranResultat(q);
   else if (q.type === 'entretien') ecranEntretien(q);
-  else if (q.type === 'territoire') ecranTerritoire(q);
   else if (q.type === 'intention') ecranIntention(q);
   else if (q.type === 'affaire') ecranAffaire(q);
   else if (q.type === 'polemique') ecranPolemique(q);

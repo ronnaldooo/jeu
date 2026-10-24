@@ -13,7 +13,6 @@
 
 import * as K from './constantes.js';
 import { CATALOGUE, PAR_ID, AFFAIRES, AFFAIRE_PAR_ID, POLEMIQUES_RENTREE, LIVRAISON_PISA, PLATEAU, REVALORISATION, chiffrerRevalorisation, FINANCEMENT_19, DOSSIERS_ETE, AUDIENCES, RECEPTION, BLOCUS_LYCEEN, COLERES, AVIS, argumentaireSyndical, porteursSyndicaux, estContestable, bordsDeCarte } from './catalogue.js';
-import { DEPARTEMENTS, ficheTerritoire } from './territoires.js';
 
 /* ---------------------------------------------------------------- ALÉA --- */
 export function rngDepuis(graine) {
@@ -92,7 +91,6 @@ export function creerPartie({ graine = 1, politique }) {
     lyceens: { colere: K.LYCEENS.colereInitiale, blocus: 0, rompues: [], tenues: [], reponses: [] },
     /* Les colères de l'automne 2026 : l'avis donné, la décision prise. */
     coleres: { avis: {}, decisions: {} },
-    territoire: null,                          // le département que le joueur connaît (écran « Mon lycée »)
     margeAnnee: 0,
 
     attractiviteCible: 0,
@@ -387,7 +385,7 @@ function* traiterColere(s, col, quand, rang, total) {
      de découverte habituel : la crise les a remontées. */
   for (const id of col.mesures) if (PAR_ID[id]) s.decouvertes.add(id);
   const dispo = col.mesures.map((id) => PAR_ID[id]).filter((c) => c && estJouable(s, c));
-  const rep = yield { type: 'faits', colere: col, avis: avis.id, dispo, tresor: s.tresor, capital: s.capital, quand, territoire: s.territoire, rang, total };
+  const rep = yield { type: 'faits', colere: col, avis: avis.id, dispo, tresor: s.tresor, capital: s.capital, quand, rang, total };
   if (rep && rep.id && dispo.some((c) => c.id === rep.id)) {
     const avant = s.joue.size;
     appliquerMesures(s, [rep], 1, false, 'prologue', false);
@@ -420,19 +418,6 @@ function* etapeColereRentree(s) {
   if (!col || s.coleres.avis[col.id]) return;
   s.decouvertes = s.decouvertes || new Set();
   yield* traiterColere(s, col, `Rentrée ${s.anneeCiv}`, 1, 1);
-}
-
-/* « Mon lycée » : avant les colères, le joueur dit d'où il regarde. Un
-   ministre arrive toujours avec un lycée en tête ; un lycéen aussi. Le choix
-   ne change pas les règles : il change ce que le jeu lui montre, et ce que
-   le bilan lui dira de son propre territoire. */
-function* etapeTerritoire(s) {
-  const rep = yield { type: 'territoire', departements: DEPARTEMENTS };
-  if (rep && rep.code && ficheTerritoire(rep.code)) {
-    s.territoire = { code: String(rep.code), priorite: rep.priorite || null };
-    const f = ficheTerritoire(rep.code);
-    note(s, `Le lycée que vous connaissez : ${f.nom} (${f.regionNom}). ${rep.priorite === 'territoires' ? 'Vous avez dit que votre politique tiendrait compte des territoires : le bilan s’en souviendra.' : rep.priorite === 'national' ? 'Vous avez dit que les règles seraient les mêmes partout : le bilan s’en souviendra aussi.' : ''}`, 'territoire');
-  }
 }
 
 function* etapeBlocus(s) {
@@ -1544,7 +1529,6 @@ export function* derouler(s) {
   yield* etapeDoctrine(s);
   rafraichir(s);
   yield { type: 'reperes', note: 'lyceens' };
-  yield* etapeTerritoire(s);
   yield { type: 'reperes', note: 'budget' };
   yield* etapeAvance(s);
   yield* etapePrologue(s);
@@ -1622,7 +1606,6 @@ export function jouerMandat({ graine = 1, politique }) {
     let rep;
     if (q.type === 'nomination') rep = 'accepter';
     else if (q.type === 'reperes') rep = null;   // la note de cadrage se lit, elle ne se décide pas
-    else if (q.type === 'territoire') rep = politique.territoire ? politique.territoire(s, q) : null;
     else if (q.type === 'entretien') { const a = politique.entretien ? politique.entretien(s, q) : 0; rep = Array.isArray(a) ? (a[q.index] | 0) : (a | 0); }
     else if (q.type === 'avance') rep = politique.avance ? politique.avance(s, q) : 1;
     else if (q.type === 'intention') rep = politique.intention ? politique.intention(s, q) : 1;
@@ -1786,7 +1769,6 @@ export function bilan(s) {
     pointsGreve: +s.pointsGreveCumules.toFixed(1),
     lyceens: { ...s.lyceens, humeur: humeurLyceenne(s.lyceens.colere) },
     coleres: s.coleres,
-    territoire: s.territoire ? { ...s.territoire, fiche: ficheTerritoire(s.territoire.code) } : null,
     fatigue: s.fatigue, abandons: s.abandons,
     mesures: s.mesuresParAnnee.flat().map((m) => m.id),
     histoire: s.histoire,

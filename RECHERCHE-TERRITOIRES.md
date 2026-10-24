@@ -571,3 +571,32 @@ pour les 101 (il faut télécharger l'export, impossible d'ici ; l'appel en
 direct la remplace quand il y a du réseau) ; le tableau complet des treize
 régions (non lu) ; toute donnée par établissement sur l'argent et les heures,
 qui n'existe pas, et dont le jeu fait précisément une carte.
+
+## 11. Ce qui a changé après l'essai (page unique, régions dans la colère)
+
+Retour d'essai : l'écran « choix de l'établissement » ne servait à rien là où
+il apparaissait. Les régions sont maintenant consultées **là où le jeu parle
+d'argent par lycéen** : la page des faits de la colère des territoires. Une
+carte de péréquation a été ajoutée à ses choix (« harmoniser entre régions »),
+alors que la partie 10 l'avait écartée comme redondante : l'essai a montré que
+la question « faut-il corriger l'écart entre régions ? » mérite sa propre
+réponse, distincte de l'éducation prioritaire (qui déplace des heures
+d'enseignement, pas des crédits d'investissement).
+
+Sources ajoutées (recherche du 24 octobre 2026) :
+
+- **Dotation régionale d'équipement scolaire** (DRES) : concours de l'État aux
+  régions pour la construction, les grosses réparations et l'équipement des
+  lycées (Insee, définitions, https://www.insee.fr/fr/metadonnees/definition/c1339 ;
+  article L. 4332-3 du code général des collectivités territoriales). Figée
+  depuis 2009 à son montant de 2008, **661 841 207 €**, répartie selon les
+  crédits de paiement de 2007 ; pour l'Île-de-France, 86,1 M€, soit 219 € par
+  élève en 2008 et 162 € en 2022 selon un amendement au projet de loi de
+  finances pour 2023 (Assemblée nationale, https://www.assemblee-nationale.fr/dyn/16/amendements/0273A/AN/1096.pdf ;
+  deux autres amendements, n° 2389 et CF922, portent sur le même sujet : le
+  chiffre exact par amendement n'a pas été recoupé).
+- **Ce qui n'a pas été trouvé** : l'investissement par lycéen des dix autres
+  régions ; le nombre de lycéens par région (les tableaux de la DEPP et de
+  l'Insee n'ont pas été lus) ; le rapport de la Cour des comptes sur les
+  lycées, cité seulement par des relais. L'enveloppe de 200 M€ de la carte est
+  donc un paramètre de jeu, présenté comme tel dans le texte de la carte.

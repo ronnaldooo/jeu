@@ -407,6 +407,18 @@ export const SOURCES = {
     date: '2026',
     url: 'https://www.publicsenat.fr/actualites/economie/blocage-des-lycees-que-payent-les-regions-pour-la-construction-et-lentretien-des-etablissements',
   },
+  dres_insee: {
+    org: 'Insee, définitions',
+    titre: 'Dotation régionale d’équipement scolaire : concours de l’État aux régions pour la construction, les grosses réparations et l’équipement des lycées',
+    date: '2024',
+    url: 'https://www.insee.fr/fr/metadonnees/definition/c1339',
+  },
+  dres_an: {
+    org: 'Assemblée nationale, amendements au projet de loi de finances pour 2023',
+    titre: 'Dotation régionale d’équipement scolaire figée depuis 2008 à 661,8 M€ ; en Île-de-France, de 219 € par élève en 2008 à 162 € en 2022',
+    date: '2022',
+    url: 'https://www.assemblee-nationale.fr/dyn/16/amendements/0273A/AN/1096.pdf',
+  },
   gazette_invest: {
     org: 'La Gazette des communes, à partir des comptes administratifs des régions',
     titre: 'Investissement des régions dans les lycées publics, 2022-2025 : de 885 € par lycéen et par an (Hauts-de-France) à 1 978 € (Bretagne) ; Île-de-France 1 206 € ; 22 Md€ investis en dix ans',

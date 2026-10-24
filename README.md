@@ -23,6 +23,15 @@ Rien à dérouler. Chaque page tient dans l'écran d'un téléphone et ne contie
 qu'**une information** et **une décision**, avec quatre choix au plus. Les
 choix sont en bas de l'écran, là où se pose le pouce.
 
+- **Une page qui se remplit.** Le texte est lu à la taille de l'écran : il
+  grandit sur un grand téléphone et se resserre (jamais sous 13,5 px) sur un
+  petit, plutôt que de faire défiler. Les choix prennent toute la hauteur
+  qu'il reste ; l'information est en haut, sans trou entre elle et les choix.
+  Les sources s'écrivent en deux mots (« Sénat, 2025 ↗ ») et se touchent pour
+  lire la publication ; la référence complète est dans l'infobulle.
+- **Un mode d'emploi et des mots expliqués** (DGESCO, Bercy, soutien du
+  gouvernement, budget en M€, études solides ou fragiles, affiché et réel,
+  IPS…) : à l'accueil, et derrière le « ? » du bandeau.
 - **📎 « Demander une note à la DGESCO »** ouvre, dans une feuille qui se
   referme, les éléments objectifs qui éclairent la décision : chiffres, sources
   cliquables, ce que disent les études. Ces notes sont facultatives : la page
@@ -116,25 +125,23 @@ appliqués) ; la preuve est notée en conséquence, basse. Une fiche « Comment
 marche un lycée » explique qui décide de quoi entre le proviseur, le conseil
 d'administration, la région et le ministre.
 
-**Mon lycée, mon département.** Avant les colères, le joueur dit d'où il
-regarde l'école : il choisit le département du lycée qu'il connaît. Le jeu
-lui montre ce qu'il en sait, chiffre par chiffre et avec la source : ce que
-sa région investit par lycéen (de 885 à 1 978 € par an selon les régions,
-quand la presse l'a relevé), le profil social moyen des lycées du département
-quand la DEPP l'a publié, le prix de la cantine, le budget participatif s'il
-existe, et ce que personne ne publie : les heures de cours perdues et la
-dépense par lycée. Si l'appareil a du réseau, un bouton va chercher les
-lycées du département dans les données ouvertes du ministère (nombre, IPS
-moyen, le plus et le moins favorisé, et le sien par son nom) ; sinon, le jeu
-donne les adresses où chercher soi-même. Le joueur dit alors si sa politique
-tiendra compte des territoires, et le bilan le lui rappelle. À la première
-rentrée, une dixième colère monte, « chez nous et pas ailleurs », avec sept
-cartes « territoires » : le bulletin annuel de chaque lycée, l'éducation
-prioritaire au lycée, deux lycéens qui votent à la région, le budget
-participatif régional, l'enquête de climat scolaire obligatoire, le plan
-chaleur, la garantie trajet. Le bilan se termine par « vu de votre
-département » : ce que vos décisions y ont changé, et ce qu'elles n'y ont pas
-changé.
+**Les régions, au moment où l'on parle d'argent par lycéen.** À la première
+rentrée, une dixième colère monte : « il y en a pour les autres, pas pour
+nous ». C'est là que le jeu compare les régions : sur la page des faits, le
+bouton « Comparer les régions, chercher mon département » ouvre ce que chaque
+région investit par lycéen et par an (de 885 € dans les Hauts-de-France à
+1 978 € en Bretagne, quand la presse l'a relevé), la dotation d'équipement
+que l'État verse aux régions (661,8 M€, figés depuis 2008), puis une liste de
+départements : le joueur choisit le sien et lit ce qu'on en sait, chiffre par
+chiffre et avec la source (profil social des lycées, cantine, budget
+participatif), et ce que personne ne publie. Si l'appareil a du réseau, un
+bouton va chercher les lycées du département dans les données ouvertes du
+ministère ; sinon, le jeu donne les adresses où chercher soi-même. La décision
+vient juste après : **harmoniser entre régions** (un fonds de 200 M€ par an pour
+les régions qui investissent le moins), l'éducation prioritaire au lycée, ou le
+bulletin annuel de chaque lycée. Cinq autres cartes « territoires » (deux
+lycéens qui votent à la région, budget participatif régional, enquête de
+climat, plan chaleur, garantie trajet…) restent au catalogue.
 
 **Puis les rentrées.** Une jauge cachée, la colère lycéenne, se lit en mots
 dans le bandeau. Si les réponses de l'automne manquent, les lycées se bloquent
@@ -229,7 +236,7 @@ jouer.
 
 ```
 index.html                   LE JEU — fichier unique autonome
-moteur/                      constantes sourcées, catalogue de 91 cartes et 10 colères, repères et territoires sourcés, moteur en générateur
+moteur/                      constantes sourcées, catalogue de 92 cartes et 10 colères, repères et territoires sourcés, moteur en générateur
 moteur/reperes.js            les 15 fiches de référence et leurs 105 sources
 RECHERCHE-GRAND-PUBLIC.md    le dossier de recherche d'octobre 2026 : mouvement lycéen, projets des partis
 RECHERCHE-TERRITOIRES.md     coût par lycéen selon les régions, comparaisons internationales, données par département, et ce qui en a été fait

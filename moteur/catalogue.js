@@ -1974,6 +1974,26 @@ export const CATALOGUE = [
     mot: "Un ministre qui parle de climat scolaire quand il fait 34 °C dans la salle de physique devrait d’abord régler le second.",
   },
   {
+    id: 'perequation_regions',
+    label: 'Harmoniser entre régions : un fonds de 200 M€ par an pour les lycées des régions qui investissent le moins',
+    famille: 'territoires',
+    porteurs: ['des députés de plusieurs groupes (amendements aux lois de finances pour indexer la dotation régionale d’équipement scolaire, gelée depuis 2008)', 'la Région Île-de-France (sa dotation par élève a baissé de 219 € en 2008 à 162 € en 2022)', 'proposition du jeu pour le fonds, conditionné à la publication du bulletin de chaque lycée'],
+    contre: ['Bercy (une dotation de plus, que les lois de finances n’ont pas indexée depuis quinze ans)', 'les régions qui investissent déjà le plus, qui ne reçoivent rien', 'les régions en général, quand l’argent vient avec des conditions'],
+    perimetre: 'matignon',
+    cout: 0.20, coutETP: 0, pol: 5,
+    theme: 'perequation_regions', once: true, reforme: false,
+    lyceens: 6,
+    vitrine: { parents: 0, enseignants: 0, presse: 0, compteurs: {} },
+    reel: [
+      { compteur: 'egalite', central: 2, delai: 4, cadenas: 2, source: 'l’écart de dépense entre régions est du simple au double sur le quart régional du coût ; la péréquation le réduit mécaniquement, mais aucune évaluation française ne relie l’investissement régional aux résultats des élèves' },
+      { compteur: 'reussite', central: 1, delai: 4, cadenas: 1, source: 'des murs en meilleur état et des salles moins chaudes aident les apprentissages (Park et al., 2020) ; l’effet d’une dotation régionale supplémentaire n’est pas mesuré' },
+    ],
+    physique: {},
+    preuve: 'Les régions paient les murs, la cantine, l’internat et les agents des lycées : 6,8 Md€ en 2025, un quart environ du coût d’un lycéen, l’État payant le reste. Leur investissement par lycéen va du simple au double, de 885 € dans les Hauts-de-France à 1 978 € en Bretagne, avec 1 206 € en Île-de-France. Il n’existe aucun tableau officiel de ces écarts ; la presse les reconstitue. Le seul instrument national est la dotation régionale d’équipement scolaire, que l’État verse aux régions pour la construction, les grosses réparations et l’équipement des lycées : 661,8 M€ par an, figés à leur montant de 2008 et répartis selon les versements de 2007. Un amendement relève que, pour l’Île-de-France, elle est passée de 219 € par élève en 2008 à 162 € en 2022. La mesure crée un fonds de 200 M€ par an, soit 30 % de cette dotation et 3 % de ce que les régions dépensent, versé d’abord aux régions du bas du tableau, contre la publication du bulletin de chaque lycée. Ce que 200 M€ comblent dépend de la répartition réelle, que personne n’a publiée : le jeu fixe l’enveloppe, il ne prétend pas mesurer le besoin. Les pays fédéraux, eux, ont des péréquations explicites entre Länder ou États, parce que chez eux l’écart porte sur tout le coût.',
+    ideeRecue: '« C’est aux régions de s’en occuper. » C’est vrai pour les murs, et c’est pourquoi il n’y a pas de ministre des lycées de Bretagne. Mais un lycéen des Hauts-de-France ne choisit pas la région où il naît, et la dotation d’État qui devait compenser n’a pas bougé depuis 2008.',
+    mot: "Le même diplôme, la même ministre, et un lycée qui reçoit presque deux fois moins pour ses murs. On peut appeler ça la décentralisation, ou l’adresse.",
+  },
+  {
     id: 'garantie_trajet',
     label: 'La garantie trajet : internat gratuit ou aide au transport au-delà de 45 minutes',
     famille: 'territoires',
@@ -2947,8 +2967,8 @@ export const COLERES = [
   },
   {
     id: 'territoires',
-    intro: 'Un an après, la colère a changé de forme : « il en manque chez nous et pas ailleurs ». Les régions publient leurs plans, les magazines leurs palmarès.',
-    resume: 'Pas là où on la cherche : l’écart entre régions est réel mais ne porte que sur un quart du coût. Celui de l’État n’est publié nulle part.',
+    intro: 'À la rentrée 2027, la colère change de forme : « il y en a pour les autres, pas pour nous ». Les régions publient leurs plans, les magazines leurs palmarès, et chaque lycée compare son budget à celui du voisin.',
+    resume: 'Fondée, mais pas là où on la cherche. Ce que chaque région investit par lycéen varie du simple au double (885 à 1 978 €), mais cela ne porte que sur un quart du coût : l’État paie les professeurs partout, et ce qu’il dépense par territoire n’est publié nulle part.',
     moment: 'rentree',
     cri: '« À Paris, ils ont des agrégés et la clim. Chez nous, des contractuels et 32 °C. »',
     qui: 'Les lycéens de Seine-Saint-Denis et de l’Hérault, à la rentrée 2027 ; l’Institut des politiques publiques, qui a essayé de mesurer ce « sentiment d’inégalité territoriale » un an plus tôt.',
@@ -2958,10 +2978,11 @@ export const COLERES = [
       { v: '71 à 129', l: 'l’indice de position sociale moyen des lycées selon le département, de Mayotte à Paris ; depuis 2015, les lycées ne sont plus dans l’éducation prioritaire, et un lycée à 80 reçoit ses heures au même barème qu’un lycée à 130', src: 'depp_ips_lycees' },
       { v: 'non publiée', l: 'la dépense de l’État par élève et par territoire. On sait qu’à Créteil et Versailles les effectifs d’enseignants n’ont pas suivi ceux des élèves depuis 2005, et qu’à Paris les professeurs sont plus âgés, plus souvent agrégés et moins souvent contractuels', src: 'ipp_territoires' },
       { v: '−10 points', l: 'de passage en seconde générale et technologique pour les élèves des communes rurales, écart que le ministère attribue à l’éloignement de l’offre', src: 'senat_ruraux' },
+      { v: '661,8 M€', l: 'par an : la dotation régionale d’équipement scolaire, le seul instrument national qui aide les régions à financer les murs de leurs lycées, figée à son montant de 2008 ; pour l’Île-de-France, elle est passée de 219 à 162 € par élève entre 2008 et 2022', src: 'dres_an' },
     ],
     lecture: 'La colère est fondée, mais pas là où elle se cherche. L’écart entre régions est réel et du simple au double ; il porte sur le quart régional du coût, les murs et la cantine. L’écart le plus lourd est celui de l’État : qui enseigne dans quel lycée, avec quelle expérience, combien d’heures sont vraiment faites. Celui-là n’est publié nulle part, et c’est le ministre qui pourrait le publier. Quant à la clim, elle n’existe presque nulle part : à Paris non plus.',
     verdict: 'partielle',
-    mesures: ['ep_lycee', 'bulletin_lycee', 'plan_chaleur'],
+    mesures: ['perequation_regions', 'ep_lycee', 'bulletin_lycee'],
   },
 ];
 
@@ -3000,7 +3021,7 @@ export const BLOCUS_LYCEEN = {
 export const LIVRAISON_PISA = {
   titre: 'PISA tombe, et vous devez répondre ce soir',
   recit: 'Les résultats de l’enquête internationale sont publiés à 11 heures. Ils portent sur des élèves entrés au cours préparatoire dix ans avant votre nomination. À midi, trois chaînes demandent une réaction. À 20 heures, on attendra des mesures, pas une explication méthodologique.',
-  contrainte: 'Vous devez annoncer trois mesures pour le niveau des élèves. Ce n’est pas une option du jeu : c’est ce que le poste exige. Selon celles que vous retenez, la salle des professeurs applaudit, hausse les épaules, ou dépose un préavis.',
+  contrainte: 'Ce soir, vous devez annoncer trois mesures pour le niveau des élèves : le poste l’exige. La salle des professeurs applaudira, haussera les épaules, ou déposera un préavis.',
   /* Les familles de mesures qui apaisent ou qui enflamment, une fois annoncées
      sous la pression d'une livraison internationale. */
   apaise: ['moyens', 'parcours'],
