@@ -7,7 +7,9 @@
   "scripts": {
     "equilibrage": "node simulations/simuler.js 700",
     "trajectoires": "node simulations/trajectoires.js 500",
-    "construire": "node outil/construire.js"
+    "construire": "node outil/construire.js",
+    "audit": "node simulations/audit.js",
+    "fuzz": "node simulations/fuzz.js 1500"
   },
   "license": "CC-BY-SA-4.0"
 }

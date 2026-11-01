@@ -345,6 +345,7 @@ function verifierPromesses(s) {
 
 /* En mots, pour l'interface et le journal : jamais un nombre. */
 export function humeurLyceenne(colere) {
+  if (colere >= 88) return 'en plein blocus';
   if (colere >= 75) return 'au bord du blocus';
   if (colere >= K.LYCEENS.seuilBlocus) return 'en colère';
   if (colere >= 45) return 'méfiants';

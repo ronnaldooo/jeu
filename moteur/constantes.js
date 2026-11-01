@@ -263,7 +263,7 @@ export const BAISSE_ELEVES = { 2026: -158, 2027: -158, 2028: -172, 2029: -181, 2
 export const ELEVES_INITIAL = 11607.6;     // milliers, rentrée 2026
 
 /* Conversion élèves → postes « libérés ». C'EST le choix politique du jeu.
-   Précédents opposés : rentrée 2025 = −106 000 élèves / −470 postes (ratio 0,04) ;
+   Précédents opposés : rentrée 2025 = −106 000 élèves / −470 postes (environ 10 % des postes libérés) ;
    rentrée 2026 = −161 000 élèves / −4 032 postes titulaires (ratio 0,60). */
 export const ELEVES_PAR_POSTE = 24;        // diviseur de conversion démographie→ETP
 
@@ -557,7 +557,7 @@ export const PROFILS = [
   },
   {
     id: 'elu', nom: 'Vous êtes un politique',
-    detail: 'Parlementaire, vous n’attendiez que ça d’être nommé. On vous rappellera vos anciennes déclarations.',
+    detail: 'Parlementaire, vous n’attendiez que d’être nommé. On vous rappellera vos anciennes déclarations.',
     adhesion: +2, capital: +2, credibilite: -2,
     expose: ['lieu'],
   },
@@ -598,7 +598,7 @@ export const ENTRETIEN = [
         det: 'Vous le dites avant qu’on ne le trouve. Le cabinet préparera une réponse ; elle existera le jour où il faudra.',
         credibilite: -4, ferme: ['passe'] },
       { label: '« Rien, absolument rien. »', valeur: 'mensonge',
-        det: 'Il y a quelque chose. Une commission d’enquête met en moyenne trois ans à s’en saisir. Vous en avez cinq.',
+        det: 'Il y a quelque chose. Une commission d’enquête met des années à s’en saisir. Votre mandat en compte trois.',
         credibilite: +4, expose: ['passe'], mensonge: true },
     ],
   },

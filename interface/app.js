@@ -106,7 +106,7 @@ const COMPTES = [
   { a: 'Union des Lycéens Debout', p: '@ULDebout · syndicat lycéen, 10 milliards ou rien', quand: (s) => s.lyceens && s.lyceens.colere >= 45, posts: [
     'Le ministre a « entendu les lycéens ». Nous aussi on l’a entendu. On attend toujours de voir.',
     'Rappel : il manque un prof dans la moitié des lycées, il fait 32 °C en salle 204, et la plateforme nous dit « merci pour votre contribution ».',
-    'On nous a donné une demi-journée de « temps lycéen ». On a fait les comptes : il nous reste 1 223 heures et demie.',
+    'On nous a donné une demi-heure de « temps lycéen ». On a fait les comptes : il nous reste 1 223 heures et demie.',
   ] },
   { a: 'Union des Lycéens Debout', p: '@ULDebout · syndicat lycéen, on juge sur pièces', quand: (s) => s.lyceens && s.lyceens.colere < 45, posts: [
     'Des dates, enfin. On les a imprimées. On viendra avec en septembre.',
@@ -304,7 +304,7 @@ function majBandeau(fin) {
   }
   if (S.lyceens) {
     const col = S.lyceens.colere;
-    zone.appendChild(puce('Lycéens', humeurLyceenne(col).replace('au bord du blocus', 'bord du blocus'), col, 'var(--c-violet)', false, col >= K.LYCEENS.seuilBlocus));
+    zone.appendChild(puce('Lycéens', humeurLyceenne(col).replace('au bord du blocus', 'bord du blocus').replace('en plein blocus', 'en blocus'), col, 'var(--c-violet)', false, col >= K.LYCEENS.seuilBlocus));
   }
   const prog = fin ? 100 : Math.max(2, Math.min(100, (moisDepuis(ETAT.dateLabel) / MOIS_TOTAL) * 100));
   $('#bd-prog i').style.width = prog.toFixed(1) + '%';
@@ -527,7 +527,7 @@ function page(o) {
       if (!r) { o.fin(i, c); return; }
       zone.innerHTML = '';
       zone.appendChild(el('div', 'pg-choisi', `<span>Votre choix</span><b>${c.html ? c.titre : esc(c.titre)}</b>`));
-      const ton = r.ton === 'bien' ? 'var(--c-sante)' : r.ton === 'mal' ? 'var(--rouge-rf)' : r.ton === 'froid' ? 'var(--c-budget)' : 'var(--or)';
+      const ton = r.ton === 'bien' ? 'var(--t-c-sante)' : r.ton === 'mal' ? 'var(--t-rouge-rf)' : r.ton === 'froid' ? 'var(--t-c-budget)' : 'var(--t-or)';
       const bloc = el('div', 'pg-retour');
       bloc.style.borderLeftColor = ton;
       bloc.innerHTML = `<div class="t" style="color:${ton}">${esc(r.titre || 'Ce qui suit')}</div><p>${r.html ? r.texte : fr(r.texte)}</p>`;
@@ -596,7 +596,7 @@ function detailCarte(c) {
     ${c.contre ? `<p class="dc-qui"><b>Qui est contre</b> ${c.contre.map(esc).join(' · ')}</p>` : ''}
     <div class="dc-chiffres">
       <span>${fmt0(k.cout * 1000)} M€ par an</span>
-      <span>${k.pol}${c.perimetre === 'matignon' ? '×2' : ''} points de soutien</span>
+      <span>${k.pol * (c.perimetre === 'matignon' ? 2 : 1)} points de soutien${c.perimetre === 'matignon' ? ' (le double, car Matignon doit valider)' : ''}</span>
       ${c.coutETP ? `<span>${fmt0(c.coutETP)} postes</span>` : ''}
       <span class="${vit.parents >= 0 ? 'pos' : 'neg'}">parents ${signe(vit.parents || 0)}</span>
       <span class="${vit.enseignants >= 0 ? 'pos' : 'neg'}">enseignants ${signe(vit.enseignants || 0)}</span>
@@ -1071,9 +1071,13 @@ const MOTS_DU_JEU = [
   ['Soutien du gouvernement', 'votre capital politique, sur 100. Chaque mesure en consomme ; s’il est trop bas, le gouvernement ne vous suit plus.'],
   ['Budget (en M€)', 'ce que vous pouvez dépenser sur vos nouvelles mesures. 1 000 M€ = 1 milliard d’euros.'],
   ['Études solides, correctes, fragiles, absentes', 'ce que la recherche sait de l’effet réel d’une mesure. Le jeu ne cache pas quand on ne sait pas.'],
-  ['Profs pour, contre', 'l’accueil que les enseignants réservent à la mesure.'],
+  ['Profs pour, contre, grincent', 'l’accueil que les enseignants réservent à la mesure : ils l’approuvent, la combattent, ou la critiquent sans s’y opposer.'],
   ['Affiché, réel', 'l’affiché, c’est ce que le public voit tout de suite (le bandeau en haut). Le réel, c’est ce que la mesure produit vraiment, souvent des années plus tard : le bilan le révèle.'],
-  ['Colère', 'une revendication des lycéens. Vous donnez d’abord votre avis, puis les chiffres tranchent, puis vous décidez.'],
+  ['PISA', 'l’enquête internationale de l’OCDE sur le niveau des élèves de 15 ans.'],
+  ['PLF', 'le projet de loi de finances : le budget de l’État pour l’année suivante.'],
+  ['CVL', 'le conseil de la vie lycéenne, où siègent des élèves élus.'],
+  ['Savary', 'Alain Savary, ministre de l’Éducation en 1984 : son projet sur l’école privée a été retiré après de grandes manifestations.'],
+  ['Colère', 'une revendication des lycéens. Vous donnez d’abord votre avis, puis les chiffres éclairent, puis vous décidez.'],
   ['Carte scolaire', 'la décision annuelle qui répartit les postes d’enseignants, et donc ouvre ou ferme des classes.'],
   ['IPS', 'indice de position sociale : le milieu social moyen des élèves d’un lycée (109 en moyenne, de 59 à 162).'],
 ];
@@ -1106,7 +1110,7 @@ function ecranAccueil(sauvegarde) {
   }
   const a = cta('Comment jouer, et à propos du jeu', () => ouvrirFeuille({
     kicker: 'Mode d’emploi', titre: 'Un jeu pour comprendre l’école',
-    corps: () => { const z = corpsModeEmploi(); z.appendChild(el('div', '', '<h3>À propos</h3><p class="pg-info">Jeu pédagogique indépendant, sans lien avec le ministère de l’Éducation nationale. Les chiffres viennent de sources publiques (DEPP, budget de l’État, OCDE, Cour des comptes), chacune citée et cliquable. Chaque mesure dit qui la défend vraiment (gouvernement, candidats de 2027, organisations lycéennes) et ce qu’on sait de son effet. Les revendications des lycéens sont celles de l’automne 2026.</p><p class="pg-info">Les personnages, syndicats et titres de presse sont des pseudonymes transparents.</p>')); return z; },
+    corps: () => { const z = corpsModeEmploi(); z.appendChild(el('div', '', '<h3>À propos</h3><p class="pg-info">Jeu pédagogique indépendant, sans lien avec le ministère de l’Éducation nationale. Les chiffres viennent de sources publiques (DEPP, budget de l’État, OCDE, Cour des comptes, presse), chacune citée et cliquable. Chaque mesure dit qui la défend vraiment (gouvernement, candidats de 2027, organisations lycéennes) et ce qu’on sait de son effet. Les revendications des lycéens sont celles de l’automne 2026.</p><p class="pg-info">Les personnages du jeu, ses syndicats et ses titres de presse sont des pseudonymes transparents. Les organisations et personnes citées dans les sources et sur les cartes, elles, sont réelles.</p>')); return z; },
   }), 'sec petit');
   zone.appendChild(a);
   pg.appendChild(zone);
@@ -1193,12 +1197,12 @@ function ecranAnnonces(q) {
   page({
     kicker: 'Conférence de presse', picto: 'pupitre', pas: 'première question',
     titre: 'Ce que votre prédécesseur a déjà annoncé',
-    info: 'Fin octobre, le ministre a répondu au mouvement par des annonces : <b>Parcoursup remplacé en 2028, 28 élèves au plus par classe de seconde, 500 postes de professeurs</b>, des suppressions de postes annulées, des bourses indexées. Les organisations lycéennes ont jugé que ce n’était pas assez : les blocus continuent. Un journaliste vous demande : <i>« Ces annonces sont-elles suffisantes ? »</i>',
+    info: 'Fin octobre, le gouvernement a répondu au mouvement par des annonces : <b>Parcoursup remplacé en 2028, 28 élèves au plus par classe de seconde, 500 postes de professeurs</b>, des suppressions de postes annoncées comme annulées (le budget n’est pas encore modifié), des bourses indexées. Les organisations lycéennes jugent que ce n’est pas assez : les blocus continuent. Un journaliste vous demande : <i>« Ces annonces sont-elles suffisantes ? »</i>',
     note: { label: 'Voir tout ce qui a été annoncé (note de la DGESCO)', kicker: 'Note de la DGESCO', titre: 'Ce qui a déjà été annoncé, fin octobre 2026', corps: () => corpsFiche('annonces') },
     prompt: 'Que répondez-vous ?',
     choix: q.options.map((o) => ({
       titre: o.label, det: o.det,
-      tags: [o.colere > 0 ? ['la colère des lycéens retombe', 'pos'] : ['la colère des lycéens monte', 'neg'], o.bercy >= 3 ? ['Bercy apprécie', 'pos'] : o.capital < 0 ? ['Matignon grince', 'neg'] : ''].filter(Boolean),
+      tags: [o.colere > 0 ? ['la colère des lycéens retombe', 'pos'] : ['la colère des lycéens monte', 'neg'], o.bercy >= 3 ? ['Bercy apprécie', 'pos'] : o.capital < 0 ? ['Matignon désapprouve', 'neg'] : ''].filter(Boolean),
       detail: { kicker: 'Votre réponse', titre: o.label, corps: `<p class="pg-info">${fr(o.det)}</p>` },
     })),
     retour: (i) => ({ titre: 'Ce qui suit', texte: q.options[i].suite, bouton: 'Continuer' }),
@@ -1227,8 +1231,8 @@ function corpsRegions() {
   z.appendChild(el('p', 'pg-info', `Chaque région paie les murs, la cantine, l’internat et les agents de ses lycées : <b>6,8 Md€ en 2025</b>. L’État paie le reste, d’abord les professeurs.${citer('ofgl_regions')}`));
   z.appendChild(el('h3', '', 'Ce que chaque région investit par lycéen et par an'));
   z.appendChild(el('div', 'bous', barres.map(([n, v, c]) => `<div class="bous-l"><span class="lib">${esc(n)}<br><small>${esc(c)}</small></span><span class="rail"><i style="width:${Math.round(v / max * 100)}%; background:var(--c-egalite)"></i></span><span class="v">${fmt0(v)} €</span></div>`).join('')));
-  z.appendChild(el('p', 'pg-info', `Du simple au double, entre les Hauts-de-France et la Bretagne. La Bourgogne-Franche-Comté, les Pays de la Loire et la Normandie sont aussi dans les quatre premières ; les neuf autres régions ne sont pas relevées : aucun tableau officiel ne le publie, la presse le reconstitue (2022-2025).${citer('gazette_invest')}`));
-  z.appendChild(el('p', 'pg-info', `Le seul outil national pour corriger ces écarts est la dotation régionale d’équipement scolaire : <b>661,8 M€ par an</b>, figés à leur montant de 2008.${citer('dres_an')}`));
+  z.appendChild(el('p', 'pg-info', `Du simple au double, entre les Hauts-de-France et la Bretagne. La Bourgogne-Franche-Comté, les Pays de la Loire et la Normandie sont aussi dans les quatre premières ; les sept autres régions ne sont pas relevées : aucun tableau officiel ne le publie, la presse le reconstitue (2022-2025).${citer('gazette_invest')}`));
+  z.appendChild(el('p', 'pg-info', `Le seul outil national pour corriger ces écarts est la dotation régionale d’équipement scolaire : <b>661,8 M€ par an</b>, figés à leur montant de 2008 au moins jusqu’en 2022.${citer('dres_an')}${citer('dres_insee')}`));
   /* mon département */
   const parRegion = {};
   for (const dep of [...DEPARTEMENTS].sort((a, b) => a.code.localeCompare(b.code, 'fr', { numeric: true }))) (parRegion[dep.region] = parRegion[dep.region] || []).push(dep);
@@ -1263,7 +1267,7 @@ function corpsTerritoire(f) {
   if (R.prive) lignes.push({ v: 'au privé', l: R.prive.v, src: R.prive.src });
   if (R.cantine) lignes.push({ v: 'la cantine', l: R.cantine.v, src: R.cantine.src });
   if (R.participation) lignes.push({ v: 'les élèves décident', l: R.participation.v, src: R.participation.src });
-  if (f.ips != null) lignes.push({ v: `IPS ${f.ips}`, l: `l’indice de position sociale moyen des lycées de ${f.nom} (rentrée 2024), pour une moyenne nationale de 109 (de 71 à Mayotte à 129 à Paris)`, src: 'depp_ips_lycees' });
+  if (f.ips != null) lignes.push({ v: `IPS ${f.ips}`, l: `l’indice de position sociale moyen des lycées de ${f.nom} (rentrée 2024), pour une moyenne nationale de 109 (71 à Mayotte, 129 à Paris)`, src: 'depp_ips_lycees' });
   else if (f.sous100) lignes.push({ v: 'IPS sous 100', l: `${f.nom} fait partie des départements où l’indice de position sociale moyen des lycées est sous 100 (moyenne nationale 109)`, src: 'depp_ips_lycees' });
   else lignes.push({ v: 'IPS : à chercher', l: `l’IPS moyen des lycées de ${f.nom} n’a pas été relevé ; celui de chaque lycée est en données ouvertes`, src: 'ods_ips' });
   for (const x of f.locaux) lignes.push(x);
@@ -1290,7 +1294,7 @@ function corpsTerritoire(f) {
     res.innerHTML = `<ul class="rep-liste"><li><span class="v">${L.length} lycées</span><span class="l">à la rentrée ${esc(r.rentree || '')}${pub.length || pri.length ? ` : ${pub.length} publics, ${pri.length} privés sous contrat` : ''}${moy(L) != null ? ` ; IPS moyen ${fmt0(moy(L))}${pub.length && pri.length ? ` (public ${fmt0(moy(pub))}, privé ${fmt0(moy(pri))})` : ''}` : ''}</span></li>
       <li><span class="v">${fmt0(tri[0].ips)}</span><span class="l">le lycée le moins favorisé : ${esc(tri[0].nom)}${tri[0].commune ? `, ${esc(tri[0].commune)}` : ''}</span></li>
       <li><span class="v">${fmt0(tri[tri.length - 1].ips)}</span><span class="l">le plus favorisé : ${esc(tri[tri.length - 1].nom)}${tri[tri.length - 1].commune ? `, ${esc(tri[tri.length - 1].commune)}` : ''}</span></li></ul>
-      <p class="exp">Un IPS de 100 est la moyenne des élèves de France ; les lycées vont de 59 à 162.${citer('ods_ips')}</p>`;
+      <p class="exp">Un IPS de 100 est la moyenne des élèves de France ; la moyenne des lycées est de 109, et ils vont de 59 à 162.${citer('ods_ips')}</p>`;
     const cherche = el('input', 'cherche-lycee');
     cherche.type = 'search'; cherche.placeholder = 'Le nom de votre lycée…'; cherche.setAttribute('aria-label', 'Votre lycée');
     const liste = el('ul', 'lycee-liste');
@@ -1307,7 +1311,7 @@ function corpsTerritoire(f) {
     res.append(cherche, liste);
   }
   const nat = el('details', 'nat');
-  nat.innerHTML = '<summary>Et partout en France : sept chiffres</summary>';
+  nat.innerHTML = '<summary>Et partout en France : huit chiffres</summary>';
   nat.appendChild(el('ul', 'rep-liste', FAITS_NATIONAUX.map((x) => `<li><span class="v">${fr(x.v)}</span><span class="l">${fr(x.l)}.${citer(x.src)}${x.src2 ? citer(x.src2) : ''}</span></li>`).join('')));
   z.appendChild(nat);
   return z;
@@ -1354,7 +1358,7 @@ function ecranResultat(q) {
     fin: () => suivant(null),
   });
   const t = $('#scene .pg-tete');
-  if (t && q.ton) t.style.color = q.ton === 'bien' ? 'var(--c-sante)' : q.ton === 'mal' ? 'var(--rouge-rf)' : '';
+  if (t && q.ton) t.style.color = q.ton === 'bien' ? 'var(--t-c-sante)' : q.ton === 'mal' ? 'var(--t-rouge-rf)' : '';
 }
 
 /* --- une colère : ce qu'ils disent, votre avis -------------------------------- */
@@ -1376,9 +1380,9 @@ function ecranColere(q) {
 
 /* --- une colère : ce que disent les faits, votre réponse -------------------- */
 const VERDICTS = {
-  fondee: { t: 'Les chiffres confirment', coul: 'var(--c-sante)' },
-  partielle: { t: 'Vrai, mais pas comme ils le disent', coul: 'var(--c-budget)' },
-  ouverte: { t: 'Les chiffres ne tranchent pas', coul: 'var(--c-violet)' },
+  fondee: { t: 'Les chiffres confirment', coul: 'var(--t-c-sante)' },
+  partielle: { t: 'Vrai, mais pas comme ils le disent', coul: 'var(--t-c-budget)' },
+  ouverte: { t: 'Les chiffres ne tranchent pas', coul: 'var(--t-c-violet)' },
 };
 function miroirAvis(avis, verdict) {
   if (verdict === 'ouverte') return avis === 'partielle' ? 'prudent : les données ne tranchent pas.' : 'les données ne tranchent pas : gardez votre avis, et sachez sur quoi il repose.';
@@ -1452,6 +1456,11 @@ function ecranFaits(q) {
    dossier de crise.
    ========================================================================== */
 
+const PROFIL_PHRASE = {
+  rapport_de_force: 'est dans une culture du rapport de force', reformiste: 'est réformiste',
+  frontal: 'est en opposition frontale', negociation: 'est dans une culture de la négociation',
+  radical: 'est radical', corporatiste: 'est corporatiste',
+};
 const PROFILS_L = {
   rapport_de_force: 'culture du rapport de force', reformiste: 'réformiste',
   frontal: 'opposition frontale', negociation: 'culture de la négociation',
@@ -1492,9 +1501,9 @@ function ecranIntention(q) {
   page({
     kicker: 'Préparation de la rentrée', picto: 'courbe', pas: ETAT.dateLabel,
     titre: 'Moins d’élèves : que faites-vous des postes libérés ?',
-    info: 'Il y a moins d’élèves chaque année : environ 6 600 postes d’enseignants deviennent inutiles. Vous pouvez les rendre à Bercy (une économie) ou les garder dans les classes (moins d’élèves par classe). Vous annoncez votre intention maintenant ; <b>Bercy la comparera à votre décision de janvier</b>.',
+    info: 'Moins d’élèves chaque année : environ 6 600 postes d’enseignants sont libérés. Rendez-les à Bercy (une économie) ou gardez-les dans les classes. Vous annoncez votre intention maintenant ; <b>Bercy la comparera à votre décision de janvier</b>.',
     prompt: 'Que dites-vous publiquement ?',
-    figure: { v: '4 % ou 60 %', l: 'des postes libres rendus à Bercy aux rentrées 2025 et 2026', src: 'depp_proj35' },
+    figure: { v: '10 % ou 60 %', l: 'des postes libérés rendus à Bercy en 2025 et 2026 (calcul du jeu : un poste pour 24 élèves)', src: 'senat_plf26' },
     note: noteFiche('demographie', 'La baisse démographique'),
     choix: q.options.map((o) => ({
       titre: o.titre, det: o.detail,
@@ -1522,11 +1531,11 @@ function ecranCarteScolaire(q) {
   const postesDispo = CHOIX_POSTES.filter((c) => c.v <= q.restitutionMax + 1e-9);
   const precedents = (S.historiqueRestitution && S.historiqueRestitution.length)
     ? 'Vos précédents : ' + S.historiqueRestitution.map((h) => `rentrée ${h.rentree}, ${h.pct} % rendus`).join(' ; ') + '.'
-    : 'Avant vous : 4 % des postes libres rendus en 2025, 60 % en 2026.';
+    : 'Avant vous : environ 10 % des postes libérés rendus en 2025, 60 % en 2026.';
   const premiere = () => page({
     kicker: 'La carte scolaire', picto: 'plan', pas: `Rentrée ${S.anneeCiv + 1} · décision 1 sur 2`,
     titre: 'Les postes libres : les rendre ou les garder ?', illus: 'carte',
-    info: `La carte scolaire répartit chaque année les postes d’enseignants. <b>${fmt0(Math.abs(q.baisse) * 1000)} élèves de moins</b> à la rentrée : ${fmt0(q.postesLiberables)} postes deviennent inutiles. Bercy veut en récupérer ${fmt0(Math.abs(q.schemaDemande))}. Les maires et les syndicats veulent les garder. ${precedents}${q.restitutionMax < 1 ? `<br><small>Votre engagement « 19 élèves par classe » vous interdit d’en rendre plus de ${fmt0(q.restitutionMax * 100)} %.</small>` : ''}`,
+    info: `La carte scolaire répartit chaque année les postes d’enseignants. <b>${fmt0(Math.abs(q.baisse) * 1000)} élèves de moins</b> à la rentrée : ${fmt0(q.postesLiberables)} postes sont libérés. Bercy veut en récupérer ${fmt0(Math.abs(q.schemaDemande))}. Les maires et les syndicats veulent les garder. ${precedents}${q.restitutionMax < 1 ? `<br><small>Votre engagement « 19 élèves par classe » vous interdit d’en rendre plus de ${fmt0(q.restitutionMax * 100)} %.</small>` : ''}`,
     note: noteFiche('demographie', 'La baisse démographique'),
     prompt: 'Que faites-vous de ces postes ?',
     choix: postesDispo.map((c) => ({ titre: c.titre, det: c.det })),
@@ -1590,10 +1599,10 @@ function corpsBudgetEtPreuve(q) {
     <div class="budget-legende">
       <span><i class="puce" style="background:var(--filet)"></i>masse salariale <b>${fmt1(salaires)} Md€</b> (1,2 M d’agents)</span>
       <span><i class="puce" style="background:var(--filet-fort)"></i>dépenses déjà engagées</span>
-      <span><i class="puce" style="background:var(--c-paix)"></i>vos mesures passées <b>${fmt0(engages * 1000)} M€/an</b> (à vie)</span>
+      <span><i class="puce" style="background:var(--c-paix)"></i>vos mesures passées <b>${fmt0(engages * 1000)} M€/an</b> (chaque année, tant que vous ne les retirez pas)</span>
       <span><i class="puce" style="background:var(--c-sante)"></i>votre marge <b>${fmt0(libre * 1000)} M€</b> (${fmt1((libre / M) * 100)} %)</span>
     </div>`));
-  z.appendChild(el('p', 'pg-info', '<b>Comment lire une mesure.</b> Elle dit combien elle coûte, qui la défend dans la vraie vie, et ce qu’on sait de son effet : « solide » quand des dizaines d’études concordent, « fragile » quand il y en a une ou deux, « personne ne sait » quand il n’y en a aucune. L’effet d’image se voit tout de suite et s’use ; l’effet réel arrive plus tard, vous le verrez au bilan. Rien ne s’applique sans les professeurs.'));
+  z.appendChild(el('p', 'pg-info', '<b>Comment lire une mesure.</b> Elle dit combien elle coûte, qui la défend dans la vraie vie, et ce qu’on sait de son effet : « solides » quand des dizaines d’études concordent, « correctes » quand plusieurs convergent, « fragiles » quand il y en a une ou deux, « absentes » quand il n’y en a aucune. L’effet d’image se voit tout de suite et s’use ; l’effet réel arrive plus tard, vous le verrez au bilan. Une mesure ne produit d’effet que si les professeurs l’appliquent.'));
   z.appendChild(corpsFiche('preuve'));
   return z;
 }
@@ -1706,7 +1715,7 @@ function ecranMesures(q) {
       page({
         kicker: MOM.type, picto: 'liste', pas: 'Votre décision',
         titre: 'Ne rien annoncer de toute l’année ?',
-        info: 'Ne rien annoncer laisse le système souffler (fatigue −8), et fait écrire « ministre invisible » (soutien −7, parents −3,5).',
+        info: 'Ne rien annoncer laisse le système souffler (fatigue −8), et fait écrire « ministre invisible » (soutien −${K.IMMOBILISME.capital}, parents −${K.IMMOBILISME.parents}).',
         choix: [
           { titre: 'Revenir aux dossiers', det: 'Vous reprenez la liste depuis le début.' },
           { titre: 'Ne rien annoncer cette année', det: 'Le système souffle. La presse, moins.' },
@@ -1787,7 +1796,7 @@ function ecranAudience(q) {
   page({
     kicker: 'Audience, rentrée sociale', picto: 'megaphone', pas: ETAT.dateLabel,
     titre: `Face à face : ${org.nom}`, illus: 'delegation',
-    info: `Un syndicat représente des professeurs. Le plus important du moment, <b>${esc(org.nom)}</b> (${fmt1(org.poids)} % des voix aux élections professionnelles), a une ${PROFILS_L[org.profil]}.${premiere ? ' Sa délégation s’assoit et pose une question :' : ''}<br><i>${fr(audience.question(S))}</i>${premiere ? '<br><small>Trois tons : fermeté, méthode, concession. Aucun n’est le bon en soi.</small>' : ''}${soutienHtml}`,
+    info: `Un syndicat représente des professeurs. Le plus important du moment, <b>${esc(org.nom)}</b> (${fmt1(org.poids)} % des voix aux élections professionnelles), ${PROFIL_PHRASE[org.profil]}.${premiere ? ' Sa délégation s’assoit et pose une question :' : ''}<br><i>${fr(audience.question(S))}</i>${premiere ? '<br><small>Trois tons : fermeté, méthode, concession. Aucun n’est le bon en soi.</small>' : ''}${soutienHtml}`,
     note: noteFiche('metier', 'Le métier enseignant'),
     prompt: 'Comment répondez-vous à la délégation ?',
     choix: audience.reponses.map((r) => ({ titre: `${{ ferme: 'Fermeté', methode: 'Méthode', concession: 'Concession' }[r.type]} — ${r.titre}` })),
@@ -1848,7 +1857,7 @@ function ecranLivraison(q) {
   const L = q.livraison;
   const b = CADRAGE_INITIAL.find((x) => x.cle === 'niveaux');
   page({
-    kicker: 'Livraison internationale, 11 heures', picto: 'globe', pas: ETAT.dateLabel,
+    kicker: 'Résultats PISA, 11 heures', picto: 'globe', pas: ETAT.dateLabel,
     titre: L.titre, illus: 'classe',
     info: `${fr(L.recit)}<br><b>${fr(L.contrainte)}</b>`,
     figure: b ? { v: b.accroche.v, l: 'en mathématiques pour les élèves de 15 ans entre 2018 et 2022 (enquête PISA, OCDE) : la plus forte baisse mesurée en France', src: b.accroche.src } : null,
@@ -2078,10 +2087,10 @@ function ecranBilan(B) {
   pages.push(() => {
     const t = el('table', 'bilan court');
     t.innerHTML = `<tr><th>Priorité</th><th class="num">Début</th><th class="num">Affiché</th><th class="num">Réel</th><th class="num">10 ans</th></tr>`
-      + B.doctrine.map((c, i) => `<tr${caches.includes(c) ? ' class="cache"' : ''}><td><span style="color:${COULEURS_C[c]}">●</span> ${NOMS_COURTS[c]} <small>n° ${i + 1}</small></td><td class="num">${fmt0(K.COMPTEURS_INITIAUX[c])}</td><td class="num">${fmt0(B.affiche[c])}</td><td class="num"><b>${fmt0(B.vrai[c])}</b></td><td class="num">${fmt0(B.projection[c])}</td></tr>`).join('');
+      + B.doctrine.map((c, i) => `<tr${caches.includes(c) ? ' class="cache"' : ''}><td><span aria-hidden="true" style="color:${COULEURS_C[c]}">●</span> ${NOMS_COURTS[c]} <small>n° ${i + 1}</small></td><td class="num">${fmt0(K.COMPTEURS_INITIAUX[c])}</td><td class="num">${fmt0(B.affiche[c])}</td><td class="num"><b>${fmt0(B.vrai[c])}</b></td><td class="num">${fmt0(B.projection[c])}</td></tr>`).join('');
     return {
       kicker: 'Vos cinq priorités', picto: 'courbe', titre: 'Ce que le pays a vu, et ce qui s’est vraiment passé',
-      info: `Chaque ligne est une de vos priorités, notée de 0 à 100 : <b>affiché</b>, ce que le tableau de bord montrait ; <b>réel</b>, ce qui s’est vraiment passé. Vous n’avez jamais vu ${caches.map((c) => NOMS_C_LONGS[c].toLowerCase()).join(' ni ')} : classés quatrième et cinquième, ils étaient tenus sans être affichés. Ils valent ${K.POIDS_DOCTRINE[3] + K.POIDS_DOCTRINE[4]} % de votre note.`,
+      info: `Chaque ligne est une de vos priorités, notée de 0 à 100 : <b>affiché</b>, ce que le tableau de bord montrait ; <b>réel</b>, ce qui s’est vraiment passé. Vous n’avez jamais vu ${caches.map((c) => NOMS_C_LONGS[c].toLowerCase()).join(' ni ')} sur votre tableau de bord : classés quatrième et cinquième, ils étaient tenus sans être affichés. Ils valent ${K.POIDS_DOCTRINE[3] + K.POIDS_DOCTRINE[4]} % de votre note.`,
       extra: t,
     };
   });
@@ -2399,7 +2408,7 @@ function blocReperes(cles, ouvert) {
     if (r.serie === 'budget') c.appendChild(serieBudget());
     c.appendChild(el('ul', 'rep-liste', r.chiffres.map((x) =>
       `<li><span class="v">${fr(x.v)}</span><span class="l">${fr(x.l)}.${citer(x.src)}${x.src2 ? citer(x.src2) : ''}</span></li>`).join('')));
-    c.appendChild(el('div', 'rep-retenir', `<b>Ce qu’il faut en retenir</b>${fr(r.aRetenir)}`));
+    c.appendChild(el('div', 'rep-retenir', `<b>Lecture du dossier</b>${fr(r.aRetenir)}`));
     dt.appendChild(c);
     z.appendChild(dt);
   }
@@ -2412,7 +2421,7 @@ function ouvrirComprendre() {
   c.innerHTML = '';
   const t = el('div', '');
   c.appendChild(corpsModeEmploi());
-  t.innerHTML = `<h3>Les chiffres du jeu</h3><p class="chapo">Les données de référence sur lesquelles le jeu est construit, thème par thème, avec leurs sources. Rien ici n’est simulé : ce sont les chiffres publiés par la DEPP, le Sénat, la Cour des comptes et l’OCDE, tels qu’ils étaient en août 2026. Le moteur du jeu les utilise comme état de départ ; la fiche « Comment le jeu note les mesures » explique le reste.</p>`;
+  t.innerHTML = `<h3>Les chiffres du jeu</h3><p class="chapo">Les données de référence sur lesquelles le jeu est construit, thème par thème, avec leurs sources. Rien ici n’est simulé : ce sont les chiffres publiés par la DEPP, le Sénat, la Cour des comptes et l’OCDE, tels qu’ils étaient fin octobre 2026. Le moteur du jeu les utilise comme état de départ ; la fiche « Comment le jeu note les mesures » explique le reste.</p>`;
   c.appendChild(t);
   c.appendChild(blocReperes(null, ['preuve']));
   const src = el('div', '');
@@ -2420,7 +2429,7 @@ function ouvrirComprendre() {
     Object.values(SOURCES).sort((a, b) => a.org.localeCompare(b.org, 'fr')).map((S) =>
       `<li><span class="org">${esc(S.org)}</span> — ${S.url ? `<a href="${S.url}" target="_blank" rel="noopener">${esc(S.titre)}</a>` : esc(S.titre)} <span style="color:var(--encre-3)">(${esc(S.date)})</span></li>`).join('')
   }</ul>
-  <p class="rep-serie-note">Les personnages, les organisations syndicales et les titres de presse du jeu sont des pseudonymes transparents : la satire est symétrique, personne n’est épargné. En revanche, les propositions politiques citées sur les cartes sont réelles et attribuées à leurs auteurs, et tous les chiffres ci-dessus sont vérifiables aux sources indiquées.</p>`;
+  <p class="rep-serie-note">Les personnages, les syndicats et les titres de presse du jeu sont des pseudonymes transparents : la satire est symétrique, personne n’est épargné. En revanche, les propositions politiques citées sur les cartes, et les organisations et personnes citées dans les sources, sont réelles et attribuées à leurs auteurs, et tous les chiffres ci-dessus sont vérifiables aux sources indiquées.</p>`;
   c.appendChild(src);
   $('#comprendre').hidden = false;
   $('#comprendre').scrollTop = 0;
@@ -2441,7 +2450,7 @@ function verdictProse(B) {
   if (B.scoreBilan >= 55 && B.constance) return 'Vous laissez un système en meilleur état que vous ne l’avez trouvé, un cap lisible, et des effets qui composeront après vous. Dans ce ministère, cela porte un nom : une exception. Vous aurez droit à une salle de réunion à votre nom à la DGESCO, celle qui fait face à la machine à café.';
   if (ecartPerception > 5) return 'Beau mandat, disent les sondages. Le bilan, lui, est plus discret : vous avez surtout gouverné le tableau de bord. Vos successeurs gouverneront le reste.';
   if (B.scoreBilan - B.scoreAffiche > 3) return 'Le pays ne vous a pas vu travailler, les indicateurs regardaient ailleurs, comme toujours, avec dix ans de retard. Vos successeurs inaugureront vos résultats. Ils y penseront très fort.';
-  if (B.anneesJouees < 3) return 'Deux ans, comme la moyenne. Le système vous a survécu sans effort particulier : il a l’habitude.';
+  if (B.anneesJouees < 3) return 'Moins de trois ans, comme la moyenne. Le système vous a survécu sans effort particulier : il a l’habitude.';
   return 'Un mandat dans la moyenne haute de ce que la Ve République fait de ses ministres de l’Éducation : des choix, des renoncements, et un tableau de bord qui ne dit pas encore la vérité.';
 }
 

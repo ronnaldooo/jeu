@@ -2137,6 +2137,40 @@ le fonds bâti est en subventions. Coûts et effets inchangés.
 seulement les cartes jouées : aucun effet sur la note. Banc d'essai : 4 cibles
 sur 4 (graines 5, 11, 23). Clé de sauvegarde `gp5`.
 
+## 3 septquinquatricies. Vérification totale du jeu (1er novembre 2026)
+
+**Ce qui a été vérifié, et comment.**
+
+| Quoi | Outil | Résultat |
+|---|---|---|
+| Intégrité des données : 92 cartes, 10 colères, 116 sources, 16 repères, 101 départements ; champs, valeurs, renvois de sources, typographie | `npm run audit` (`simulations/audit.js`) | 0 erreur ; avertissements listés dans le script |
+| Moteur : 6 400 mandats joués par des joueurs qui changent de stratégie à chaque décision, invariants vérifiés à chaque pas (compteurs dans 0-100, nombres finis, bilans complets) | `npm run fuzz` (`simulations/fuzz.js`) | aucune exception, aucun invariant violé |
+| Équilibrage : quatre cibles | `npm run equilibrage` (graines 5, 11, 23) | 4/4 |
+| Interface : 92 détails de carte, 16 fiches, 101 départements, 12 illustrations SVG, 116 sources, 1 340 liens (https, `noopener`), glossaire, tableau de bord | robot navigateur | 0 problème |
+| Parcours complets : mobile 390 × 760 et 390 × 664, petit écran 360 × 640, ordinateur ; clair et sombre ; choix premiers, derniers, aléatoires | robot navigateur | 0 erreur ; 0 page qui déborde à 390 × 760 et 390 × 664 (jusqu'à 8 pages qui défilent un peu à 360 × 640) |
+| Accessibilité par page : un titre, des boutons nommés, cibles de 32 px au moins, `lang="fr"` | robot navigateur | conforme |
+| Contraste de chaque texte (4,5:1, 3:1 pour le grand texte), clair et sombre | robot navigateur | 2 défauts corrigés (voir ci-dessous) |
+| Sauvegarde : reprise, sauvegarde corrompue, ancienne clé | robot navigateur | conforme |
+| Relecture indépendante des textes (deux relecteurs) : cartes et colères ; interface et repères | lecture | environ 250 remarques, triées |
+
+**Défauts trouvés et corrigés.**
+
+- *Contraste.* Les verts (`--ok`, `--c-sante`), l'ambre et le rose servaient de couleur de texte à 1,9:1 à 3,4:1. Des jetons de texte `--t-*` (assombris en clair, éclaircis en sombre) les remplacent partout où une couleur sert de texte ; `--encre-3` passe à 4,5:1.
+- *Mode sombre.* Les boutons secondaires (« Précédent », « Rejouer la même partie ») avaient un texte à 1,1:1 : une règle du thème sombre l'emportait sur la leur.
+- *Texte.* « a une réformiste » (accord), « Vous en avez cinq » pour un mandat de trois ans, « hériter » mal construit, plusieurs cartes dont le libellé contredisait la preuve ou le coût (suppressions « inscrites » au lieu de leur annulation, labellisation des manuels que le rapport écarte, « moitié des lycées attend 2028 » qui était la majorité, « six fois » pour « deux fois et demie », santé scolaire « plus du double des 500 annoncés » pour 1 200 au total), des conclusions du jeu écrites comme des faits au lieu d'être attribuées (« selon le HCSP », « selon la Cour des comptes »), des recommandations implicites retirées des notes, le coût de la fonctionnarisation des AESH (0,043 pour 4,3 Md€).
+- *Annonces d'octobre.* Les suppressions « annulées » sont dites « annoncées comme annulées, budget non modifié » partout ; les annonces sont attribuées au gouvernement et non à un ministre seul ; « 76 500 » devient « premières contributions ».
+- *Humeur des lycéens.* Au départ, la jauge est à 90 alors que les lycées sont déjà bloqués : le mot « en blocus » apparaît au-dessus de 88.
+
+**Ce qui reste ouvert, et que je n'ai pas pu vérifier** (le réseau est fermé, seule une recherche web est possible) :
+
+- La rentrée 2025 : le jeu compte −470 postes pour −106 000 élèves (environ 10 % des postes libérés) ; une recherche trouve au contraire « aucune suppression en 2025 » (Public Sénat) et +542 postes dans le second degré. Le chiffre du jeu est présenté comme un calcul (« un poste pour 24 élèves ») ; à recouper avec le Sénat.
+- Le périmètre du +1,2 Md€ (Gazette des communes) contre le +0,8 Md€ du plafond de la mission : les deux sont cités avec leur périmètre, sans pouvoir les réconcilier.
+- Les « heures de cours perdues » : 4,3 %, 7,4 %, 7,5 %, 9,3 %, 9,8 %, selon la source, l'année et le périmètre (second degré, collèges, lycées). Une seule valeur par périmètre reste à choisir.
+- Des affirmations de cartes jugées douteuses ou absolues par la relecture, à sourcer ou à nuancer : classement TALIS de la France, « sept ministres en trois ans », « le seul levier qui ait fait tomber un gouvernement », dépense des collectivités (« 40 % »), ancienneté des conseils de la vie lycéenne (1990 ou 2000), effet de l'internat de Sourdun, 5 500 psychologues pour 7 500 postes. Elles sont dans le rapport de relecture, pas dans le jeu corrigé.
+- Des sigles non développés au premier emploi dans les cartes (HCSP, CSEN, EEF, TALIS, IGÉSR-IGAS, MDPH, CAS, HSA, INSPÉ…) : le glossaire du jeu en couvre une partie (DGESCO, Bercy, PISA, PLF, CVL, IPS…).
+- 28 sources de `reperes.js` ne sont citées par aucune fiche (reliquat de la recherche) ; elles apparaissent dans « Toutes les sources ».
+- Le calcul des 60 000 divisions pour 19 élèves par classe, qui suppose une moyenne tous niveaux incompatible avec les moyennes du primaire (21,5) et du collège (25,8).
+
 ## 5. Paramètres à réexaminer après tests humains
 
 - **Appel en direct aux données ouvertes.** L'écran « Mon lycée » appelle data.education.gouv.fr depuis le navigateur du joueur ; l'appel n'a pas pu être testé depuis la session de développement (réseau fermé). À vérifier sur un téléphone : en-têtes inter-origines, noms de colonnes découverts, délai de 8 secondes. Si le service refuse, le repli (adresses) s'affiche et rien ne casse.

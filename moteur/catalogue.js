@@ -38,7 +38,7 @@ export const CATALOGUE = [
     physique: { hna: { delta: +1.5, duree: 2 }, adhesion: +5 },
     preuve: 'Attention au format : le HCSP (août 2026) rappelle que l’efficacité des dispositifs de formation continue est très variable selon leur intensité, leur contenu et leur ancrage dans la pratique. Ce qui marche est intensif, long, centré sur la pratique, et combine formation et accompagnement en classe. La formation continue est l’intervention au meilleur rendement documenté du répertoire : l’Education Endowment Foundation classe le feedback et la métacognition (cœur des formations efficaces) à +6 et +7/8 mois de progrès par an, au plus haut niveau de preuve (plus de 90 études). Condition : des formations longues, disciplinaires et suivies. La France est classée dernière des 48 pays de l’enquête TALIS 2024 pour la formation continue de ses enseignants : la marge de progression est maximale.',
     ideeRecue: '« Former les profs, on le fait déjà. » En volume réel, un enseignant français reçoit parmi les plus faibles quantités de formation continue du monde développé, et souvent hors de sa discipline.',
-    mot: "L'effet réel le plus solide du catalogue. Il coûte deux ans d'heures non assurées, et personne ne vous en félicitera avant votre départ.",
+    mot: "L’effet réel le plus solide du catalogue. Il coûte deux ans d’heures non assurées, et personne ne vous en félicitera avant votre départ.",
   },
 
   /* ------------------------------------------------------------------ 2 --- */
@@ -76,7 +76,7 @@ export const CATALOGUE = [
     physique: {},
     preuve: 'Le Haut-commissariat à la Stratégie et au Plan (août 2026) pose le problème en deux lignes : avec 367 000 enseignants dans le premier degré et 485 000 dans le second, toute revalorisation générale coûte très cher, à moins de rester modérée, et donc sans effet sur l’attractivité. Sa recommandation est de cibler les affectations et les missions où la pénurie est la plus criante. Pour mémoire, la revalorisation des débuts de carrière de 2023 a coûté 2 Md€ par an en année pleine. Les salaires effectifs des enseignants français sont inférieurs de 26 % (élémentaire) et 18 % (collège) à ceux des autres diplômés du supérieur (OCDE 2025) ; un certifié débutant est passé de 2 SMIC en 1980 à 1,08 SMIC en 2025. Le point décisif est la cible : les revalorisations de 2023 ont ciblé les débuts de carrière ; le milieu de carrière, lui, a décroché de 14 points par rapport à l’OCDE en dix ans, c’est là que se joue l’usure du corps.',
     ideeRecue: '« Augmenter tout le monde pareil, c’est plus juste. » Le saupoudrage est l’option la mieux acceptée et la moins efficace : diluée sur 814 927 équivalents temps plein, la même somme ne change ni l’attractivité ni les démissions.',
-    mot: "Trois façons de dépenser exactement la même somme, et trois pays différents à l'arrivée.",
+    mot: "Trois façons de dépenser exactement la même somme, et trois pays différents à l’arrivée.",
   },
 
   /* ------------------------------------------------------------------ 4 --- */
@@ -96,7 +96,7 @@ export const CATALOGUE = [
     physique: {},
     preuve: 'Évaluation DEPP 2021 sur 15 000 élèves et 408 écoles : +8 % d’écart-type en français et +13 % en maths en fin de CP, effet concentré sur les élèves en grande difficulté. Mais le suivi de long terme change la conclusion : selon le Haut-commissariat à la Stratégie et au Plan (août 2026), les bénéfices observés de la fin du CP à la fin du CE1 n’apparaissent plus à l’entrée en sixième. La prudence s’impose dans les deux sens, cette première cohorte n’avait pas bénéficié du dédoublement en grande section.',
     ideeRecue: '« Le dédoublement, c’est prouvé, ça marche. » C’est prouvé à court terme, et démenti à moyen terme par le suivi de la première cohorte. Le rapport du HCSP en tire une recommandation explicite : ne pas tout miser sur la taille des classes, et cibler précisément, d’autant que la faiblesse des acquis touche tous les profils d’élèves, pas seulement les plus fragiles.',
-    mot: "La mesure la plus évaluée du répertoire français. C'est aussi la seule dont l'évaluation, en grandissant, a retiré une partie de ce qu'elle avait promis.",
+    mot: "La mesure la plus évaluée du répertoire français. C’est aussi la seule dont l’évaluation, en grandissant, a retiré une partie de ce qu’elle avait promis.",
   },
 
   /* ------------------------------------------------------------------ 5 --- */
@@ -129,7 +129,7 @@ export const CATALOGUE = [
     porteurs: ['collectifs d’AESH', 'Défenseur des droits', 'associations de familles (Unapei, APF France handicap)', 'la gauche parlementaire'],
     contre: ['rapport IGÉSR-IGAS : rejette la fonctionnarisation, propose +10 % via une grille type catégorie B'],
     perimetre: 'matignon',                  // législatif, rejeté au Sénat le 07/01/2026
-    cout: 0.043, coutETP: 0, pol: 16,
+    cout: 4.3, coutETP: 0, pol: 16,
     theme: 'aesh', once: true, reforme: false,
     lyceens: 3,
     vitrine: { parents: +7, enseignants: +8, presse: +5, compteurs: { sante: +6 } },
@@ -139,13 +139,13 @@ export const CATALOGUE = [
     ],
     physique: { adhesion: +4, affection: +2 },
     preuve: '146 000 accompagnants pour 520 600 élèves en situation de handicap scolarisés en milieu ordinaire (trois fois plus qu’au début des années 2000), avec des notifications MDPH en hausse de 10 % par an. La fonctionnarisation est chiffrée à 4,3 Md€ ; le rapport IGÉSR-IGAS la rejette et propose +10 % via une grille de catégorie B. Le fond du problème : le temps incomplet est structurel tant que l’accompagnement s’arrête aux heures de classe.',
-    mot: "4,3 milliards. Soit environ neuf fois toute la marge que Bercy vous concédera en cinq ans. Les experts sont contre, les personnels sont pour. Bon courage.",
+    mot: "4,3 milliards. Soit environ neuf fois toute la marge que Bercy vous concédera en trois ans. Les experts sont contre, les personnels sont pour. Bon courage.",
   },
 
   /* ------------------------------------------------------------------ 7 --- */
   {
     id: 'sante_scolaire',
-    label: 'Santé scolaire : 1 200 postes d’infirmiers, de PsyEN et d’assistants sociaux, plus du double des 500 annoncés',
+    label: 'Santé scolaire : 1 200 postes d’infirmiers, de PsyEN et d’assistants sociaux, soit 700 de plus que les 500 annoncés',
     famille: 'moyens',
     porteurs: ['les organisations lycéennes (personnels de santé et d’orientation)', 'Cour des comptes', 'intersyndicale', 'fédérations de parents'],
     perimetre: 'ministeriel',
@@ -155,13 +155,13 @@ export const CATALOGUE = [
     goulot: true,                           // l'argent ne produit qu'au rythme des concours pourvus
     vitrine: { parents: +5, enseignants: +4, presse: +2, compteurs: { sante: +2 } },
     reel: [
-      { compteur: 'sante',   central: 5, delai: 3, cadenas: 3, source: '~900 médecins pour 12 M d’élèves ; 20 % des visites de la 6e année réalisées' },
+      { compteur: 'sante',   central: 5, delai: 3, cadenas: 3, source: '~800 médecins pour 12 M d’élèves ; 20 % des visites de la 6e année réalisées' },
       { compteur: 'egalite', central: 3, delai: 4, cadenas: 2, source: 'désengagement scolaire 31 % en IPS faible contre 19,4 % en IPS élevé' },
     ],
     physique: {},
-    preuve: 'Fin octobre 2026, le gouvernement a annoncé 500 postes de psychologues, d’infirmiers et d’assistants sociaux ; la mesure plus que double cet effort. Environ 900 médecins scolaires pour 12 millions d’élèves, plus d’un tiers des postes vacants (Cour des comptes) ; 20 % seulement des visites médicales de la sixième année réalisées ; 41 postes de psychologues sur 147 non pourvus au concours 2025. La leçon du PLF 2026 (+300 postes votés, pourvus en partie seulement) : un budget voté n’est pas une politique faite quand le vivier professionnel n’existe pas.',
+    preuve: 'Fin octobre 2026, le gouvernement a annoncé 500 postes de psychologues, d’infirmiers et d’assistants sociaux ; la mesure le porte à 1 200 postes au total. Environ 800 médecins scolaires (818 en 2022) pour 12 millions d’élèves, plus d’un tiers des postes vacants (Cour des comptes) ; 20 % seulement des visites médicales de la sixième année réalisées ; 41 postes de psychologues sur 147 non pourvus au concours 2025. La leçon du PLF 2026 (+300 postes votés, pourvus en partie seulement) : un budget voté n’est pas une politique faite quand le vivier professionnel n’existe pas.',
     ideeRecue: '« Il suffit de créer des postes. » Créer un poste et le pourvoir sont deux choses différentes : quand toute une profession manque de praticiens, l’argent seul n’ouvre pas de cabinet médical dans un collège.',
-    mot: "Le PLF 2026 a voté +300 postes. Les concours n'en ont pourvu qu'une fraction : 41 postes de PsyEN non pourvus sur 147. Un budget voté n'est pas une politique faite.",
+    mot: "Le PLF 2026 a voté +300 postes. Les concours n’ont pas tout pourvu : 41 postes de PsyEN sont restés vacants sur 147. Un budget voté n’est pas une politique faite.",
   },
 
   /* ------------------------------------------------------------------ 8 --- */
@@ -203,7 +203,7 @@ export const CATALOGUE = [
     greve: { intensite: 4, theme: 'pedagogie', segment: 'college' },
     preuve: 'La littérature internationale sur les regroupements durables par niveau est convergente : effet moyen proche de zéro sur l’ensemble, effet négatif sur les élèves faibles regroupés entre eux, par perte de l’entraînement par les pairs et baisse des attentes des adultes. Le précédent français est éloquent : l’obligation a été appliquée dans moins de 20 % des établissements, censurée partiellement par le Conseil d’État, puis abandonnée en 2026. L’IGÉSR a parlé de « dérive des continents » entre le texte et le terrain.',
     ideeRecue: '« Regrouper les faibles ensemble permet de mieux s’occuper d’eux. » C’est l’intuition la plus répandue et la mieux réfutée : l’effet de composition joue contre eux. Les regroupements qui marchent sont courts, ciblés et réversibles, ce qui est exactement le contraire d’un groupe permanent.',
-    mot: "Première tentative : appliqué dans moins de 20 % des établissements, censuré au Conseil d'État, abandonné en 2026. Vous voulez vraiment recommencer ?",
+    mot: "Première tentative : appliqué dans moins de 20 % des établissements, censuré au Conseil d’État, abandonné en 2026. Vous voulez vraiment recommencer ?",
   },
   {
     id: 'certificat_6e',
@@ -224,7 +224,7 @@ export const CATALOGUE = [
     greve: { intensite: 3, theme: 'pedagogie', segment: '1erdegre' },
     preuve: 'Le dispositif « prépa-6e » consiste à retenir hors de la sixième ordinaire les élèves qui n’atteignent pas un seuil aux évaluations de fin de CM2. C’est, dans sa mécanique, un redoublement déguisé : mêmes élèves visés, même effet de retard, même profil social. Or la note n° 15 du Conseil scientifique de l’éducation nationale établit que le redoublement a un effet moyen négatif sur les acquis et accroît le décrochage. L’« effet de menace », qui voudrait que la perspective du barrage fasse travailler davantage, n’a jamais été démontré nulle part.',
     ideeRecue: '« On ne peut pas envoyer en sixième un élève qui ne sait pas lire. » On ne le peut pas, en effet. La question est de savoir si le retenir une année de plus le lui apprend : la réponse documentée est non. Ce qui l’apprend coûte plus cher et se voit moins.',
-    mot: "Un examen d'entrée en sixième, c'est un redoublement avec un beau nom. Le CSEN a écrit ce qu'il fallait en penser ; il n'a pas été invité au lancement.",
+    mot: "Un examen d’entrée en sixième, c’est un redoublement avec un beau nom. Le CSEN a écrit ce qu’il fallait en penser ; il n’a pas été invité au lancement.",
   },
   {
     id: 'parcours_4e',
@@ -245,7 +245,7 @@ export const CATALOGUE = [
     greve: { intensite: 4, theme: 'pedagogie', segment: 'college' },
     preuve: 'C’est la mesure dont la comparaison internationale documente le mieux l’effet, et il est négatif. Les systèmes qui orientent tôt sont ceux où l’origine sociale pèse le plus sur les résultats. La réforme polonaise de 1999, qui a repoussé l’orientation d’un an, est citée comme le facteur crucial de la progression du pays dans PISA, portée par les élèves les plus faibles. Avancer l’orientation en quatrième revient à faire le trajet en sens inverse, sur une population dont on sait déjà qu’elle est socialement typée.',
     ideeRecue: '« Certains élèves n’ont rien à faire au collège général. » Ils y sont mal, c’est vrai. La question est de savoir ce qu’on leur propose : les pays qui les orientent à quatorze ans obtiennent de moins bons résultats pour eux, pas seulement pour les autres.',
-    mot: "Six ans de délai, aucune photo à la clé, et la voie professionnelle qui se sent visée. Un ministre courageux la prend ; un ministre pressé prend l'inverse.",
+    mot: "Cinq ans de délai pour un effet négatif, aucune photo à la clé, et la voie professionnelle qui se sent visée. La mesure plaît d’abord à ceux qui ne la subiront pas.",
   },
 
   /* ----------------------------------------------------------------- 10 --- */
@@ -266,7 +266,7 @@ export const CATALOGUE = [
     greve: { intensite: 4, theme: 'statut', segment: 'tous' },
     preuve: 'Les comparaisons internationales sont contradictoires : l’autonomie améliore les résultats dans les systèmes dotés d’un encadrement fort, les dégrade ailleurs. Sur la publication des résultats par établissement, le constat est plus net : elle alimente l’évitement scolaire et la ségrégation sans gain d’apprentissage démontré. C’est la carte à la variance maximale du jeu : preuve faible, deux cadenas.',
     ideeRecue: '« Publier les résultats, c’est de la transparence. » C’est aussi mettre les établissements en concurrence sur leurs notes. En Suède, où le diplôme de fin de lycée repose sur le contrôle continu, la concurrence a produit une inflation documentée, les « notes du bonheur » : les indicateurs s’améliorent sans que rien ne s’améliore. La France a déjà 40 % de contrôle continu au baccalauréat depuis 2019 : le mécanisme n’est pas hypothétique, il est en place.',
-    mot: "Deux cadenas : l'effet réel peut aussi bien doubler que se retourner. C'est la carte la plus incertaine du jeu, et celle qui fait les meilleures unes.",
+    mot: "Deux cadenas : l’effet réel peut aussi bien doubler que se retourner. C’est la carte la plus incertaine du jeu, et celle qui fait les meilleures unes.",
   },
 
   /* ----------------------------------------------------------------- 11 --- */
@@ -307,7 +307,7 @@ export const CATALOGUE = [
     physique: { hna: { delta: -1.2, duree: 99 } },
     preuve: '9,8 % des heures d’enseignement du second degré n’ont pas été assurées en 2024-2025, dont 7,5 points de non-remplacement, soit environ deux heures perdues par élève et par semaine, en hausse de 0,7 point par an. Des brigades académiques traitent la part la plus visible du problème, celle des absences longues, sans toucher au statut. Leur limite est connue : elles ne couvrent pas les absences de courte durée, qui sont la majorité des heures perdues, et elles supposent que les postes soient pourvus.',
     ideeRecue: '« Il manque des remplaçants, donc il faut en recruter. » C’est vrai et insuffisant : un remplaçant recruté ne remplace pas une absence d’une demi-journée, qui se règle dans l’établissement ou ne se règle pas.',
-    mot: "La moitié du problème, sans conflit. C'est rare, alors ne boudez pas : l'autre moitié est dans la carte d'à côté, et elle coûte votre paix sociale.",
+    mot: "Une partie du problème, sans conflit. C’est rare, alors ne boudez pas : le reste est dans la carte d’à côté, et elle coûte votre paix sociale.",
   },
   {
     id: 'ors_remplacement',
@@ -329,7 +329,7 @@ export const CATALOGUE = [
     greve: { intensite: 4, theme: 'statut', segment: 'tous' },
     preuve: 'Ramener le taux d’heures non assurées de 9,8 % à 5 % rendrait aux élèves plus d’heures que n’en apportent 4 000 postes. Le verrou n’est pas budgétaire, il est statutaire : le remplacement de courte durée relève des obligations de service, mais son organisation effective n’a jamais été imposée. C’est la mesure du catalogue au meilleur rendement par euro dépensé, et celle qui coûte le plus cher dans la seule monnaie qui ne se reconstitue pas vite.',
     ideeRecue: '« C’est déjà dans les textes, il suffit de les appliquer. » Les textes existent depuis 2005. Trois des cinq derniers conflits sociaux du ministère ont commencé par cette phrase, prononcée exactement sur ce ton.',
-    mot: "Presque gratuite, et la plus chère du catalogue. Neuf points de capital, quatre d'intensité de grève, et deux heures par semaine rendues aux élèves.",
+    mot: "Presque gratuite, et la plus chère du catalogue. Neuf points de capital, quatre d’intensité de grève, et des heures de cours rendues aux élèves.",
   },
 
   /* ======================================================================
@@ -353,7 +353,7 @@ export const CATALOGUE = [
     ],
     physique: {},
     preuve: 'Les travaux d’économie de l’éducation (à la suite de Heckman) convergent : le rendement de l’euro public investi est maximal aux âges précoces, surtout pour les enfants défavorisés. Les écarts de vocabulaire entre milieux sociaux sont déjà installés à 4 ans ; c’est en maternelle qu’ils se réduisent le mieux, et c’est l’investissement le moins visible politiquement, puisque ses effets arrivent après le mandat.',
-    mot: "L'euro le mieux investi du système, et le seul dont l'inauguration n'intéresse personne : les bénéficiaires ont quatre ans et ne votent pas.",
+    mot: "L’euro le mieux investi du système, et le seul dont l’inauguration n’intéresse personne : les bénéficiaires ont quatre ans et ne votent pas.",
   },
 
   /* ----------------------------- 14 · moyens / équité ----------------- */
@@ -374,7 +374,7 @@ export const CATALOGUE = [
     physique: {},
     greve: { intensite: 2, theme: 'moyens', segment: 'tous' },
     preuve: 'La difficulté sociale est continue ; le label éducation prioritaire est binaire. Résultat documenté par la Cour des comptes et la DEPP : des établissements au public très défavorisé restent hors du dispositif, d’autres y demeurent alors que leur situation a changé. Une allocation progressive sur l’indice de position sociale supprime l’effet de seuil, et les rentes de situation, ce qui explique sa difficulté politique.',
-    mot: "Techniquement irréprochable : la difficulté sociale est continue, pas binaire. Politiquement : vous venez d'annoncer à cent collèges qu'ils perdent leur prime.",
+    mot: "Techniquement irréprochable : la difficulté sociale est continue, pas binaire. Politiquement : vous venez d’annoncer à cent collèges qu’ils perdent leur prime.",
   },
 
   /* ----------------------------- 15 · moyens ------------------------- */
@@ -392,7 +392,7 @@ export const CATALOGUE = [
     ],
     physique: { adhesion: +3 },
     preuve: 'Le recours aux contractuels s’est banalisé, avec des recrutements parfois expédiés en quelques jours et sans formation. Les stabiliser et les former améliore la continuité pédagogique à coût modéré, c’est une reconnaissance de l’existant plus qu’une création de moyens.',
-    mot: "Ils font déjà cours depuis trois ans. Vous ne recrutez personne : vous reconnaissez l'existant, ce qui est à la fois moins cher et plus honnête.",
+    mot: "Ils font déjà cours depuis trois ans. Vous ne recrutez personne : vous reconnaissez l’existant, ce qui est à la fois moins cher et plus honnête.",
   },
 
   /* ----------------------------- 16 · moyens / climat ----------------- */
@@ -412,7 +412,7 @@ export const CATALOGUE = [
     ],
     physique: {},
     preuve: 'Le facteur le mieux établi du climat scolaire n’est ni le discours ni le règlement : c’est la densité et la stabilité des adultes présents. Les études sur les violences scolaires convergent sur ce point ; en France, la précarité des contrats d’assistants d’éducation produit une rotation qui défait chaque année ce que l’année précédente a construit.',
-    mot: "Le climat scolaire n'est pas un discours sur l'autorité : c'est un budget de surveillants. Le discours est gratuit, c'est bien pour ça qu'on l'entend plus souvent.",
+    mot: "Le climat scolaire n’est pas un discours sur l’autorité : c’est un budget de surveillants. Le discours est gratuit, c’est bien pour ça qu’on l’entend plus souvent.",
   },
 
   /* ----------------------------- 17 · moyens (le rabot) --------------- */
@@ -431,7 +431,7 @@ export const CATALOGUE = [
     physique: { hna: { delta: -0.8, duree: 2 } },
     preuve: 'Une heure supplémentaire annuelle coûte environ un cinquantième d’un poste : c’est l’instrument de gestion le plus rentable à court terme, utilisé par tous les gouvernements. Son coût différé est documenté par les enquêtes de conditions de travail : intensification, épuisement, démissions, le rabot d’aujourd’hui se paie sur l’attractivité de demain.',
     ideeRecue: '« Les HS, tout le monde y gagne. » À dose modérée, oui. En usage structurel, c’est un emprunt sur la santé du corps enseignant, remboursable avec intérêts.',
-    mot: "Une HSA coûte cinquante fois moins qu'un poste. C'est aussi la différence entre embaucher un collègue et faire ses heures à sa place.",
+    mot: "Une HSA coûte cinquante fois moins qu’un poste. C’est aussi la différence entre embaucher un collègue et faire ses heures à sa place.",
   },
 
   /* ----------------------------- 18 · moyens ------------------------- */
@@ -450,7 +450,7 @@ export const CATALOGUE = [
     ],
     physique: { attractivite: -9 },       // la transition casse une année de recrutement
     preuve: 'La formation initiale a été réformée à répétition (IUFM, ESPE, INSPÉ, position du concours déplacée plusieurs fois) : chaque transition casse une année de recrutement, le temps que les candidats s’adaptent. La réforme de 2026 (concours à bac+3) a fait bondir les inscriptions de 76,6 %, après un trou d’air. Les systèmes qui progressent (Estonie, Irlande, Singapour) ont tous investi massivement et durablement dans la formation de leurs enseignants.',
-    mot: "Chaque réforme de la formation casse une promotion le temps de la transition. La vôtre sera la neuvième en trente ans. Cette fois, c'est la bonne.",
+    mot: "Chaque réforme de la formation casse une promotion le temps de la transition. La vôtre sera la neuvième en trente ans. Cette fois, c’est la bonne.",
   },
 
   /* ----------------------------- 19 · moyens / équité ----------------- */
@@ -468,7 +468,7 @@ export const CATALOGUE = [
       { compteur: 'sante',   central: 2, delai: 4, cadenas: 3, source: 'moins de sortants sans qualification, moins de classes ingérables' },
     ],
     physique: {},
-    preuve: 'Environ 76 000 jeunes sortent chaque année sans qualification. La recherche est unanime : le décrochage est un processus à signaux faibles (absences, notes, comportement) repérables des années avant la rupture, et le repérage précoce avec référent est la intervention la mieux évaluée, très loin devant les sanctions, dont les évaluations n’ont montré aucun effet durable.',
+    preuve: 'Environ 76 000 jeunes sortent chaque année sans qualification. La recherche est unanime : le décrochage est un processus à signaux faibles (absences, notes, comportement) repérables des années avant la rupture, et le repérage précoce avec référent est l’intervention la mieux évaluée, très loin devant les sanctions, dont les évaluations n’ont montré aucun effet durable.',
     mot: "Le décrochage est un processus, pas un événement. Intervenir en 5e coûte dix fois moins cher que raccrocher un jeune de 18 ans, et fait cent fois moins de communiqués.",
   },
 
@@ -486,8 +486,8 @@ export const CATALOGUE = [
       { compteur: 'sante', central: 4, delai: 2, cadenas: 3, source: 'contourne le goulot de recrutement de la santé scolaire en mobilisant des personnels de santé publique' },
     ],
     physique: {},
-    preuve: 'Les indicateurs de santé mentale des adolescents se sont nettement dégradés depuis 2020. La médecine scolaire ne peut pas y répondre seule (900 médecins pour 12 millions d’élèves) : les conventions avec les maisons des adolescents et les agences régionales de santé mobilisent des professionnels qui existent, plutôt que d’attendre des recrutements impossibles.',
-    mot: "Faire soigner vos élèves par le budget d'un autre ministère : l'art d'être efficace avec l'argent qu'on n'a pas. Le revers : votre politique dépend d'un partenaire qui ne vous doit rien.",
+    preuve: 'Les indicateurs de santé mentale des adolescents se sont nettement dégradés depuis 2020. La médecine scolaire ne peut pas y répondre seule (environ 800 médecins pour 12 millions d’élèves) : les conventions avec les maisons des adolescents et les agences régionales de santé mobilisent des professionnels qui existent, plutôt que d’attendre des recrutements impossibles.',
+    mot: "Faire soigner vos élèves par le budget d’un autre ministère : l’art d’être efficace avec l’argent qu’on n’a pas. Le revers : votre politique dépend d’un partenaire qui ne vous doit rien.",
   },
 
   /* ----------------------------- 21 · compétences partagées ----------- */
@@ -508,7 +508,7 @@ export const CATALOGUE = [
     physique: {},
     preuve: 'L’État ne possède ni les écoles (communes), ni les collèges (départements), ni les lycées (régions) : il ne peut que co-financer et inciter. Le confort thermique a un effet documenté mais modeste sur les apprentissages ; l’effet principal d’un plan bâti est ailleurs, dans la relation avec les collectivités, qui paient 40 % de la dépense éducative sans participer aux décisions pédagogiques.',
     ideeRecue: '« Le ministre n’a qu’à rénover les écoles. » Il ne le peut pas : les murs ne sont pas à lui. Une annonce nationale sur le bâti est une annonce sur le budget des autres.',
-    mot: "Les écoles sont aux communes, les collèges aux départements, les lycées aux régions, et les photos de classes à 40 °C au ministre. Vous payez l'amorçage pour des murs qui ne sont pas à vous.",
+    mot: "Les écoles sont aux communes, les collèges aux départements, les lycées aux régions, et les photos de classes à 40 °C au ministre. Vous amorcez le chantier de murs qui ne sont pas à vous.",
   },
 
   /* ----------------------------- 22 · évaluation ---------------------- */
@@ -544,14 +544,14 @@ export const CATALOGUE = [
     provocations: 1,
     vitrine: { parents: +3, enseignants: -8, presse: +6, compteurs: {} },
     reel: [
-      { compteur: 'reussite', central: 1, delai: 4, cadenas: 1, source: 'aucun pays comparable ne l’a fait à l’échelle : preuve minimale, variance maximale' },
+      { compteur: 'reussite', central: 1, delai: 4, cadenas: 1, source: 'peu de pays l’ont fait à grande échelle, avec des effets contrastés : preuve minimale, variance maximale' },
       { compteur: 'egalite',  central: -6, delai: 4, cadenas: 2, source: 'les systèmes à libre choix accroissent le tri social (Chili, Suède)' },
     ],
     physique: { segregation: +1.0 },
     greve: { intensite: 3, theme: 'prive', segment: 'tous' },
     preuve: 'La Suède est l’expérience naturelle la mieux documentée du monde : chèque scolaire, écoles indépendantes à but lucratif et libre choix au début des années 1990. Bilan à vingt ans, partagé par la quasi-totalité des chercheurs et par les agences gouvernementales suédoises : l’OCDE constatait en 2015 qu’aucun autre pays participant à PISA n’enregistrait un tel recul. Démonstration décisive (Östh, 2013) : en comparant la variance réelle entre écoles à celle qu’on observerait si chaque élève allait à l’école de son quartier, c’est <b>le libre choix, et non la ségrégation résidentielle</b>, qui explique le mieux les écarts entre établissements. S’y ajoutent une inflation des notes née de la concurrence, et des coûts plus élevés pour des résultats qui ne le sont pas.',
     ideeRecue: '« La concurrence tire tout le monde vers le haut. » C’est l’hypothèse qui a été testée grandeur nature, sur vingt ans, par un pays entier, et invalidée par ses propres agences publiques. Cette carte est le miroir exact du redoublement : une vitrine excellente, un bilan qui arrive après vous, et une littérature qui dit déjà ce qu’il contiendra.',
-    mot: "Aucun pays comparable ne l'a fait à l'échelle. Vous serez le pionnier, ou le cas d'école, au sens propre.",
+    mot: "Peu de pays l’ont fait à grande échelle, avec des résultats contrastés. Vous serez le pionnier, ou le cas d’école, au sens propre.",
   },
 
   /* ----------------------------- 24 · autonomie ----------------------- */
@@ -590,7 +590,7 @@ export const CATALOGUE = [
     ],
     physique: { adhesion: +2 },
     preuve: 'La visibilité pluriannuelle est un levier peu coûteux et documenté : une commune n’investit pas dans une école menacée de fermeture, une équipe ne s’engage pas sur des moyens repris l’année suivante. Son ennemi naturel est l’annualité budgétaire, à laquelle Bercy tient comme à son bien le plus précieux, parce que c’est son bien le plus précieux.',
-    mot: "Une commune ne rénove pas une école qu'elle croit condamnée, un principal ne s'engage pas sur des moyens repris en février. La visibilité est une politique, que Bercy compte comme une reddition.",
+    mot: "Une commune ne rénove pas une école qu’elle croit condamnée, un principal ne s’engage pas sur des moyens repris en février. La visibilité est une politique, que Bercy compte comme une reddition.",
   },
 
   /* ----------------------------- 26 · parcours ------------------------ */
@@ -609,7 +609,7 @@ export const CATALOGUE = [
     ],
     physique: {},
     preuve: 'La différenciation efficace, selon la recherche, est courte, ciblée et réversible : des regroupements de quelques semaines sur un besoin identifié, puis retour en classe entière. C’est la version que la Sgen-CFDT a arrachée en 2024-2026 contre les groupes de niveau permanents. Sa limite : elle exige de l’ingénierie d’emploi du temps et une vraie adhésion des équipes, elle ne se décrète pas.',
-    mot: "Différencier sans étiqueter. Exigeant, invisible, efficace là où les équipes y croient, c'est-à-dire là où vous ne décidez pas.",
+    mot: "Différencier sans étiqueter. Exigeant, invisible, efficace là où les équipes y croient, c’est-à-dire là où vous ne décidez pas.",
   },
 
   /* ----------------------------- 27 · parcours ------------------------ */
@@ -630,7 +630,7 @@ export const CATALOGUE = [
     physique: {},
     preuve: 'Aucune étude ne démontre qu’un examen-barrage élève le niveau par « effet de menace », c’est le même mécanisme non prouvé que pour le redoublement. Ce qui est documenté : les recalés d’un barrage décrochent davantage, et ils sont socialement très typés. La « prépa-seconde » française n’a pas d’équivalent évalué.',
     ideeRecue: '« Un examen exigeant tire tout le monde vers le haut. » L’exigence sans accompagnement trie ; elle n’élève pas. Les systèmes les plus exigeants qui réussissent (Japon, Estonie) sont aussi ceux qui laissent le moins d’élèves au bord du chemin.',
-    mot: "« L'exigence. » Les recalés iront en prépa-seconde, c'est-à-dire au même endroit qu'avant, mais avec un nom qui rassure tout le monde sauf eux.",
+    mot: "« L’exigence. » Les recalés iront en prépa-seconde, c’est-à-dire au même endroit qu’avant, mais avec un nom qui rassure tout le monde sauf eux.",
   },
 
   /* ----------------------------- 28 · autorité (comédie) -------------- */
@@ -650,7 +650,7 @@ export const CATALOGUE = [
     physique: {},
     preuve: 'L’expérimentation française de la tenue unique (2024-2026) n’a mesuré aucun effet significatif sur les acquis, le climat ou le harcèlement. La littérature internationale, essentiellement anglo-saxonne, est tout aussi décevante : les corrélations positives disparaissent quand on tient compte du profil des établissements volontaires.',
     ideeRecue: '« L’uniforme gomme les inégalités et restaure le cadre. » C’est l’exemple parfait de la mesure-vitrine : populaire, visible, photogénique, et sans effet mesuré. Les inégalités se voient aux chaussures, aux téléphones et aux vacances, pas au polo.',
-    mot: "L'expérimentation a coûté trois millions d'euros et conclu à un effet principal : des polos. Mais quels polos.",
+    mot: "L’expérimentation a coûté trois millions d’euros et conclu à un effet principal : des polos. Mais quels polos.",
   },
 
   /* ----------------------------- 29 · parcours ------------------------ */
@@ -709,7 +709,7 @@ export const CATALOGUE = [
     ],
     physique: {},
     preuve: 'Le déplacement d’élèves très perturbateurs soulage la classe d’origine, c’est réel et immédiat. Sur les élèves déplacés, les données manquent, et ce qu’on sait des regroupements d’élèves en rupture joue contre : concentrer les difficultés dégrade les trajectoires (effet de composition, encore lui).',
-    mot: "Sortir l'élève règle le problème de la classe et déplace celui de l'élève.",
+    mot: "Sortir l’élève règle le problème de la classe et déplace celui de l’élève.",
   },
 
   /* ----------------------------- 32 · autorité ------------------------ */
@@ -728,7 +728,7 @@ export const CATALOGUE = [
     ],
     physique: {},
     preuve: 'L’interdiction effective du téléphone (casiers, pochettes) montre des effets mesurés sur le climat de récréation, les incidents et l’attention, modestes mais réels, parmi les mieux établis des mesures « d’ordre ». Le point aveugle : l’intendance (achat, responsabilité, gestion) retombe sur les établissements et les collectivités.',
-    mot: "Mesure rarissime : les enseignants sont pour, les parents sont pour, les élèves sont contre et n'ont pas le droit de vote. Reste à savoir qui achète les casiers, indice : pas vous.",
+    mot: "Mesure rarissime : les enseignants sont pour, les parents sont pour, les élèves sont contre et n’ont pas le droit de vote. Reste à savoir qui achète les casiers, indice : pas vous.",
   },
 
   /* ----------------------------- 33 · climat -------------------------- */
@@ -749,7 +749,7 @@ export const CATALOGUE = [
     physique: {},
     preuve: 'Les programmes structurés de compétences psychosociales et de prévention du harcèlement (KiVa en Finlande et ses équivalents) comptent parmi les interventions les mieux évaluées d’Europe : réduction mesurée des violences entre élèves, effets durables. Deux conditions : des adultes formés, et de la durée. Sans elles, « l’heure d’empathie » devient une heure de vie de classe de plus.',
     ideeRecue: '« C’est l’école des bisous. » Les programmes moqués sous ce nom sont, avec la formation continue, ce que la recherche européenne a de mieux évalué en matière de climat scolaire. Le ridicule médiatique n’est pas un niveau de preuve.',
-    mot: "Les programmes danois ont vingt ans de preuve. Le vôtre aura vingt secondes au journal de 20 heures, sous le bandeau « L'école des bisous ».",
+    mot: "Les programmes danois ont vingt ans de preuve. Le vôtre aura vingt secondes au journal de 20 heures, sous le bandeau « L’école des bisous ».",
   },
 
   /* ----------------------------- 34 · autorité (comédie) -------------- */
@@ -768,7 +768,7 @@ export const CATALOGUE = [
     physique: {},
     preuve: 'Aucune évaluation n’existe : le « surveillant général » a disparu en 1970, remplacé par les CPE. Ce qui est documenté, c’est l’effet de la présence adulte stable, que le poste s’appelle surgé, AED ou CPE. Le reste est du costume. D’où un seul cadenas : l’effet tiré peut aller du négatif au double.',
     ideeRecue: '« De mon temps, avec les surgés, il y avait de l’ordre. » De votre temps, il y avait surtout deux fois moins d’élèves scolarisés au-delà de 16 ans. La nostalgie est un biais d’échantillonnage.',
-    mot: "Personne ne sait exactement ce que c'était, tout le monde s'en souvient avec émotion. Vous financez un souvenir, à variance maximale.",
+    mot: "Personne ne sait exactement ce que c’était, tout le monde s’en souvient avec émotion. Vous financez un souvenir, à variance maximale.",
   },
 
   /* ----------------------------- 35 · mixité (le levier doux) --------- */
@@ -805,7 +805,7 @@ export const CATALOGUE = [
     ],
     physique: { segregation: -0.8 },
     preuve: 'La fermeture-redéploiement d’établissements très ségrégués n’a jamais été menée à l’échelle annoncée : l’effet dépend entièrement de la qualité des réaffectations (vers des établissements mixtes, avec accompagnement, ou vers le collège voisin tout aussi ségrégué). Deux cadenas : le principe est plausible, l’exécution est tout.',
-    mot: "Fermer un collège que tout le monde évite : tout le monde est pour, sauf l'intégralité des personnes concernées, son maire, et le collège d'à côté.",
+    mot: "Fermer un collège que tout le monde évite : tout le monde est pour, sauf l’intégralité des personnes concernées, son maire, et le collège d’à côté.",
   },
 
   /* ----------------------------- 37 · mixité (l’arme nucléaire) ------- */
@@ -864,7 +864,7 @@ export const CATALOGUE = [
     ],
     physique: {},
     preuve: 'L’esprit critique face aux médias et à l’IA s’enseigne, avec des effets mesurés (modestes, lents, réels) quand des heures y sont réellement dédiées et les enseignants formés. Le piège documenté : l’ajout au programme sans retrait équivalent, tout ajout est une soustraction ailleurs.',
-    mot: "Vos élèves utilisent déjà l'IA pour leurs devoirs, et vos enseignants pour les corriger. Il serait temps que quelqu'un forme quelqu'un.",
+    mot: "Vos élèves utilisent déjà l’IA pour leurs devoirs, et vos enseignants pour les corriger. Il serait temps que quelqu’un forme quelqu’un.",
   },
 
   /* ----------------------------- 40 · équité -------------------------- */
@@ -884,7 +884,7 @@ export const CATALOGUE = [
     physique: {},
     preuve: 'L’aide aux devoirs encadrée et le tutorat comptent parmi les interventions les mieux documentées du répertoire EEF (+5 mois pour le tutorat). Le mécanisme d’équité est limpide : le devoir à la maison mesure surtout l’aide disponible à la maison. Condition : un encadrement réel, pas une étude surveillée où l’on fait ses devoirs seul mais assis.',
     ideeRecue: '« Les devoirs, c’est aux parents de s’en occuper. » C’est exactement ainsi que l’école transforme les inégalités familiales en inégalités scolaires, chaque soir, gratuitement.',
-    mot: "Le dispositif existe depuis 2017. Vous le rendez systématique, c'est-à-dire que vous allez découvrir qui, exactement, était volontaire.",
+    mot: "Le dispositif existe depuis 2017. Vous le rendez systématique, c’est-à-dire que vous allez découvrir qui, exactement, était volontaire.",
   },
 
   /* ======================================================================
@@ -913,7 +913,7 @@ export const CATALOGUE = [
     physique: {},
     preuve: 'Le tutorat est, avec le feedback, l’intervention la mieux documentée du répertoire de l’Education Endowment Foundation : +4 mois de progrès pour le tutorat en petits groupes, +5 mois en individuel, sur plus de soixante études. Les conditions sont connues et exigeantes : trois séances par semaine, des groupes de un à trois élèves, douze semaines au moins, des tuteurs formés.',
     ideeRecue: '« Du soutien scolaire, on en fait déjà partout. » Ce qui existe partout, c’est l’aide diffuse en classe entière. Ce qui produit l’effet mesuré, c’est un protocole intensif et court, et c’est justement ce qui coûte, parce qu’il faut du temps d’adulte qualifié en plus.',
-    mot: "L'une des rares cartes à cinq cadenas du catalogue. Elle ne fera jamais la une, mais elle est la seule dont vous serez à peu près sûr au bilan.",
+    mot: "L’une des rares cartes à cinq cadenas du catalogue. Elle ne fera jamais la une, mais elle est la seule dont vous serez à peu près sûr au bilan.",
   },
 
   /* ----------------------------- 42 · moyens -------------------------- */
@@ -938,7 +938,7 @@ export const CATALOGUE = [
     greve: { intensite: 2, theme: 'statut', segment: 'college' },
     preuve: 'La Cour des comptes établit en décembre 2025 que 9,3 % des heures sont perdues au collège et au lycée, et surtout que les deux tiers des absences non remplacées ne sont pas individuelles : elles sont produites par le système lui-même, surveillance et correction d’examens, formation, réunions, sorties. Le rapport sénatorial de juin 2025 mesure 4,3 % du temps scolaire perdu en moyenne et 7,4 % dans le second degré : deux chiffres officiels, deux périmètres, un même diagnostic.',
     ideeRecue: '« Les profs sont trop souvent absents. » Un tiers seulement de ces absences relève de raisons individuelles. Les deux autres tiers, c’est l’institution qui convoque ses propres enseignants pendant les heures de cours, puis qui s’étonne que les heures manquent.',
-    mot: "La mesure la moins chère du catalogue pour rendre des heures aux élèves. Elle consiste à demander au ministère d'arrêter de se déranger lui-même.",
+    mot: "L’une des mesures les moins chères du catalogue pour rendre des heures aux élèves. Elle consiste à demander au ministère d’arrêter de se déranger lui-même.",
   },
 
   /* ----------------------------- 44 · parcours ------------------------ */
@@ -963,7 +963,7 @@ export const CATALOGUE = [
     greve: { intensite: 3, theme: 'statut', segment: 'tous' },
     preuve: 'Les élèves français reçoivent 864 heures d’enseignement par an en élémentaire et 973 au collège, soit environ 600 heures de plus que la moyenne de l’OCDE sur l’ensemble de la scolarité obligatoire. Ces heures tiennent dans 36 semaines quand la moyenne est de 38 : les journées sont donc parmi les plus longues du monde développé, 7 heures de présence quotidienne au collège contre 5 ailleurs. Le niveau de preuve sur les rythmes reste faible : deux cadenas, pas davantage.',
     ideeRecue: '« Les élèves français n’ont pas assez d’heures de cours. » Ils en ont plus que presque partout ailleurs, sur moins de jours, avec la plus forte proportion de français et de mathématiques de l’OCDE, pour des résultats moyens. Ce n’est pas le volume qui manque.',
-    mot: "Aucun ministre n'a jamais gagné une bataille sur les rythmes scolaires. Aucun n'a jamais résisté à l'envie d'essayer.",
+    mot: "Aucun ministre n’a jamais gagné une bataille sur les rythmes scolaires. Aucun n’a jamais résisté à l’envie d’essayer.",
   },
 
   /* ----------------------------- 46 · autonomie ----------------------- */
@@ -971,7 +971,7 @@ export const CATALOGUE = [
     id: 'directeurs',
     label: 'Décharge complète et statut pour les directeurs d’école',
     famille: 'autonomie',
-    porteurs: ['SNPDEN', 'associations de directeurs', 'plusieurs rapports parlementaires'],
+    porteurs: ['associations et syndicats de directeurs d’école', 'plusieurs rapports parlementaires'],
     contre: ['la FSU refuse un supérieur hiérarchique dans l’école'],
     perimetre: 'ministeriel',
     cout: 0.34, coutETP: 3800, pol: 6,
@@ -986,7 +986,7 @@ export const CATALOGUE = [
     greve: { intensite: 2, theme: 'statut', segment: '1erdegre' },
     preuve: 'L’école primaire française est le seul niveau du système sans chef d’établissement : le directeur d’école est un enseignant déchargé, sans autorité hiérarchique, qui absorbe l’administratif, la sécurité, le lien avec la mairie et les familles. C’est un facteur d’usure documenté, et le maillon par lequel passe (ou ne passe pas) toute réforme pédagogique du premier degré.',
     ideeRecue: '« Un statut, c’est juste une prime et un titre. » C’est aussi la question de savoir qui, dans une école, peut demander à une équipe de faire quelque chose. La réponse actuelle est : personne. C’est pour cela que la mesure est à la fois populaire chez les directeurs et combattue par la principale fédération.',
-    mot: "Le seul niveau du système éducatif où personne n'est le chef. Ce n'est pas un oubli, c'est une position politique, vieille de quarante ans.",
+    mot: "Le seul niveau du système éducatif où personne n’est le chef. Ce n’est pas un oubli, c’est une position politique, vieille de quarante ans.",
   },
 
   /* ----------------------------- 47 · moyens -------------------------- */
@@ -1007,7 +1007,7 @@ export const CATALOGUE = [
     physique: { hna: { delta: +0.6, duree: 2 }, adhesion: +3 },
     preuve: 'Les élèves de CM1 obtiennent 484 en mathématiques à TIMSS 2023, contre 524 pour la moyenne des pays de l’Union européenne et 525 pour l’OCDE ; 15 % n’atteignent pas le niveau minimal, et les résultats sont stables depuis 2019. Le rapport Villani-Torossian a établi le diagnostic : les professeurs des écoles sont très majoritairement issus de filières littéraires et reçoivent peu de formation disciplinaire en mathématiques. Le format « constellations » (petits groupes d’enseignants suivis dans la durée par un pair formé) est celui dont l’effet est le mieux étayé.',
     ideeRecue: '« Le niveau en maths baisse partout, c’est une tendance mondiale. » L’écart de la France à ses voisins européens en CM1 est de 40 points et il ne se réduit pas : ce n’est pas une dérive commune, c’est un décrochage propre.',
-    mot: "Quarante points d'écart avec la moyenne européenne dès le CM1. On ne les rattrape pas en changeant le programme du lycée.",
+    mot: "Quarante points d’écart avec la moyenne européenne dès le CM1. On ne les rattrape pas en changeant le programme du lycée.",
   },
 
   /* ----------------------------- 48 · mixite -------------------------- */
@@ -1029,7 +1029,7 @@ export const CATALOGUE = [
     physique: { segregation: -1.6 },
     preuve: 'Depuis 2021, l’affectation en seconde à Paris pondère les vœux par l’indice de position sociale : la ségrégation entre lycées a reculé sans dégradation mesurée des résultats. Le levier est puissant parce qu’il ne coûte presque rien (c’est un paramètre d’algorithme) et fragile pour la même raison : un successeur le change en une circulaire.',
     ideeRecue: '« La mixité sociale, c’est bon pour les uns et mauvais pour les autres. » Les travaux disponibles concluent à un gain net pour les élèves défavorisés et à un effet proche de zéro pour les favorisés. Ce que perdent ces derniers n’est pas mesuré en points : c’est un entre-soi.',
-    mot: "Cinq millions d'euros, un paramètre d'algorithme, et la totalité des associations de parents du 5e arrondissement.",
+    mot: "Quelques millions d’euros, un paramètre d’algorithme, et la totalité des associations de parents du 5e arrondissement.",
   },
 
   /* ----------------------------- 49 · moyens -------------------------- */
@@ -1050,7 +1050,7 @@ export const CATALOGUE = [
     physique: {},
     preuve: 'La restauration scolaire relève des collectivités, mais l’État finance depuis 2019 la tarification à un euro dans les communes qui s’y engagent, et les petits déjeuners en éducation prioritaire. La littérature sur l’alimentation scolaire est convergente sur l’assiduité et la disponibilité aux apprentissages, plus modeste sur les acquis eux-mêmes.',
     ideeRecue: '« Ce n’est pas le rôle de l’école. » C’est déjà son rôle depuis 1881 dans les faits, et le seul repas complet de la journée pour une part non négligeable des élèves d’éducation prioritaire.',
-    mot: "La carte la moins contestée du catalogue. Profitez-en, il n'y en a qu'une.",
+    mot: "La carte la moins contestée du catalogue. Profitez-en, il n’y en a qu’une.",
   },
 
   /* ----------------------------- 50 · autorite ------------------------ */
@@ -1096,7 +1096,7 @@ export const CATALOGUE = [
     greve: { intensite: 2, theme: 'evaluation', segment: 'tous' },
     preuve: 'Le Conseil d’évaluation de l’école conduit depuis 2020 un cycle d’évaluations d’établissement combinant auto-évaluation et regard externe. Le point faible identifié par la Cour des comptes est constant : les rapports concluent, et rien ne suit. L’effet mesuré des démarches d’évaluation dépend presque entièrement des moyens affectés aux suites, accompagnement, formation, marges d’organisation.',
     ideeRecue: '« Évaluer, c’est déjà agir. » Évaluer sans donner de suites, c’est produire un document et une rancune. C’est la différence entre cette carte et un classement des établissements : elle ne vaut que par ce qu’on met derrière.',
-    mot: "Le rapport d'évaluation est le seul produit du ministère dont la production est garantie et l'usage, facultatif.",
+    mot: "Le rapport d’évaluation est le seul produit du ministère dont la production est garantie et l’usage, facultatif.",
   },
 
   /* ----------------------------- 53 · moyens -------------------------- */
@@ -1117,7 +1117,7 @@ export const CATALOGUE = [
     physique: { adhesion: +3 },
     preuve: 'La loi de 2022 a ouvert la possibilité d’un contrat à durée indéterminée aux assistants d’éducation après six ans. Dans les faits, la vie scolaire reste l’un des services les plus instables des établissements : équipes renouvelées chaque année, peu ou pas de formation, et la charge du suivi quotidien des élèves les plus fragiles. Le climat scolaire se construit là, pas dans les circulaires.',
     ideeRecue: '« Les surveillants, ce sont des étudiants de passage. » C’est le modèle de 1937, encore inscrit dans les textes. Les établissements qui vont bien sont ceux qui ont réussi, à titre local, à s’en écarter.',
-    mot: "Le service qui connaît le mieux les élèves est aussi celui dont on renouvelle l'équipe tous les ans. Personne ne trouve ça bizarre depuis 1937.",
+    mot: "Le service qui connaît le mieux les élèves est aussi celui dont on renouvelle l’équipe tous les ans. Personne ne trouve ça bizarre depuis 1937.",
   },
 
   /* ----------------------------- 54 · parcours ------------------------ */
@@ -1139,7 +1139,7 @@ export const CATALOGUE = [
     physique: {},
     preuve: 'Les 54 heures annuelles dédiées à l’orientation existent dans les textes depuis 2018 ; leur mise en œuvre effective est très inégale, faute d’heures fléchées et de personnels. Le mécanisme d’inégalité est documenté : à résultats scolaires identiques, l’origine sociale continue de commander les vœux. Le corps des psychologues de l’éducation nationale compte environ 5 500 personnes pour 7 500 postes.',
     ideeRecue: '« L’orientation, c’est le rôle des familles. » C’est précisément le problème : quand elle l’est, elle reproduit exactement ce que les familles savent déjà de l’école, et rien de ce qu’elles n’en savent pas.',
-    mot: "Le moment où le système décide de ce que deviendront les élèves est aussi celui où il leur consacre le moins de temps d'adulte formé.",
+    mot: "Le moment où le système décide de ce que deviendront les élèves est aussi celui où il leur consacre le moins de temps d’adulte formé.",
   },
 
   /* ----------------------------- 55 · moyens -------------------------- */
@@ -1191,7 +1191,7 @@ export const CATALOGUE = [
     physique: { adhesion: +2 },
     preuve: 'Première recommandation du rapport du Haut-commissariat à la Stratégie et au Plan (août 2026) : tout nouveau dispositif doit être conçu, dès l’amont, pour que ses effets sur les résultats des élèves soient mesurables et effectivement mesurés. Seconde recommandation : les résultats de ces évaluations doivent être rendus publics. Le rapport ajoute la contrainte qui fait mal : il faut laisser le temps aux réformes de produire des résultats avant d’en changer.',
     ideeRecue: '« On évalue déjà tout. » On mesure beaucoup, la France dispose d’un dispositif d’évaluations nationales exhaustives sans équivalent à l’étranger. On évalue rarement : mesurer le niveau des élèves n’est pas la même chose que mesurer l’effet d’une politique, ce qui suppose de l’avoir prévu avant de la lancer.',
-    mot: "La seule carte du catalogue dont l'effet consiste à empêcher vos successeurs de faire n'importe quoi. Vous compris.",
+    mot: "La seule carte du catalogue dont l’effet consiste à empêcher vos successeurs de faire n’importe quoi. Vous compris.",
   },
 
   /* ----------------------------- 57 · moyens -------------------------- */
@@ -1212,7 +1212,7 @@ export const CATALOGUE = [
     physique: { adhesion: +6 },
     preuve: 'Le rapport du HCSP identifie là un angle mort du système : on compte un inspecteur pour 280 enseignants dans le premier degré et un pour 240 dans le second, et les inspecteurs, accaparés par la mise en œuvre des réformes, se sont éloignés des classes. Or confondre celui qui évalue et celui qui accompagne rend le second rôle presque impossible à tenir. Le second degré n’a même pas d’équivalent des conseillers pédagogiques de circonscription.',
     ideeRecue: '« Les profs ne veulent pas qu’on entre dans leur classe. » Ce qu’ils refusent, c’est le jugement. L’observation entre pairs, elle, est la pratique la plus rare en France et l’une des mieux corrélées à l’efficacité ailleurs, et là où elle a été organisée, elle a été adoptée.',
-    mot: "Il n'y a pas de mot pour cette carte : elle est ennuyeuse, invisible, et probablement la plus efficace de la page.",
+    mot: "Il n’y a pas de mot pour cette carte : elle est ennuyeuse, invisible, et probablement la plus efficace de la page.",
   },
 
   /* ----------------------------- 58 · autonomie ----------------------- */
@@ -1239,7 +1239,7 @@ export const CATALOGUE = [
     greve: { intensite: 4, theme: 'statut', segment: '1erdegre' },
     preuve: 'La France est le seul pays de l’OCDE où la majorité des écoles (93 % des communes) organise les cours sur quatre jours ; ailleurs, la règle est quatre jours et demi ou cinq. Avec 864 heures annuelles en élémentaire contre 730 en moyenne européenne, la conséquence arithmétique est connue : des journées d’école parmi les plus longues du monde développé. Le HCSP recommande le retour à quatre jours et demi au minimum, en tenant compte des contraintes des familles et des enseignants.',
     ideeRecue: '« On a déjà essayé, ça n’a pas marché. » La réforme de 2013 a échoué sur son financement et sa méthode (le périscolaire à la charge des communes, sans moyens ni concertation) et non sur son diagnostic, qui n’a jamais été contesté par les chronobiologistes. C’est la mise en œuvre qui a été abandonnée, pas la question.',
-    mot: "Deux ministres s'y sont brûlés en dix ans. Le rapport le redemande quand même, ce qui en dit long sur la solidité du diagnostic, et sur le peu de poids qu'a un diagnostic.",
+    mot: "Deux ministres s’y sont brûlés en dix ans. Le rapport le redemande quand même, ce qui en dit long sur la solidité du diagnostic, et sur le peu de poids qu’a un diagnostic.",
   },
 
   /* ----------------------------- 61 · moyens -------------------------- */
@@ -1247,7 +1247,7 @@ export const CATALOGUE = [
   /* ----------------------------- 62 · autonomie ----------------------- */
   {
     id: 'manuels',
-    label: 'Créer une labellisation des manuels scolaires',
+    label: 'Publier une information qualitative sur les manuels scolaires, par une commission d’experts',
     famille: 'autonomie',
     porteurs: ['HCSP (recommandation 10)', 'précédents portugais et japonais'],
     contre: ['les éditeurs scolaires', 'les organisations syndicales, qui y voient une atteinte à la liberté pédagogique'],
@@ -1262,9 +1262,9 @@ export const CATALOGUE = [
     ],
     physique: { adhesion: -4 },
     greve: { intensite: 3, theme: 'pedagogie', segment: '1erdegre' },
-    preuve: 'Les enquêtes en classe montrent que, pour les apprentissages fondamentaux au moins, le manuel dicte largement la pratique, or leur qualité et leur orientation didactique sont très variables, et la France est l’un des rares pays sans aucune certification. Le HCSP écarte la labellisation, à laquelle éditeurs et syndicats s’opposent frontalement, et propose une information qualitative publique par une commission de spécialistes et d’enseignants : place réservée aux domaines du programme, exactitude des définitions, conformité aux connaissances scientifiques, qualité des exercices, approche didactique servie.',
+    preuve: 'Les enquêtes en classe montrent que, pour les apprentissages fondamentaux au moins, les manuels dictent largement la pratique, or leur qualité et leur orientation didactique sont très variables, et la France est l’un des rares pays sans aucune certification. Le HCSP écarte la labellisation, à laquelle éditeurs et syndicats s’opposent frontalement, et propose une information qualitative publique par une commission de spécialistes et d’enseignants : place réservée aux domaines du programme, exactitude des définitions, conformité aux connaissances scientifiques, qualité des exercices, approche didactique servie.',
     ideeRecue: '« Un ministre n’a pas à dire aux enseignants quel manuel choisir. » Il ne le dit pas : il publie ce qu’un manuel contient. C’est le refus même de publier cette information qui est une position, et elle n’est défendue nulle part au nom de l’intérêt des élèves.',
-    mot: "Informer sur le contenu d'un manuel scolaire : on croirait une mesure sans adversaire. Elle en a deux, et ils sont organisés.",
+    mot: "Informer sur le contenu d’un manuel scolaire : on croirait une mesure sans adversaire. Elle en a deux, et ils sont organisés.",
   },
 
   /* ----------------------------- 63 · moyens -------------------------- */
@@ -1285,7 +1285,7 @@ export const CATALOGUE = [
     physique: { hna: { delta: +0.4, duree: 2 }, adhesion: +2 },
     preuve: 'C’est la seule discipline où le volume horaire est vraiment en cause : les enseignants déclarent 47 heures annuelles de sciences en CM1 pour 72 recommandées, soit un déficit de 35 %, quand leurs homologues européens en déclarent 58. Les enseignants du premier degré se disent souvent peu à l’aise avec cet enseignement, moins qu’avec les mathématiques. Le rapport pointe aussi que la promotion des démarches d’investigation, utiles pour l’intérêt des élèves, a pu se faire au détriment de l’acquisition des concepts fondamentaux.',
     ideeRecue: '« Les sciences, ça s’apprend au collège. » Les écarts observés à TIMSS existent déjà en CM1, et la France est le pays où l’horaire réel s’écarte le plus de l’horaire prescrit. Ce qui n’est pas enseigné à l’école n’est pas rattrapé ensuite : c’est reporté sur des professeurs de physique-chimie qu’on ne parvient déjà plus à recruter.',
-    mot: "Trente-cinq pour cent de l'horaire officiel simplement absent des emplois du temps. Personne ne l'a décidé ; c'est ce qui rend la chose difficile à corriger.",
+    mot: "Trente-cinq pour cent de l’horaire officiel simplement absent des emplois du temps. Personne ne l’a décidé ; c’est ce qui rend la chose difficile à corriger.",
   },
 
   /* ----------------------------- 64 · moyens -------------------------- */
@@ -1320,7 +1320,7 @@ export const CATALOGUE = [
     physique: { adhesion: +5 },
     preuve: 'La réforme du collège de 2015 a été préparée deux ans, appliquée une année, puis partiellement abrogée par décret dès l’arrivée du ministre suivant : les enseignements pratiques interdisciplinaires, cœur du dispositif, sont devenus facultatifs, ce qui les a tués sans les supprimer. Sept ministres se sont succédé depuis 2022. Une loi de programmation ne se défait pas d’un trait de plume : elle coûte du capital politique et du temps parlementaire, et c’est exactement ce qu’elle achète.',
     ideeRecue: '« L’essentiel est de faire la réforme ; on verra bien ensuite. » C’est le raisonnement de tous vos prédécesseurs, et il explique pourquoi trois réformes majeures sur quatre ont été abrogées ou vidées en dix ans. Sans consolidation, une part importante de ce que vous aurez semé sera arrachée par le suivant, et le jeu vous le montrera à la projection de fin.',
-    mot: "Douze points de capital pour que votre successeur ne puisse pas vous effacer d'un décret. C'est cher. C'est le seul achat du catalogue qui porte sur l'après.",
+    mot: "Douze points de capital pour que votre successeur ne puisse pas vous effacer d’un décret. C’est cher. C’est le seul achat du catalogue qui porte sur l’après.",
   },
 
   /* ----------------------------- 68 · autonomie ----------------------- */
@@ -1372,7 +1372,7 @@ export const CATALOGUE = [
     physique: { adhesion: +1 },
     preuve: 'Depuis 2018, le ministère édite des guides « pour enseigner les fondamentaux à l’école primaire et au collège », coordonnés par la DGESCO et appuyés sur l’état de la recherche ; celui sur les nombres et la résolution de problèmes au CP a été relu par des membres du Conseil scientifique. Une dizaine ont été publiés, de 100 à 200 pages chacun. Le HCSP les tient pour des outils précieux, pour les professeurs comme pour leurs formateurs. Leur limite est entière et connue : un guide ne s’applique pas tout seul. Le même rapport cite des inspecteurs comparant les injonctions successives à une partie de Tetris, où les briques descendent plus vite qu’on ne les range.',
     ideeRecue: '« Publier une ressource, ce n’est pas agir. » C’est agir à un coût dérisoire, et c’est l’une des rares choses qu’un ministre puisse faire sans arbitrage budgétaire. Simplement, l’effet est intégralement suspendu à l’adhésion des personnels : c’est la carte du catalogue où votre facteur d’implémentation compte le plus, et où il est le plus visible.',
-    mot: "Quinze millions, deux points de capital, et un vrai contenu. La direction générale vous l'écrit en quelques mois, ce sera hébergé sur Éduscol — et quelques professeurs iront vraiment le consulter. Quelques-uns.",
+    mot: "Quelques millions, deux points de capital, et un vrai contenu. La direction générale vous l’écrit en quelques mois, ce sera hébergé sur Éduscol — et quelques professeurs iront vraiment le consulter. Quelques-uns.",
   },
   {
     id: 'kit_empathie',
@@ -1421,7 +1421,7 @@ export const CATALOGUE = [
       { compteur: 'reussite', central: 2, delai: 2, cadenas: 3, source: 'le temps d’enseignement effectivement reçu est un déterminant direct des acquis ; 9 % des heures ne sont pas assurées au collège public (Cour des comptes, 2025)' },
     ],
     physique: { hna: { delta: -1.2, duree: 3 } },
-    preuve: 'Mi-octobre 2026, le ministre a affecté 3 000 professeurs titulaires remplaçants en urgence et annoncé poursuivre ce plan ; aucune ligne de la loi de finances ne le pérennise. Au 7 septembre 2026, 53 % des collèges et lycées publics manquaient d’au moins un professeur selon l’enquête du SNES-FSU (1 033 établissements) ; le ministère parlait de volumes d’heures plutôt que de postes entiers. Le ministre a reconnu que 7 % des heures de cours n’étaient pas assurées, et la Cour des comptes mesure 9 % d’heures perdues dans les collèges publics en 2023-2024. En octobre 2026, 3 000 professeurs titulaires remplaçants ont été affectés en urgence dans les lycées les plus touchés : le nombre de lycées « en grande difficulté » est passé de 114 à 47 en une semaine. Cette carte inscrit ce dispositif au budget au lieu de le reconduire en urgence.',
+    preuve: 'Mi-octobre 2026, le ministre a affecté 3 000 professeurs titulaires remplaçants en urgence et annoncé poursuivre ce plan ; aucune ligne de la loi de finances ne le pérennise. Au 7 septembre 2026, 53 % des collèges et lycées publics manquaient d’au moins un professeur selon l’enquête du SNES-FSU (1 033 établissements) ; le ministère parlait de volumes d’heures plutôt que de postes entiers. Le ministre a reconnu que 7 % des heures de cours n’étaient pas assurées, et la Cour des comptes mesure 9 % d’heures perdues dans les collèges publics en 2023-2024. Dans les lycées les plus touchés, le nombre de lycées « en grande difficulté » est passé de 114 à 47 en une semaine. Cette carte inscrit ce dispositif au budget au lieu de le reconduire en urgence.',
     ideeRecue: '« Il suffit de recruter des remplaçants. » Deux tiers des absences non remplacées ont une cause institutionnelle (examens, formations, sorties) et sont courtes : une brigade ne les couvre pas. Et des postes créés ne mettent personne devant les élèves tant que les concours ne font pas le plein.',
     mot: "En octobre 2026, ces 3 000 titulaires ont été prêtés à la hâte. Ici, vous les inscrivez au budget : c’est ce qui sépare un plan d’urgence d’un système. Cela marche là où les candidats existent ; le vivier, lui, n’a pas changé d’avis.",
   },
@@ -1509,7 +1509,7 @@ export const CATALOGUE = [
       { compteur: 'paix',    central: 2, delai: 1, cadenas: 2, source: '14,5 % des contributions lycéennes évoquent Parcoursup et l’orientation' },
     ],
     physique: {},
-    preuve: 'Fin octobre 2026, le gouvernement a annoncé onze mesures de transparence pour Parcoursup, dont neuf dès la session 2027, et son remplacement en 2028. À l’issue de la phase principale du 11 juillet 2026, 126 632 candidats n’avaient reçu aucune proposition, soit 17,4 % ; la part de candidats « sans solution » a progressé de 5,5 points en un an, ce que le ministère attribue à la démographie. Le comité éthique et scientifique de Parcoursup recommandait en avril 2026 de publier le code, ou au moins la spécification, du module de classement ; un rapport parlementaire de février 2026 propose de retirer le lycée d’origine des dossiers et de publier les algorithmes locaux. Le gouvernement a exclu la suppression et promis des « mesures concrètes » de transparence pour fin octobre 2026. Gabriel Attal propose d’y ajouter mentorat, tutorat et stages.',
+    preuve: 'Fin octobre 2026, le gouvernement a annoncé onze mesures de transparence pour Parcoursup, dont neuf dès la session 2027, et son remplacement en 2028. À l’issue de la phase principale du 11 juillet 2026, 126 632 candidats n’avaient reçu aucune proposition, soit 17,4 % ; la part de candidats « sans solution » a progressé de 5,5 points en un an, ce que le ministère attribue à la démographie. Le comité éthique et scientifique de Parcoursup recommandait en avril 2026 de publier le code, ou au moins la spécification, du module de classement ; un rapport parlementaire de février 2026 propose de retirer le lycée d’origine des dossiers et de publier les algorithmes locaux. Le gouvernement avait exclu l’abolition avant d’annoncer, fin octobre 2026, le remplacement en 2028. Gabriel Attal propose d’y ajouter mentorat, tutorat et stages.',
     ideeRecue: '« Parcoursup, c’est un algorithme qui décide. » L’algorithme national ne classe personne : il transmet des classements faits dans chaque formation, par des humains, avec des critères qu’ils ne publient pas. C’est là que la transparence manque.',
     mot: "La réponse la plus raisonnable, et celle qui ne fera jamais la une : personne n’a jamais défilé pour une documentation technique.",
   },
@@ -1517,10 +1517,10 @@ export const CATALOGUE = [
   /* ------------------------------ L6 · Parcoursup, la fin ----------- */
   {
     id: 'parcoursup_fin',
-    label: 'Avancer le remplacement de Parcoursup à 2027 : plus de sélection à l’entrée de l’université, et des places en plus',
+    label: 'Avancer le remplacement de Parcoursup à 2027 : sans sélection à l’entrée de l’université, et des places en plus',
     famille: 'lycee',
     porteurs: ['La France insoumise', 'Parti socialiste (projet « Vivre libre »)', 'les organisations lycéennes et étudiantes (« 10 mesures d’urgence », 250 000 places)', 'UDR, alliée du RN (proposition de loi de février 2026)'],
-    contre: ['le gouvernement et le ministre de l’Enseignement supérieur (« pas d’abolition »)', 'Raphaël Glucksmann et Édouard Philippe (améliorer plutôt que supprimer)'],
+    contre: ['le gouvernement et le ministre de l’Enseignement supérieur (qui refusent d’avancer l’échéance à 2027)', 'Raphaël Glucksmann et Édouard Philippe (améliorer plutôt que supprimer)'],
     perimetre: 'matignon',
     cout: 0.60, coutETP: 0, pol: 12,
     theme: 'parcoursup', once: true, excl: 'parcoursup', reforme: true,
@@ -1532,9 +1532,9 @@ export const CATALOGUE = [
       { compteur: 'reussite', central: -2, delai: 4, cadenas: 1, source: 'sans sélection ni places suffisantes, le tri se déplace vers l’échec en première année ; effet non mesuré' },
     ],
     physique: {},
-    preuve: 'Fin octobre 2026, le gouvernement a annoncé le remplacement de Parcoursup en 2028, sans en définir le successeur ; la mesure avance l’échéance et fixe les principes. Parcoursup a été créé par la loi de 2018 après l’échec d’Admission post-bac, qui avait fini par tirer au sort des bacheliers en 2017. En 2026, 126 632 candidats restaient sans proposition à l’issue de la phase principale. La suppression est demandée par La France insoumise, le projet du Parti socialiste, les organisations lycéennes et étudiantes (avec 250 000 places supplémentaires dans le supérieur) et une proposition de loi déposée en février 2026. Le gouvernement l’exclut ; Raphaël Glucksmann et Édouard Philippe préfèrent l’améliorer. Aucune étude n’évalue ce que produirait, en France, une affectation sans classement : le niveau de preuve est au plus bas, dans les deux sens.',
+    preuve: 'Fin octobre 2026, le gouvernement a annoncé le remplacement de Parcoursup en 2028, sans en définir le successeur ; la mesure avance l’échéance et fixe les principes. Parcoursup a été créé par la loi de 2018 après l’échec d’Admission post-bac, qui avait fini par tirer au sort des bacheliers en 2017. En 2026, 126 632 candidats restaient sans proposition à l’issue de la phase principale. La suppression est demandée par La France insoumise, le projet du Parti socialiste, les organisations lycéennes et étudiantes (avec 250 000 places supplémentaires dans le supérieur) et une proposition de loi déposée en février 2026. Le gouvernement le renvoie à 2028 ; Raphaël Glucksmann et Édouard Philippe préfèrent l’améliorer. Aucune étude n’évalue ce que produirait, en France, une affectation sans classement : le niveau de preuve est au plus bas, dans les deux sens.',
     ideeRecue: '« Sans Parcoursup, plus de tri. » Le tri se fait alors ailleurs : par le nombre de places, par le tirage au sort comme en 2017, ou par l’échec en première année. Supprimer la plateforme déplace la question ; cela ne la supprime pas.',
-    mot: "La mesure la plus demandée dans la rue, la moins étudiée dans les rapports. Dix-huit points de colère en moins le soir même ; ce qui se passe en septembre 2028 n’est écrit nulle part.",
+    mot: "La mesure la plus demandée dans la rue, la moins étudiée dans les rapports. Dix-huit points de colère en moins le soir même ; ce qui se passe en septembre 2027 n’est écrit nulle part.",
   },
 
   /* ------------------------------ L7 · trente par classe ------------ */
@@ -1576,7 +1576,7 @@ export const CATALOGUE = [
     physique: {},
     preuve: 'Les conseils de la vie lycéenne existent depuis 1990 et les élèves siègent au conseil d’administration des lycées, en minorité. Les organisations lycéennes demandent davantage de sièges et une « refonte de la démocratie lycéenne » ; le gouvernement a répondu à l’automne 2026 par une demi-journée banalisée de « temps lycéen » dans chaque lycée et par une consultation anonyme en ligne, que les chefs d’établissement ont jugée improvisée. La recherche sur la participation des élèves montre un effet sur le climat déclaré ; rien de solide sur les résultats scolaires.',
     ideeRecue: '« Les lycéens ne sont pas là pour gérer le lycée. » Ils y passent 1 224 heures par an, et ils ont rempli 76 500 contributions en deux semaines quand on leur a demandé leur avis. La question n’est pas s’ils ont un avis : c’est qui l’écoute.',
-    mot: "Ne coûte rien, ne rapporte rien de visible, et c’est la seule mesure de la liste qui ne se retire pas : on ne reprend pas un siège qu’on a donné.",
+    mot: "Coûte peu, ne rapporte rien de visible, et c’est la seule mesure de la liste qui ne se retire pas : on ne reprend pas un siège qu’on a donné.",
   },
 
   /* ------------------------------ L9 · le bac ---------------------- */
@@ -1625,7 +1625,7 @@ export const CATALOGUE = [
   /* ------------------------------ L11 · les postes ----------------- */
   {
     id: 'annuler_suppressions',
-    label: 'Inscrire dans le budget les 836 suppressions annoncées comme annulées, et annuler aussi les 752 autres',
+    label: 'Inscrire dans le budget l’annulation des 836 suppressions annoncées, et annuler aussi les 752 autres',
     famille: 'lycee',
     porteurs: ['l’intersyndicale de l’éducation (grève du 8 octobre 2026)', 'les organisations lycéennes', 'les députés écologistes et insoumis (amendements au PLF 2027)'],
     contre: ['le ministère : « 36 200 élèves de moins dans le second degré, les postes suivent la démographie »', 'Bercy'],
@@ -1641,7 +1641,7 @@ export const CATALOGUE = [
     physique: { adhesion: +3 },
     preuve: 'Le ministre a annoncé fin octobre 2026 que les 836 suppressions du second degré public seraient annulées et que 500 postes seraient créés ; aucun amendement au budget n’a été voté, et les 752 autres suppressions (414 dans le premier degré public, 338 dans le privé) ne sont pas concernées. Le projet de loi de finances pour 2027, présenté le 2 octobre 2026, augmente le budget de l’Éducation nationale de 1,2 milliard d’euros et supprime 1 588 postes d’enseignants, dont 1 250 dans le public (414 dans le premier degré, 836 dans le second). Le ministère justifie ces suppressions par la baisse du nombre d’élèves : 36 200 de moins dans le second degré à la rentrée 2026 selon la DEPP. Les syndicats et les lycéens répondent qu’il manque déjà un professeur dans un établissement sur deux. Les deux séries de chiffres sont exactes : l’une compte des élèves, l’autre des classes sans professeur, et la baisse des élèves ne se produit pas là où les professeurs manquent.',
     ideeRecue: '« Moins d’élèves, donc moins de profs, c’est logique. » C’est logique en moyenne nationale. Dans un lycée donné, une classe de 35 ne devient pas une classe de 30 parce qu’un collège de l’autre bout du pays a perdu trois élèves par niveau.',
-    mot: "Cent vingt millions d’euros, le prix le plus bas du catalogue pour la colère la plus précise. Bercy, lui, retiendra que vous avez commencé par défaire son budget.",
+    mot: "Cent vingt millions d’euros, un prix bas pour la colère la plus précise. Bercy, lui, retiendra que vous avez commencé par défaire son budget.",
   },
   /* =====================================================================
      DANS LE LYCÉE : LA PAROLE DES ÉLÈVES (version grand public)
@@ -1673,14 +1673,14 @@ export const CATALOGUE = [
     ],
     physique: {},
     preuve: 'Le Portugal a créé en 2017 un budget participatif dans tous ses collèges et lycées : un euro par élève, des propositions déposées et votées par les élèves, un projet gagnant réalisé dans l’année. Des centaines d’établissements y participent ; les propositions portent surtout sur le bien-être et la vie commune, et les chefs d’établissement interrogés y voient un apprentissage civique. Il n’existe pas d’évaluation nationale de ses effets. En France, le fonds de vie lycéenne existe depuis 2001, mais le conseil d’administration en vote le montant : 771 € par lycée en moyenne, de zéro à 64 000 €. Deux euros par élève, c’est 4,5 millions d’euros pour tous les lycées de France, et, pour un lycée de 1 000 élèves, deux fois et demie la moyenne actuelle.',
-    ideeRecue: '« Deux euros par élève, c’est symbolique. » C’est six fois plus que la moyenne de ce que les lycées votent aujourd’hui pour les projets de leurs élèves, et c’est surtout la première fois que ce sont eux qui décident de la dépense.',
+    ideeRecue: '« Deux euros par élève, c’est symbolique. » C’est deux fois et demie la moyenne de ce que les lycées votent aujourd’hui pour les projets de leurs élèves, et c’est surtout la première fois que ce sont eux qui décident de la dépense.',
     mot: "Au Portugal, les élèves ont surtout voté pour des bancs, des micro-ondes et des toilettes. Ce qu’on vote dit ce qui manque.",
   },
 
   /* ------------------------------ V2 · le droit de réponse ---------- */
   {
     id: 'droit_reponse',
-    label: 'Le droit de réponse : toute question du CVL reçoit une réponse écrite sous un mois',
+    label: 'Le droit à une réponse : toute question du conseil de la vie lycéenne (CVL) reçoit une réponse écrite sous un mois',
     famille: 'vie_lyceenne',
     porteurs: ['proposition du jeu', 'la médiatrice de l’Éducation nationale (28 450 saisines en 2025, 78 % de succès)', 'les organisations lycéennes (« personne ne nous écoute »)'],
     contre: ['une partie des chefs d’établissement, qui y voient une procédure de plus'],
@@ -1970,7 +1970,7 @@ export const CATALOGUE = [
     ],
     physique: {},
     preuve: 'Pendant les vagues de chaleur de mai et juin 2026, plus de 30 °C ont été relevés dans 78 % puis 88 % des collèges et lycées ayant répondu au relevé du SNES-FSU, et 87 % n’avaient aucune mesure d’adaptation ; le 7 septembre 2026, deux lycées de l’Hérault ont renvoyé leurs élèves. Les murs sont aux régions, dont les plans de rénovation thermique ne suivent pas. Sur dix millions d’élèves américains, une étude de référence trouve qu’une année scolaire plus chaude d’un degré Fahrenheit réduit les apprentissages d’environ 1 %, et que la climatisation des écoles efface l’essentiel de l’effet. La mesure impose un diagnostic thermique publié pour chaque lycée, un protocole national au-dessus de 30 °C mesurés en classe, et un fonds État-région de 200 M€ par an pendant cinq ans pour les travaux, qui va d’abord aux lycées les plus chauds et les plus défavorisés.',
-    ideeRecue: '« Il a toujours fait chaud en juin. » Pas comme ça, pas en mai, et pas en septembre. Et les cours ne s’arrêtaient pas en juin 1990 parce que l’année était finie, pas parce qu’il faisait 32 °C dans la salle.',
+    ideeRecue: '« Il a toujours fait chaud en juin. » Pas comme ça, pas en mai, et pas en septembre. Et les cours s’arrêtaient en juin 1990 parce que l’année était finie, pas parce qu’il faisait 32 °C dans la salle.',
     mot: "Un ministre qui parle de climat scolaire quand il fait 34 °C dans la salle de physique devrait d’abord régler le second.",
   },
   {
@@ -1978,7 +1978,7 @@ export const CATALOGUE = [
     label: 'Harmoniser entre régions : un fonds de 200 M€ par an pour les lycées des régions qui investissent le moins',
     famille: 'territoires',
     porteurs: ['des députés de plusieurs groupes (amendements aux lois de finances pour indexer la dotation régionale d’équipement scolaire, gelée depuis 2008)', 'la Région Île-de-France (sa dotation par élève a baissé de 219 € en 2008 à 162 € en 2022)', 'proposition du jeu pour le fonds, conditionné à la publication du bulletin de chaque lycée'],
-    contre: ['Bercy (une dotation de plus, que les lois de finances n’ont pas indexée depuis quinze ans)', 'les régions qui investissent déjà le plus, qui ne reçoivent rien', 'les régions en général, quand l’argent vient avec des conditions'],
+    contre: ['Bercy (une dotation de plus, que les lois de finances n’ont pas indexée depuis 2008)', 'les régions qui investissent déjà le plus, qui ne reçoivent rien', 'les régions en général, quand l’argent vient avec des conditions'],
     perimetre: 'matignon',
     cout: 0.20, coutETP: 0, pol: 5,
     theme: 'perequation_regions', once: true, reforme: false,
@@ -1991,7 +1991,7 @@ export const CATALOGUE = [
     physique: {},
     preuve: 'Les régions paient les murs, la cantine, l’internat et les agents des lycées : 6,8 Md€ en 2025, un quart environ du coût d’un lycéen, l’État payant le reste. Leur investissement par lycéen va du simple au double, de 885 € dans les Hauts-de-France à 1 978 € en Bretagne, avec 1 206 € en Île-de-France. Il n’existe aucun tableau officiel de ces écarts ; la presse les reconstitue. Le seul instrument national est la dotation régionale d’équipement scolaire, que l’État verse aux régions pour la construction, les grosses réparations et l’équipement des lycées : 661,8 M€ par an, figés à leur montant de 2008 et répartis selon les versements de 2007. Un amendement relève que, pour l’Île-de-France, elle est passée de 219 € par élève en 2008 à 162 € en 2022. La mesure crée un fonds de 200 M€ par an, soit 30 % de cette dotation et 3 % de ce que les régions dépensent, versé d’abord aux régions du bas du tableau, contre la publication du bulletin de chaque lycée. Ce que 200 M€ comblent dépend de la répartition réelle, que personne n’a publiée : le jeu fixe l’enveloppe, il ne prétend pas mesurer le besoin. Les pays fédéraux, eux, ont des péréquations explicites entre Länder ou États, parce que chez eux l’écart porte sur tout le coût.',
     ideeRecue: '« C’est aux régions de s’en occuper. » C’est vrai pour les murs, et c’est pourquoi il n’y a pas de ministre des lycées de Bretagne. Mais un lycéen des Hauts-de-France ne choisit pas la région où il naît, et la dotation d’État qui devait compenser n’a pas bougé depuis 2008.',
-    mot: "Le même diplôme, la même ministre, et un lycée qui reçoit presque deux fois moins pour ses murs. On peut appeler ça la décentralisation, ou l’adresse.",
+    mot: "Le même diplôme, le même ministère, et un lycée qui reçoit presque deux fois moins pour ses murs. On peut appeler ça la décentralisation, ou l’adresse.",
   },
   {
     id: 'garantie_trajet',
@@ -2163,7 +2163,7 @@ export const DOSSIERS_ETE = [
   {
     id: 'canicule',
     titre: 'Canicule de juillet : des écoles à 40 °C',
-    contexte: 'Une vague de chaleur précoce frappe le pays. Des centres de loisirs ferment, des vidéos de salles surchauffées circulent, et l’on vous demande, à vous qui êtes ministre depuis onze jours, « un plan national pour le bâti scolaire ».',
+    contexte: 'Une vague de chaleur précoce frappe le pays. Des centres de loisirs ferment, des vidéos de salles surchauffées circulent, et l’on vous demande, à vous qui êtes ministre depuis plusieurs mois, « un plan national pour le bâti scolaire ».',
     options: [
       { titre: 'Annoncer un grand plan national de rénovation',
         effets: { parents: 5, capital: -6, adhesion: 0 },
@@ -2287,7 +2287,7 @@ export const AUDIENCES = [
   {
     id: 'greve',
     quand: (s) => s.greves.length > 0 && s.greves[s.greves.length - 1].annee === s.annee,
-    question: (s) => `« ${s.greves[s.greves.length - 1].tauxSyndicats} % de grévistes selon nous, vous en avez compté ${s.greves[s.greves.length - 1].tauxMinistere}. Au-delà des chiffres : qu’avez-vous entendu ? »`,
+    question: (s) => `« ${s.greves[s.greves.length - 1].tauxSyndicats} % de grévistes selon nous, vous en avez compté ${s.greves[s.greves.length - 1].tauxMinistere} %. Au-delà des chiffres : qu’avez-vous entendu ? »`,
     reponses: [
       { type: 'ferme', titre: '« J’ai entendu une minorité mobilisée. Le pays, lui, attend des résultats. »',
         mot: 'Minorer une mobilisation devant ceux qui l’ont organisée : audacieux, au sens où l’entendait Napoléon avant la Bérézina.' },
@@ -2300,9 +2300,9 @@ export const AUDIENCES = [
   {
     id: 'doctrine',
     quand: () => true,
-    question: (s) => `« Votre priorité affichée, c’est « ${({reussite:'la réussite des élèves',egalite:'la réduction des inégalités',sante:'la santé du système',paix:'la paix sociale',budget:'le budget et les salaires'})[s.doctrine[0]]} ». Concrètement, pour nos collègues, ça change quoi lundi matin ? »`,
+    question: (s) => `« Votre priorité affichée, c’est “${({reussite:'la réussite des élèves',egalite:'la réduction des inégalités',sante:'la santé du système',paix:'la paix sociale',budget:'le budget et les salaires'})[s.doctrine[0]]}”. Concrètement, pour nos collègues, ça change quoi lundi matin ? »`,
     reponses: [
-      { type: 'ferme', titre: '« Un cap se juge à cinq ans, pas lundi matin. »',
+      { type: 'ferme', titre: '« Un cap se juge à trois ans, pas lundi matin. »',
         mot: 'Vrai. Mais les gens qui vous font face vivent une succession de lundis matins.' },
       { type: 'methode', titre: '« Voici les trois premières mesures, leur calendrier et leur financement. »',
         mot: 'Répondre à une question par son contenu : technique sous-employée rue de Grenelle.' },
@@ -2451,7 +2451,7 @@ export const AFFAIRES = [
     manchette: 'Les photos du ministre en soirée, la semaine où l’on parlait d’écrans',
     themes: ['portable', 'numerique_tel', 'uniforme', 'empathie', 'vie_scolaire'],
     recit: 'Des photographies de vous en soirée, à l’étranger, un verre à la main, circulent par centaines de milliers de reprises. Elles datent de l’été, elles sont authentiques, elles ne montrent rien d’illégal et rien d’indigne. Elles sortent la semaine où vous demandez aux adolescents de poser leur téléphone et aux familles de tenir un cadre.',
-    lecon: 'Une image ne se réfute pas : elle circule. Le grief n’est pas la soirée, c’est la simultanéité, vous exigez des autres une tenue au moment précis où l’on vous regarde relâchée. Répondre sur le fond (« c’était mon congé, c’est légal ») revient à argumenter contre une photographie, exercice que personne n’a jamais gagné.',
+    lecon: 'Une image ne se réfute pas : elle circule. Le grief n’est pas la soirée, c’est la simultanéité, vous exigez des autres une tenue au moment précis où l’on vous regarde relâché. Répondre sur le fond (« c’était mon congé, c’est légal ») revient à argumenter contre une photographie, exercice que personne n’a jamais gagné.',
     reponses: [
       { type: 'assumer', label: 'En rire une fois, en public, puis revenir au dossier',
         det: 'Une phrase, une seule, à la première question : « J’ai quarante-huit ans et j’ai dansé. Passons aux programmes. » Puis vous ne répondez plus jamais sur le sujet.',
@@ -2918,11 +2918,11 @@ export const COLERES = [
   },
   {
     id: 'effectifs',
-    annonce: { texte: 'Seconde plafonnée à 28 élèves : dès 2027 dans la moitié des lycées les moins favorisés, en 2028 dans tous les lycées publics ; 500 postes de professeurs.', limite: 'Une moitié des lycées attend 2028, et la première et la terminale ne sont pas concernées.', src: ['echosplus26', 'decl28'], plusLoin: ['classe30_lycee', 'classe19'] },
-    intro: 'Des classes de seconde à 35, des chaises ajoutées, des professeurs qui ne connaissent pas les prénoms avant novembre. Le plafond de 28 annoncé ne couvre que la seconde, et la moitié des lycées attend 2028.',
+    annonce: { texte: 'Seconde plafonnée à 28 élèves : dès 2027 dans la moitié des lycées les moins favorisés, en 2028 dans tous les lycées publics ; 500 postes de professeurs.', limite: 'La majorité des lycées attend 2028, et la première et la terminale ne sont pas concernées.', src: ['echosplus26', 'decl28'], plusLoin: ['classe30_lycee', 'classe19'] },
+    intro: 'Des classes de seconde à 35, des chaises ajoutées, des professeurs qui ne connaissent pas les prénoms avant novembre. Le plafond de 28 annoncé ne couvre que la seconde, et la majorité des lycées attend 2028.',
     resume: 'Vrai : parmi les classes les plus chargées d’Europe. Mais « moins nombreux, on apprend mieux » est plus solide au CP qu’en seconde.',
     cri: '« On est 35 par classe. »',
-    qui: 'Un quart des contributions de la consultation ; les lycées de Loiret, de Guyane, de Seine-Saint-Denis.',
+    qui: 'Un quart des contributions de la consultation ; les lycées du Loiret, de Guyane, de Seine-Saint-Denis.',
     contexte: 'Des classes de seconde à 35, des salles où l’on ajoute des chaises, des professeurs qui ne connaissent pas les prénoms avant novembre.',
     faits: [
       { v: '24 %', l: 'des contributions lycéennes évoquent les effectifs par classe', src: 'consult26' },
@@ -2952,8 +2952,8 @@ export const COLERES = [
   },
   {
     id: 'sante',
-    annonce: { texte: '500 postes de psychologues, d’infirmiers et d’assistants sociaux.', limite: 'Les concours n’ont pourvu qu’une fraction des postes précédents : un poste annoncé n’est pas un poste pourvu.', src: ['decl28', 'lettre30'], plusLoin: ['sante_scolaire', 'sante_mentale', 'mediation_pairs'] },
-    intro: 'Une infirmière pour deux ou trois établissements, des psychologues vus pour l’orientation, des rendez-vous à trois mois. Les 500 postes annoncés ne seront pas tous pourvus.',
+    annonce: { texte: '500 postes de psychologues, d’infirmiers et d’assistants sociaux.', limite: 'Les concours n’ont pas pourvu tous les postes précédents (41 postes de PsyEN vacants sur 147 en 2025) : un poste annoncé n’est pas un poste pourvu.', src: ['decl28', 'lettre30'], plusLoin: ['sante_scolaire', 'sante_mentale', 'mediation_pairs'] },
+    intro: 'Une infirmière pour deux ou trois établissements, des psychologues vus pour l’orientation, des rendez-vous à trois mois. Les 500 postes annoncés risquent de ne pas être tous pourvus.',
     resume: 'Une colère ancienne. Ce que les chiffres ne disent pas : ce qui marche le mieux, recruter, ouvrir aux maisons des adolescents, ou donner un adulte référent.',
     cri: '« On n’a ni infirmière ni psy. Quand ça va mal, il n’y a personne. »',
     qui: 'La pancarte « ni prof ni infirmière » des premiers blocus ; la médiatrice de l’Éducation nationale, dont le rapport 2025 porte sur la santé mentale.',
@@ -2994,7 +2994,7 @@ export const COLERES = [
     faits: [
       { v: '≈ 2 000', l: 'interpellations recensées au 2 octobre 2026, dont 90 % de mineurs, et quelque 400 lycées fermés ce jour-là', src: 'interpellations26' },
       { v: '2 M€', l: 'de dégâts au lycée Nelson-Mandela de Nantes, fermé un mois après un incendie ; une centaine d’établissements « gravement dégradés » au 2 octobre', src: 'nantes26' },
-      { v: '62 % et 74 %', l: 'des Français jugent la mobilisation justifiée, et 74 % estiment que La France insoumise met les lycéens en danger : le soutien aux lycéens et la peur des violences cohabitent dans la même opinion', src: 'odoxa26' },
+      { v: '62 % et 74 %', l: '62 % des Français jugent la mobilisation justifiée, et 74 % estiment que La France insoumise met les lycéens en danger : le soutien aux lycéens et la peur des violences cohabitent dans la même opinion', src: 'odoxa26' },
     ],
     lecture: 'Ici, les chiffres ne tranchent pas, et le jeu ne tranchera pas pour vous : deux colères se font face, celle des lycéens interpellés et celle des agents qui nettoient les lycées brûlés, et chacune a ses images. C’est le moment où un ministre choisit une attitude, pas une mesure. Méfiez-vous de ceux qui vous disent que c’est simple.',
     verdict: 'ouverte',

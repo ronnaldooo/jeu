@@ -8,11 +8,13 @@
    [data-theme=dark] rejoue les mêmes valeurs.
    ============================================================ */
 :root{
+  /* couleurs de TEXTE : mêmes teintes, assombries (clair) ou éclaircies (sombre) pour atteindre 4,5:1 */
+  --t-ok:#077507; --t-c-sante:#0f7652; --t-c-budget:#8d5f00; --t-or:#7f6617; --t-alerte:#b73333; --t-rouge-rf:#d3000e; --t-c-egalite:#934d67; --t-c-violet:#7b4ad1;
   --bleu-rf:#000091; --bleu-rf-2:#2a2ac4;
   --papier-creme:#f6f1e6; --papier-creme-bord:#e3dbc8;
   --rouge-rf:#e1000f;
   --papier:#f2f3f7; --fiche:#ffffff; --fiche-2:#eceef4;
-  --encre:#1e1f26; --encre-2:#565b6b; --encre-3:#6b7086;
+  --encre:#1e1f26; --encre-2:#565b6b; --encre-3:#5e6275;
   --filet:#d8dae4; --filet-fort:#b9bdcf;
   --or:#c9a227;
   --c-reussite:#2a78d6; --c-egalite:#e87ba4; --c-sante:#1baf7a;
@@ -22,6 +24,8 @@
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
+  --t-ok:#27ad27; --t-c-sante:#33a880; --t-c-budget:#c98500; --t-or:#d9b545; --t-alerte:#e77070; --t-rouge-rf:#ff605f; --t-c-egalite:#dd759b; --t-c-violet:#a385f0;
+
     --bleu-rf:#8585f6; --bleu-rf-2:#a2a2f8;
     --papier-creme:#232219; --papier-creme-bord:#3c3a2c;
     --rouge-rf:#ff5655;
@@ -36,6 +40,8 @@
   }
 }
 :root[data-theme="dark"]{
+  --t-ok:#27ad27; --t-c-sante:#33a880; --t-c-budget:#c98500; --t-or:#d9b545; --t-alerte:#e77070; --t-rouge-rf:#ff605f; --t-c-egalite:#dd759b; --t-c-violet:#a385f0;
+
   --bleu-rf:#8585f6; --bleu-rf-2:#a2a2f8;
   --papier-creme:#232219; --papier-creme-bord:#3c3a2c;
   --rouge-rf:#ff5655;
@@ -79,7 +85,7 @@ h1,h2,h3{text-wrap:balance; margin:0}
 .jauge .rail{height:4px; background:var(--fiche-2); border-radius:2px; margin-top:2px; overflow:hidden}
 .jauge .rail i{display:block; height:100%; border-radius:2px; transition:width .5s ease}
 .jauge .delta{font-size:.7rem; color:var(--encre-3); font-variant-numeric:tabular-nums}
-.jauge .delta.up{color:var(--ok)} .jauge .delta.down{color:var(--alerte)}
+.jauge .delta.up{color:var(--t-ok)} .jauge .delta.down{color:var(--t-alerte)}
 @keyframes pulse-jauge{0%{background:color-mix(in srgb, var(--bleu-rf) 18%, transparent)} 100%{background:transparent}}
 .jauge.pulse{animation:pulse-jauge 1.1s ease-out; border-radius:3px}
 @keyframes entree-scene{from{opacity:0; transform:translateY(6px)} to{opacity:1; transform:none}}
@@ -122,7 +128,7 @@ h1,h2,h3{text-wrap:balance; margin:0}
 .frise-pas li .mois{font-weight:600; font-variant-numeric:tabular-nums; white-space:nowrap}
 .frise-pas li .quoi{font-size:.7rem; line-height:1.3; flex-basis:100%; color:var(--encre-2)}
 .frise-pas li.fait{color:var(--encre-2)}
-.frise-pas li.fait .mois::after{content:"✓"; color:var(--ok); margin-left:3px; font-size:.65rem}
+.frise-pas li.fait .mois::after{content:"✓"; color:var(--t-ok); margin-left:3px; font-size:.65rem}
 .frise-pas li.ici{color:var(--encre); background:var(--fiche-2); margin-left:-6px; padding:5px 8px 5px 12px; border-radius:2px}
 .frise-pas li.ici::before{content:""; position:absolute; left:-13px; top:50%; width:9px; height:9px; margin-top:-4.5px; border-radius:50%; background:var(--bleu-rf); box-shadow:0 0 0 3px var(--fiche)}
 @media (max-width:1180px){
@@ -155,7 +161,7 @@ h1,h2,h3{text-wrap:balance; margin:0}
 
 /* ---------- options (choix à réponses) ---------- */
 .opts{display:grid; gap:10px; margin-top:18px}
-.opts::before{content:"À vous de décider"; font-size:.7rem; letter-spacing:.14em; text-transform:uppercase; font-weight:700; color:var(--rouge-rf); margin-bottom:-2px}
+.opts::before{content:"À vous de décider"; font-size:.7rem; letter-spacing:.14em; text-transform:uppercase; font-weight:700; color:var(--t-rouge-rf); margin-bottom:-2px}
 .entretien-q .opts::before, .plateau-q .opts::before, .flechage-liste .opts::before{content:none}
 .opt{cursor:pointer; text-align:left; background:var(--fiche); border:1px solid var(--filet); border-left:4px solid var(--filet-fort); padding:14px 18px; border-radius:2px; transition:border-color .12s, background .12s}
 .opt:hover, .opt:focus-visible{border-color:var(--bleu-rf); border-left-color:var(--bleu-rf); background:var(--fiche-2); outline:none}
@@ -165,7 +171,7 @@ h1,h2,h3{text-wrap:balance; margin:0}
 .opt .det.mot{margin-top:5px; font-family:"Newsreader",georgia,serif; font-style:italic; color:var(--encre-3)}
 .opt .chiffres{display:flex; flex-wrap:wrap; gap:3px 14px; margin-top:7px; padding-top:6px; border-top:1px dotted var(--filet);
   font-family:"IBM Plex Mono",monospace; font-size:.74rem; color:var(--encre-2); font-variant-numeric:tabular-nums}
-.opt .chiffres .neg{color:var(--alerte)} .opt .chiffres .pos{color:var(--ok)}
+.opt .chiffres .neg{color:var(--t-alerte)} .opt .chiffres .pos{color:var(--t-ok)}
 .opt .chiffres b{display:inline; margin:0}
 
 /* ---------- doctrine ---------- */
@@ -211,8 +217,8 @@ h1,h2,h3{text-wrap:balance; margin:0}
 /* ---------- deltas d'acteurs (avant validation) ---------- */
 .deltas-acteurs{display:flex; flex-wrap:wrap; gap:6px; margin-top:10px}
 .delta-a{font-family:"IBM Plex Mono",monospace; font-size:.74rem; padding:3px 9px; border:1px solid var(--filet-fort); background:var(--fiche); font-variant-numeric:tabular-nums}
-.delta-a.pos{color:var(--ok); border-color:var(--ok)}
-.delta-a.neg{color:var(--alerte); border-color:var(--alerte)}
+.delta-a.pos{color:var(--t-ok); border-color:var(--ok)}
+.delta-a.neg{color:var(--t-alerte); border-color:var(--alerte)}
 
 /* ---------- tamponner ---------- */
 .btn.tamponner{transform:rotate(-1.5deg); letter-spacing:.06em; text-transform:uppercase; font-weight:700}
@@ -233,13 +239,13 @@ h1,h2,h3{text-wrap:balance; margin:0}
 .annee-chiffres .t .n{font-size:.7rem; letter-spacing:.1em; text-transform:uppercase; color:var(--encre-2); font-weight:700}
 .annee-chiffres .t .v{font-size:2rem; font-weight:700; line-height:1.1; margin-top:4px; font-variant-numeric:tabular-nums}
 .annee-chiffres .t .d{font-size:.84rem; margin-top:2px; font-variant-numeric:tabular-nums; color:var(--encre-3)}
-.annee-chiffres .t .d.up{color:var(--ok); font-weight:600} .annee-chiffres .t .d.down{color:var(--alerte); font-weight:600}
+.annee-chiffres .t .d.up{color:var(--t-ok); font-weight:600} .annee-chiffres .t .d.down{color:var(--t-alerte); font-weight:600}
 .annee-chiffres .t .rail{height:6px; background:var(--fiche-2); border-radius:3px; margin:8px auto 0; max-width:130px; overflow:hidden; position:relative}
 .annee-chiffres .t .rail i{position:absolute; top:0; bottom:0; left:0; border-radius:3px}
 .annee-chiffres .t .rail .tick{position:absolute; top:-3px; bottom:-3px; width:2px; margin-left:-1px; background:var(--encre)}
 .annee-chiffres .lecture{text-align:center; font-size:.84rem; color:var(--encre-2); margin:12px 0 0; font-family:"Newsreader",georgia,serif; font-style:italic}
 .scelles{background:var(--fiche); border:1px solid var(--filet); border-left:3px solid var(--or); max-width:860px; margin:0 auto 14px; padding:14px 18px}
-.scelles .titre-d{font-size:.68rem; letter-spacing:.12em; text-transform:uppercase; font-weight:700; color:var(--or); margin-bottom:6px}
+.scelles .titre-d{font-size:.68rem; letter-spacing:.12em; text-transform:uppercase; font-weight:700; color:var(--t-or); margin-bottom:6px}
 .scelles .ligne-s{display:flex; flex-wrap:wrap; gap:6px 14px; font-size:.85rem; padding:4px 0; border-top:1px dashed var(--filet)}
 .scelles .ligne-s:first-of-type{border-top:0}
 .scelles .val{font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums; font-weight:500}
@@ -286,7 +292,7 @@ details.mecanisme[open]>summary.titre-d{margin-bottom:6px}
 
 /* ---------- dossier d'été ---------- */
 .decryptage{background:var(--fiche-2); border-left:3px solid var(--or); padding:12px 16px; margin-top:16px}
-.decryptage .titre-d{font-size:.66rem; letter-spacing:.12em; text-transform:uppercase; font-weight:700; color:var(--or)}
+.decryptage .titre-d{font-size:.66rem; letter-spacing:.12em; text-transform:uppercase; font-weight:700; color:var(--t-or)}
 .decryptage p{margin:6px 0 0; font-size:.92rem; max-width:70ch}
 
 /* ---------- comprendre l'effet ---------- */
@@ -300,10 +306,10 @@ details.mecanisme[open]>summary.titre-d{margin-bottom:6px}
 .carte.sel .btn-retenir{background:var(--bleu-rf); color:var(--fiche)}
 .carte .comprendre{display:none; background:var(--fiche-2); border-left:3px solid var(--c-sante); padding:10px 12px; font-size:.8rem}
 .carte .comprendre.visible{display:block}
-.carte .comprendre .titre-d{font-size:.62rem; letter-spacing:.1em; text-transform:uppercase; font-weight:700; color:var(--c-sante)}
+.carte .comprendre .titre-d{font-size:.62rem; letter-spacing:.1em; text-transform:uppercase; font-weight:700; color:var(--t-c-sante)}
 .carte .comprendre p{margin:5px 0; max-width:70ch}
 .carte .comprendre .idee{border-top:1px dashed var(--filet-fort); margin-top:8px; padding-top:8px}
-.carte .comprendre .idee .titre-d{color:var(--rouge-rf)}
+.carte .comprendre .idee .titre-d{color:var(--t-rouge-rf)}
 .carte .plie{font-size:.78rem; color:var(--encre-2)}
 .carte .plie .reste{color:var(--encre-3); font-variant-numeric:tabular-nums}
 
@@ -323,13 +329,13 @@ details.mecanisme[open]>summary.titre-d{margin-bottom:6px}
 .solde .tuile .v small{font-size:.78rem; font-weight:400; color:var(--encre-2)}
 .solde .tuile .rail{height:4px; background:var(--fiche-2); border-radius:2px; overflow:hidden; margin-top:3px; width:100%}
 .solde .tuile .rail i{display:block; height:100%; background:var(--c-sante); border-radius:2px; transition:width .25s ease}
-.solde .tuile.neg .v, .solde .tuile.neg .l{color:var(--alerte)} .solde .tuile.neg .rail i{background:var(--alerte)}
+.solde .tuile.neg .v, .solde .tuile.neg .l{color:var(--t-alerte)} .solde .tuile.neg .rail i{background:var(--alerte)}
 .solde .points{display:flex; gap:4px; margin-top:5px}
 .solde .points i{width:11px; height:11px; border-radius:50%; border:1.5px solid var(--filet-fort); background:transparent}
 .solde .points i.on{background:var(--bleu-rf); border-color:var(--bleu-rf)}
 .solde .mineur{display:flex; flex-wrap:wrap; gap:3px 16px; font-size:.76rem; color:var(--encre-2); margin-left:auto; align-self:center}
 .solde .mineur b{color:var(--encre); font-weight:600}
-.solde .mineur .neg, .solde .avert{color:var(--alerte)}
+.solde .mineur .neg, .solde .avert{color:var(--t-alerte)}
 .solde .avert{flex-basis:100%; font-size:.8rem; font-weight:600}
 .regle{font-size:1.12rem; font-weight:700; color:var(--bleu-rf); line-height:1.4; max-width:56ch; margin:0 0 6px; padding-left:12px; border-left:4px solid var(--bleu-rf)}
 .regle + .chapo{margin-top:8px}
@@ -354,12 +360,12 @@ details.mecanisme[open]>summary.titre-d{margin-bottom:6px}
 .carte .porteurs{font-size:.74rem; color:var(--encre-2)}
 .carte .porteurs b{font-weight:600; color:var(--encre)}
 .carte .chiffres{display:flex; flex-wrap:wrap; gap:4px 14px; font-family:"IBM Plex Mono",monospace; font-size:.74rem; color:var(--encre-2); font-variant-numeric:tabular-nums}
-.carte .chiffres .neg{color:var(--alerte)} .carte .chiffres .pos{color:var(--ok)}
+.carte .chiffres .neg{color:var(--t-alerte)} .carte .chiffres .pos{color:var(--t-ok)}
 .carte .reels{display:grid; gap:3px; font-size:.76rem}
 .carte .reels .ligne{display:flex; gap:8px; align-items:baseline}
 .carte .reels .verrous{letter-spacing:1px; white-space:nowrap}
 .carte .reels .src{color:var(--encre-3); font-size:.7rem}
-.carte .alerte-greve{font-size:.72rem; color:var(--rouge-rf); font-weight:600}
+.carte .alerte-greve{font-size:.72rem; color:var(--t-rouge-rf); font-weight:600}
 .carte .mot{font-family:"Newsreader",georgia,serif; font-style:italic; font-size:.92rem; color:var(--encre-2); border-top:1px solid var(--filet); padding-top:8px; margin-top:auto; line-height:1.4}
 .carte .curseurs-carte{display:grid; gap:6px; border-top:1px dashed var(--filet-fort); padding-top:8px}
 .carte .curseurs-carte label{font-size:.7rem; text-transform:uppercase; letter-spacing:.07em; color:var(--encre-2); display:block}
@@ -399,7 +405,7 @@ table.bilan .num{text-align:right}
 .score-bloc{flex:1; min-width:150px; background:var(--fiche-2); border-top:3px solid var(--bleu-rf); padding:12px 16px}
 .score-bloc .val{font-size:1.9rem; font-weight:700; font-variant-numeric:tabular-nums; line-height:1.1}
 .score-bloc .lib{font-size:.68rem; text-transform:uppercase; letter-spacing:.08em; color:var(--encre-2)}
-.revele{color:var(--encre-3)} .revele.bon{color:var(--ok); font-weight:600} .revele.mauvais{color:var(--alerte); font-weight:600}
+.revele{color:var(--encre-3)} .revele.bon{color:var(--t-ok); font-weight:600} .revele.mauvais{color:var(--t-alerte); font-weight:600}
 
 /* ---------- accueil ---------- */
 .accueil{max-width:720px; margin:6vh auto 0; text-align:center}
@@ -530,7 +536,7 @@ table.bilan .num{text-align:right}
 .comp-ligne i.ref{background:var(--filet-fort)}
 .comp-ligne b{font-family:"IBM Plex Mono",monospace; font-size:.8rem; font-variant-numeric:tabular-nums; width:4ch; flex-shrink:0}
 .comp-ecart{font-size:.7rem; font-weight:700; letter-spacing:0; text-transform:none}
-.comp-ecart.neg{color:var(--alerte)} .comp-ecart.pos{color:var(--ok)}
+.comp-ecart.neg{color:var(--t-alerte)} .comp-ecart.pos{color:var(--t-ok)}
 @media (max-width:640px){ .comp-ligne .qui{width:8ch} }
 #comprendre{position:fixed; inset:0; z-index:60; background:var(--papier); overflow-y:auto; overscroll-behavior:contain; padding:0 16px 60px}
 #comprendre .in{max-width:920px; margin:0 auto}
@@ -539,7 +545,7 @@ table.bilan .num{text-align:right}
 #comprendre h3{margin:22px 0 8px; font-size:1rem}
 #comprendre .chapo{margin:14px 0 18px}
 /* entretien de l'Élysée, profil déclaré, fléchage de la rallonge */
-.plateau-num{font-size:.62rem; text-transform:uppercase; letter-spacing:.1em; font-weight:700; color:var(--rouge-rf); margin-bottom:5px}
+.plateau-num{font-size:.62rem; text-transform:uppercase; letter-spacing:.1em; font-weight:700; color:var(--t-rouge-rf); margin-bottom:5px}
 .entretien-q{border-top:1px solid var(--filet); padding-top:14px; margin-top:16px}
 .entretien-q:first-child{border-top:0; margin-top:8px}
 .entretien-q h3{font-size:1rem; font-weight:700; margin:0 0 3px}
@@ -547,7 +553,7 @@ table.bilan .num{text-align:right}
 .opt.choisi{border-color:var(--bleu-rf); border-left-color:var(--bleu-rf); background:var(--fiche-2); box-shadow:inset 3px 0 0 var(--bleu-rf)}
 .opt.choisi b{color:var(--bleu-rf)}
 .flechage{border:1px solid var(--filet); border-left:3px solid var(--c-budget); background:var(--fiche-2); padding:13px 16px; margin:14px 0}
-.flechage .titre-d{font-size:.62rem; letter-spacing:.1em; text-transform:uppercase; font-weight:700; color:var(--c-budget); margin-bottom:5px}
+.flechage .titre-d{font-size:.62rem; letter-spacing:.1em; text-transform:uppercase; font-weight:700; color:var(--t-c-budget); margin-bottom:5px}
 .flechage .det{font-size:.85rem; color:var(--encre-2); margin:0 0 10px; max-width:70ch}
 .flechage-liste{display:flex; flex-direction:column; gap:6px}
 .flechage-liste .opt{padding:9px 12px}
@@ -559,7 +565,7 @@ table.bilan .num{text-align:right}
 .profil-ligne b{min-width:17ch; flex-shrink:0; font-size:.88rem}
 .profil-ligne span{font-size:.84rem; color:var(--encre-2); line-height:1.5; flex:1; min-width:16ch}
 .profil-note{font-size:.78rem; color:var(--encre-3); margin:9px 0 0; line-height:1.5; font-style:italic}
-#hud-sous b.neg{color:var(--alerte)}
+#hud-sous b.neg{color:var(--t-alerte)}
 #hud-sous small{color:var(--encre-3); font-weight:400}
 #hud-alertes{max-width:1100px; margin:0 auto; padding:0 16px 8px}
 .alerte-hud{border-left:3px solid var(--alerte); background:var(--fiche-2); padding:7px 12px; margin-top:6px; font-size:.78rem; line-height:1.5; color:var(--encre-2)}
@@ -578,8 +584,8 @@ table.bilan tr.cache td{background:var(--fiche-2)}
 .argumentaire .arg-d{border-top-color:var(--c-sante)}
 .argumentaire .arg-p{border-top-color:var(--c-budget)}
 .argumentaire .etiq{display:block; font-size:.62rem; font-weight:700; text-transform:uppercase; letter-spacing:.09em; color:var(--encre-2); margin-bottom:6px}
-.argumentaire .arg-d .etiq{color:var(--c-sante)}
-.argumentaire .arg-p .etiq{color:var(--c-budget)}
+.argumentaire .arg-d .etiq{color:var(--t-c-sante)}
+.argumentaire .arg-p .etiq{color:var(--t-c-budget)}
 .argumentaire .dit{font-size:.85rem; line-height:1.6; margin:0 0 8px; font-style:italic !important}
 .argumentaire .verdict{font:400 .76rem/1.55 "Public Sans",system-ui,-apple-system,"Segoe UI",sans-serif; font-style:normal !important; color:var(--encre-2); margin:0; padding-top:7px; border-top:1px dotted var(--filet)}
 @media (max-width:720px){ .argumentaire{grid-template-columns:1fr} }
@@ -594,7 +600,7 @@ table.bilan tr.cache td{background:var(--fiche-2)}
 .bous-note{font-size:.78rem; line-height:1.55; color:var(--encre-2); margin:11px 0 0; padding-top:9px; border-top:1px dotted var(--filet)}
 @media (max-width:560px){ .bous-l{flex-wrap:wrap} .bous-l .lib{flex-basis:100%} }
 .soutien-synd{border:1px solid var(--filet); border-left:3px solid var(--c-sante); background:var(--fiche-2); padding:10px 14px 12px; margin:14px 0}
-.soutien-synd b{display:block; font-size:.7rem; font-weight:700; text-transform:uppercase; letter-spacing:.07em; color:var(--c-sante); margin-bottom:5px}
+.soutien-synd b{display:block; font-size:.7rem; font-weight:700; text-transform:uppercase; letter-spacing:.07em; color:var(--t-c-sante); margin-bottom:5px}
 .soutien-synd span{display:block; font-size:.86rem; line-height:1.6}
 .soutien-synd .quoi{font-weight:600; font-size:.9rem; margin-bottom:3px}
 .soutien-synd .src{font-size:.75rem; color:var(--encre-2); margin-top:7px; padding-top:7px; border-top:1px dotted var(--filet)}
@@ -607,7 +613,7 @@ table.bilan tr.cache td{background:var(--fiche-2)}
 .bous-mesures li::before{content:"·"; position:absolute; left:0; color:var(--encre-3); font-weight:700}
 .bous-mesures.hors li{color:var(--encre-3)}
 .bandeau-mensonge{background:var(--fiche-2); border-left:3px solid var(--rouge-rf); padding:10px 14px; font-size:.84rem; margin:14px 0; line-height:1.55}
-.bandeau-mensonge b{display:block; color:var(--rouge-rf); margin-bottom:3px}
+.bandeau-mensonge b{display:block; color:var(--t-rouge-rf); margin-bottom:3px}
 .revanche-cmp{border:1px solid var(--filet); border-left:3px solid var(--bleu-rf); background:var(--fiche); padding:13px 16px 15px; margin:22px 0 6px}
 .revanche-cmp .titre-d{font-size:.66rem; letter-spacing:.12em; text-transform:uppercase; font-weight:700; color:var(--bleu-rf); margin-bottom:6px}
 .btn.secondaire{background:var(--fiche); color:var(--bleu-rf); border:1px solid var(--bleu-rf)}
@@ -625,12 +631,12 @@ table.bilan tr.cache td{background:var(--fiche-2)}
 .choix-dep{width:100%; max-width:30rem; font:inherit; font-size:1rem; padding:10px 12px; background:var(--fiche-2); color:var(--encre); border:1px solid var(--filet-fort); border-radius:4px}
 .choix-dep:focus{outline:2px solid var(--bleu-rf); outline-offset:1px}
 .fiche-terr{margin-top:14px}
-.fiche-terr > .titre-d{font-size:.68rem; letter-spacing:.12em; text-transform:uppercase; font-weight:700; color:var(--c-egalite); margin:8px 0 0}
-.fiche-terr .rep-liste.faits .v{color:var(--c-egalite)}
+.fiche-terr > .titre-d{font-size:.68rem; letter-spacing:.12em; text-transform:uppercase; font-weight:700; color:var(--t-c-egalite); margin:8px 0 0}
+.fiche-terr .rep-liste.faits .v{color:var(--t-c-egalite)}
 .direct{background:var(--fiche-2); border-left:3px solid var(--c-egalite); padding:12px 16px; margin:16px 0}
-.direct .titre-d{font-size:.68rem; letter-spacing:.12em; text-transform:uppercase; font-weight:700; color:var(--c-egalite)}
+.direct .titre-d{font-size:.68rem; letter-spacing:.12em; text-transform:uppercase; font-weight:700; color:var(--t-c-egalite)}
 .direct .exp{font-size:.86rem; color:var(--encre-2); margin:6px 0 10px; max-width:70ch}
-.direct .btn-mini{cursor:pointer; font-size:.8rem; font-weight:600; padding:8px 12px; border:1px solid var(--c-egalite); background:var(--fiche); color:var(--c-egalite); border-radius:3px}
+.direct .btn-mini{cursor:pointer; font-size:.8rem; font-weight:600; padding:8px 12px; border:1px solid var(--c-egalite); background:var(--fiche); color:var(--t-c-egalite); border-radius:3px}
 .direct .btn-mini[disabled]{opacity:.6; cursor:wait}
 .direct .liens{margin:6px 0 0; padding-left:18px; font-size:.86rem}
 .direct .liens li{margin:6px 0}
@@ -640,7 +646,7 @@ table.bilan tr.cache td{background:var(--fiche-2)}
 .lycee-liste{list-style:none; margin:8px 0 0; padding:0}
 .lycee-liste li{padding:6px 0; border-bottom:1px dotted var(--filet); font-size:.88rem}
 .lycee-liste .c{color:var(--encre-3); font-size:.78rem}
-.lycee-liste .i{font-family:"IBM Plex Mono",monospace; font-weight:700; color:var(--c-egalite); margin-left:6px}
+.lycee-liste .i{font-family:"IBM Plex Mono",monospace; font-weight:700; color:var(--t-c-egalite); margin-left:6px}
 .territoire details.nat{margin:12px 0 0}
 .territoire details.nat summary{cursor:pointer; font-size:.88rem; font-weight:600; color:var(--encre-2)}
 .decision-terr{margin-top:6px}
@@ -650,7 +656,7 @@ table.bilan tr.cache td{background:var(--fiche-2)}
 .chez-vous cite{display:block; font-style:normal; font-size:.7rem; color:var(--encre-3); margin-top:3px}
 .chez-vous cite a{color:inherit}
 .terr-bloc{background:var(--fiche-2); border-left:3px solid var(--c-egalite); padding:12px 16px; margin:14px 0}
-.terr-bloc .titre-d{font-size:.68rem; letter-spacing:.12em; text-transform:uppercase; font-weight:700; color:var(--c-egalite)}
+.terr-bloc .titre-d{font-size:.68rem; letter-spacing:.12em; text-transform:uppercase; font-weight:700; color:var(--t-c-egalite)}
 .terr-liste{list-style:none; margin:8px 0 0; padding:0}
 .terr-liste li{padding:5px 0; font-size:.9rem; line-height:1.5}
 .terr-liste li.ok{color:var(--encre)}
@@ -661,7 +667,7 @@ table.bilan tr.cache td{background:var(--fiche-2)}
 .consigne{font-size:.9rem; color:var(--encre-2); max-width:62ch}
 .rappel-cri{font-family:"Newsreader",georgia,serif; font-size:1.2rem; font-style:italic; color:var(--encre-2); margin:0 0 8px}
 .rep-liste.faits{margin-top:6px}
-.rep-liste.faits .v{color:var(--c-violet)}
+.rep-liste.faits .v{color:var(--t-c-violet)}
 .verdict-bloc{background:var(--fiche-2); border-left:3px solid var(--c-violet); padding:12px 16px; margin:14px 0}
 .verdict-bloc .titre-d{font-size:.68rem; letter-spacing:.12em; text-transform:uppercase; font-weight:700; margin-bottom:4px}
 .verdict-bloc p{margin:6px 0 0; font-size:.92rem; max-width:70ch}
@@ -683,14 +689,14 @@ h3.decider{font-size:1.05rem; margin:18px 0 0; font-weight:700}
 .opt.reponse .btn-mini:hover{border-color:var(--bleu-rf); color:var(--bleu-rf)}
 .opt.reponse .comprendre{display:none; background:var(--fiche-2); border-left:3px solid var(--c-sante); padding:10px 12px; font-size:.8rem; margin-top:8px}
 .opt.reponse .comprendre.visible{display:block}
-.opt.reponse .comprendre .titre-d{font-size:.62rem; letter-spacing:.1em; text-transform:uppercase; font-weight:700; color:var(--c-sante)}
+.opt.reponse .comprendre .titre-d{font-size:.62rem; letter-spacing:.1em; text-transform:uppercase; font-weight:700; color:var(--t-c-sante)}
 .opt.reponse .comprendre p{margin:5px 0; max-width:70ch; font-weight:400}
 .opt.reponse .comprendre .idee{border-top:1px dashed var(--filet-fort); margin-top:8px; padding-top:8px}
-.opt.reponse .comprendre .idee .titre-d{color:var(--rouge-rf)}
+.opt.reponse .comprendre .idee .titre-d{color:var(--t-rouge-rf)}
 .opt.reponse .comprendre .mot-carte{font-family:"Newsreader",georgia,serif; font-style:italic; color:var(--encre-2); border-top:1px solid var(--filet); padding-top:6px}
 .miroir-bloc{background:var(--fiche); border:1px solid var(--filet); border-left:3px solid var(--c-violet); max-width:860px; margin:0 auto 14px; padding:13px 16px 14px}
 .doc .miroir-bloc{max-width:none; margin:18px 0 0}
-.miroir-bloc .titre-d{font-size:.68rem; letter-spacing:.12em; text-transform:uppercase; font-weight:700; color:var(--c-violet); margin-bottom:8px}
+.miroir-bloc .titre-d{font-size:.68rem; letter-spacing:.12em; text-transform:uppercase; font-weight:700; color:var(--t-c-violet); margin-bottom:8px}
 .miroir-bloc ul{list-style:none; margin:0; padding:0; display:grid; gap:7px}
 .miroir-bloc li{border-left:3px solid var(--filet-fort); padding:4px 0 4px 10px}
 .miroir-bloc li.ok{border-left-color:var(--ok)} .miroir-bloc li.ecart{border-left-color:var(--c-budget)}
@@ -729,17 +735,17 @@ h3.decider{font-size:1.05rem; margin:18px 0 0; font-weight:700}
 .conso .rep-serie-note{margin-top:4px}
 @media (max-width:560px){ .conso-l{flex-wrap:wrap} .conso-l .sujet{flex-basis:100%} }
 .promesses{border:1px solid var(--filet); border-left:3px solid var(--c-violet); background:var(--fiche-2); padding:10px 14px 12px; margin:14px 0}
-.promesses b{display:block; font-size:.72rem; font-weight:700; text-transform:uppercase; letter-spacing:.07em; color:var(--c-violet); margin-bottom:5px}
+.promesses b{display:block; font-size:.72rem; font-weight:700; text-transform:uppercase; letter-spacing:.07em; color:var(--t-c-violet); margin-bottom:5px}
 .promesses ul{margin:0; padding-left:18px; font-size:.9rem; line-height:1.55}
 .promesses .src{display:block; font-size:.74rem; color:var(--encre-3); margin-top:7px}
 .lyceens-bloc{border:1px solid var(--filet); border-left:3px solid var(--c-violet); background:var(--fiche); padding:13px 16px 14px; max-width:860px; margin:0 auto 14px}
 .doc .lyceens-bloc{max-width:none; margin:18px 0 0}
-.lyceens-bloc .titre-d{font-size:.68rem; letter-spacing:.12em; text-transform:uppercase; font-weight:700; color:var(--c-violet); margin-bottom:6px}
+.lyceens-bloc .titre-d{font-size:.68rem; letter-spacing:.12em; text-transform:uppercase; font-weight:700; color:var(--t-c-violet); margin-bottom:6px}
 .lyceens-bloc .humeur{font-size:.95rem; margin:0 0 6px}
-.lyceens-bloc .humeur b.neg{color:var(--alerte)} .lyceens-bloc .humeur b.pos{color:var(--ok)}
+.lyceens-bloc .humeur b.neg{color:var(--t-alerte)} .lyceens-bloc .humeur b.pos{color:var(--t-ok)}
 .lyceens-bloc .promesses-l{font-size:.82rem; line-height:1.7; color:var(--encre-2); margin:0}
 .lyceens-bloc .promesses-l span{display:inline-block; margin-right:10px}
-.lyceens-bloc .promesses-l .ok{color:var(--ok)} .lyceens-bloc .promesses-l .non{color:var(--alerte)}
+.lyceens-bloc .promesses-l .ok{color:var(--t-ok)} .lyceens-bloc .promesses-l .non{color:var(--t-alerte)}
 @media (prefers-reduced-motion: reduce){ *{transition:none !important; animation:none !important} }
 @media (max-width:640px){
   #hud{position:static}
@@ -772,7 +778,7 @@ body{height:100%; display:flex; flex-direction:column; height:100dvh; min-height
 .chip{border:0; background:var(--fiche-2); border-radius:6px; padding:3px 6px 4px; text-align:left; cursor:pointer; display:block; min-width:0}
 .chip .n{display:block; font-size:.68rem; letter-spacing:.06em; text-transform:uppercase; color:var(--encre-2); white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
 .chip b{display:block; font-size:.86rem; line-height:1.2; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
-.chip.neg b{color:var(--alerte)}
+.chip.neg b{color:var(--t-alerte)}
 .chip .rail{display:block; height:3px; background:var(--filet); border-radius:2px; margin-top:2px; overflow:hidden}
 .chip .rail u{display:block; height:100%; text-decoration:none; border-radius:2px; transition:width .5s ease}
 @keyframes pulse-chip{0%{background:color-mix(in srgb, var(--bleu-rf) 22%, var(--fiche-2))} 100%{background:var(--fiche-2)}}
@@ -780,7 +786,7 @@ body{height:100%; display:flex; flex-direction:column; height:100dvh; min-height
 .prog{height:3px; background:var(--filet)}
 .prog i{display:block; height:100%; width:0; background:var(--bleu-rf); transition:width .5s ease}
 .bd-alertes{flex:1; display:flex; justify-content:flex-end; gap:6px}
-.alerte-bd{border:1px solid var(--alerte); background:color-mix(in srgb, var(--alerte) 8%, var(--fiche)); color:var(--alerte); border-radius:12px; padding:3px 10px; font-size:.78rem; font-weight:700; cursor:pointer; white-space:nowrap}
+.alerte-bd{border:1px solid var(--alerte); background:color-mix(in srgb, var(--alerte) 8%, var(--fiche)); color:var(--t-alerte); border-radius:12px; padding:3px 10px; font-size:.78rem; font-weight:700; cursor:pointer; white-space:nowrap}
 
 #scene{flex:1; min-height:0; overflow-y:auto; overscroll-behavior:contain; padding:10px 12px 14px; display:flex; justify-content:center; align-items:flex-start}
 @keyframes entree-page{from{opacity:0; transform:translateY(8px)} to{opacity:1; transform:none}}
@@ -818,19 +824,19 @@ cite a{text-underline-offset:2px}
 .pg-note:hover{background:var(--fiche-2)}
 .pg-neuf{margin:0; font-size:.88rem; color:var(--encre-2); background:var(--fiche-2); border-radius:6px; padding:5px 8px}
 .pg-promesses{margin:0; font-size:.84rem; color:var(--encre-2); line-height:1.4}
-.pg-promesses span{display:inline-block; margin-right:8px; color:var(--alerte); font-weight:600}
+.pg-promesses span{display:inline-block; margin-right:8px; color:var(--t-alerte); font-weight:600}
 .pg .note-passation{font-size:1.06rem; line-height:1.42; margin:0; padding:12px 14px; max-width:none; background:#fff8c9; border:1px solid #e6d77a; color:#3a3520; border-radius:2px; transform:rotate(-.6deg); box-shadow:0 2px 6px rgba(0,0,0,.12)}
 :root[data-theme="dark"] .pg .note-passation{background:#4a4520; border-color:#7a6f2f; color:#f3ecc0}
 @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .pg .note-passation{background:#4a4520; border-color:#7a6f2f; color:#f3ecc0} }
 .pg .note-passation p{margin:0 0 6px; max-width:none}
-.pg .note-passation .ps{font-style:italic; margin:0; font-size:.96rem; display:block}
+.pg .note-passation .ps{font-style:italic; margin:0; font-size:.96rem; display:block; color:inherit; opacity:.92}
 .pg-zone{margin-top:auto; display:flex; flex-direction:column; gap:8px; padding-top:2px}
 .pg-zone.decide{flex:1 1 auto; margin-top:0; min-height:0}
 .pg-zone.decide .pg-retour{flex:1 1 auto; display:flex; flex-direction:column; justify-content:center}
 .pg.lecture .pg-info{font-size:1.14rem; line-height:1.5}
 .pg.lecture h2{font-size:1.5rem}
 .pg.nomination h2{font-size:1.3rem; text-wrap:nowrap}
-.pg-q{margin:0; font-size:.8rem; letter-spacing:.06em; text-transform:uppercase; font-weight:700; color:var(--rouge-rf)}
+.pg-q{margin:0; font-size:.8rem; letter-spacing:.06em; text-transform:uppercase; font-weight:700; color:var(--t-rouge-rf)}
 .pg-choix{display:flex; flex-direction:column; gap:8px; flex:1 1 auto; min-height:0}
 .ch{position:relative; display:flex; align-items:stretch; flex:1 1 auto; min-height:56px; max-height:150px; border:1px solid var(--filet); border-left:4px solid var(--filet-fort); border-radius:10px; background:var(--fiche); overflow:hidden; transition:border-color .12s}
 .ch:hover, .ch:focus-within{border-color:var(--bleu-rf); border-left-color:var(--bleu-rf)}
@@ -840,10 +846,10 @@ cite a{text-underline-offset:2px}
 .ch .ch-d{display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; font-size:.88rem; line-height:1.35; color:var(--encre-2)}
 .ch .ch-tags{display:flex; flex-wrap:wrap; gap:4px 5px}
 .ch.ch-c .ch-t{-webkit-line-clamp:3}
-.ch .ch-raison{display:block; font-size:.82rem; color:var(--alerte)}
+.ch .ch-raison{display:block; font-size:.82rem; color:var(--t-alerte)}
 .tg{font-size:.78rem; font-weight:600; padding:1px 8px; white-space:nowrap; border-radius:10px; border:1px solid var(--filet-fort); color:var(--encre-2); background:var(--fiche); line-height:1.5}
-.tg.pos{border-color:var(--ok); color:var(--ok)}
-.tg.neg{border-color:var(--alerte); color:var(--alerte)}
+.tg.pos{border-color:var(--ok); color:var(--t-ok)}
+.tg.neg{border-color:var(--alerte); color:var(--t-alerte)}
 .ch .ch-i{position:absolute; top:8px; right:8px; z-index:1; flex:none; width:30px; height:30px; border:1px solid var(--filet-fort); border-radius:50%; background:var(--fiche-2); color:var(--bleu-rf); font-family:"Newsreader",georgia,serif; font-style:italic; font-weight:700; font-size:1.05rem; cursor:pointer; line-height:1; padding:0}
 .ch .ch-i:hover{background:var(--filet); border-color:var(--bleu-rf)}
 .ch.off{opacity:.55}
@@ -862,7 +868,8 @@ cite a{text-underline-offset:2px}
 .cta:hover{background:var(--bleu-rf-2); border-color:var(--bleu-rf-2)}
 .cta:focus-visible{outline:3px solid color-mix(in srgb, var(--bleu-rf) 40%, transparent); outline-offset:2px}
 .cta:disabled{opacity:.45; cursor:not-allowed}
-.cta.sec{background:transparent; color:var(--bleu-rf)}
+.cta.sec, :root[data-theme="dark"] .cta.sec{background:transparent; color:var(--bleu-rf)}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .cta.sec{color:var(--bleu-rf)} }
 .cta.sec:hover{background:var(--fiche-2)}
 .cta.petit{padding:8px 12px; font-size:.82rem; font-weight:600}
 .pg-accueil{text-align:center; align-items:center; justify-content:center}
@@ -901,8 +908,8 @@ cite a{text-underline-offset:2px}
 
 /* bilan */
 .chantiers{list-style:none; margin:0; padding:0; display:grid; gap:2px; font-size:.9rem; line-height:1.3}
-.chantiers .ok{color:var(--c-sante); font-weight:600}
-.chantiers .non{color:var(--alerte); font-weight:600}
+.chantiers .ok{color:var(--t-c-sante); font-weight:600}
+.chantiers .non{color:var(--t-alerte); font-weight:600}
 table.bilan.court{font-size:.9rem}
 table.bilan.court th{padding:4px 6px; font-size:.72rem}
 table.bilan.court td{padding:5px 6px}
@@ -933,12 +940,12 @@ table.bilan .cache td{opacity:.7}
 .dc .dc-qui{margin:8px 0; font-size:.94rem; line-height:1.4}
 .dc .dc-qui b{display:block; font-size:.62rem; letter-spacing:.1em; text-transform:uppercase; color:var(--encre-3)}
 .dc .dc-chiffres{display:flex; flex-wrap:wrap; gap:4px 12px; font-family:"IBM Plex Mono",monospace; font-size:.82rem; color:var(--encre-2); margin:8px 0}
-.dc .dc-chiffres .neg{color:var(--alerte)} .dc .dc-chiffres .pos{color:var(--ok)}
+.dc .dc-chiffres .neg{color:var(--t-alerte)} .dc .dc-chiffres .pos{color:var(--t-ok)}
 .dc p{font-size:.96rem; line-height:1.5; margin:4px 0}
 .dc-reels{list-style:none; margin:4px 0; padding:0; font-size:.92rem}
 .dc-reels li{margin:6px 0}
 .dc-reels small{display:block; color:var(--encre-3); font-size:.72rem}
-.dc-alerte{color:var(--rouge-rf); font-weight:600}
+.dc-alerte{color:var(--t-rouge-rf); font-weight:600}
 .dc-mot{font-family:"Newsreader",georgia,serif; font-style:italic; color:var(--encre-2); border-top:1px solid var(--filet); padding-top:8px; margin-top:10px}
 .tb h3{font-size:.78rem; letter-spacing:.1em; text-transform:uppercase; color:var(--encre-2); margin:14px 0 6px}
 .tb-j{margin:8px 0}
@@ -951,7 +958,7 @@ table.bilan .cache td{opacity:.7}
 .tb-liste{list-style:none; margin:0; padding:0}
 .tb-liste li{display:flex; justify-content:space-between; gap:10px; padding:7px 0; border-bottom:1px dotted var(--filet); font-size:.96rem}
 .tb-liste small{display:block; color:var(--encre-3); font-size:.72rem}
-.tb-liste b.neg{color:var(--alerte)}
+.tb-liste b.neg{color:var(--t-alerte)}
 .tb-liste li > b{text-align:right}
 .fe-corps .alerte-hud{border:1px solid var(--filet); border-left:3px solid var(--alerte); padding:8px 12px; margin:6px 0; font-size:.84rem}
 .fe-corps .alerte-hud .t{display:block}
@@ -966,7 +973,7 @@ table.bilan .cache td{opacity:.7}
 .lycee-liste{list-style:none; margin:8px 0 0; padding:0}
 .lycee-liste li{padding:6px 0; border-bottom:1px dotted var(--filet); font-size:.86rem}
 .lycee-liste .c{color:var(--encre-3); font-size:.76rem}
-.lycee-liste .i{font-family:"IBM Plex Mono",monospace; font-weight:700; color:var(--c-egalite); margin-left:6px}
+.lycee-liste .i{font-family:"IBM Plex Mono",monospace; font-weight:700; color:var(--t-c-egalite); margin-left:6px}
 details.nat summary{cursor:pointer; font-weight:600; font-size:.88rem; color:var(--encre-2); margin:10px 0}
 .journal.petit{padding:14px 16px; box-shadow:none}
 .journal.petit h3.une{font-family:"Newsreader",georgia,serif; font-size:1.2rem; line-height:1.15; margin:10px 0 6px}
@@ -1290,7 +1297,7 @@ const BAISSE_ELEVES = { 2026: -158, 2027: -158, 2028: -172, 2029: -181, 2030: -1
 const ELEVES_INITIAL = 11607.6;     // milliers, rentrée 2026
 
 /* Conversion élèves → postes « libérés ». C'EST le choix politique du jeu.
-   Précédents opposés : rentrée 2025 = −106 000 élèves / −470 postes (ratio 0,04) ;
+   Précédents opposés : rentrée 2025 = −106 000 élèves / −470 postes (environ 10 % des postes libérés) ;
    rentrée 2026 = −161 000 élèves / −4 032 postes titulaires (ratio 0,60). */
 const ELEVES_PAR_POSTE = 24;        // diviseur de conversion démographie→ETP
 
@@ -1584,7 +1591,7 @@ const PROFILS = [
   },
   {
     id: 'elu', nom: 'Vous êtes un politique',
-    detail: 'Parlementaire, vous n’attendiez que ça d’être nommé. On vous rappellera vos anciennes déclarations.',
+    detail: 'Parlementaire, vous n’attendiez que d’être nommé. On vous rappellera vos anciennes déclarations.',
     adhesion: +2, capital: +2, credibilite: -2,
     expose: ['lieu'],
   },
@@ -1625,7 +1632,7 @@ const ENTRETIEN = [
         det: 'Vous le dites avant qu’on ne le trouve. Le cabinet préparera une réponse ; elle existera le jour où il faudra.',
         credibilite: -4, ferme: ['passe'] },
       { label: '« Rien, absolument rien. »', valeur: 'mensonge',
-        det: 'Il y a quelque chose. Une commission d’enquête met en moyenne trois ans à s’en saisir. Vous en avez cinq.',
+        det: 'Il y a quelque chose. Une commission d’enquête met des années à s’en saisir. Votre mandat en compte trois.',
         credibilite: +4, expose: ['passe'], mensonge: true },
     ],
   },
@@ -1799,7 +1806,7 @@ const CATALOGUE = [
     physique: { hna: { delta: +1.5, duree: 2 }, adhesion: +5 },
     preuve: 'Attention au format : le HCSP (août 2026) rappelle que l’efficacité des dispositifs de formation continue est très variable selon leur intensité, leur contenu et leur ancrage dans la pratique. Ce qui marche est intensif, long, centré sur la pratique, et combine formation et accompagnement en classe. La formation continue est l’intervention au meilleur rendement documenté du répertoire : l’Education Endowment Foundation classe le feedback et la métacognition (cœur des formations efficaces) à +6 et +7/8 mois de progrès par an, au plus haut niveau de preuve (plus de 90 études). Condition : des formations longues, disciplinaires et suivies. La France est classée dernière des 48 pays de l’enquête TALIS 2024 pour la formation continue de ses enseignants : la marge de progression est maximale.',
     ideeRecue: '« Former les profs, on le fait déjà. » En volume réel, un enseignant français reçoit parmi les plus faibles quantités de formation continue du monde développé, et souvent hors de sa discipline.',
-    mot: "L'effet réel le plus solide du catalogue. Il coûte deux ans d'heures non assurées, et personne ne vous en félicitera avant votre départ.",
+    mot: "L’effet réel le plus solide du catalogue. Il coûte deux ans d’heures non assurées, et personne ne vous en félicitera avant votre départ.",
   },
 
   /* ------------------------------------------------------------------ 2 --- */
@@ -1837,7 +1844,7 @@ const CATALOGUE = [
     physique: {},
     preuve: 'Le Haut-commissariat à la Stratégie et au Plan (août 2026) pose le problème en deux lignes : avec 367 000 enseignants dans le premier degré et 485 000 dans le second, toute revalorisation générale coûte très cher, à moins de rester modérée, et donc sans effet sur l’attractivité. Sa recommandation est de cibler les affectations et les missions où la pénurie est la plus criante. Pour mémoire, la revalorisation des débuts de carrière de 2023 a coûté 2 Md€ par an en année pleine. Les salaires effectifs des enseignants français sont inférieurs de 26 % (élémentaire) et 18 % (collège) à ceux des autres diplômés du supérieur (OCDE 2025) ; un certifié débutant est passé de 2 SMIC en 1980 à 1,08 SMIC en 2025. Le point décisif est la cible : les revalorisations de 2023 ont ciblé les débuts de carrière ; le milieu de carrière, lui, a décroché de 14 points par rapport à l’OCDE en dix ans, c’est là que se joue l’usure du corps.',
     ideeRecue: '« Augmenter tout le monde pareil, c’est plus juste. » Le saupoudrage est l’option la mieux acceptée et la moins efficace : diluée sur 814 927 équivalents temps plein, la même somme ne change ni l’attractivité ni les démissions.',
-    mot: "Trois façons de dépenser exactement la même somme, et trois pays différents à l'arrivée.",
+    mot: "Trois façons de dépenser exactement la même somme, et trois pays différents à l’arrivée.",
   },
 
   /* ------------------------------------------------------------------ 4 --- */
@@ -1857,7 +1864,7 @@ const CATALOGUE = [
     physique: {},
     preuve: 'Évaluation DEPP 2021 sur 15 000 élèves et 408 écoles : +8 % d’écart-type en français et +13 % en maths en fin de CP, effet concentré sur les élèves en grande difficulté. Mais le suivi de long terme change la conclusion : selon le Haut-commissariat à la Stratégie et au Plan (août 2026), les bénéfices observés de la fin du CP à la fin du CE1 n’apparaissent plus à l’entrée en sixième. La prudence s’impose dans les deux sens, cette première cohorte n’avait pas bénéficié du dédoublement en grande section.',
     ideeRecue: '« Le dédoublement, c’est prouvé, ça marche. » C’est prouvé à court terme, et démenti à moyen terme par le suivi de la première cohorte. Le rapport du HCSP en tire une recommandation explicite : ne pas tout miser sur la taille des classes, et cibler précisément, d’autant que la faiblesse des acquis touche tous les profils d’élèves, pas seulement les plus fragiles.',
-    mot: "La mesure la plus évaluée du répertoire français. C'est aussi la seule dont l'évaluation, en grandissant, a retiré une partie de ce qu'elle avait promis.",
+    mot: "La mesure la plus évaluée du répertoire français. C’est aussi la seule dont l’évaluation, en grandissant, a retiré une partie de ce qu’elle avait promis.",
   },
 
   /* ------------------------------------------------------------------ 5 --- */
@@ -1890,7 +1897,7 @@ const CATALOGUE = [
     porteurs: ['collectifs d’AESH', 'Défenseur des droits', 'associations de familles (Unapei, APF France handicap)', 'la gauche parlementaire'],
     contre: ['rapport IGÉSR-IGAS : rejette la fonctionnarisation, propose +10 % via une grille type catégorie B'],
     perimetre: 'matignon',                  // législatif, rejeté au Sénat le 07/01/2026
-    cout: 0.043, coutETP: 0, pol: 16,
+    cout: 4.3, coutETP: 0, pol: 16,
     theme: 'aesh', once: true, reforme: false,
     lyceens: 3,
     vitrine: { parents: +7, enseignants: +8, presse: +5, compteurs: { sante: +6 } },
@@ -1900,13 +1907,13 @@ const CATALOGUE = [
     ],
     physique: { adhesion: +4, affection: +2 },
     preuve: '146 000 accompagnants pour 520 600 élèves en situation de handicap scolarisés en milieu ordinaire (trois fois plus qu’au début des années 2000), avec des notifications MDPH en hausse de 10 % par an. La fonctionnarisation est chiffrée à 4,3 Md€ ; le rapport IGÉSR-IGAS la rejette et propose +10 % via une grille de catégorie B. Le fond du problème : le temps incomplet est structurel tant que l’accompagnement s’arrête aux heures de classe.',
-    mot: "4,3 milliards. Soit environ neuf fois toute la marge que Bercy vous concédera en cinq ans. Les experts sont contre, les personnels sont pour. Bon courage.",
+    mot: "4,3 milliards. Soit environ neuf fois toute la marge que Bercy vous concédera en trois ans. Les experts sont contre, les personnels sont pour. Bon courage.",
   },
 
   /* ------------------------------------------------------------------ 7 --- */
   {
     id: 'sante_scolaire',
-    label: 'Santé scolaire : 1 200 postes d’infirmiers, de PsyEN et d’assistants sociaux, plus du double des 500 annoncés',
+    label: 'Santé scolaire : 1 200 postes d’infirmiers, de PsyEN et d’assistants sociaux, soit 700 de plus que les 500 annoncés',
     famille: 'moyens',
     porteurs: ['les organisations lycéennes (personnels de santé et d’orientation)', 'Cour des comptes', 'intersyndicale', 'fédérations de parents'],
     perimetre: 'ministeriel',
@@ -1916,13 +1923,13 @@ const CATALOGUE = [
     goulot: true,                           // l'argent ne produit qu'au rythme des concours pourvus
     vitrine: { parents: +5, enseignants: +4, presse: +2, compteurs: { sante: +2 } },
     reel: [
-      { compteur: 'sante',   central: 5, delai: 3, cadenas: 3, source: '~900 médecins pour 12 M d’élèves ; 20 % des visites de la 6e année réalisées' },
+      { compteur: 'sante',   central: 5, delai: 3, cadenas: 3, source: '~800 médecins pour 12 M d’élèves ; 20 % des visites de la 6e année réalisées' },
       { compteur: 'egalite', central: 3, delai: 4, cadenas: 2, source: 'désengagement scolaire 31 % en IPS faible contre 19,4 % en IPS élevé' },
     ],
     physique: {},
-    preuve: 'Fin octobre 2026, le gouvernement a annoncé 500 postes de psychologues, d’infirmiers et d’assistants sociaux ; la mesure plus que double cet effort. Environ 900 médecins scolaires pour 12 millions d’élèves, plus d’un tiers des postes vacants (Cour des comptes) ; 20 % seulement des visites médicales de la sixième année réalisées ; 41 postes de psychologues sur 147 non pourvus au concours 2025. La leçon du PLF 2026 (+300 postes votés, pourvus en partie seulement) : un budget voté n’est pas une politique faite quand le vivier professionnel n’existe pas.',
+    preuve: 'Fin octobre 2026, le gouvernement a annoncé 500 postes de psychologues, d’infirmiers et d’assistants sociaux ; la mesure le porte à 1 200 postes au total. Environ 800 médecins scolaires (818 en 2022) pour 12 millions d’élèves, plus d’un tiers des postes vacants (Cour des comptes) ; 20 % seulement des visites médicales de la sixième année réalisées ; 41 postes de psychologues sur 147 non pourvus au concours 2025. La leçon du PLF 2026 (+300 postes votés, pourvus en partie seulement) : un budget voté n’est pas une politique faite quand le vivier professionnel n’existe pas.',
     ideeRecue: '« Il suffit de créer des postes. » Créer un poste et le pourvoir sont deux choses différentes : quand toute une profession manque de praticiens, l’argent seul n’ouvre pas de cabinet médical dans un collège.',
-    mot: "Le PLF 2026 a voté +300 postes. Les concours n'en ont pourvu qu'une fraction : 41 postes de PsyEN non pourvus sur 147. Un budget voté n'est pas une politique faite.",
+    mot: "Le PLF 2026 a voté +300 postes. Les concours n’ont pas tout pourvu : 41 postes de PsyEN sont restés vacants sur 147. Un budget voté n’est pas une politique faite.",
   },
 
   /* ------------------------------------------------------------------ 8 --- */
@@ -1964,7 +1971,7 @@ const CATALOGUE = [
     greve: { intensite: 4, theme: 'pedagogie', segment: 'college' },
     preuve: 'La littérature internationale sur les regroupements durables par niveau est convergente : effet moyen proche de zéro sur l’ensemble, effet négatif sur les élèves faibles regroupés entre eux, par perte de l’entraînement par les pairs et baisse des attentes des adultes. Le précédent français est éloquent : l’obligation a été appliquée dans moins de 20 % des établissements, censurée partiellement par le Conseil d’État, puis abandonnée en 2026. L’IGÉSR a parlé de « dérive des continents » entre le texte et le terrain.',
     ideeRecue: '« Regrouper les faibles ensemble permet de mieux s’occuper d’eux. » C’est l’intuition la plus répandue et la mieux réfutée : l’effet de composition joue contre eux. Les regroupements qui marchent sont courts, ciblés et réversibles, ce qui est exactement le contraire d’un groupe permanent.',
-    mot: "Première tentative : appliqué dans moins de 20 % des établissements, censuré au Conseil d'État, abandonné en 2026. Vous voulez vraiment recommencer ?",
+    mot: "Première tentative : appliqué dans moins de 20 % des établissements, censuré au Conseil d’État, abandonné en 2026. Vous voulez vraiment recommencer ?",
   },
   {
     id: 'certificat_6e',
@@ -1985,7 +1992,7 @@ const CATALOGUE = [
     greve: { intensite: 3, theme: 'pedagogie', segment: '1erdegre' },
     preuve: 'Le dispositif « prépa-6e » consiste à retenir hors de la sixième ordinaire les élèves qui n’atteignent pas un seuil aux évaluations de fin de CM2. C’est, dans sa mécanique, un redoublement déguisé : mêmes élèves visés, même effet de retard, même profil social. Or la note n° 15 du Conseil scientifique de l’éducation nationale établit que le redoublement a un effet moyen négatif sur les acquis et accroît le décrochage. L’« effet de menace », qui voudrait que la perspective du barrage fasse travailler davantage, n’a jamais été démontré nulle part.',
     ideeRecue: '« On ne peut pas envoyer en sixième un élève qui ne sait pas lire. » On ne le peut pas, en effet. La question est de savoir si le retenir une année de plus le lui apprend : la réponse documentée est non. Ce qui l’apprend coûte plus cher et se voit moins.',
-    mot: "Un examen d'entrée en sixième, c'est un redoublement avec un beau nom. Le CSEN a écrit ce qu'il fallait en penser ; il n'a pas été invité au lancement.",
+    mot: "Un examen d’entrée en sixième, c’est un redoublement avec un beau nom. Le CSEN a écrit ce qu’il fallait en penser ; il n’a pas été invité au lancement.",
   },
   {
     id: 'parcours_4e',
@@ -2006,7 +2013,7 @@ const CATALOGUE = [
     greve: { intensite: 4, theme: 'pedagogie', segment: 'college' },
     preuve: 'C’est la mesure dont la comparaison internationale documente le mieux l’effet, et il est négatif. Les systèmes qui orientent tôt sont ceux où l’origine sociale pèse le plus sur les résultats. La réforme polonaise de 1999, qui a repoussé l’orientation d’un an, est citée comme le facteur crucial de la progression du pays dans PISA, portée par les élèves les plus faibles. Avancer l’orientation en quatrième revient à faire le trajet en sens inverse, sur une population dont on sait déjà qu’elle est socialement typée.',
     ideeRecue: '« Certains élèves n’ont rien à faire au collège général. » Ils y sont mal, c’est vrai. La question est de savoir ce qu’on leur propose : les pays qui les orientent à quatorze ans obtiennent de moins bons résultats pour eux, pas seulement pour les autres.',
-    mot: "Six ans de délai, aucune photo à la clé, et la voie professionnelle qui se sent visée. Un ministre courageux la prend ; un ministre pressé prend l'inverse.",
+    mot: "Cinq ans de délai pour un effet négatif, aucune photo à la clé, et la voie professionnelle qui se sent visée. La mesure plaît d’abord à ceux qui ne la subiront pas.",
   },
 
   /* ----------------------------------------------------------------- 10 --- */
@@ -2027,7 +2034,7 @@ const CATALOGUE = [
     greve: { intensite: 4, theme: 'statut', segment: 'tous' },
     preuve: 'Les comparaisons internationales sont contradictoires : l’autonomie améliore les résultats dans les systèmes dotés d’un encadrement fort, les dégrade ailleurs. Sur la publication des résultats par établissement, le constat est plus net : elle alimente l’évitement scolaire et la ségrégation sans gain d’apprentissage démontré. C’est la carte à la variance maximale du jeu : preuve faible, deux cadenas.',
     ideeRecue: '« Publier les résultats, c’est de la transparence. » C’est aussi mettre les établissements en concurrence sur leurs notes. En Suède, où le diplôme de fin de lycée repose sur le contrôle continu, la concurrence a produit une inflation documentée, les « notes du bonheur » : les indicateurs s’améliorent sans que rien ne s’améliore. La France a déjà 40 % de contrôle continu au baccalauréat depuis 2019 : le mécanisme n’est pas hypothétique, il est en place.',
-    mot: "Deux cadenas : l'effet réel peut aussi bien doubler que se retourner. C'est la carte la plus incertaine du jeu, et celle qui fait les meilleures unes.",
+    mot: "Deux cadenas : l’effet réel peut aussi bien doubler que se retourner. C’est la carte la plus incertaine du jeu, et celle qui fait les meilleures unes.",
   },
 
   /* ----------------------------------------------------------------- 11 --- */
@@ -2068,7 +2075,7 @@ const CATALOGUE = [
     physique: { hna: { delta: -1.2, duree: 99 } },
     preuve: '9,8 % des heures d’enseignement du second degré n’ont pas été assurées en 2024-2025, dont 7,5 points de non-remplacement, soit environ deux heures perdues par élève et par semaine, en hausse de 0,7 point par an. Des brigades académiques traitent la part la plus visible du problème, celle des absences longues, sans toucher au statut. Leur limite est connue : elles ne couvrent pas les absences de courte durée, qui sont la majorité des heures perdues, et elles supposent que les postes soient pourvus.',
     ideeRecue: '« Il manque des remplaçants, donc il faut en recruter. » C’est vrai et insuffisant : un remplaçant recruté ne remplace pas une absence d’une demi-journée, qui se règle dans l’établissement ou ne se règle pas.',
-    mot: "La moitié du problème, sans conflit. C'est rare, alors ne boudez pas : l'autre moitié est dans la carte d'à côté, et elle coûte votre paix sociale.",
+    mot: "Une partie du problème, sans conflit. C’est rare, alors ne boudez pas : le reste est dans la carte d’à côté, et elle coûte votre paix sociale.",
   },
   {
     id: 'ors_remplacement',
@@ -2090,7 +2097,7 @@ const CATALOGUE = [
     greve: { intensite: 4, theme: 'statut', segment: 'tous' },
     preuve: 'Ramener le taux d’heures non assurées de 9,8 % à 5 % rendrait aux élèves plus d’heures que n’en apportent 4 000 postes. Le verrou n’est pas budgétaire, il est statutaire : le remplacement de courte durée relève des obligations de service, mais son organisation effective n’a jamais été imposée. C’est la mesure du catalogue au meilleur rendement par euro dépensé, et celle qui coûte le plus cher dans la seule monnaie qui ne se reconstitue pas vite.',
     ideeRecue: '« C’est déjà dans les textes, il suffit de les appliquer. » Les textes existent depuis 2005. Trois des cinq derniers conflits sociaux du ministère ont commencé par cette phrase, prononcée exactement sur ce ton.',
-    mot: "Presque gratuite, et la plus chère du catalogue. Neuf points de capital, quatre d'intensité de grève, et deux heures par semaine rendues aux élèves.",
+    mot: "Presque gratuite, et la plus chère du catalogue. Neuf points de capital, quatre d’intensité de grève, et des heures de cours rendues aux élèves.",
   },
 
   /* ======================================================================
@@ -2114,7 +2121,7 @@ const CATALOGUE = [
     ],
     physique: {},
     preuve: 'Les travaux d’économie de l’éducation (à la suite de Heckman) convergent : le rendement de l’euro public investi est maximal aux âges précoces, surtout pour les enfants défavorisés. Les écarts de vocabulaire entre milieux sociaux sont déjà installés à 4 ans ; c’est en maternelle qu’ils se réduisent le mieux, et c’est l’investissement le moins visible politiquement, puisque ses effets arrivent après le mandat.',
-    mot: "L'euro le mieux investi du système, et le seul dont l'inauguration n'intéresse personne : les bénéficiaires ont quatre ans et ne votent pas.",
+    mot: "L’euro le mieux investi du système, et le seul dont l’inauguration n’intéresse personne : les bénéficiaires ont quatre ans et ne votent pas.",
   },
 
   /* ----------------------------- 14 · moyens / équité ----------------- */
@@ -2135,7 +2142,7 @@ const CATALOGUE = [
     physique: {},
     greve: { intensite: 2, theme: 'moyens', segment: 'tous' },
     preuve: 'La difficulté sociale est continue ; le label éducation prioritaire est binaire. Résultat documenté par la Cour des comptes et la DEPP : des établissements au public très défavorisé restent hors du dispositif, d’autres y demeurent alors que leur situation a changé. Une allocation progressive sur l’indice de position sociale supprime l’effet de seuil, et les rentes de situation, ce qui explique sa difficulté politique.',
-    mot: "Techniquement irréprochable : la difficulté sociale est continue, pas binaire. Politiquement : vous venez d'annoncer à cent collèges qu'ils perdent leur prime.",
+    mot: "Techniquement irréprochable : la difficulté sociale est continue, pas binaire. Politiquement : vous venez d’annoncer à cent collèges qu’ils perdent leur prime.",
   },
 
   /* ----------------------------- 15 · moyens ------------------------- */
@@ -2153,7 +2160,7 @@ const CATALOGUE = [
     ],
     physique: { adhesion: +3 },
     preuve: 'Le recours aux contractuels s’est banalisé, avec des recrutements parfois expédiés en quelques jours et sans formation. Les stabiliser et les former améliore la continuité pédagogique à coût modéré, c’est une reconnaissance de l’existant plus qu’une création de moyens.',
-    mot: "Ils font déjà cours depuis trois ans. Vous ne recrutez personne : vous reconnaissez l'existant, ce qui est à la fois moins cher et plus honnête.",
+    mot: "Ils font déjà cours depuis trois ans. Vous ne recrutez personne : vous reconnaissez l’existant, ce qui est à la fois moins cher et plus honnête.",
   },
 
   /* ----------------------------- 16 · moyens / climat ----------------- */
@@ -2173,7 +2180,7 @@ const CATALOGUE = [
     ],
     physique: {},
     preuve: 'Le facteur le mieux établi du climat scolaire n’est ni le discours ni le règlement : c’est la densité et la stabilité des adultes présents. Les études sur les violences scolaires convergent sur ce point ; en France, la précarité des contrats d’assistants d’éducation produit une rotation qui défait chaque année ce que l’année précédente a construit.',
-    mot: "Le climat scolaire n'est pas un discours sur l'autorité : c'est un budget de surveillants. Le discours est gratuit, c'est bien pour ça qu'on l'entend plus souvent.",
+    mot: "Le climat scolaire n’est pas un discours sur l’autorité : c’est un budget de surveillants. Le discours est gratuit, c’est bien pour ça qu’on l’entend plus souvent.",
   },
 
   /* ----------------------------- 17 · moyens (le rabot) --------------- */
@@ -2192,7 +2199,7 @@ const CATALOGUE = [
     physique: { hna: { delta: -0.8, duree: 2 } },
     preuve: 'Une heure supplémentaire annuelle coûte environ un cinquantième d’un poste : c’est l’instrument de gestion le plus rentable à court terme, utilisé par tous les gouvernements. Son coût différé est documenté par les enquêtes de conditions de travail : intensification, épuisement, démissions, le rabot d’aujourd’hui se paie sur l’attractivité de demain.',
     ideeRecue: '« Les HS, tout le monde y gagne. » À dose modérée, oui. En usage structurel, c’est un emprunt sur la santé du corps enseignant, remboursable avec intérêts.',
-    mot: "Une HSA coûte cinquante fois moins qu'un poste. C'est aussi la différence entre embaucher un collègue et faire ses heures à sa place.",
+    mot: "Une HSA coûte cinquante fois moins qu’un poste. C’est aussi la différence entre embaucher un collègue et faire ses heures à sa place.",
   },
 
   /* ----------------------------- 18 · moyens ------------------------- */
@@ -2211,7 +2218,7 @@ const CATALOGUE = [
     ],
     physique: { attractivite: -9 },       // la transition casse une année de recrutement
     preuve: 'La formation initiale a été réformée à répétition (IUFM, ESPE, INSPÉ, position du concours déplacée plusieurs fois) : chaque transition casse une année de recrutement, le temps que les candidats s’adaptent. La réforme de 2026 (concours à bac+3) a fait bondir les inscriptions de 76,6 %, après un trou d’air. Les systèmes qui progressent (Estonie, Irlande, Singapour) ont tous investi massivement et durablement dans la formation de leurs enseignants.',
-    mot: "Chaque réforme de la formation casse une promotion le temps de la transition. La vôtre sera la neuvième en trente ans. Cette fois, c'est la bonne.",
+    mot: "Chaque réforme de la formation casse une promotion le temps de la transition. La vôtre sera la neuvième en trente ans. Cette fois, c’est la bonne.",
   },
 
   /* ----------------------------- 19 · moyens / équité ----------------- */
@@ -2229,7 +2236,7 @@ const CATALOGUE = [
       { compteur: 'sante',   central: 2, delai: 4, cadenas: 3, source: 'moins de sortants sans qualification, moins de classes ingérables' },
     ],
     physique: {},
-    preuve: 'Environ 76 000 jeunes sortent chaque année sans qualification. La recherche est unanime : le décrochage est un processus à signaux faibles (absences, notes, comportement) repérables des années avant la rupture, et le repérage précoce avec référent est la intervention la mieux évaluée, très loin devant les sanctions, dont les évaluations n’ont montré aucun effet durable.',
+    preuve: 'Environ 76 000 jeunes sortent chaque année sans qualification. La recherche est unanime : le décrochage est un processus à signaux faibles (absences, notes, comportement) repérables des années avant la rupture, et le repérage précoce avec référent est l’intervention la mieux évaluée, très loin devant les sanctions, dont les évaluations n’ont montré aucun effet durable.',
     mot: "Le décrochage est un processus, pas un événement. Intervenir en 5e coûte dix fois moins cher que raccrocher un jeune de 18 ans, et fait cent fois moins de communiqués.",
   },
 
@@ -2247,8 +2254,8 @@ const CATALOGUE = [
       { compteur: 'sante', central: 4, delai: 2, cadenas: 3, source: 'contourne le goulot de recrutement de la santé scolaire en mobilisant des personnels de santé publique' },
     ],
     physique: {},
-    preuve: 'Les indicateurs de santé mentale des adolescents se sont nettement dégradés depuis 2020. La médecine scolaire ne peut pas y répondre seule (900 médecins pour 12 millions d’élèves) : les conventions avec les maisons des adolescents et les agences régionales de santé mobilisent des professionnels qui existent, plutôt que d’attendre des recrutements impossibles.',
-    mot: "Faire soigner vos élèves par le budget d'un autre ministère : l'art d'être efficace avec l'argent qu'on n'a pas. Le revers : votre politique dépend d'un partenaire qui ne vous doit rien.",
+    preuve: 'Les indicateurs de santé mentale des adolescents se sont nettement dégradés depuis 2020. La médecine scolaire ne peut pas y répondre seule (environ 800 médecins pour 12 millions d’élèves) : les conventions avec les maisons des adolescents et les agences régionales de santé mobilisent des professionnels qui existent, plutôt que d’attendre des recrutements impossibles.',
+    mot: "Faire soigner vos élèves par le budget d’un autre ministère : l’art d’être efficace avec l’argent qu’on n’a pas. Le revers : votre politique dépend d’un partenaire qui ne vous doit rien.",
   },
 
   /* ----------------------------- 21 · compétences partagées ----------- */
@@ -2269,7 +2276,7 @@ const CATALOGUE = [
     physique: {},
     preuve: 'L’État ne possède ni les écoles (communes), ni les collèges (départements), ni les lycées (régions) : il ne peut que co-financer et inciter. Le confort thermique a un effet documenté mais modeste sur les apprentissages ; l’effet principal d’un plan bâti est ailleurs, dans la relation avec les collectivités, qui paient 40 % de la dépense éducative sans participer aux décisions pédagogiques.',
     ideeRecue: '« Le ministre n’a qu’à rénover les écoles. » Il ne le peut pas : les murs ne sont pas à lui. Une annonce nationale sur le bâti est une annonce sur le budget des autres.',
-    mot: "Les écoles sont aux communes, les collèges aux départements, les lycées aux régions, et les photos de classes à 40 °C au ministre. Vous payez l'amorçage pour des murs qui ne sont pas à vous.",
+    mot: "Les écoles sont aux communes, les collèges aux départements, les lycées aux régions, et les photos de classes à 40 °C au ministre. Vous amorcez le chantier de murs qui ne sont pas à vous.",
   },
 
   /* ----------------------------- 22 · évaluation ---------------------- */
@@ -2305,14 +2312,14 @@ const CATALOGUE = [
     provocations: 1,
     vitrine: { parents: +3, enseignants: -8, presse: +6, compteurs: {} },
     reel: [
-      { compteur: 'reussite', central: 1, delai: 4, cadenas: 1, source: 'aucun pays comparable ne l’a fait à l’échelle : preuve minimale, variance maximale' },
+      { compteur: 'reussite', central: 1, delai: 4, cadenas: 1, source: 'peu de pays l’ont fait à grande échelle, avec des effets contrastés : preuve minimale, variance maximale' },
       { compteur: 'egalite',  central: -6, delai: 4, cadenas: 2, source: 'les systèmes à libre choix accroissent le tri social (Chili, Suède)' },
     ],
     physique: { segregation: +1.0 },
     greve: { intensite: 3, theme: 'prive', segment: 'tous' },
     preuve: 'La Suède est l’expérience naturelle la mieux documentée du monde : chèque scolaire, écoles indépendantes à but lucratif et libre choix au début des années 1990. Bilan à vingt ans, partagé par la quasi-totalité des chercheurs et par les agences gouvernementales suédoises : l’OCDE constatait en 2015 qu’aucun autre pays participant à PISA n’enregistrait un tel recul. Démonstration décisive (Östh, 2013) : en comparant la variance réelle entre écoles à celle qu’on observerait si chaque élève allait à l’école de son quartier, c’est <b>le libre choix, et non la ségrégation résidentielle</b>, qui explique le mieux les écarts entre établissements. S’y ajoutent une inflation des notes née de la concurrence, et des coûts plus élevés pour des résultats qui ne le sont pas.',
     ideeRecue: '« La concurrence tire tout le monde vers le haut. » C’est l’hypothèse qui a été testée grandeur nature, sur vingt ans, par un pays entier, et invalidée par ses propres agences publiques. Cette carte est le miroir exact du redoublement : une vitrine excellente, un bilan qui arrive après vous, et une littérature qui dit déjà ce qu’il contiendra.',
-    mot: "Aucun pays comparable ne l'a fait à l'échelle. Vous serez le pionnier, ou le cas d'école, au sens propre.",
+    mot: "Peu de pays l’ont fait à grande échelle, avec des résultats contrastés. Vous serez le pionnier, ou le cas d’école, au sens propre.",
   },
 
   /* ----------------------------- 24 · autonomie ----------------------- */
@@ -2351,7 +2358,7 @@ const CATALOGUE = [
     ],
     physique: { adhesion: +2 },
     preuve: 'La visibilité pluriannuelle est un levier peu coûteux et documenté : une commune n’investit pas dans une école menacée de fermeture, une équipe ne s’engage pas sur des moyens repris l’année suivante. Son ennemi naturel est l’annualité budgétaire, à laquelle Bercy tient comme à son bien le plus précieux, parce que c’est son bien le plus précieux.',
-    mot: "Une commune ne rénove pas une école qu'elle croit condamnée, un principal ne s'engage pas sur des moyens repris en février. La visibilité est une politique, que Bercy compte comme une reddition.",
+    mot: "Une commune ne rénove pas une école qu’elle croit condamnée, un principal ne s’engage pas sur des moyens repris en février. La visibilité est une politique, que Bercy compte comme une reddition.",
   },
 
   /* ----------------------------- 26 · parcours ------------------------ */
@@ -2370,7 +2377,7 @@ const CATALOGUE = [
     ],
     physique: {},
     preuve: 'La différenciation efficace, selon la recherche, est courte, ciblée et réversible : des regroupements de quelques semaines sur un besoin identifié, puis retour en classe entière. C’est la version que la Sgen-CFDT a arrachée en 2024-2026 contre les groupes de niveau permanents. Sa limite : elle exige de l’ingénierie d’emploi du temps et une vraie adhésion des équipes, elle ne se décrète pas.',
-    mot: "Différencier sans étiqueter. Exigeant, invisible, efficace là où les équipes y croient, c'est-à-dire là où vous ne décidez pas.",
+    mot: "Différencier sans étiqueter. Exigeant, invisible, efficace là où les équipes y croient, c’est-à-dire là où vous ne décidez pas.",
   },
 
   /* ----------------------------- 27 · parcours ------------------------ */
@@ -2391,7 +2398,7 @@ const CATALOGUE = [
     physique: {},
     preuve: 'Aucune étude ne démontre qu’un examen-barrage élève le niveau par « effet de menace », c’est le même mécanisme non prouvé que pour le redoublement. Ce qui est documenté : les recalés d’un barrage décrochent davantage, et ils sont socialement très typés. La « prépa-seconde » française n’a pas d’équivalent évalué.',
     ideeRecue: '« Un examen exigeant tire tout le monde vers le haut. » L’exigence sans accompagnement trie ; elle n’élève pas. Les systèmes les plus exigeants qui réussissent (Japon, Estonie) sont aussi ceux qui laissent le moins d’élèves au bord du chemin.',
-    mot: "« L'exigence. » Les recalés iront en prépa-seconde, c'est-à-dire au même endroit qu'avant, mais avec un nom qui rassure tout le monde sauf eux.",
+    mot: "« L’exigence. » Les recalés iront en prépa-seconde, c’est-à-dire au même endroit qu’avant, mais avec un nom qui rassure tout le monde sauf eux.",
   },
 
   /* ----------------------------- 28 · autorité (comédie) -------------- */
@@ -2411,7 +2418,7 @@ const CATALOGUE = [
     physique: {},
     preuve: 'L’expérimentation française de la tenue unique (2024-2026) n’a mesuré aucun effet significatif sur les acquis, le climat ou le harcèlement. La littérature internationale, essentiellement anglo-saxonne, est tout aussi décevante : les corrélations positives disparaissent quand on tient compte du profil des établissements volontaires.',
     ideeRecue: '« L’uniforme gomme les inégalités et restaure le cadre. » C’est l’exemple parfait de la mesure-vitrine : populaire, visible, photogénique, et sans effet mesuré. Les inégalités se voient aux chaussures, aux téléphones et aux vacances, pas au polo.',
-    mot: "L'expérimentation a coûté trois millions d'euros et conclu à un effet principal : des polos. Mais quels polos.",
+    mot: "L’expérimentation a coûté trois millions d’euros et conclu à un effet principal : des polos. Mais quels polos.",
   },
 
   /* ----------------------------- 29 · parcours ------------------------ */
@@ -2470,7 +2477,7 @@ const CATALOGUE = [
     ],
     physique: {},
     preuve: 'Le déplacement d’élèves très perturbateurs soulage la classe d’origine, c’est réel et immédiat. Sur les élèves déplacés, les données manquent, et ce qu’on sait des regroupements d’élèves en rupture joue contre : concentrer les difficultés dégrade les trajectoires (effet de composition, encore lui).',
-    mot: "Sortir l'élève règle le problème de la classe et déplace celui de l'élève.",
+    mot: "Sortir l’élève règle le problème de la classe et déplace celui de l’élève.",
   },
 
   /* ----------------------------- 32 · autorité ------------------------ */
@@ -2489,7 +2496,7 @@ const CATALOGUE = [
     ],
     physique: {},
     preuve: 'L’interdiction effective du téléphone (casiers, pochettes) montre des effets mesurés sur le climat de récréation, les incidents et l’attention, modestes mais réels, parmi les mieux établis des mesures « d’ordre ». Le point aveugle : l’intendance (achat, responsabilité, gestion) retombe sur les établissements et les collectivités.',
-    mot: "Mesure rarissime : les enseignants sont pour, les parents sont pour, les élèves sont contre et n'ont pas le droit de vote. Reste à savoir qui achète les casiers, indice : pas vous.",
+    mot: "Mesure rarissime : les enseignants sont pour, les parents sont pour, les élèves sont contre et n’ont pas le droit de vote. Reste à savoir qui achète les casiers, indice : pas vous.",
   },
 
   /* ----------------------------- 33 · climat -------------------------- */
@@ -2510,7 +2517,7 @@ const CATALOGUE = [
     physique: {},
     preuve: 'Les programmes structurés de compétences psychosociales et de prévention du harcèlement (KiVa en Finlande et ses équivalents) comptent parmi les interventions les mieux évaluées d’Europe : réduction mesurée des violences entre élèves, effets durables. Deux conditions : des adultes formés, et de la durée. Sans elles, « l’heure d’empathie » devient une heure de vie de classe de plus.',
     ideeRecue: '« C’est l’école des bisous. » Les programmes moqués sous ce nom sont, avec la formation continue, ce que la recherche européenne a de mieux évalué en matière de climat scolaire. Le ridicule médiatique n’est pas un niveau de preuve.',
-    mot: "Les programmes danois ont vingt ans de preuve. Le vôtre aura vingt secondes au journal de 20 heures, sous le bandeau « L'école des bisous ».",
+    mot: "Les programmes danois ont vingt ans de preuve. Le vôtre aura vingt secondes au journal de 20 heures, sous le bandeau « L’école des bisous ».",
   },
 
   /* ----------------------------- 34 · autorité (comédie) -------------- */
@@ -2529,7 +2536,7 @@ const CATALOGUE = [
     physique: {},
     preuve: 'Aucune évaluation n’existe : le « surveillant général » a disparu en 1970, remplacé par les CPE. Ce qui est documenté, c’est l’effet de la présence adulte stable, que le poste s’appelle surgé, AED ou CPE. Le reste est du costume. D’où un seul cadenas : l’effet tiré peut aller du négatif au double.',
     ideeRecue: '« De mon temps, avec les surgés, il y avait de l’ordre. » De votre temps, il y avait surtout deux fois moins d’élèves scolarisés au-delà de 16 ans. La nostalgie est un biais d’échantillonnage.',
-    mot: "Personne ne sait exactement ce que c'était, tout le monde s'en souvient avec émotion. Vous financez un souvenir, à variance maximale.",
+    mot: "Personne ne sait exactement ce que c’était, tout le monde s’en souvient avec émotion. Vous financez un souvenir, à variance maximale.",
   },
 
   /* ----------------------------- 35 · mixité (le levier doux) --------- */
@@ -2566,7 +2573,7 @@ const CATALOGUE = [
     ],
     physique: { segregation: -0.8 },
     preuve: 'La fermeture-redéploiement d’établissements très ségrégués n’a jamais été menée à l’échelle annoncée : l’effet dépend entièrement de la qualité des réaffectations (vers des établissements mixtes, avec accompagnement, ou vers le collège voisin tout aussi ségrégué). Deux cadenas : le principe est plausible, l’exécution est tout.',
-    mot: "Fermer un collège que tout le monde évite : tout le monde est pour, sauf l'intégralité des personnes concernées, son maire, et le collège d'à côté.",
+    mot: "Fermer un collège que tout le monde évite : tout le monde est pour, sauf l’intégralité des personnes concernées, son maire, et le collège d’à côté.",
   },
 
   /* ----------------------------- 37 · mixité (l’arme nucléaire) ------- */
@@ -2625,7 +2632,7 @@ const CATALOGUE = [
     ],
     physique: {},
     preuve: 'L’esprit critique face aux médias et à l’IA s’enseigne, avec des effets mesurés (modestes, lents, réels) quand des heures y sont réellement dédiées et les enseignants formés. Le piège documenté : l’ajout au programme sans retrait équivalent, tout ajout est une soustraction ailleurs.',
-    mot: "Vos élèves utilisent déjà l'IA pour leurs devoirs, et vos enseignants pour les corriger. Il serait temps que quelqu'un forme quelqu'un.",
+    mot: "Vos élèves utilisent déjà l’IA pour leurs devoirs, et vos enseignants pour les corriger. Il serait temps que quelqu’un forme quelqu’un.",
   },
 
   /* ----------------------------- 40 · équité -------------------------- */
@@ -2645,7 +2652,7 @@ const CATALOGUE = [
     physique: {},
     preuve: 'L’aide aux devoirs encadrée et le tutorat comptent parmi les interventions les mieux documentées du répertoire EEF (+5 mois pour le tutorat). Le mécanisme d’équité est limpide : le devoir à la maison mesure surtout l’aide disponible à la maison. Condition : un encadrement réel, pas une étude surveillée où l’on fait ses devoirs seul mais assis.',
     ideeRecue: '« Les devoirs, c’est aux parents de s’en occuper. » C’est exactement ainsi que l’école transforme les inégalités familiales en inégalités scolaires, chaque soir, gratuitement.',
-    mot: "Le dispositif existe depuis 2017. Vous le rendez systématique, c'est-à-dire que vous allez découvrir qui, exactement, était volontaire.",
+    mot: "Le dispositif existe depuis 2017. Vous le rendez systématique, c’est-à-dire que vous allez découvrir qui, exactement, était volontaire.",
   },
 
   /* ======================================================================
@@ -2674,7 +2681,7 @@ const CATALOGUE = [
     physique: {},
     preuve: 'Le tutorat est, avec le feedback, l’intervention la mieux documentée du répertoire de l’Education Endowment Foundation : +4 mois de progrès pour le tutorat en petits groupes, +5 mois en individuel, sur plus de soixante études. Les conditions sont connues et exigeantes : trois séances par semaine, des groupes de un à trois élèves, douze semaines au moins, des tuteurs formés.',
     ideeRecue: '« Du soutien scolaire, on en fait déjà partout. » Ce qui existe partout, c’est l’aide diffuse en classe entière. Ce qui produit l’effet mesuré, c’est un protocole intensif et court, et c’est justement ce qui coûte, parce qu’il faut du temps d’adulte qualifié en plus.',
-    mot: "L'une des rares cartes à cinq cadenas du catalogue. Elle ne fera jamais la une, mais elle est la seule dont vous serez à peu près sûr au bilan.",
+    mot: "L’une des rares cartes à cinq cadenas du catalogue. Elle ne fera jamais la une, mais elle est la seule dont vous serez à peu près sûr au bilan.",
   },
 
   /* ----------------------------- 42 · moyens -------------------------- */
@@ -2699,7 +2706,7 @@ const CATALOGUE = [
     greve: { intensite: 2, theme: 'statut', segment: 'college' },
     preuve: 'La Cour des comptes établit en décembre 2025 que 9,3 % des heures sont perdues au collège et au lycée, et surtout que les deux tiers des absences non remplacées ne sont pas individuelles : elles sont produites par le système lui-même, surveillance et correction d’examens, formation, réunions, sorties. Le rapport sénatorial de juin 2025 mesure 4,3 % du temps scolaire perdu en moyenne et 7,4 % dans le second degré : deux chiffres officiels, deux périmètres, un même diagnostic.',
     ideeRecue: '« Les profs sont trop souvent absents. » Un tiers seulement de ces absences relève de raisons individuelles. Les deux autres tiers, c’est l’institution qui convoque ses propres enseignants pendant les heures de cours, puis qui s’étonne que les heures manquent.',
-    mot: "La mesure la moins chère du catalogue pour rendre des heures aux élèves. Elle consiste à demander au ministère d'arrêter de se déranger lui-même.",
+    mot: "L’une des mesures les moins chères du catalogue pour rendre des heures aux élèves. Elle consiste à demander au ministère d’arrêter de se déranger lui-même.",
   },
 
   /* ----------------------------- 44 · parcours ------------------------ */
@@ -2724,7 +2731,7 @@ const CATALOGUE = [
     greve: { intensite: 3, theme: 'statut', segment: 'tous' },
     preuve: 'Les élèves français reçoivent 864 heures d’enseignement par an en élémentaire et 973 au collège, soit environ 600 heures de plus que la moyenne de l’OCDE sur l’ensemble de la scolarité obligatoire. Ces heures tiennent dans 36 semaines quand la moyenne est de 38 : les journées sont donc parmi les plus longues du monde développé, 7 heures de présence quotidienne au collège contre 5 ailleurs. Le niveau de preuve sur les rythmes reste faible : deux cadenas, pas davantage.',
     ideeRecue: '« Les élèves français n’ont pas assez d’heures de cours. » Ils en ont plus que presque partout ailleurs, sur moins de jours, avec la plus forte proportion de français et de mathématiques de l’OCDE, pour des résultats moyens. Ce n’est pas le volume qui manque.',
-    mot: "Aucun ministre n'a jamais gagné une bataille sur les rythmes scolaires. Aucun n'a jamais résisté à l'envie d'essayer.",
+    mot: "Aucun ministre n’a jamais gagné une bataille sur les rythmes scolaires. Aucun n’a jamais résisté à l’envie d’essayer.",
   },
 
   /* ----------------------------- 46 · autonomie ----------------------- */
@@ -2732,7 +2739,7 @@ const CATALOGUE = [
     id: 'directeurs',
     label: 'Décharge complète et statut pour les directeurs d’école',
     famille: 'autonomie',
-    porteurs: ['SNPDEN', 'associations de directeurs', 'plusieurs rapports parlementaires'],
+    porteurs: ['associations et syndicats de directeurs d’école', 'plusieurs rapports parlementaires'],
     contre: ['la FSU refuse un supérieur hiérarchique dans l’école'],
     perimetre: 'ministeriel',
     cout: 0.34, coutETP: 3800, pol: 6,
@@ -2747,7 +2754,7 @@ const CATALOGUE = [
     greve: { intensite: 2, theme: 'statut', segment: '1erdegre' },
     preuve: 'L’école primaire française est le seul niveau du système sans chef d’établissement : le directeur d’école est un enseignant déchargé, sans autorité hiérarchique, qui absorbe l’administratif, la sécurité, le lien avec la mairie et les familles. C’est un facteur d’usure documenté, et le maillon par lequel passe (ou ne passe pas) toute réforme pédagogique du premier degré.',
     ideeRecue: '« Un statut, c’est juste une prime et un titre. » C’est aussi la question de savoir qui, dans une école, peut demander à une équipe de faire quelque chose. La réponse actuelle est : personne. C’est pour cela que la mesure est à la fois populaire chez les directeurs et combattue par la principale fédération.',
-    mot: "Le seul niveau du système éducatif où personne n'est le chef. Ce n'est pas un oubli, c'est une position politique, vieille de quarante ans.",
+    mot: "Le seul niveau du système éducatif où personne n’est le chef. Ce n’est pas un oubli, c’est une position politique, vieille de quarante ans.",
   },
 
   /* ----------------------------- 47 · moyens -------------------------- */
@@ -2768,7 +2775,7 @@ const CATALOGUE = [
     physique: { hna: { delta: +0.6, duree: 2 }, adhesion: +3 },
     preuve: 'Les élèves de CM1 obtiennent 484 en mathématiques à TIMSS 2023, contre 524 pour la moyenne des pays de l’Union européenne et 525 pour l’OCDE ; 15 % n’atteignent pas le niveau minimal, et les résultats sont stables depuis 2019. Le rapport Villani-Torossian a établi le diagnostic : les professeurs des écoles sont très majoritairement issus de filières littéraires et reçoivent peu de formation disciplinaire en mathématiques. Le format « constellations » (petits groupes d’enseignants suivis dans la durée par un pair formé) est celui dont l’effet est le mieux étayé.',
     ideeRecue: '« Le niveau en maths baisse partout, c’est une tendance mondiale. » L’écart de la France à ses voisins européens en CM1 est de 40 points et il ne se réduit pas : ce n’est pas une dérive commune, c’est un décrochage propre.',
-    mot: "Quarante points d'écart avec la moyenne européenne dès le CM1. On ne les rattrape pas en changeant le programme du lycée.",
+    mot: "Quarante points d’écart avec la moyenne européenne dès le CM1. On ne les rattrape pas en changeant le programme du lycée.",
   },
 
   /* ----------------------------- 48 · mixite -------------------------- */
@@ -2790,7 +2797,7 @@ const CATALOGUE = [
     physique: { segregation: -1.6 },
     preuve: 'Depuis 2021, l’affectation en seconde à Paris pondère les vœux par l’indice de position sociale : la ségrégation entre lycées a reculé sans dégradation mesurée des résultats. Le levier est puissant parce qu’il ne coûte presque rien (c’est un paramètre d’algorithme) et fragile pour la même raison : un successeur le change en une circulaire.',
     ideeRecue: '« La mixité sociale, c’est bon pour les uns et mauvais pour les autres. » Les travaux disponibles concluent à un gain net pour les élèves défavorisés et à un effet proche de zéro pour les favorisés. Ce que perdent ces derniers n’est pas mesuré en points : c’est un entre-soi.',
-    mot: "Cinq millions d'euros, un paramètre d'algorithme, et la totalité des associations de parents du 5e arrondissement.",
+    mot: "Quelques millions d’euros, un paramètre d’algorithme, et la totalité des associations de parents du 5e arrondissement.",
   },
 
   /* ----------------------------- 49 · moyens -------------------------- */
@@ -2811,7 +2818,7 @@ const CATALOGUE = [
     physique: {},
     preuve: 'La restauration scolaire relève des collectivités, mais l’État finance depuis 2019 la tarification à un euro dans les communes qui s’y engagent, et les petits déjeuners en éducation prioritaire. La littérature sur l’alimentation scolaire est convergente sur l’assiduité et la disponibilité aux apprentissages, plus modeste sur les acquis eux-mêmes.',
     ideeRecue: '« Ce n’est pas le rôle de l’école. » C’est déjà son rôle depuis 1881 dans les faits, et le seul repas complet de la journée pour une part non négligeable des élèves d’éducation prioritaire.',
-    mot: "La carte la moins contestée du catalogue. Profitez-en, il n'y en a qu'une.",
+    mot: "La carte la moins contestée du catalogue. Profitez-en, il n’y en a qu’une.",
   },
 
   /* ----------------------------- 50 · autorite ------------------------ */
@@ -2857,7 +2864,7 @@ const CATALOGUE = [
     greve: { intensite: 2, theme: 'evaluation', segment: 'tous' },
     preuve: 'Le Conseil d’évaluation de l’école conduit depuis 2020 un cycle d’évaluations d’établissement combinant auto-évaluation et regard externe. Le point faible identifié par la Cour des comptes est constant : les rapports concluent, et rien ne suit. L’effet mesuré des démarches d’évaluation dépend presque entièrement des moyens affectés aux suites, accompagnement, formation, marges d’organisation.',
     ideeRecue: '« Évaluer, c’est déjà agir. » Évaluer sans donner de suites, c’est produire un document et une rancune. C’est la différence entre cette carte et un classement des établissements : elle ne vaut que par ce qu’on met derrière.',
-    mot: "Le rapport d'évaluation est le seul produit du ministère dont la production est garantie et l'usage, facultatif.",
+    mot: "Le rapport d’évaluation est le seul produit du ministère dont la production est garantie et l’usage, facultatif.",
   },
 
   /* ----------------------------- 53 · moyens -------------------------- */
@@ -2878,7 +2885,7 @@ const CATALOGUE = [
     physique: { adhesion: +3 },
     preuve: 'La loi de 2022 a ouvert la possibilité d’un contrat à durée indéterminée aux assistants d’éducation après six ans. Dans les faits, la vie scolaire reste l’un des services les plus instables des établissements : équipes renouvelées chaque année, peu ou pas de formation, et la charge du suivi quotidien des élèves les plus fragiles. Le climat scolaire se construit là, pas dans les circulaires.',
     ideeRecue: '« Les surveillants, ce sont des étudiants de passage. » C’est le modèle de 1937, encore inscrit dans les textes. Les établissements qui vont bien sont ceux qui ont réussi, à titre local, à s’en écarter.',
-    mot: "Le service qui connaît le mieux les élèves est aussi celui dont on renouvelle l'équipe tous les ans. Personne ne trouve ça bizarre depuis 1937.",
+    mot: "Le service qui connaît le mieux les élèves est aussi celui dont on renouvelle l’équipe tous les ans. Personne ne trouve ça bizarre depuis 1937.",
   },
 
   /* ----------------------------- 54 · parcours ------------------------ */
@@ -2900,7 +2907,7 @@ const CATALOGUE = [
     physique: {},
     preuve: 'Les 54 heures annuelles dédiées à l’orientation existent dans les textes depuis 2018 ; leur mise en œuvre effective est très inégale, faute d’heures fléchées et de personnels. Le mécanisme d’inégalité est documenté : à résultats scolaires identiques, l’origine sociale continue de commander les vœux. Le corps des psychologues de l’éducation nationale compte environ 5 500 personnes pour 7 500 postes.',
     ideeRecue: '« L’orientation, c’est le rôle des familles. » C’est précisément le problème : quand elle l’est, elle reproduit exactement ce que les familles savent déjà de l’école, et rien de ce qu’elles n’en savent pas.',
-    mot: "Le moment où le système décide de ce que deviendront les élèves est aussi celui où il leur consacre le moins de temps d'adulte formé.",
+    mot: "Le moment où le système décide de ce que deviendront les élèves est aussi celui où il leur consacre le moins de temps d’adulte formé.",
   },
 
   /* ----------------------------- 55 · moyens -------------------------- */
@@ -2952,7 +2959,7 @@ const CATALOGUE = [
     physique: { adhesion: +2 },
     preuve: 'Première recommandation du rapport du Haut-commissariat à la Stratégie et au Plan (août 2026) : tout nouveau dispositif doit être conçu, dès l’amont, pour que ses effets sur les résultats des élèves soient mesurables et effectivement mesurés. Seconde recommandation : les résultats de ces évaluations doivent être rendus publics. Le rapport ajoute la contrainte qui fait mal : il faut laisser le temps aux réformes de produire des résultats avant d’en changer.',
     ideeRecue: '« On évalue déjà tout. » On mesure beaucoup, la France dispose d’un dispositif d’évaluations nationales exhaustives sans équivalent à l’étranger. On évalue rarement : mesurer le niveau des élèves n’est pas la même chose que mesurer l’effet d’une politique, ce qui suppose de l’avoir prévu avant de la lancer.',
-    mot: "La seule carte du catalogue dont l'effet consiste à empêcher vos successeurs de faire n'importe quoi. Vous compris.",
+    mot: "La seule carte du catalogue dont l’effet consiste à empêcher vos successeurs de faire n’importe quoi. Vous compris.",
   },
 
   /* ----------------------------- 57 · moyens -------------------------- */
@@ -2973,7 +2980,7 @@ const CATALOGUE = [
     physique: { adhesion: +6 },
     preuve: 'Le rapport du HCSP identifie là un angle mort du système : on compte un inspecteur pour 280 enseignants dans le premier degré et un pour 240 dans le second, et les inspecteurs, accaparés par la mise en œuvre des réformes, se sont éloignés des classes. Or confondre celui qui évalue et celui qui accompagne rend le second rôle presque impossible à tenir. Le second degré n’a même pas d’équivalent des conseillers pédagogiques de circonscription.',
     ideeRecue: '« Les profs ne veulent pas qu’on entre dans leur classe. » Ce qu’ils refusent, c’est le jugement. L’observation entre pairs, elle, est la pratique la plus rare en France et l’une des mieux corrélées à l’efficacité ailleurs, et là où elle a été organisée, elle a été adoptée.',
-    mot: "Il n'y a pas de mot pour cette carte : elle est ennuyeuse, invisible, et probablement la plus efficace de la page.",
+    mot: "Il n’y a pas de mot pour cette carte : elle est ennuyeuse, invisible, et probablement la plus efficace de la page.",
   },
 
   /* ----------------------------- 58 · autonomie ----------------------- */
@@ -3000,7 +3007,7 @@ const CATALOGUE = [
     greve: { intensite: 4, theme: 'statut', segment: '1erdegre' },
     preuve: 'La France est le seul pays de l’OCDE où la majorité des écoles (93 % des communes) organise les cours sur quatre jours ; ailleurs, la règle est quatre jours et demi ou cinq. Avec 864 heures annuelles en élémentaire contre 730 en moyenne européenne, la conséquence arithmétique est connue : des journées d’école parmi les plus longues du monde développé. Le HCSP recommande le retour à quatre jours et demi au minimum, en tenant compte des contraintes des familles et des enseignants.',
     ideeRecue: '« On a déjà essayé, ça n’a pas marché. » La réforme de 2013 a échoué sur son financement et sa méthode (le périscolaire à la charge des communes, sans moyens ni concertation) et non sur son diagnostic, qui n’a jamais été contesté par les chronobiologistes. C’est la mise en œuvre qui a été abandonnée, pas la question.',
-    mot: "Deux ministres s'y sont brûlés en dix ans. Le rapport le redemande quand même, ce qui en dit long sur la solidité du diagnostic, et sur le peu de poids qu'a un diagnostic.",
+    mot: "Deux ministres s’y sont brûlés en dix ans. Le rapport le redemande quand même, ce qui en dit long sur la solidité du diagnostic, et sur le peu de poids qu’a un diagnostic.",
   },
 
   /* ----------------------------- 61 · moyens -------------------------- */
@@ -3008,7 +3015,7 @@ const CATALOGUE = [
   /* ----------------------------- 62 · autonomie ----------------------- */
   {
     id: 'manuels',
-    label: 'Créer une labellisation des manuels scolaires',
+    label: 'Publier une information qualitative sur les manuels scolaires, par une commission d’experts',
     famille: 'autonomie',
     porteurs: ['HCSP (recommandation 10)', 'précédents portugais et japonais'],
     contre: ['les éditeurs scolaires', 'les organisations syndicales, qui y voient une atteinte à la liberté pédagogique'],
@@ -3023,9 +3030,9 @@ const CATALOGUE = [
     ],
     physique: { adhesion: -4 },
     greve: { intensite: 3, theme: 'pedagogie', segment: '1erdegre' },
-    preuve: 'Les enquêtes en classe montrent que, pour les apprentissages fondamentaux au moins, le manuel dicte largement la pratique, or leur qualité et leur orientation didactique sont très variables, et la France est l’un des rares pays sans aucune certification. Le HCSP écarte la labellisation, à laquelle éditeurs et syndicats s’opposent frontalement, et propose une information qualitative publique par une commission de spécialistes et d’enseignants : place réservée aux domaines du programme, exactitude des définitions, conformité aux connaissances scientifiques, qualité des exercices, approche didactique servie.',
+    preuve: 'Les enquêtes en classe montrent que, pour les apprentissages fondamentaux au moins, les manuels dictent largement la pratique, or leur qualité et leur orientation didactique sont très variables, et la France est l’un des rares pays sans aucune certification. Le HCSP écarte la labellisation, à laquelle éditeurs et syndicats s’opposent frontalement, et propose une information qualitative publique par une commission de spécialistes et d’enseignants : place réservée aux domaines du programme, exactitude des définitions, conformité aux connaissances scientifiques, qualité des exercices, approche didactique servie.',
     ideeRecue: '« Un ministre n’a pas à dire aux enseignants quel manuel choisir. » Il ne le dit pas : il publie ce qu’un manuel contient. C’est le refus même de publier cette information qui est une position, et elle n’est défendue nulle part au nom de l’intérêt des élèves.',
-    mot: "Informer sur le contenu d'un manuel scolaire : on croirait une mesure sans adversaire. Elle en a deux, et ils sont organisés.",
+    mot: "Informer sur le contenu d’un manuel scolaire : on croirait une mesure sans adversaire. Elle en a deux, et ils sont organisés.",
   },
 
   /* ----------------------------- 63 · moyens -------------------------- */
@@ -3046,7 +3053,7 @@ const CATALOGUE = [
     physique: { hna: { delta: +0.4, duree: 2 }, adhesion: +2 },
     preuve: 'C’est la seule discipline où le volume horaire est vraiment en cause : les enseignants déclarent 47 heures annuelles de sciences en CM1 pour 72 recommandées, soit un déficit de 35 %, quand leurs homologues européens en déclarent 58. Les enseignants du premier degré se disent souvent peu à l’aise avec cet enseignement, moins qu’avec les mathématiques. Le rapport pointe aussi que la promotion des démarches d’investigation, utiles pour l’intérêt des élèves, a pu se faire au détriment de l’acquisition des concepts fondamentaux.',
     ideeRecue: '« Les sciences, ça s’apprend au collège. » Les écarts observés à TIMSS existent déjà en CM1, et la France est le pays où l’horaire réel s’écarte le plus de l’horaire prescrit. Ce qui n’est pas enseigné à l’école n’est pas rattrapé ensuite : c’est reporté sur des professeurs de physique-chimie qu’on ne parvient déjà plus à recruter.',
-    mot: "Trente-cinq pour cent de l'horaire officiel simplement absent des emplois du temps. Personne ne l'a décidé ; c'est ce qui rend la chose difficile à corriger.",
+    mot: "Trente-cinq pour cent de l’horaire officiel simplement absent des emplois du temps. Personne ne l’a décidé ; c’est ce qui rend la chose difficile à corriger.",
   },
 
   /* ----------------------------- 64 · moyens -------------------------- */
@@ -3081,7 +3088,7 @@ const CATALOGUE = [
     physique: { adhesion: +5 },
     preuve: 'La réforme du collège de 2015 a été préparée deux ans, appliquée une année, puis partiellement abrogée par décret dès l’arrivée du ministre suivant : les enseignements pratiques interdisciplinaires, cœur du dispositif, sont devenus facultatifs, ce qui les a tués sans les supprimer. Sept ministres se sont succédé depuis 2022. Une loi de programmation ne se défait pas d’un trait de plume : elle coûte du capital politique et du temps parlementaire, et c’est exactement ce qu’elle achète.',
     ideeRecue: '« L’essentiel est de faire la réforme ; on verra bien ensuite. » C’est le raisonnement de tous vos prédécesseurs, et il explique pourquoi trois réformes majeures sur quatre ont été abrogées ou vidées en dix ans. Sans consolidation, une part importante de ce que vous aurez semé sera arrachée par le suivant, et le jeu vous le montrera à la projection de fin.',
-    mot: "Douze points de capital pour que votre successeur ne puisse pas vous effacer d'un décret. C'est cher. C'est le seul achat du catalogue qui porte sur l'après.",
+    mot: "Douze points de capital pour que votre successeur ne puisse pas vous effacer d’un décret. C’est cher. C’est le seul achat du catalogue qui porte sur l’après.",
   },
 
   /* ----------------------------- 68 · autonomie ----------------------- */
@@ -3133,7 +3140,7 @@ const CATALOGUE = [
     physique: { adhesion: +1 },
     preuve: 'Depuis 2018, le ministère édite des guides « pour enseigner les fondamentaux à l’école primaire et au collège », coordonnés par la DGESCO et appuyés sur l’état de la recherche ; celui sur les nombres et la résolution de problèmes au CP a été relu par des membres du Conseil scientifique. Une dizaine ont été publiés, de 100 à 200 pages chacun. Le HCSP les tient pour des outils précieux, pour les professeurs comme pour leurs formateurs. Leur limite est entière et connue : un guide ne s’applique pas tout seul. Le même rapport cite des inspecteurs comparant les injonctions successives à une partie de Tetris, où les briques descendent plus vite qu’on ne les range.',
     ideeRecue: '« Publier une ressource, ce n’est pas agir. » C’est agir à un coût dérisoire, et c’est l’une des rares choses qu’un ministre puisse faire sans arbitrage budgétaire. Simplement, l’effet est intégralement suspendu à l’adhésion des personnels : c’est la carte du catalogue où votre facteur d’implémentation compte le plus, et où il est le plus visible.',
-    mot: "Quinze millions, deux points de capital, et un vrai contenu. La direction générale vous l'écrit en quelques mois, ce sera hébergé sur Éduscol — et quelques professeurs iront vraiment le consulter. Quelques-uns.",
+    mot: "Quelques millions, deux points de capital, et un vrai contenu. La direction générale vous l’écrit en quelques mois, ce sera hébergé sur Éduscol — et quelques professeurs iront vraiment le consulter. Quelques-uns.",
   },
   {
     id: 'kit_empathie',
@@ -3182,7 +3189,7 @@ const CATALOGUE = [
       { compteur: 'reussite', central: 2, delai: 2, cadenas: 3, source: 'le temps d’enseignement effectivement reçu est un déterminant direct des acquis ; 9 % des heures ne sont pas assurées au collège public (Cour des comptes, 2025)' },
     ],
     physique: { hna: { delta: -1.2, duree: 3 } },
-    preuve: 'Mi-octobre 2026, le ministre a affecté 3 000 professeurs titulaires remplaçants en urgence et annoncé poursuivre ce plan ; aucune ligne de la loi de finances ne le pérennise. Au 7 septembre 2026, 53 % des collèges et lycées publics manquaient d’au moins un professeur selon l’enquête du SNES-FSU (1 033 établissements) ; le ministère parlait de volumes d’heures plutôt que de postes entiers. Le ministre a reconnu que 7 % des heures de cours n’étaient pas assurées, et la Cour des comptes mesure 9 % d’heures perdues dans les collèges publics en 2023-2024. En octobre 2026, 3 000 professeurs titulaires remplaçants ont été affectés en urgence dans les lycées les plus touchés : le nombre de lycées « en grande difficulté » est passé de 114 à 47 en une semaine. Cette carte inscrit ce dispositif au budget au lieu de le reconduire en urgence.',
+    preuve: 'Mi-octobre 2026, le ministre a affecté 3 000 professeurs titulaires remplaçants en urgence et annoncé poursuivre ce plan ; aucune ligne de la loi de finances ne le pérennise. Au 7 septembre 2026, 53 % des collèges et lycées publics manquaient d’au moins un professeur selon l’enquête du SNES-FSU (1 033 établissements) ; le ministère parlait de volumes d’heures plutôt que de postes entiers. Le ministre a reconnu que 7 % des heures de cours n’étaient pas assurées, et la Cour des comptes mesure 9 % d’heures perdues dans les collèges publics en 2023-2024. Dans les lycées les plus touchés, le nombre de lycées « en grande difficulté » est passé de 114 à 47 en une semaine. Cette carte inscrit ce dispositif au budget au lieu de le reconduire en urgence.',
     ideeRecue: '« Il suffit de recruter des remplaçants. » Deux tiers des absences non remplacées ont une cause institutionnelle (examens, formations, sorties) et sont courtes : une brigade ne les couvre pas. Et des postes créés ne mettent personne devant les élèves tant que les concours ne font pas le plein.',
     mot: "En octobre 2026, ces 3 000 titulaires ont été prêtés à la hâte. Ici, vous les inscrivez au budget : c’est ce qui sépare un plan d’urgence d’un système. Cela marche là où les candidats existent ; le vivier, lui, n’a pas changé d’avis.",
   },
@@ -3270,7 +3277,7 @@ const CATALOGUE = [
       { compteur: 'paix',    central: 2, delai: 1, cadenas: 2, source: '14,5 % des contributions lycéennes évoquent Parcoursup et l’orientation' },
     ],
     physique: {},
-    preuve: 'Fin octobre 2026, le gouvernement a annoncé onze mesures de transparence pour Parcoursup, dont neuf dès la session 2027, et son remplacement en 2028. À l’issue de la phase principale du 11 juillet 2026, 126 632 candidats n’avaient reçu aucune proposition, soit 17,4 % ; la part de candidats « sans solution » a progressé de 5,5 points en un an, ce que le ministère attribue à la démographie. Le comité éthique et scientifique de Parcoursup recommandait en avril 2026 de publier le code, ou au moins la spécification, du module de classement ; un rapport parlementaire de février 2026 propose de retirer le lycée d’origine des dossiers et de publier les algorithmes locaux. Le gouvernement a exclu la suppression et promis des « mesures concrètes » de transparence pour fin octobre 2026. Gabriel Attal propose d’y ajouter mentorat, tutorat et stages.',
+    preuve: 'Fin octobre 2026, le gouvernement a annoncé onze mesures de transparence pour Parcoursup, dont neuf dès la session 2027, et son remplacement en 2028. À l’issue de la phase principale du 11 juillet 2026, 126 632 candidats n’avaient reçu aucune proposition, soit 17,4 % ; la part de candidats « sans solution » a progressé de 5,5 points en un an, ce que le ministère attribue à la démographie. Le comité éthique et scientifique de Parcoursup recommandait en avril 2026 de publier le code, ou au moins la spécification, du module de classement ; un rapport parlementaire de février 2026 propose de retirer le lycée d’origine des dossiers et de publier les algorithmes locaux. Le gouvernement avait exclu l’abolition avant d’annoncer, fin octobre 2026, le remplacement en 2028. Gabriel Attal propose d’y ajouter mentorat, tutorat et stages.',
     ideeRecue: '« Parcoursup, c’est un algorithme qui décide. » L’algorithme national ne classe personne : il transmet des classements faits dans chaque formation, par des humains, avec des critères qu’ils ne publient pas. C’est là que la transparence manque.',
     mot: "La réponse la plus raisonnable, et celle qui ne fera jamais la une : personne n’a jamais défilé pour une documentation technique.",
   },
@@ -3278,10 +3285,10 @@ const CATALOGUE = [
   /* ------------------------------ L6 · Parcoursup, la fin ----------- */
   {
     id: 'parcoursup_fin',
-    label: 'Avancer le remplacement de Parcoursup à 2027 : plus de sélection à l’entrée de l’université, et des places en plus',
+    label: 'Avancer le remplacement de Parcoursup à 2027 : sans sélection à l’entrée de l’université, et des places en plus',
     famille: 'lycee',
     porteurs: ['La France insoumise', 'Parti socialiste (projet « Vivre libre »)', 'les organisations lycéennes et étudiantes (« 10 mesures d’urgence », 250 000 places)', 'UDR, alliée du RN (proposition de loi de février 2026)'],
-    contre: ['le gouvernement et le ministre de l’Enseignement supérieur (« pas d’abolition »)', 'Raphaël Glucksmann et Édouard Philippe (améliorer plutôt que supprimer)'],
+    contre: ['le gouvernement et le ministre de l’Enseignement supérieur (qui refusent d’avancer l’échéance à 2027)', 'Raphaël Glucksmann et Édouard Philippe (améliorer plutôt que supprimer)'],
     perimetre: 'matignon',
     cout: 0.60, coutETP: 0, pol: 12,
     theme: 'parcoursup', once: true, excl: 'parcoursup', reforme: true,
@@ -3293,9 +3300,9 @@ const CATALOGUE = [
       { compteur: 'reussite', central: -2, delai: 4, cadenas: 1, source: 'sans sélection ni places suffisantes, le tri se déplace vers l’échec en première année ; effet non mesuré' },
     ],
     physique: {},
-    preuve: 'Fin octobre 2026, le gouvernement a annoncé le remplacement de Parcoursup en 2028, sans en définir le successeur ; la mesure avance l’échéance et fixe les principes. Parcoursup a été créé par la loi de 2018 après l’échec d’Admission post-bac, qui avait fini par tirer au sort des bacheliers en 2017. En 2026, 126 632 candidats restaient sans proposition à l’issue de la phase principale. La suppression est demandée par La France insoumise, le projet du Parti socialiste, les organisations lycéennes et étudiantes (avec 250 000 places supplémentaires dans le supérieur) et une proposition de loi déposée en février 2026. Le gouvernement l’exclut ; Raphaël Glucksmann et Édouard Philippe préfèrent l’améliorer. Aucune étude n’évalue ce que produirait, en France, une affectation sans classement : le niveau de preuve est au plus bas, dans les deux sens.',
+    preuve: 'Fin octobre 2026, le gouvernement a annoncé le remplacement de Parcoursup en 2028, sans en définir le successeur ; la mesure avance l’échéance et fixe les principes. Parcoursup a été créé par la loi de 2018 après l’échec d’Admission post-bac, qui avait fini par tirer au sort des bacheliers en 2017. En 2026, 126 632 candidats restaient sans proposition à l’issue de la phase principale. La suppression est demandée par La France insoumise, le projet du Parti socialiste, les organisations lycéennes et étudiantes (avec 250 000 places supplémentaires dans le supérieur) et une proposition de loi déposée en février 2026. Le gouvernement le renvoie à 2028 ; Raphaël Glucksmann et Édouard Philippe préfèrent l’améliorer. Aucune étude n’évalue ce que produirait, en France, une affectation sans classement : le niveau de preuve est au plus bas, dans les deux sens.',
     ideeRecue: '« Sans Parcoursup, plus de tri. » Le tri se fait alors ailleurs : par le nombre de places, par le tirage au sort comme en 2017, ou par l’échec en première année. Supprimer la plateforme déplace la question ; cela ne la supprime pas.',
-    mot: "La mesure la plus demandée dans la rue, la moins étudiée dans les rapports. Dix-huit points de colère en moins le soir même ; ce qui se passe en septembre 2028 n’est écrit nulle part.",
+    mot: "La mesure la plus demandée dans la rue, la moins étudiée dans les rapports. Dix-huit points de colère en moins le soir même ; ce qui se passe en septembre 2027 n’est écrit nulle part.",
   },
 
   /* ------------------------------ L7 · trente par classe ------------ */
@@ -3337,7 +3344,7 @@ const CATALOGUE = [
     physique: {},
     preuve: 'Les conseils de la vie lycéenne existent depuis 1990 et les élèves siègent au conseil d’administration des lycées, en minorité. Les organisations lycéennes demandent davantage de sièges et une « refonte de la démocratie lycéenne » ; le gouvernement a répondu à l’automne 2026 par une demi-journée banalisée de « temps lycéen » dans chaque lycée et par une consultation anonyme en ligne, que les chefs d’établissement ont jugée improvisée. La recherche sur la participation des élèves montre un effet sur le climat déclaré ; rien de solide sur les résultats scolaires.',
     ideeRecue: '« Les lycéens ne sont pas là pour gérer le lycée. » Ils y passent 1 224 heures par an, et ils ont rempli 76 500 contributions en deux semaines quand on leur a demandé leur avis. La question n’est pas s’ils ont un avis : c’est qui l’écoute.',
-    mot: "Ne coûte rien, ne rapporte rien de visible, et c’est la seule mesure de la liste qui ne se retire pas : on ne reprend pas un siège qu’on a donné.",
+    mot: "Coûte peu, ne rapporte rien de visible, et c’est la seule mesure de la liste qui ne se retire pas : on ne reprend pas un siège qu’on a donné.",
   },
 
   /* ------------------------------ L9 · le bac ---------------------- */
@@ -3386,7 +3393,7 @@ const CATALOGUE = [
   /* ------------------------------ L11 · les postes ----------------- */
   {
     id: 'annuler_suppressions',
-    label: 'Inscrire dans le budget les 836 suppressions annoncées comme annulées, et annuler aussi les 752 autres',
+    label: 'Inscrire dans le budget l’annulation des 836 suppressions annoncées, et annuler aussi les 752 autres',
     famille: 'lycee',
     porteurs: ['l’intersyndicale de l’éducation (grève du 8 octobre 2026)', 'les organisations lycéennes', 'les députés écologistes et insoumis (amendements au PLF 2027)'],
     contre: ['le ministère : « 36 200 élèves de moins dans le second degré, les postes suivent la démographie »', 'Bercy'],
@@ -3402,7 +3409,7 @@ const CATALOGUE = [
     physique: { adhesion: +3 },
     preuve: 'Le ministre a annoncé fin octobre 2026 que les 836 suppressions du second degré public seraient annulées et que 500 postes seraient créés ; aucun amendement au budget n’a été voté, et les 752 autres suppressions (414 dans le premier degré public, 338 dans le privé) ne sont pas concernées. Le projet de loi de finances pour 2027, présenté le 2 octobre 2026, augmente le budget de l’Éducation nationale de 1,2 milliard d’euros et supprime 1 588 postes d’enseignants, dont 1 250 dans le public (414 dans le premier degré, 836 dans le second). Le ministère justifie ces suppressions par la baisse du nombre d’élèves : 36 200 de moins dans le second degré à la rentrée 2026 selon la DEPP. Les syndicats et les lycéens répondent qu’il manque déjà un professeur dans un établissement sur deux. Les deux séries de chiffres sont exactes : l’une compte des élèves, l’autre des classes sans professeur, et la baisse des élèves ne se produit pas là où les professeurs manquent.',
     ideeRecue: '« Moins d’élèves, donc moins de profs, c’est logique. » C’est logique en moyenne nationale. Dans un lycée donné, une classe de 35 ne devient pas une classe de 30 parce qu’un collège de l’autre bout du pays a perdu trois élèves par niveau.',
-    mot: "Cent vingt millions d’euros, le prix le plus bas du catalogue pour la colère la plus précise. Bercy, lui, retiendra que vous avez commencé par défaire son budget.",
+    mot: "Cent vingt millions d’euros, un prix bas pour la colère la plus précise. Bercy, lui, retiendra que vous avez commencé par défaire son budget.",
   },
   /* =====================================================================
      DANS LE LYCÉE : LA PAROLE DES ÉLÈVES (version grand public)
@@ -3434,14 +3441,14 @@ const CATALOGUE = [
     ],
     physique: {},
     preuve: 'Le Portugal a créé en 2017 un budget participatif dans tous ses collèges et lycées : un euro par élève, des propositions déposées et votées par les élèves, un projet gagnant réalisé dans l’année. Des centaines d’établissements y participent ; les propositions portent surtout sur le bien-être et la vie commune, et les chefs d’établissement interrogés y voient un apprentissage civique. Il n’existe pas d’évaluation nationale de ses effets. En France, le fonds de vie lycéenne existe depuis 2001, mais le conseil d’administration en vote le montant : 771 € par lycée en moyenne, de zéro à 64 000 €. Deux euros par élève, c’est 4,5 millions d’euros pour tous les lycées de France, et, pour un lycée de 1 000 élèves, deux fois et demie la moyenne actuelle.',
-    ideeRecue: '« Deux euros par élève, c’est symbolique. » C’est six fois plus que la moyenne de ce que les lycées votent aujourd’hui pour les projets de leurs élèves, et c’est surtout la première fois que ce sont eux qui décident de la dépense.',
+    ideeRecue: '« Deux euros par élève, c’est symbolique. » C’est deux fois et demie la moyenne de ce que les lycées votent aujourd’hui pour les projets de leurs élèves, et c’est surtout la première fois que ce sont eux qui décident de la dépense.',
     mot: "Au Portugal, les élèves ont surtout voté pour des bancs, des micro-ondes et des toilettes. Ce qu’on vote dit ce qui manque.",
   },
 
   /* ------------------------------ V2 · le droit de réponse ---------- */
   {
     id: 'droit_reponse',
-    label: 'Le droit de réponse : toute question du CVL reçoit une réponse écrite sous un mois',
+    label: 'Le droit à une réponse : toute question du conseil de la vie lycéenne (CVL) reçoit une réponse écrite sous un mois',
     famille: 'vie_lyceenne',
     porteurs: ['proposition du jeu', 'la médiatrice de l’Éducation nationale (28 450 saisines en 2025, 78 % de succès)', 'les organisations lycéennes (« personne ne nous écoute »)'],
     contre: ['une partie des chefs d’établissement, qui y voient une procédure de plus'],
@@ -3731,7 +3738,7 @@ const CATALOGUE = [
     ],
     physique: {},
     preuve: 'Pendant les vagues de chaleur de mai et juin 2026, plus de 30 °C ont été relevés dans 78 % puis 88 % des collèges et lycées ayant répondu au relevé du SNES-FSU, et 87 % n’avaient aucune mesure d’adaptation ; le 7 septembre 2026, deux lycées de l’Hérault ont renvoyé leurs élèves. Les murs sont aux régions, dont les plans de rénovation thermique ne suivent pas. Sur dix millions d’élèves américains, une étude de référence trouve qu’une année scolaire plus chaude d’un degré Fahrenheit réduit les apprentissages d’environ 1 %, et que la climatisation des écoles efface l’essentiel de l’effet. La mesure impose un diagnostic thermique publié pour chaque lycée, un protocole national au-dessus de 30 °C mesurés en classe, et un fonds État-région de 200 M€ par an pendant cinq ans pour les travaux, qui va d’abord aux lycées les plus chauds et les plus défavorisés.',
-    ideeRecue: '« Il a toujours fait chaud en juin. » Pas comme ça, pas en mai, et pas en septembre. Et les cours ne s’arrêtaient pas en juin 1990 parce que l’année était finie, pas parce qu’il faisait 32 °C dans la salle.',
+    ideeRecue: '« Il a toujours fait chaud en juin. » Pas comme ça, pas en mai, et pas en septembre. Et les cours s’arrêtaient en juin 1990 parce que l’année était finie, pas parce qu’il faisait 32 °C dans la salle.',
     mot: "Un ministre qui parle de climat scolaire quand il fait 34 °C dans la salle de physique devrait d’abord régler le second.",
   },
   {
@@ -3739,7 +3746,7 @@ const CATALOGUE = [
     label: 'Harmoniser entre régions : un fonds de 200 M€ par an pour les lycées des régions qui investissent le moins',
     famille: 'territoires',
     porteurs: ['des députés de plusieurs groupes (amendements aux lois de finances pour indexer la dotation régionale d’équipement scolaire, gelée depuis 2008)', 'la Région Île-de-France (sa dotation par élève a baissé de 219 € en 2008 à 162 € en 2022)', 'proposition du jeu pour le fonds, conditionné à la publication du bulletin de chaque lycée'],
-    contre: ['Bercy (une dotation de plus, que les lois de finances n’ont pas indexée depuis quinze ans)', 'les régions qui investissent déjà le plus, qui ne reçoivent rien', 'les régions en général, quand l’argent vient avec des conditions'],
+    contre: ['Bercy (une dotation de plus, que les lois de finances n’ont pas indexée depuis 2008)', 'les régions qui investissent déjà le plus, qui ne reçoivent rien', 'les régions en général, quand l’argent vient avec des conditions'],
     perimetre: 'matignon',
     cout: 0.20, coutETP: 0, pol: 5,
     theme: 'perequation_regions', once: true, reforme: false,
@@ -3752,7 +3759,7 @@ const CATALOGUE = [
     physique: {},
     preuve: 'Les régions paient les murs, la cantine, l’internat et les agents des lycées : 6,8 Md€ en 2025, un quart environ du coût d’un lycéen, l’État payant le reste. Leur investissement par lycéen va du simple au double, de 885 € dans les Hauts-de-France à 1 978 € en Bretagne, avec 1 206 € en Île-de-France. Il n’existe aucun tableau officiel de ces écarts ; la presse les reconstitue. Le seul instrument national est la dotation régionale d’équipement scolaire, que l’État verse aux régions pour la construction, les grosses réparations et l’équipement des lycées : 661,8 M€ par an, figés à leur montant de 2008 et répartis selon les versements de 2007. Un amendement relève que, pour l’Île-de-France, elle est passée de 219 € par élève en 2008 à 162 € en 2022. La mesure crée un fonds de 200 M€ par an, soit 30 % de cette dotation et 3 % de ce que les régions dépensent, versé d’abord aux régions du bas du tableau, contre la publication du bulletin de chaque lycée. Ce que 200 M€ comblent dépend de la répartition réelle, que personne n’a publiée : le jeu fixe l’enveloppe, il ne prétend pas mesurer le besoin. Les pays fédéraux, eux, ont des péréquations explicites entre Länder ou États, parce que chez eux l’écart porte sur tout le coût.',
     ideeRecue: '« C’est aux régions de s’en occuper. » C’est vrai pour les murs, et c’est pourquoi il n’y a pas de ministre des lycées de Bretagne. Mais un lycéen des Hauts-de-France ne choisit pas la région où il naît, et la dotation d’État qui devait compenser n’a pas bougé depuis 2008.',
-    mot: "Le même diplôme, la même ministre, et un lycée qui reçoit presque deux fois moins pour ses murs. On peut appeler ça la décentralisation, ou l’adresse.",
+    mot: "Le même diplôme, le même ministère, et un lycée qui reçoit presque deux fois moins pour ses murs. On peut appeler ça la décentralisation, ou l’adresse.",
   },
   {
     id: 'garantie_trajet',
@@ -3924,7 +3931,7 @@ const DOSSIERS_ETE = [
   {
     id: 'canicule',
     titre: 'Canicule de juillet : des écoles à 40 °C',
-    contexte: 'Une vague de chaleur précoce frappe le pays. Des centres de loisirs ferment, des vidéos de salles surchauffées circulent, et l’on vous demande, à vous qui êtes ministre depuis onze jours, « un plan national pour le bâti scolaire ».',
+    contexte: 'Une vague de chaleur précoce frappe le pays. Des centres de loisirs ferment, des vidéos de salles surchauffées circulent, et l’on vous demande, à vous qui êtes ministre depuis plusieurs mois, « un plan national pour le bâti scolaire ».',
     options: [
       { titre: 'Annoncer un grand plan national de rénovation',
         effets: { parents: 5, capital: -6, adhesion: 0 },
@@ -4048,7 +4055,7 @@ const AUDIENCES = [
   {
     id: 'greve',
     quand: (s) => s.greves.length > 0 && s.greves[s.greves.length - 1].annee === s.annee,
-    question: (s) => `« ${s.greves[s.greves.length - 1].tauxSyndicats} % de grévistes selon nous, vous en avez compté ${s.greves[s.greves.length - 1].tauxMinistere}. Au-delà des chiffres : qu’avez-vous entendu ? »`,
+    question: (s) => `« ${s.greves[s.greves.length - 1].tauxSyndicats} % de grévistes selon nous, vous en avez compté ${s.greves[s.greves.length - 1].tauxMinistere} %. Au-delà des chiffres : qu’avez-vous entendu ? »`,
     reponses: [
       { type: 'ferme', titre: '« J’ai entendu une minorité mobilisée. Le pays, lui, attend des résultats. »',
         mot: 'Minorer une mobilisation devant ceux qui l’ont organisée : audacieux, au sens où l’entendait Napoléon avant la Bérézina.' },
@@ -4061,9 +4068,9 @@ const AUDIENCES = [
   {
     id: 'doctrine',
     quand: () => true,
-    question: (s) => `« Votre priorité affichée, c’est « ${({reussite:'la réussite des élèves',egalite:'la réduction des inégalités',sante:'la santé du système',paix:'la paix sociale',budget:'le budget et les salaires'})[s.doctrine[0]]} ». Concrètement, pour nos collègues, ça change quoi lundi matin ? »`,
+    question: (s) => `« Votre priorité affichée, c’est “${({reussite:'la réussite des élèves',egalite:'la réduction des inégalités',sante:'la santé du système',paix:'la paix sociale',budget:'le budget et les salaires'})[s.doctrine[0]]}”. Concrètement, pour nos collègues, ça change quoi lundi matin ? »`,
     reponses: [
-      { type: 'ferme', titre: '« Un cap se juge à cinq ans, pas lundi matin. »',
+      { type: 'ferme', titre: '« Un cap se juge à trois ans, pas lundi matin. »',
         mot: 'Vrai. Mais les gens qui vous font face vivent une succession de lundis matins.' },
       { type: 'methode', titre: '« Voici les trois premières mesures, leur calendrier et leur financement. »',
         mot: 'Répondre à une question par son contenu : technique sous-employée rue de Grenelle.' },
@@ -4212,7 +4219,7 @@ const AFFAIRES = [
     manchette: 'Les photos du ministre en soirée, la semaine où l’on parlait d’écrans',
     themes: ['portable', 'numerique_tel', 'uniforme', 'empathie', 'vie_scolaire'],
     recit: 'Des photographies de vous en soirée, à l’étranger, un verre à la main, circulent par centaines de milliers de reprises. Elles datent de l’été, elles sont authentiques, elles ne montrent rien d’illégal et rien d’indigne. Elles sortent la semaine où vous demandez aux adolescents de poser leur téléphone et aux familles de tenir un cadre.',
-    lecon: 'Une image ne se réfute pas : elle circule. Le grief n’est pas la soirée, c’est la simultanéité, vous exigez des autres une tenue au moment précis où l’on vous regarde relâchée. Répondre sur le fond (« c’était mon congé, c’est légal ») revient à argumenter contre une photographie, exercice que personne n’a jamais gagné.',
+    lecon: 'Une image ne se réfute pas : elle circule. Le grief n’est pas la soirée, c’est la simultanéité, vous exigez des autres une tenue au moment précis où l’on vous regarde relâché. Répondre sur le fond (« c’était mon congé, c’est légal ») revient à argumenter contre une photographie, exercice que personne n’a jamais gagné.',
     reponses: [
       { type: 'assumer', label: 'En rire une fois, en public, puis revenir au dossier',
         det: 'Une phrase, une seule, à la première question : « J’ai quarante-huit ans et j’ai dansé. Passons aux programmes. » Puis vous ne répondez plus jamais sur le sujet.',
@@ -4679,11 +4686,11 @@ const COLERES = [
   },
   {
     id: 'effectifs',
-    annonce: { texte: 'Seconde plafonnée à 28 élèves : dès 2027 dans la moitié des lycées les moins favorisés, en 2028 dans tous les lycées publics ; 500 postes de professeurs.', limite: 'Une moitié des lycées attend 2028, et la première et la terminale ne sont pas concernées.', src: ['echosplus26', 'decl28'], plusLoin: ['classe30_lycee', 'classe19'] },
-    intro: 'Des classes de seconde à 35, des chaises ajoutées, des professeurs qui ne connaissent pas les prénoms avant novembre. Le plafond de 28 annoncé ne couvre que la seconde, et la moitié des lycées attend 2028.',
+    annonce: { texte: 'Seconde plafonnée à 28 élèves : dès 2027 dans la moitié des lycées les moins favorisés, en 2028 dans tous les lycées publics ; 500 postes de professeurs.', limite: 'La majorité des lycées attend 2028, et la première et la terminale ne sont pas concernées.', src: ['echosplus26', 'decl28'], plusLoin: ['classe30_lycee', 'classe19'] },
+    intro: 'Des classes de seconde à 35, des chaises ajoutées, des professeurs qui ne connaissent pas les prénoms avant novembre. Le plafond de 28 annoncé ne couvre que la seconde, et la majorité des lycées attend 2028.',
     resume: 'Vrai : parmi les classes les plus chargées d’Europe. Mais « moins nombreux, on apprend mieux » est plus solide au CP qu’en seconde.',
     cri: '« On est 35 par classe. »',
-    qui: 'Un quart des contributions de la consultation ; les lycées de Loiret, de Guyane, de Seine-Saint-Denis.',
+    qui: 'Un quart des contributions de la consultation ; les lycées du Loiret, de Guyane, de Seine-Saint-Denis.',
     contexte: 'Des classes de seconde à 35, des salles où l’on ajoute des chaises, des professeurs qui ne connaissent pas les prénoms avant novembre.',
     faits: [
       { v: '24 %', l: 'des contributions lycéennes évoquent les effectifs par classe', src: 'consult26' },
@@ -4713,8 +4720,8 @@ const COLERES = [
   },
   {
     id: 'sante',
-    annonce: { texte: '500 postes de psychologues, d’infirmiers et d’assistants sociaux.', limite: 'Les concours n’ont pourvu qu’une fraction des postes précédents : un poste annoncé n’est pas un poste pourvu.', src: ['decl28', 'lettre30'], plusLoin: ['sante_scolaire', 'sante_mentale', 'mediation_pairs'] },
-    intro: 'Une infirmière pour deux ou trois établissements, des psychologues vus pour l’orientation, des rendez-vous à trois mois. Les 500 postes annoncés ne seront pas tous pourvus.',
+    annonce: { texte: '500 postes de psychologues, d’infirmiers et d’assistants sociaux.', limite: 'Les concours n’ont pas pourvu tous les postes précédents (41 postes de PsyEN vacants sur 147 en 2025) : un poste annoncé n’est pas un poste pourvu.', src: ['decl28', 'lettre30'], plusLoin: ['sante_scolaire', 'sante_mentale', 'mediation_pairs'] },
+    intro: 'Une infirmière pour deux ou trois établissements, des psychologues vus pour l’orientation, des rendez-vous à trois mois. Les 500 postes annoncés risquent de ne pas être tous pourvus.',
     resume: 'Une colère ancienne. Ce que les chiffres ne disent pas : ce qui marche le mieux, recruter, ouvrir aux maisons des adolescents, ou donner un adulte référent.',
     cri: '« On n’a ni infirmière ni psy. Quand ça va mal, il n’y a personne. »',
     qui: 'La pancarte « ni prof ni infirmière » des premiers blocus ; la médiatrice de l’Éducation nationale, dont le rapport 2025 porte sur la santé mentale.',
@@ -4755,7 +4762,7 @@ const COLERES = [
     faits: [
       { v: '≈ 2 000', l: 'interpellations recensées au 2 octobre 2026, dont 90 % de mineurs, et quelque 400 lycées fermés ce jour-là', src: 'interpellations26' },
       { v: '2 M€', l: 'de dégâts au lycée Nelson-Mandela de Nantes, fermé un mois après un incendie ; une centaine d’établissements « gravement dégradés » au 2 octobre', src: 'nantes26' },
-      { v: '62 % et 74 %', l: 'des Français jugent la mobilisation justifiée, et 74 % estiment que La France insoumise met les lycéens en danger : le soutien aux lycéens et la peur des violences cohabitent dans la même opinion', src: 'odoxa26' },
+      { v: '62 % et 74 %', l: '62 % des Français jugent la mobilisation justifiée, et 74 % estiment que La France insoumise met les lycéens en danger : le soutien aux lycéens et la peur des violences cohabitent dans la même opinion', src: 'odoxa26' },
     ],
     lecture: 'Ici, les chiffres ne tranchent pas, et le jeu ne tranchera pas pour vous : deux colères se font face, celle des lycéens interpellés et celle des agents qui nettoient les lycées brûlés, et chacune a ses images. C’est le moment où un ministre choisit une attitude, pas une mesure. Méfiez-vous de ceux qui vous disent que c’est simple.',
     verdict: 'ouverte',
@@ -5639,16 +5646,16 @@ const REPERES = [
     resume: 'Le premier budget de l’État en effectifs, et le plus rigide en euros.',
     chiffres: [
       { v: '64,49 Md€', l: 'crédits de paiement de la mission « Enseignement scolaire » au budget 2026, hors contribution au CAS Pensions', src: 'senat_plf26' },
-      { v: '89,64 Md€', l: 'la même mission pensions comprises, c’est ce chiffre que citent les tribunes, et l’autre que manie Bercy', src: 'senat_plf26' },
+      { v: '89,64 Md€', l: 'la même mission pensions comprises, c’est ce chiffre que citent les tribunes, et l’autre est celui que manie Bercy', src: 'senat_plf26' },
       { v: '+0,26 %', l: 'progression du budget 2026 sur 2025 : +167 M€ en crédits de paiement, moins que l’inflation', src: 'senat_plf26' },
-      { v: '+0,8 Md€', l: 'hausse inscrite au plafond prévisionnel du PLF 2027 (65,3 Md€), soit +1,2 %, la marge que vous héritez', src: 'plafonds27' },
+      { v: '+0,8 Md€', l: 'hausse inscrite au plafond prévisionnel du PLF 2027 (65,3 Md€), soit +1,2 %, la marge dont vous héritez (la presse parle de +1,2 Md€ pour l’ensemble de l’Éducation nationale, un périmètre plus large)', src: 'plafonds27' },
       { v: '≈ 93 %', l: 'part de la mission consommée par la masse salariale : ce qui n’est pas arbitrable dans l’année', src: 'cc_neb24' },
       { v: '13 545 $', l: 'dépense annuelle par élève en France (moyenne OCDE : 12 647 $), mais −13 % en primaire, −5 % au collège, +24 % au lycée', src: 'ocde25' },
-      { v: '9 100 € → 14 700 €', l: 'dépense annuelle par élève en 2024 selon le niveau : 9 100 € à l’école, 10 500 € au collège, 13 000 € au lycée général, 14 700 € au lycée professionnel. Le même élève ne vaut pas la même chose selon l’année où on le regarde', src: 'hcsp26' },
+      { v: '9 100 € → 14 700 €', l: 'dépense annuelle par élève en 2024 selon le niveau : 9 100 € à l’école, 10 500 € au collège, 13 000 € au lycée général, 14 700 € au lycée professionnel. Un élève ne coûte pas la même chose selon le niveau où on le regarde', src: 'hcsp26' },
       { v: 'stable depuis 2010', l: 'la dépense par élève du second degré, en euros constants ; celle du premier degré, elle, progresse depuis 2010 et surtout depuis 2017 : le rééquilibrage a commencé, il n’est pas fini', src: 'hcsp26' },
     ],
     serie: 'budget',
-    aRetenir: 'La France ne dépense pas moins que ses voisins : elle dépense ailleurs. Le lycée est sur-doté, le primaire sous-doté, et l’écart se creuse depuis vingt ans. Déplacer un euro du second vers le premier degré est la décision la moins coûteuse et la plus impopulaire du métier.',
+    aRetenir: 'La France ne dépense pas moins que ses voisins : elle dépense autrement. Elle dépasse la moyenne de l’OCDE au lycée (+24 %) et reste en dessous à l’école primaire (−13 %), et l’écart se creuse depuis vingt ans. Où placer l’euro est un choix politique.',
   },
   {
     cle: 'demographie',
@@ -5656,11 +5663,11 @@ const REPERES = [
     resume: 'La donnée qui commande tout le reste, et dont personne ne parle en campagne.',
     chiffres: [
       { v: '−1 676 800', l: 'élèves de moins en 2035 qu’aujourd’hui dans le public et le privé sous contrat, scénario de référence', src: 'depp_proj35' },
-      { v: '−14,2 %', l: 'de la population scolaire en dix ans : c’est l’équivalent de l’académie de Versailles qui disparaît, deux fois', src: 'depp_proj35' },
+      { v: '−14,2 %', l: 'de la population scolaire en dix ans : soit environ 1,7 million d’élèves en moins d’ici 2035', src: 'depp_proj35' },
       { v: '≈ −161 000', l: 'élèves à la seule rentrée 2026, dont environ −125 000 dans le premier degré', src: 'depp_prev28' },
       { v: '2010', l: 'année où la baisse des naissances s’amorce ; elle s’est accélérée depuis 2015 et arrive maintenant au collège', src: 'depp_proj35' },
     ],
-    aRetenir: 'Chaque année, la démographie « rend » des milliers de postes. Deux politiques opposées existent, toutes deux appliquées récemment : rendre ces postes à Bercy (rentrée 2026 : −4 032 postes pour −161 000 élèves), ou les réinvestir dans l’encadrement (rentrée 2025 : −470 postes seulement pour −106 000 élèves). Le même chiffre démographique, deux pays différents à l’arrivée. C’est l’arbitrage de janvier, dans le jeu comme dans la réalité.',
+    aRetenir: 'Chaque année, la démographie « rend » des milliers de postes. Deux politiques opposées existent, toutes deux appliquées récemment : rendre ces postes à Bercy (rentrée 2026 : −4 032 postes pour −161 000 élèves), ou les réinvestir dans l’encadrement (rentrée 2025 : environ un poste sur dix rendu, pour 106 000 élèves en moins, selon la conversion du jeu). Le même chiffre démographique, deux pays différents à l’arrivée. C’est l’arbitrage de janvier, dans le jeu comme dans la réalité.',
   },
   {
     cle: 'niveaux',
@@ -5676,7 +5683,7 @@ const REPERES = [
       { v: 'un quart', l: 'des jeunes de 17-18 ans avaient en 2024 des difficultés prononcées en lecture aux tests de la Journée défense et citoyenneté, et la moitié d’entre eux se situaient sous le seuil de lecture fonctionnelle', src: 'hcsp26' },
       { v: 'septembre 2025', l: 'évaluations nationales : progrès confirmés en CP depuis 2019, résultats en baisse en français en CE1 sur trois compétences sur huit, français en hausse en 6e', src: 'evalnat25' },
     ],
-    aRetenir: 'Les enquêtes internationales mesurent une cohorte, pas un ministre : un élève de PISA 2027 est entré au CP en 2018. Aucune mesure prise pendant votre mandat n’apparaîtra dans PISA avant votre départ. C’est la contrainte que le jeu vous fait éprouver : la vitrine bouge tout de suite, le réel arrive après vous.',
+    aRetenir: 'Les enquêtes internationales mesurent une cohorte, pas un ministre : un élève de 15 ans évalué par PISA est entré au CP dix ans plus tôt. Aucune mesure prise pendant votre mandat n’apparaîtra dans PISA avant votre départ. C’est la contrainte que le jeu vous fait éprouver : la vitrine bouge tout de suite, le réel arrive après vous.',
   },
   {
     cle: 'inegalites',
@@ -5687,8 +5694,8 @@ const REPERES = [
       { v: '75 % / 98 %', l: 'parmi les 200 collèges au plus fort IPS, 75 % sont privés ; parmi les 200 au plus faible, 98 % sont publics', src: 'senat_mixite' },
       { v: '26,4 % → 40,2 %', l: 'part des élèves très favorisés dans le privé sous contrat, de 2000 à 2021', src: 'senat_mixite' },
       { v: '75 % contre 32 %', l: 'part des 25-34 ans diplômés du supérieur selon que leurs parents le sont ou n’ont pas le baccalauréat', src: 'ocde25' },
-      { v: 'en baisse', l: 'la ségrégation entre collèges publics a plutôt diminué, et celle entre collèges privés aussi ; c’est l’écart de composition sociale entre les deux secteurs qui se creuse. Le problème français n’est pas la ségrégation en général, c’est la frontière public/privé', src: 'hcsp26' },
-      { v: 'tous les profils', l: 'la faiblesse relative de la France en comparaison internationale touche les élèves modestes comme les favorisés, les plus faibles comme les meilleurs, les filles comme les garçons. La France n’a pas seulement un problème d’inégalités : elle a aussi, jusqu’au collège, un problème de niveau général', src: 'hcsp26' },
+      { v: 'en baisse', l: 'la ségrégation entre collèges publics a plutôt diminué, et celle entre collèges privés aussi ; c’est l’écart de composition sociale entre les deux secteurs qui se creuse. Selon le rapport, le problème français n’est pas la ségrégation en général, c’est la frontière public/privé', src: 'hcsp26' },
+      { v: 'tous les profils', l: 'la faiblesse relative de la France en comparaison internationale touche les élèves modestes comme les favorisés, les plus faibles comme les meilleurs, les filles comme les garçons. Selon le rapport, la France n’a pas seulement un problème d’inégalités : elle a aussi, jusqu’au collège, un problème de niveau général', src: 'hcsp26' },
       { v: '7,6 %', l: 'de sorties précoces chez les 18-24 ans (environ 110 000 jeunes par an), contre 11,2 % en 2006 : le décrochage, lui, recule', src: 'depp_decrochage' },
     ],
     aRetenir: 'C’est le compteur qui bouge le plus lentement et qui coûte le plus cher politiquement. Toucher au privé sous contrat déclenche un conflit qui, en 1984, a fait tomber un ministre et un gouvernement. Le jeu ne vous en dissuade pas, il vous fait payer le prix réel.',
@@ -5696,7 +5703,7 @@ const REPERES = [
   {
     cle: 'metier',
     titre: 'Le métier enseignant',
-    resume: 'Un million de personnes, dont la moitié de la carrière se joue sur un point d’indice.',
+    resume: 'Plus d’un million de personnes, dont la rémunération dépend d’un même point d’indice.',
     chiffres: [
       { v: '−26 % / −18 %', l: 'salaires effectifs des enseignants d’élémentaire et de collège par rapport aux autres diplômés du supérieur à temps plein (2024). Moyennes OCDE : −17 % et −13 %', src: 'ocde25' },
       { v: '4 sur 10', l: 'enseignants français ont plus de 50 ans', src: 'ocde25' },
@@ -5706,7 +5713,7 @@ const REPERES = [
       { v: '5 → 2,5', l: 'candidats par poste au concours de professeur des écoles, de la fin des années 2000 à 2024 ; dans le second degré, plus de 6 → environ 3. À Créteil, 0,7 candidat par poste en 2024 ; à Versailles, 0,8', src: 'hcsp26' },
       { v: '+43 %', l: 'de personnels non titulaires entre 2015 et 2022 dans le public, quand le nombre de titulaires reculait de 0,7 %', src: 'hcsp26' },
       { v: '38 % contre 64 %', l: 'enseignants de collège s’estimant bien ou très bien préparés en pédagogie générale, en France et en moyenne européenne', src: 'hcsp26' },
-      { v: '1 pour 280', l: 'inspecteurs par enseignant dans le premier degré, 1 pour 240 dans le second, et des inspecteurs de plus en plus mobilisés par la mise en place des réformes, donc éloignés des classes', src: 'hcsp26' },
+      { v: '1 pour 280', l: 'un inspecteur pour 280 enseignants dans le premier degré, un pour 240 dans le second, et des inspecteurs de plus en plus mobilisés par la mise en place des réformes, donc éloignés des classes', src: 'hcsp26' },
       { v: '64 % / 55 % / 27 %', l: 'part des enseignants du premier degré, du second degré et des autres cadres déclarant vivre des situations de tension avec le public', src: 'hcsp26' },
       { v: '94,7 %', l: 'de couverture dans le premier degré public en 2025, contre 88,3 % en 2024 : la situation s’améliore, sans être réglée', src: 'concours25' },
     ],
@@ -5726,9 +5733,9 @@ const REPERES = [
       { v: '1 sur 7', l: 'élèves notifiés pour un accompagnement humain se retrouve sans AESH à la rentrée : 48 726 sur 352 102', src: 'handicap' },
       { v: '×2,4 en 18 ans', l: 'élèves en situation de handicap scolarisés : 232 400 en 2006 (1,9 % des effectifs), 563 400 en 2024 (4,7 %). La hausse a porté presque entièrement sur le milieu ordinaire', src: 'hcsp26' },
       { v: '49 %', l: 'des enseignants de collège déclarent que l’adaptation des séances pour les élèves à besoins éducatifs particuliers est une source de stress, dix points de plus que la moyenne européenne', src: 'hcsp26' },
-      { v: '≈ 900', l: 'médecins scolaires pour 12 millions d’élèves : 1 143 en 2013, 818 en 2022 ; 28 postes seulement ouverts au concours 2025', src: 'an_medecine' },
+      { v: '818', l: 'médecins scolaires en 2022 pour 12 millions d’élèves, contre 1 143 en 2013 ; 28 postes seulement ouverts au concours 2025', src: 'an_medecine' },
     ],
-    aRetenir: 'Deux tiers des absences non remplacées sont produites par le fonctionnement même du système. C’est la meilleure nouvelle du dossier : cette part-là ne se règle pas en recrutant, elle se règle en réorganisant, donc à budget presque constant, et contre les habitudes de tout le monde.',
+    aRetenir: 'Selon la Cour des comptes, deux tiers des absences non remplacées sont produites par le fonctionnement même du système, plutôt que par un manque de candidats : l’organisation du remplacement pèse autant que le recrutement.',
   },
   {
     cle: 'organisation',
@@ -5744,7 +5751,7 @@ const REPERES = [
       { v: '12,5 / 12,8', l: 'élèves par classe en CP et CE1 dédoublés en éducation prioritaire, pour environ 144 000 élèves de chaque niveau', src: 'depp_dedoub' },
       { v: '2 Md€', l: 'coût annuel estimé du redoublement, pour un effet moyen nul à négatif sur les trajectoires selon le Conseil scientifique de l’éducation nationale', src: 'csen15' },
     ],
-    aRetenir: 'Les élèves français passent plus d’heures en classe que presque partout, sur moins de jours, avec plus de français et de maths, et pour des résultats moyens. Cela invalide l’idée qu’il suffirait d’ajouter des heures, et rend l’organisation du temps scolaire au moins aussi décisive que son volume.',
+    aRetenir: 'Les élèves français passent plus d’heures en classe que presque partout, sur moins de jours, avec plus de français et de maths, et pour des résultats moyens. Selon le HCSP, cela écarte l’idée qu’il suffirait d’ajouter des heures : l’organisation du temps scolaire compte au moins autant que son volume.',
   },
   {
     cle: 'climat',
@@ -5767,27 +5774,27 @@ const REPERES = [
       { v: 'Portugal', l: 'quinze ans de réformes menées par des ministres d’orientations différentes, avec un seul fil commun : l’attention constante aux résultats. Seul pays de l’OCDE en progression dans les trois domaines de PISA entre 2000 et 2018', src: 'pisa22' },
       { v: 'Pologne', l: 'le report d’un an du premier palier d’orientation (1999) est identifié comme le facteur crucial d’une progression portée surtout par les élèves les plus faibles', src: 'pisa22' },
       { v: 'Londres', l: 'le London Challenge (2003-2011) fait passer les autorités du centre de Londres des pires aux meilleures performances nationales, grâce à des conseillers chevronnés affectés aux établissements en difficulté, mais l’exportation du modèle hors de Londres a échoué', src: 'hcsp_partieD' },
-      { v: 'Suède', l: 'chèque scolaire et libre choix depuis les années 1990 : recul à PISA sans équivalent parmi les pays participants, ségrégation accrue, inflation des notes. C’est le libre choix, et non la ségrégation résidentielle, qui explique le mieux les écarts entre écoles', src: 'suede' },
+      { v: 'Suède', l: 'chèque scolaire et libre choix depuis les années 1990 : recul à PISA sans équivalent parmi les pays participants, ségrégation accrue, inflation des notes. Selon ces travaux, c’est le libre choix, et non la ségrégation résidentielle, qui explique le mieux les écarts entre écoles', src: 'suede' },
       { v: 'Finlande', l: 'première à PISA en 2000, 2003 et 2006 ; déclin continu depuis, avec un renforcement du lien entre origine familiale et apprentissage. En mathématiques : 554 points en 2003, 484 en 2022', src: 'pisa22' },
       { v: '10 à 15 ans', l: 'le délai des deux réussites. Sous des majorités différentes, sans réforme spectaculaire, en tirant les élèves les plus faibles', src: 'pisa22' },
     ],
-    aRetenir: 'Les deux systèmes qui ont réellement progressé l’ont fait sur dix à quinze ans, sous des majorités successives, sans réforme spectaculaire. Les deux qui ont reculé l’ont fait en libérant le choix et en abandonnant la mesure. La France, elle, a changé sept fois de ministre en trois ans et abrogé ou vidé trois réformes majeures sur quatre. Le jeu ne conclut pas : il rend ces faits jouables.',
+    aRetenir: 'Les deux systèmes qui ont réellement progressé l’ont fait sur dix à quinze ans, sous des majorités successives, sans réforme spectaculaire. Les deux qui ont reculé n’ont pas tenu le cap : la Suède a libéré le choix, la Finlande a vu le lien entre origine familiale et apprentissage se renforcer. Le jeu ne conclut pas : il rend ces faits jouables.',
   },
   {
     cle: 'diagnostic',
     titre: 'Pourquoi le niveau baisse',
     resume: 'Le diagnostic officiel d’août 2026, et ce qu’il écarte autant que ce qu’il retient.',
     chiffres: [
-      { v: 'pas une cause', l: 'le Haut-commissariat à la Stratégie et au Plan conclut qu’il n’existe pas de cause unique. Il distingue des difficultés exogènes (hétérogénéité des publics, écrans) et endogènes, moyens, attractivité du métier, formation, temps scolaire, rythme des réformes', src: 'hcsp26' },
+      { v: 'pas une cause', l: 'le Haut-commissariat à la Stratégie et au Plan conclut qu’il n’existe pas de cause unique. Il distingue des difficultés exogènes (hétérogénéité des publics, écrans) et endogènes (moyens, attractivité du métier, formation, temps scolaire, rythme des réformes)', src: 'hcsp26' },
       { v: 'pas le volume horaire', l: 'ni en français ni en mathématiques : les élèves français en reçoivent plus que la moyenne. Ce sont les méthodes et la progression des programmes qui sont mises en cause, sauf en sciences, où le volume, lui, manque vraiment', src: 'hcsp26' },
       { v: 'pas les élèves allophones', l: 'leur nombre augmente fortement mais reste très faible rapporté aux effectifs scolaires : la diversité culturelle pose ses propres défis, elle n’accroît pas mécaniquement l’hétérogénéité des acquis', src: 'hcsp26' },
       { v: 'le rythme des réformes', l: 'au collège, les enseignants citent l’enchaînement des réformes comme source de stress plus souvent que le maintien de la discipline en classe. Il transforme aussi une partie du temps de formation continue en séances d’information sur les dispositifs à mettre en place', src: 'hcsp26' },
       { v: 'le balancier pédagogique', l: 'quarante ans de formation à des méthodes favorisant l’activité de l’élève ont pu se faire au détriment de ce qui ancre durablement les savoirs : traces écrites structurées, ré-explications, entraînement, répétition. Le rapport pose l’hypothèse ; il ne la tranche pas', src: 'hcsp26' },
       { v: 'la méthode de lecture', l: 'la méthode phonique synthétique stricte est la plus efficace, particulièrement pour les élèves de condition modeste, et n’est encore employée que par une minorité d’enseignants, la majorité recourant à des méthodes mixtes', src: 'hcsp26' },
       { v: '50 % dans 15 circonscriptions', l: 'la moitié des enseignants qui emploient la méthode la plus efficace exercent dans une quinzaine de circonscriptions où l’inspection et les conseillers pédagogiques avaient organisé un accompagnement spécifique à l’enseignement de la lecture. La méthode ne se diffuse pas seule', src: 'hcsp26' },
-      { v: '11 recommandations', l: 'du rendre-évaluable-et-publier au retour à la semaine de quatre jours et demi, en passant par la formation centrée sur l’observation en classe, la coordination pédagogique reconnue et l’évaluation des manuels. Plusieurs sont jouables dans le catalogue', src: 'hcsp26' },
+      { v: '11 recommandations', l: 'de l’évaluation des dispositifs et de la publication de leurs résultats au retour à la semaine de quatre jours et demi, en passant par la formation centrée sur l’observation en classe, la coordination pédagogique reconnue et l’évaluation des manuels. Plusieurs sont jouables dans le catalogue', src: 'hcsp26' },
     ],
-    aRetenir: 'Ce rapport est le contraire d’un pamphlet : il écarte méthodiquement les explications les plus commodes (le nombre d’heures, les élèves étrangers, l’argent seul) pour désigner ce qui est plus difficile à changer : la formation des maîtres, l’accompagnement de proximité, les méthodes d’apprentissage de la lecture, l’organisation du temps. Aucune de ces réponses ne se décrète en une rentrée, et c’est exactement ce que le jeu vous fait éprouver.',
+    aRetenir: 'Le rapport écarte plusieurs explications fréquentes (le nombre d’heures, les élèves étrangers, une cause unique) et met en avant la formation des maîtres, l’accompagnement de proximité, les méthodes d’apprentissage de la lecture et l’organisation du temps. Aucune de ces pistes ne se décrète en une rentrée : c’est ce que le jeu vous fait éprouver.',
   },
   {
     cle: 'etablissement',
@@ -5800,8 +5807,8 @@ const REPERES = [
       { v: '3 élèves', l: 'siègent au conseil de discipline d’un lycée, élus par les délégués de classe', src: 'discipline_eduscol' },
       { v: '10 heures', l: 'de vie de classe par an sont prévues à l’emploi du temps depuis 2002. Leur tenue réelle dépend de chaque professeur principal', src: 'hvc_snes' },
       { v: '771 €', l: 'par lycée en moyenne : le fonds de vie lycéenne voté par les conseils d’administration pour les projets des élèves, de 0 à 64 158 € selon l’établissement (enquête nationale, vers 2016)', src: 'fvl_enquete' },
-      { v: 'la région', l: 'possède les bâtiments, paie la cantine, l’internat, les agents d’entretien et les ordinateurs. Le ministre, lui, paie les professeurs, fixe les programmes et les examens, et nomme le proviseur', src: 'regions_lycees' },
-      { v: '28 450', l: 'saisines de la médiatrice de l’Éducation nationale en 2025, en hausse de 57 % en cinq ans : la voie de recours quand l’établissement ne répond pas, encore peu connue des élèves', src: 'mediatrice25' },
+      { v: 'la région', l: 'possède les bâtiments, finance l’essentiel de la cantine, de l’internat, les agents d’entretien et les ordinateurs. Le ministre, lui, paie les professeurs, fixe les programmes et les examens, et nomme le proviseur', src: 'regions_lycees' },
+      { v: '28 450', l: 'saisines de la médiatrice de l’Éducation nationale en 2025, en hausse de 57 % en cinq ans : la voie de recours quand l’établissement ne répond pas', src: 'mediatrice25' },
     ],
     aRetenir: 'Un lycée est gouverné à trois : l’État pour les personnels et les programmes, la région pour les murs et les repas, le conseil d’administration pour l’organisation. Les élèves ont des sièges partout, et presque nulle part la majorité. C’est là que se joue une partie de ce que les lycéens appellent « personne ne nous écoute ».',
   },
@@ -5811,18 +5818,18 @@ const REPERES = [
     resume: 'Ce que les lycéens ont demandé, ce qu’on leur a répondu, et ce dont vous héritez.',
     chiffres: [
       { v: '891 lycées', l: 'ont eu leurs cours suspendus, totalement ou partiellement, le 6 octobre 2026, sur 3 700 ; 256 000 manifestants selon l’Intérieur, 450 000 selon les organisateurs', src: 'mobilisation26' },
-      { v: '76 500', l: 'contributions à la consultation nationale ouverte du 5 au 23 octobre 2026 : 71 % évoquent le temps scolaire, 51 % les bâtiments, 28,5 % les professeurs absents, 24 % les effectifs, 14,5 % Parcoursup', src: 'consult26' },
-      { v: '5 chantiers', l: 'ouverts par le Premier ministre le 4 octobre 2026 : remplacement, bâti (compétence des régions), emplois du temps, Parcoursup, démocratie lycéenne. Décisions annoncées pour la fin du mois', src: 'chantiers26' },
+      { v: '76 500', l: 'premières contributions à la consultation nationale ouverte le 5 octobre 2026 (chiffre du 11 octobre) : 71 % évoquent le temps scolaire, 51 % les bâtiments, 28,5 % les professeurs absents, 24 % les effectifs, 14,5 % Parcoursup', src: 'consult26' },
+      { v: '5 chantiers', l: 'ouverts par le Premier ministre le 4 octobre 2026 : remplacement, bâti (compétence des régions), emplois du temps, Parcoursup, démocratie lycéenne. Décisions annoncées le 26 octobre', src: 'chantiers26' },
       { v: '10 mesures', l: 'd’urgence des organisations lycéennes et étudiantes : rénovation du bâti, recrutements, rythmes, fin de la sélection via Parcoursup avec 250 000 places, démocratie lycéenne, bourses, repas à 1 €, logement, fin de la répression', src: 'dix_mesures' },
       { v: '53 %', l: 'des collèges et lycées publics manquaient d’au moins un professeur à la rentrée 2026 selon le SNES-FSU ; le ministère parle de volumes d’heures, pas de postes entiers', src: 'snes_rentree26' },
       { v: '3 000', l: 'professeurs titulaires remplaçants affectés en urgence en octobre 2026 ; les lycées « en grande difficulté » passent de 114 à 47 en une semaine', src: 'remplacants26' },
       { v: '1 224 h', l: 'de cours par an à 15 ans en France, contre 962 h en moyenne dans l’Union européenne', src: 'ocde_temps' },
       { v: '126 632', l: 'candidats sans proposition à l’issue de la phase principale de Parcoursup 2026 (17,4 %), 5,5 points de plus qu’en 2025', src: 'parcoursup26' },
       { v: '6,8 Md€', l: 'dépensés par les régions pour le second degré en 2025, dont 2,5 Md€ d’investissement : ce sont elles qui possèdent les lycées, pas le ministre', src: 'regions_lycees' },
-      { v: '−1 588 postes', l: 'd’enseignants au budget 2027 (dont 836 dans le second degré public), pour +1,2 Md€ de crédits : c’est le budget que vous héritez', src: 'plf27' },
+      { v: '−1 588 postes', l: 'd’enseignants au budget 2027 (dont 836 dans le second degré public), pour +1,2 Md€ de crédits sur l’ensemble de l’Éducation nationale ; l’annulation des 836 suppressions du second degré est annoncée, pas votée : c’est le budget dont vous héritez', src: 'plf27' },
       { v: '62 %', l: 'des Français jugeaient la mobilisation lycéenne justifiée début octobre 2026', src: 'odoxa26' },
     ],
-    aRetenir: 'Le mouvement de 2026 a été le plus large depuis 2005, et il a obtenu des promesses datées plutôt que des moyens. C’est ce qu’un ministre hérite le plus souvent : non pas une crise, mais la facture d’une crise que d’autres ont apaisée avec sa signature.',
+    aRetenir: 'Le mouvement de 2026 a obtenu des annonces et des promesses datées plutôt que des moyens votés. C’est ce dont un ministre hérite le plus souvent : non pas une crise résolue, mais la facture de promesses faites avant lui.',
   },
   {
     cle: 'annonces',
@@ -5833,12 +5840,12 @@ const REPERES = [
       { v: '28 élèves', l: 'au plus par classe de seconde : dès 2027 dans la moitié des lycées les moins favorisés, dans tous les lycées publics en 2028. Première et terminale ne sont pas concernées', src: 'echosplus26', src2: 'decl28' },
       { v: '500 + 500', l: 'postes de professeurs en plus, et 500 postes de psychologues, d’infirmiers et d’assistants sociaux. Il ne faut pas confondre les deux 500', src: 'decl28', src2: 'lettre30' },
       { v: '836 postes', l: 'de suppressions dans le second degré public au budget 2027 « seront annulés », selon la presse. Le budget n’est pas encore modifié : tant qu’aucun amendement n’est voté, c’est une promesse', src: 'suppr836', src2: 'plf27' },
-      { v: 'bourses', l: 'indexées sur l’inflation dès la rentrée 2027 ; 15 000 places en plus dans le supérieur en 2027 et 2028 (le communiqué parle de 2028 seulement)', src: 'annonces26', src2: 'decl28' },
+      { v: 'bourses', l: 'indexées sur l’inflation dès la rentrée 2027 ; 15 000 places en plus dans le supérieur en 2027 et 2028 (le communiqué du gouvernement ne parle que de 2028)', src: 'annonces26', src2: 'decl28' },
       { v: '3 000', l: 'professeurs titulaires remplaçants affectés en urgence mi-octobre, plan d’urgence « poursuivi » ; les régions réunies sur le bâti, avec environ 4 Md€ de prêts selon la presse', src: 'remplacants26', src2: 'echosplus26' },
       { v: 'un comité', l: 'de lycéens et d’enseignants, premières recommandations en novembre ; le Premier ministre revoit les représentants lycéens sous quinze jours', src: 'an_decl28' },
-      { v: 'pas assez', l: 'les organisations lycéennes (Les Lycéens !, Renouveau lycéen) appellent à « poursuivre la mobilisation » ; l’Union syndicale lycéenne parlait déjà de « miettes » et demande dix milliards. Le ministre : « on aurait certainement dû être plus rapides »', src: 'reaction26', src2: 'aveu29' },
+      { v: 'pas assez', l: 'les organisations lycéennes (Les Lycéens !, Renouveau lycéen) appellent à « poursuivre la mobilisation » ; l’Union syndicale lycéenne parlait déjà de « miettes » et demande dix milliards. Le ministre d’alors : « on aurait certainement dû être plus rapides »', src: 'reaction26', src2: 'aveu29' },
     ],
-    aRetenir: 'Annoncé ne veut pas dire financé, voté, ni appliqué. Les lycéens ne contestent pas ces annonces : ils jugent qu’elles arrivent après six semaines et qu’elles ne touchent ni le temps scolaire ni le bâti. Votre enjeu n’est pas de les refaire : c’est d’aller plus loin.',
+    aRetenir: 'Annoncé ne veut pas dire financé, voté, ni appliqué. Les lycéens ne demandent pas de retirer ces annonces : ils jugent qu’elles arrivent tard, qu’elles ne répondent pas à leurs demandes sur le temps scolaire et qu’elles ne chiffrent pas les travaux. Votre enjeu n’est pas de les refaire : c’est d’aller plus loin.',
   },
   {
     cle: 'territoires',
@@ -5846,7 +5853,7 @@ const REPERES = [
     resume: 'Ce que coûte un lycéen, qui paie, et pourquoi ce n’est pas pareil partout.',
     chiffres: [
       { v: '11 660 €', l: 'par an et par élève du second degré en 2024 : trois ans de lycée coûtent de l’ordre de 35 000 € à la collectivité, une classe de trente environ 350 000 € par an', src: 'insee_die2024' },
-      { v: 'un quart', l: 'de ce coût est payé par la région (murs, cantine, internat, agents, ordinateurs) : 6,8 Md€ en 2025, soit 3 000 à 3 900 € par lycéen. L’État paie le reste, d’abord les professeurs', src: 'ofgl_regions' },
+      { v: 'un quart', l: 'de ce coût est payé par la région (murs, cantine, internat, agents, ordinateurs) : 6,8 Md€ en 2025, soit 3 000 à 3 900 € par lycéen. Le reste est payé par l’État (d’abord les professeurs), les départements, les communes et les familles', src: 'ofgl_regions' },
       { v: '+24 %', l: 'par rapport à la moyenne de l’OCDE pour un élève de lycée (18 127 dollars contre 14 562), mais −13 % pour un élève de primaire : la France dépense beaucoup en haut, peu en bas', src: 'ocde_rse2025' },
       { v: '885 à 1 978 €', l: 'par lycéen et par an d’investissement selon la région, des Hauts-de-France à la Bretagne, Île-de-France en queue : du simple au double, sur le quart régional du coût', src: 'gazette_invest' },
       { v: '405 à 3 884 €', l: 'par lycéen du privé en huit ans : ce que les régions choisissent de donner aux lycées privés, de l’Île-de-France aux Pays de la Loire', src: 'gazette_prive' },
@@ -5854,9 +5861,9 @@ const REPERES = [
       { v: '71 à 129', l: 'l’indice de position sociale moyen des lycées selon le département (Mayotte, Paris), 109 en moyenne, et de 59 à 162 selon le lycée. Celui de chaque lycée est en données ouvertes', src: 'depp_ips_lycees' },
       { v: '9 700 à 14 200 €', l: 'par élève de Gymnasium selon le Land allemand ; 10 203 à 30 012 dollars selon l’État américain : dans les pays fédéraux, l’écart porte sur tout le coût, en France sur la part régionale', src: 'bmbf_laender' },
       { v: 'Madrid', l: 'dépense le moins par élève des régions espagnoles et réussit parmi les mieux à PISA ; le Mezzogiorno dépense plus par habitant et réussit moins : l’argent compte, mais pas tout seul', src: 'elcano_pisa' },
-      { v: 'nulle part', l: 'les heures de cours perdues et la dépense par élève de chaque lycée. L’Australie, l’Angleterre et les États-Unis publient la seconde pour chaque école', src: 'acara_myschool' },
+      { v: 'nulle part', l: 'ne sont publiées nulle part : les heures de cours perdues et la dépense par élève de chaque lycée. L’Australie, l’Angleterre et les États-Unis publient la seconde pour chaque école', src: 'acara_myschool', src2: 'govuk_compare' },
     ],
-    aRetenir: 'Un lycéen coûte à peu près la même chose partout en France, parce que l’État paie les professeurs partout. Ce qui change d’une région à l’autre, c’est le quart régional : les murs, la cantine, les travaux, du simple au double. Et ce qui change d’un lycée à l’autre, qui enseigne et combien d’heures sont vraiment faites, personne ne le publie.',
+    aRetenir: 'L’État paie les professeurs partout, mais ce qu’il dépense par lycéen selon le territoire n’est publié nulle part. Ce que l’on connaît, c’est le quart régional du coût : les murs, la cantine, les travaux, du simple au double d’une région à l’autre. Et ce qui change d’un lycée à l’autre, qui enseigne et combien d’heures sont vraiment faites, personne ne le publie.',
   },
   {
     cle: 'agir',
@@ -5864,14 +5871,14 @@ const REPERES = [
     resume: 'Sept choses qu’un élève peut faire, dans l’ordre où elles servent.',
     chiffres: [
       { v: '1. Lire', l: 'l’IPS de son lycée et sa valeur ajoutée au bac : ils sont publics, lycée par lycée. En dix minutes on sait si son lycée fait mieux ou moins bien que ce que son public laissait attendre. Ce chiffre vaut plus que les palmarès des magazines', src: 'ods_ips' },
-      { v: '2. Demander', l: 'au conseil de la vie lycéenne les deux chiffres que personne ne publie : les heures de cours perdues cette année dans l’établissement (le proviseur les a) et la dotation de fonctionnement reçue de la région (le conseil d’administration la vote)', src: 'letudiant_heures' },
-      { v: '3. Viser les deux moments', l: 'où quelque chose se décide : à l’automne, le conseil régional vote la dotation de chaque lycée ; en janvier, le rectorat attribue les heures d’enseignement, et en février ou mars le conseil d’administration vote leur répartition. Les élus élèves y siègent', src: 'dhg_qe' },
+      { v: '2. Demander', l: 'au conseil de la vie lycéenne les deux chiffres que personne ne publie : les heures de cours perdues cette année dans l’établissement (le proviseur les a) et la dotation de fonctionnement reçue de la région (la région la vote, le conseil d’administration l’emploie)', src: 'letudiant_heures' },
+      { v: '3. Viser les trois moments', l: 'où quelque chose se décide : à l’automne, le conseil régional vote la dotation de chaque lycée ; en janvier, le rectorat attribue les heures d’enseignement, et en février ou mars le conseil d’administration vote leur répartition. Les élus élèves y siègent', src: 'dhg_qe' },
       { v: '4. Le budget participatif', l: 'quand la région en a un (Occitanie depuis 2017, Bretagne, Centre-Val de Loire) : jusqu’à 10 000 € sur un vote des élèves. Quand elle n’en a pas, c’est une demande simple à porter au conseil régional', src: 'occitanie_bp' },
       { v: '5. L’enquête de climat scolaire', l: 'locale (ELCS) : chaque lycée peut la passer et comparer ses résultats au national. Un résultat chiffré est un argument plus fort qu’une pétition', src: 'eduscol_elcs' },
       { v: '6. Les élections du CVL', l: 'réunissent moins d’un électeur sur deux au niveau national. Une liste qui fait campagne sur deux chiffres et trois demandes datées change le rapport de force sans bloquer quoi que ce soit', src: 'orleans_cvl' },
       { v: '7. La médiatrice', l: 'de l’Éducation nationale : 28 450 saisines en 2025, 78 % de succès au moins partiel, et presque aucun élève ne la saisit. C’est le recours quand l’établissement ne répond pas', src: 'mediatrice25' },
     ],
-    aRetenir: 'Les murs, c’est la région ; les professeurs, c’est l’État ; l’organisation, c’est le conseil d’administration. Un lycéen qui sait lequel des trois décide de ce qu’il demande a déjà gagné la moitié de la discussion. Ce que ni lui ni le ministre ne peuvent faire seuls : obliger à publier les chiffres par lycée, donner un vote aux élèves, compenser les écarts entre territoires.',
+    aRetenir: 'Les murs, c’est la région ; les professeurs, c’est l’État ; l’organisation, c’est le conseil d’administration. Un lycéen qui sait lequel des trois décide de ce qu’il demande a déjà gagné la moitié de la discussion. Ce qu’un lycéen ne peut pas faire seul : obliger à publier les chiffres par lycée, donner un vote aux élèves, compenser les écarts entre territoires, des décisions qui passent par un texte.',
   },
   {
     cle: 'preuve',
@@ -5879,7 +5886,7 @@ const REPERES = [
     resume: 'Les cadenas, l’écart vitrine/réel, et pourquoi tout cela n’est pas arbitraire.',
     chiffres: [
       { v: '5 cadenas', l: 'plusieurs dizaines d’essais concordants : l’effet réel tiré par le jeu reste dans une fourchette de ±20 % autour de l’effet central', src: 'eef' },
-      { v: '1 cadenas', l: 'une évaluation isolée, ou aucune : l’effet réel peut aller de la moitié en négatif au triple en positif. C’est le vrai risque d’une mesure non évaluée', src: 'eef' },
+      { v: '1 cadenas', l: 'une évaluation isolée, ou aucune : l’effet réel peut aller d’un effet de moitié inférieur à un effet triple de l’effet central. C’est le vrai risque d’une mesure non évaluée', src: 'eef' },
       { v: 'effet-vitrine', l: 'ce que l’annonce produit tout de suite : opinion, presse, compteurs affichés. Il s’use de 26 % par an et ne compte pas au bilan', src: 'eef' },
       { v: 'effet réel', l: 'ce que la mesure produit vraiment, avec un délai de 1 à 8 ans, révélé seulement à la fin. C’est lui, et lui seul, qui est noté', src: 'eef' },
       { v: '× adhésion', l: 'toute mesure est multipliée par le facteur d’implémentation : une réforme appliquée par des personnels qui n’y croient pas produit un effet proche de zéro', src: 'talis' },
@@ -5935,20 +5942,20 @@ const CADRAGE_INITIAL = [
   {
     cle: 'lyceens',
     titre: 'Où vous mettez les pieds : l’automne 2026 des lycéens',
-    accroche: { v: '891 lycées', l: 'ont eu leurs cours suspendus le même jour, le 6 octobre 2026, sur 3 700. Votre prédécesseur a fait des annonces le 26 octobre : Parcoursup remplacé en 2028, 28 élèves par classe de seconde, 500 postes. Ce n’était pas assez : les blocus continuent, et il a démissionné.', src: 'mobilisation26' },
-    sousAccroche: { v: '76 500', l: 'lycéens ont écrit au gouvernement ce qui n’allait pas. Ils attendent votre réponse', src: 'consult26' },
+    accroche: { v: '891 lycées', l: 'ont eu leurs cours suspendus le même jour, le 6 octobre 2026, sur 3 700. Le gouvernement a fait des annonces à partir du 26 octobre : Parcoursup remplacé en 2028, 28 élèves par classe de seconde, 500 postes de professeurs. Les organisations lycéennes jugent que ce n’est pas assez : les blocus continuent, et votre prédécesseur a démissionné.', src: 'mobilisation26' },
+    sousAccroche: { v: '76 500', l: 'premières contributions de lycéens au gouvernement, sur ce qui n’allait pas. Ils attendent votre réponse', src: 'consult26' },
     graphique: 'consultation',
     chiffres: [
       { v: 'déjà annoncé', l: 'Parcoursup remplacé en 2028, seconde à 28 élèves (moitié des lycées en 2027, tous en 2028), 500 postes de professeurs, 500 postes de santé scolaire et d’orientation, bourses indexées. Les organisations lycéennes ont répondu : « poursuivre la mobilisation »', src: 'decl28', src2: 'reaction26' },
       { v: '5 promesses', l: 'un professeur devant chaque classe « à la Toussaint », des travaux « avant l’été 2027 », des règles de Parcoursup lisibles, des emplois du temps revus, une place pour les élèves dans les décisions : les cinq chantiers du 4 octobre 2026', src: 'chantiers26' },
-      { v: '10 milliards', l: 'ce que les organisations lycéennes demandent pour les lycées. Le budget 2027 ajoute 1,2 milliard à toute l’Éducation nationale, et supprime 1 588 postes', src: 'dix_mesures' },
+      { v: '10 milliards', l: 'ce que les organisations lycéennes demandent pour les lycées. Le budget 2027 ajoute 1,2 milliard à toute l’Éducation nationale, et prévoit 1 588 suppressions de postes (dont 836 annoncées comme annulées)', src: 'dix_mesures' },
     ],
     aRetenir: 'Vous n’avez pas bloqué les lycées. Vous êtes la personne à qui l’on demandera, dès demain matin, pourquoi ils le sont encore.',
   },
   {
     cle: 'budget',
     titre: 'Un budget contraint',
-    accroche: { v: '65,3 Md€', l: 'C’est le budget de l’Éducation nationale en 2027, hors pensions, le premier budget de l’État. Il augmente, un peu, et il est presque entièrement pré-engagé.', src: 'plafonds27' },
+    accroche: { v: '65,3 Md€', l: 'C’est le plafond prévu pour la mission « Enseignement scolaire » en 2027, hors pensions, le premier budget de l’État. Il augmente, un peu, et il est presque entièrement pré-engagé.', src: 'plafonds27' },
     /* Le chiffre qui commande tous les autres se lit sous le total, pas dans
        une liste sous le graphique où personne ne le voyait. La hausse de
        +0,8 Md€, elle, est écrite sur la colonne 2027 du graphique. */
@@ -5964,7 +5971,7 @@ const CADRAGE_INITIAL = [
     graphique: 'eleves',
     chiffres: [
       { v: '≈ 6 600', l: 'postes que la démographie « libère » chaque rentrée, à raison d’un poste pour vingt-quatre élèves. C’est vous qui décidez à qui ils vont', src: 'depp_proj35' },
-      { v: '4 % ou 60 %', l: 'les deux précédents récents de restitution à Bercy, rentrée 2025, puis rentrée 2026. Le même chiffre démographique, deux pays différents', src: 'senat_plf26' },
+      { v: '10 % ou 60 %', l: 'des postes libérés par la démographie rendus à Bercy aux rentrées 2025 et 2026 (conversion du jeu : un poste pour 24 élèves). Le même chiffre démographique, deux pays différents', src: 'senat_plf26' },
     ],
     aRetenir: 'Rendre ces postes ou les réinvestir : c’est l’arbitrage de janvier, chaque année.',
   },
@@ -5977,7 +5984,7 @@ const CADRAGE_INITIAL = [
       { v: '484 contre 524', l: 'le score des CM1 français en mathématiques face à la moyenne de l’Union européenne (TIMSS 2023). Stable depuis 2019, mais loin', src: 'timss23' },
       { v: '1 jeune sur 4', l: 'a des difficultés prononcées en lecture à 17-18 ans, aux tests de la Journée défense et citoyenneté', src: 'hcsp26' },
     ],
-    aRetenir: 'Un élève de PISA 2027 est entré au CP en 2018 : vous répondrez de ce que vous n’avez pas fait.',
+    aRetenir: 'Un élève de 15 ans évalué par PISA est entré au CP dix ans plus tôt : vous répondrez de ce que vous n’avez pas fait.',
   },
 ];
 
@@ -6485,6 +6492,7 @@ function verifierPromesses(s) {
 
 /* En mots, pour l'interface et le journal : jamais un nombre. */
 function humeurLyceenne(colere) {
+  if (colere >= 88) return 'en plein blocus';
   if (colere >= 75) return 'au bord du blocus';
   if (colere >= K.LYCEENS.seuilBlocus) return 'en colère';
   if (colere >= 45) return 'méfiants';
@@ -8038,7 +8046,7 @@ const COMPTES = [
   { a: 'Union des Lycéens Debout', p: '@ULDebout · syndicat lycéen, 10 milliards ou rien', quand: (s) => s.lyceens && s.lyceens.colere >= 45, posts: [
     'Le ministre a « entendu les lycéens ». Nous aussi on l’a entendu. On attend toujours de voir.',
     'Rappel : il manque un prof dans la moitié des lycées, il fait 32 °C en salle 204, et la plateforme nous dit « merci pour votre contribution ».',
-    'On nous a donné une demi-journée de « temps lycéen ». On a fait les comptes : il nous reste 1 223 heures et demie.',
+    'On nous a donné une demi-heure de « temps lycéen ». On a fait les comptes : il nous reste 1 223 heures et demie.',
   ] },
   { a: 'Union des Lycéens Debout', p: '@ULDebout · syndicat lycéen, on juge sur pièces', quand: (s) => s.lyceens && s.lyceens.colere < 45, posts: [
     'Des dates, enfin. On les a imprimées. On viendra avec en septembre.',
@@ -8236,7 +8244,7 @@ function majBandeau(fin) {
   }
   if (S.lyceens) {
     const col = S.lyceens.colere;
-    zone.appendChild(puce('Lycéens', humeurLyceenne(col).replace('au bord du blocus', 'bord du blocus'), col, 'var(--c-violet)', false, col >= K.LYCEENS.seuilBlocus));
+    zone.appendChild(puce('Lycéens', humeurLyceenne(col).replace('au bord du blocus', 'bord du blocus').replace('en plein blocus', 'en blocus'), col, 'var(--c-violet)', false, col >= K.LYCEENS.seuilBlocus));
   }
   const prog = fin ? 100 : Math.max(2, Math.min(100, (moisDepuis(ETAT.dateLabel) / MOIS_TOTAL) * 100));
   $('#bd-prog i').style.width = prog.toFixed(1) + '%';
@@ -8459,7 +8467,7 @@ function page(o) {
       if (!r) { o.fin(i, c); return; }
       zone.innerHTML = '';
       zone.appendChild(el('div', 'pg-choisi', `<span>Votre choix</span><b>${c.html ? c.titre : esc(c.titre)}</b>`));
-      const ton = r.ton === 'bien' ? 'var(--c-sante)' : r.ton === 'mal' ? 'var(--rouge-rf)' : r.ton === 'froid' ? 'var(--c-budget)' : 'var(--or)';
+      const ton = r.ton === 'bien' ? 'var(--t-c-sante)' : r.ton === 'mal' ? 'var(--t-rouge-rf)' : r.ton === 'froid' ? 'var(--t-c-budget)' : 'var(--t-or)';
       const bloc = el('div', 'pg-retour');
       bloc.style.borderLeftColor = ton;
       bloc.innerHTML = `<div class="t" style="color:${ton}">${esc(r.titre || 'Ce qui suit')}</div><p>${r.html ? r.texte : fr(r.texte)}</p>`;
@@ -8528,7 +8536,7 @@ function detailCarte(c) {
     ${c.contre ? `<p class="dc-qui"><b>Qui est contre</b> ${c.contre.map(esc).join(' · ')}</p>` : ''}
     <div class="dc-chiffres">
       <span>${fmt0(k.cout * 1000)} M€ par an</span>
-      <span>${k.pol}${c.perimetre === 'matignon' ? '×2' : ''} points de soutien</span>
+      <span>${k.pol * (c.perimetre === 'matignon' ? 2 : 1)} points de soutien${c.perimetre === 'matignon' ? ' (le double, car Matignon doit valider)' : ''}</span>
       ${c.coutETP ? `<span>${fmt0(c.coutETP)} postes</span>` : ''}
       <span class="${vit.parents >= 0 ? 'pos' : 'neg'}">parents ${signe(vit.parents || 0)}</span>
       <span class="${vit.enseignants >= 0 ? 'pos' : 'neg'}">enseignants ${signe(vit.enseignants || 0)}</span>
@@ -9003,9 +9011,13 @@ const MOTS_DU_JEU = [
   ['Soutien du gouvernement', 'votre capital politique, sur 100. Chaque mesure en consomme ; s’il est trop bas, le gouvernement ne vous suit plus.'],
   ['Budget (en M€)', 'ce que vous pouvez dépenser sur vos nouvelles mesures. 1 000 M€ = 1 milliard d’euros.'],
   ['Études solides, correctes, fragiles, absentes', 'ce que la recherche sait de l’effet réel d’une mesure. Le jeu ne cache pas quand on ne sait pas.'],
-  ['Profs pour, contre', 'l’accueil que les enseignants réservent à la mesure.'],
+  ['Profs pour, contre, grincent', 'l’accueil que les enseignants réservent à la mesure : ils l’approuvent, la combattent, ou la critiquent sans s’y opposer.'],
   ['Affiché, réel', 'l’affiché, c’est ce que le public voit tout de suite (le bandeau en haut). Le réel, c’est ce que la mesure produit vraiment, souvent des années plus tard : le bilan le révèle.'],
-  ['Colère', 'une revendication des lycéens. Vous donnez d’abord votre avis, puis les chiffres tranchent, puis vous décidez.'],
+  ['PISA', 'l’enquête internationale de l’OCDE sur le niveau des élèves de 15 ans.'],
+  ['PLF', 'le projet de loi de finances : le budget de l’État pour l’année suivante.'],
+  ['CVL', 'le conseil de la vie lycéenne, où siègent des élèves élus.'],
+  ['Savary', 'Alain Savary, ministre de l’Éducation en 1984 : son projet sur l’école privée a été retiré après de grandes manifestations.'],
+  ['Colère', 'une revendication des lycéens. Vous donnez d’abord votre avis, puis les chiffres éclairent, puis vous décidez.'],
   ['Carte scolaire', 'la décision annuelle qui répartit les postes d’enseignants, et donc ouvre ou ferme des classes.'],
   ['IPS', 'indice de position sociale : le milieu social moyen des élèves d’un lycée (109 en moyenne, de 59 à 162).'],
 ];
@@ -9038,7 +9050,7 @@ function ecranAccueil(sauvegarde) {
   }
   const a = cta('Comment jouer, et à propos du jeu', () => ouvrirFeuille({
     kicker: 'Mode d’emploi', titre: 'Un jeu pour comprendre l’école',
-    corps: () => { const z = corpsModeEmploi(); z.appendChild(el('div', '', '<h3>À propos</h3><p class="pg-info">Jeu pédagogique indépendant, sans lien avec le ministère de l’Éducation nationale. Les chiffres viennent de sources publiques (DEPP, budget de l’État, OCDE, Cour des comptes), chacune citée et cliquable. Chaque mesure dit qui la défend vraiment (gouvernement, candidats de 2027, organisations lycéennes) et ce qu’on sait de son effet. Les revendications des lycéens sont celles de l’automne 2026.</p><p class="pg-info">Les personnages, syndicats et titres de presse sont des pseudonymes transparents.</p>')); return z; },
+    corps: () => { const z = corpsModeEmploi(); z.appendChild(el('div', '', '<h3>À propos</h3><p class="pg-info">Jeu pédagogique indépendant, sans lien avec le ministère de l’Éducation nationale. Les chiffres viennent de sources publiques (DEPP, budget de l’État, OCDE, Cour des comptes, presse), chacune citée et cliquable. Chaque mesure dit qui la défend vraiment (gouvernement, candidats de 2027, organisations lycéennes) et ce qu’on sait de son effet. Les revendications des lycéens sont celles de l’automne 2026.</p><p class="pg-info">Les personnages du jeu, ses syndicats et ses titres de presse sont des pseudonymes transparents. Les organisations et personnes citées dans les sources et sur les cartes, elles, sont réelles.</p>')); return z; },
   }), 'sec petit');
   zone.appendChild(a);
   pg.appendChild(zone);
@@ -9125,12 +9137,12 @@ function ecranAnnonces(q) {
   page({
     kicker: 'Conférence de presse', picto: 'pupitre', pas: 'première question',
     titre: 'Ce que votre prédécesseur a déjà annoncé',
-    info: 'Fin octobre, le ministre a répondu au mouvement par des annonces : <b>Parcoursup remplacé en 2028, 28 élèves au plus par classe de seconde, 500 postes de professeurs</b>, des suppressions de postes annulées, des bourses indexées. Les organisations lycéennes ont jugé que ce n’était pas assez : les blocus continuent. Un journaliste vous demande : <i>« Ces annonces sont-elles suffisantes ? »</i>',
+    info: 'Fin octobre, le gouvernement a répondu au mouvement par des annonces : <b>Parcoursup remplacé en 2028, 28 élèves au plus par classe de seconde, 500 postes de professeurs</b>, des suppressions de postes annoncées comme annulées (le budget n’est pas encore modifié), des bourses indexées. Les organisations lycéennes jugent que ce n’est pas assez : les blocus continuent. Un journaliste vous demande : <i>« Ces annonces sont-elles suffisantes ? »</i>',
     note: { label: 'Voir tout ce qui a été annoncé (note de la DGESCO)', kicker: 'Note de la DGESCO', titre: 'Ce qui a déjà été annoncé, fin octobre 2026', corps: () => corpsFiche('annonces') },
     prompt: 'Que répondez-vous ?',
     choix: q.options.map((o) => ({
       titre: o.label, det: o.det,
-      tags: [o.colere > 0 ? ['la colère des lycéens retombe', 'pos'] : ['la colère des lycéens monte', 'neg'], o.bercy >= 3 ? ['Bercy apprécie', 'pos'] : o.capital < 0 ? ['Matignon grince', 'neg'] : ''].filter(Boolean),
+      tags: [o.colere > 0 ? ['la colère des lycéens retombe', 'pos'] : ['la colère des lycéens monte', 'neg'], o.bercy >= 3 ? ['Bercy apprécie', 'pos'] : o.capital < 0 ? ['Matignon désapprouve', 'neg'] : ''].filter(Boolean),
       detail: { kicker: 'Votre réponse', titre: o.label, corps: `<p class="pg-info">${fr(o.det)}</p>` },
     })),
     retour: (i) => ({ titre: 'Ce qui suit', texte: q.options[i].suite, bouton: 'Continuer' }),
@@ -9159,8 +9171,8 @@ function corpsRegions() {
   z.appendChild(el('p', 'pg-info', `Chaque région paie les murs, la cantine, l’internat et les agents de ses lycées : <b>6,8 Md€ en 2025</b>. L’État paie le reste, d’abord les professeurs.${citer('ofgl_regions')}`));
   z.appendChild(el('h3', '', 'Ce que chaque région investit par lycéen et par an'));
   z.appendChild(el('div', 'bous', barres.map(([n, v, c]) => `<div class="bous-l"><span class="lib">${esc(n)}<br><small>${esc(c)}</small></span><span class="rail"><i style="width:${Math.round(v / max * 100)}%; background:var(--c-egalite)"></i></span><span class="v">${fmt0(v)} €</span></div>`).join('')));
-  z.appendChild(el('p', 'pg-info', `Du simple au double, entre les Hauts-de-France et la Bretagne. La Bourgogne-Franche-Comté, les Pays de la Loire et la Normandie sont aussi dans les quatre premières ; les neuf autres régions ne sont pas relevées : aucun tableau officiel ne le publie, la presse le reconstitue (2022-2025).${citer('gazette_invest')}`));
-  z.appendChild(el('p', 'pg-info', `Le seul outil national pour corriger ces écarts est la dotation régionale d’équipement scolaire : <b>661,8 M€ par an</b>, figés à leur montant de 2008.${citer('dres_an')}`));
+  z.appendChild(el('p', 'pg-info', `Du simple au double, entre les Hauts-de-France et la Bretagne. La Bourgogne-Franche-Comté, les Pays de la Loire et la Normandie sont aussi dans les quatre premières ; les sept autres régions ne sont pas relevées : aucun tableau officiel ne le publie, la presse le reconstitue (2022-2025).${citer('gazette_invest')}`));
+  z.appendChild(el('p', 'pg-info', `Le seul outil national pour corriger ces écarts est la dotation régionale d’équipement scolaire : <b>661,8 M€ par an</b>, figés à leur montant de 2008 au moins jusqu’en 2022.${citer('dres_an')}${citer('dres_insee')}`));
   /* mon département */
   const parRegion = {};
   for (const dep of [...DEPARTEMENTS].sort((a, b) => a.code.localeCompare(b.code, 'fr', { numeric: true }))) (parRegion[dep.region] = parRegion[dep.region] || []).push(dep);
@@ -9195,7 +9207,7 @@ function corpsTerritoire(f) {
   if (R.prive) lignes.push({ v: 'au privé', l: R.prive.v, src: R.prive.src });
   if (R.cantine) lignes.push({ v: 'la cantine', l: R.cantine.v, src: R.cantine.src });
   if (R.participation) lignes.push({ v: 'les élèves décident', l: R.participation.v, src: R.participation.src });
-  if (f.ips != null) lignes.push({ v: `IPS ${f.ips}`, l: `l’indice de position sociale moyen des lycées de ${f.nom} (rentrée 2024), pour une moyenne nationale de 109 (de 71 à Mayotte à 129 à Paris)`, src: 'depp_ips_lycees' });
+  if (f.ips != null) lignes.push({ v: `IPS ${f.ips}`, l: `l’indice de position sociale moyen des lycées de ${f.nom} (rentrée 2024), pour une moyenne nationale de 109 (71 à Mayotte, 129 à Paris)`, src: 'depp_ips_lycees' });
   else if (f.sous100) lignes.push({ v: 'IPS sous 100', l: `${f.nom} fait partie des départements où l’indice de position sociale moyen des lycées est sous 100 (moyenne nationale 109)`, src: 'depp_ips_lycees' });
   else lignes.push({ v: 'IPS : à chercher', l: `l’IPS moyen des lycées de ${f.nom} n’a pas été relevé ; celui de chaque lycée est en données ouvertes`, src: 'ods_ips' });
   for (const x of f.locaux) lignes.push(x);
@@ -9222,7 +9234,7 @@ function corpsTerritoire(f) {
     res.innerHTML = `<ul class="rep-liste"><li><span class="v">${L.length} lycées</span><span class="l">à la rentrée ${esc(r.rentree || '')}${pub.length || pri.length ? ` : ${pub.length} publics, ${pri.length} privés sous contrat` : ''}${moy(L) != null ? ` ; IPS moyen ${fmt0(moy(L))}${pub.length && pri.length ? ` (public ${fmt0(moy(pub))}, privé ${fmt0(moy(pri))})` : ''}` : ''}</span></li>
       <li><span class="v">${fmt0(tri[0].ips)}</span><span class="l">le lycée le moins favorisé : ${esc(tri[0].nom)}${tri[0].commune ? `, ${esc(tri[0].commune)}` : ''}</span></li>
       <li><span class="v">${fmt0(tri[tri.length - 1].ips)}</span><span class="l">le plus favorisé : ${esc(tri[tri.length - 1].nom)}${tri[tri.length - 1].commune ? `, ${esc(tri[tri.length - 1].commune)}` : ''}</span></li></ul>
-      <p class="exp">Un IPS de 100 est la moyenne des élèves de France ; les lycées vont de 59 à 162.${citer('ods_ips')}</p>`;
+      <p class="exp">Un IPS de 100 est la moyenne des élèves de France ; la moyenne des lycées est de 109, et ils vont de 59 à 162.${citer('ods_ips')}</p>`;
     const cherche = el('input', 'cherche-lycee');
     cherche.type = 'search'; cherche.placeholder = 'Le nom de votre lycée…'; cherche.setAttribute('aria-label', 'Votre lycée');
     const liste = el('ul', 'lycee-liste');
@@ -9239,7 +9251,7 @@ function corpsTerritoire(f) {
     res.append(cherche, liste);
   }
   const nat = el('details', 'nat');
-  nat.innerHTML = '<summary>Et partout en France : sept chiffres</summary>';
+  nat.innerHTML = '<summary>Et partout en France : huit chiffres</summary>';
   nat.appendChild(el('ul', 'rep-liste', FAITS_NATIONAUX.map((x) => `<li><span class="v">${fr(x.v)}</span><span class="l">${fr(x.l)}.${citer(x.src)}${x.src2 ? citer(x.src2) : ''}</span></li>`).join('')));
   z.appendChild(nat);
   return z;
@@ -9286,7 +9298,7 @@ function ecranResultat(q) {
     fin: () => suivant(null),
   });
   const t = $('#scene .pg-tete');
-  if (t && q.ton) t.style.color = q.ton === 'bien' ? 'var(--c-sante)' : q.ton === 'mal' ? 'var(--rouge-rf)' : '';
+  if (t && q.ton) t.style.color = q.ton === 'bien' ? 'var(--t-c-sante)' : q.ton === 'mal' ? 'var(--t-rouge-rf)' : '';
 }
 
 /* --- une colère : ce qu'ils disent, votre avis -------------------------------- */
@@ -9308,9 +9320,9 @@ function ecranColere(q) {
 
 /* --- une colère : ce que disent les faits, votre réponse -------------------- */
 const VERDICTS = {
-  fondee: { t: 'Les chiffres confirment', coul: 'var(--c-sante)' },
-  partielle: { t: 'Vrai, mais pas comme ils le disent', coul: 'var(--c-budget)' },
-  ouverte: { t: 'Les chiffres ne tranchent pas', coul: 'var(--c-violet)' },
+  fondee: { t: 'Les chiffres confirment', coul: 'var(--t-c-sante)' },
+  partielle: { t: 'Vrai, mais pas comme ils le disent', coul: 'var(--t-c-budget)' },
+  ouverte: { t: 'Les chiffres ne tranchent pas', coul: 'var(--t-c-violet)' },
 };
 function miroirAvis(avis, verdict) {
   if (verdict === 'ouverte') return avis === 'partielle' ? 'prudent : les données ne tranchent pas.' : 'les données ne tranchent pas : gardez votre avis, et sachez sur quoi il repose.';
@@ -9384,6 +9396,11 @@ function ecranFaits(q) {
    dossier de crise.
    ========================================================================== */
 
+const PROFIL_PHRASE = {
+  rapport_de_force: 'est dans une culture du rapport de force', reformiste: 'est réformiste',
+  frontal: 'est en opposition frontale', negociation: 'est dans une culture de la négociation',
+  radical: 'est radical', corporatiste: 'est corporatiste',
+};
 const PROFILS_L = {
   rapport_de_force: 'culture du rapport de force', reformiste: 'réformiste',
   frontal: 'opposition frontale', negociation: 'culture de la négociation',
@@ -9424,9 +9441,9 @@ function ecranIntention(q) {
   page({
     kicker: 'Préparation de la rentrée', picto: 'courbe', pas: ETAT.dateLabel,
     titre: 'Moins d’élèves : que faites-vous des postes libérés ?',
-    info: 'Il y a moins d’élèves chaque année : environ 6 600 postes d’enseignants deviennent inutiles. Vous pouvez les rendre à Bercy (une économie) ou les garder dans les classes (moins d’élèves par classe). Vous annoncez votre intention maintenant ; <b>Bercy la comparera à votre décision de janvier</b>.',
+    info: 'Moins d’élèves chaque année : environ 6 600 postes d’enseignants sont libérés. Rendez-les à Bercy (une économie) ou gardez-les dans les classes. Vous annoncez votre intention maintenant ; <b>Bercy la comparera à votre décision de janvier</b>.',
     prompt: 'Que dites-vous publiquement ?',
-    figure: { v: '4 % ou 60 %', l: 'des postes libres rendus à Bercy aux rentrées 2025 et 2026', src: 'depp_proj35' },
+    figure: { v: '10 % ou 60 %', l: 'des postes libérés rendus à Bercy en 2025 et 2026 (calcul du jeu : un poste pour 24 élèves)', src: 'senat_plf26' },
     note: noteFiche('demographie', 'La baisse démographique'),
     choix: q.options.map((o) => ({
       titre: o.titre, det: o.detail,
@@ -9454,11 +9471,11 @@ function ecranCarteScolaire(q) {
   const postesDispo = CHOIX_POSTES.filter((c) => c.v <= q.restitutionMax + 1e-9);
   const precedents = (S.historiqueRestitution && S.historiqueRestitution.length)
     ? 'Vos précédents : ' + S.historiqueRestitution.map((h) => `rentrée ${h.rentree}, ${h.pct} % rendus`).join(' ; ') + '.'
-    : 'Avant vous : 4 % des postes libres rendus en 2025, 60 % en 2026.';
+    : 'Avant vous : environ 10 % des postes libérés rendus en 2025, 60 % en 2026.';
   const premiere = () => page({
     kicker: 'La carte scolaire', picto: 'plan', pas: `Rentrée ${S.anneeCiv + 1} · décision 1 sur 2`,
     titre: 'Les postes libres : les rendre ou les garder ?', illus: 'carte',
-    info: `La carte scolaire répartit chaque année les postes d’enseignants. <b>${fmt0(Math.abs(q.baisse) * 1000)} élèves de moins</b> à la rentrée : ${fmt0(q.postesLiberables)} postes deviennent inutiles. Bercy veut en récupérer ${fmt0(Math.abs(q.schemaDemande))}. Les maires et les syndicats veulent les garder. ${precedents}${q.restitutionMax < 1 ? `<br><small>Votre engagement « 19 élèves par classe » vous interdit d’en rendre plus de ${fmt0(q.restitutionMax * 100)} %.</small>` : ''}`,
+    info: `La carte scolaire répartit chaque année les postes d’enseignants. <b>${fmt0(Math.abs(q.baisse) * 1000)} élèves de moins</b> à la rentrée : ${fmt0(q.postesLiberables)} postes sont libérés. Bercy veut en récupérer ${fmt0(Math.abs(q.schemaDemande))}. Les maires et les syndicats veulent les garder. ${precedents}${q.restitutionMax < 1 ? `<br><small>Votre engagement « 19 élèves par classe » vous interdit d’en rendre plus de ${fmt0(q.restitutionMax * 100)} %.</small>` : ''}`,
     note: noteFiche('demographie', 'La baisse démographique'),
     prompt: 'Que faites-vous de ces postes ?',
     choix: postesDispo.map((c) => ({ titre: c.titre, det: c.det })),
@@ -9522,10 +9539,10 @@ function corpsBudgetEtPreuve(q) {
     <div class="budget-legende">
       <span><i class="puce" style="background:var(--filet)"></i>masse salariale <b>${fmt1(salaires)} Md€</b> (1,2 M d’agents)</span>
       <span><i class="puce" style="background:var(--filet-fort)"></i>dépenses déjà engagées</span>
-      <span><i class="puce" style="background:var(--c-paix)"></i>vos mesures passées <b>${fmt0(engages * 1000)} M€/an</b> (à vie)</span>
+      <span><i class="puce" style="background:var(--c-paix)"></i>vos mesures passées <b>${fmt0(engages * 1000)} M€/an</b> (chaque année, tant que vous ne les retirez pas)</span>
       <span><i class="puce" style="background:var(--c-sante)"></i>votre marge <b>${fmt0(libre * 1000)} M€</b> (${fmt1((libre / M) * 100)} %)</span>
     </div>`));
-  z.appendChild(el('p', 'pg-info', '<b>Comment lire une mesure.</b> Elle dit combien elle coûte, qui la défend dans la vraie vie, et ce qu’on sait de son effet : « solide » quand des dizaines d’études concordent, « fragile » quand il y en a une ou deux, « personne ne sait » quand il n’y en a aucune. L’effet d’image se voit tout de suite et s’use ; l’effet réel arrive plus tard, vous le verrez au bilan. Rien ne s’applique sans les professeurs.'));
+  z.appendChild(el('p', 'pg-info', '<b>Comment lire une mesure.</b> Elle dit combien elle coûte, qui la défend dans la vraie vie, et ce qu’on sait de son effet : « solides » quand des dizaines d’études concordent, « correctes » quand plusieurs convergent, « fragiles » quand il y en a une ou deux, « absentes » quand il n’y en a aucune. L’effet d’image se voit tout de suite et s’use ; l’effet réel arrive plus tard, vous le verrez au bilan. Une mesure ne produit d’effet que si les professeurs l’appliquent.'));
   z.appendChild(corpsFiche('preuve'));
   return z;
 }
@@ -9638,7 +9655,7 @@ function ecranMesures(q) {
       page({
         kicker: MOM.type, picto: 'liste', pas: 'Votre décision',
         titre: 'Ne rien annoncer de toute l’année ?',
-        info: 'Ne rien annoncer laisse le système souffler (fatigue −8), et fait écrire « ministre invisible » (soutien −7, parents −3,5).',
+        info: 'Ne rien annoncer laisse le système souffler (fatigue −8), et fait écrire « ministre invisible » (soutien −${K.IMMOBILISME.capital}, parents −${K.IMMOBILISME.parents}).',
         choix: [
           { titre: 'Revenir aux dossiers', det: 'Vous reprenez la liste depuis le début.' },
           { titre: 'Ne rien annoncer cette année', det: 'Le système souffle. La presse, moins.' },
@@ -9719,7 +9736,7 @@ function ecranAudience(q) {
   page({
     kicker: 'Audience, rentrée sociale', picto: 'megaphone', pas: ETAT.dateLabel,
     titre: `Face à face : ${org.nom}`, illus: 'delegation',
-    info: `Un syndicat représente des professeurs. Le plus important du moment, <b>${esc(org.nom)}</b> (${fmt1(org.poids)} % des voix aux élections professionnelles), a une ${PROFILS_L[org.profil]}.${premiere ? ' Sa délégation s’assoit et pose une question :' : ''}<br><i>${fr(audience.question(S))}</i>${premiere ? '<br><small>Trois tons : fermeté, méthode, concession. Aucun n’est le bon en soi.</small>' : ''}${soutienHtml}`,
+    info: `Un syndicat représente des professeurs. Le plus important du moment, <b>${esc(org.nom)}</b> (${fmt1(org.poids)} % des voix aux élections professionnelles), ${PROFIL_PHRASE[org.profil]}.${premiere ? ' Sa délégation s’assoit et pose une question :' : ''}<br><i>${fr(audience.question(S))}</i>${premiere ? '<br><small>Trois tons : fermeté, méthode, concession. Aucun n’est le bon en soi.</small>' : ''}${soutienHtml}`,
     note: noteFiche('metier', 'Le métier enseignant'),
     prompt: 'Comment répondez-vous à la délégation ?',
     choix: audience.reponses.map((r) => ({ titre: `${{ ferme: 'Fermeté', methode: 'Méthode', concession: 'Concession' }[r.type]} — ${r.titre}` })),
@@ -9780,7 +9797,7 @@ function ecranLivraison(q) {
   const L = q.livraison;
   const b = CADRAGE_INITIAL.find((x) => x.cle === 'niveaux');
   page({
-    kicker: 'Livraison internationale, 11 heures', picto: 'globe', pas: ETAT.dateLabel,
+    kicker: 'Résultats PISA, 11 heures', picto: 'globe', pas: ETAT.dateLabel,
     titre: L.titre, illus: 'classe',
     info: `${fr(L.recit)}<br><b>${fr(L.contrainte)}</b>`,
     figure: b ? { v: b.accroche.v, l: 'en mathématiques pour les élèves de 15 ans entre 2018 et 2022 (enquête PISA, OCDE) : la plus forte baisse mesurée en France', src: b.accroche.src } : null,
@@ -10010,10 +10027,10 @@ function ecranBilan(B) {
   pages.push(() => {
     const t = el('table', 'bilan court');
     t.innerHTML = `<tr><th>Priorité</th><th class="num">Début</th><th class="num">Affiché</th><th class="num">Réel</th><th class="num">10 ans</th></tr>`
-      + B.doctrine.map((c, i) => `<tr${caches.includes(c) ? ' class="cache"' : ''}><td><span style="color:${COULEURS_C[c]}">●</span> ${NOMS_COURTS[c]} <small>n° ${i + 1}</small></td><td class="num">${fmt0(K.COMPTEURS_INITIAUX[c])}</td><td class="num">${fmt0(B.affiche[c])}</td><td class="num"><b>${fmt0(B.vrai[c])}</b></td><td class="num">${fmt0(B.projection[c])}</td></tr>`).join('');
+      + B.doctrine.map((c, i) => `<tr${caches.includes(c) ? ' class="cache"' : ''}><td><span aria-hidden="true" style="color:${COULEURS_C[c]}">●</span> ${NOMS_COURTS[c]} <small>n° ${i + 1}</small></td><td class="num">${fmt0(K.COMPTEURS_INITIAUX[c])}</td><td class="num">${fmt0(B.affiche[c])}</td><td class="num"><b>${fmt0(B.vrai[c])}</b></td><td class="num">${fmt0(B.projection[c])}</td></tr>`).join('');
     return {
       kicker: 'Vos cinq priorités', picto: 'courbe', titre: 'Ce que le pays a vu, et ce qui s’est vraiment passé',
-      info: `Chaque ligne est une de vos priorités, notée de 0 à 100 : <b>affiché</b>, ce que le tableau de bord montrait ; <b>réel</b>, ce qui s’est vraiment passé. Vous n’avez jamais vu ${caches.map((c) => NOMS_C_LONGS[c].toLowerCase()).join(' ni ')} : classés quatrième et cinquième, ils étaient tenus sans être affichés. Ils valent ${K.POIDS_DOCTRINE[3] + K.POIDS_DOCTRINE[4]} % de votre note.`,
+      info: `Chaque ligne est une de vos priorités, notée de 0 à 100 : <b>affiché</b>, ce que le tableau de bord montrait ; <b>réel</b>, ce qui s’est vraiment passé. Vous n’avez jamais vu ${caches.map((c) => NOMS_C_LONGS[c].toLowerCase()).join(' ni ')} sur votre tableau de bord : classés quatrième et cinquième, ils étaient tenus sans être affichés. Ils valent ${K.POIDS_DOCTRINE[3] + K.POIDS_DOCTRINE[4]} % de votre note.`,
       extra: t,
     };
   });
@@ -10331,7 +10348,7 @@ function blocReperes(cles, ouvert) {
     if (r.serie === 'budget') c.appendChild(serieBudget());
     c.appendChild(el('ul', 'rep-liste', r.chiffres.map((x) =>
       `<li><span class="v">${fr(x.v)}</span><span class="l">${fr(x.l)}.${citer(x.src)}${x.src2 ? citer(x.src2) : ''}</span></li>`).join('')));
-    c.appendChild(el('div', 'rep-retenir', `<b>Ce qu’il faut en retenir</b>${fr(r.aRetenir)}`));
+    c.appendChild(el('div', 'rep-retenir', `<b>Lecture du dossier</b>${fr(r.aRetenir)}`));
     dt.appendChild(c);
     z.appendChild(dt);
   }
@@ -10344,7 +10361,7 @@ function ouvrirComprendre() {
   c.innerHTML = '';
   const t = el('div', '');
   c.appendChild(corpsModeEmploi());
-  t.innerHTML = `<h3>Les chiffres du jeu</h3><p class="chapo">Les données de référence sur lesquelles le jeu est construit, thème par thème, avec leurs sources. Rien ici n’est simulé : ce sont les chiffres publiés par la DEPP, le Sénat, la Cour des comptes et l’OCDE, tels qu’ils étaient en août 2026. Le moteur du jeu les utilise comme état de départ ; la fiche « Comment le jeu note les mesures » explique le reste.</p>`;
+  t.innerHTML = `<h3>Les chiffres du jeu</h3><p class="chapo">Les données de référence sur lesquelles le jeu est construit, thème par thème, avec leurs sources. Rien ici n’est simulé : ce sont les chiffres publiés par la DEPP, le Sénat, la Cour des comptes et l’OCDE, tels qu’ils étaient fin octobre 2026. Le moteur du jeu les utilise comme état de départ ; la fiche « Comment le jeu note les mesures » explique le reste.</p>`;
   c.appendChild(t);
   c.appendChild(blocReperes(null, ['preuve']));
   const src = el('div', '');
@@ -10352,7 +10369,7 @@ function ouvrirComprendre() {
     Object.values(SOURCES).sort((a, b) => a.org.localeCompare(b.org, 'fr')).map((S) =>
       `<li><span class="org">${esc(S.org)}</span> — ${S.url ? `<a href="${S.url}" target="_blank" rel="noopener">${esc(S.titre)}</a>` : esc(S.titre)} <span style="color:var(--encre-3)">(${esc(S.date)})</span></li>`).join('')
   }</ul>
-  <p class="rep-serie-note">Les personnages, les organisations syndicales et les titres de presse du jeu sont des pseudonymes transparents : la satire est symétrique, personne n’est épargné. En revanche, les propositions politiques citées sur les cartes sont réelles et attribuées à leurs auteurs, et tous les chiffres ci-dessus sont vérifiables aux sources indiquées.</p>`;
+  <p class="rep-serie-note">Les personnages, les syndicats et les titres de presse du jeu sont des pseudonymes transparents : la satire est symétrique, personne n’est épargné. En revanche, les propositions politiques citées sur les cartes, et les organisations et personnes citées dans les sources, sont réelles et attribuées à leurs auteurs, et tous les chiffres ci-dessus sont vérifiables aux sources indiquées.</p>`;
   c.appendChild(src);
   $('#comprendre').hidden = false;
   $('#comprendre').scrollTop = 0;
@@ -10373,7 +10390,7 @@ function verdictProse(B) {
   if (B.scoreBilan >= 55 && B.constance) return 'Vous laissez un système en meilleur état que vous ne l’avez trouvé, un cap lisible, et des effets qui composeront après vous. Dans ce ministère, cela porte un nom : une exception. Vous aurez droit à une salle de réunion à votre nom à la DGESCO, celle qui fait face à la machine à café.';
   if (ecartPerception > 5) return 'Beau mandat, disent les sondages. Le bilan, lui, est plus discret : vous avez surtout gouverné le tableau de bord. Vos successeurs gouverneront le reste.';
   if (B.scoreBilan - B.scoreAffiche > 3) return 'Le pays ne vous a pas vu travailler, les indicateurs regardaient ailleurs, comme toujours, avec dix ans de retard. Vos successeurs inaugureront vos résultats. Ils y penseront très fort.';
-  if (B.anneesJouees < 3) return 'Deux ans, comme la moyenne. Le système vous a survécu sans effort particulier : il a l’habitude.';
+  if (B.anneesJouees < 3) return 'Moins de trois ans, comme la moyenne. Le système vous a survécu sans effort particulier : il a l’habitude.';
   return 'Un mandat dans la moyenne haute de ce que la Ve République fait de ses ministres de l’Éducation : des choix, des renoncements, et un tableau de bord qui ne dit pas encore la vérité.';
 }
 
