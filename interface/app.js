@@ -628,7 +628,7 @@ function corpsFiche(cle) {
   }
   const chiffres = (b && b.chiffres && b.chiffres.length) ? b.chiffres : (r ? r.chiffres : []);
   if (r && r.serie === 'budget' && !b) z.appendChild(serieBudget());
-  if (chiffres.length) z.appendChild(el('ul', 'rep-liste', chiffres.map((x) => `<li><span class="v">${fr(x.v)}</span><span class="l">${fr(x.l)}.${citer(x.src)}</span></li>`).join('')));
+  if (chiffres.length) z.appendChild(el('ul', 'rep-liste', chiffres.map((x) => `<li><span class="v">${fr(x.v)}</span><span class="l">${fr(x.l)}.${citer(x.src)}${x.src2 ? citer(x.src2) : ''}</span></li>`).join('')));
   const retenir = (b && b.aRetenir) || (r && r.aRetenir);
   if (retenir) z.appendChild(el('p', 'cadrage-retenir', fr(retenir)));
   return z;
@@ -645,7 +645,7 @@ function noteFaits(titre, faits, lecture) {
     kicker: 'Note de la DGESCO', titre,
     corps: () => {
       const z = el('div', 'fiche-corps');
-      if (faits && faits.length) z.appendChild(el('ul', 'rep-liste', faits.map((x) => `<li><span class="v">${fr(x.v)}</span><span class="l">${fr(x.l)}.${citer(x.src)}</span></li>`).join('')));
+      if (faits && faits.length) z.appendChild(el('ul', 'rep-liste', faits.map((x) => `<li><span class="v">${fr(x.v)}</span><span class="l">${fr(x.l)}.${citer(x.src)}${x.src2 ? citer(x.src2) : ''}</span></li>`).join('')));
       if (lecture) z.appendChild(el('p', 'cadrage-retenir', fr(lecture)));
       return z;
     },
@@ -1095,8 +1095,8 @@ function ecranAccueil(sauvegarde) {
     <div class="tampon"><div class="rf">RÉPUBLIQUE FRANÇAISE</div><div class="mn">MINISTÈRE DE L’ÉDUCATION NATIONALE</div></div>
     ${ILLUS.facade.replace('<svg ', '<svg class="illustration" ')}
     <h1>Rue de Grenelle</h1>
-    <p class="devise">Automne 2026. Les lycées sont bloqués depuis six semaines. Le ministre démissionne. On vous appelle.</p>
-    <p class="chute">Vous êtes le nouveau ministre de l’Éducation. Sur chaque page : une information, puis une décision à prendre. Une partie dure vingt à trente minutes.</p>`;
+    <p class="devise">Automne 2026. Le ministre a fait des annonces : les lycées restent bloqués. Il démissionne. On vous appelle.</p>
+    <p class="chute">Vous êtes le nouveau ministre de l’Éducation. Votre enjeu : aller plus loin que ses annonces. Sur chaque page, une information, puis une décision. Une partie dure vingt à trente minutes.</p>`;
   const zone = el('div', 'pg-zone');
   if (sauvegarde) {
     zone.appendChild(cta('Reprendre la partie en cours', () => demarrer(sauvegarde)));
@@ -1117,8 +1117,8 @@ function ecranAccueil(sauvegarde) {
 function ecranNomination() {
   const note = el('div', 'note-passation');
   note.innerHTML = `<p>Cher successeur,</p>
-    <p>Un seul conseil, le seul que je n’ai pas su suivre : <b>les lycéens, c’est comme le dentifrice. Une fois sorti du tube, on ne le fait plus rentrer.</b> On peut l’étaler, le diriger, le canaliser. Pas faire comme s’il n’était jamais sorti.</p>
-    <p>Le reste est dans les cartons. Les cartons sont devant les grilles.</p>
+    <p>J’ai annoncé ce que j’ai pu : Parcoursup remplacé en 2028, vingt-huit élèves par classe en seconde, 500 postes. Ils disent que ce n’est pas assez, et les lycées restent bloqués. Ils ont raison.</p>
+    <p>Un seul conseil : <b>les lycéens, c’est comme le dentifrice. Une fois sorti du tube, on ne le fait plus rentrer.</b> On peut l’étaler, le diriger, le canaliser. Pas faire comme s’il n’était jamais sorti.</p>
     <p class="ps">P.-S. La photocopieuse du deuxième est en panne depuis 2019. Ne la réparez pas : c’est le dossier le plus consensuel du ministère. Il fédère.</p>`;
   page({
     kicker: 'Rue de Grenelle', picto: 'lettre', pas: 'novembre 2026',
@@ -1186,6 +1186,24 @@ function ecranDoctrine() {
   ok.disabled = true;
   pg.querySelector('.pg-zone').appendChild(ok);
   dessiner();
+}
+
+/* --- les annonces de votre prédécesseur : la première question de la presse --- */
+function ecranAnnonces(q) {
+  page({
+    kicker: 'Conférence de presse', picto: 'pupitre', pas: 'première question',
+    titre: 'Ce que votre prédécesseur a déjà annoncé',
+    info: 'Fin octobre, le ministre a répondu au mouvement par des annonces : <b>Parcoursup remplacé en 2028, 28 élèves au plus par classe de seconde, 500 postes de professeurs</b>, des suppressions de postes annulées, des bourses indexées. Les organisations lycéennes ont jugé que ce n’était pas assez : les blocus continuent. Un journaliste vous demande : <i>« Ces annonces sont-elles suffisantes ? »</i>',
+    note: { label: 'Voir tout ce qui a été annoncé (note de la DGESCO)', kicker: 'Note de la DGESCO', titre: 'Ce qui a déjà été annoncé, fin octobre 2026', corps: () => corpsFiche('annonces') },
+    prompt: 'Que répondez-vous ?',
+    choix: q.options.map((o) => ({
+      titre: o.label, det: o.det,
+      tags: [o.colere > 0 ? ['la colère des lycéens retombe', 'pos'] : ['la colère des lycéens monte', 'neg'], o.bercy >= 3 ? ['Bercy apprécie', 'pos'] : o.capital < 0 ? ['Matignon grince', 'neg'] : ''].filter(Boolean),
+      detail: { kicker: 'Votre réponse', titre: o.label, corps: `<p class="pg-info">${fr(o.det)}</p>` },
+    })),
+    retour: (i) => ({ titre: 'Ce qui suit', texte: q.options[i].suite, bouton: 'Continuer' }),
+    fin: (i) => suivant(i),
+  });
 }
 
 /* --- la note d'héritage et les notes de cadrage ------------------------------ */
@@ -1290,7 +1308,7 @@ function corpsTerritoire(f) {
   }
   const nat = el('details', 'nat');
   nat.innerHTML = '<summary>Et partout en France : sept chiffres</summary>';
-  nat.appendChild(el('ul', 'rep-liste', FAITS_NATIONAUX.map((x) => `<li><span class="v">${fr(x.v)}</span><span class="l">${fr(x.l)}.${citer(x.src)}</span></li>`).join('')));
+  nat.appendChild(el('ul', 'rep-liste', FAITS_NATIONAUX.map((x) => `<li><span class="v">${fr(x.v)}</span><span class="l">${fr(x.l)}.${citer(x.src)}${x.src2 ? citer(x.src2) : ''}</span></li>`).join('')));
   z.appendChild(nat);
   return z;
 }
@@ -1349,6 +1367,7 @@ function ecranColere(q) {
     titre: c.cri, cri: true, papier: true,
     qui: c.qui,
     info: fr(c.intro || c.contexte),
+    extra: c.annonce ? el('p', 'pg-neuf', `<b>Déjà annoncé :</b> ${fr(c.annonce.texte)}`) : null,
     prompt: 'Selon vous, cette colère est-elle fondée ? (les chiffres suivent)',
     choix: q.avis.map((a) => ({ titre: a.label, det: a.det })),
     fin: (i) => suivant(i),
@@ -1374,7 +1393,14 @@ function ecranFaits(q) {
   const avisLabel = (AVIS.find((a) => a.id === q.avis) || {}).label || '';
   const rentree = rentreeColere(q);
   const when = rentree ? 'cette année' : 'cet automne';
-  const note = noteFaits(`Ce que disent les chiffres`, c.faits, c.lecture);
+  const noteBase = noteFaits(`Ce que disent les chiffres`, c.faits, c.lecture);
+  /* Ce qui est déjà annoncé, et pourquoi cela ne suffit pas, avant les chiffres. */
+  const note = { corps: () => {
+    const z = el('div', '');
+    if (c.annonce) z.appendChild(el('div', 'direct', `<h4>Ce qui est déjà annoncé</h4><p class="exp">${fr(c.annonce.texte)}${c.annonce.src.map(citer).join('')}</p><h4>Pourquoi les lycéens disent que cela ne suffit pas</h4><p class="exp">${fr(c.annonce.limite)}</p>`));
+    z.appendChild(noteBase.corps());
+    return z;
+  } };
   const base = {
     kicker: rentree ? `${q.quand}, les faits` : 'Automne 2026, les faits', picto: 'megaphone',
     pas: q.total > 1 ? `Colère ${q.rang} sur ${q.total}` : '',
@@ -1414,7 +1440,7 @@ function ecranFaits(q) {
   choix.push({ titre: 'Ne rien décider pour l’instant', det: 'Vous notez la question. Un sujet sans réponse à la rentrée fait remonter la colère des lycéens.', autre: true });
   page(Object.assign(base, {
     info: verdictHtml,
-    prompt: `Que décidez-vous ? Budget restant : ${fmt0(Math.max(0, q.tresor) * 1000)} M€ · soutien du gouvernement : ${fmt0(q.capital)}`,
+    prompt: `${c.annonce ? 'Pour aller plus loin que l’annonce, que décidez-vous ?' : 'Que décidez-vous ?'} Budget restant : ${fmt0(Math.max(0, q.tresor) * 1000)} M€ · soutien du gouvernement : ${fmt0(q.capital)}`,
     choix,
     retour: (i, ch) => ({ titre: ch.carte ? 'Vous avez décidé' : 'Vous attendez', html: true, texte: `${fr(ch.carte ? ch.carte.mot : 'Rien n’est décidé, et c’est une décision : elle ne coûte rien aujourd’hui, elle se paie en septembre.')}<br><small>${esc(miroir)}</small>` }),
     fin: (i, ch) => suivant(ch.carte ? { id: ch.carte.id } : null),
@@ -2112,7 +2138,25 @@ function ecranBilan(B) {
       notes: [{ label: 'Ce que vous pensiez, ce que disaient les faits', kicker: 'Les lycéens', titre: 'Ce que vous pensiez, ce que disaient les faits', corps: () => blocMiroir(S) }],
     };
   });
-  /* 6. doctrine déclarée, doctrine menée */
+  /* 6. au-delà des annonces d'octobre */
+  pages.push(() => {
+    const SUJETS = { profs: 'Remplacement', journees: 'Temps scolaire', bati: 'Bâti', parcoursup: 'Parcoursup', effectifs: 'Taille des classes', postes: 'Postes', sante: 'Santé scolaire', democratie: 'Démocratie lycéenne' };
+    const lignes = COLERES.filter((c) => c.annonce).map((c) => {
+      const id = c.annonce.plusLoin.find((x) => S.joue.has(x));
+      return { sujet: SUJETS[c.id] || c.id, ok: !!id, carte: id ? nom(id).split(' : ')[0] : '' };
+    });
+    const n = lignes.filter((l) => l.ok).length;
+    const ul = el('ul', 'chantiers');
+    ul.innerHTML = lignes.map((l) => `<li class="${l.ok ? 'ok' : 'non'}">${l.ok ? '✓' : '✗'} <b>${esc(l.sujet)}</b> : ${l.ok ? `« ${esc(l.carte)} »` : 'rien de plus que l’annonce de votre prédécesseur'}</li>`).join('');
+    const lect = { debut: 'Vous aviez dit : « un début ».', insuffisantes: 'Vous aviez dit : « elles ne suffisent pas ».', tiennent: 'Vous aviez dit : « elles tiennent ».' }[S.lectureAnnonces] || '';
+    return {
+      kicker: 'Au-delà des annonces', picto: 'liste', titre: 'Êtes-vous allé plus loin que votre prédécesseur ?',
+      info: `En octobre 2026, le ministre avait annoncé des mesures sur ${lignes.length} sujets. Vous avez fait plus que lui sur <b>${n}</b>. ${lect}`,
+      extra: ul,
+      notes: [{ label: 'Rappel : ce qui avait été annoncé', kicker: 'Au-delà des annonces', titre: 'Ce qui avait été annoncé, fin octobre 2026', corps: () => corpsFiche('annonces') }],
+    };
+  });
+  /* 7. doctrine déclarée, doctrine menée */
   pages.push(() => {
     let cmp = null;
     if (rev && rev.precedent && rev.graine === ETAT.graine) {
@@ -2354,7 +2398,7 @@ function blocReperes(cles, ouvert) {
     const c = el('div', 'rep-corps');
     if (r.serie === 'budget') c.appendChild(serieBudget());
     c.appendChild(el('ul', 'rep-liste', r.chiffres.map((x) =>
-      `<li><span class="v">${fr(x.v)}</span><span class="l">${fr(x.l)}.${citer(x.src)}</span></li>`).join('')));
+      `<li><span class="v">${fr(x.v)}</span><span class="l">${fr(x.l)}.${citer(x.src)}${x.src2 ? citer(x.src2) : ''}</span></li>`).join('')));
     c.appendChild(el('div', 'rep-retenir', `<b>Ce qu’il faut en retenir</b>${fr(r.aRetenir)}`));
     dt.appendChild(c);
     z.appendChild(dt);
@@ -2454,13 +2498,13 @@ function blocMiroir(S) {
 }
 
 /* -------------------------------------------------------- boucle & sauvegarde */
-const CLE_SAUVE = 'rue-de-grenelle-gp4';  // version grand public : son propre jeu de sauvegarde
+const CLE_SAUVE = 'rue-de-grenelle-gp5';  // version grand public : son propre jeu de sauvegarde
 const ETAT = { s: null, gen: null, journalLu: 0, pas: [], dateLabel: 'novembre 2026', rentreeRatee: false, picto: 'journal', typeEcran: '' };
 
 function dateDe(q) {
   const S = ETAT.s, an = S.anneeCiv || 2026;
   const t = q.type;
-  if (['nomination', 'doctrine', 'entretien', 'avance', 'resultat'].includes(t)) return 'novembre 2026';
+  if (['nomination', 'doctrine', 'annonces', 'entretien', 'avance', 'resultat'].includes(t)) return 'novembre 2026';
   if (t === 'reperes') return q.note === 'demographie' ? `juillet ${an}` : 'novembre 2026';
   if (t === 'colere' || t === 'faits') return q.quand && /^Rentrée/.test(q.quand) ? `septembre ${an}` : 'novembre 2026';
   if (t === 'intention') return `juillet ${an}`;
@@ -2485,7 +2529,7 @@ function dateDe(q) {
 
 /* Le pictogramme de chaque type de page : on reconnaît la page avant de la lire. */
 const PICTO_DE = {
-  nomination: 'lettre', entretien: 'colonnes', doctrine: 'pupitre', avance: 'pieces', resultat: 'pieces',
+  nomination: 'lettre', entretien: 'colonnes', doctrine: 'pupitre', annonces: 'pupitre', avance: 'pieces', resultat: 'pieces',
   colere: 'megaphone', faits: 'megaphone', intention: 'courbe', affaire: 'alerte', polemique: 'tele', blocus: 'megaphone',
   livraison: 'globe', plateau: 'tele', retrait: 'megaphone', dossier: 'dossier', audience: 'megaphone', lettrePlafond: 'lettre',
   rentree: 'ecole', carteScolaire: 'plan', mesures: 'liste',
@@ -2502,6 +2546,7 @@ function rendre(q) {
   else if (q.type === 'reperes') ecranReperes(q);
   else if (q.type === 'avance') ecranAvance(q);
   else if (q.type === 'resultat') ecranResultat(q);
+  else if (q.type === 'annonces') ecranAnnonces(q);
   else if (q.type === 'entretien') ecranEntretien(q);
   else if (q.type === 'intention') ecranIntention(q);
   else if (q.type === 'affaire') ecranAffaire(q);

@@ -145,7 +145,7 @@ export const CATALOGUE = [
   /* ------------------------------------------------------------------ 7 --- */
   {
     id: 'sante_scolaire',
-    label: 'Plan de recrutement en santé scolaire (infirmiers, PsyEN, assistants sociaux)',
+    label: 'Santé scolaire : 1 200 postes d’infirmiers, de PsyEN et d’assistants sociaux, plus du double des 500 annoncés',
     famille: 'moyens',
     porteurs: ['les organisations lycéennes (personnels de santé et d’orientation)', 'Cour des comptes', 'intersyndicale', 'fédérations de parents'],
     perimetre: 'ministeriel',
@@ -159,7 +159,7 @@ export const CATALOGUE = [
       { compteur: 'egalite', central: 3, delai: 4, cadenas: 2, source: 'désengagement scolaire 31 % en IPS faible contre 19,4 % en IPS élevé' },
     ],
     physique: {},
-    preuve: 'Environ 900 médecins scolaires pour 12 millions d’élèves, plus d’un tiers des postes vacants (Cour des comptes) ; 20 % seulement des visites médicales de la sixième année réalisées ; 41 postes de psychologues sur 147 non pourvus au concours 2025. La leçon du PLF 2026 (+300 postes votés, pourvus en partie seulement) : un budget voté n’est pas une politique faite quand le vivier professionnel n’existe pas.',
+    preuve: 'Fin octobre 2026, le gouvernement a annoncé 500 postes de psychologues, d’infirmiers et d’assistants sociaux ; la mesure plus que double cet effort. Environ 900 médecins scolaires pour 12 millions d’élèves, plus d’un tiers des postes vacants (Cour des comptes) ; 20 % seulement des visites médicales de la sixième année réalisées ; 41 postes de psychologues sur 147 non pourvus au concours 2025. La leçon du PLF 2026 (+300 postes votés, pourvus en partie seulement) : un budget voté n’est pas une politique faite quand le vivier professionnel n’existe pas.',
     ideeRecue: '« Il suffit de créer des postes. » Créer un poste et le pourvoir sont deux choses différentes : quand toute une profession manque de praticiens, l’argent seul n’ouvre pas de cabinet médical dans un collège.',
     mot: "Le PLF 2026 a voté +300 postes. Les concours n'en ont pourvu qu'une fraction : 41 postes de PsyEN non pourvus sur 147. Un budget voté n'est pas une politique faite.",
   },
@@ -1408,7 +1408,7 @@ export const CATALOGUE = [
   /* ------------------------------ L1 · remplacement ---------------- */
   {
     id: 'remplacement_lycee',
-    label: 'Une brigade de 3 000 remplaçants titulaires pour les lycées',
+    label: 'Rendre permanent le plan d’urgence : 3 000 remplaçants titulaires dans les lycées, financés par la loi de finances',
     famille: 'lycee',
     porteurs: ['le gouvernement (3 000 remplaçants appelés en octobre 2026)', 'les organisations lycéennes (des postes, pas des contrats précaires)', 'fédérations de parents', 'Cour des comptes (absences longues)'],
     perimetre: 'ministeriel',
@@ -1421,9 +1421,9 @@ export const CATALOGUE = [
       { compteur: 'reussite', central: 2, delai: 2, cadenas: 3, source: 'le temps d’enseignement effectivement reçu est un déterminant direct des acquis ; 9 % des heures ne sont pas assurées au collège public (Cour des comptes, 2025)' },
     ],
     physique: { hna: { delta: -1.2, duree: 3 } },
-    preuve: 'Au 7 septembre 2026, 53 % des collèges et lycées publics manquaient d’au moins un professeur selon l’enquête du SNES-FSU (1 033 établissements) ; le ministère parlait de volumes d’heures plutôt que de postes entiers. Le ministre a reconnu que 7 % des heures de cours n’étaient pas assurées, et la Cour des comptes mesure 9 % d’heures perdues dans les collèges publics en 2023-2024. En octobre 2026, 3 000 professeurs titulaires remplaçants ont été affectés en urgence dans les lycées les plus touchés : le nombre de lycées « en grande difficulté » est passé de 114 à 47 en une semaine. Cette carte inscrit ce dispositif au budget au lieu de le reconduire en urgence.',
+    preuve: 'Mi-octobre 2026, le ministre a affecté 3 000 professeurs titulaires remplaçants en urgence et annoncé poursuivre ce plan ; aucune ligne de la loi de finances ne le pérennise. Au 7 septembre 2026, 53 % des collèges et lycées publics manquaient d’au moins un professeur selon l’enquête du SNES-FSU (1 033 établissements) ; le ministère parlait de volumes d’heures plutôt que de postes entiers. Le ministre a reconnu que 7 % des heures de cours n’étaient pas assurées, et la Cour des comptes mesure 9 % d’heures perdues dans les collèges publics en 2023-2024. En octobre 2026, 3 000 professeurs titulaires remplaçants ont été affectés en urgence dans les lycées les plus touchés : le nombre de lycées « en grande difficulté » est passé de 114 à 47 en une semaine. Cette carte inscrit ce dispositif au budget au lieu de le reconduire en urgence.',
     ideeRecue: '« Il suffit de recruter des remplaçants. » Deux tiers des absences non remplacées ont une cause institutionnelle (examens, formations, sorties) et sont courtes : une brigade ne les couvre pas. Et des postes créés ne mettent personne devant les élèves tant que les concours ne font pas le plein.',
-    mot: "La réponse d’octobre 2026, inscrite au budget. Elle marche là où les candidats existent ; le vivier, lui, n’a pas changé d’avis.",
+    mot: "En octobre 2026, ces 3 000 titulaires ont été prêtés à la hâte. Ici, vous les inscrivez au budget : c’est ce qui sépare un plan d’urgence d’un système. Cela marche là où les candidats existent ; le vivier, lui, n’a pas changé d’avis.",
   },
 
   /* ------------------------------ L2 · la journée ------------------- */
@@ -1475,7 +1475,7 @@ export const CATALOGUE = [
   /* ------------------------------ L4 · les murs -------------------- */
   {
     id: 'bati_lycee',
-    label: 'Fonds d’urgence État-régions pour les lycées : toilettes, chauffage, salles surchauffées',
+    label: 'Fonds d’urgence État-régions pour les lycées : des subventions, pas des prêts, pour les toilettes, le chauffage et les salles surchauffées',
     famille: 'lycee',
     porteurs: ['le Premier ministre (« l’État pourra accompagner les régions », octobre 2026)', 'Régions de France (qui demande un geste financier de l’État)', 'les organisations lycéennes (plan d’urgence bâti)', 'Les Écologistes (2 Md€ par an, « refuges climatiques »)'],
     perimetre: 'matignon',
@@ -1488,7 +1488,7 @@ export const CATALOGUE = [
       { compteur: 'reussite', central: 2, delai: 3, cadenas: 2, source: 'la littérature sur le confort thermique et les apprentissages est mince mais cohérente' },
     ],
     physique: {},
-    preuve: 'Les bâtiments, les équipements, la restauration et les internats des lycées publics relèvent de la compétence exclusive des régions, rappelée par le Premier ministre le 4 octobre 2026 ; l’État « pourra accompagner les régions qui en expriment le besoin ». Les régions ont consacré 6,8 Md€ au second degré en 2025, dont 2,5 Md€ d’investissement, et 2,6 Md€ d’investissement dans les lycées en 2026 ; Régions de France demande que leur effort soit plafonné à 500 M€ face au budget 2027. Les lycéens décrivent des toilettes fermées ou sans eau, des salles à plus de 30 °C, un lycée de Mayotte conçu pour 900 élèves qui en accueille 2 300. Cette carte paie une part des travaux « réalisables avant l’été 2027 » promis à l’automne 2026.',
+    preuve: 'Fin octobre 2026, les ministres ont réuni les conseils régionaux et le gouvernement a évoqué environ 4 Md€ de prêts pour rénover collèges et lycées, selon la presse : des prêts, que les régions rembourseront. Les bâtiments, les équipements, la restauration et les internats des lycées publics relèvent de la compétence exclusive des régions, rappelée par le Premier ministre le 4 octobre 2026 ; l’État « pourra accompagner les régions qui en expriment le besoin ». Les régions ont consacré 6,8 Md€ au second degré en 2025, dont 2,5 Md€ d’investissement, et 2,6 Md€ d’investissement dans les lycées en 2026 ; Régions de France demande que leur effort soit plafonné à 500 M€ face au budget 2027. Les lycéens décrivent des toilettes fermées ou sans eau, des salles à plus de 30 °C, un lycée de Mayotte conçu pour 900 élèves qui en accueille 2 300. Cette carte paie une part des travaux « réalisables avant l’été 2027 » promis à l’automne 2026.',
     ideeRecue: '« Le ministre n’a qu’à faire réparer les toilettes. » Il n’est propriétaire d’aucun lycée : ce sont les régions, depuis 1986. Il peut payer une partie et convaincre ; il ne peut pas signer le devis.',
     mot: "Vous payez pour des murs qui ne sont pas à vous. C’est exactement ce que les lycéens demandent, et exactement ce que Bercy déteste.",
   },
@@ -1496,7 +1496,7 @@ export const CATALOGUE = [
   /* ------------------------------ L5 · Parcoursup, la lisibilité ---- */
   {
     id: 'parcoursup_transparence',
-    label: 'Parcoursup : règles de classement publiées, lycée d’origine retiré des dossiers, un tuteur par candidat',
+    label: 'Parcoursup 2027 : aller plus loin que les mesures de transparence annoncées (lycée d’origine retiré des dossiers, un tuteur par candidat)',
     famille: 'lycee',
     porteurs: ['le gouvernement (chantier « transparence », octobre 2026)', 'comité éthique et scientifique de Parcoursup (avril 2026)', 'rapport parlementaire de février 2026', 'Gabriel Attal (mentorat et tutorat)', 'Édouard Philippe (accompagnement à l’orientation)', 'Raphaël Glucksmann (améliorer, pas supprimer)'],
     perimetre: 'matignon',
@@ -1509,7 +1509,7 @@ export const CATALOGUE = [
       { compteur: 'paix',    central: 2, delai: 1, cadenas: 2, source: '14,5 % des contributions lycéennes évoquent Parcoursup et l’orientation' },
     ],
     physique: {},
-    preuve: 'À l’issue de la phase principale du 11 juillet 2026, 126 632 candidats n’avaient reçu aucune proposition, soit 17,4 % ; la part de candidats « sans solution » a progressé de 5,5 points en un an, ce que le ministère attribue à la démographie. Le comité éthique et scientifique de Parcoursup recommandait en avril 2026 de publier le code, ou au moins la spécification, du module de classement ; un rapport parlementaire de février 2026 propose de retirer le lycée d’origine des dossiers et de publier les algorithmes locaux. Le gouvernement a exclu la suppression et promis des « mesures concrètes » de transparence pour fin octobre 2026. Gabriel Attal propose d’y ajouter mentorat, tutorat et stages.',
+    preuve: 'Fin octobre 2026, le gouvernement a annoncé onze mesures de transparence pour Parcoursup, dont neuf dès la session 2027, et son remplacement en 2028. À l’issue de la phase principale du 11 juillet 2026, 126 632 candidats n’avaient reçu aucune proposition, soit 17,4 % ; la part de candidats « sans solution » a progressé de 5,5 points en un an, ce que le ministère attribue à la démographie. Le comité éthique et scientifique de Parcoursup recommandait en avril 2026 de publier le code, ou au moins la spécification, du module de classement ; un rapport parlementaire de février 2026 propose de retirer le lycée d’origine des dossiers et de publier les algorithmes locaux. Le gouvernement a exclu la suppression et promis des « mesures concrètes » de transparence pour fin octobre 2026. Gabriel Attal propose d’y ajouter mentorat, tutorat et stages.',
     ideeRecue: '« Parcoursup, c’est un algorithme qui décide. » L’algorithme national ne classe personne : il transmet des classements faits dans chaque formation, par des humains, avec des critères qu’ils ne publient pas. C’est là que la transparence manque.',
     mot: "La réponse la plus raisonnable, et celle qui ne fera jamais la une : personne n’a jamais défilé pour une documentation technique.",
   },
@@ -1517,7 +1517,7 @@ export const CATALOGUE = [
   /* ------------------------------ L6 · Parcoursup, la fin ----------- */
   {
     id: 'parcoursup_fin',
-    label: 'Supprimer Parcoursup : plus de sélection à l’entrée de l’université, et des places en plus',
+    label: 'Avancer le remplacement de Parcoursup à 2027 : plus de sélection à l’entrée de l’université, et des places en plus',
     famille: 'lycee',
     porteurs: ['La France insoumise', 'Parti socialiste (projet « Vivre libre »)', 'les organisations lycéennes et étudiantes (« 10 mesures d’urgence », 250 000 places)', 'UDR, alliée du RN (proposition de loi de février 2026)'],
     contre: ['le gouvernement et le ministre de l’Enseignement supérieur (« pas d’abolition »)', 'Raphaël Glucksmann et Édouard Philippe (améliorer plutôt que supprimer)'],
@@ -1532,7 +1532,7 @@ export const CATALOGUE = [
       { compteur: 'reussite', central: -2, delai: 4, cadenas: 1, source: 'sans sélection ni places suffisantes, le tri se déplace vers l’échec en première année ; effet non mesuré' },
     ],
     physique: {},
-    preuve: 'Parcoursup a été créé par la loi de 2018 après l’échec d’Admission post-bac, qui avait fini par tirer au sort des bacheliers en 2017. En 2026, 126 632 candidats restaient sans proposition à l’issue de la phase principale. La suppression est demandée par La France insoumise, le projet du Parti socialiste, les organisations lycéennes et étudiantes (avec 250 000 places supplémentaires dans le supérieur) et une proposition de loi déposée en février 2026. Le gouvernement l’exclut ; Raphaël Glucksmann et Édouard Philippe préfèrent l’améliorer. Aucune étude n’évalue ce que produirait, en France, une affectation sans classement : le niveau de preuve est au plus bas, dans les deux sens.',
+    preuve: 'Fin octobre 2026, le gouvernement a annoncé le remplacement de Parcoursup en 2028, sans en définir le successeur ; la mesure avance l’échéance et fixe les principes. Parcoursup a été créé par la loi de 2018 après l’échec d’Admission post-bac, qui avait fini par tirer au sort des bacheliers en 2017. En 2026, 126 632 candidats restaient sans proposition à l’issue de la phase principale. La suppression est demandée par La France insoumise, le projet du Parti socialiste, les organisations lycéennes et étudiantes (avec 250 000 places supplémentaires dans le supérieur) et une proposition de loi déposée en février 2026. Le gouvernement l’exclut ; Raphaël Glucksmann et Édouard Philippe préfèrent l’améliorer. Aucune étude n’évalue ce que produirait, en France, une affectation sans classement : le niveau de preuve est au plus bas, dans les deux sens.',
     ideeRecue: '« Sans Parcoursup, plus de tri. » Le tri se fait alors ailleurs : par le nombre de places, par le tirage au sort comme en 2017, ou par l’échec en première année. Supprimer la plateforme déplace la question ; cela ne la supprime pas.',
     mot: "La mesure la plus demandée dans la rue, la moins étudiée dans les rapports. Dix-huit points de colère en moins le soir même ; ce qui se passe en septembre 2028 n’est écrit nulle part.",
   },
@@ -1540,7 +1540,7 @@ export const CATALOGUE = [
   /* ------------------------------ L7 · trente par classe ------------ */
   {
     id: 'classe30_lycee',
-    label: 'Trente élèves par classe au maximum au lycée',
+    label: 'Aller plus loin que les 28 élèves en seconde : 28 au plus dans toutes les classes du lycée, dès 2027',
     famille: 'lycee',
     porteurs: ['Rassemblement national (plafond de 30 dans le secondaire)', 'les organisations lycéennes (« on est 35 par classe »)', 'SNES-FSU (seuils d’effectifs)'],
     perimetre: 'ministeriel',
@@ -1553,7 +1553,7 @@ export const CATALOGUE = [
       { compteur: 'reussite', central: 2, delai: 3, cadenas: 3, source: 'l’effet de la taille des classes est documenté surtout au primaire et pour les élèves défavorisés ; au lycée, il est faible' },
     ],
     physique: {},
-    preuve: 'Un quart des contributions lycéennes de la consultation d’octobre 2026 évoque les effectifs par classe ; la presse rapporte des classes « à 30 ou 35 ». Le Rassemblement national propose un plafond de 30 dans le secondaire et de 20 en grande section et au CP. La littérature de référence (expérience STAR, travaux de Piketty et Valdenaire) situe l’effet de la taille des classes au primaire et chez les élèves défavorisés ; au lycée, l’effet mesuré est faible. Au collège, la France a les classes les plus chargées d’Europe (25,8 élèves en 2023, HCSP).',
+    preuve: 'Fin octobre 2026, le gouvernement a annoncé 28 élèves au plus par classe de seconde : dès 2027 dans la moitié des lycées les moins favorisés, dans tous les lycées publics en 2028, avec 500 postes de professeurs. La mesure va plus loin : tous les niveaux, tous les lycées, dès 2027. Un quart des contributions lycéennes de la consultation d’octobre 2026 évoque les effectifs par classe ; la presse rapporte des classes « à 30 ou 35 ». Le Rassemblement national propose un plafond de 30 dans le secondaire et de 20 en grande section et au CP. La littérature de référence (expérience STAR, travaux de Piketty et Valdenaire) situe l’effet de la taille des classes au primaire et chez les élèves défavorisés ; au lycée, l’effet mesuré est faible. Au collège, la France a les classes les plus chargées d’Europe (25,8 élèves en 2023, HCSP).',
     ideeRecue: '« Moins d’élèves par classe, c’est forcément mieux. » C’est mieux au CP, pour les élèves fragiles. Au lycée, les études trouvent peu ; les lycéens, eux, trouvent que 35 c’est trop, et ce n’est pas le même argument.',
     mot: "Les lycéens le demandent, les études le promettent surtout au CP. Vous payez le prix d’une mesure de primaire pour un effet de lycée.",
   },
@@ -1625,7 +1625,7 @@ export const CATALOGUE = [
   /* ------------------------------ L11 · les postes ----------------- */
   {
     id: 'annuler_suppressions',
-    label: 'Annuler les 1 588 suppressions de postes du budget 2027, par amendement',
+    label: 'Inscrire dans le budget les 836 suppressions annoncées comme annulées, et annuler aussi les 752 autres',
     famille: 'lycee',
     porteurs: ['l’intersyndicale de l’éducation (grève du 8 octobre 2026)', 'les organisations lycéennes', 'les députés écologistes et insoumis (amendements au PLF 2027)'],
     contre: ['le ministère : « 36 200 élèves de moins dans le second degré, les postes suivent la démographie »', 'Bercy'],
@@ -1639,7 +1639,7 @@ export const CATALOGUE = [
       { compteur: 'reussite', central: 1, delai: 3, cadenas: 2, source: 'le taux d’encadrement joue peu sur les résultats au lycée ; l’effet passe par les remplacements et les options maintenues' },
     ],
     physique: { adhesion: +3 },
-    preuve: 'Le projet de loi de finances pour 2027, présenté le 2 octobre 2026, augmente le budget de l’Éducation nationale de 1,2 milliard d’euros et supprime 1 588 postes d’enseignants, dont 1 250 dans le public (414 dans le premier degré, 836 dans le second). Le ministère justifie ces suppressions par la baisse du nombre d’élèves : 36 200 de moins dans le second degré à la rentrée 2026 selon la DEPP. Les syndicats et les lycéens répondent qu’il manque déjà un professeur dans un établissement sur deux. Les deux séries de chiffres sont exactes : l’une compte des élèves, l’autre des classes sans professeur, et la baisse des élèves ne se produit pas là où les professeurs manquent.',
+    preuve: 'Le ministre a annoncé fin octobre 2026 que les 836 suppressions du second degré public seraient annulées et que 500 postes seraient créés ; aucun amendement au budget n’a été voté, et les 752 autres suppressions (414 dans le premier degré public, 338 dans le privé) ne sont pas concernées. Le projet de loi de finances pour 2027, présenté le 2 octobre 2026, augmente le budget de l’Éducation nationale de 1,2 milliard d’euros et supprime 1 588 postes d’enseignants, dont 1 250 dans le public (414 dans le premier degré, 836 dans le second). Le ministère justifie ces suppressions par la baisse du nombre d’élèves : 36 200 de moins dans le second degré à la rentrée 2026 selon la DEPP. Les syndicats et les lycéens répondent qu’il manque déjà un professeur dans un établissement sur deux. Les deux séries de chiffres sont exactes : l’une compte des élèves, l’autre des classes sans professeur, et la baisse des élèves ne se produit pas là où les professeurs manquent.',
     ideeRecue: '« Moins d’élèves, donc moins de profs, c’est logique. » C’est logique en moyenne nationale. Dans un lycée donné, une classe de 35 ne devient pas une classe de 30 parce qu’un collège de l’autre bout du pays a perdu trois élèves par niveau.',
     mot: "Cent vingt millions d’euros, le prix le plus bas du catalogue pour la colère la plus précise. Bercy, lui, retiendra que vous avez commencé par défaire son budget.",
   },
@@ -2820,10 +2820,38 @@ export const AVIS = [
   { id: 'infondee', label: 'Pas fondée', det: 'C’est un ressenti, pas un fait.' },
 ];
 
+
+/* ============================================================================
+   LES ANNONCES D'OCTOBRE 2026 — la première question de la presse
+   ----------------------------------------------------------------------------
+   Le ministre a répondu au mouvement lycéen par des annonces (26-30 octobre
+   2026 : Parcoursup remplacé en 2028, seconde à 28 élèves, 500 postes,
+   suppressions annulées, bourses indexées). Les organisations lycéennes ont
+   jugé que cela ne suffisait pas ; les blocus continuent ; il démissionne.
+   Le joueur arrive avec ces annonces pour acquis, et une question : que
+   pense-t-il de ce qui a déjà été annoncé ? Voir la fiche « annonces » dans
+   reperes.js pour les chiffres et les sources.
+   ========================================================================== */
+export const LECTURES_ANNONCES = [
+  { id: 'debut', label: 'Un début : je les tiens, puis j’irai plus loin',
+    det: 'Vous reprenez à votre compte ce qui a été annoncé et vous annoncez que ce n’est qu’une première étape. Les lycéens attendent de voir lesquelles vous dépasserez.',
+    colere: 3, parents: 1, capital: 0, bercy: 0,
+    suite: 'La formule plaît à tout le monde et n’engage à rien de précis : les organisations lycéennes notent que vous « allez plus loin », et comptent déjà les points sur lesquels vous le ferez.' },
+  { id: 'insuffisantes', label: 'Elles ne suffisent pas, et je le dis',
+    det: 'Vous donnez raison aux lycéens contre votre prédécesseur. C’est entendu dans la rue, et mal reçu à Matignon, qui avait validé ces annonces.',
+    colere: 6, parents: 0, capital: -3, bercy: -2,
+    suite: 'Les organisations lycéennes saluent « enfin quelqu’un qui nous écoute ». Matignon rappelle que ces annonces sont celles du gouvernement, pas seulement du ministre.' },
+  { id: 'tiennent', label: 'Elles tiennent : appliquons-les avant d’en promettre d’autres',
+    det: 'Vous défendez le bilan de votre prédécesseur et refusez de surenchérir. Bercy apprécie ; les lycéens y voient la continuité de ce qu’ils ont rejeté.',
+    colere: -4, parents: 0, capital: 2, bercy: 4,
+    suite: 'Bercy note votre sens des responsabilités. Dans les lycées bloqués, on lit : « même ministre, même méthode ».' },
+];
+
 export const COLERES = [
   {
     id: 'profs',
-    intro: 'Dans un lycée bloqué sur deux, la première revendication est un professeur absent depuis la rentrée. Le rectorat « est saisi ».',
+    annonce: { texte: 'Le ministre a affecté 3 000 titulaires remplaçants en urgence mi-octobre et dit poursuivre ce plan d’urgence.', limite: 'Des remplaçants prêtés dans l’urgence ne font pas un système : rien n’est financé durablement.', src: ['remplacants26', 'lettre30'], plusLoin: ['remplacement_lycee', 'brigades', 'ors_remplacement'] },
+    intro: 'Dans un lycée bloqué sur deux, la première revendication est un professeur absent depuis la rentrée. Malgré les 3 000 remplaçants envoyés en urgence, « le rectorat est saisi » reste la réponse.',
     resume: 'Un élève perd environ une heure de cours sur onze. Les chiffres du ministère et des syndicats diffèrent, parce qu’ils ne comptent pas la même chose.',
     cri: '« Il nous manque un prof depuis septembre. »',
     qui: 'La pancarte la plus fréquente devant les grilles ; 28,5 % des contributions de la consultation nationale.',
@@ -2839,7 +2867,8 @@ export const COLERES = [
   },
   {
     id: 'journees',
-    intro: 'Journées de dix heures, heures de trou, cantine saturée. Les lycéens disent qu’ils n’ont plus le temps ni de dormir, ni de réviser.',
+    annonce: { texte: 'Une demi-journée de « temps lycéen », des chantiers sur la pression scolaire, une révision du contrôle continu au baccalauréat.', limite: 'Aucun horaire ne change : la journée de dix heures reste.', src: ['lettre30', 'an_decl28'], plusLoin: ['journee_lycee', 'matinees', 'heures_vie_classe'] },
+    intro: 'Journées de dix heures, heures de trou, cantine saturée. Les annonces d’octobre n’ont changé aucun horaire : les lycéens disent toujours qu’ils n’ont plus le temps ni de dormir, ni de réviser.',
     resume: '260 heures de classe de plus que chez leurs voisins européens. Mais « plus d’heures, meilleur niveau » ne tient pas. Reste à savoir comment raccourcir.',
     cri: '« On est au lycée de 8 h à 18 h, avec une demi-heure pour manger. »',
     qui: 'Le premier sujet de la consultation nationale : 71 % des contributions.',
@@ -2855,7 +2884,8 @@ export const COLERES = [
   },
   {
     id: 'bati',
-    intro: 'Salles à 35 °C, sanitaires fermés, un lycée de Mayotte prévu pour 900 élèves qui en accueille 2 300. On vous demande un plan national.',
+    annonce: { texte: 'Les ministres ont réuni les régions ; environ 4 Md€ de prêts évoqués pour rénover collèges et lycées, selon la presse.', limite: 'Des prêts, pas des subventions ; les murs restent aux régions, et rien n’est garanti avant l’été 2027.', src: ['echosplus26', 'an_decl28'], plusLoin: ['bati_lycee', 'charte_sanitaires', 'outremer'] },
+    intro: 'Salles à 35 °C, sanitaires fermés, un lycée de Mayotte prévu pour 900 élèves qui en accueille 2 300. Le gouvernement a parlé de prêts aux régions : on vous demande un plan national.',
     resume: 'Juste sur le fond, mal adressée : les lycées appartiennent aux régions. Un ministre peut cofinancer et convaincre ; il ne signe pas le devis.',
     cri: '« Il fait 35 °C en salle 204 et les toilettes sont fermées depuis la rentrée. »',
     qui: 'Deuxième sujet de la consultation (51 %) ; les lycéens de Cayenne, de Mayotte, de Lormont, du Loiret.',
@@ -2871,7 +2901,8 @@ export const COLERES = [
   },
   {
     id: 'parcoursup',
-    intro: 'Chaque printemps, des lycéens restent « en attente » sans savoir pourquoi. En 2026, un candidat sur six n’avait rien à l’issue de la phase principale.',
+    annonce: { texte: 'Parcoursup sera remplacé en 2028 ; onze mesures de transparence, dont neuf dès la session 2027.', limite: 'Les terminales de 2027 passent encore par Parcoursup, et le successeur n’est pas défini.', src: ['annonces26', 'thotis26'], plusLoin: ['parcoursup_transparence', 'parcoursup_fin', 'orientation'] },
+    intro: 'Chaque printemps, des lycéens restent « en attente » sans savoir pourquoi. En 2026, un candidat sur six n’avait rien à l’issue de la phase principale. Parcoursup sera remplacé en 2028 : les terminales de 2027, eux, n’y échapperont pas.',
     resume: 'Opaque, oui : les critères ne sont pas publics. Au hasard, non : des humains classent. Supprimer la plateforme déplace le tri, elle ne le supprime pas.',
     cri: '« Parcoursup nous trie au hasard. »',
     qui: 'La revendication nationale la plus visible : suppression demandée par les organisations lycéennes et étudiantes.',
@@ -2887,7 +2918,8 @@ export const COLERES = [
   },
   {
     id: 'effectifs',
-    intro: 'Des classes de seconde à 35, des chaises ajoutées, des professeurs qui ne connaissent pas les prénoms avant novembre.',
+    annonce: { texte: 'Seconde plafonnée à 28 élèves : dès 2027 dans la moitié des lycées les moins favorisés, en 2028 dans tous les lycées publics ; 500 postes de professeurs.', limite: 'Une moitié des lycées attend 2028, et la première et la terminale ne sont pas concernées.', src: ['echosplus26', 'decl28'], plusLoin: ['classe30_lycee', 'classe19'] },
+    intro: 'Des classes de seconde à 35, des chaises ajoutées, des professeurs qui ne connaissent pas les prénoms avant novembre. Le plafond de 28 annoncé ne couvre que la seconde, et la moitié des lycées attend 2028.',
     resume: 'Vrai : parmi les classes les plus chargées d’Europe. Mais « moins nombreux, on apprend mieux » est plus solide au CP qu’en seconde.',
     cri: '« On est 35 par classe. »',
     qui: 'Un quart des contributions de la consultation ; les lycées de Loiret, de Guyane, de Seine-Saint-Denis.',
@@ -2903,9 +2935,10 @@ export const COLERES = [
   },
   {
     id: 'postes',
-    intro: 'Le budget 2027 supprime 1 588 postes d’enseignants, en plein mouvement. Les syndicats parlent de manque de profs, le ministère de démographie.',
+    annonce: { texte: 'Les 836 suppressions du second degré public seraient annulées (selon la presse) ; 500 postes de professeurs en plus.', limite: 'Le budget 2027 n’est pas modifié : tant qu’aucun amendement n’est voté, c’est une promesse ; les 752 autres suppressions restent.', src: ['suppr836', 'plf27'], plusLoin: ['annuler_suppressions', 'titularisation'] },
+    intro: 'Le budget 2027 supprime 1 588 postes d’enseignants. Le ministre a annoncé annuler les 836 du second degré et créer 500 postes ; le budget, lui, n’a pas changé. Les syndicats parlent de manque de profs, le ministère de démographie.',
     resume: 'Tout est vrai à la fois : postes supprimés, budget en hausse, élèves en moins. La vraie question est le ratio, et où les professeurs manquent.',
-    cri: '« Le gouvernement supprime 1 588 postes pendant qu’on manque de profs. »',
+    cri: '« Ils annoncent 500 postes, le budget en supprime 1 588. »',
     qui: 'L’intersyndicale de l’éducation (grève du 8 octobre 2026) et les organisations lycéennes.',
     contexte: 'Le budget 2027 est présenté le 2 octobre, en plein mouvement : 1 588 postes d’enseignants en moins. Les syndicats appellent à la grève « en soutien aux lycéens » ; le ministère parle de démographie.',
     faits: [
@@ -2919,7 +2952,8 @@ export const COLERES = [
   },
   {
     id: 'sante',
-    intro: 'Une infirmière pour deux ou trois établissements, des psychologues vus pour l’orientation, des rendez-vous à trois mois.',
+    annonce: { texte: '500 postes de psychologues, d’infirmiers et d’assistants sociaux.', limite: 'Les concours n’ont pourvu qu’une fraction des postes précédents : un poste annoncé n’est pas un poste pourvu.', src: ['decl28', 'lettre30'], plusLoin: ['sante_scolaire', 'sante_mentale', 'mediation_pairs'] },
+    intro: 'Une infirmière pour deux ou trois établissements, des psychologues vus pour l’orientation, des rendez-vous à trois mois. Les 500 postes annoncés ne seront pas tous pourvus.',
     resume: 'Une colère ancienne. Ce que les chiffres ne disent pas : ce qui marche le mieux, recruter, ouvrir aux maisons des adolescents, ou donner un adulte référent.',
     cri: '« On n’a ni infirmière ni psy. Quand ça va mal, il n’y a personne. »',
     qui: 'La pancarte « ni prof ni infirmière » des premiers blocus ; la médiatrice de l’Éducation nationale, dont le rapport 2025 porte sur la santé mentale.',
@@ -2935,7 +2969,8 @@ export const COLERES = [
   },
   {
     id: 'democratie',
-    intro: 'Les instances existent depuis trente ans. Le gouvernement a répondu par une demi-journée de « temps lycéen » et une consultation en ligne.',
+    annonce: { texte: 'Une demi-journée de démocratie interne, une consultation de plus de 100 000 contributions, un comité de lycéens et d’enseignants (recommandations en novembre).', limite: 'Un comité consulte, il ne décide pas : aucun siège ni aucun budget en plus.', src: ['an_decl28', 'lettre30'], plusLoin: ['democratie_lyceenne', 'budget_participatif', 'droit_reponse'] },
+    intro: 'Les instances existent depuis trente ans. Le gouvernement a répondu par une demi-journée de « temps lycéen », une consultation en ligne et un comité qui consulte sans décider.',
     resume: 'Constat juste : peu de pouvoir, presque pas d’argent. La participation qui décide a des effets civiques ; sur les notes, rien de prouvé.',
     cri: '« Nos délégués ne servent à rien, et le CVL, c’est pour la photo. »',
     qui: 'Les organisations lycéennes (« refonte de la démocratie lycéenne », cinquième des dix mesures) ; une partie des 76 500 contributions.',

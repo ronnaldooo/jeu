@@ -12,7 +12,7 @@
    ========================================================================== */
 
 import * as K from './constantes.js';
-import { CATALOGUE, PAR_ID, AFFAIRES, AFFAIRE_PAR_ID, POLEMIQUES_RENTREE, LIVRAISON_PISA, PLATEAU, REVALORISATION, chiffrerRevalorisation, FINANCEMENT_19, DOSSIERS_ETE, AUDIENCES, RECEPTION, BLOCUS_LYCEEN, COLERES, AVIS, argumentaireSyndical, porteursSyndicaux, estContestable, bordsDeCarte } from './catalogue.js';
+import { CATALOGUE, PAR_ID, AFFAIRES, AFFAIRE_PAR_ID, POLEMIQUES_RENTREE, LIVRAISON_PISA, PLATEAU, REVALORISATION, chiffrerRevalorisation, FINANCEMENT_19, DOSSIERS_ETE, AUDIENCES, RECEPTION, BLOCUS_LYCEEN, COLERES, AVIS, LECTURES_ANNONCES, argumentaireSyndical, porteursSyndicaux, estContestable, bordsDeCarte } from './catalogue.js';
 
 /* ---------------------------------------------------------------- ALÉA --- */
 export function rngDepuis(graine) {
@@ -278,6 +278,18 @@ function* etapeDoctrine(s) {
   s.poids = {};
   s.doctrine.forEach((c, i) => { s.poids[c] = K.POIDS_DOCTRINE[i]; });
   note(s, `Feuille de route déclarée : ${s.doctrine.map((c) => (K.COMPTEURS_META[c] || { court: c }).court.toLowerCase()).join(' > ')}. La presse garde une copie.`, 'doctrine');
+}
+
+/* --- les annonces de votre prédécesseur : qu'en dites-vous ? ----------------- */
+function* etapeAnnonces(s) {
+  const i = (yield { type: 'annonces', options: LECTURES_ANNONCES }) | 0;
+  const l = LECTURES_ANNONCES[Math.max(0, Math.min(LECTURES_ANNONCES.length - 1, i))];
+  s.lectureAnnonces = l.id;
+  s.capital = Math.min(K.CAPITAL.plafond, s.capital + l.capital);
+  s.creditBercy = borne(s.creditBercy + l.bercy, 0, 100);
+  s.phys.parents = borne(s.phys.parents + l.parents, 0, 100);
+  s.lyceens.colere = borne(s.lyceens.colere - l.colere, 0, 100);
+  note(s, `Votre première réponse aux annonces de votre prédécesseur : « ${l.label} ».`, 'lyceens');
 }
 
 /* --- L'ÉTÉ DES CENT JOURS (an 1) : deux crises avant la première rentrée --- */
@@ -1527,6 +1539,7 @@ export function* derouler(s) {
      toujours. Puis la situation (la note lycéens), le budget en discussion,
      et le prologue, colère par colère. */
   yield* etapeDoctrine(s);
+  yield* etapeAnnonces(s);
   rafraichir(s);
   yield { type: 'reperes', note: 'lyceens' };
   yield { type: 'reperes', note: 'budget' };
@@ -1606,6 +1619,7 @@ export function jouerMandat({ graine = 1, politique }) {
     let rep;
     if (q.type === 'nomination') rep = 'accepter';
     else if (q.type === 'reperes') rep = null;   // la note de cadrage se lit, elle ne se décide pas
+    else if (q.type === 'annonces') rep = politique.annonces ? politique.annonces(s, q) : 0;
     else if (q.type === 'entretien') { const a = politique.entretien ? politique.entretien(s, q) : 0; rep = Array.isArray(a) ? (a[q.index] | 0) : (a | 0); }
     else if (q.type === 'avance') rep = politique.avance ? politique.avance(s, q) : 1;
     else if (q.type === 'intention') rep = politique.intention ? politique.intention(s, q) : 1;

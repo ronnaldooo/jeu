@@ -2040,7 +2040,7 @@ carrière, pacte) ; la formule « grand plan à 2,5 Md€ » a été retirée du
 elle dépassait toute enveloppe, et se lit dans la note.
 
 **Les bilans passent en pages** (verdict, cinq priorités, mesures,
-bords politiques, lycéens, cap ; la page « département » a disparu dans la
+bords politiques, lycéens, au-delà des annonces, cap ; la page « département » a disparu dans la
 refonte suivante, voir 3 quinquatricies) avec « Précédent » et
 « Suivant ». Les notes de cadrage du budget et de la démographie ne sont plus
 imposées : elles se demandent depuis la page où elles servent.
@@ -2106,6 +2106,36 @@ stratégie tombait à +1,8 (cible : plus de 2). La carte est donc *sans effet
 d'image* (vitrine nulle) : une harmonisation entre régions ne se voit pas. Le banc
 d'essai (300 parties, graines 5, 11 et 23) donne 4 cibles sur 4 ; l'écart
 vitrine reste mince (2,0 à 2,3).
+
+## 3 sexquinquatricies. Les annonces d'octobre 2026 : le jeu part de « ce n'était pas assez »
+
+Le ministre a annoncé, du 26 au 30 octobre 2026, Parcoursup remplacé en 2028,
+la seconde à 28 élèves, 500 postes, des suppressions annulées, des bourses
+indexées (voir RECHERCHE-GRAND-PUBLIC.md, partie 9). Le jeu prend ces annonces
+pour acquis et fait de « aller plus loin » l'enjeu.
+
+**Pas de changement de chiffres de base.** Les annonces ne modifient pas le
+moteur : elles sont *annoncées*, pas votées. Le budget 2027 contient toujours
+ses 1 588 suppressions (836 annulées « selon la presse », sans amendement), la
+colère lycéenne part toujours de 90, les promesses héritées sont inchangées.
+La carte `annuler_suppressions` devient « inscrire dans le budget les 836
+suppressions annoncées comme annulées, et annuler aussi les 752 autres », au
+même coût et aux mêmes effets : la dépense de 1 588 postes est celle qu'elle
+chiffrait déjà.
+
+**Une décision nouvelle** (`etapeAnnonces`, après les priorités) : trois lectures
+des annonces (un début, insuffisantes, elles tiennent), avec des effets
+de quelques points sur la colère lycéenne, le soutien du gouvernement, le
+crédit auprès de Bercy et les parents. Défaut du pilote : « un début ».
+
+**Sept cartes réécrites** (libellé, porteurs et début de la preuve) : le plan
+de remplacement devient permanent, les classes à 28 s'étendent à tous les
+niveaux, Parcoursup est avancé à 2027, la santé scolaire passe à 1 200 postes,
+le fonds bâti est en subventions. Coûts et effets inchangés.
+
+**Un bilan de plus** : « au-delà des annonces », sujet par sujet. Il lit
+seulement les cartes jouées : aucun effet sur la note. Banc d'essai : 4 cibles
+sur 4 (graines 5, 11, 23). Clé de sauvegarde `gp5`.
 
 ## 5. Paramètres à réexaminer après tests humains
 

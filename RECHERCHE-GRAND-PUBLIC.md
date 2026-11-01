@@ -550,3 +550,55 @@ organisation lycéenne.
 12. Les « advisories » américaines et les tuteurs finlandais sont cités comme
     inspiration, sans chiffre : la carte s'appuie sur la méta-analyse EEF du
     mentorat, non sur ces dispositifs.
+
+## 9. Quatrième cadrage (1er novembre 2026) : les annonces du ministre sont dans le jeu
+
+Demande : « le ministre a fait des annonces suite au mouvement ; le jeu doit les
+prendre en compte, avec comme postulat que ce n'est pas suffisant ; les blocus
+se poursuivent, et c'est à ce moment-là que vous êtes appelé ministre ; l'enjeu
+est d'aller plus loin ».
+
+### 9.1 Ce qui a été annoncé (26-30 octobre 2026)
+
+Recherche du 1er novembre 2026. Une seule source officielle a pu être lue par
+le moteur de recherche (les pages info.gouv.fr ne sont pas accessibles depuis
+la session) : les résumés qu'il en donne sont recoupés avec la presse. Chaque
+ligne dit sa source ; ce qui diverge est signalé.
+
+| Annonce | Détail | Source |
+|---|---|---|
+| Parcoursup | Remplacé en 2028 ; de premières évolutions dès 2027. Onze mesures de transparence, dont neuf dès la session 2027 ; les refus devront être expliqués. Le successeur n'est pas défini. | `[officiel]` info.gouv.fr (26 oct.) ; `[presse]` Thotis, Sortiraparis |
+| Classes de seconde | 28 élèves au plus : dès 2027 dans la moitié des lycées les moins favorisés, dans tous les lycées publics en 2028. | `[officiel]` info.gouv.fr (28 oct.) ; `[presse]` Echos Plus |
+| Postes | 500 postes de professeurs en plus ; 500 postes de psychologues, d'infirmiers et d'assistants sociaux (deux 500 à ne pas confondre). | `[officiel]` info.gouv.fr ; `[presse]` France 24/AFP (30 oct.) |
+| Suppressions | Les 836 suppressions du second degré public du PLF 2027 « seront annulées » ; le chiffre vient du Parisien, relayé par un direct. Les 752 autres (414 premier degré public, 338 privé) ne sont pas citées. Aucun amendement n'était déposé. | `[presse]` Morandini/Le Parisien ; PLF 2027 (Banque des Territoires) |
+| Bourses, supérieur | Bourses indexées sur l'inflation dès la rentrée 2027 ; 15 000 places en plus dans le supérieur en 2027 et 2028 (le communiqué dit 2028). | `[officiel]` info.gouv.fr ; `[presse]` |
+| Remplacement | 3 000 titulaires remplaçants affectés mi-octobre ; plan d'urgence poursuivi. | `[presse]` Europe 1, France 24 |
+| Bâti | Régions réunies ; environ 4 Md€ de prêts pour rénover collèges et lycées (une seule source). | `[presse]` Echos Plus |
+| Démocratie, temps | Comité de lycéens et d'enseignants, recommandations en novembre ; Premier ministre qui revoit les représentants sous quinze jours ; révision du contrôle continu au baccalauréat ; « chantiers » sur la pression scolaire. | `[officiel]` Assemblée nationale (déclaration du 28 oct.) ; `[presse]` |
+| Réaction | Les Lycéens !, Renouveau lycéen : « poursuivre la mobilisation » ; l'USL parlait de « miettes » le 12 octobre. Le ministre, le 29 : « on aurait certainement dû être plus rapides ». Lettre aux lycéens le 30, deux jours avant la rentrée de la Toussaint. | `[presse]` France 24, CNews |
+
+Non vérifié et donc absent du jeu : le texte intégral de la lettre du 30
+octobre ; le détail des « chantiers » sur la pression scolaire ; le calendrier
+exact des 15 000 places ; le coût chiffré du plan.
+
+### 9.2 Ce qui a été fait dans le jeu
+
+- **Le postulat.** Accueil, mot du prédécesseur et note « Où en est-on »
+  disent que le ministre a annoncé, que ce n'était pas assez, et que les
+  blocus continuent. Les personnages restent pseudonymisés et le ministre n'est
+  jamais nommé : le joueur ne joue pas une personne en exercice.
+- **Une page « annonces »** après les priorités : la presse demande si les
+  annonces suffisent. Trois réponses (un début, insuffisantes, elles tiennent)
+  qui jouent sur la colère des lycéens, le soutien du gouvernement, le crédit
+  auprès de Bercy.
+- **Une fiche « annonces »** (note de la DGESCO, et « Comprendre le jeu »),
+  huit sources nouvelles.
+- **Huit colères sur neuf** portent maintenant ce qui est déjà annoncé, et
+  pourquoi les lycéens disent que cela ne suffit pas. Sept cartes sont
+  réécrites pour aller plus loin : brigade rendue permanente, suppressions
+  inscrites au budget et étendues aux 752 autres, 28 élèves dans tous les
+  niveaux dès 2027, Parcoursup avancé à 2027, 1 200 postes de santé scolaire,
+  fonds d'urgence en subventions. Les coûts et les effets des cartes n'ont pas
+  changé : elles chiffraient déjà ces ambitions.
+- **Un bilan « au-delà des annonces »** : sujet par sujet, le joueur est-il
+  allé plus loin que son prédécesseur ?

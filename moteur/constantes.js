@@ -220,7 +220,7 @@ export const COLERES_MAX = 9;
    par le Premier ministre avec des promesses datées : remplacement « réglé à
    la Toussaint », travaux « réalisables avant l'été 2027 », Parcoursup
    « transparence d'ici fin octobre », revue des emplois du temps, temps de
-   démocratie lycéenne. Le ministre hérite des promesses, pas des blocus.
+   démocratie lycéenne. Le ministre hérite des promesses, des annonces d'octobre (26-30) jugées insuffisantes, et des blocus qui continuent.
 
    Le jeu tient une seule jauge cachée, la COLÈRE LYCÉENNE (0-100). Elle part
    haute, parce que la consultation a dit où le bât blesse, et elle décide d'une

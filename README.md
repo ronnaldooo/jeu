@@ -143,6 +143,18 @@ bulletin annuel de chaque lycée. Cinq autres cartes « territoires » (deux
 lycéens qui votent à la région, budget participatif régional, enquête de
 climat, plan chaleur, garantie trajet…) restent au catalogue.
 
+**Les annonces du ministre sont le point de départ.** Fin octobre 2026, le
+ministre a répondu au mouvement par des annonces (Parcoursup remplacé en 2028,
+28 élèves au plus par classe de seconde, 500 postes de professeurs, des
+suppressions de postes annulées, des bourses indexées). Les organisations
+lycéennes ont jugé que ce n'était pas assez, les blocus continuent, il
+démissionne : vous êtes nommé. Le jeu part de là. Une page de conférence de
+presse demande si ces annonces suffisent ; chaque colère dit ce qui est déjà
+annoncé et pourquoi cela ne suffit pas ; les cartes proposées vont plus loin
+que l'annonce ; et le bilan dit, sujet par sujet, si vous êtes allé plus loin
+que votre prédécesseur. Chaque annonce est sourcée (info.gouv.fr, Assemblée
+nationale, presse), et ce qui n'est pas confirmé est signalé.
+
 **Puis les rentrées.** Une jauge cachée, la colère lycéenne, se lit en mots
 dans le bandeau. Si les réponses de l'automne manquent, les lycées se bloquent
 à la rentrée suivante et la circulaire de rentrée ne peut plus parler que
@@ -236,7 +248,7 @@ jouer.
 
 ```
 index.html                   LE JEU — fichier unique autonome
-moteur/                      constantes sourcées, catalogue de 92 cartes et 10 colères, repères et territoires sourcés, moteur en générateur
+moteur/                      constantes sourcées, catalogue de 92 cartes (dont sept réécrites pour aller plus loin que les annonces d'octobre 2026) et 10 colères, repères et territoires sourcés, moteur en générateur
 moteur/reperes.js            les 15 fiches de référence et leurs 105 sources
 RECHERCHE-GRAND-PUBLIC.md    le dossier de recherche d'octobre 2026 : mouvement lycéen, projets des partis
 RECHERCHE-TERRITOIRES.md     coût par lycéen selon les régions, comparaisons internationales, données par département, et ce qui en a été fait
