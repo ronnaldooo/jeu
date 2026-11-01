@@ -286,6 +286,42 @@ export const SOURCES = {
     date: '29 octobre 2026',
     url: 'https://www.cnews.fr/france/2026-10-29/blocus-des-lycees-aurait-certainement-du-etre-plus-rapides-pour-regler-la-crise',
   },
+  depp_2614: {
+    org: 'DEPP (ministère de l’Éducation nationale), note d’information n° 26-14',
+    titre: 'La part du temps d’enseignement non assuré dans les établissements publics du second degré en 2024-2025 : 9,8 %, dont 7,5 points de non-remplacement d’enseignants absents et 2,3 points de fermetures ; les 10 % d’établissements les plus touchés perdent plus de 15 % des heures',
+    date: '30 avril 2026',
+    url: 'https://www.education.gouv.fr/depp/la-part-du-temps-d-enseignement-non-assure-dans-les-etablissements-publics-du-second-degre-en-2024-504512',
+  },
+  aef_plf27: {
+    org: 'AEF info',
+    titre: 'Le PLF 2027 prévoit une hausse de 1,2 Md€ pour l’Éducation nationale et le retrait de 1 588 postes d’enseignants titulaires',
+    date: 'octobre 2026',
+    url: 'https://www.aefinfo.fr/depeche/757761-le-plf-2027prevoit-une-hausse-de-12md-pour-leducation-nationale-et-le-retrait-de-1588postes-denseignants-titulaires',
+  },
+  budget27_men: {
+    org: 'Ministère de l’Éducation nationale, dossier de presse',
+    titre: 'Budget 2027 pour l’École : 64 Md€ hors compte d’affectation spéciale Pensions, crédits en hausse de 1,2 Md€ à format constant',
+    date: 'octobre 2026',
+    url: 'https://www.education.gouv.fr/sites/default/files/document/budget-2027-pour-l-cole-le-dossier-de-presse-521314.pdf',
+  },
+  budget25_abandon: {
+    org: 'SUD éducation, CSA du 17 janvier 2025',
+    titre: 'Les moyens pour la rentrée 2025 : le gouvernement renonce aux 4 000 suppressions de postes prévues ; second degré : 1 148 postes créés, 816 supprimés',
+    date: '17 janvier 2025',
+    url: 'https://www.sudeducation.org/csa-du-17-janvier-2025-les-moyens-pour-la-rentree-2025/',
+  },
+  die24: {
+    org: 'DEPP (ministère de l’Éducation nationale)',
+    titre: 'En 2024, 197,1 milliards d’euros consacrés à l’éducation, soit 6,8 % du PIB : l’État finance 55 % (financement initial), les collectivités territoriales 23 %, les entreprises 10 %, les ménages 8 %',
+    date: '2025',
+    url: 'https://www.education.gouv.fr/depp/en-2024-1971-milliards-d-euros-consacres-l-education-soit-68-du-pib-452853',
+  },
+  talis24: {
+    org: 'OCDE, Résultats de TALIS 2024 : France',
+    titre: 'Les enseignants et leur contexte : 79 % de satisfaction à l’égard du métier contre près de 90 % dans l’OCDE ; 4 % estiment leur profession valorisée ; deux heures de travail d’équipe par semaine contre trois',
+    date: '7 octobre 2025',
+    url: 'https://www.oecd.org/fr/publications/resultats-de-talis-2024_f0f38709-fr/france_1daeade6-fr.html',
+  },
   consult26: {
     org: 'Premier ministre, premiers résultats de la consultation lycéenne (76 500 contributions), relayés par Europe 1',
     titre: 'Colère des lycéens : temps scolaire, bâtiments… les principales revendications recensées sur la plateforme de concertation',
@@ -734,7 +770,7 @@ export const SERIE_BUDGET = [
   { annee: 2024, md: 63.65, note: '+3,9 Md€ en un an : l’effet des revalorisations de 2023', src: 'senat_plf24' },
   { annee: 2025, md: 64.32, src: 'senat_plf26' },
   { annee: 2026, md: 64.49, note: '+0,26 % : la progression la plus faible de la série', src: 'senat_plf26' },
-  { annee: 2027, md: 65.30, prevision: true, note: 'plafond prévisionnel : +0,8 Md€. C’est votre marge, sur le papier.', src: 'plafonds27' },
+  { annee: 2027, md: 65.30, prevision: true, note: 'plafond prévisionnel de juillet : +0,8 Md€ ; le PLF du 1er octobre le porte à 65,5 Md€ (+1,1 à +1,2 Md€ selon les sources). C’est votre marge, sur le papier.', src: 'plafonds27' },
 ];
 
 /* ---------------------------------------------------------------------------
@@ -760,10 +796,11 @@ export const REPERES = [
     titre: 'Un budget contraint',
     resume: 'Le premier budget de l’État en effectifs, et le plus rigide en euros.',
     chiffres: [
+      { v: '65,5 Md€', l: 'pour la mission « Enseignement scolaire » dans le PLF présenté le 1er octobre 2026 (64 Md€ hors pensions selon le ministère), contre 65,3 Md€ au plafond de juillet : +1,1 à +1,2 Md€ selon les sources', src: 'aef_plf27', src2: 'budget27_men' },
       { v: '64,49 Md€', l: 'crédits de paiement de la mission « Enseignement scolaire » au budget 2026, hors contribution au CAS Pensions', src: 'senat_plf26' },
       { v: '89,64 Md€', l: 'la même mission pensions comprises, c’est ce chiffre que citent les tribunes, et l’autre est celui que manie Bercy', src: 'senat_plf26' },
       { v: '+0,26 %', l: 'progression du budget 2026 sur 2025 : +167 M€ en crédits de paiement, moins que l’inflation', src: 'senat_plf26' },
-      { v: '+0,8 Md€', l: 'hausse inscrite au plafond prévisionnel du PLF 2027 (65,3 Md€), soit +1,2 %, la marge dont vous héritez (la presse parle de +1,2 Md€ pour l’ensemble de l’Éducation nationale, un périmètre plus large)', src: 'plafonds27' },
+      { v: '+0,8 Md€', l: 'hausse inscrite au plafond prévisionnel du PLF 2027 (65,3 Md€), soit +1,2 %, la marge dont vous héritez (le PLF présenté le 1er octobre le porte à 65,5 Md€, soit +1,1 à +1,2 Md€ selon les sources ; hors pensions, le ministère annonce 64 Md€)', src: 'plafonds27' },
       { v: '≈ 93 %', l: 'part de la mission consommée par la masse salariale : ce qui n’est pas arbitrable dans l’année', src: 'cc_neb24' },
       { v: '13 545 $', l: 'dépense annuelle par élève en France (moyenne OCDE : 12 647 $), mais −13 % en primaire, −5 % au collège, +24 % au lycée', src: 'ocde25' },
       { v: '9 100 € → 14 700 €', l: 'dépense annuelle par élève en 2024 selon le niveau : 9 100 € à l’école, 10 500 € au collège, 13 000 € au lycée général, 14 700 € au lycée professionnel. Un élève ne coûte pas la même chose selon le niveau où on le regarde', src: 'hcsp26' },
@@ -782,7 +819,7 @@ export const REPERES = [
       { v: '≈ −161 000', l: 'élèves à la seule rentrée 2026, dont environ −125 000 dans le premier degré', src: 'depp_prev28' },
       { v: '2010', l: 'année où la baisse des naissances s’amorce ; elle s’est accélérée depuis 2015 et arrive maintenant au collège', src: 'depp_proj35' },
     ],
-    aRetenir: 'Chaque année, la démographie « rend » des milliers de postes. Deux politiques opposées existent, toutes deux appliquées récemment : rendre ces postes à Bercy (rentrée 2026 : −4 032 postes pour −161 000 élèves), ou les réinvestir dans l’encadrement (rentrée 2025 : environ un poste sur dix rendu, pour 106 000 élèves en moins, selon la conversion du jeu). Le même chiffre démographique, deux pays différents à l’arrivée. C’est l’arbitrage de janvier, dans le jeu comme dans la réalité.',
+    aRetenir: 'Chaque année, la démographie « rend » des milliers de postes. Deux politiques opposées existent, toutes deux appliquées récemment : rendre ces postes à Bercy (rentrée 2026 : −4 032 postes pour −161 000 élèves), ou les réinvestir dans l’encadrement (rentrée 2025 : les 4 000 suppressions prévues au budget ont été abandonnées, presque aucun poste n’a été rendu). Le même chiffre démographique, deux pays différents à l’arrivée. C’est l’arbitrage de janvier, dans le jeu comme dans la réalité.',
   },
   {
     cle: 'niveaux',
@@ -820,6 +857,7 @@ export const REPERES = [
     titre: 'Le métier enseignant',
     resume: 'Plus d’un million de personnes, dont la rémunération dépend d’un même point d’indice.',
     chiffres: [
+      { v: '79 %', l: 'des enseignants français se disent satisfaits de leur métier (TALIS 2024), contre près de 90 % dans l’OCDE ; 4 % jugent leur profession valorisée dans la société', src: 'talis24' },
       { v: '−26 % / −18 %', l: 'salaires effectifs des enseignants d’élémentaire et de collège par rapport aux autres diplômés du supérieur à temps plein (2024). Moyennes OCDE : −17 % et −13 %', src: 'ocde25' },
       { v: '4 sur 10', l: 'enseignants français ont plus de 50 ans', src: 'ocde25' },
       { v: '3,5 jours', l: 'de formation continue par an au collège, contre 8 en moyenne dans l’OCDE ; 35 % des enseignants français jugent utile la formation proposée, contre 55 % ailleurs', src: 'talis' },
@@ -840,7 +878,7 @@ export const REPERES = [
     resume: 'Le sujet dont les familles parlent, et que les statistiques mesurent mal.',
     chiffres: [
       { v: '4,3 % et 7,4 %', l: 'part du temps scolaire perdu faute de remplacement, en moyenne et dans le second degré (rapport sénatorial, juin 2025)', src: 'senat_rempl' },
-      { v: '9,3 %', l: 'part des heures d’enseignement perdues au collège et au lycée en 2023-2024 selon la Cour des comptes (décembre 2025). Deux chiffres officiels, deux périmètres : c’est le débat, pas une erreur', src: 'cc_absences' },
+      { v: '9,8 %', l: 'des heures d’enseignement non assurées dans le second degré public en 2024-2025 : 7,5 points par absence non remplacée, 2,3 par fermeture d’établissement ; +0,7 point en un an, dû aux fermetures. Les chiffres du Sénat (4,3 % et 7,4 %) et de la Cour des comptes (9,3 % en 2023-2024) mesurent d’autres périmètres : c’est le débat, pas une erreur', src: 'depp_2614', src2: 'cc_absences' },
       { v: '20 % contre 96 %', l: 'taux de remplacement des absences courtes et des absences de plus de quinze jours', src: 'cc_absences' },
       { v: 'deux tiers', l: 'des absences non remplacées ont une cause institutionnelle (examens, formation, réunions, sorties) et non individuelle', src: 'cc_absences' },
       { v: '4,2 Md€', l: 'budget consacré au remplacement en 2025, en hausse de 33 % depuis 2017', src: 'senat_rempl' },
@@ -967,6 +1005,7 @@ export const REPERES = [
     titre: 'Mon lycée, mon département',
     resume: 'Ce que coûte un lycéen, qui paie, et pourquoi ce n’est pas pareil partout.',
     chiffres: [
+      { v: '55 % et 23 %', l: 'la part de l’État et celle des collectivités territoriales dans le financement de la dépense d’éducation en 2024 (197,1 Md€)', src: 'die24' },
       { v: '11 660 €', l: 'par an et par élève du second degré en 2024 : trois ans de lycée coûtent de l’ordre de 35 000 € à la collectivité, une classe de trente environ 350 000 € par an', src: 'insee_die2024' },
       { v: 'un quart', l: 'de ce coût est payé par la région (murs, cantine, internat, agents, ordinateurs) : 6,8 Md€ en 2025, soit 3 000 à 3 900 € par lycéen. Le reste est payé par l’État (d’abord les professeurs), les départements, les communes et les familles', src: 'ofgl_regions' },
       { v: '+24 %', l: 'par rapport à la moyenne de l’OCDE pour un élève de lycée (18 127 dollars contre 14 562), mais −13 % pour un élève de primaire : la France dépense beaucoup en haut, peu en bas', src: 'ocde_rse2025' },
@@ -1070,7 +1109,7 @@ export const CADRAGE_INITIAL = [
   {
     cle: 'budget',
     titre: 'Un budget contraint',
-    accroche: { v: '65,3 Md€', l: 'C’est le plafond prévu pour la mission « Enseignement scolaire » en 2027, hors pensions, le premier budget de l’État. Il augmente, un peu, et il est presque entièrement pré-engagé.', src: 'plafonds27' },
+    accroche: { v: '65,3 Md€', l: 'C’est le plafond de juillet pour la mission « Enseignement scolaire » en 2027 ; le PLF du 1er octobre la porte à 65,5 Md€ (64 Md€ hors pensions selon le ministère). Le premier budget de l’État. Il augmente, un peu, et il est presque entièrement pré-engagé.', src: 'plafonds27' },
     /* Le chiffre qui commande tous les autres se lit sous le total, pas dans
        une liste sous le graphique où personne ne le voyait. La hausse de
        +0,8 Md€, elle, est écrite sur la colonne 2027 du graphique. */
@@ -1086,7 +1125,7 @@ export const CADRAGE_INITIAL = [
     graphique: 'eleves',
     chiffres: [
       { v: '≈ 6 600', l: 'postes que la démographie « libère » chaque rentrée, à raison d’un poste pour vingt-quatre élèves. C’est vous qui décidez à qui ils vont', src: 'depp_proj35' },
-      { v: '10 % ou 60 %', l: 'des postes libérés par la démographie rendus à Bercy aux rentrées 2025 et 2026 (conversion du jeu : un poste pour 24 élèves). Le même chiffre démographique, deux pays différents', src: 'senat_plf26' },
+      { v: 'presque 0 ou 60 %', l: 'des postes libérés par la démographie rendus à Bercy aux rentrées 2025 et 2026 : en 2025, les 4 000 suppressions prévues ont été abandonnées ; en 2026, 4 032 postes supprimés, soit 60 % selon le calcul du jeu (un poste pour 24 élèves). Le même chiffre démographique, deux pays différents', src: 'senat_plf26', src2: 'budget25_abandon' },
     ],
     aRetenir: 'Rendre ces postes ou les réinvestir : c’est l’arbitrage de janvier, chaque année.',
   },

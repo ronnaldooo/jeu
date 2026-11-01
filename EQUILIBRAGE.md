@@ -2161,15 +2161,23 @@ sur 4 (graines 5, 11, 23). Clé de sauvegarde `gp5`.
 - *Annonces d'octobre.* Les suppressions « annulées » sont dites « annoncées comme annulées, budget non modifié » partout ; les annonces sont attribuées au gouvernement et non à un ministre seul ; « 76 500 » devient « premières contributions ».
 - *Humeur des lycéens.* Au départ, la jauge est à 90 alors que les lycées sont déjà bloqués : le mot « en blocus » apparaît au-dessus de 88.
 
-**Ce qui reste ouvert, et que je n'ai pas pu vérifier** (le réseau est fermé, seule une recherche web est possible) :
+**Ce qui était ouvert, et ce qu'une recherche du 1er novembre a tranché.**
 
-- La rentrée 2025 : le jeu compte −470 postes pour −106 000 élèves (environ 10 % des postes libérés) ; une recherche trouve au contraire « aucune suppression en 2025 » (Public Sénat) et +542 postes dans le second degré. Le chiffre du jeu est présenté comme un calcul (« un poste pour 24 élèves ») ; à recouper avec le Sénat.
-- Le périmètre du +1,2 Md€ (Gazette des communes) contre le +0,8 Md€ du plafond de la mission : les deux sont cités avec leur périmètre, sans pouvoir les réconcilier.
-- Les « heures de cours perdues » : 4,3 %, 7,4 %, 7,5 %, 9,3 %, 9,8 %, selon la source, l'année et le périmètre (second degré, collèges, lycées). Une seule valeur par périmètre reste à choisir.
-- Des affirmations de cartes jugées douteuses ou absolues par la relecture, à sourcer ou à nuancer : classement TALIS de la France, « sept ministres en trois ans », « le seul levier qui ait fait tomber un gouvernement », dépense des collectivités (« 40 % »), ancienneté des conseils de la vie lycéenne (1990 ou 2000), effet de l'internat de Sourdun, 5 500 psychologues pour 7 500 postes. Elles sont dans le rapport de relecture, pas dans le jeu corrigé.
-- Des sigles non développés au premier emploi dans les cartes (HCSP, CSEN, EEF, TALIS, IGÉSR-IGAS, MDPH, CAS, HSA, INSPÉ…) : le glossaire du jeu en couvre une partie (DGESCO, Bercy, PISA, PLF, CVL, IPS…).
-- 28 sources de `reperes.js` ne sont citées par aucune fiche (reliquat de la recherche) ; elles apparaissent dans « Toutes les sources ».
-- Le calcul des 60 000 divisions pour 19 élèves par classe, qui suppose une moyenne tous niveaux incompatible avec les moyennes du primaire (21,5) et du collège (25,8).
+- *Rentrée 2025.* Le jeu comptait −470 postes (environ 10 % des postes libérés). Le budget 2025 prévoyait environ 4 000 suppressions, que le gouvernement a abandonnées en janvier 2025 (SUD éducation, CSA du 17 janvier 2025 : second degré, 1 148 postes créés et 816 supprimés selon les académies ; Public Sénat pour le projet initial). Les textes disent maintenant « presque aucun poste rendu » ; le paramètre du jeu (10 % pour l'option « réinvestir ») est une règle de jeu, pas un chiffre publié.
+- *Budget 2027.* Le plafond de juillet (65,3 Md€, +0,8 Md€) est devenu, au projet de loi de finances du 1er octobre, 65,5 Md€ pour la mission (+1,1 à +1,2 Md€ selon les sources) ; le ministère annonce 64 Md€ hors pensions. Les textes donnent les deux. La série du budget et la marge du moteur gardent le plafond de juillet : à resserrer si l'on veut suivre le PLF.
+- *Heures de cours perdues.* Référence retenue : DEPP, note 26-14 (30 avril 2026), 9,8 % en 2024-2025 dans le second degré public, dont 7,5 points d'absences non remplacées et 2,3 de fermetures ; +0,7 point en un an, dû aux fermetures ; les 10 % d'établissements les plus touchés perdent plus de 15 % des heures. Le Sénat (4,3 % et 7,4 %) et la Cour des comptes (9,3 %, non relue) mesurent d'autres périmètres, et le texte le dit.
+- *TALIS 2024.* « Dernière des 48 pays » n'est pas confirmé : l'OCDE donne 79 % de satisfaction contre près de 90 %, 4 % de reconnaissance sociale, deux heures de travail d'équipe contre trois. Le texte cite ces chiffres.
+- *Dépense d'éducation.* Les collectivités financent 23 % (l'État 55 %, entreprises 10 %, ménages 8 %) de 197,1 Md€ en 2024 (DEPP), non 40 % comme écrit dans une carte : corrigé.
+- *Conseils de la vie lycéenne.* Généralisés en 2000 (conseils académiques en 1991), non 1990 : corrigé.
+- *Internat de Sourdun.* Confirmé : rien la première année, puis des gains en mathématiques la deuxième pour les élèves déjà bons, rien en français : le texte le dit.
+
+**Ce qui reste ouvert** (non vérifié, y compris par la recherche) :
+
+- Des affirmations de cartes jugées douteuses ou absolues par la relecture : « sept ministres en trois ans », « le seul levier qui ait fait tomber un gouvernement », 5 500 psychologues pour 7 500 postes, 40 % d'élèves très favorisés dans le privé.
+- Le rapport de la Cour des comptes de décembre 2025 (9,3 %), non retrouvé.
+- Des sigles non développés au premier emploi dans les cartes (HCSP, CSEN, EEF, IGÉSR-IGAS, MDPH, CAS, HSA, INSPÉ…) : le glossaire du jeu en couvre une partie.
+- 22 sources de `reperes.js` ne sont citées par aucune fiche (reliquat de la recherche) ; elles apparaissent dans « Toutes les sources ».
+- Le calcul des 60 000 divisions pour 19 élèves par classe, qui suppose une moyenne tous niveaux incompatible avec celles du primaire (21,5) et du collège (25,8).
 
 ## 5. Paramètres à réexaminer après tests humains
 

@@ -1503,7 +1503,7 @@ function ecranIntention(q) {
     titre: 'Moins d’élèves : que faites-vous des postes libérés ?',
     info: 'Moins d’élèves chaque année : environ 6 600 postes d’enseignants sont libérés. Rendez-les à Bercy (une économie) ou gardez-les dans les classes. Vous annoncez votre intention maintenant ; <b>Bercy la comparera à votre décision de janvier</b>.',
     prompt: 'Que dites-vous publiquement ?',
-    figure: { v: '10 % ou 60 %', l: 'des postes libérés rendus à Bercy en 2025 et 2026 (calcul du jeu : un poste pour 24 élèves)', src: 'senat_plf26' },
+    figure: { v: '≈ 0 ou 60 %', l: 'des postes libérés rendus à Bercy en 2025 et en 2026', src: 'budget25_abandon' },
     note: noteFiche('demographie', 'La baisse démographique'),
     choix: q.options.map((o) => ({
       titre: o.titre, det: o.detail,
@@ -1531,7 +1531,7 @@ function ecranCarteScolaire(q) {
   const postesDispo = CHOIX_POSTES.filter((c) => c.v <= q.restitutionMax + 1e-9);
   const precedents = (S.historiqueRestitution && S.historiqueRestitution.length)
     ? 'Vos précédents : ' + S.historiqueRestitution.map((h) => `rentrée ${h.rentree}, ${h.pct} % rendus`).join(' ; ') + '.'
-    : 'Avant vous : environ 10 % des postes libérés rendus en 2025, 60 % en 2026.';
+    : 'Avant vous : presque aucun poste rendu en 2025, 60 % des postes libérés en 2026.';
   const premiere = () => page({
     kicker: 'La carte scolaire', picto: 'plan', pas: `Rentrée ${S.anneeCiv + 1} · décision 1 sur 2`,
     titre: 'Les postes libres : les rendre ou les garder ?', illus: 'carte',
@@ -2319,7 +2319,7 @@ function serieBudget() {
   </div>
   <div class="rep-annees">${SERIE_BUDGET.map((b) => `<span>${b.annee}</span>`).join('')}</div>
   <div class="rep-lgd"><i class="c-bleu-bloc"></i>budget voté<i class="c-hachure"></i>plafond prévisionnel 2027<span class="unite">en milliards d’euros courants</span></div>
-  <p class="rep-serie-note"><b>+0,8 Md€ en 2027</b>, soit +1,2 % : c’est tout ce qui est nouveau, et une bonne moitié en est déjà engagée par votre prédécesseur. Crédits de paiement de la mission « Enseignement scolaire », hors pensions. <b>L’échelle part de zéro</b> : la hausse est réelle mais modeste — +25 % en huit ans d’euros courants, soit à peu près l’inflation. 2021 n’est pas représentée, le périmètre de la mission ayant changé cette année-là.</p>`;
+  <p class="rep-serie-note"><b>+0,8 Md€ en 2027 au plafond de juillet</b>, soit +1,2 % (le PLF du 1er octobre parle de +1,1 à +1,2 Md€) : c’est tout ce qui est nouveau, et une bonne moitié en est déjà engagée par votre prédécesseur. Crédits de paiement de la mission « Enseignement scolaire », hors pensions. <b>L’échelle part de zéro</b> : la hausse est réelle mais modeste — +25 % en huit ans d’euros courants. 2021 n’est pas représentée, le périmètre de la mission ayant changé cette année-là.</p>`;
   return g;
 }
 
